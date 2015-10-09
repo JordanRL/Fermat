@@ -1,13 +1,16 @@
 <?php
 
-namespace Samsara\Cantor\Bounds;
+namespace Samsara\Cantor\Context;
 
 use Samsara\Cantor\Numbers;
 use Samsara\Cantor\Provider\BCProvider;
 use Samsara\Cantor\Provider\GaussianProvider;
 use Samsara\Cantor\Values\Base\NumberInterface;
 
-class GaussianBound
+/**
+ * Used for operating on numbers within the context of a Gaussian (or normal) distribution.
+ */
+class GaussianContext
 {
 
     /**
@@ -19,8 +22,6 @@ class GaussianBound
      * @var NumberInterface
      */
     protected $standardDev;
-
-    protected $numberType;
 
     /**
      * @var NumberInterface
@@ -123,9 +124,9 @@ class GaussianBound
 
     public function random()
     {
-        $rand = GaussianProvider::random($this->getMean(), $this->getSD());
+        $rand = GaussianProvider::random($this->getMean()->getValue(), $this->getSD()->getValue());
 
-        return $rand;
+        return Numbers::make($this->numberType, $rand);
     }
 
 }

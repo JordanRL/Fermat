@@ -1,6 +1,7 @@
 {
   "name": "samsara/cantor",
   "require": {
+    "ircmaxell/random-lib": "1.1.*",
     "ext-stats": "*"
   },
   "require-dev": {
