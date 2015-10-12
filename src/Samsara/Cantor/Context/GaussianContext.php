@@ -2,6 +2,7 @@
 
 namespace Samsara\Cantor\Context;
 
+use Samsara\Cantor\Context\Base\BaseContext;
 use Samsara\Cantor\Numbers;
 use Samsara\Cantor\Provider\BCProvider;
 use Samsara\Cantor\Provider\GaussianProvider;
@@ -10,7 +11,7 @@ use Samsara\Cantor\Values\Base\NumberInterface;
 /**
  * Used for operating on numbers within the context of a Gaussian (or normal) distribution.
  */
-class GaussianContext
+class GaussianContext extends BaseContext
 {
 
     /**
@@ -127,6 +128,11 @@ class GaussianContext
         $rand = GaussianProvider::random($this->getMean()->getValue(), $this->getSD()->getValue());
 
         return Numbers::make($this->numberType, $rand);
+    }
+
+    public function transformBaseContext($base)
+    {
+        return $this;
     }
 
 }

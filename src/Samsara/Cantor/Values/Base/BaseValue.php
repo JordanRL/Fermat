@@ -18,6 +18,10 @@ abstract class BaseValue
 
         $this->base = $base;
         $this->value = (string)$value;
+
+        if ($this->base != 10 && $this->getRadixPos() !== false) {
+            throw new \Exception('This number has a fractional part. Currently, only whole numbers may be base converted. Floating point numbers must be in base 10.');
+        }
     }
 
     public function getValue()
@@ -44,7 +48,7 @@ abstract class BaseValue
     {
         $radix = $this->getRadixPos();
         if ($radix !== false) {
-            return substr($this->getValue(), $radix);
+            return substr($this->getValue(), $radix+1);
         } else {
             return 0;
         }
@@ -54,7 +58,7 @@ abstract class BaseValue
     {
         $radix = $this->getRadixPos();
         if ($radix !== false) {
-            return substr($this->getValue(), 0, ($radix-1));
+            return substr($this->getValue(), 0, $radix);
         } else {
             return $this->getValue();
         }

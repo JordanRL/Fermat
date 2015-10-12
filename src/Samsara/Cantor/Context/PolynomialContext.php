@@ -3,8 +3,8 @@
 namespace Samsara\Cantor\Context;
 
 use RandomLib\Factory;
-use RandomLib\Source\Random;
 use Samsara\Cantor\Context\Base\BaseContext;
+use Samsara\Cantor\Context\Base\ContextInterface;
 use Samsara\Cantor\Numbers;
 use Samsara\Cantor\Provider\BCProvider;
 use Samsara\Cantor\Values\Base\NumberInterface;
@@ -12,7 +12,7 @@ use Samsara\Cantor\Values\Base\NumberInterface;
 /**
  * Used for operating on numbers withing a polynomial context.
  */
-class PolynomialContext extends BaseContext
+class PolynomialContext extends BaseContext implements ContextInterface
 {
 
     /**
@@ -50,10 +50,11 @@ class PolynomialContext extends BaseContext
         $this->equationDefinition = $definition;
     }
 
-    public function random()
+    public function random($min = 0, $max = PHP_INT_MAX)
     {
-        $randFactory = new Factory();
-        $x = $randFactory->getMediumStrengthGenerator()->generateInt();
+        $openContext = new OpenContext($this->numberType, $this->contextBase);
+
+        $x = $openContext->random($min, $max);
 
         return $this->getY($x);
     }

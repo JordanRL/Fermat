@@ -68,8 +68,7 @@ class GaussianProvider
 
     public static function formatPercent($percent)
     {
-        if ($percent <= 1 && $percent > 0)
-        {
+        if ($percent <= 1 && $percent > 0) {
             return $percent;
         } elseif ($percent <= 100) {
             return ($percent/100);

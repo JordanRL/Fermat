@@ -40,4 +40,14 @@ class BCProvider
         return bcmod($number, $modulo);
     }
 
+    public static function compare($left, $right, $scale = null)
+    {
+        return bccomp($left, $right, $scale);
+    }
+
+    public static function powmod($left, $right, $modulus, $scale = null)
+    {
+        return bcpowmod($left, $right, $modulus, $scale);
+    }
+
 }

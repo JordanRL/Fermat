@@ -9,8 +9,8 @@ use Samsara\Cantor\Values\Base\NumberInterface;
 class Numbers
 {
 
-    const MUTABLE = 'Samsara\Cantor\Values\FluentNumber';
-    const IMMUTABLE = 'Samsara\Cantor\Values\ImmutableNumber';
+    const MUTABLE = FluentNumber::class;
+    const IMMUTABLE = ImmutableNumber::class;
 
     /**
      * @param $type
@@ -24,7 +24,7 @@ class Numbers
 
         $reflector = new \ReflectionClass($type);
 
-        if ($reflector->implementsInterface('Samsara\Cantor\Values\Base\NumberInterface')) {
+        if ($reflector->implementsInterface(NumberInterface::class)) {
             return $reflector->newInstance([
                 $value,
                 $precision,
