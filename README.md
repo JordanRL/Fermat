@@ -1,4 +1,4 @@
-# Newton
+# Cantor
 
 **This project is unit tested against 5.6.X and 7.X, and merges are not accepted unless the tests pass on both.**
 
