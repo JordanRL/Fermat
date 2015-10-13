@@ -6,7 +6,7 @@
 
 To install, simply require the package using composer:
 
-    composer require samsara/newton "~0.2"
+    composer require samsara/cantor "dev-dev"
     
 Or include it in your `composer.json` file:
 
