@@ -10,7 +10,7 @@ use Samsara\Cantor\Provider\BCProvider;
 use Samsara\Cantor\Values\ImmutableNumber;
 use Samsara\Cantor\Values\Base\NumberInterface;
 
-class OpenContext extends BaseContext implements ContextInterface
+class UniformContext extends BaseContext implements ContextInterface
 {
     public function __construct($type, $base = 10)
     {

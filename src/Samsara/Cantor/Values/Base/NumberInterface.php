@@ -35,4 +35,18 @@ interface NumberInterface
 
     public function getPrecision();
 
+    public function add($num);
+
+    public function subtract($num);
+
+    public function multiply($num);
+
+    public function divide($num);
+
+    public function exp($num);
+
+    public function convertForModification();
+
+    public function convertFromModification($oldBase);
+
 }
