@@ -1,9 +1,9 @@
 <?php
 
-namespace Samsara\Cantor\Values\Base;
+namespace Samsara\Fermat\Values\Base;
 
-use Samsara\Cantor\Numbers;
-use Samsara\Cantor\Provider\BCProvider;
+use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\BCProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
 
 abstract class BaseValue

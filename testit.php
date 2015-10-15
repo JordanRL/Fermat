@@ -2,7 +2,7 @@
 
 require './tests/bootstrap.php';
 
-$numberInBase10 = new \Samsara\Cantor\Values\ImmutableNumber(100.1);
+$numberInBase10 = new \Samsara\Fermat\Values\ImmutableNumber(100.1);
 
 echo $numberInBase10->getValue().PHP_EOL;
 

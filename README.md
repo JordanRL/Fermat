@@ -1,4 +1,4 @@
-# Cantor
+# Fermat
 
 **This project is unit tested against 5.6.X and 7.X, and merges are not accepted unless the tests pass on both.**
 
@@ -6,19 +6,19 @@
 
 To install, simply require the package using composer:
 
-    composer require samsara/cantor "dev-dev"
+    composer require samsara/fermat "dev-dev"
     
 Or include it in your `composer.json` file:
 
 ```json
 {
     "require": {
-        "samsara/cantor": "dev-dev"
+        "samsara/fermat": "dev-dev"
     }
 }
 ```
 
-The project namespace is `Samsara\Cantor\*`. You can view the project on [Packagist](https://packagist.org/packages/samsara/cantor).
+The project namespace is `Samsara\Fermat\*`. You can view the project on [Packagist](https://packagist.org/packages/samsara/fermat).
 
 ## Usage
 

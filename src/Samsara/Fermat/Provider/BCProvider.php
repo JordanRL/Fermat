@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Cantor\Provider;
+namespace Samsara\Fermat\Provider;
 
 class BCProvider
 {

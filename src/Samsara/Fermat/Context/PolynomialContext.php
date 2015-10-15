@@ -1,13 +1,13 @@
 <?php
 
-namespace Samsara\Cantor\Context;
+namespace Samsara\Fermat\Context;
 
 use RandomLib\Factory;
-use Samsara\Cantor\Context\Base\BaseContext;
-use Samsara\Cantor\Context\Base\ContextInterface;
-use Samsara\Cantor\Numbers;
-use Samsara\Cantor\Provider\BCProvider;
-use Samsara\Cantor\Values\Base\NumberInterface;
+use Samsara\Fermat\Context\Base\BaseContext;
+use Samsara\Fermat\Context\Base\ContextInterface;
+use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\BCProvider;
+use Samsara\Fermat\Values\Base\NumberInterface;
 
 /**
  * Used for operating on numbers withing a polynomial context.

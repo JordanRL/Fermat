@@ -1,5 +1,5 @@
 {
-  "name": "samsara/cantor",
+  "name": "samsara/fermat",
   "type": "library",
   "description": "A library providing math and statistics operations for numbers of arbitrary size.",
   "keywords": ["math", "bigint", "large numbers", "numbers", "stats", "statistics", "gaussian"],

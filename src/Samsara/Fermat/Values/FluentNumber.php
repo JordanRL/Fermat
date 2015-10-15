@@ -1,9 +1,9 @@
 <?php
 
-namespace Samsara\Cantor\Values;
+namespace Samsara\Fermat\Values;
 
-use Samsara\Cantor\Values\Base\BaseValue;
-use Samsara\Cantor\Values\Base\NumberInterface;
+use Samsara\Fermat\Values\Base\BaseValue;
+use Samsara\Fermat\Values\Base\NumberInterface;
 
 class FluentNumber extends BaseValue implements NumberInterface
 {

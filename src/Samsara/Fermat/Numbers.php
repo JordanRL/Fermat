@@ -1,10 +1,10 @@
 <?php
 
-namespace Samsara\Cantor;
+namespace Samsara\Fermat;
 
-use Samsara\Cantor\Values\ImmutableNumber;
-use Samsara\Cantor\Values\FluentNumber;
-use Samsara\Cantor\Values\Base\NumberInterface;
+use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\FluentNumber;
+use Samsara\Fermat\Values\Base\NumberInterface;
 
 class Numbers
 {
@@ -67,7 +67,7 @@ class Numbers
         } elseif (is_object($input)) {
             $reflector = new \ReflectionClass($input);
 
-            if ($reflector->implementsInterface('Samsara\Cantor\Values\Base\NumberInterface')) {
+            if ($reflector->implementsInterface('Samsara\Fermat\Values\Base\NumberInterface')) {
                 return $input;
             }
         }

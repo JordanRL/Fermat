@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Cantor\Values\Base;
+namespace Samsara\Fermat\Values\Base;
 
 interface NumberInterface
 {

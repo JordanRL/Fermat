@@ -1,8 +1,8 @@
 <?php
 
-namespace Samsara\Cantor\Context\Base;
+namespace Samsara\Fermat\Context\Base;
 
-use Samsara\Cantor\Values\Base\NumberInterface;
+use Samsara\Fermat\Values\Base\NumberInterface;
 
 abstract class BaseContext
 {

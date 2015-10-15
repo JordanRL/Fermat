@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Cantor\Context\Base;
+namespace Samsara\Fermat\Context\Base;
 
 interface ContextInterface
 {
