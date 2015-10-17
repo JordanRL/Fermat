@@ -46,9 +46,11 @@ interface NumberInterface
     public function isPositive();
 
     /**
+     * @param int $decimals
+     *
      * @return NumberInterface
      */
-    public function round();
+    public function round($decimals = 0);
 
     /**
      * @return NumberInterface
