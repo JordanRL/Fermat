@@ -5,7 +5,7 @@ namespace Samsara\Fermat\Values;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\TrigonometryProvider;
 
-class Vector
+class SphericalVector
 {
 
     /**
