@@ -20,15 +20,20 @@ class TrigonometryProvider
         return acos(
             BCProvider::divide(
                 $z,
-                BCProvider::squareRoot(
-                    BCProvider::add(
-                        BCProvider::add(
-                            BCProvider::exp($x, 2),
-                            BCProvider::exp($y, 2)
-                        ),
-                        BCProvider::exp($z, 2)
-                    )
-                )
+                self::sphericalCartesianDistance($x, $y, $z)
+            )
+        );
+    }
+
+    public static function sphericalCartesianDistance($x, $y, $z)
+    {
+        return BCProvider::squareRoot(
+            BCProvider::add(
+                BCProvider::add(
+                    BCProvider::exp($x, 2),
+                    BCProvider::exp($y, 2)
+                ),
+                BCProvider::exp($z, 2)
             )
         );
     }
