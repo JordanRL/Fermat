@@ -26,7 +26,7 @@ class Numbers
 
         if ($reflector->implementsInterface(NumberInterface::class)) {
             return $reflector->newInstance([
-                $value,
+                trim($value),
                 $precision,
                 $base
             ]);
