@@ -139,12 +139,11 @@ abstract class BaseValue
 
     public function convertFromModification($oldBase)
     {
-        if ($oldBase === false) {
-            return 10;
-        } else {
-            $this->convertToBase($oldBase);
-            return $oldBase;
+        if ($oldBase !== false) {
+            return $this->convertToBase($oldBase);
         }
+
+        return $this;
     }
 
     public function abs()
@@ -177,18 +176,38 @@ abstract class BaseValue
         return !$this->isNegative();
     }
 
-    public function round()
+    public function round($decimals = 0)
     {
         $fractional = $this->getFractionalPart();
         $whole = $this->getWholePart();
 
         $fractionalArr = str_split($fractional);
 
-        if ($fractionalArr[0] >= 5) {
-            $whole = BCProvider::add($whole, 1);
+        if ($fractionalArr[$decimals] >= 5) {
+            if ($decimals == 0) {
+                $rounded = BCProvider::add($whole, 1);
+            } else {
+                $rounded = $whole.'.';
+                for ($i = 0; $i < $decimals; $i++) {
+                    if (($i+1) == $decimals) {
+                        $rounded .= ($fractionalArr[$i]+1);
+                    } else {
+                        $rounded .= $fractionalArr[$i];
+                    }
+                }
+            }
+        } else {
+            if ($decimals == 0) {
+                $rounded = $whole;
+            } else {
+                $rounded = $whole.'.';
+                for ($i = 0; $i < $decimals; $i++) {
+                    $rounded .= $fractionalArr[$i];
+                }
+            }
         }
 
-        return $this->setValue($whole);
+        return $this->setValue($rounded);
     }
 
     public function ceil()
