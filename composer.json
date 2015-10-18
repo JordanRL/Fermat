@@ -14,7 +14,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Samsara\\Fermat": "src/"
+      "Samsara\\Fermat\\": "src/"
     }
   }
 }
