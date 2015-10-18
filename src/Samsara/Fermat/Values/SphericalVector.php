@@ -27,7 +27,11 @@ class SphericalVector
     {
         $this->theta = Numbers::makeOrDont(Numbers::IMMUTABLE, $theta);
         $this->phi = Numbers::makeOrDont(Numbers::IMMUTABLE, $phi);
-        $this->rho = Numbers::makeOrDont(Numbers::IMMUTABLE, $rho);
+        if (is_object($rho)) {
+            $this->rho = $rho;
+        } else {
+            $this->rho = Numbers::makeOrDont(Numbers::IMMUTABLE, $rho);
+        }
     }
 
     public static function createFromCartesian($x, $y, $z)
@@ -36,7 +40,7 @@ class SphericalVector
         $phi = TrigonometryProvider::sphericalCartesianAzimuth($x, $y);
         $theta = TrigonometryProvider::sphericalCartesianInclination($x, $y, $z);
 
-        return new Vector($theta, $phi, $rho);
+        return new SphericalVector($theta, $phi, $rho);
     }
 
     public function getTheta()
