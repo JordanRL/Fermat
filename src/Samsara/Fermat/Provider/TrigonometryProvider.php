@@ -38,4 +38,13 @@ class TrigonometryProvider
         );
     }
 
+    public static function moveCartesianToOrigin($startX, $startY, $startZ, $endX, $endY, $endZ)
+    {
+        return [
+            'x' => (BCProvider::subtract($endX, $startX)),
+            'y' => (BCProvider::subtract($endY, $startY)),
+            'z' => (BCProvider::subtract($endZ, $startZ))
+        ];
+    }
+
 }

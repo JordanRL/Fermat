@@ -30,9 +30,9 @@ class BCProvider
         return bcpow($base, $exponent);
     }
 
-    public static function squareRoot($number)
+    public static function squareRoot($number, $precision = null)
     {
-        return bcsqrt($number);
+        return bcsqrt($number, $precision);
     }
 
     public static function modulo($number, $modulo)
