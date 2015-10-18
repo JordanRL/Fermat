@@ -67,8 +67,12 @@ class Numbers
         } elseif (is_object($input)) {
             $reflector = new \ReflectionClass($input);
 
-            if ($reflector->implementsInterface('Samsara\Fermat\Values\Base\NumberInterface')) {
+            if ($input instanceof $type) {
                 return $input;
+            }
+
+            if ($reflector->implementsInterface('Samsara\Fermat\Values\Base\NumberInterface')) {
+                return self::make($type, $input->convertToBase(10)->getValue(), $precision, $base);
             }
         }
 
