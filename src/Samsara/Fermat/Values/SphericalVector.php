@@ -8,21 +8,6 @@ use Samsara\Fermat\Provider\TrigonometryProvider;
 class SphericalVector
 {
 
-    /**
-     * @var Base\NumberInterface
-     */
-    private $theta;
-
-    /**
-     * @var Base\NumberInterface
-     */
-    private $phi;
-
-    /**
-     * @var Base\NumberInterface
-     */
-    private $rho;
-
     public function __construct($theta, $phi, $rho)
     {
         $this->theta = Numbers::makeOrDont(Numbers::IMMUTABLE, $theta);
@@ -41,36 +26,6 @@ class SphericalVector
         $theta = TrigonometryProvider::sphericalCartesianInclination($x, $y, $z);
 
         return new SphericalVector($theta, $phi, $rho);
-    }
-
-    public function getTheta()
-    {
-        return $this->theta;
-    }
-
-    public function getInclination()
-    {
-        return $this->getTheta();
-    }
-
-    public function getPhi()
-    {
-        return $this->phi;
-    }
-
-    public function getAzimuth()
-    {
-        return $this->getPhi();
-    }
-
-    public function getRho()
-    {
-        return $this->rho;
-    }
-
-    public function getMagnitude()
-    {
-        return $this->getRho();
     }
 
 }
