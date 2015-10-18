@@ -47,4 +47,19 @@ class TrigonometryProvider
         ];
     }
 
+    public static function headingFromSpherical($azimuth, $inclination)
+    {
+        return $azimuth.' Mark '.$inclination;
+    }
+
+    public static function sphericalFromHeading($heading)
+    {
+        $parts = explode('mark', strtolower($heading));
+
+        return [
+            'azimuth' => $parts[0],
+            'inclination' => $parts[1]
+        ];
+    }
+
 }
