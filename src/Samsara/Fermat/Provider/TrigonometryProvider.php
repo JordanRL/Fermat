@@ -2,12 +2,23 @@
 
 namespace Samsara\Fermat\Provider;
 
+use Samsara\Fermat\Numbers;
+
 class TrigonometryProvider
 {
 
     public static function radiansToDegrees($radians)
     {
-        return BCProvider::divide(BCProvider::multiply(180, $radians), M_1_PI);
+        $radians = Numbers::makeOrDont(Numbers::IMMUTABLE, $radians);
+
+        return BCProvider::divide(BCProvider::multiply(180, $radians->getValue()), M_1_PI);
+    }
+
+    public static function degreesToRadians($degrees)
+    {
+        $degrees = Numbers::makeOrDont(Numbers::IMMUTABLE, $degrees);
+
+        return BCProvider::divide(BCProvider::multiply(M_1_PI, $degrees->getValue()), 180);
     }
 
     public static function sphericalCartesianAzimuth($x, $y)
@@ -59,6 +70,23 @@ class TrigonometryProvider
         return [
             'azimuth' => $parts[0],
             'inclination' => $parts[1]
+        ];
+    }
+
+    public static function cartesianFromSpherical($azimuth, $inclination, $rho)
+    {
+        $azimuth = TrigonometryProvider::degreesToRadians($azimuth);
+        $inclination = TrigonometryProvider::degreesToRadians($inclination);
+        $rho = Numbers::makeOrDont(Numbers::IMMUTABLE, $rho);
+
+        $unitX = Numbers::make(Numbers::IMMUTABLE, cos($azimuth));
+        $unitY = Numbers::make(Numbers::IMMUTABLE, sin($azimuth));
+        $unitZ = Numbers::make(Numbers::IMMUTABLE, sin($inclination));
+
+        return [
+            'x' => $unitX->multiply($rho),
+            'y' => $unitY->multiply($rho),
+            'z' => $unitZ->multiply($rho),
         ];
     }
 

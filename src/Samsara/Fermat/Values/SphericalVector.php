@@ -4,7 +4,7 @@ namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\TrigonometryProvider;
-use Samsara\Fermat\Values\Base\SphericalCoordinateTrait;
+use Samsara\Fermat\Values\ValueTraits\SphericalCoordinateTrait;
 
 class SphericalVector
 {

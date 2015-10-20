@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Values\Base;
+namespace Samsara\Fermat\Values\ValueTraits;
 
 trait SphericalCoordinateTrait
 {
