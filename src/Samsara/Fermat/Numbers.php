@@ -3,13 +3,13 @@
 namespace Samsara\Fermat;
 
 use Samsara\Fermat\Values\ImmutableNumber;
-use Samsara\Fermat\Values\FluentNumber;
+use Samsara\Fermat\Values\MutableNumber;
 use Samsara\Fermat\Types\NumberInterface;
 
 class Numbers
 {
 
-    const MUTABLE = FluentNumber::class;
+    const MUTABLE = MutableNumber::class;
     const IMMUTABLE = ImmutableNumber::class;
 
     /**
@@ -45,7 +45,7 @@ class Numbers
     public static function makeFromBase10($type, $value, $precision = null, $base = 10)
     {
         /**
-         * @var ImmutableNumber|FluentNumber
+         * @var ImmutableNumber|MutableNumber
          */
         $number = self::make($type, $value, $precision, 10);
 
