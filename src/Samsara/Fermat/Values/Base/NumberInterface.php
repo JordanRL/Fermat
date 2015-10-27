@@ -1,13 +1,13 @@
 <?php
 
-namespace Samsara\Fermat\Values\Base;
+namespace Samsara\Fermat\Types;
 
 interface NumberInterface
 {
 
     /**
      * @param int $base
-     * @return $this
+     * @return NumberInterface
      */
     public function convertToBase($base);
 

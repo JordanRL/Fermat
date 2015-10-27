@@ -2,6 +2,8 @@
 
 namespace Samsara\Fermat\Values\ValueTraits;
 
+use Samsara\Fermat\Types\NumberInterface;
+
 trait SphericalCoordinateTrait
 {
 

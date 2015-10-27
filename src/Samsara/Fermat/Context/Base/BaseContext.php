@@ -2,7 +2,7 @@
 
 namespace Samsara\Fermat\Context\Base;
 
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\NumberInterface;
 
 abstract class BaseContext
 {

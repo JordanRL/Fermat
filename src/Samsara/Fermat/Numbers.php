@@ -4,7 +4,7 @@ namespace Samsara\Fermat;
 
 use Samsara\Fermat\Values\ImmutableNumber;
 use Samsara\Fermat\Values\FluentNumber;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\NumberInterface;
 
 class Numbers
 {
@@ -54,7 +54,7 @@ class Numbers
 
     /**
      * @param $type
-     * @param $input
+     * @param int|float|string|NumberInterface $input
      * @param null $precision
      * @param int $base
      * @return NumberInterface
@@ -74,6 +74,12 @@ class Numbers
             if ($reflector->implementsInterface('Samsara\Fermat\Values\Base\NumberInterface')) {
                 return self::make($type, $input->convertToBase(10)->getValue(), $precision, $base);
             }
+        } elseif (is_array($input)) {
+            foreach ($input as $key => $value) {
+                $input[$key] = self::makeOrDont($type, $value, $precision, $base);
+            }
+
+            return $input;
         }
 
         throw new \InvalidArgumentException('The $input argument was not numeric or an implementation of NumberInterface.');

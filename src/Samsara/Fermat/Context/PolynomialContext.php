@@ -7,7 +7,7 @@ use Samsara\Fermat\Context\Base\BaseContext;
 use Samsara\Fermat\Context\Base\ContextInterface;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\NumberInterface;
 
 /**
  * Used for operating on numbers withing a polynomial context.
@@ -52,9 +52,9 @@ class PolynomialContext extends BaseContext implements ContextInterface
 
     public function random($min = 0, $max = PHP_INT_MAX)
     {
-        $openContext = new OpenContext($this->numberType, $this->contextBase);
+        $uniformContext = new UniformContext($this->numberType, $this->contextBase);
 
-        $x = $openContext->random($min, $max);
+        $x = $uniformContext->random($min, $max);
 
         return $this->getY($x);
     }

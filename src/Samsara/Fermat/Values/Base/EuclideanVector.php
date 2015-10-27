@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Values\Base;
+namespace Samsara\Fermat\Types;
 
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;

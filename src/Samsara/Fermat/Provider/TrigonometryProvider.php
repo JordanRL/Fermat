@@ -3,6 +3,9 @@
 namespace Samsara\Fermat\Provider;
 
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Tuple;
+use Samsara\Fermat\Types\NumberInterface;
+use Samsara\Fermat\Values\ImmutableNumber;
 
 class TrigonometryProvider
 {
@@ -49,13 +52,13 @@ class TrigonometryProvider
         );
     }
 
-    public static function moveCartesianToOrigin($startX, $startY, $startZ, $endX, $endY, $endZ)
+    public static function moveCartesianToOrigin(Tuple $start, Tuple $end)
     {
-        return [
-            'x' => (BCProvider::subtract($endX, $startX)),
-            'y' => (BCProvider::subtract($endY, $startY)),
-            'z' => (BCProvider::subtract($endZ, $startZ))
-        ];
+        $x = $end->get(0)->subtract($start->get(0));
+        $y = $end->get(1)->subtract($start->get(1));
+        $z = $end->get(2)->subtract($start->get(2));
+
+        return new Tuple($x, $y, $z);
     }
 
     public static function headingFromSpherical($azimuth, $inclination)
@@ -63,13 +66,17 @@ class TrigonometryProvider
         return $azimuth.' Mark '.$inclination;
     }
 
+    /**
+     * @param string $heading
+     * @return ImmutableNumber[]
+     */
     public static function sphericalFromHeading($heading)
     {
         $parts = explode('mark', strtolower($heading));
 
         return [
-            'azimuth' => $parts[0],
-            'inclination' => $parts[1]
+            'azimuth' => Numbers::make(Numbers::IMMUTABLE, $parts[0]),
+            'inclination' => Numbers::make(Numbers::IMMUTABLE, $parts[1]),
         ];
     }
 

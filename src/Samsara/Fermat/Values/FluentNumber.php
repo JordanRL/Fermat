@@ -2,10 +2,10 @@
 
 namespace Samsara\Fermat\Values;
 
-use Samsara\Fermat\Values\Base\BaseValue;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\Value;
+use Samsara\Fermat\Types\NumberInterface;
 
-class FluentNumber extends BaseValue implements NumberInterface
+class FluentNumber extends Value implements NumberInterface
 {
 
     public function modulo($mod)

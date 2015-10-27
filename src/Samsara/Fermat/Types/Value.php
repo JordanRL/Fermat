@@ -1,12 +1,12 @@
 <?php
 
-namespace Samsara\Fermat\Values\Base;
+namespace Samsara\Fermat\Types;
 
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
 
-abstract class BaseValue
+abstract class Value
 {
     protected $value;
 
@@ -267,6 +267,11 @@ abstract class BaseValue
         $this->base = $base;
 
         return $this->setValue($value);
+    }
+
+    public function __toString()
+    {
+        return $this->getValue();
     }
 
     protected function getRadixPos()
