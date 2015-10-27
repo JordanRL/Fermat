@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Types;
+namespace Samsara\Fermat\Values\Base;
 
 interface NumberInterface
 {
@@ -111,6 +111,11 @@ interface NumberInterface
      * @return NumberInterface
      */
     public function exp($num);
+
+    /**
+     * @return NumberInterface
+     */
+    public function sqrt();
 
     /**
      * @return int|bool

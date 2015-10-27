@@ -3,7 +3,7 @@
 namespace Samsara\Fermat\Types;
 
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\NumberInterface;
+use Samsara\Fermat\Values\Base\NumberInterface;
 
 class Tuple
 {

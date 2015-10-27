@@ -3,7 +3,7 @@
 namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Types\Value;
-use Samsara\Fermat\Types\NumberInterface;
+use Samsara\Fermat\Values\Base\NumberInterface;
 
 class ImmutableNumber extends Value implements NumberInterface
 {

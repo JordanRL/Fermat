@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Types;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
+use Samsara\Fermat\Values\Base\NumberInterface;
 
 abstract class Value
 {
@@ -22,10 +23,6 @@ abstract class Value
 
         $this->base = $base;
         $this->value = (string)$value;
-
-        if ($this->base != 10 && $this->getRadixPos() !== false) {
-            throw new \Exception('This number has a fractional part. Currently, only whole numbers may be base converted. Floating point numbers must be in base 10.');
-        }
     }
 
     public function getValue()
@@ -122,6 +119,17 @@ abstract class Value
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
+
+        return $this->setValue($value);
+    }
+
+    public function sqrt()
+    {
+        $oldBase = $this->convertForModification();
+
+        $value = BCProvider::squareRoot($this->getValue(), $this->getPrecision());
+
+        $this->convertFromModification($oldBase);
 
         return $this->setValue($value);
     }

@@ -7,7 +7,7 @@ use Samsara\Fermat\Context\Base\BaseContext;
 use Samsara\Fermat\Context\Base\ContextInterface;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;
-use Samsara\Fermat\Types\NumberInterface;
+use Samsara\Fermat\Values\Base\NumberInterface;
 
 /**
  * Used for operating on numbers withing a polynomial context.

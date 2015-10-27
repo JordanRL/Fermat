@@ -4,7 +4,7 @@ namespace Samsara\Fermat;
 
 use Samsara\Fermat\Values\ImmutableNumber;
 use Samsara\Fermat\Values\MutableNumber;
-use Samsara\Fermat\Types\NumberInterface;
+use Samsara\Fermat\Values\Base\NumberInterface;
 
 class Numbers
 {
