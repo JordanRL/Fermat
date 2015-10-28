@@ -57,4 +57,27 @@ class Cartesian
 
     }
 
+    public function performPairedOperation(Cartesian $cartesian, callable $function)
+    {
+        if (!$this->ofSameDimensionalityAs($cartesian)) {
+            throw new \InvalidArgumentException('Cannot operate on two cartesians of different dimensionality.');
+        }
+
+        for ($i = 0;$i < $this->dimensions->getValue();$i++) {
+            yield $function($this->getAxis($i), $cartesian->getAxis($i));
+        }
+    }
+
+    public function performOperation(callable $function)
+    {
+        for ($i = 0;$i < $this->dimensions->getValue();$i++) {
+            yield $function($this->getAxis($i));
+        }
+    }
+
+    public function ofSameDimensionalityAs(Cartesian $cartesian)
+    {
+        return ($this->getDimensions()->getValue() == $cartesian->getDimensions()->getValue());
+    }
+
 }

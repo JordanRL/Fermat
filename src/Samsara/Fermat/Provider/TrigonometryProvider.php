@@ -3,7 +3,9 @@
 namespace Samsara\Fermat\Provider;
 
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Cartesian;
 use Samsara\Fermat\Types\Tuple;
+use Samsara\Fermat\Values\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
 class TrigonometryProvider
@@ -28,36 +30,45 @@ class TrigonometryProvider
         return atan2($y, $x);
     }
 
-    public static function sphericalCartesianInclination($x, $y, $z)
+    public static function sphericalCartesianInclination(Cartesian $cartesian)
     {
         return acos(
             BCProvider::divide(
-                $z,
-                self::sphericalCartesianDistance($x, $y, $z)
+                $cartesian->getAxis(2),
+                self::sphericalCartesianDistance($cartesian)
             )
         );
     }
 
-    public static function sphericalCartesianDistance($x, $y, $z)
+    public static function sphericalCartesianDistance(Cartesian $cartesian)
     {
-        return BCProvider::squareRoot(
-            BCProvider::add(
-                BCProvider::add(
-                    BCProvider::exp($x, 2),
-                    BCProvider::exp($y, 2)
-                ),
-                BCProvider::exp($z, 2)
-            )
-        );
+        $squaredSum = Numbers::make(Numbers::MUTABLE, 0);
+
+        $operation = function(NumberInterface $number) {
+            return $number->exp(2);
+        };
+
+        foreach ($cartesian->performOperation($operation) as $value) {
+            $squaredSum->add($value);
+        }
+
+        return $squaredSum->sqrt();
     }
 
-    public static function moveCartesianToOrigin(Tuple $start, Tuple $end)
+    public static function moveCartesianToOrigin(Cartesian $end, Cartesian $start)
     {
-        $x = $end->get(0)->subtract($start->get(0));
-        $y = $end->get(1)->subtract($start->get(1));
-        $z = $end->get(2)->subtract($start->get(2));
 
-        return new Tuple($x, $y, $z);
+        $operation = function(NumberInterface $end, NumberInterface $start) {
+            return $end->subtract($start);
+        };
+
+        $points = [];
+
+        foreach ($end->performPairedOperation($start, $operation) as $value) {
+            $points[] = $value;
+        }
+
+        return new Cartesian($points);
     }
 
     public static function headingFromSpherical($azimuth, $inclination)

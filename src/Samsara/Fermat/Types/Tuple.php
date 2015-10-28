@@ -3,13 +3,13 @@
 namespace Samsara\Fermat\Types;
 
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Values\ImmutableNumber;
 
 class Tuple
 {
 
     /**
-     * @var NumberInterface[]
+     * @var ImmutableNumber[]
      */
     private $data;
 
@@ -21,7 +21,7 @@ class Tuple
 
     /**
      * @param $index
-     * @return NumberInterface
+     * @return ImmutableNumber
      */
     public function get($index)
     {
@@ -34,10 +34,10 @@ class Tuple
 
     /**
      * @param int $index
-     * @param NumberInterface $value
+     * @param ImmutableNumber $value
      * @return $this
      */
-    public function set($index, NumberInterface $value)
+    public function set($index, ImmutableNumber $value)
     {
         if (array_key_exists($index, $this->data)) {
             $this->data[$index] = $value;
