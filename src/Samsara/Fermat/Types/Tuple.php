@@ -19,6 +19,10 @@ class Tuple
         $this->data = Numbers::makeOrDont(Numbers::IMMUTABLE, $data);
     }
 
+    /**
+     * @param $index
+     * @return NumberInterface
+     */
     public function get($index)
     {
         if (array_key_exists($index, $this->data)) {
@@ -28,7 +32,12 @@ class Tuple
         throw new \InvalidArgumentException('Undefined index requested on tuple.');
     }
 
-    public function set($index, $value)
+    /**
+     * @param int $index
+     * @param NumberInterface $value
+     * @return $this
+     */
+    public function set($index, NumberInterface $value)
     {
         if (array_key_exists($index, $this->data)) {
             $this->data[$index] = $value;
@@ -37,6 +46,11 @@ class Tuple
         }
 
         throw new \InvalidArgumentException('Cannot set value for index that does not exist in tuple.');
+    }
+
+    public function all()
+    {
+        return $this->data;
     }
 
 }

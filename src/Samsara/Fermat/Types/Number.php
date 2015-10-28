@@ -7,7 +7,7 @@ use Samsara\Fermat\Provider\BCProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Fermat\Values\Base\NumberInterface;
 
-abstract class Value
+abstract class Number
 {
     protected $value;
 
