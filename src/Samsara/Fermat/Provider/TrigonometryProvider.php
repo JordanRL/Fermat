@@ -32,16 +32,6 @@ class TrigonometryProvider
 
     public static function sphericalCartesianInclination(Cartesian $cartesian)
     {
-        return acos(
-            BCProvider::divide(
-                $cartesian->getAxis(2),
-                self::sphericalCartesianDistance($cartesian)
-            )
-        );
-    }
-
-    public static function sphericalCartesianDistance(Cartesian $cartesian)
-    {
         $squaredSum = Numbers::make(Numbers::MUTABLE, 0);
 
         $operation = function(NumberInterface $number) {
@@ -50,6 +40,28 @@ class TrigonometryProvider
 
         foreach ($cartesian->performOperation($operation) as $value) {
             $squaredSum->add($value);
+        }
+
+        $squaredSum->sqrt();
+
+        return acos(
+            BCProvider::divide(
+                $cartesian->getAxis(2),
+                $squaredSum->getValue()
+            )
+        );
+    }
+
+    public static function cartesianDistance(Cartesian $end, Cartesian $start, $returnType = Numbers::IMMUTABLE)
+    {
+        $squaredSum = Numbers::make($returnType, 0);
+
+        $operation = function(NumberInterface $point1, NumberInterface $point2) {
+            return $point1->subtract($point2)->exp(2);
+        };
+
+        foreach ($end->performPairedOperation($start, $operation) as $value) {
+            $squaredSum = $squaredSum->add($value);
         }
 
         return $squaredSum->sqrt();
@@ -96,15 +108,11 @@ class TrigonometryProvider
         $inclination = TrigonometryProvider::degreesToRadians($inclination);
         $rho = Numbers::makeOrDont(Numbers::IMMUTABLE, $rho);
 
-        $unitX = Numbers::make(Numbers::IMMUTABLE, cos($azimuth));
-        $unitY = Numbers::make(Numbers::IMMUTABLE, sin($azimuth));
-        $unitZ = Numbers::make(Numbers::IMMUTABLE, sin($inclination));
+        $units[] = Numbers::make(Numbers::IMMUTABLE, cos($azimuth))->multiply($rho);
+        $units[] = Numbers::make(Numbers::IMMUTABLE, sin($azimuth))->multiply($rho);
+        $units[] = Numbers::make(Numbers::IMMUTABLE, sin($inclination))->multiply($rho);
 
-        return [
-            'x' => $unitX->multiply($rho),
-            'y' => $unitY->multiply($rho),
-            'z' => $unitZ->multiply($rho),
-        ];
+        return new Cartesian($units);
     }
 
 }

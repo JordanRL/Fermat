@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Types;
 
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\TrigonometryProvider;
 use Samsara\Fermat\Values\ImmutableNumber;
 
 class Cartesian
@@ -40,21 +41,9 @@ class Cartesian
         return $this->identity->all();
     }
 
-    public function distanceFrom(Cartesian $cartesian)
+    public function distanceFrom(Cartesian $cartesian, $returnType = Numbers::IMMUTABLE)
     {
-
-        if ($this->dimensions->compare($cartesian->getDimensions()) !== 0) {
-            throw new \InvalidArgumentException('Cannot calculate distance between cartesian points that exist in different dimensions.');
-        }
-
-        $distance = Numbers::make(Numbers::MUTABLE, 0);
-
-        for ($i = 0;$i < $this->dimensions->getValue();$i++) {
-            $distance->add($this->getAxis($i)->subtract($cartesian->getAxis($i))->exp(2));
-        }
-
-        return $distance->sqrt();
-
+        return TrigonometryProvider::cartesianDistance($this, $cartesian, $returnType);
     }
 
     public function performPairedOperation(Cartesian $cartesian, callable $function)

@@ -6,7 +6,7 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\TrigonometryProvider;
 use Samsara\Fermat\Values\ValueTraits\SphericalCoordinateTrait;
 
-class SphericalVector
+class SphericalCoordinate
 {
 
     use SphericalCoordinateTrait;
@@ -28,7 +28,7 @@ class SphericalVector
         $phi = TrigonometryProvider::sphericalCartesianAzimuth($x, $y);
         $theta = TrigonometryProvider::sphericalCartesianInclination($x, $y, $z);
 
-        return new SphericalVector($theta, $phi, $rho);
+        return new SphericalCoordinate($theta, $phi, $rho);
     }
 
 }
