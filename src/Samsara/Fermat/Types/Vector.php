@@ -12,7 +12,7 @@ abstract class Vector
     /**
      * @var Tuple
      */
-    private $dimensions;
+    protected $dimensions;
 
     /**
      * @param Cartesian $end
@@ -65,19 +65,62 @@ abstract class Vector
 
     abstract public function dotProduct(VectorInterface $vector);
 
-    abstract public function addScalar(NumberInterface $number);
-
-    abstract public function subtractScalar(NumberInterface $number);
-
-    abstract public function multiplyScalar(NumberInterface $number);
-
-    abstract public function divideScalar(NumberInterface $number);
-
-    protected function setDimensions(Tuple $dimensions)
+    public function addScalar(NumberInterface $number)
     {
-        $this->dimensions = $dimensions;
+        $points = $this->dimensions->all();
 
-        return $this;
+        $newPoints = [];
+
+        foreach ($points as $values) {
+            $newPoints[] = $values->add($number);
+        }
+
+        return $this->setDimensions(new Tuple(...$newPoints));
     }
+
+    public function subtractScalar(NumberInterface $number)
+    {
+        $points = $this->dimensions->all();
+
+        $newPoints = [];
+
+        foreach ($points as $values) {
+            $newPoints[] = $values->subtract($number);
+        }
+
+        return $this->setDimensions(new Tuple(...$newPoints));
+    }
+
+    public function multiplyScalar(NumberInterface $number)
+    {
+        $points = $this->dimensions->all();
+
+        $newPoints = [];
+
+        foreach ($points as $values) {
+            $newPoints[] = $values->multiply($number);
+        }
+
+        return $this->setDimensions(new Tuple(...$newPoints));
+    }
+
+    public function divideScalar(NumberInterface $number)
+    {
+        $points = $this->dimensions->all();
+
+        $newPoints = [];
+
+        foreach ($points as $values) {
+            $newPoints[] = $values->divide($number);
+        }
+
+        return $this->setDimensions(new Tuple(...$newPoints));
+    }
+
+    /**
+     * @param Tuple $dimensions
+     * @return VectorInterface
+     */
+    abstract protected function setDimensions(Tuple $dimensions);
 
 }
