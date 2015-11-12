@@ -55,9 +55,31 @@ abstract class Vector
         return $magnitude;
     }
 
-    abstract public function addVector(VectorInterface $vector);
+    public function addVector(VectorInterface $vector)
+    {
+        $points = $this->dimensions->all();
 
-    abstract public function subtractVector(VectorInterface $vector);
+        $newPoints = [];
+
+        foreach ($points as $axis => $value) {
+            $newPoints[] = $value->add($vector->getAxis($axis));
+        }
+
+        return $this->setDimensions(new Tuple(...$newPoints));
+    }
+
+    public function subtractVector(VectorInterface $vector)
+    {
+        $points = $this->dimensions->all();
+
+        $newPoints = [];
+
+        foreach ($points as $axis => $value) {
+            $newPoints[] = $value->subtract($vector->getAxis($axis));
+        }
+
+        return $this->setDimensions(new Tuple(...$newPoints));
+    }
 
     abstract public function multiplyVector(VectorInterface $vector);
 
