@@ -38,7 +38,7 @@ class GaussianContext extends BaseContext
     {
         $this->mean = Numbers::makeOrDont($type, $mean);
         $this->standardDev = Numbers::makeOrDont($type, $mean);
-        $this->variance = Numbers::make($type, BCProvider::exp($this->standardDev->getValue(), 2), $this->standardDev->getPrecision(), $this->standardDev->getBase());
+        $this->variance = Numbers::make($type, BCProvider::pow($this->standardDev->getValue(), 2), $this->standardDev->getPrecision(), $this->standardDev->getBase());
         $this->numberType = $type;
     }
 
@@ -101,12 +101,12 @@ class GaussianContext extends BaseContext
                         )
                     )
                 ), // Fraction
-                BCProvider::exp(
+                BCProvider::pow(
                     M_E,
                     BCProvider::multiply(
                         -1,
                         BCProvider::divide(
-                            BCProvider::exp(
+                            BCProvider::pow(
                                 BCProvider::subtract($value->getValue(), $this->mean->getValue()),
                                 2
                             ),

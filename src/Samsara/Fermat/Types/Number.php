@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Types;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
+use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Values\Base\NumberInterface;
 
 abstract class Number
@@ -17,12 +18,14 @@ abstract class Number
 
     public function __construct($value, $precision = null, $base = 10)
     {
-        if (!is_null($precision)) {
-            $this->precision = $precision;
-        }
-
         $this->base = $base;
         $this->value = (string)$value;
+        
+        if (!is_null($precision)) {
+            $this->precision = $precision;
+        } else {
+            $this->precision = strlen($this->getFractionalPart());
+        }
     }
 
     public function getValue()
@@ -108,14 +111,14 @@ abstract class Number
         return $this->setValue($value);
     }
 
-    public function exp($num)
+    public function pow($num)
     {
         $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
 
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
-        $value = BCProvider::exp($this->getValue(), $num->getValue());
+        $value = BCProvider::pow($this->getValue(), $num->getValue());
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
@@ -132,6 +135,60 @@ abstract class Number
         $this->convertFromModification($oldBase);
 
         return $this->setValue($value);
+    }
+    
+    public function sin($mult = 1, $div = 1, $precision = null)
+    {
+        if ($this->equals(0)) {
+            return $this;
+        }
+        
+        $value = $this->getValue();
+        
+        $value = BCProvider::multiply($value, $mult);
+        $value = BCProvider::divide($value, $div);
+        
+        return $this->setValue(
+            SeriesProvider::maclaurinSeries(
+                Numbers::make(Numbers::IMMUTABLE, $value),
+                function ($i) {
+                    if ($i == 0) {
+                        return 0;
+                    } else {
+                        return ($i % 2) ? 0 : (($i % 4 == 3) ? -1 : 1);
+                    }
+                },
+                0,
+                $precision
+            )->getValue()
+        );
+    }
+    
+    public function cos($mult = 1, $div = 1, $precision = null)
+    {
+        if ($this->equals(0)) {
+            return $this->setValue(1);
+        }
+
+        $value = $this->getValue();
+
+        $value = BCProvider::multiply($value, $mult);
+        $value = BCProvider::divide($value, $div);
+
+        return $this->setValue(
+            SeriesProvider::maclaurinSeries(
+                Numbers::make(Numbers::IMMUTABLE, $value),
+                function ($i) {
+                    if ($i == 0) {
+                        return 1;
+                    } else {
+                        return ($i % 2) ? (($i % 4) ? 1 : -1) : 0;
+                    }
+                },
+                0,
+                $precision
+            )->getValue()
+        );
     }
 
     public function convertForModification()
@@ -259,6 +316,17 @@ abstract class Number
 
         return BCProvider::compare($thisValue, $thatValue, $scale);
     }
+    
+    public function equals($value)
+    {
+        $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
+        
+        if ($this->compare($value) === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * @param $base
@@ -280,6 +348,25 @@ abstract class Number
     public function __toString()
     {
         return $this->getValue();
+    }
+    
+    public function roundToPrecision($precision)
+    {
+        
+        $this->precision = $precision;
+        
+        return $this->round($precision);
+        
+    }
+    
+    public function numberOfLeadingZeros()
+    {
+        $fractional = $this->getFractionalPart();
+        
+        $total = strlen($fractional);
+        $fractional = ltrim($fractional, '0');
+        
+        return $total-strlen($fractional);
     }
 
     protected function getRadixPos()

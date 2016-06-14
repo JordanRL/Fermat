@@ -11,11 +11,17 @@ class Numbers
 
     const MUTABLE = MutableNumber::class;
     const IMMUTABLE = ImmutableNumber::class;
+    /* 105 digits after decimal, which is going to be overkill in almost all places */
+    const PI = '3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148';
+    /* Euler's Number to 100 digits */
+    const E = '2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427';
+    /* Golden Ratio to 100 digits */
+    const GOLDEN_RATIO = '1.618033988749894848204586834365638117720309179805762862135448622705260462818902449707207204189391137';
 
     /**
      * @param $type
      * @param $value
-     * @param null $precision
+     * @param int|null $precision
      * @param int $base
      * @return NumberInterface
      */
@@ -38,7 +44,7 @@ class Numbers
     /**
      * @param $type
      * @param $value
-     * @param null $precision
+     * @param int|null $precision
      * @param int $base
      * @return NumberInterface
      */
@@ -55,7 +61,7 @@ class Numbers
     /**
      * @param $type
      * @param int|float|string|NumberInterface $input
-     * @param null $precision
+     * @param int|null $precision
      * @param int $base
      * @return NumberInterface
      */
@@ -83,6 +89,72 @@ class Numbers
         }
 
         throw new \InvalidArgumentException('The $input argument was not numeric or an implementation of NumberInterface.');
+
+    }
+
+    /**
+     * @param int|null $precision
+     *
+     * @return NumberInterface
+     */
+    public static function makePi($precision = null)
+    {
+        
+        if (!is_null($precision) && ($precision > 105 || $precision < 1)) {
+            throw new \InvalidArgumentException('The PI constant cannot have a precision higher than the constant stored (105).');
+        }
+        
+        $pi = self::make(self::IMMUTABLE, self::PI);
+        
+        if (!is_null($precision)) {
+            return $pi->roundToPrecision($precision);
+        } else {
+            return $pi;
+        }
+        
+    }
+
+    /**
+     * @param int|null $precision
+     *
+     * @return NumberInterface
+     */
+    public static function makeE($precision = null)
+    {
+
+        if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
+            throw new \InvalidArgumentException('The E constant cannot have a precision higher than the constant stored (100).');
+        }
+
+        $e = self::make(self::IMMUTABLE, self::E);
+
+        if (!is_null($e)) {
+            return $e->roundToPrecision($precision);
+        } else {
+            return $e;
+        }
+
+    }
+
+    /**
+     * @param int|null $precision
+     *
+     * @return NumberInterface
+     */
+    public static function makeGoldenRatio($precision = null)
+    {
+
+        if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
+            throw new \InvalidArgumentException('The Golden Ratio constant cannot have a precision higher than the constant stored (100).');
+        }
+
+        $goldenRatio = self::make(self::IMMUTABLE, self::GOLDEN_RATIO);
+
+        if (!is_null($precision)) {
+            return $goldenRatio->roundToPrecision($precision);
+        } else {
+            return $goldenRatio;
+        }
 
     }
 

@@ -25,7 +25,7 @@ class BCProvider
         return bcdiv($numerator, $denominator, $precision);
     }
 
-    public static function exp($base, $exponent)
+    public static function pow($base, $exponent)
     {
         return bcpow($base, $exponent);
     }
@@ -48,6 +48,15 @@ class BCProvider
     public static function powmod($left, $right, $modulus, $scale = null)
     {
         return bcpowmod($left, $right, $modulus, $scale);
+    }
+    
+    public static function factorial($number)
+    {
+        for ($x = 1; $number > 0; $number--) {
+            $x = bcmul($x, $number);
+        }
+        
+        return $x;
     }
 
 }

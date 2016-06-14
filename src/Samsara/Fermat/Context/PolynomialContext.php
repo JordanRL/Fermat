@@ -68,7 +68,7 @@ class PolynomialContext extends BaseContext implements ContextInterface
                 $value,
                 BCProvider::multiply(
                     $coefficient,
-                    BCProvider::exp(
+                    BCProvider::pow(
                         $x,
                         $exponent
                     )
@@ -80,6 +80,27 @@ class PolynomialContext extends BaseContext implements ContextInterface
             $this->numberType,
             $value
         );
+    }
+
+    public function derivative()
+    {
+
+        $newPoly = [];
+
+        foreach ($this->equationDefinition as $exp => $coef) {
+            if ($exp == 0) {
+                $newPoly[0] = 1;
+                continue;
+            }
+
+            $newPoly[$exp] = $coef;
+            $newPoly[$exp-1] = BCProvider::multiply($newPoly[$exp-1], $coef);
+        }
+
+        array_pop($newPoly);
+
+        return new PolynomialContext($newPoly, Numbers::IMMUTABLE);
+
     }
 
     protected function transformBaseContext($base)

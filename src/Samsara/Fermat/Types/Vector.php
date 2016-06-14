@@ -47,7 +47,7 @@ abstract class Vector
         $total = Numbers::make(Numbers::MUTABLE, 0);
 
         foreach ($this->dimensions->all() as $value) {
-            $total->add($value->exp(2));
+            $total->add($value->pow(2));
         }
 
         $magnitude = Numbers::make(Numbers::IMMUTABLE, $total->sqrt()->getValue());

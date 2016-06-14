@@ -110,7 +110,7 @@ interface NumberInterface
      *
      * @return NumberInterface
      */
-    public function exp($num);
+    public function pow($num);
 
     /**
      * @return NumberInterface
@@ -128,5 +128,17 @@ interface NumberInterface
      * @return NumberInterface
      */
     public function convertFromModification($oldBase);
+
+    /**
+     * @param $precision
+     *
+     * @return NumberInterface
+     */
+    public function roundToPrecision($precision);
+
+    /**
+     * @return int
+     */
+    public function numberOfLeadingZeros();
 
 }

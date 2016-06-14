@@ -14,15 +14,17 @@ class TrigonometryProvider
     public static function radiansToDegrees($radians)
     {
         $radians = Numbers::makeOrDont(Numbers::IMMUTABLE, $radians);
-
-        return BCProvider::divide(BCProvider::multiply(180, $radians->getValue()), M_1_PI);
+        $pi = Numbers::makePi();
+        
+        return $radians->multiply(180)->divide($pi)->getValue();
     }
 
     public static function degreesToRadians($degrees)
     {
         $degrees = Numbers::makeOrDont(Numbers::IMMUTABLE, $degrees);
+        $pi = Numbers::makePi();
 
-        return BCProvider::divide(BCProvider::multiply(M_1_PI, $degrees->getValue()), 180);
+        return $degrees->multiply($pi)->divide(180)->getValue();
     }
 
     public static function sphericalCartesianAzimuth($x, $y)
