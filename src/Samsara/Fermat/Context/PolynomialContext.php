@@ -56,10 +56,10 @@ class PolynomialContext extends BaseContext implements ContextInterface
 
         $x = $uniformContext->random($min, $max);
 
-        return $this->getY($x);
+        return $this->getByX($x);
     }
 
-    public function getY($x)
+    public function getByX($x)
     {
         $value = 0;
 

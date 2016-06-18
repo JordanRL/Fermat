@@ -81,11 +81,13 @@ class Numbers
                 return self::make($type, $input->convertToBase(10)->getValue(), $precision, $base);
             }
         } elseif (is_array($input)) {
+            $newInput = [];
+            
             foreach ($input as $key => $value) {
-                $input[$key] = self::makeOrDont($type, $value, $precision, $base);
+                $newInput[$key] = self::makeOrDont($type, $value, $precision, $base);
             }
 
-            return $input;
+            return $newInput;
         }
 
         throw new \InvalidArgumentException('The $input argument was not numeric or an implementation of NumberInterface.');

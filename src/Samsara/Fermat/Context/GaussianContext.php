@@ -88,6 +88,8 @@ class GaussianContext extends BaseContext
     public function PDFByValue($value)
     {
         $value = Numbers::makeOrDont($this->numberType, $value);
+        $pi = Numbers::makePi();
+        $e = Numbers::makeE();
 
         return Numbers::make(
             $this->numberType,
@@ -97,12 +99,12 @@ class GaussianContext extends BaseContext
                     BCProvider::multiply(
                         $this->standardDev->getValue(),
                         BCProvider::squareRoot(
-                            M_2_PI
+                            $pi->divide(2)
                         )
                     )
                 ), // Fraction
                 BCProvider::pow(
-                    M_E,
+                    $e,
                     BCProvider::multiply(
                         -1,
                         BCProvider::divide(
@@ -123,11 +125,42 @@ class GaussianContext extends BaseContext
         );
     }
 
-    public function random()
+    public function fullRandom()
     {
         $rand = GaussianProvider::random($this->getMean()->getValue(), $this->getSD()->getValue());
 
         return Numbers::make($this->numberType, $rand);
+    }
+    
+    public function random($min = 0, $max = PHP_INT_MAX)
+    {
+        $i = 0;
+        $continue = true;
+        
+        while ($continue) {
+            $num = $this->fullRandom();
+            
+            if ($num->greaterThanOrEqualTo($min) && $num->lessThanOrEqualTo($max)) {
+                $continue = false;
+            }
+            
+            if ($i == 100) {
+                $continue = false;
+            }
+            
+            if ($continue) {
+                $i++;
+            }
+        }
+        
+        return $num;
+    }
+    
+    public function getByX($x)
+    {
+        
+        
+        
     }
 
     public function transformBaseContext($base)

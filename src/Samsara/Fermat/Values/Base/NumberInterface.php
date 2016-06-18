@@ -118,6 +118,24 @@ interface NumberInterface
     public function sqrt();
 
     /**
+     * @param int  $mult
+     * @param int  $div
+     * @param null $precision
+     *
+     * @return NumberInterface
+     */
+    public function sin($mult = 1, $div = 1, $precision = null);
+
+    /**
+     * @param int  $mult
+     * @param int  $div
+     * @param null $precision
+     *
+     * @return NumberInterface
+     */
+    public function cos($mult = 1, $div = 1, $precision = null);
+
+    /**
      * @return int|bool
      */
     public function convertForModification();
@@ -140,5 +158,40 @@ interface NumberInterface
      * @return int
      */
     public function numberOfLeadingZeros();
+
+    /**
+     * @param int|string|NumberInterface $value
+     *
+     * @return bool
+     */
+    public function equals($value);
+
+    /**
+     * @param int|string|NumberInterface $value
+     *
+     * @return bool
+     */
+    public function greaterThan($value);
+
+    /**
+     * @param int|string|NumberInterface $value
+     *
+     * @return bool
+     */
+    public function lessThan($value);
+
+    /**
+     * @param int|string|NumberInterface $value
+     *
+     * @return bool
+     */
+    public function greaterThanOrEqualTo($value);
+
+    /**
+     * @param int|string|NumberInterface $value
+     *
+     * @return bool
+     */
+    public function lessThanOrEqualTo($value);
 
 }

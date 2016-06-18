@@ -1,6 +1,6 @@
 # Change Log
 All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/).
+This project adheres to [Semantic Versioning](http://semver.org/). At least so much as we feel like it.
 
 ## [Unreleased] - [unreleased]
 ### Added
@@ -14,9 +14,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - UniformContext
   - PolynomialContext
   - GaussianContext
+- Types:
+  - Cartesian
+  - Number
+  - Tuple
+  - Vector
 - Numbers:
-  - FluentNumber
+  - MutableNumber
   - ImmutableNumber
+  - MutableVector
+  - ImmutableVector
+  - SphericalPosition
 - Providers:
   - BCProvider
   - GaussianProvider
+  - SeriesProvider
+  - TrigonometryProvider

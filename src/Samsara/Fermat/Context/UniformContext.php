@@ -17,6 +17,11 @@ class UniformContext extends BaseContext implements ContextInterface
         $this->numberType = $type;
         $this->contextBase = $base;
     }
+    
+    public function getByX($x)
+    {
+        return Numbers::makeOrDont($this->numberType, $x, null, $this->contextBase);
+    }
 
     /**
      * Generates a random number in the provided range, where all possible values are equally likely. (Even distribution.)

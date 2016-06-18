@@ -143,14 +143,24 @@ abstract class Number
             return $this;
         }
         
+        if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
+            return $this->setValue(sin($this->getValue()));
+        }
+        
         $value = $this->getValue();
         
         $value = BCProvider::multiply($value, $mult);
         $value = BCProvider::divide($value, $div);
+
+        //$pi = Numbers::makePi();
+
+        $modulo = Numbers::make(Numbers::IMMUTABLE, $value);
+        // Turning off for now... bcmod doesn't take float modulus
+        //$modulo = $modulo->modulo($pi->multiply(2));
         
         return $this->setValue(
             SeriesProvider::maclaurinSeries(
-                Numbers::make(Numbers::IMMUTABLE, $value),
+                $modulo,
                 function ($i) {
                     if ($i == 0) {
                         return 0;
@@ -170,14 +180,24 @@ abstract class Number
             return $this->setValue(1);
         }
 
+        if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
+            return $this->setValue(cos($this->getValue()));
+        }
+
         $value = $this->getValue();
 
         $value = BCProvider::multiply($value, $mult);
         $value = BCProvider::divide($value, $div);
+        
+        //$pi = Numbers::makePi();
+        
+        $modulo = Numbers::make(Numbers::IMMUTABLE, $value);
+        // Turning off for now... bcmod doesn't take float modulus
+        //$modulo = $modulo->modulo($pi->multiply(2));
 
         return $this->setValue(
             SeriesProvider::maclaurinSeries(
-                Numbers::make(Numbers::IMMUTABLE, $value),
+                $modulo,
                 function ($i) {
                     if ($i == 0) {
                         return 1;
@@ -322,6 +342,49 @@ abstract class Number
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
         
         if ($this->compare($value) === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function greaterThan($value)
+    {
+        $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
+        
+        if ($this->compare($value) === 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function greaterThanOrEqualTo($value)
+    {
+        $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
+        
+        if ($this->compare($value) > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function lessThan($value) {
+        $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
+        
+        if ($this->compare($value) === -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function lessThanOrEqualTo($value)
+    {
+        $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
+
+        if ($this->compare($value) < 1) {
             return true;
         } else {
             return false;
