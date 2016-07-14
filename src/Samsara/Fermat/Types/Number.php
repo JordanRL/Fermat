@@ -374,6 +374,15 @@ abstract class Number
         return !$this->isNegative();
     }
 
+    public function isNatural()
+    {
+        if ($this->getFractionalPart() === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function round($decimals = 0)
     {
         $fractional = $this->getFractionalPart();

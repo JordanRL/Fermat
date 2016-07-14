@@ -53,6 +53,11 @@ interface NumberInterface
     public function isPositive();
 
     /**
+     * @return bool
+     */
+    public function isNatural();
+
+    /**
      * @param int $decimals
      *
      * @return NumberInterface
