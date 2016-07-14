@@ -116,6 +116,11 @@ interface NumberInterface
     public function doubleFactorial();
 
     /**
+     * @return NumberInterface
+     */
+    public function semiFactorial();
+
+    /**
      * @param $num
      *
      * @return NumberInterface

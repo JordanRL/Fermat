@@ -164,6 +164,11 @@ abstract class Number
 
     }
 
+    public function semiFactorial()
+    {
+        return $this->doubleFactorial();
+    }
+
     public function pow($num)
     {
         $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
