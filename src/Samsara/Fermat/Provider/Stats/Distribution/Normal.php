@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Provider\Stats\CDF;
+namespace Samsara\Fermat\Provider\Stats\Distribution;
 
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Stats\Stats;
