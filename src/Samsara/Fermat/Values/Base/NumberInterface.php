@@ -19,6 +19,13 @@ interface NumberInterface
     public function modulo($mod);
 
     /**
+     * @param $mod
+     *
+     * @return NumberInterface
+     */
+    public function continuousModulo($mod);
+
+    /**
      * @param $value
      *
      * @return int

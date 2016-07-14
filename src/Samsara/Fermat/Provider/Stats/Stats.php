@@ -10,24 +10,6 @@ use Samsara\Fermat\Values\Base\NumberInterface;
 class Stats
 {
 
-    public static function inverseNormal($p, $q, $precision = 10)
-    {
-
-        $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
-        $q = Numbers::makeOrDont(Numbers::IMMUTABLE, $q);
-
-        $pSmall = $p->lessThanOrEqualTo($q);
-
-        if ($pSmall) {
-            $pp = $p;
-        } else {
-            $pp = $q;
-        }
-
-
-
-    }
-
     /**
      * @param $x
      *
@@ -104,6 +86,31 @@ class Stats
 
         return $answer;
 
+    }
+
+    public static function inverseNormalCDF($p, $precision = 10)
+    {
+        $pi = Numbers::makePi();
+        $r2pi = $pi->multiply(2)->sqrt();
+        $e = Numbers::makeE();
+
+        $continue = true;
+
+        $xCur = Numbers::make(Numbers::IMMUTABLE, $p);
+
+        while ($continue) {
+
+            $cumulative = self::normalCDF($xCur);
+            $dx = $cumulative->subtract($p)->divide($r2pi->multiply($e->pow($xCur->pow(2))->divide(-2)));
+            $xCur = $xCur->subtract($dx);
+
+            if ($dx->numberOfLeadingZeros() > $precision) {
+                $continue = false;
+            }
+
+        }
+
+        return $xCur;
     }
 
 }

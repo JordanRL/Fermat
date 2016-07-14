@@ -292,6 +292,7 @@ abstract class Number
         // Turning off for now... bcmod doesn't take float modulus
         //$modulo = $modulo->modulo($pi->multiply(2));
 
+        // Maclaurin Series method
         return $this->setValue(
             SeriesProvider::maclaurinSeries(
                 $modulo,
@@ -353,6 +354,10 @@ abstract class Number
 
     public function isNegative()
     {
+        if ($this->equals(0)) {
+            return false;
+        }
+
         if (strpos($this->getValue(), '-') === 0) {
             return true;
         } else {
@@ -362,6 +367,10 @@ abstract class Number
 
     public function isPositive()
     {
+        if ($this->equals(0)) {
+            return false;
+        }
+
         return !$this->isNegative();
     }
 
@@ -397,6 +406,15 @@ abstract class Number
         }
 
         return $this->setValue($rounded);
+    }
+
+    public function roundToPrecision($precision)
+    {
+
+        $this->precision = $precision;
+
+        return $this->round($precision);
+
     }
 
     public function ceil()
@@ -511,20 +529,6 @@ abstract class Number
 
         return $this->setValue($value);
     }
-
-    public function __toString()
-    {
-        return $this->getValue();
-    }
-    
-    public function roundToPrecision($precision)
-    {
-        
-        $this->precision = $precision;
-        
-        return $this->round($precision);
-        
-    }
     
     public function numberOfLeadingZeros()
     {
@@ -534,6 +538,11 @@ abstract class Number
         $fractional = ltrim($fractional, '0');
         
         return $total-strlen($fractional);
+    }
+
+    public function __toString()
+    {
+        return $this->getValue();
     }
 
     protected function getRadixPos()
