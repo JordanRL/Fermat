@@ -28,14 +28,20 @@ class Numbers
     public static function make($type, $value, $precision = null, $base = 10)
     {
 
-        $reflector = new \ReflectionClass($type);
+        if ($type == self::IMMUTABLE) {
+            return new ImmutableNumber(trim($value), $precision, $base);
+        } elseif ($type == self::MUTABLE) {
+            return New MutableNumber(trim($value), $precision, $base);
+        } else {
+            $reflector = new \ReflectionClass($type);
 
-        if ($reflector->implementsInterface(NumberInterface::class)) {
-            return $reflector->newInstance([
-                trim($value),
-                $precision,
-                $base
-            ]);
+            if ($reflector->implementsInterface(NumberInterface::class)) {
+                return $reflector->newInstance([
+                    trim($value),
+                    $precision,
+                    $base
+                ]);
+            }
         }
 
         throw new \InvalidArgumentException('The $type argument was not an implementation of NumberInterface.');
@@ -158,6 +164,16 @@ class Numbers
             return $goldenRatio;
         }
 
+    }
+
+    public static function makeOne()
+    {
+        return self::make(self::IMMUTABLE, 1);
+    }
+
+    public static function makeZero()
+    {
+        return self::make(self::IMMUTABLE, 0);
     }
 
 }

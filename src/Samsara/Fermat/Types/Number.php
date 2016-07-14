@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Types;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
+use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Values\Base\NumberInterface;
 
@@ -111,6 +112,58 @@ abstract class Number
         return $this->setValue($value);
     }
 
+    public function factorial()
+    {
+
+        if ($this->lessThan(1)) {
+            if ($this->equals(0)) {
+                return $this->setValue(1);
+            }
+            throw new \Exception('Cannot make a factorial with a number less than 1 (other than zero)');
+        }
+
+        if ($this->getFractionalPart() !== 0) {
+            throw new \Exception('Can only perform a factorial on a whole number');
+        }
+
+        $curVal = $this->getValue();
+        $calcVal = Numbers::make(Numbers::IMMUTABLE, 1);
+
+        for ($i = 1;$i <= $curVal;$i++) {
+            $calcVal = $calcVal->multiply($i);
+        }
+
+        return $this->setValue($calcVal->getValue());
+
+    }
+
+    public function doubleFactorial()
+    {
+
+        $val = Numbers::make(Numbers::IMMUTABLE, $this->getValue());
+
+        if ($val->modulo(2)->equals(1)) {
+            $m = Numbers::make(Numbers::IMMUTABLE, $val->add(1)->divide(2));
+            $term = function ($n) {
+                return Numbers::make(Numbers::IMMUTABLE, 2)->multiply($n);
+            };
+        } else {
+            $m = Numbers::make(Numbers::IMMUTABLE, $val->divide(2));
+            $term = function ($n) {
+                return Numbers::make(Numbers::IMMUTABLE, 2)->multiply($n)->subtract(1);
+            };
+        }
+
+        $newVal = Numbers::makeOne();
+
+        for ($i = 1;$m->greaterThanOrEqualTo($i);$i++) {
+            $newVal = $newVal->multiply($term($i));
+        }
+
+        return $this->setValue($newVal->getValue());
+
+    }
+
     public function pow($num)
     {
         $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
@@ -161,12 +214,16 @@ abstract class Number
         return $this->setValue(
             SeriesProvider::maclaurinSeries(
                 $modulo,
-                function ($i) {
-                    if ($i == 0) {
-                        return 0;
-                    } else {
-                        return ($i % 2) ? 0 : (($i % 4 == 3) ? -1 : 1);
-                    }
+                function ($n) {
+                    $negOne = Numbers::make(Numbers::IMMUTABLE, -1);
+
+                    return $negOne->pow($n);
+                },
+                function ($n) {
+                    return SequenceProvider::nthOddNumber($n);
+                },
+                function ($n) {
+                    return SequenceProvider::nthOddNumber($n)->factorial();
                 },
                 0,
                 $precision
@@ -198,16 +255,58 @@ abstract class Number
         return $this->setValue(
             SeriesProvider::maclaurinSeries(
                 $modulo,
-                function ($i) {
-                    if ($i == 0) {
-                        return 1;
-                    } else {
-                        return ($i % 2) ? (($i % 4) ? 1 : -1) : 0;
-                    }
+                function ($n) {
+                    return SequenceProvider::nthPowerNegativeOne($n);
+                },
+                function ($n) {
+                    return SequenceProvider::nthEvenNumber($n);
+                },
+                function ($n) {
+                    return SequenceProvider::nthEvenNumber($n)->factorial();
                 },
                 0,
                 $precision
             )->getValue()
+        );
+    }
+
+    public function tan($mult = 1, $div = 1, $precision = null)
+    {
+        if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
+            return $this->setValue(cos($this->getValue()));
+        }
+
+        $value = $this->getValue();
+
+        $value = BCProvider::multiply($value, $mult);
+        $value = BCProvider::divide($value, $div);
+
+        //$pi = Numbers::makePi();
+
+        $modulo = Numbers::make(Numbers::IMMUTABLE, $value);
+        // Turning off for now... bcmod doesn't take float modulus
+        //$modulo = $modulo->modulo($pi->multiply(2));
+
+        return $this->setValue(
+            SeriesProvider::maclaurinSeries(
+                $modulo,
+                function ($n) {
+                    $four = Numbers::make(Numbers::IMMUTABLE, 4);
+                    $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+
+                    return SequenceProvider::nthBernoulliNumber($n->multiply(2)->getValue(), -4)->pow($n)->multiply(Numbers::makeOne()->subtract($four->pow($n)));
+                },
+                function ($n) {
+                    $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+
+                    return $n->multiply(2)->subtract(1);
+                },
+                function ($n) {
+                    return SequenceProvider::nthEvenNumber($n)->factorial();
+                },
+                1,
+                $precision
+            )
         );
     }
 

@@ -106,6 +106,16 @@ interface NumberInterface
     public function divide($num);
 
     /**
+     * @return NumberInterface
+     */
+    public function factorial();
+
+    /**
+     * @return NumberInterface
+     */
+    public function doubleFactorial();
+
+    /**
      * @param $num
      *
      * @return NumberInterface
