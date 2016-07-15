@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat;
 
+use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableNumber;
 use Samsara\Fermat\Values\MutableNumber;
 use Samsara\Fermat\Values\Base\NumberInterface;
@@ -11,6 +12,7 @@ class Numbers
 
     const MUTABLE = MutableNumber::class;
     const IMMUTABLE = ImmutableNumber::class;
+    const FRACTION = ImmutableFraction::class;
     /* 105 digits after decimal, which is going to be overkill in almost all places */
     const PI = '3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148';
     /* Euler's Number to 100 digits */

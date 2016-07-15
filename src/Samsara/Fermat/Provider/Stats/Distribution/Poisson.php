@@ -46,7 +46,12 @@ class Poisson
         return $cumulative;
 
     }
-    
+
+    /**
+     * WARNING: This function has issues with $lambda values which are very large (in excess of 400-500)
+     *
+     * @return NumberInterface
+     */
     public function random()
     {
 

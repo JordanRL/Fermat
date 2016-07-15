@@ -93,6 +93,7 @@ class Stats
         $pi = Numbers::makePi();
         $r2pi = $pi->multiply(2)->sqrt();
         $e = Numbers::makeE();
+        $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
 
         $continue = true;
 
@@ -110,7 +111,11 @@ class Stats
 
         }
 
-        return $xCur;
+        if ($p->lessThan(0.5)) {
+            return $xCur->multiply(-1);
+        } else {
+            return $xCur;
+        }
     }
 
 }

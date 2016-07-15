@@ -549,6 +549,17 @@ abstract class Number
         return $total-strlen($fractional);
     }
 
+    public function asInt()
+    {
+
+        if ($this->greaterThan(PHP_INT_MAX) || $this->lessThan(PHP_INT_MIN)) {
+            throw new \Exception('Cannot export number as integer because it is out of range');
+        }
+
+        return intval($this->getValue());
+
+    }
+
     public function __toString()
     {
         return $this->getValue();
