@@ -15,6 +15,8 @@ class Numbers
     const FRACTION = ImmutableFraction::class;
     /* 105 digits after decimal, which is going to be overkill in almost all places */
     const PI = '3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148';
+    /* Tau (2pi) to 100 digits */
+    const TAU = '6.283185307179586476925286766559005768394338798750211641949889184615632812572417997256069650684234136';
     /* Euler's Number to 100 digits */
     const E = '2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427';
     /* Golden Ratio to 100 digits */
@@ -102,6 +104,18 @@ class Numbers
 
     }
 
+    public static function makeFractionFromString($value)
+    {
+        $parts = explode('/', $value);
+
+        if (count($parts) > 2) {
+            throw new \Exception('Cannot construct Fraction with more than one division symbol');
+        }
+
+        $numerator = Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[0])))->round();
+        $denominator = Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[1])))->round();
+    }
+
     /**
      * @param int|null $precision
      *
@@ -122,6 +136,36 @@ class Numbers
             return $pi;
         }
         
+    }
+
+    /**
+     * @param int|null $precision
+     *
+     * @return NumberInterface
+     */
+    public static function makeTau($precision = null)
+    {
+        if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
+            throw new \InvalidArgumentException('The TAU constant cannot have a precision higher than the constant stored (100).');
+        }
+
+        $tau = self::make(self::IMMUTABLE, self::TAU);
+
+        if (!is_null($tau)) {
+            return $tau->roundToPrecision($precision);
+        } else {
+            return $tau;
+        }
+    }
+
+    /**
+     * @param int|null $precision
+     *
+     * @return NumberInterface
+     */
+    public static function make2Pi($precision = null)
+    {
+        return self::makeTau($precision);
     }
 
     /**
