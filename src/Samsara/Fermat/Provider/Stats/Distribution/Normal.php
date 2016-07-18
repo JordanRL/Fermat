@@ -55,5 +55,37 @@ class Normal
 
         return new Normal($mean, $sd);
     }
+    
+    public function cdf($x)
+    {
+        $oneHalf = Numbers::make(Numbers::IMMUTABLE, '0.5');
+        $one = Numbers::makeOne();
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+        $sqrtTwo = Numbers::make(Numbers::IMMUTABLE, 2)->sqrt();
+
+        return $oneHalf->multiply($one->add(Stats::gaussErrorFunction(
+            $x->subtract($this->mean)->divide($this->sd->multiply($sqrtTwo))
+        )));
+    }
+    
+    public function pdf($x1, $x2)
+    {
+        
+    }
+    
+    public function pmf($x)
+    {
+        
+    }
+    
+    public function random()
+    {
+        
+    }
+    
+    public function rangeRandom($min = 0, $max = PHP_INT_MAX)
+    {
+        
+    }
 
 }

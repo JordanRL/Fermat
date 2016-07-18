@@ -4,9 +4,10 @@ namespace Samsara\Fermat\Provider\Stats\Distribution;
 
 use RandomLib\Factory;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\Stats\Distribution\Base\DistributionInterface;
 use Samsara\Fermat\Values\Base\NumberInterface;
 
-class Poisson
+class Poisson implements DistributionInterface
 {
 
     /**
@@ -21,15 +22,8 @@ class Poisson
 
     public function probabilityOfKEvents($k)
     {
-        
-        $k = Numbers::makeOrDont(Numbers::IMMUTABLE, $k);
-        $e = Numbers::makeE();
 
-        if (!$k->isNatural()) {
-            throw new \Exception('The number of events must be a natural number (integer) for a Poisson distribution');
-        }
-
-        return $this->lambda->pow($k)->multiply($e->pow($this->lambda->multiply(-1)))->divide($k->factorial());
+        return $this->pmf($k);
         
     }
 
@@ -40,11 +34,51 @@ class Poisson
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
         for ($i = 0;$x->greaterThanOrEqualTo($i);$i++) {
-            $cumulative = $cumulative->add($this->probabilityOfKEvents($i));
+            $cumulative = $cumulative->add($this->pmf($i));
         }
 
         return $cumulative;
 
+    }
+
+    public function pdf($x1, $x2)
+    {
+        $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
+        $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
+
+        if ($x1->equals($x2)) {
+            return Numbers::makeZero();
+        } elseif ($x1->greaterThan($x2)) {
+            $larger = $x1;
+            $smaller = $x2;
+        } else {
+            $larger = $x2;
+            $smaller = $x1;
+        }
+
+        if (!$larger->isNatural() || !$smaller->isNatural()) {
+            throw new \Exception('Poisson distributions can only have a PDF for integer values');
+        }
+
+        $cumulative = Numbers::makeZero();
+
+        for (;$larger->greaterThanOrEqualTo($smaller);$smaller->add(1)) {
+            $cumulative = $cumulative->add($this->pmf($smaller));
+        }
+
+        return $cumulative;
+    }
+
+    public function pmf($x)
+    {
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+        $e = Numbers::makeE();
+
+        if (!$x->isNatural()) {
+            throw new \Exception('The number of events must be a natural number (integer) for a Poisson distribution');
+        }
+
+        return $this->lambda->pow($x)->multiply($e->pow($this->lambda->multiply(-1)))->divide($x->factorial());
     }
 
     /**
@@ -68,6 +102,25 @@ class Poisson
         
         return $k->subtract(1);
         
+    }
+
+    /**
+     * WARNING: This function is of very limited use with Poisson distributions, and may recurse almost
+     * indefinitely for certain values of $min, $max, and $lambda.
+     *
+     * @param int $min
+     * @param $max
+     * @return NumberInterface
+     */
+    public function rangeRandom($min = 0, $max = PHP_INT_MAX)
+    {
+        $rand = $this->random();
+
+        if ($rand->greaterThanOrEqualTo($min) && $rand->lessThanOrEqualTo($max)) {
+            return $rand;
+        } else {
+            return $this->rangeRandom($min, $max);
+        }
     }
 
 }

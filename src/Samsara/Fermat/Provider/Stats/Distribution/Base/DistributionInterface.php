@@ -12,5 +12,7 @@ interface DistributionInterface
     public function cdf($x);
 
     public function pdf($x1, $x2);
+    
+    public function pmf($x);
 
 }

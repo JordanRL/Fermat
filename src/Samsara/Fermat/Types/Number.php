@@ -11,6 +11,9 @@ use Samsara\Fermat\Values\Base\NumberInterface;
 
 abstract class Number
 {
+    const INFINITY = 'INF';
+    const NEG_INFINITY = '-INF';
+    
     protected $value;
 
     protected $precision;
