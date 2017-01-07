@@ -200,7 +200,7 @@ abstract class Number
         return $this->setValue($value);
     }
     
-    public function sin($mult = 1, $div = 1, $precision = null)
+    public function sin($mult = 1, $div = 1, $precision = null, $calc = false)
     {
         if ($this->equals(0)) {
             return $this;
@@ -217,33 +217,36 @@ abstract class Number
         $value = BCProvider::multiply($value, $mult);
         $value = BCProvider::divide($value, $div);
 
-        //$pi = Numbers::makePi();
+        $pi = Numbers::makePi();
 
         $modulo = Numbers::make(Numbers::IMMUTABLE, $value);
-        // Turning off for now... bcmod doesn't take float modulus
-        //$modulo = $modulo->modulo($pi->multiply(2));
-        
-        return $this->setValue(
-            SeriesProvider::maclaurinSeries(
-                $modulo,
-                function ($n) {
-                    $negOne = Numbers::make(Numbers::IMMUTABLE, -1);
+        $modulo = $modulo->continuousModulo($pi->multiply(2));
 
-                    return $negOne->pow($n);
-                },
-                function ($n) {
-                    return SequenceProvider::nthOddNumber($n);
-                },
-                function ($n) {
-                    return SequenceProvider::nthOddNumber($n)->factorial();
-                },
-                0,
-                $precision
-            )->getValue()
-        )->convertFromModification($oldBase);
+        if ($calc) {
+            return $this->setValue(
+                SeriesProvider::maclaurinSeries(
+                    Numbers::make(Numbers::IMMUTABLE, $value),
+                    function ($n) {
+                        $negOne = Numbers::make(Numbers::IMMUTABLE, -1);
+
+                        return $negOne->pow($n);
+                    },
+                    function ($n) {
+                        return SequenceProvider::nthOddNumber($n);
+                    },
+                    function ($n) {
+                        return SequenceProvider::nthOddNumber($n)->factorial();
+                    },
+                    0,
+                    $precision
+                )->getValue()
+            )->convertFromModification($oldBase);
+        } else {
+            return $this->setValue(sin($modulo->getValue()));
+        }
     }
     
-    public function cos($mult = 1, $div = 1, $precision = null)
+    public function cos($mult = 1, $div = 1, $precision = null, $calc = false)
     {
         if ($this->equals(0)) {
             return $this->setValue(1);
@@ -260,31 +263,34 @@ abstract class Number
         $value = BCProvider::multiply($value, $mult);
         $value = BCProvider::divide($value, $div);
         
-        //$pi = Numbers::makePi();
+        $pi = Numbers::makePi();
         
         $modulo = Numbers::make(Numbers::IMMUTABLE, $value);
-        // Turning off for now... bcmod doesn't take float modulus
-        //$modulo = $modulo->modulo($pi->multiply(2));
+        $modulo = $modulo->continuousModulo($pi->multiply(2));
 
-        return $this->setValue(
-            SeriesProvider::maclaurinSeries(
-                $modulo,
-                function ($n) {
-                    return SequenceProvider::nthPowerNegativeOne($n);
-                },
-                function ($n) {
-                    return SequenceProvider::nthEvenNumber($n);
-                },
-                function ($n) {
-                    return SequenceProvider::nthEvenNumber($n)->factorial();
-                },
-                0,
-                $precision
-            )->getValue()
-        )->convertFromModification($oldBase);
+        if ($calc) {
+            return $this->setValue(
+                SeriesProvider::maclaurinSeries(
+                    Numbers::make(Numbers::IMMUTABLE, $value),
+                    function ($n) {
+                        return SequenceProvider::nthPowerNegativeOne($n);
+                    },
+                    function ($n) {
+                        return SequenceProvider::nthEvenNumber($n);
+                    },
+                    function ($n) {
+                        return SequenceProvider::nthEvenNumber($n)->factorial();
+                    },
+                    0,
+                    $precision
+                )->getValue()
+            )->convertFromModification($oldBase);
+        } else {
+            return $this->setValue(cos($modulo->getValue()));
+        }
     }
 
-    public function tan($mult = 1, $div = 1, $precision = null)
+    public function tan($mult = 1, $div = 1, $precision = null, $calc = false)
     {
         $oldBase = $this->convertForModification();
 
@@ -297,34 +303,36 @@ abstract class Number
         $value = BCProvider::multiply($value, $mult);
         $value = BCProvider::divide($value, $div);
 
-        //$pi = Numbers::makePi();
+        $pi = Numbers::makePi();
 
         $modulo = Numbers::make(Numbers::IMMUTABLE, $value);
-        // Turning off for now... bcmod doesn't take float modulus
-        //$modulo = $modulo->modulo($pi->multiply(2));
+        $modulo = $modulo->continuousModulo($pi->multiply(2));
 
-        // Maclaurin Series method
-        return $this->setValue(
-            SeriesProvider::maclaurinSeries(
-                $modulo,
-                function ($n) {
-                    $four = Numbers::make(Numbers::IMMUTABLE, 4);
-                    $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+        if ($calc) {
+            return $this->setValue(
+                SeriesProvider::maclaurinSeries(
+                    Numbers::make(Numbers::IMMUTABLE, $value),
+                    function ($n) {
+                        $four = Numbers::make(Numbers::IMMUTABLE, 4);
+                        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
 
-                    return SequenceProvider::nthBernoulliNumber($n->multiply(2)->getValue(), -4)->pow($n)->multiply(Numbers::makeOne()->subtract($four->pow($n)));
-                },
-                function ($n) {
-                    $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+                        return SequenceProvider::nthBernoulliNumber($n->multiply(2)->getValue(), -4)->pow($n)->multiply(Numbers::makeOne()->subtract($four->pow($n)));
+                    },
+                    function ($n) {
+                        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
 
-                    return $n->multiply(2)->subtract(1);
-                },
-                function ($n) {
-                    return SequenceProvider::nthEvenNumber($n)->factorial();
-                },
-                1,
-                $precision
-            )
-        )->convertFromModification($oldBase);
+                        return $n->multiply(2)->subtract(1);
+                    },
+                    function ($n) {
+                        return SequenceProvider::nthEvenNumber($n)->factorial();
+                    },
+                    1,
+                    $precision
+                )
+            )->convertFromModification($oldBase);
+        } else {
+            return $this->setValue(tan($modulo->getValue()));
+        }
     }
 
     public function convertForModification()
