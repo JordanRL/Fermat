@@ -117,6 +117,7 @@ abstract class Number
 
     public function factorial()
     {
+        $oldBase = $this->convertForModification();
 
         if ($this->lessThan(1)) {
             if ($this->equals(0)) {
@@ -136,12 +137,13 @@ abstract class Number
             $calcVal = $calcVal->multiply($i);
         }
 
-        return $this->setValue($calcVal->getValue());
+        return $this->setValue($calcVal->getValue())->convertFromModification($oldBase);
 
     }
 
     public function doubleFactorial()
     {
+        $oldBase = $this->convertForModification();
 
         $val = Numbers::make(Numbers::IMMUTABLE, $this->getValue());
 
@@ -163,7 +165,7 @@ abstract class Number
             $newVal = $newVal->multiply($term($i));
         }
 
-        return $this->setValue($newVal->getValue());
+        return $this->setValue($newVal->getValue())->convertFromModification($oldBase);
 
     }
 
@@ -203,6 +205,8 @@ abstract class Number
         if ($this->equals(0)) {
             return $this;
         }
+
+        $oldBase = $this->convertForModification();
         
         if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
             return $this->setValue(sin($this->getValue()));
@@ -236,7 +240,7 @@ abstract class Number
                 0,
                 $precision
             )->getValue()
-        );
+        )->convertFromModification($oldBase);
     }
     
     public function cos($mult = 1, $div = 1, $precision = null)
@@ -244,6 +248,8 @@ abstract class Number
         if ($this->equals(0)) {
             return $this->setValue(1);
         }
+
+        $oldBase = $this->convertForModification();
 
         if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
             return $this->setValue(cos($this->getValue()));
@@ -275,11 +281,13 @@ abstract class Number
                 0,
                 $precision
             )->getValue()
-        );
+        )->convertFromModification($oldBase);
     }
 
     public function tan($mult = 1, $div = 1, $precision = null)
     {
+        $oldBase = $this->convertForModification();
+
         if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
             return $this->setValue(cos($this->getValue()));
         }
@@ -316,7 +324,7 @@ abstract class Number
                 1,
                 $precision
             )
-        );
+        )->convertFromModification($oldBase);
     }
 
     public function convertForModification()
@@ -454,21 +462,20 @@ abstract class Number
     {
         $value = Numbers::makeOrDont($this, $value, $this->getPrecision());
 
-        if ($this->getBase() != 10) {
-            $thisValue = $this->convertToBase(10)->getValue();
-        } else {
-            $thisValue = $this->getValue();
-        }
+        $thisBase = $this->convertForModification();
+        $thatBase = $value->convertForModification();
 
-        if ($value->getBase() != 10) {
-            $thatValue = $value->convertToBase(10)->getValue();
-        } else {
-            $thatValue = $value->getValue();
-        }
+        $thisValue = $this->getValue();
+        $thatValue = $value->getValue();
 
         $scale = ($this->getPrecision() < $value->getPrecision()) ? $this->getPrecision() : $value->getPrecision();
 
-        return BCProvider::compare($thisValue, $thatValue, $scale);
+        $comparison = BCProvider::compare($thisValue, $thatValue, $scale);
+
+        $this->convertFromModification($thisBase);
+        $value->convertFromModification($thatBase);
+
+        return $comparison;
     }
     
     public function equals($value)
@@ -593,6 +600,11 @@ abstract class Number
         }
     }
 
+    /**
+     * @param $value
+     *
+     * @return NumberInterface
+     */
     abstract protected function setValue($value);
 
 }

@@ -37,7 +37,7 @@ class TrigonometryProvider
         $squaredSum = Numbers::make(Numbers::MUTABLE, 0);
 
         $operation = function(NumberInterface $number) {
-            return $number->exp(2);
+            return $number->pow(2);
         };
 
         foreach ($cartesian->performOperation($operation) as $value) {
@@ -59,7 +59,7 @@ class TrigonometryProvider
         $squaredSum = Numbers::make($returnType, 0);
 
         $operation = function(NumberInterface $point1, NumberInterface $point2) {
-            return $point1->subtract($point2)->exp(2);
+            return $point1->subtract($point2)->pow(2);
         };
 
         foreach ($end->performPairedOperation($start, $operation) as $value) {
