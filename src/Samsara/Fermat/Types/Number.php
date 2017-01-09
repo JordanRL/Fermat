@@ -10,6 +10,7 @@ use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Values\ImmutableNumber;
 
 abstract class Number implements Hashable
 {
@@ -189,6 +190,46 @@ abstract class Number implements Hashable
         $num->convertFromModification($numOldBase);
 
         return $this->setValue($value);
+    }
+
+    public function ln($precision = 10)
+    {
+        $oldBase = $this->convertForModification();
+
+        if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX)) {
+            return $this->setValue(log((float)$this->getValue()))->convertFromModification($oldBase);
+        }
+
+        $x = Numbers::make(Numbers::IMMUTABLE, $this->getValue(), $this->getPrecision());
+
+        /** @var ImmutableNumber $y */
+        $y = Numbers::makeOne();
+        $y = $y->multiply($x->subtract(1))->divide($x->add(1));
+
+        return $this->setValue(SeriesProvider::genericTwoPartSeries(
+            function($term) use ($y) {
+                $two = Numbers::make(Numbers::IMMUTABLE, 2);
+                $denominator = SequenceProvider::nthOddNumber($term);
+
+                return $two->multiply($y)->divide($denominator);
+            },
+            function($term) use ($y) {
+                return $y;
+            },
+            function($term) {
+                return SequenceProvider::nthEvenNumber($term);
+            },
+            0,
+            $precision
+        ))->convertFromModification($oldBase);
+    }
+
+    public function log10($precision = 10)
+    {
+        $log10 = Numbers::make(Numbers::IMMUTABLE, 10);
+        $log10 = $log10->ln($precision);
+
+        return $this->setValue($this->ln($precision)->divide($log10));
     }
 
     public function sqrt()

@@ -14,7 +14,7 @@ class ImmutableNumber extends Number implements NumberInterface, DecimalInterfac
     {
         $oldBase = $this->convertForModification();
 
-        return (new ImmutableNumber(bcmod($this->getValue(), $mod), $this->getPrecision()))->convertFromModification($oldBase);
+        return (new ImmutableNumber(bcmod($this->getValue(), $mod), $this->getPrecision(), $this->getBase()))->convertFromModification($oldBase);
     }
 
     public function continuousModulo($mod)

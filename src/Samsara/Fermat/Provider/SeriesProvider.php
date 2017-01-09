@@ -67,5 +67,37 @@ class SeriesProvider
         return $x->roundToPrecision($precision);
 
     }
+
+    public static function genericTwoPartSeries(
+        callable $part1,
+        callable $part2,
+        callable $exponent,
+        $startTermAt = 0,
+        $precision = 10)
+    {
+
+        $x = Numbers::makeZero();
+
+        $continue = true;
+        $termNumber = $startTermAt;
+
+        while ($continue) {
+            $term = Numbers::makeOne();
+
+            $term = $term->multiply($part2($termNumber))->pow($exponent($termNumber))
+                ->multiply($part1($termNumber));
+
+            if ($term->numberOfLeadingZeros() >= $precision) {
+                $continue = false;
+            }
+
+            $x = $x->add($term);
+
+            $termNumber++;
+        }
+
+        return $x->roundToPrecision($precision);
+
+    }
     
 }

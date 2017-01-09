@@ -3,6 +3,7 @@
 namespace Samsara\Fermat;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Values\Currency;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableNumber;
 use Samsara\Fermat\Values\MutableFraction;
@@ -16,6 +17,7 @@ class Numbers
     const IMMUTABLE = ImmutableNumber::class;
     const MUTABLE_FRACTION = MutableFraction::class;
     const IMMUTABLE_FRACTION = ImmutableFraction::class;
+    const CURRENCY = Currency::class;
     /* 105 digits after decimal, which is going to be overkill in almost all places */
     const PI = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679';
     /* Tau (2pi) to 100 digits */
@@ -30,6 +32,8 @@ class Numbers
      * @param $value
      * @param int|null $precision
      * @param int $base
+     *
+     * @throws IntegrityConstraint
      * @return ImmutableNumber|MutableNumber|ImmutableFraction|MutableFraction|NumberInterface
      */
     public static function make($type, $value, $precision = null, $base = 10)
@@ -87,7 +91,7 @@ class Numbers
      * @param int|null $precision
      * @param int $base
      *
-*@throws \InvalidArgumentException
+     * @throws IntegrityConstraint
      * @return ImmutableNumber|MutableNumber|NumberInterface|ImmutableNumber[]|MutableNumber[]|NumberInterface[]
      */
     public static function makeOrDont($type, $value, $precision = null, $base = 10)
