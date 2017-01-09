@@ -101,38 +101,45 @@ interface NumberInterface
     public function convertFromModification($oldBase);
 
     /**
-     * @param int|string|NumberInterface $value
+     * @param mixed $value
      *
      * @return bool
      */
-    public function equals($value);
+    public function equals($value): bool;
 
     /**
      * @param int|string|NumberInterface $value
      *
      * @return bool
      */
-    public function greaterThan($value);
+    public function isEqual($value): bool;
 
     /**
      * @param int|string|NumberInterface $value
      *
      * @return bool
      */
-    public function lessThan($value);
+    public function greaterThan($value): bool;
 
     /**
      * @param int|string|NumberInterface $value
      *
      * @return bool
      */
-    public function greaterThanOrEqualTo($value);
+    public function lessThan($value): bool;
 
     /**
      * @param int|string|NumberInterface $value
      *
      * @return bool
      */
-    public function lessThanOrEqualTo($value);
+    public function greaterThanOrEqualTo($value): bool;
+
+    /**
+     * @param int|string|NumberInterface $value
+     *
+     * @return bool
+     */
+    public function lessThanOrEqualTo($value): bool;
 
 }

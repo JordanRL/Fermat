@@ -8,7 +8,8 @@
     "ircmaxell/random-lib": "1.1.*",
     "riimu/kit-baseconversion": "1.*",
     "samsara/common": "dev-master",
-    "php-ds/php-ds": "1.1.*"
+    "php-ds/php-ds": "1.1.*",
+    "php": ">=7.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "4.8.*"

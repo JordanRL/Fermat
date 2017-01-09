@@ -210,7 +210,7 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
         
         if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
-            return $this->setValue(sin($this->getValue()));
+            return $this->setValue(sin($this->getValue()))->convertFromModification($oldBase);
         }
         
         $value = $this->getValue();
@@ -243,7 +243,7 @@ abstract class Number implements Hashable
                 )->getValue()
             )->convertFromModification($oldBase);
         } else {
-            return $this->setValue(sin($modulo->getValue()));
+            return $this->setValue(sin($modulo->getValue()))->convertFromModification($oldBase);
         }
     }
     
@@ -256,7 +256,7 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
 
         if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
-            return $this->setValue(cos($this->getValue()));
+            return $this->setValue(cos($this->getValue()))->convertFromModification($oldBase);
         }
 
         $value = $this->getValue();
@@ -287,7 +287,7 @@ abstract class Number implements Hashable
                 )->getValue()
             )->convertFromModification($oldBase);
         } else {
-            return $this->setValue(cos($modulo->getValue()));
+            return $this->setValue(cos($modulo->getValue()))->convertFromModification($oldBase);
         }
     }
 
@@ -296,7 +296,7 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
 
         if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
-            return $this->setValue(cos($this->getValue()));
+            return $this->setValue(tan($this->getValue()))->convertFromModification($oldBase);
         }
 
         $value = $this->getValue();
@@ -332,7 +332,7 @@ abstract class Number implements Hashable
                 )
             )->convertFromModification($oldBase);
         } else {
-            return $this->setValue(tan($modulo->getValue()));
+            return $this->setValue(tan($modulo->getValue()))->convertFromModification($oldBase);
         }
     }
 
@@ -363,7 +363,7 @@ abstract class Number implements Hashable
         return $this->setValue($newValue);
     }
 
-    public function absValue()
+    public function absValue(): string
     {
         if ($this->isNegative()) {
             return substr($this->getValue(), 1);
@@ -372,7 +372,7 @@ abstract class Number implements Hashable
         }
     }
 
-    public function isNegative()
+    public function isNegative(): bool
     {
         if ($this->equals(0)) {
             return false;
@@ -385,7 +385,7 @@ abstract class Number implements Hashable
         }
     }
 
-    public function isPositive()
+    public function isPositive(): bool
     {
         if ($this->equals(0)) {
             return false;
@@ -394,17 +394,17 @@ abstract class Number implements Hashable
         return !$this->isNegative();
     }
 
-    public function isNatural()
+    public function isNatural(): bool
     {
         return $this->isInt();
     }
 
-    public function isWhole()
+    public function isWhole(): bool
     {
         return $this->isInt();
     }
 
-    public function isInt()
+    public function isInt(): bool
     {
         if ($this->getDecimalPart() === 0) {
             return true;
@@ -477,7 +477,7 @@ abstract class Number implements Hashable
      * @param NumberInterface|int|float|string $value
      * @return int
      */
-    public function compare($value)
+    public function compare($value): int
     {
         $value = Numbers::makeOrDont($this, $value, $this->getPrecision());
 
@@ -497,7 +497,7 @@ abstract class Number implements Hashable
         return $comparison;
     }
     
-    public function isEqual($value)
+    public function isEqual($value): bool
     {
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
         
@@ -508,7 +508,7 @@ abstract class Number implements Hashable
         }
     }
     
-    public function greaterThan($value)
+    public function greaterThan($value): bool
     {
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
         
@@ -519,7 +519,7 @@ abstract class Number implements Hashable
         }
     }
     
-    public function greaterThanOrEqualTo($value)
+    public function greaterThanOrEqualTo($value): bool
     {
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
         
@@ -530,7 +530,7 @@ abstract class Number implements Hashable
         }
     }
     
-    public function lessThan($value) {
+    public function lessThan($value): bool {
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
         
         if ($this->compare($value) === -1) {
@@ -540,7 +540,7 @@ abstract class Number implements Hashable
         }
     }
 
-    public function lessThanOrEqualTo($value)
+    public function lessThanOrEqualTo($value): bool
     {
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
 
@@ -603,7 +603,7 @@ abstract class Number implements Hashable
     {
         $reflection = new \ReflectionClass($object);
 
-        if ($reflection->implementsInterface(NumberInterface::class)) {
+        if ($reflection->implementsInterface(NumberInterface::class) || is_numeric($object)) {
             return $this->isEqual($object);
         } else {
             return false;
