@@ -154,6 +154,7 @@ class Numbers
     /**
      * @param int|null $precision
      *
+     * @throws IntegrityConstraint
      * @return NumberInterface
      */
     public static function makePi($precision = null)
@@ -180,6 +181,7 @@ class Numbers
     /**
      * @param int|null $precision
      *
+     * @throws IntegrityConstraint
      * @return NumberInterface
      */
     public static function makeTau($precision = null)
@@ -214,6 +216,7 @@ class Numbers
     /**
      * @param int|null $precision
      *
+     * @throws IntegrityConstraint
      * @return NumberInterface
      */
     public static function makeE($precision = null)
@@ -240,6 +243,7 @@ class Numbers
     /**
      * @param int|null $precision
      *
+     * @throws IntegrityConstraint
      * @return NumberInterface
      */
     public static function makeGoldenRatio($precision = null)

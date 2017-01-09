@@ -28,6 +28,8 @@ class Tuple
 
     /**
      * @param $index
+     *
+     * @throws IncompatibleObjectState
      * @return ImmutableNumber
      */
     public function get(int $index): ImmutableNumber
@@ -42,6 +44,8 @@ class Tuple
     /**
      * @param int $index
      * @param ImmutableNumber $value
+     *
+     * @throws IncompatibleObjectState
      * @return $this
      */
     public function set(int $index, ImmutableNumber $value)
@@ -52,7 +56,7 @@ class Tuple
             return $this;
         }
 
-        throw new IncompatibleObjectState('Cannot set value for index that does not exist in tuple');
+        throw new IncompatibleObjectState('Cannot set value for index '.$index.' that does not exist in tuple');
     }
 
     public function all(): array
