@@ -3,12 +3,19 @@
 namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Provider\Stats\Distribution\Normal;
 
 class GaussianProvider
 {
     public static function percentBelowX($x, $mean, $standardDev)
     {
-        return stats_cdf_normal($x, $mean, $standardDev, 1);
+        if (function_exists('stats_cdf_normal')) {
+            return stats_cdf_normal($x, $mean, $standardDev, 1);
+        } else {
+            $normal = new Normal($mean, $standardDev);
+
+            return $normal->cdf($x);
+        }
     }
 
     public static function percentAboveX($x, $mean, $standardDev)
@@ -72,8 +79,6 @@ class GaussianProvider
     {
         if ($percent <= 1 && $percent > 0) {
             return $percent;
-        } elseif ($percent <= 100) {
-            return ($percent/100);
         } else {
             throw new IntegrityConstraint(
                 '$percent must be between 1 and 0 (inclusive)',
