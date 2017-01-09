@@ -12,4 +12,8 @@ interface FractionInterface
      */
     public function simplify();
 
+    public function getNumerator();
+
+    public function getDenominator();
+
 }

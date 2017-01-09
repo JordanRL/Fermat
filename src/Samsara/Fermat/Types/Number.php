@@ -28,7 +28,7 @@ abstract class Number
         if (!is_null($precision)) {
             $this->precision = $precision;
         } else {
-            $this->precision = strlen($this->getFractionalPart());
+            $this->precision = strlen($this->getDecimalPart());
         }
     }
 
@@ -126,7 +126,7 @@ abstract class Number
             throw new \Exception('Cannot make a factorial with a number less than 1 (other than zero)');
         }
 
-        if ($this->getFractionalPart() !== 0) {
+        if ($this->getDecimalPart() !== 0) {
             throw new \Exception('Can only perform a factorial on a whole number');
         }
 
@@ -395,7 +395,17 @@ abstract class Number
 
     public function isNatural()
     {
-        if ($this->getFractionalPart() === 0) {
+        return $this->isInt();
+    }
+
+    public function isWhole()
+    {
+        return $this->isInt();
+    }
+
+    public function isInt()
+    {
+        if ($this->getDecimalPart() === 0) {
             return true;
         } else {
             return false;
@@ -404,7 +414,7 @@ abstract class Number
 
     public function round($decimals = 0)
     {
-        $fractional = $this->getFractionalPart();
+        $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
 
         $fractionalArr = str_split($fractional);
@@ -447,7 +457,7 @@ abstract class Number
 
     public function ceil()
     {
-        $fractional = $this->getFractionalPart();
+        $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
 
         if ($fractional > 0) {
@@ -559,7 +569,7 @@ abstract class Number
     
     public function numberOfLeadingZeros()
     {
-        $fractional = $this->getFractionalPart();
+        $fractional = $this->getDecimalPart();
         
         $total = strlen($fractional);
         $fractional = ltrim($fractional, '0');
@@ -588,7 +598,7 @@ abstract class Number
         return strpos($this->getValue(), '.');
     }
 
-    protected function getFractionalPart()
+    protected function getDecimalPart()
     {
         $radix = $this->getRadixPos();
         if ($radix !== false) {

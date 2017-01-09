@@ -10,6 +10,38 @@ use Samsara\Fermat\Types\Base\CoordinateInterface;
 class CartesianCoordinate extends Tuple implements CoordinateInterface
 {
 
+    /**
+     * @var array
+     */
+    protected $axes;
+
+    public function __construct(array $data)
+    {
+        $zeroIndexedData = [];
+
+        foreach ($data as $axis => $value) {
+            $this->axes[$axis] = count($zeroIndexedData);
+            $zeroIndexedData[] = $value;
+        }
+
+        parent::__construct($zeroIndexedData);
+    }
+
+    public function getAxis($axis): ImmutableNumber
+    {
+        return $this->get($this->axes[$axis]);
+    }
+
+    public function numberOfDimensions(): int
+    {
+        return $this->size();
+    }
+
+    public function axisValues(): array
+    {
+        return $this->all();
+    }
+
     public function distanceTo(CoordinateInterface $coordinate): ImmutableNumber
     {
         if (!($coordinate instanceof CartesianCoordinate)) {
@@ -28,6 +60,7 @@ class CartesianCoordinate extends Tuple implements CoordinateInterface
             );
         }
 
+        /** @var ImmutableNumber $n */
         $n = Numbers::makeZero();
 
         foreach ($this->all() as $index => $value) {

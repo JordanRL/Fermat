@@ -2,8 +2,10 @@
 
 namespace Samsara\Fermat;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\MutableFraction;
 use Samsara\Fermat\Values\MutableNumber;
 use Samsara\Fermat\Types\Base\NumberInterface;
 
@@ -12,7 +14,8 @@ class Numbers
 
     const MUTABLE = MutableNumber::class;
     const IMMUTABLE = ImmutableNumber::class;
-    const FRACTION = ImmutableFraction::class;
+    const MUTABLE_FRACTION = MutableFraction::class;
+    const IMMUTABLE_FRACTION = ImmutableFraction::class;
     /* 105 digits after decimal, which is going to be overkill in almost all places */
     const PI = '3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148';
     /* Tau (2pi) to 100 digits */
@@ -27,7 +30,7 @@ class Numbers
      * @param $value
      * @param int|null $precision
      * @param int $base
-     * @return ImmutableNumber|MutableNumber|NumberInterface
+     * @return ImmutableNumber|MutableNumber|ImmutableFraction|MutableFraction|NumberInterface
      */
     public static function make($type, $value, $precision = null, $base = 10)
     {
@@ -35,16 +38,22 @@ class Numbers
         if ($type == self::IMMUTABLE) {
             return new ImmutableNumber(trim($value), $precision, $base);
         } elseif ($type == self::MUTABLE) {
-            return New MutableNumber(trim($value), $precision, $base);
+            return new MutableNumber(trim($value), $precision, $base);
+        } elseif ($type == self::IMMUTABLE_FRACTION) {
+            return self::makeFractionFromString($value, $type)->convertToBase($base);
+        } elseif ($type == self::MUTABLE_FRACTION) {
+            return self::makeFractionFromString($value, $type)->convertToBase($base);
         } else {
             $reflector = new \ReflectionClass($type);
 
             if ($reflector->implementsInterface(NumberInterface::class)) {
-                return $reflector->newInstance([
+                /** @var NumberInterface $customNumber */
+                $customNumber = $reflector->newInstance([
                     trim($value),
                     $precision,
                     $base
                 ]);
+                return $customNumber;
             }
         }
 
@@ -70,32 +79,33 @@ class Numbers
 
     /**
      * @param $type
-     * @param int|float|string|NumberInterface $input
+     * @param int|float|string|NumberInterface $value
      * @param int|null $precision
      * @param int $base
-     * @throws \InvalidArgumentException
+     *
+*@throws \InvalidArgumentException
      * @return ImmutableNumber|MutableNumber|NumberInterface|ImmutableNumber[]|MutableNumber[]|NumberInterface[]
      */
-    public static function makeOrDont($type, $input, $precision = null, $base = 10)
+    public static function makeOrDont($type, $value, $precision = null, $base = 10)
     {
 
-        if (is_numeric($input)) {
-            return self::make($type, $input, $precision, $base);
-        } elseif (is_object($input)) {
-            $reflector = new \ReflectionClass($input);
+        if (is_numeric($value)) {
+            return self::make($type, $value, $precision, $base);
+        } elseif (is_object($value)) {
+            $reflector = new \ReflectionClass($value);
 
-            if ($input instanceof $type) {
-                return $input;
+            if ($value instanceof $type) {
+                return $value;
             }
 
             if ($reflector->implementsInterface(NumberInterface::class)) {
-                return self::make($type, $input->getValue(), $precision, $base);
+                return self::make($type, $value->getValue(), $precision, $base);
             }
-        } elseif (is_array($input)) {
+        } elseif (is_array($value)) {
             $newInput = [];
             
-            foreach ($input as $key => $value) {
-                $newInput[$key] = self::makeOrDont($type, $value, $precision, $base);
+            foreach ($value as $key => $item) {
+                $newInput[$key] = self::makeOrDont($type, $item, $precision, $base);
             }
 
             return $newInput;
@@ -105,18 +115,32 @@ class Numbers
 
     }
 
-    public static function makeFractionFromString($value)
+    public static function makeFractionFromString($value, $type = self::IMMUTABLE_FRACTION)
     {
         $parts = explode('/', $value);
 
         if (count($parts) > 2) {
-            throw new \Exception('Cannot construct Fraction with more than one division symbol');
+            throw new IntegrityConstraint(
+                'Only one division symbol (/) can be used',
+                'Change the calling code to not provide more than one division symbol',
+                'makeFractionFromString needs either one or zero division symbols in the $value argument; '.$value.' given'
+            );
         }
 
         $numerator = Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[0])))->round();
-        $denominator = Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[1])))->round();
+        $denominator = isset($parts[1]) ? Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[1])))->round() : Numbers::makeOne();
 
-        return new ImmutableFraction($numerator, $denominator);
+        if ($type == self::IMMUTABLE_FRACTION) {
+            return new ImmutableFraction($numerator, $denominator);
+        } elseif ($type == self::MUTABLE_FRACTION) {
+            return new MutableFraction($numerator, $denominator);
+        } else {
+            throw new IntegrityConstraint(
+                'Type must be ImmutableFraction or MutableFraction',
+                'Alter to calling code to use the correct type',
+                'makeFractionFromString can only make objects of type ImmutableFraction or MutableFraction; '.$type.' given'
+            );
+        }
     }
 
     /**

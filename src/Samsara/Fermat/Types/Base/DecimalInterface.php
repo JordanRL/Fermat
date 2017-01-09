@@ -25,11 +25,14 @@ interface DecimalInterface
     public function isNatural();
 
     /**
-     * @param int $decimals
-     *
-     * @return NumberInterface
+     * @return bool
      */
-    public function round($decimals = 0);
+    public function isWhole();
+
+    /**
+     * @return bool
+     */
+    public function isInt();
 
     /**
      * @return NumberInterface
@@ -78,6 +81,13 @@ interface DecimalInterface
      * @return NumberInterface
      */
     public function cos($mult = 1, $div = 1, $precision = null);
+
+    /**
+     * @param int $decimals
+     *
+     * @return NumberInterface
+     */
+    public function round($decimals = 0);
 
     /**
      * @param $precision

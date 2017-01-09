@@ -2,12 +2,17 @@
 
 namespace Samsara\Fermat\Types\Base;
 
+use Samsara\Fermat\Values\ImmutableNumber;
+
 interface CoordinateInterface
 {
-    public function size();
 
-    public function all();
+    public function getAxis($axis): ImmutableNumber;
 
-    public function distanceTo(CoordinateInterface $coordinate);
+    public function numberOfDimensions(): int;
+
+    public function axisValues(): array;
+
+    public function distanceTo(CoordinateInterface $coordinate): ImmutableNumber;
 
 }
