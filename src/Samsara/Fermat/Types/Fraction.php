@@ -3,7 +3,7 @@
 namespace Samsara\Fermat\Types;
 
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
 abstract class Fraction

@@ -3,7 +3,7 @@
 namespace Samsara\Fermat\Provider;
 
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\NumberInterface;
 
 class SequenceProvider
 {

@@ -5,7 +5,7 @@ namespace Samsara\Fermat\Provider\Stats\Distribution;
 use RandomLib\Factory;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Stats\Distribution\Base\DistributionInterface;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\NumberInterface;
 
 class Poisson implements DistributionInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Values\Base;
+namespace Samsara\Fermat\Types\Base;
 
 use Samsara\Fermat\Types\Fraction;
 

@@ -6,7 +6,7 @@ use Samsara\Fermat\Context\Base\BaseContext;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;
 use Samsara\Fermat\Provider\GaussianProvider;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\NumberInterface;
 
 /**
  * Used for operating on numbers within the context of a Gaussian (or normal) distribution.

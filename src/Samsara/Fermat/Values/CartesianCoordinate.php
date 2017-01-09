@@ -5,7 +5,7 @@ namespace Samsara\Fermat\Values;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Tuple;
-use Samsara\Fermat\Values\Base\CoordinateInterface;
+use Samsara\Fermat\Types\Base\CoordinateInterface;
 
 class CartesianCoordinate extends Tuple implements CoordinateInterface
 {

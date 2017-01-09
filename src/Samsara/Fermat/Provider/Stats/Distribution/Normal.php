@@ -4,7 +4,7 @@ namespace Samsara\Fermat\Provider\Stats\Distribution;
 
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Stats\Stats;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\NumberInterface;
 
 class Normal
 {

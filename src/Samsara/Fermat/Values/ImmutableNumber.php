@@ -4,8 +4,8 @@ namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Number;
-use Samsara\Fermat\Values\Base\DecimalInterface;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\DecimalInterface;
+use Samsara\Fermat\Types\Base\NumberInterface;
 
 class ImmutableNumber extends Number implements NumberInterface, DecimalInterface
 {

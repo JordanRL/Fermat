@@ -3,8 +3,8 @@
 namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Types\Fraction;
-use Samsara\Fermat\Values\Base\FractionInterface;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\FractionInterface;
+use Samsara\Fermat\Types\Base\NumberInterface;
 
 class ImmutableFraction extends Fraction implements NumberInterface, FractionInterface
 {

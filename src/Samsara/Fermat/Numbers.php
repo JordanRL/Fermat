@@ -5,7 +5,7 @@ namespace Samsara\Fermat;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableNumber;
 use Samsara\Fermat\Values\MutableNumber;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\NumberInterface;
 
 class Numbers
 {
@@ -87,7 +87,7 @@ class Numbers
                 return $input;
             }
 
-            if ($reflector->implementsInterface('Samsara\Fermat\Values\Base\NumberInterface')) {
+            if ($reflector->implementsInterface('Samsara\Fermat\Types\Base\NumberInterface')) {
                 return self::make($type, $input->convertToBase(10)->getValue(), $precision, $base);
             }
         } elseif (is_array($input)) {

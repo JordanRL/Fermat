@@ -7,7 +7,7 @@ use Samsara\Fermat\Provider\BCProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
-use Samsara\Fermat\Values\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\NumberInterface;
 
 abstract class Number
 {
