@@ -27,7 +27,7 @@ class Numbers
      * @param $value
      * @param int|null $precision
      * @param int $base
-     * @return NumberInterface
+     * @return ImmutableNumber|MutableNumber|NumberInterface
      */
     public static function make($type, $value, $precision = null, $base = 10)
     {
@@ -73,7 +73,8 @@ class Numbers
      * @param int|float|string|NumberInterface $input
      * @param int|null $precision
      * @param int $base
-     * @return NumberInterface
+     * @throws \InvalidArgumentException
+     * @return ImmutableNumber|MutableNumber|NumberInterface|ImmutableNumber[]|MutableNumber[]|NumberInterface[]
      */
     public static function makeOrDont($type, $input, $precision = null, $base = 10)
     {
@@ -87,8 +88,8 @@ class Numbers
                 return $input;
             }
 
-            if ($reflector->implementsInterface('Samsara\Fermat\Types\Base\NumberInterface')) {
-                return self::make($type, $input->convertToBase(10)->getValue(), $precision, $base);
+            if ($reflector->implementsInterface(NumberInterface::class)) {
+                return self::make($type, $input->getValue(), $precision, $base);
             }
         } elseif (is_array($input)) {
             $newInput = [];
@@ -214,11 +215,17 @@ class Numbers
 
     }
 
+    /**
+     * @return ImmutableNumber
+     */
     public static function makeOne()
     {
         return self::make(self::IMMUTABLE, 1);
     }
 
+    /**
+     * @return ImmutableNumber
+     */
     public static function makeZero()
     {
         return self::make(self::IMMUTABLE, 0);
