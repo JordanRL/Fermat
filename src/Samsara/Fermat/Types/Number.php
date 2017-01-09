@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Types;
 
+use Ds\Hashable;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
@@ -9,7 +10,7 @@ use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\NumberInterface;
 
-abstract class Number
+abstract class Number implements Hashable
 {
     const INFINITY = 'INF';
     const NEG_INFINITY = '-INF';
@@ -496,7 +497,7 @@ abstract class Number
         return $comparison;
     }
     
-    public function equals($value)
+    public function isEqual($value)
     {
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
         
@@ -591,6 +592,22 @@ abstract class Number
     public function __toString()
     {
         return $this->getValue();
+    }
+
+    public function hash()
+    {
+        return get_class($this).$this->getValue();
+    }
+
+    public function equals($object): bool
+    {
+        $reflection = new \ReflectionClass($object);
+
+        if ($reflection->implementsInterface(NumberInterface::class)) {
+            return $this->isEqual($object);
+        } else {
+            return false;
+        }
     }
 
     protected function getRadixPos()
