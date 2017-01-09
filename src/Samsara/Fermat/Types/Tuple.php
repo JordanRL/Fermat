@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Types;
 
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Values\ImmutableNumber;
 
@@ -35,7 +36,7 @@ class Tuple
             return $this->data[$index];
         }
 
-        throw new \InvalidArgumentException('Undefined index requested on tuple.');
+        throw new IncompatibleObjectState('Requested index '.$index.' is unset in tuple');
     }
 
     /**
@@ -51,7 +52,7 @@ class Tuple
             return $this;
         }
 
-        throw new \InvalidArgumentException('Cannot set value for index that does not exist in tuple.');
+        throw new IncompatibleObjectState('Cannot set value for index that does not exist in tuple');
     }
 
     public function all(): array

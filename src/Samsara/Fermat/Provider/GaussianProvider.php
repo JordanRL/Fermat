@@ -2,6 +2,8 @@
 
 namespace Samsara\Fermat\Provider;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
+
 class GaussianProvider
 {
     public static function percentBelowX($x, $mean, $standardDev)
@@ -73,7 +75,10 @@ class GaussianProvider
         } elseif ($percent <= 100) {
             return ($percent/100);
         } else {
-            throw new \InvalidArgumentException('A probability must be in the range 0-1 or 0-100');
+            throw new IntegrityConstraint(
+                '$percent must be between 1 and 0 (inclusive)',
+                'Provide a valid percent'
+            );
         }
     }
 }

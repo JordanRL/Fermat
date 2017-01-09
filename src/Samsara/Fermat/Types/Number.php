@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Types;
 
 use Ds\Hashable;
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
@@ -121,14 +122,14 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
 
         if ($this->lessThan(1)) {
-            if ($this->equals(0)) {
+            if ($this->isEqual(0)) {
                 return $this->setValue(1);
             }
-            throw new \Exception('Cannot make a factorial with a number less than 1 (other than zero)');
+            throw new IncompatibleObjectState('Cannot make a factorial with a number less than 1 (other than zero)');
         }
 
         if ($this->getDecimalPart() !== 0) {
-            throw new \Exception('Can only perform a factorial on a whole number');
+            throw new IncompatibleObjectState('Can only perform a factorial on a whole number');
         }
 
         $curVal = $this->getValue();
@@ -148,7 +149,7 @@ abstract class Number implements Hashable
 
         $val = Numbers::make(Numbers::IMMUTABLE, $this->getValue());
 
-        if ($val->modulo(2)->equals(1)) {
+        if ($val->modulo(2)->isEqual(1)) {
             $m = Numbers::make(Numbers::IMMUTABLE, $val->add(1)->divide(2));
             $term = function ($n) {
                 return Numbers::make(Numbers::IMMUTABLE, 2)->multiply($n);
@@ -203,7 +204,7 @@ abstract class Number implements Hashable
     
     public function sin($mult = 1, $div = 1, $precision = null, $calc = false)
     {
-        if ($this->equals(0)) {
+        if ($this->isEqual(0)) {
             return $this;
         }
 
@@ -249,7 +250,7 @@ abstract class Number implements Hashable
     
     public function cos($mult = 1, $div = 1, $precision = null, $calc = false)
     {
-        if ($this->equals(0)) {
+        if ($this->isEqual(0)) {
             return $this->setValue(1);
         }
 
@@ -374,7 +375,7 @@ abstract class Number implements Hashable
 
     public function isNegative(): bool
     {
-        if ($this->equals(0)) {
+        if ($this->isEqual(0)) {
             return false;
         }
 
@@ -387,7 +388,7 @@ abstract class Number implements Hashable
 
     public function isPositive(): bool
     {
-        if ($this->equals(0)) {
+        if ($this->isEqual(0)) {
             return false;
         }
 
@@ -508,7 +509,7 @@ abstract class Number implements Hashable
         }
     }
     
-    public function greaterThan($value): bool
+    public function isGreaterThan($value): bool
     {
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
         
@@ -519,7 +520,7 @@ abstract class Number implements Hashable
         }
     }
     
-    public function greaterThanOrEqualTo($value): bool
+    public function isGreaterThanOrEqualTo($value): bool
     {
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
         
@@ -530,7 +531,7 @@ abstract class Number implements Hashable
         }
     }
     
-    public function lessThan($value): bool {
+    public function isLessThan($value): bool {
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
         
         if ($this->compare($value) === -1) {
@@ -540,7 +541,7 @@ abstract class Number implements Hashable
         }
     }
 
-    public function lessThanOrEqualTo($value): bool
+    public function isLessThanOrEqualTo($value): bool
     {
         $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
 
@@ -582,7 +583,7 @@ abstract class Number implements Hashable
     {
 
         if ($this->greaterThan(PHP_INT_MAX) || $this->lessThan(PHP_INT_MIN)) {
-            throw new \Exception('Cannot export number as integer because it is out of range');
+            throw new IncompatibleObjectState('Cannot export number as integer because it is out of range');
         }
 
         return intval($this->getValue());

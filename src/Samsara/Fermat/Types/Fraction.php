@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Types;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
@@ -52,8 +53,12 @@ abstract class Fraction
         } else {
             $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num);
 
-            if (!$num->isNatural()) {
-                throw new \Exception('Cannot add decimal values to Fraction objects');
+            if (!$num->isInt()) {
+                throw new IntegrityConstraint(
+                    'Argument must be a whole number or fraction',
+                    'Provide a whole number or fraction as an argument',
+                    'To add a number to a fraction it must be either a whole number or a fraction, '.$num->getValue().' given'
+                );
             }
 
             $finalNumerator = $this->numerator->add($num->multiply($this->denominator));

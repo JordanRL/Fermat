@@ -17,7 +17,7 @@ class Numbers
     const MUTABLE_FRACTION = MutableFraction::class;
     const IMMUTABLE_FRACTION = ImmutableFraction::class;
     /* 105 digits after decimal, which is going to be overkill in almost all places */
-    const PI = '3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148';
+    const PI = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679';
     /* Tau (2pi) to 100 digits */
     const TAU = '6.283185307179586476925286766559005768394338798750211641949889184615632812572417997256069650684234136';
     /* Euler's Number to 100 digits */
@@ -57,7 +57,11 @@ class Numbers
             }
         }
 
-        throw new \InvalidArgumentException('The $type argument was not an implementation of NumberInterface.');
+        throw new IntegrityConstraint(
+            '$type must be an implementation of NumberInterface',
+            'Provide a type that implements NumberInterface (the Numbers class contains constants for the built in ones)',
+            'The $type argument was not an implementation of NumberInterface'
+        );
     }
 
     /**
@@ -111,7 +115,11 @@ class Numbers
             return $newInput;
         }
 
-        throw new \InvalidArgumentException('The $input argument was not numeric or an implementation of NumberInterface.');
+        throw new IntegrityConstraint(
+            '$input must be an int, float, numeric string, or an implementation of NumberInterface',
+            'Provide any of the MANY valid inputs',
+            'The $input argument was not numeric or an implementation of NumberInterface.'
+        );
 
     }
 
@@ -151,8 +159,12 @@ class Numbers
     public static function makePi($precision = null)
     {
         
-        if (!is_null($precision) && ($precision > 105 || $precision < 1)) {
-            throw new \InvalidArgumentException('The PI constant cannot have a precision higher than the constant stored (105).');
+        if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
+            throw new IntegrityConstraint(
+                '$precision must be between 1 and 100 inclusive',
+                'Provide a precision within range',
+                'The PI constant cannot have a precision higher than the constant stored (100)'
+            );
         }
         
         $pi = self::make(self::IMMUTABLE, self::PI);
@@ -173,7 +185,11 @@ class Numbers
     public static function makeTau($precision = null)
     {
         if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
-            throw new \InvalidArgumentException('The TAU constant cannot have a precision higher than the constant stored (100).');
+            throw new IntegrityConstraint(
+                '$precision must be between 1 and 100 inclusive',
+                'Provide a precision within range',
+                'The TAU constant cannot have a precision higher than the constant stored (100)'
+            );
         }
 
         $tau = self::make(self::IMMUTABLE, self::TAU);
@@ -204,7 +220,11 @@ class Numbers
     {
 
         if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
-            throw new \InvalidArgumentException('The E constant cannot have a precision higher than the constant stored (100).');
+            throw new IntegrityConstraint(
+                '$precision must be between 1 and 100 inclusive',
+                'Provide a precision within range',
+                'The E constant cannot have a precision higher than the constant stored (100)'
+            );
         }
 
         $e = self::make(self::IMMUTABLE, self::E);
@@ -226,7 +246,11 @@ class Numbers
     {
 
         if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
-            throw new \InvalidArgumentException('The Golden Ratio constant cannot have a precision higher than the constant stored (100).');
+            throw new IntegrityConstraint(
+                '$precision must be between 1 and 100 inclusive',
+                'Provide a precision within range',
+                'The Golden Ratio constant cannot have a precision higher than the constant stored (100)'
+            );
         }
 
         $goldenRatio = self::make(self::IMMUTABLE, self::GOLDEN_RATIO);

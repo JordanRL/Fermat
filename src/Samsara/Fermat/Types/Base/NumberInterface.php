@@ -119,27 +119,27 @@ interface NumberInterface
      *
      * @return bool
      */
-    public function greaterThan($value): bool;
+    public function isGreaterThan($value): bool;
 
     /**
      * @param int|string|NumberInterface $value
      *
      * @return bool
      */
-    public function lessThan($value): bool;
+    public function isLessThan($value): bool;
 
     /**
      * @param int|string|NumberInterface $value
      *
      * @return bool
      */
-    public function greaterThanOrEqualTo($value): bool;
+    public function isGreaterThanOrEqualTo($value): bool;
 
     /**
      * @param int|string|NumberInterface $value
      *
      * @return bool
      */
-    public function lessThanOrEqualTo($value): bool;
+    public function isLessThanOrEqualTo($value): bool;
 
 }
