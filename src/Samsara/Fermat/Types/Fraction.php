@@ -12,8 +12,6 @@ use Samsara\Fermat\Values\ImmutableNumber;
 abstract class Fraction
 {
 
-    protected $precision;
-
     protected $base;
 
     /**
