@@ -16,6 +16,7 @@
   },
   "suggest": {
     "ext-stats": "*",
+    "ext-gmp": "*",
     "ext-ds": "*"
   },
   "autoload": {

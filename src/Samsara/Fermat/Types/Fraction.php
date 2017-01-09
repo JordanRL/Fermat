@@ -43,7 +43,7 @@ abstract class Fraction
         $denominator = $this->denominator->divide($gcd);
 
         return $this->setValue($numerator, $denominator);
-        
+
     }
 
     public function add($num)
