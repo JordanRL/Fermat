@@ -9,6 +9,11 @@ class Tuple
 {
 
     /**
+     * @var int
+     */
+    private $size;
+
+    /**
      * @var ImmutableNumber[]
      */
     private $data;
@@ -17,13 +22,14 @@ class Tuple
     public function __construct(...$data)
     {
         $this->data = Numbers::makeOrDont(Numbers::IMMUTABLE, $data);
+        $this->size = count($this->data);
     }
 
     /**
      * @param $index
      * @return ImmutableNumber
      */
-    public function get($index)
+    public function get(int $index): ImmutableNumber
     {
         if (array_key_exists($index, $this->data)) {
             return $this->data[$index];
@@ -37,7 +43,7 @@ class Tuple
      * @param ImmutableNumber $value
      * @return $this
      */
-    public function set($index, ImmutableNumber $value)
+    public function set(int $index, ImmutableNumber $value)
     {
         if (array_key_exists($index, $this->data)) {
             $this->data[$index] = $value;
@@ -48,9 +54,14 @@ class Tuple
         throw new \InvalidArgumentException('Cannot set value for index that does not exist in tuple.');
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->data;
+    }
+
+    public function size(): int
+    {
+        return $this->size;
     }
 
 }

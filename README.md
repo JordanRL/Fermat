@@ -1,19 +1,19 @@
 # Fermat
 
-**This project is unit tested against 5.6.X and 7.X, and merges are not accepted unless the tests pass on both.**
+**This project is unit tested against 7.X, and merges are not accepted unless the tests pass.**
 
 ## Installation
 
 To install, simply require the package using composer:
 
-    composer require samsara/fermat "dev-dev"
+    composer require samsara/fermat "*"
     
 Or include it in your `composer.json` file:
 
 ```json
 {
     "require": {
-        "samsara/fermat": "dev-dev"
+        "samsara/fermat": "*"
     }
 }
 ```

@@ -6,13 +6,16 @@
   "license": "GPL-2.0",
   "require": {
     "ircmaxell/random-lib": "1.1.*",
-    "riimu/kit-baseconversion": "1.*"
+    "riimu/kit-baseconversion": "1.*",
+    "samsara/common": "dev-master",
+    "php-ds/php-ds": "1.1.*"
   },
   "require-dev": {
     "phpunit/phpunit": "4.8.*"
   },
   "suggest": {
-    "ext-stats": "*"
+    "ext-stats": "*",
+    "ext-ds": "*"
   },
   "autoload": {
     "psr-4": {
