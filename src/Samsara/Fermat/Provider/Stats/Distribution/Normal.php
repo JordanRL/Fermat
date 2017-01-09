@@ -86,6 +86,32 @@ class Normal
         return $this->cdf($x1)->subtract($this->cdf($x2))->abs();
     }
 
+    public function percentBelowX($x)
+    {
+        return $this->cdf($x);
+    }
+
+    public function percentAboveX($x)
+    {
+        $one = Numbers::makeOne();
+
+        return $one->subtract($this->cdf($x));
+    }
+
+    public function zScoreOfX($x)
+    {
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+
+        return $x->subtract($this->mean)->divide($this->sd);
+    }
+
+    public function xFromZScore($z)
+    {
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
+
+        return $z->multiply($this->sd)->add($this->mean);
+    }
+
     /**
      * @return ImmutableNumber
      */
