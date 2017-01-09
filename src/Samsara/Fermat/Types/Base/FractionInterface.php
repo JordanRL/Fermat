@@ -12,8 +12,14 @@ interface FractionInterface
      */
     public function simplify();
 
+    /**
+     * @return NumberInterface
+     */
     public function getNumerator();
 
+    /**
+     * @return NumberInterface
+     */
     public function getDenominator();
 
 }
