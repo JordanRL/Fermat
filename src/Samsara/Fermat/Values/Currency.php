@@ -9,6 +9,30 @@ use Samsara\Fermat\Types\Number;
 
 class Currency extends Number implements NumberInterface, DecimalInterface
 {
+    const DOLLAR = '$';
+    const EURO = '€';
+    const POUND = '£';
+    const YUAN = '¥';
+    const YEN = '¥';
+    const WON = '₩';
+    const RUBLE = '₽';
+    const RIYAL = '﷼';
+    const RUPEE_INDIA = '₹';
+
+    protected $symbol;
+
+    public function __construct($value, $symbol = Currency::DOLLAR, $precision = null, $base = 10)
+    {
+        $this->symbol = $symbol;
+
+        parent::__construct($value, $precision, $base);
+    }
+
+    public function __toString()
+    {
+        return $this->symbol.$this->multiply(100)->floor()->divide(100)->getValue();
+    }
+
     public function modulo($mod)
     {
         $oldBase = $this->convertForModification();
