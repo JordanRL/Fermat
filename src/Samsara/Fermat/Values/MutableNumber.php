@@ -3,10 +3,11 @@
 namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Types\Number;
+use Samsara\Fermat\Values\Base\DecimalInterface;
 use Samsara\Fermat\Values\Base\NumberInterface;
 use Samsara\Fermat\Numbers;
 
-class MutableNumber extends Number implements NumberInterface
+class MutableNumber extends Number implements NumberInterface, DecimalInterface
 {
 
     public function modulo($mod)

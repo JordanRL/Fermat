@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - CartesianCoordinate
   - ImmutableFraction
   - ImmutableNumber
+  - MutableFraction
   - MutableNumber
 - Providers:
   - BCProvider

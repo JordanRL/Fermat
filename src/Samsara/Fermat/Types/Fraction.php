@@ -16,14 +16,14 @@ abstract class Fraction
     /**
      * @var ImmutableNumber
      */
-    private $numerator;
+    protected $numerator;
 
     /**
      * @var ImmutableNumber
      */
-    private $denominator;
+    protected $denominator;
 
-    public function __construct($numerator, $denominator, $precision = null, $base = 10)
+    public function __construct($numerator, $denominator, $base = 10)
     {
 
         $this->numerator = Numbers::makeOrDont(Numbers::IMMUTABLE, $numerator)->round();

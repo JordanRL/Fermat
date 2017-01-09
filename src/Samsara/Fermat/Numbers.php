@@ -114,6 +114,8 @@ class Numbers
 
         $numerator = Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[0])))->round();
         $denominator = Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[1])))->round();
+
+        return new ImmutableFraction($numerator, $denominator);
     }
 
     /**
