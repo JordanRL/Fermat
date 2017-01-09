@@ -48,7 +48,7 @@ class Poisson implements DistributionInterface
 
         if ($x1->equals($x2)) {
             return Numbers::makeZero();
-        } elseif ($x1->greaterThan($x2)) {
+        } elseif ($x1->isGreaterThan($x2)) {
             $larger = $x1;
             $smaller = $x2;
         } else {
@@ -62,7 +62,7 @@ class Poisson implements DistributionInterface
 
         $cumulative = Numbers::makeZero();
 
-        for (;$larger->greaterThanOrEqualTo($smaller);$smaller->add(1)) {
+        for (;$larger->isGreaterThanOrEqualTo($smaller);$smaller->add(1)) {
             $cumulative = $cumulative->add($this->pmf($smaller));
         }
 
@@ -94,7 +94,7 @@ class Poisson implements DistributionInterface
         $k = Numbers::makeZero();
         $p = Numbers::makeOne();
         
-        while ($p->lessThan($L)) {
+        while ($p->isLessThan($L)) {
             $k = $k->add(1);
             $u = $randFactory->getMediumStrengthGenerator()->generateInt() / PHP_INT_MAX;
             $p = $p->multiply($u);
@@ -116,7 +116,7 @@ class Poisson implements DistributionInterface
     {
         $rand = $this->random();
 
-        if ($rand->greaterThanOrEqualTo($min) && $rand->lessThanOrEqualTo($max)) {
+        if ($rand->isGreaterThanOrEqualTo($min) && $rand->isLessThanOrEqualTo($max)) {
             return $rand;
         } else {
             return $this->rangeRandom($min, $max);

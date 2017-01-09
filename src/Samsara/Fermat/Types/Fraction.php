@@ -91,7 +91,7 @@ abstract class Fraction
             $numerator = $this->numerator->abs();
             $denominator = $this->denominator->abs();
 
-            if ($numerator->lessThan($denominator)) {
+            if ($numerator->isLessThan($denominator)) {
                 $greater = $denominator;
                 $lesser = $numerator;
             } else {
@@ -99,9 +99,10 @@ abstract class Fraction
                 $lesser = $denominator;
             }
 
+            /** @var NumberInterface $remainder */
             $remainder = $greater->modulo($lesser);
 
-            while ($remainder->greaterThan(0)) {
+            while ($remainder->isGreaterThan(0)) {
                 $greater = $lesser;
                 $lesser = $remainder;
                 $remainder = $greater->modulo($lesser);

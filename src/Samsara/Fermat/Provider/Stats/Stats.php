@@ -111,7 +111,7 @@ class Stats
 
         }
 
-        if ($p->lessThan(0.5)) {
+        if ($p->isLessThan(0.5)) {
             return $xCur->multiply(-1);
         } else {
             return $xCur;

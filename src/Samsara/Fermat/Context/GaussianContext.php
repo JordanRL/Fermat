@@ -140,7 +140,7 @@ class GaussianContext extends BaseContext
         while ($continue) {
             $num = $this->fullRandom();
             
-            if ($num->greaterThanOrEqualTo($min) && $num->lessThanOrEqualTo($max)) {
+            if ($num->isGreaterThanOrEqualTo($min) && $num->isLessThanOrEqualTo($max)) {
                 $continue = false;
             }
             

@@ -69,7 +69,7 @@ class SequenceProvider
 
         $t = Numbers::makeZero();
 
-        for ($k = 0;$m->greaterThanOrEqualTo($k);$k++) {
+        for ($k = 0;$m->isGreaterThanOrEqualTo($k);$k++) {
             $kNum = Numbers::make(Numbers::IMMUTABLE, $k);
             $combination = $m->factorial()->divide($kNum->factorial()->multiply($m->subtract($k)->factorial()));
             $t = $t->add($combination->multiply(self::nthBernoulliNumber($k, $n))->divide($m->subtract($k)->add(1)));

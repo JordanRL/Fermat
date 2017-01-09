@@ -121,7 +121,7 @@ abstract class Number implements Hashable
     {
         $oldBase = $this->convertForModification();
 
-        if ($this->lessThan(1)) {
+        if ($this->isLessThan(1)) {
             if ($this->isEqual(0)) {
                 return $this->setValue(1);
             }
@@ -163,7 +163,7 @@ abstract class Number implements Hashable
 
         $newVal = Numbers::makeOne();
 
-        for ($i = 1;$m->greaterThanOrEqualTo($i);$i++) {
+        for ($i = 1;$m->isGreaterThanOrEqualTo($i);$i++) {
             $newVal = $newVal->multiply($term($i));
         }
 
@@ -210,7 +210,7 @@ abstract class Number implements Hashable
 
         $oldBase = $this->convertForModification();
         
-        if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
+        if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX)) {
             return $this->setValue(sin($this->getValue()))->convertFromModification($oldBase);
         }
         
@@ -256,7 +256,7 @@ abstract class Number implements Hashable
 
         $oldBase = $this->convertForModification();
 
-        if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
+        if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX)) {
             return $this->setValue(cos($this->getValue()))->convertFromModification($oldBase);
         }
 
@@ -296,7 +296,7 @@ abstract class Number implements Hashable
     {
         $oldBase = $this->convertForModification();
 
-        if ($this->greaterThanOrEqualTo(PHP_INT_MIN) && $this->lessThanOrEqualTo(PHP_INT_MAX)) {
+        if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX)) {
             return $this->setValue(tan($this->getValue()))->convertFromModification($oldBase);
         }
 
@@ -582,7 +582,7 @@ abstract class Number implements Hashable
     public function asInt()
     {
 
-        if ($this->greaterThan(PHP_INT_MAX) || $this->lessThan(PHP_INT_MIN)) {
+        if ($this->isGreaterThan(PHP_INT_MAX) || $this->isLessThan(PHP_INT_MIN)) {
             throw new IncompatibleObjectState('Cannot export number as integer because it is out of range');
         }
 
