@@ -14,22 +14,32 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 - **Dev Dependencies:**
   - phpunit/phpunit: v4.8.*
 - Types:
+  - Interfaces:
+    - CoordinateInterface
+    - DecimalInterface
+    - FractionInterface
+    - NumberInterface
   - Fraction
   - Number
   - Tuple
 - Numbers:
   - CartesianCoordinate
+  - Currency
   - ImmutableFraction
   - ImmutableNumber
   - MutableFraction
   - MutableNumber
+- Shapes:
+  - Base:
+    - Line
+    - TwoDimensionNonCurved
 - Providers:
+  - Stats:
+    - Distributions:
+      - Normal
+      - Poisson
+    - Stats
   - BCProvider
-  - GaussianProvider
   - SequenceProvider
   - SeriesProvider
   - TrigonometryProvider
-- Contexts:
-  - UniformContext
-  - PolynomialContext
-  - GaussianContext
