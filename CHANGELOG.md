@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 - **Suggested Extensions**
   - ext-ds: *
   - ext-stats: *
+  - ext-gmp: *
 - **Dev Dependencies:**
   - phpunit/phpunit: v4.8.*
 - Types:
