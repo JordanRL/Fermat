@@ -4,11 +4,13 @@ namespace Samsara\Fermat\Types;
 
 use Ds\Hashable;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\BCProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
+use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
@@ -378,6 +380,66 @@ abstract class Number implements Hashable
         }
     }
 
+    public function getLeastCommonMultiple($num)
+    {
+
+        /** @var ImmutableNumber $num */
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num);
+
+        if (!$this->isInt() || !$num->isInt()) {
+            throw new IntegrityConstraint(
+                'Both numbers must be integers',
+                'Ensure that both numbers are integers before getting the LCM',
+                'Both numbers being considered must be integers in order to calculate a Least Common Multiple'
+            );
+        }
+
+        return $this->multiply($num)->abs()->divide($this->getGreatestCommonDivisor($num));
+
+    }
+
+    public function getGreatestCommonDivisor($num)
+    {
+        /** @var ImmutableNumber $num */
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num)->abs();
+        /** @var ImmutableNumber $thisNum */
+        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this)->abs();
+
+        if (!$this->isInt() || !$num->isInt()) {
+            throw new IntegrityConstraint(
+                'Both numbers must be integers',
+                'Ensure that both numbers are integers before getting the GCD',
+                'Both numbers being considered must be integers in order to calculate a Greatest Common Divisor'
+            );
+        }
+
+        if (function_exists('gmp_gcd') && function_exists('gmp_strval')) {
+            $val = gmp_strval(gmp_gcd($thisNum->getValue(), $num->getValue()));
+
+            return Numbers::make(Numbers::IMMUTABLE, $val);
+        } else {
+
+            if ($thisNum->isLessThan($num)) {
+                $greater = $num;
+                $lesser = $thisNum;
+            } else {
+                $greater = $thisNum;
+                $lesser = $num;
+            }
+
+            /** @var NumberInterface $remainder */
+            $remainder = $greater->modulo($lesser);
+
+            while ($remainder->isGreaterThan(0)) {
+                $greater = $lesser;
+                $lesser = $remainder;
+                $remainder = $greater->modulo($lesser);
+            }
+
+            return $lesser;
+        }
+    }
+
     public function convertForModification()
     {
         if ($this->getBase() == 10) {
@@ -453,6 +515,46 @@ abstract class Number implements Hashable
         } else {
             return false;
         }
+    }
+
+    /**
+     * This function is a PHP implementation of the function described at: http://stackoverflow.com/a/1801446
+     *
+     * It is relatively simple to understand, which is why it was chosen as the implementation. However in the future,
+     * an implementation that is based on ECPP (such as the Goldwasser implementation) may be employed to improve speed.
+     *
+     * @return bool
+     */
+    public function isPrime(): bool
+    {
+        if (!$this->isInt()) {
+            return false;
+        }
+
+        if ($this->isEqual(2)) {
+            return true;
+        } elseif ($this->isEqual(3)) {
+            return true;
+        } elseif ($this->modulo(2)->isEqual(0)) {
+            return false;
+        } elseif ($this->modulo(2)->isEqual(0)) {
+            return false;
+        }
+
+        $i = Numbers::make(Numbers::IMMUTABLE, 5);
+        $w = Numbers::make(Numbers::IMMUTABLE, 2);
+        $k = Numbers::make(Numbers::IMMUTABLE, 6);
+
+        while ($i->pow(2)->isLessThanOrEqualTo($this)) {
+            if ($this->modulo($i)->isEqual(0)) {
+                return false;
+            }
+
+            $i = $i->add($w);
+            $w = $k->subtract($w);
+        }
+
+        return true;
     }
 
     public function round($decimals = 0)
@@ -676,6 +778,13 @@ abstract class Number implements Hashable
             return $this->getValue();
         }
     }
+    /**
+     * @param $mod
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    abstract public function modulo($mod);
+
 
     /**
      * @param $value

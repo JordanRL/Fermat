@@ -62,13 +62,15 @@ class Normal
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        if (function_exists('stats_cdf_normal') &&
+        if (
+            function_exists('stats_cdf_normal') &&
             $x->isLessThanOrEqualTo(PHP_INT_MAX) &&
             $x->isGreaterThanOrEqualTo(PHP_INT_MIN) &&
             $this->mean->isLessThanOrEqualTo(PHP_INT_MAX) &&
             $this->mean->isGreaterThanOrEqualTo(PHP_INT_MIN) &&
             $this->sd->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->sd->isGreaterThanOrEqualTo(PHP_INT_MIN)) {
+            $this->sd->isGreaterThanOrEqualTo(PHP_INT_MIN)
+        ) {
             return Numbers::make(Numbers::IMMUTABLE, stats_cdf_normal($x->getValue(), $this->mean, $this->sd));
         }
 

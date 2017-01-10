@@ -8,18 +8,25 @@ interface FractionInterface
 {
 
     /**
-     * @return Fraction
+     * @return NumberInterface|FractionInterface
      */
     public function simplify();
 
     /**
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function getNumerator();
 
     /**
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function getDenominator();
+
+    /**
+     * @param FractionInterface $fraction
+     *
+     * @return NumberInterface|FractionInterface
+     */
+    public function getSmallestCommonDenominator(FractionInterface $fraction);
 
 }

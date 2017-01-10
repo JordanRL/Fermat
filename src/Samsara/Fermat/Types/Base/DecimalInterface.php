@@ -8,39 +8,58 @@ interface DecimalInterface
     /**
      * @param $mod
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function modulo($mod);
 
     /**
      * @param $mod
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function continuousModulo($mod);
 
     /**
-     * @return bool
+     * @param $num
+     *
+     * @return NumberInterface|DecimalInterface
      */
-    public function isNatural();
+    public function getLeastCommonMultiple($num);
+
+    /**
+     * @param $num
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function getGreatestCommonDivisor($num);
 
     /**
      * @return bool
      */
-    public function isWhole();
+    public function isNatural(): bool;
 
     /**
      * @return bool
      */
-    public function isInt();
+    public function isWhole(): bool;
 
     /**
-     * @return NumberInterface
+     * @return bool
+     */
+    public function isInt(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isPrime(): bool;
+
+    /**
+     * @return NumberInterface|DecimalInterface
      */
     public function ceil();
 
     /**
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function floor();
 
@@ -50,17 +69,17 @@ interface DecimalInterface
     public function getPrecision();
 
     /**
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function factorial();
 
     /**
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function doubleFactorial();
 
     /**
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function semiFactorial();
 
@@ -69,7 +88,7 @@ interface DecimalInterface
      * @param int  $div
      * @param null $precision
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function sin($mult = 1, $div = 1, $precision = null);
 
@@ -78,21 +97,21 @@ interface DecimalInterface
      * @param int  $div
      * @param null $precision
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function cos($mult = 1, $div = 1, $precision = null);
 
     /**
      * @param int $decimals
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function round($decimals = 0);
 
     /**
      * @param $precision
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     public function roundToPrecision($precision);
 

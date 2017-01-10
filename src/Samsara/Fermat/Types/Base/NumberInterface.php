@@ -101,13 +101,6 @@ interface NumberInterface
     public function convertFromModification($oldBase);
 
     /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    public function equals($value): bool;
-
-    /**
      * @param int|string|NumberInterface $value
      *
      * @return bool

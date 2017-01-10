@@ -127,7 +127,7 @@ abstract class Fraction
         $thatDenominator = $fraction->getDenominator();
 
         /** @var NumberInterface $lcm */
-        $lcm = $thisDenominator->multiply($thatDenominator)->abs()->divide($this->getGreatestCommonDivisor($thisDenominator, $thatDenominator));
+        $lcm = $thisDenominator->getLeastCommonMultiple($thatDenominator);
 
         return $lcm;
     }
@@ -218,46 +218,11 @@ abstract class Fraction
     }
 
     /**
-     * @param $a
-     * @param $b
-     *
      * @return NumberInterface
      */
-    protected function getGreatestCommonDivisor($a = null, $b = null)
+    public function getGreatestCommonDivisor()
     {
-        if (is_null($a) && is_null($b)) {
-            $a = $this->numerator->abs();
-            $b = $this->denominator->abs();
-        } else {
-            $a = Numbers::makeOrDont(Numbers::IMMUTABLE, $a);
-            $b = Numbers::makeOrDont(Numbers::IMMUTABLE, $b);
-        }
-
-        if (function_exists('gmp_gcd') && function_exists('gmp_strval')) {
-            $val = gmp_strval(gmp_gcd($a->getValue(), $b->getValue()));
-
-            return Numbers::make(Numbers::IMMUTABLE, $val);
-        } else {
-
-            if ($a->isLessThan($b)) {
-                $greater = $b;
-                $lesser = $a;
-            } else {
-                $greater = $a;
-                $lesser = $b;
-            }
-
-            /** @var NumberInterface $remainder */
-            $remainder = $greater->modulo($lesser);
-
-            while ($remainder->isGreaterThan(0)) {
-                $greater = $lesser;
-                $lesser = $remainder;
-                $remainder = $greater->modulo($lesser);
-            }
-
-            return $lesser;
-        }
+        return $this->getNumerator()->getGreatestCommonDivisor($this->getDenominator());
     }
 
     protected function getNumeratorsWithSameDenominator(FractionInterface $fraction, NumberInterface $lcm = null)

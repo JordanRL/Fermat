@@ -33,7 +33,7 @@ class Poisson implements DistributionInterface
         $cumulative = Numbers::makeZero();
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        for ($i = 0;$x->greaterThanOrEqualTo($i);$i++) {
+        for ($i = 0;$x->isGreaterThanOrEqualTo($i);$i++) {
             $cumulative = $cumulative->add($this->pmf($i));
         }
 
