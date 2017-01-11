@@ -778,6 +778,7 @@ abstract class Number implements Hashable
             return $this->getValue();
         }
     }
+
     /**
      * @param $mod
      *

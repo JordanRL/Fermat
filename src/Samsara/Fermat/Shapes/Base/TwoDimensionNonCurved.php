@@ -8,11 +8,17 @@ use Samsara\Fermat\Values\CartesianCoordinate;
 
 class TwoDimensionNonCurved
 {
+    /** @var Set  */
     private $lines;
 
+    /** @var Set  */
     private $points;
 
+    /** @var Map  */
     private $linesByPoint;
+
+    /** @var bool */
+    private $closed;
 
     public function __construct(Line ...$lines)
     {
@@ -36,6 +42,21 @@ class TwoDimensionNonCurved
                 }
             }
         }
+
+        $this->closed = true;
+
+        /** @var Set $pointLines */
+        foreach ($this->linesByPoint as $pointLines) {
+            if ($pointLines->count() < 2) {
+                $this->closed = false;
+                break;
+            }
+        }
+    }
+
+    public function isClosed()
+    {
+        return $this->closed;
     }
 
 }

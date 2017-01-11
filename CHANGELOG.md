@@ -37,10 +37,11 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 - Providers:
   - Stats:
     - Distributions:
+      - Exponential
       - Normal
       - Poisson
     - Stats
-  - BCProvider
+  - ArithmeticProvider
   - SequenceProvider
   - SeriesProvider
   - TrigonometryProvider

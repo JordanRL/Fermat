@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Provider\Stats\Distribution;
 
 use RandomLib\Factory;
+use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Stats\Stats;
 use Samsara\Fermat\Types\Base\NumberInterface;
@@ -12,12 +13,12 @@ class Normal
 {
 
     /**
-     * @var NumberInterface
+     * @var ImmutableNumber
      */
     private $mean;
 
     /**
-     * @var NumberInterface
+     * @var ImmutableNumber
      */
     private $sd;
 
@@ -83,8 +84,21 @@ class Normal
         )));
     }
     
-    public function pdf($x1, $x2)
+    public function pdf($x1, $x2 = null)
     {
+
+        $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
+
+        if (is_null($x2)) {
+            $separation = $x1->subtract($this->mean)->multiply(2)->abs();
+
+            if ($this->mean->isLessThan($x1)) {
+                $x2 = $x1->subtract($separation);
+            } else {
+                $x2 = $x1->add($separation);
+            }
+        }
+
         return $this->cdf($x1)->subtract($this->cdf($x2))->abs();
     }
 
@@ -119,7 +133,13 @@ class Normal
      */
     public function random()
     {
-        if (function_exists('stats_rand_gen_normal')) {
+        if (
+            function_exists('stats_rand_gen_normal') &&
+            $this->mean->isLessThanOrEqualTo(PHP_INT_MAX) &&
+            $this->mean->isGreaterThanOrEqualTo(PHP_INT_MIN) &&
+            $this->sd->isLessThanOrEqualTo(PHP_INT_MAX) &&
+            $this->sd->isGreaterThanOrEqualTo(PHP_INT_MIN)
+        ) {
             return Numbers::make(Numbers::IMMUTABLE, stats_rand_gen_normal($this->mean, $this->sd), 20);
         } else {
             $randFactory = new Factory();
@@ -136,7 +156,15 @@ class Normal
             return $randomNumber;
         }
     }
-    
+
+    /**
+     * @param int|float|NumberInterface $min
+     * @param int|float|NumberInterface $max
+     * @param int $maxIterations
+     *
+     * @return ImmutableNumber
+     * @throws OptionalExit
+     */
     public function rangeRandom($min = 0, $max = PHP_INT_MAX, $maxIterations = 20)
     {
         $i = 0;
@@ -144,10 +172,13 @@ class Normal
         do {
             $randomNumber = $this->random();
             $i++;
-        } while ($randomNumber->isLessThanOrEqualTo($max) && $randomNumber->isGreaterThanOrEqualTo($min) && $i < $maxIterations);
+        } while (($randomNumber->isGreaterThanOrEqualTo($max) || $randomNumber->isLessThanOrEqualTo($min)) && $i < $maxIterations);
 
         if ($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) {
-            throw new \Exception();
+            throw new OptionalExit(
+                'All random numbers generated were outside of the requested range',
+                'A suitable random number, restricted by the $max ('.$max.') and $min ('.$min.'), could not be found within '.$maxIterations.' iterations'
+            );
         } else {
             return $randomNumber;
         }

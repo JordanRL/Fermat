@@ -101,6 +101,10 @@ interface DecimalInterface
      */
     public function cos($mult = 1, $div = 1, $precision = null);
 
+    public function ln($precision = 10);
+
+    public function log10($precision = 10);
+
     /**
      * @param int $decimals
      *
