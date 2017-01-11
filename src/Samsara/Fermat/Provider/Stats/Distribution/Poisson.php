@@ -7,6 +7,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Stats\Distribution\Base\DistributionInterface;
+use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
@@ -18,6 +19,13 @@ class Poisson
      */
     private $lambda;
 
+    /**
+     * Poisson constructor.
+     *
+     * @param int|float|DecimalInterface $lambda
+     *
+     * @throws IntegrityConstraint
+     */
     public function __construct($lambda)
     {
         $lambda = Numbers::makeOrDont(Numbers::IMMUTABLE, $lambda);
@@ -33,6 +41,11 @@ class Poisson
         $this->lambda = $lambda;
     }
 
+    /**
+     * @param int|DecimalInterface $k
+     *
+     * @return ImmutableNumber
+     */
     public function probabilityOfKEvents($k)
     {
 
@@ -40,6 +53,12 @@ class Poisson
         
     }
 
+    /**
+     * @param $x
+     *
+     * @return ImmutableNumber
+     * @throws IntegrityConstraint
+     */
     public function cdf($x)
     {
 
@@ -75,7 +94,7 @@ class Poisson
      * Not sure if the usage of stats_dens_pmf_poisson() is correct here because it is undocumented in
      * the C code for the PHP extension and on PHP.net
      *
-     * @param $x
+     * @param int|DecimalInterface $x
      *
      * @return ImmutableNumber
      * @throws IntegrityConstraint
@@ -108,6 +127,13 @@ class Poisson
         return $pmf;
     }
 
+    /**
+     * @param int|DecimalInterface $x1
+     * @param int|DecimalInterface $x2
+     *
+     * @return ImmutableNumber
+     * @throws IntegrityConstraint
+     */
     public function rangePmf($x1, $x2)
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);

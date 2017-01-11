@@ -6,6 +6,7 @@ use RandomLib\Factory;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Stats\Stats;
+use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
@@ -22,6 +23,12 @@ class Normal
      */
     private $sd;
 
+    /**
+     * Normal constructor.
+     *
+     * @param int|float|DecimalInterface $mean
+     * @param int|float|DecimalInterface $sd
+     */
     public function __construct($mean, $sd)
     {
         $mean = Numbers::makeOrDont(Numbers::IMMUTABLE, $mean);
@@ -31,6 +38,13 @@ class Normal
         $this->sd = $sd;
     }
 
+    /**
+     * @param int|float|DecimalInterface $p
+     * @param int|float|DecimalInterface $x
+     * @param int|float|DecimalInterface $mean
+     *
+     * @return Normal
+     */
     public static function makeFromMean($p, $x, $mean)
     {
         $one = Numbers::makeOne();
@@ -45,6 +59,13 @@ class Normal
         return new Normal($mean, $sd);
     }
 
+    /**
+     * @param int|float|DecimalInterface $p
+     * @param int|float|DecimalInterface $x
+     * @param int|float|DecimalInterface $sd
+     *
+     * @return Normal
+     */
     public static function makeFromSd($p, $x, $sd)
     {
         $one = Numbers::makeOne();
@@ -58,7 +79,12 @@ class Normal
 
         return new Normal($mean, $sd);
     }
-    
+
+    /**
+     * @param int|float|DecimalInterface $x
+     *
+     * @return ImmutableNumber
+     */
     public function cdf($x)
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -83,7 +109,13 @@ class Normal
             $x->subtract($this->mean)->divide($this->sd->multiply($sqrtTwo))
         )));
     }
-    
+
+    /**
+     * @param int|float|DecimalInterface $x1
+     * @param null|int|float|DecimalInterface $x2
+     *
+     * @return ImmutableNumber
+     */
     public function pdf($x1, $x2 = null)
     {
 
@@ -99,14 +131,27 @@ class Normal
             }
         }
 
-        return $this->cdf($x1)->subtract($this->cdf($x2))->abs();
+        /** @var ImmutableNumber $pdf */
+        $pdf = $this->cdf($x1)->subtract($this->cdf($x2))->abs();
+
+        return $pdf;
     }
 
+    /**
+     * @param int|float|DecimalInterface $x
+     *
+     * @return ImmutableNumber
+     */
     public function percentBelowX($x)
     {
         return $this->cdf($x);
     }
 
+    /**
+     * @param int|float|DecimalInterface $x
+     *
+     * @return ImmutableNumber
+     */
     public function percentAboveX($x)
     {
         $one = Numbers::makeOne();
@@ -114,18 +159,35 @@ class Normal
         return $one->subtract($this->cdf($x));
     }
 
+    /**
+     * @param $x
+     *
+     * @return ImmutableNumber
+     */
     public function zScoreOfX($x)
     {
+        /** @var ImmutableNumber $x */
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        return $x->subtract($this->mean)->divide($this->sd);
+        /** @var ImmutableNumber $z */
+        $z = $x->subtract($this->mean)->divide($this->sd);
+
+        return $z;
     }
 
+    /**
+     * @param int|float|DecimalInterface $z
+     *
+     * @return ImmutableNumber
+     */
     public function xFromZScore($z)
     {
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
 
-        return $z->multiply($this->sd)->add($this->mean);
+        /** @var ImmutableNumber $x */
+        $x = $z->multiply($this->sd)->add($this->mean);
+
+        return $x;
     }
 
     /**
