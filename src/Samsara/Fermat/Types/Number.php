@@ -6,7 +6,7 @@ use Ds\Hashable;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Provider\BCProvider;
+use Samsara\Fermat\Provider\ArithmeticProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
@@ -59,7 +59,7 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
-        $value = BCProvider::add($this->getValue(), $num->getValue());
+        $value = ArithmeticProvider::add($this->getValue(), $num->getValue());
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
@@ -74,7 +74,7 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
-        $value = BCProvider::subtract($this->getValue(), $num->getValue());
+        $value = ArithmeticProvider::subtract($this->getValue(), $num->getValue());
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
@@ -89,7 +89,7 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
-        $value = BCProvider::multiply($this->getValue(), $num->getValue());
+        $value = ArithmeticProvider::multiply($this->getValue(), $num->getValue());
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
@@ -112,7 +112,7 @@ abstract class Number implements Hashable
 
         $precision = ($this->getPrecision() > $num->getPrecision()) ? $num->getPrecision() : $this->getPrecision();
 
-        $value = BCProvider::divide($this->getValue(), $num->getValue(), $precision);
+        $value = ArithmeticProvider::divide($this->getValue(), $num->getValue(), $precision);
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
@@ -186,7 +186,7 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
-        $value = BCProvider::pow($this->getValue(), $num->getValue());
+        $value = ArithmeticProvider::pow($this->getValue(), $num->getValue());
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
@@ -238,7 +238,7 @@ abstract class Number implements Hashable
     {
         $oldBase = $this->convertForModification();
 
-        $value = BCProvider::squareRoot($this->getValue(), $this->getPrecision());
+        $value = ArithmeticProvider::squareRoot($this->getValue(), $this->getPrecision());
 
         $this->convertFromModification($oldBase);
 
@@ -259,8 +259,8 @@ abstract class Number implements Hashable
         
         $value = $this->getValue();
         
-        $value = BCProvider::multiply($value, $mult);
-        $value = BCProvider::divide($value, $div);
+        $value = ArithmeticProvider::multiply($value, $mult);
+        $value = ArithmeticProvider::divide($value, $div);
 
         $pi = Numbers::makePi();
 
@@ -305,8 +305,8 @@ abstract class Number implements Hashable
 
         $value = $this->getValue();
 
-        $value = BCProvider::multiply($value, $mult);
-        $value = BCProvider::divide($value, $div);
+        $value = ArithmeticProvider::multiply($value, $mult);
+        $value = ArithmeticProvider::divide($value, $div);
         
         $pi = Numbers::makePi();
         
@@ -345,8 +345,8 @@ abstract class Number implements Hashable
 
         $value = $this->getValue();
 
-        $value = BCProvider::multiply($value, $mult);
-        $value = BCProvider::divide($value, $div);
+        $value = ArithmeticProvider::multiply($value, $mult);
+        $value = ArithmeticProvider::divide($value, $div);
 
         $pi = Numbers::makePi();
 
@@ -566,7 +566,7 @@ abstract class Number implements Hashable
 
         if ($fractionalArr[$decimals] >= 5) {
             if ($decimals == 0) {
-                $rounded = BCProvider::add($whole, 1);
+                $rounded = ArithmeticProvider::add($whole, 1);
             } else {
                 $rounded = $whole.'.';
                 for ($i = 0; $i < $decimals; $i++) {
@@ -606,7 +606,7 @@ abstract class Number implements Hashable
         $whole = $this->getWholePart();
 
         if ($fractional > 0) {
-            $whole = BCProvider::add($whole, 1);
+            $whole = ArithmeticProvider::add($whole, 1);
         }
 
         return $this->setValue($whole);
@@ -633,7 +633,7 @@ abstract class Number implements Hashable
 
         $scale = ($this->getPrecision() < $value->getPrecision()) ? $this->getPrecision() : $value->getPrecision();
 
-        $comparison = BCProvider::compare($thisValue, $thatValue, $scale);
+        $comparison = ArithmeticProvider::compare($thisValue, $thatValue, $scale);
 
         $this->convertFromModification($thisBase);
         $value->convertFromModification($thatBase);

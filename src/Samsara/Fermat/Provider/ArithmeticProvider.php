@@ -2,7 +2,7 @@
 
 namespace Samsara\Fermat\Provider;
 
-class BCProvider
+class ArithmeticProvider
 {
 
     public static function add($number1, $number2)
