@@ -3,6 +3,8 @@
 namespace Samsara\Fermat;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Types\Base\DecimalInterface;
+use Samsara\Fermat\Types\Base\FractionInterface;
 use Samsara\Fermat\Values\Currency;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableNumber;
@@ -87,7 +89,7 @@ class Numbers
 
     /**
      * @param $type
-     * @param int|float|string|NumberInterface $value
+     * @param int|float|string|NumberInterface|DecimalInterface|FractionInterface $value
      * @param int|null $precision
      * @param int $base
      *
@@ -139,7 +141,9 @@ class Numbers
             );
         }
 
+        /** @var ImmutableNumber $numerator */
         $numerator = Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[0])))->round();
+        /** @var ImmutableNumber $denominator */
         $denominator = isset($parts[1]) ? Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[1])))->round() : Numbers::makeOne();
 
         if ($type == self::IMMUTABLE_FRACTION) {
