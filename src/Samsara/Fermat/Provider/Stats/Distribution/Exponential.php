@@ -49,6 +49,8 @@ class Exponential
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+        /** @var ImmutableNumber $one */
+        $one = Numbers::makeOne();
 
         if (!$x->isPositive()) {
             throw new IntegrityConstraint(
@@ -63,11 +65,9 @@ class Exponential
             $x->isLessThanOrEqualTo(PHP_INT_MAX) &&
             $this->lambda->isLessThanOrEqualTo(PHP_INT_MAX)
         ) {
-            return Numbers::make(Numbers::IMMUTABLE, stats_cdf_exponential($x->getValue(), $this->lambda->getValue(), 1));
+            return Numbers::make(Numbers::IMMUTABLE, stats_cdf_exponential($x->getValue(), $one->divide($this->lambda), 1));
         }
 
-        /** @var ImmutableNumber $one */
-        $one = Numbers::makeOne();
         /** @var ImmutableNumber $e */
         $e = Numbers::makeE();
 
