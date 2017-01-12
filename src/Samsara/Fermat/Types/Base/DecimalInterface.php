@@ -124,4 +124,16 @@ interface DecimalInterface
      */
     public function numberOfLeadingZeros();
 
+    /**
+     * @return int|bool
+     */
+    public function convertForModification();
+
+    /**
+     * @param $oldBase
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function convertFromModification($oldBase);
+
 }

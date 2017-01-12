@@ -89,18 +89,6 @@ interface NumberInterface
     public function sqrt();
 
     /**
-     * @return int|bool
-     */
-    public function convertForModification();
-
-    /**
-     * @param $oldBase
-     *
-     * @return NumberInterface
-     */
-    public function convertFromModification($oldBase);
-
-    /**
      * @param int|string|NumberInterface $value
      *
      * @return bool

@@ -54,7 +54,11 @@ abstract class Number implements Hashable
 
     public function add($num)
     {
-        $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+        if (is_object($num) && method_exists($num, 'asDecimal')) {
+            $num = $num->asDecimal($this->getPrecision());
+        } else {
+            $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+        }
 
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
@@ -69,7 +73,11 @@ abstract class Number implements Hashable
 
     public function subtract($num)
     {
-        $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+        if (is_object($num) && method_exists($num, 'asDecimal')) {
+            $num = $num->asDecimal($this->getPrecision());
+        } else {
+            $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+        }
 
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
@@ -84,7 +92,11 @@ abstract class Number implements Hashable
 
     public function multiply($num)
     {
-        $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+        if (is_object($num) && method_exists($num, 'asDecimal')) {
+            $num = $num->asDecimal($this->getPrecision());
+        } else {
+            $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+        }
 
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
@@ -101,16 +113,23 @@ abstract class Number implements Hashable
      * Note about precision: it uses the smaller of the two precisions (significant figures).
      *
      * @param $num
+     * @param $precision
      * @return mixed
      */
-    public function divide($num)
+    public function divide($num, $precision = null)
     {
-        $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+        if (is_object($num) && method_exists($num, 'asDecimal')) {
+            $num = $num->asDecimal($this->getPrecision());
+        } else {
+            $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+        }
 
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
-        $precision = ($this->getPrecision() > $num->getPrecision()) ? $num->getPrecision() : $this->getPrecision();
+        if (!is_int($precision)) {
+            $precision = ($this->getPrecision() > $num->getPrecision()) ? $num->getPrecision() : $this->getPrecision();
+        }
 
         $value = ArithmeticProvider::divide($this->getValue(), $num->getValue(), $precision);
 
@@ -181,7 +200,11 @@ abstract class Number implements Hashable
 
     public function pow($num)
     {
-        $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+        if (is_object($num) && method_exists($num, 'asDecimal')) {
+            $num = $num->asDecimal($this->getPrecision());
+        } else {
+            $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+        }
 
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();

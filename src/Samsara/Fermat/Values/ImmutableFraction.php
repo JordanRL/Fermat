@@ -12,7 +12,7 @@ class ImmutableFraction extends Fraction implements NumberInterface, FractionInt
     protected function setValue(ImmutableNumber $numerator, ImmutableNumber $denominator)
     {
 
-        return new ImmutableFraction($numerator->getValue().'/'.$denominator->getValue(), $this->base);
+        return new ImmutableFraction($numerator, $denominator, $this->base);
 
     }
 

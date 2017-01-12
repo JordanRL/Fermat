@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Types;
 
+use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\FractionInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
@@ -26,9 +27,31 @@ abstract class Fraction
     public function __construct($numerator, $denominator, $base = 10)
     {
 
-        $this->numerator = Numbers::makeOrDont(Numbers::IMMUTABLE, $numerator)->round();
-        $this->denominator = Numbers::makeOrDont(Numbers::IMMUTABLE, $denominator)->round();
+        $this->numerator = Numbers::makeOrDont(Numbers::IMMUTABLE, $numerator, null, $base)->round();
+        $this->denominator = Numbers::makeOrDont(Numbers::IMMUTABLE, $denominator, null, $base)->round();
 
+        $this->base = $base;
+
+    }
+
+    public function getValue()
+    {
+        return $this->getNumerator()->getValue().'/'.$this->getDenominator()->getValue();
+    }
+
+    public function getBase()
+    {
+        return $this->base;
+    }
+
+    public function getNumerator()
+    {
+        return $this->numerator;
+    }
+
+    public function getDenominator()
+    {
+        return $this->denominator;
     }
 
     public function simplify()
@@ -36,8 +59,8 @@ abstract class Fraction
 
         $gcd = $this->getGreatestCommonDivisor();
 
-        $numerator = $this->numerator->divide($gcd);
-        $denominator = $this->denominator->divide($gcd);
+        $numerator = $this->getNumerator()->divide($gcd);
+        $denominator = $this->getDenominator()->divide($gcd);
 
         return $this->setValue($numerator, $denominator);
 
@@ -111,25 +134,71 @@ abstract class Fraction
 
     }
 
-    public function getNumerator()
+    public function sqrt()
     {
-        return $this->numerator;
+
+        /** @var ImmutableNumber $sqrtNumerator */
+        $sqrtNumerator = $this->getNumerator()->sqrt();
+        /** @var ImmutableNumber $sqrtDenominator */
+        $sqrtDenominator = $this->getDenominator()->sqrt();
+
+        if ($sqrtNumerator->isWhole() && $sqrtDenominator->isWhole()) {
+            return $this->setValue($sqrtNumerator, $sqrtDenominator);
+        } else {
+            return $sqrtNumerator->divide($sqrtDenominator);
+        }
+
     }
 
-    public function getDenominator()
+    public function pow($num)
     {
-        return $this->denominator;
+
+        if (is_object($num) && method_exists($num, 'asDecimal')) {
+            $num = $num->asDecimal();
+        } else {
+            $num = Numbers::makeOrDont($this, $num);
+        }
+
+        /** @var ImmutableNumber $powNumerator */
+        $powNumerator = $this->getNumerator()->pow($num);
+        /** @var ImmutableNumber $powDenominator */
+        $powDenominator = $this->getDenominator()->pow($num);
+
+        if ($powNumerator->isWhole() && $powDenominator->isWhole()) {
+            return $this->setValue($powNumerator, $powDenominator);
+        } else {
+            return $powNumerator->divide($powDenominator);
+        }
+
     }
 
-    public function getSmallestCommonDenominator(FractionInterface $fraction)
+    public function abs()
     {
-        $thisDenominator = $this->getDenominator();
-        $thatDenominator = $fraction->getDenominator();
+        if ($this->isPositive()) {
+            return $this;
+        } else {
+            return $this->setValue($this->getNumerator()->abs(), $this->getDenominator()->abs());
+        }
+    }
 
-        /** @var NumberInterface $lcm */
-        $lcm = $thisDenominator->getLeastCommonMultiple($thatDenominator);
+    public function absValue()
+    {
+        if ($this->isPositive()) {
+            return $this->getValue();
+        } else {
+            return substr($this->getValue(), 1);
+        }
+    }
 
-        return $lcm;
+    public function compare($number)
+    {
+        if ($this->isGreaterThan($number)) {
+            return 1;
+        } elseif ($this->isLessThan($number)) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 
     public function isEqual($number)
@@ -217,12 +286,59 @@ abstract class Fraction
 
     }
 
+    public function isPositive()
+    {
+        return $this->getNumerator()->isPositive();
+    }
+
+    public function isNegative()
+    {
+        return $this->getNumerator()->isNegative();
+    }
+
+    public function asDecimal($precision = 10)
+    {
+
+        /** @var ImmutableNumber $decimal */
+        $decimal = $this->getNumerator()->divide($this->getDenominator(), $precision);
+
+        return $decimal;
+
+    }
+
     /**
      * @return NumberInterface
      */
     public function getGreatestCommonDivisor()
     {
         return $this->getNumerator()->getGreatestCommonDivisor($this->getDenominator());
+    }
+
+    public function getSmallestCommonDenominator(FractionInterface $fraction)
+    {
+        $thisDenominator = $this->getDenominator();
+        $thatDenominator = $fraction->getDenominator();
+
+        /** @var NumberInterface $lcm */
+        $lcm = $thisDenominator->getLeastCommonMultiple($thatDenominator);
+
+        return $lcm;
+    }
+
+    public function convertToBase($base)
+    {
+        $converter = new BaseConverter($this->getBase(), $base);
+
+        $converter->setPrecision(10);
+
+        /** @var ImmutableNumber $numerator */
+        $numerator = $this->getNumerator()->convertToBase($base);
+        /** @var ImmutableNumber $denominator */
+        $denominator = $this->getDenominator()->convertToBase($base);
+
+        $this->base = $base;
+
+        return $this->setValue($numerator, $denominator);
     }
 
     protected function getNumeratorsWithSameDenominator(FractionInterface $fraction, NumberInterface $lcm = null)
