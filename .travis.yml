@@ -3,8 +3,8 @@ php:
   - 7.0
 
 install:
-  - apt install php7.0-bcmath
-  - apt install php7.0-gmp
+  - apt-get install php7.0-bcmath
+  - apt-get install php7.0-gmp
 
 before_script:
   - mkdir build
