@@ -5,6 +5,7 @@ php:
 #sudo: true
 
 install:
+  - composer require satooshi/php-coveralls:~0.6@stable
   - composer update
 #  - sudo apt-get -qq update
 #  - sudo apt-cache search php7
@@ -16,3 +17,6 @@ before_script:
 
 script:
   - phpunit ./tests/Samsara
+
+after_success:
+  - php vendor/bin/coveralls -v
