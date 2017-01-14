@@ -2,6 +2,8 @@ language: php
 php:
   - 7.0
 
+sudo: true
+
 install:
   - apt-get install php7.0-bcmath
   - apt-get install php7.0-gmp
