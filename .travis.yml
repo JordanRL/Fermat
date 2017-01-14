@@ -2,10 +2,12 @@ language: php
 php:
   - 7.0
 
-#install:
-#  - pecl install gmp
+install:
+  - apt install php7.0-bcmath
+  - apt install php7.0-gmp
 
 before_script:
+  - mkdir build
   - mkdir build/logs
 
 script:
