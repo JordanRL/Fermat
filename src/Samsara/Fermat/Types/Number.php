@@ -694,7 +694,7 @@ abstract class Number implements Hashable
             return true;
         } elseif ($this->modulo(2)->isEqual(0)) {
             return false;
-        } elseif ($this->modulo(2)->isEqual(0)) {
+        } elseif ($this->modulo(3)->isEqual(0)) {
             return false;
         }
 

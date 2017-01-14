@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Base\FractionInterface;
 
 class ImmutableNumberTest extends TestCase
 {
@@ -151,6 +152,12 @@ class ImmutableNumberTest extends TestCase
 
         $five = new ImmutableNumber(5);
 
+        $this->assertEquals('120', $five->factorial()->getValue());
+
+        $three->setExtensions(false);
+        $five->setExtensions(false);
+
+        $this->assertEquals('6', $three->factorial()->getValue());
         $this->assertEquals('120', $five->factorial()->getValue());
 
         $negativeOne = new ImmutableNumber(-1);
@@ -357,6 +364,107 @@ class ImmutableNumberTest extends TestCase
 
         $this->assertEquals('3', $three->getGreatestCommonDivisor($six)->getValue());
         $this->assertEquals('3', $six->getGreatestCommonDivisor($three)->getValue());
+
+    }
+
+    public function testConverts()
+    {
+
+        $five = new ImmutableNumber(5);
+
+        $five = $five->convertToBase(5);
+
+        $this->assertEquals('10', $five->getValue());
+
+        $four = new ImmutableNumber(4);
+
+        $this->assertEquals('14', $five->add($four)->getValue());
+        $this->assertEquals('20', $five->add($five)->getValue());
+
+    }
+
+    public function testAbsMethods()
+    {
+
+        $negFive = new ImmutableNumber(-5);
+
+        $this->assertEquals('5', $negFive->abs()->getValue());
+        $this->assertEquals('5', $negFive->absValue());
+
+        $five = new ImmutableNumber(5);
+
+        $this->assertEquals('5', $five->abs()->getValue());
+        $this->assertEquals('5', $five->absValue());
+
+    }
+
+    public function testNumberState()
+    {
+
+        $negFive = new ImmutableNumber(-5);
+        $five = new ImmutableNumber(5);
+        $zero = Numbers::makeZero();
+
+        $oneHalf = new ImmutableNumber('0.5');
+
+        $this->assertTrue($negFive->isNegative());
+        $this->assertFalse($negFive->isPositive());
+
+        $this->assertTrue($five->isPositive());
+        $this->assertFalse($five->isNegative());
+
+        $this->assertTrue($five->isInt());
+        $this->assertTrue($five->isNatural());
+        $this->assertTrue($five->isWhole());
+
+        $this->assertTrue($negFive->isInt());
+        $this->assertTrue($negFive->isNatural());
+        $this->assertTrue($negFive->isWhole());
+
+        $this->assertTrue($oneHalf->isPositive());
+        $this->assertFalse($oneHalf->isNegative());
+
+        $this->assertFalse($oneHalf->isInt());
+        $this->assertFalse($oneHalf->isNatural());
+        $this->assertFalse($oneHalf->isWhole());
+
+        $this->assertFalse($zero->isPositive());
+        $this->assertFalse($zero->isNegative());
+
+    }
+
+    public function testIsPrime()
+    {
+
+        $two = new ImmutableNumber(2);
+        $three = new ImmutableNumber(3);
+        $six = new ImmutableNumber(6);
+        $twentySeven = new ImmutableNumber(27);
+        $thirtyOne = new ImmutableNumber(31);
+        $fortyFive = new ImmutableNumber(45);
+        $ninetyOne = new ImmutableNumber(91);
+        $tenThousandSeven = new ImmutableNumber(10007);
+        $largeNonPrime = new ImmutableNumber('99799811');
+
+        $this->assertTrue($two->isPrime());
+        $this->assertTrue($three->isPrime());
+        $this->assertTrue($thirtyOne->isPrime());
+        $this->assertFalse($six->isPrime());
+        $this->assertFalse($twentySeven->isPrime());
+        $this->assertFalse($fortyFive->isPrime());
+        $this->assertFalse($ninetyOne->isPrime());
+        $this->assertTrue($tenThousandSeven->isPrime());
+        $this->assertFalse($largeNonPrime->isPrime());
+
+    }
+
+    public function testCeilFloor()
+    {
+
+        $oneHalf = new ImmutableNumber('0.5');
+
+        $this->assertEquals('1', $oneHalf->ceil()->getValue());
+        $this->assertEquals('0', $oneHalf->floor()->getValue());
 
     }
 
