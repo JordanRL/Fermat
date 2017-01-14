@@ -6,7 +6,7 @@ sudo: true
 
 install:
   - sudo apt-get -qq update
-  - sudo apt-get search php7
+  - sudo apt-cache search php7
 #  - sudo apt-get install php7.0-gmp
 
 before_script:
