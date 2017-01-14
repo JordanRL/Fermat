@@ -2,8 +2,8 @@ language: php
 php:
   - 7.0
 
-install:
-  - pecl install gmp
+#install:
+#  - pecl install gmp
 
 before_script:
   - mkdir build/logs
