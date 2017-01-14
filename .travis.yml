@@ -15,4 +15,4 @@ before_script:
   - mkdir build/logs
 
 script:
-  - phpunit
+  - phpunit ./tests/Samsara
