@@ -28,6 +28,8 @@ class Numbers
     const E = '2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427';
     /* Golden Ratio to 100 digits */
     const GOLDEN_RATIO = '1.618033988749894848204586834365638117720309179805762862135448622705260462818902449707207204189391137';
+    /* Natural log of 10 to 100 digits */
+    const LN_10 = '2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298';
 
     /**
      * @param $type
@@ -41,13 +43,17 @@ class Numbers
     public static function make($type, $value, $precision = null, $base = 10)
     {
 
-        if ($type == self::IMMUTABLE) {
+        if (is_object($type)) {
+            $type = get_class($type);
+        }
+
+        if ($type == static::IMMUTABLE) {
             return new ImmutableNumber(trim($value), $precision, $base);
-        } elseif ($type == self::MUTABLE) {
+        } elseif ($type == static::MUTABLE) {
             return new MutableNumber(trim($value), $precision, $base);
-        } elseif ($type == self::IMMUTABLE_FRACTION) {
+        } elseif ($type == static::IMMUTABLE_FRACTION) {
             return self::makeFractionFromString($value, $type)->convertToBase($base);
-        } elseif ($type == self::MUTABLE_FRACTION) {
+        } elseif ($type == static::MUTABLE_FRACTION) {
             return self::makeFractionFromString($value, $type)->convertToBase($base);
         } else {
             $reflector = new \ReflectionClass($type);
@@ -99,9 +105,7 @@ class Numbers
     public static function makeOrDont($type, $value, $precision = null, $base = 10)
     {
 
-        if (is_numeric($value)) {
-            return self::make($type, $value, $precision, $base);
-        } elseif (is_object($value)) {
+        if (is_object($value)) {
             $reflector = new \ReflectionClass($value);
 
             if ($value instanceof $type) {
@@ -109,13 +113,15 @@ class Numbers
             }
 
             if ($reflector->implementsInterface(NumberInterface::class)) {
-                return self::make($type, $value->getValue(), $precision, $base);
+                return static::make($type, $value->getValue(), $precision, $base);
             }
+        } elseif (is_numeric($value)) {
+            return static::make($type, $value, $precision, $base);
         } elseif (is_array($value)) {
             $newInput = [];
             
             foreach ($value as $key => $item) {
-                $newInput[$key] = self::makeOrDont($type, $item, $precision, $base);
+                $newInput[$key] = static::makeOrDont($type, $item, $precision, $base);
             }
 
             return $newInput;
@@ -129,6 +135,13 @@ class Numbers
 
     }
 
+    /**
+     * @param $value
+     * @param $type
+     *
+     * @return ImmutableFraction|MutableFraction
+     * @throws IntegrityConstraint
+     */
     public static function makeFractionFromString($value, $type = self::IMMUTABLE_FRACTION)
     {
         $parts = explode('/', $value);
@@ -176,12 +189,10 @@ class Numbers
             );
         }
         
-        $pi = self::make(self::IMMUTABLE, self::PI);
-        
         if (!is_null($precision)) {
-            return $pi->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::PI, $precision)->roundToPrecision($precision);
         } else {
-            return $pi;
+            return self::make(self::IMMUTABLE, self::PI, 100);
         }
         
     }
@@ -202,12 +213,10 @@ class Numbers
             );
         }
 
-        $tau = self::make(self::IMMUTABLE, self::TAU);
-
-        if (!is_null($tau)) {
-            return $tau->roundToPrecision($precision);
+        if (!is_null($precision)) {
+            return self::make(self::IMMUTABLE, self::TAU, $precision)->roundToPrecision($precision);
         } else {
-            return $tau;
+            return self::make(self::IMMUTABLE, self::TAU, 100);
         }
     }
 
@@ -238,12 +247,10 @@ class Numbers
             );
         }
 
-        $e = self::make(self::IMMUTABLE, self::E);
-
-        if (!is_null($e)) {
-            return $e->roundToPrecision($precision);
+        if (!is_null($precision)) {
+            return self::make(self::IMMUTABLE, self::E, $precision)->roundToPrecision($precision);
         } else {
-            return $e;
+            return self::make(self::IMMUTABLE, self::E, 100);
         }
 
     }
@@ -265,12 +272,35 @@ class Numbers
             );
         }
 
-        $goldenRatio = self::make(self::IMMUTABLE, self::GOLDEN_RATIO);
+        if (!is_null($precision)) {
+            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $precision)->roundToPrecision($precision);
+        } else {
+            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, 100);
+        }
+
+    }
+
+    /**
+     * @param int|null $precision
+     *
+     * @throws IntegrityConstraint
+     * @return NumberInterface
+     */
+    public static function makeNaturalLog10($precision = null)
+    {
+
+        if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
+            throw new IntegrityConstraint(
+                '$precision must be between 1 and 100 inclusive',
+                'Provide a precision within range',
+                'The natural log of 10 constant cannot have a precision higher than the constant stored (100)'
+            );
+        }
 
         if (!is_null($precision)) {
-            return $goldenRatio->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::LN_10, $precision)->roundToPrecision($precision);
         } else {
-            return $goldenRatio;
+            return self::make(self::IMMUTABLE, self::LN_10, 100);
         }
 
     }
@@ -278,17 +308,17 @@ class Numbers
     /**
      * @return ImmutableNumber
      */
-    public static function makeOne()
+    public static function makeOne($precision = null)
     {
-        return self::make(self::IMMUTABLE, 1);
+        return self::make(self::IMMUTABLE, 1, $precision);
     }
 
     /**
      * @return ImmutableNumber
      */
-    public static function makeZero()
+    public static function makeZero($precision = null)
     {
-        return self::make(self::IMMUTABLE, 0);
+        return self::make(self::IMMUTABLE, 0, $precision);
     }
 
 }

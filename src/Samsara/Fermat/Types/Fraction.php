@@ -201,7 +201,7 @@ abstract class Fraction
         }
     }
 
-    public function isEqual($number)
+    public function isEqual($number): bool
     {
 
         /** @var ImmutableFraction $number */
@@ -218,7 +218,7 @@ abstract class Fraction
 
     }
 
-    public function isGreaterThan($number)
+    public function isGreaterThan($number): bool
     {
 
         /** @var ImmutableFraction $number */
@@ -235,7 +235,7 @@ abstract class Fraction
 
     }
 
-    public function isLessThan($number)
+    public function isLessThan($number): bool
     {
 
         /** @var ImmutableFraction $number */
@@ -252,7 +252,7 @@ abstract class Fraction
 
     }
 
-    public function isGreaterThanOrEqualTo($number)
+    public function isGreaterThanOrEqualTo($number): bool
     {
 
         /** @var ImmutableFraction $number */
@@ -269,7 +269,7 @@ abstract class Fraction
 
     }
 
-    public function isLessThanOrEqualTo($number)
+    public function isLessThanOrEqualTo($number): bool
     {
 
         /** @var ImmutableFraction $number */

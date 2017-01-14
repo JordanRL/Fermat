@@ -2,8 +2,10 @@
 
 namespace Samsara\Fermat\Provider;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Values\ImmutableNumber;
 
 class SeriesProvider
 {
@@ -42,20 +44,40 @@ class SeriesProvider
         $precision = 10)
     {
 
-        $x = Numbers::makeZero();
+        $x = Numbers::makeZero(100);
         $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue());
 
         $continue = true;
         $termNumber = $startTermAt;
 
-        while ($continue) {
-            $term = Numbers::makeOne();
+        $adjustmentOfZero = 0;
 
-            $term = $term->multiply($value->pow($exponent($termNumber)))
-                ->divide($denominator($termNumber))
-                ->multiply($numerator($termNumber));
+        $currentPrecision = 0;
+
+        while ($continue) {
+            $term = Numbers::makeOne(100);
+
+            try {
+                $term = $term->multiply($value->pow($exponent($termNumber)))
+                    ->divide($denominator($termNumber), 100)
+                    ->multiply($numerator($termNumber));
+            } catch (IntegrityConstraint $constraint) {
+                return $x->roundToPrecision($currentPrecision+1);
+            }
 
             if ($term->numberOfLeadingZeros() >= $precision) {
+                $continue = false;
+            }
+
+            $currentPrecision = $term->numberOfLeadingZeros();
+
+            if ($term->isEqual(0)) {
+                $adjustmentOfZero++;
+            } else {
+                $adjustmentOfZero = 0;
+            }
+
+            if ($adjustmentOfZero > 5) {
                 $continue = false;
             }
 
@@ -76,18 +98,19 @@ class SeriesProvider
         $precision = 10)
     {
 
-        $x = Numbers::makeZero();
+        $x = Numbers::makeZero($precision+1);
 
         $continue = true;
         $termNumber = $startTermAt;
 
         while ($continue) {
-            $term = Numbers::makeOne();
+            $term = Numbers::makeOne($precision+1);
 
+            /** @var ImmutableNumber $term */
             $term = $term->multiply($part2($termNumber))->pow($exponent($termNumber))
                 ->multiply($part1($termNumber));
 
-            if ($term->numberOfLeadingZeros() >= $precision) {
+            if ($term->numberOfLeadingZeros()-1 >= $precision) {
                 $continue = false;
             }
 
@@ -96,7 +119,7 @@ class SeriesProvider
             $termNumber++;
         }
 
-        return $x->roundToPrecision($precision);
+        return $x->roundToPrecision($precision+1);
 
     }
     

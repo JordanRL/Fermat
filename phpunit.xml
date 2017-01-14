@@ -1,0 +1,5 @@
+<phpunit bootstrap="./tests/bootstrap.php">
+    <testsuites name="Fermat Values">
+        <directory>/tests/Samsara/Fermat/Values/*Test.php</directory>
+    </testsuites>
+</phpunit>

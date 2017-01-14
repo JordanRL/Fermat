@@ -11,6 +11,7 @@ use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
+use Samsara\Fermat\Types\Base\FractionInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
@@ -25,21 +26,33 @@ abstract class Number implements Hashable
 
     protected $base;
 
-    public function __construct($value, $precision = null, $base = 10)
+    public function __construct($value, $precision = 10, $base = 10)
     {
         $this->base = $base;
         $this->value = (string)$value;
         
         if (!is_null($precision)) {
+            if ($precision > 100) {
+                throw new IntegrityConstraint(
+                    'Precision cannot be larger than 100',
+                    'Use a precision of 100 or less',
+                    'Due to the fact that 100 digit constants are used internally, precision of any number cannot be calculated beyond 100 digits'
+                );
+            }
+
             $this->precision = $precision;
         } else {
-            $this->precision = strlen($this->getDecimalPart());
+            $this->precision = (strlen($this->getDecimalPart()) > 10) ? strlen($this->getDecimalPart()) : 10;
         }
     }
 
     public function getValue()
     {
-        return $this->value;
+        if ($this->getRadixPos()) {
+            return rtrim(rtrim($this->value, '0'), '.');
+        } else {
+            return $this->value;
+        }
     }
 
     public function getBase()
@@ -90,6 +103,11 @@ abstract class Number implements Hashable
         return $this->setValue($value);
     }
 
+    /**
+     * @param $num
+     *
+     * @return DecimalInterface|NumberInterface
+     */
     public function multiply($num)
     {
         if (is_object($num) && method_exists($num, 'asDecimal')) {
@@ -114,7 +132,7 @@ abstract class Number implements Hashable
      *
      * @param $num
      * @param $precision
-     * @return mixed
+     * @return DecimalInterface|NumberInterface
      */
     public function divide($num, $precision = null)
     {
@@ -150,8 +168,12 @@ abstract class Number implements Hashable
             throw new IncompatibleObjectState('Cannot make a factorial with a number less than 1 (other than zero)');
         }
 
-        if ($this->getDecimalPart() !== 0) {
+        if ($this->getDecimalPart() != 0) {
             throw new IncompatibleObjectState('Can only perform a factorial on a whole number');
+        }
+
+        if (function_exists('gmp_fact') && function_exists('gmp_strval')) {
+            return $this->setValue(gmp_strval(gmp_fact($this->getValue())))->convertFromModification($oldBase);
         }
 
         $curVal = $this->getValue();
@@ -167,26 +189,27 @@ abstract class Number implements Hashable
 
     public function doubleFactorial()
     {
+        if ($this->isWhole() && $this->isLessThanOrEqualTo(1)) {
+            return $this->setValue('1');
+        } elseif (!$this->isWhole()) {
+            throw new IncompatibleObjectState('Can only perform a double factorial on a whole number');
+        }
+
         $oldBase = $this->convertForModification();
 
-        $val = Numbers::make(Numbers::IMMUTABLE, $this->getValue());
-
-        if ($val->modulo(2)->isEqual(1)) {
-            $m = Numbers::make(Numbers::IMMUTABLE, $val->add(1)->divide(2));
-            $term = function ($n) {
-                return Numbers::make(Numbers::IMMUTABLE, 2)->multiply($n);
-            };
-        } else {
-            $m = Numbers::make(Numbers::IMMUTABLE, $val->divide(2));
-            $term = function ($n) {
-                return Numbers::make(Numbers::IMMUTABLE, 2)->multiply($n)->subtract(1);
-            };
-        }
+        $num = Numbers::make(Numbers::MUTABLE, $this->getValue(), $this->getPrecision(), $this->getBase());
 
         $newVal = Numbers::makeOne();
 
-        for ($i = 1;$m->isGreaterThanOrEqualTo($i);$i++) {
-            $newVal = $newVal->multiply($term($i));
+        $continue = true;
+
+        while ($continue) {
+            $newVal = $newVal->multiply($num->getValue());
+            $num->subtract(2);
+
+            if ($num->isLessThanOrEqualTo(1)) {
+                $continue = false;
+            }
         }
 
         return $this->setValue($newVal->getValue())->convertFromModification($oldBase);
@@ -198,6 +221,11 @@ abstract class Number implements Hashable
         return $this->doubleFactorial();
     }
 
+    /**
+     * @param $num
+     *
+     * @return DecimalInterface|NumberInterface
+     */
     public function pow($num)
     {
         if (is_object($num) && method_exists($num, 'asDecimal')) {
@@ -217,44 +245,92 @@ abstract class Number implements Hashable
         return $this->setValue($value);
     }
 
-    public function ln($precision = 10)
+    /**
+     * @param int $precision The number of digits which should be accurate
+     * @param bool $round Whether or not to round to the $precision value. If true, will round. If false, will truncate.
+     *
+     * @return DecimalInterface|NumberInterface
+     */
+    public function ln($precision = 10, $round = true)
     {
         $oldBase = $this->convertForModification();
 
-        if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX)) {
-            return $this->setValue(log((float)$this->getValue()))->convertFromModification($oldBase);
+        if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX) && $precision <= 10) {
+            return $this->setValue(log($this->getValue()))->convertFromModification($oldBase);
         }
 
-        $x = Numbers::make(Numbers::IMMUTABLE, $this->getValue(), $this->getPrecision());
+        $internalPrecision = ($precision+1 > strlen($this->value)) ? $precision+1 : strlen($this->value);
+
+        $this->precision = $internalPrecision;
+
+        $ePow = 0;
+        $eDiv = 1;
+        $e = Numbers::makeE();
+
+        if ($this->isGreaterThan(10)) {
+            $continue = true;
+            do {
+                $prevDiv = $eDiv;
+                $eDiv = $e->pow($ePow);
+
+                if ($eDiv->isGreaterThan($this)) {
+                    $continue = false;
+                } else {
+                    $ePow++;
+                }
+            } while ($continue);
+
+            $ePow--;
+            $eDiv = $prevDiv;
+        }
+
+        $adjustedNum = $this->divide($eDiv, $internalPrecision);
 
         /** @var ImmutableNumber $y */
-        $y = Numbers::makeOne();
-        $y = $y->multiply($x->subtract(1))->divide($x->add(1));
+        $y = Numbers::makeOne($internalPrecision);
+        $y = $y->multiply($adjustedNum->subtract(1))->divide($adjustedNum->add(1), $internalPrecision);
 
-        return $this->setValue(SeriesProvider::genericTwoPartSeries(
-            function($term) use ($y) {
-                $two = Numbers::make(Numbers::IMMUTABLE, 2);
-                $denominator = SequenceProvider::nthOddNumber($term);
+        $answer = SeriesProvider::genericTwoPartSeries(
+            function($term) use ($y, $internalPrecision) {
+                $two = Numbers::make(Numbers::IMMUTABLE, 2, $internalPrecision);
+                $odd = SequenceProvider::nthOddNumber($term);
 
-                return $two->multiply($y)->divide($denominator);
+                return $two->divide($odd, $internalPrecision);
             },
             function($term) use ($y) {
                 return $y;
             },
             function($term) {
-                return SequenceProvider::nthEvenNumber($term);
+                return SequenceProvider::nthOddNumber($term);
             },
             0,
-            $precision
-        ))->convertFromModification($oldBase);
+            $internalPrecision
+        );
+
+        $answer = $answer->add($ePow);
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
     }
 
-    public function log10($precision = 10)
+    public function log10($precision = 10, $round = true)
     {
-        $log10 = Numbers::make(Numbers::IMMUTABLE, 10);
-        $log10 = $log10->ln($precision);
+        $log10 = Numbers::makeNaturalLog10();
 
-        return $this->setValue($this->ln($precision)->divide($log10));
+        $value = $this->ln($precision+1)->divide($log10, $precision+1);
+
+        if ($round) {
+            $value = $value->roundToPrecision($precision);
+        } else {
+            $value = $value->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($value);
     }
 
     public function sqrt()
@@ -268,53 +344,49 @@ abstract class Number implements Hashable
         return $this->setValue($value);
     }
     
-    public function sin($mult = 1, $div = 1, $precision = null, $calc = false)
+    public function sin($precision = null, $round = true)
     {
         if ($this->isEqual(0)) {
             return $this;
         }
 
         $oldBase = $this->convertForModification();
-        
-        if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX)) {
-            return $this->setValue(sin($this->getValue()))->convertFromModification($oldBase);
+
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
         }
-        
-        $value = $this->getValue();
-        
-        $value = ArithmeticProvider::multiply($value, $mult);
-        $value = ArithmeticProvider::divide($value, $div);
 
-        $pi = Numbers::makePi();
+        $twoPi = Numbers::make2Pi();
 
-        $modulo = Numbers::make(Numbers::IMMUTABLE, $value);
-        $modulo = $modulo->continuousModulo($pi->multiply(2));
+        $modulo = $this->continuousModulo($twoPi);
 
-        if ($calc) {
-            return $this->setValue(
-                SeriesProvider::maclaurinSeries(
-                    Numbers::make(Numbers::IMMUTABLE, $value),
-                    function ($n) {
-                        $negOne = Numbers::make(Numbers::IMMUTABLE, -1);
+        $answer = SeriesProvider::maclaurinSeries(
+            $modulo,
+            function ($n) {
+                $negOne = Numbers::make(Numbers::IMMUTABLE, -1, 100);
 
-                        return $negOne->pow($n);
-                    },
-                    function ($n) {
-                        return SequenceProvider::nthOddNumber($n);
-                    },
-                    function ($n) {
-                        return SequenceProvider::nthOddNumber($n)->factorial();
-                    },
-                    0,
-                    $precision
-                )->getValue()
-            )->convertFromModification($oldBase);
+                return $negOne->pow($n);
+            },
+            function ($n) {
+                return SequenceProvider::nthOddNumber($n);
+            },
+            function ($n) {
+                return SequenceProvider::nthOddNumber($n)->factorial();
+            },
+            0,
+            $precision+1
+        );
+
+        if ($round) {
+            return $this->setValue($answer->getValue())->roundToPrecision($precision)->convertFromModification($oldBase);
         } else {
-            return $this->setValue(sin($modulo->getValue()))->convertFromModification($oldBase);
+            return $this->setValue($answer->getValue())->truncateToPrecision($precision)->convertFromModification($oldBase);
         }
     }
     
-    public function cos($mult = 1, $div = 1, $precision = null, $calc = false)
+    public function cos($precision = null, $round = true)
     {
         if ($this->isEqual(0)) {
             return $this->setValue(1);
@@ -322,85 +394,136 @@ abstract class Number implements Hashable
 
         $oldBase = $this->convertForModification();
 
-        if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX)) {
-            return $this->setValue(cos($this->getValue()))->convertFromModification($oldBase);
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
         }
 
-        $value = $this->getValue();
+        $twoPi = Numbers::make2Pi();
 
-        $value = ArithmeticProvider::multiply($value, $mult);
-        $value = ArithmeticProvider::divide($value, $div);
-        
-        $pi = Numbers::makePi();
-        
-        $modulo = Numbers::make(Numbers::IMMUTABLE, $value);
-        $modulo = $modulo->continuousModulo($pi->multiply(2));
+        $modulo = $this->continuousModulo($twoPi);
 
-        if ($calc) {
-            return $this->setValue(
-                SeriesProvider::maclaurinSeries(
-                    Numbers::make(Numbers::IMMUTABLE, $value),
-                    function ($n) {
-                        return SequenceProvider::nthPowerNegativeOne($n);
-                    },
-                    function ($n) {
-                        return SequenceProvider::nthEvenNumber($n);
-                    },
-                    function ($n) {
-                        return SequenceProvider::nthEvenNumber($n)->factorial();
-                    },
-                    0,
-                    $precision
-                )->getValue()
-            )->convertFromModification($oldBase);
+        $answer = SeriesProvider::maclaurinSeries(
+            $modulo,
+            function ($n) {
+                return SequenceProvider::nthPowerNegativeOne($n);
+            },
+            function ($n) {
+                return SequenceProvider::nthEvenNumber($n);
+            },
+            function ($n) {
+                return SequenceProvider::nthEvenNumber($n)->factorial();
+            },
+            0,
+            $precision+1
+        );
+
+        if ($round) {
+            return $this->setValue($answer->getValue())->roundToPrecision($precision)->convertFromModification($oldBase);
         } else {
-            return $this->setValue(cos($modulo->getValue()))->convertFromModification($oldBase);
+            return $this->setValue($answer->getValue())->truncateToPrecision($precision)->convertFromModification($oldBase);
         }
     }
 
-    public function tan($mult = 1, $div = 1, $precision = null, $calc = false)
+    public function tan($precision = null, $round = true)
     {
         $oldBase = $this->convertForModification();
 
-        if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX)) {
-            return $this->setValue(tan($this->getValue()))->convertFromModification($oldBase);
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
         }
-
-        $value = $this->getValue();
-
-        $value = ArithmeticProvider::multiply($value, $mult);
-        $value = ArithmeticProvider::divide($value, $div);
 
         $pi = Numbers::makePi();
+        $piDivTwo = Numbers::makePi()->divide(2);
+        $piDivFour = Numbers::makePi()->divide(4);
+        $piDivEight = Numbers::makePi()->divide(8);
+        $threePiDivTwo = Numbers::makePi()->multiply(3)->divide(2);
+        $twoPi = Numbers::make2Pi();
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, 100);
+        $one = Numbers::make(Numbers::IMMUTABLE, 1, 100);
 
-        $modulo = Numbers::make(Numbers::IMMUTABLE, $value);
-        $modulo = $modulo->continuousModulo($pi->multiply(2));
+        $exitModulo = $this->continuousModulo($pi);
 
-        if ($calc) {
-            return $this->setValue(
-                SeriesProvider::maclaurinSeries(
-                    Numbers::make(Numbers::IMMUTABLE, $value),
-                    function ($n) {
-                        $four = Numbers::make(Numbers::IMMUTABLE, 4);
-                        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
-
-                        return SequenceProvider::nthBernoulliNumber($n->multiply(2)->getValue(), -4)->pow($n)->multiply(Numbers::makeOne()->subtract($four->pow($n)));
-                    },
-                    function ($n) {
-                        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
-
-                        return $n->multiply(2)->subtract(1);
-                    },
-                    function ($n) {
-                        return SequenceProvider::nthEvenNumber($n)->factorial();
-                    },
-                    1,
-                    $precision
-                )
-            )->convertFromModification($oldBase);
-        } else {
-            return $this->setValue(tan($modulo->getValue()))->convertFromModification($oldBase);
+        if ($exitModulo->truncate(99)->isEqual(0)) {
+            return $this->setValue(0)->convertFromModification($oldBase);
         }
+
+        $modulo = $this->continuousModulo($twoPi);
+
+        if (
+            $modulo->truncate(99)->isEqual($piDivTwo->truncate(99)) ||
+            ($this->isNegative() && $modulo->subtract($pi)->abs()->truncate(99)->isEqual($piDivTwo->truncate(99)))
+        ) {
+            return $this->setValue(static::INFINITY);
+        }
+
+        if (
+            $modulo->subtract($pi)->truncate(99)->isEqual($piDivTwo->truncate(99)) ||
+            ($this->isNegative() && $modulo->truncate(99)->abs()->isEqual($piDivTwo->truncate(99)))
+        ) {
+            return $this->setValue(static::NEG_INFINITY);
+        }
+
+        if ($modulo->abs()->isGreaterThan($piDivTwo)) {
+            if ($this->isNegative()) {
+                if ($modulo->abs()->isGreaterThan($threePiDivTwo)) {
+                    $modulo = $modulo->add($twoPi);
+                } else {
+                    $modulo = $modulo->add($pi);
+                }
+            } else {
+                if ($modulo->isGreaterThan($threePiDivTwo)) {
+                    $modulo = $modulo->subtract($twoPi);
+                } else {
+                    $modulo = $modulo->subtract($pi);
+                }
+            }
+        }
+
+        $reciprocal = false;
+
+        if ($modulo->abs()->isGreaterThan($piDivFour)) {
+            $modulo = $piDivTwo->subtract($modulo);
+            $reciprocal = true;
+        }
+
+        if ($modulo->abs()->isGreaterThan($piDivEight)) {
+            /** @var ImmutableNumber $halfModTan */
+            $halfModTan = $modulo->divide(2)->tan($precision+1, false);
+            $answer = $two->multiply($halfModTan)->divide($one->subtract($halfModTan->pow(2)));
+        } else {
+            $answer = SeriesProvider::maclaurinSeries(
+                $modulo,
+                function ($n) {
+                    $nthOddNumber = SequenceProvider::nthOddNumber($n);
+
+                    return SequenceProvider::nthEulerZigzag($nthOddNumber);
+                },
+                function ($n) {
+
+                    return SequenceProvider::nthOddNumber($n);
+                },
+                function ($n) {
+                    return SequenceProvider::nthOddNumber($n)->factorial();
+                },
+                0,
+                $precision + 1
+            );
+        }
+
+        if ($reciprocal) {
+            $answer = $one->divide($answer);
+        }
+
+        if ($round) {
+            return $this->setValue($answer->getValue())->roundToPrecision($precision)->convertFromModification($oldBase);
+        } else {
+            return $this->setValue($answer->getValue())->truncateToPrecision($precision)->convertFromModification($oldBase);
+        }
+
     }
 
     public function getLeastCommonMultiple($num)
@@ -587,31 +710,55 @@ abstract class Number implements Hashable
 
         $fractionalArr = str_split($fractional);
 
-        if ($fractionalArr[$decimals] >= 5) {
-            if ($decimals == 0) {
-                $rounded = ArithmeticProvider::add($whole, 1);
-            } else {
-                $rounded = $whole.'.';
-                for ($i = 0; $i < $decimals; $i++) {
-                    if (($i+1) == $decimals) {
-                        $rounded .= ($fractionalArr[$i]+1);
-                    } else {
-                        $rounded .= $fractionalArr[$i];
-                    }
-                }
-            }
+        if (!isset($fractionalArr[$decimals])) {
+            return $this;
         } else {
             if ($decimals == 0) {
-                $rounded = $whole;
+                if ($fractionalArr[$decimals] >= 5) {
+                    return $this->setValue($whole)->add(1);
+                } else {
+                    return $this->setValue($whole);
+                }
             } else {
+                if ($fractionalArr[$decimals] >= 5) {
+                    $fractionalArr = $this->reduceDecimals($fractionalArr, $decimals-1, 1);
+                }
+
+                if (is_null($fractionalArr)) {
+                    return $this->setValue($whole)->add(1);
+                }
+
                 $rounded = $whole.'.';
-                for ($i = 0; $i < $decimals; $i++) {
+
+                for ($i = 0;$i < $decimals;$i++) {
                     $rounded .= $fractionalArr[$i];
                 }
+
+                return $this->setValue($rounded);
             }
         }
+    }
 
-        return $this->setValue($rounded);
+    public function truncate($decimals = 0)
+    {
+        $fractional = $this->getDecimalPart();
+        $whole = $this->getWholePart();
+
+        if ($decimals == 0) {
+            return $this->setValue($whole);
+        } else {
+            $truncated = $whole.'.';
+
+            if ($decimals > strlen($fractional)) {
+                $fractional = str_pad($fractional, $decimals, '0');
+            } else {
+                $fractional = substr($fractional, 0, $decimals);
+            }
+
+            $truncated .= $fractional;
+
+            return $this->setValue($truncated);
+        }
     }
 
     public function roundToPrecision($precision)
@@ -620,6 +767,15 @@ abstract class Number implements Hashable
         $this->precision = $precision;
 
         return $this->round($precision);
+
+    }
+
+    public function truncateToPrecision($precision)
+    {
+
+        $this->precision = $precision;
+
+        return $this->truncate($precision);
 
     }
 
@@ -779,7 +935,28 @@ abstract class Number implements Hashable
 
     protected function getRadixPos()
     {
-        return strpos($this->getValue(), '.');
+        return strpos($this->value, '.');
+    }
+
+    protected function reduceDecimals(array $decimalArray, $pos, $add)
+    {
+
+        if ($add == 1) {
+            if ($decimalArray[$pos] == 9) {
+                $decimalArray[$pos] = 0;
+
+                if ($pos == 0) {
+                    return null;
+                } else {
+                    return $this->reduceDecimals($decimalArray, $pos-1, $add);
+                }
+            } else {
+                $decimalArray[$pos] += 1;
+            }
+        }
+
+        return $decimalArray;
+
     }
 
     protected function getDecimalPart()
@@ -809,11 +986,18 @@ abstract class Number implements Hashable
      */
     abstract public function modulo($mod);
 
+    /**
+     * @param $mod
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    abstract public function continuousModulo($mod);
+
 
     /**
      * @param $value
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface
      */
     abstract protected function setValue($value);
 

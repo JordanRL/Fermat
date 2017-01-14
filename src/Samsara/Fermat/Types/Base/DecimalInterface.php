@@ -84,22 +84,20 @@ interface DecimalInterface
     public function semiFactorial();
 
     /**
-     * @param int  $mult
-     * @param int  $div
      * @param null $precision
+     * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
      */
-    public function sin($mult = 1, $div = 1, $precision = null);
+    public function sin($precision = null, $round = true);
 
     /**
-     * @param int  $mult
-     * @param int  $div
      * @param null $precision
+     * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
      */
-    public function cos($mult = 1, $div = 1, $precision = null);
+    public function cos($precision = null, $round = true);
 
     public function ln($precision = 10);
 
@@ -113,11 +111,25 @@ interface DecimalInterface
     public function round($decimals = 0);
 
     /**
+     * @param int $decimals
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function truncate($decimals = 0);
+
+    /**
      * @param $precision
      *
      * @return NumberInterface|DecimalInterface
      */
     public function roundToPrecision($precision);
+
+    /**
+     * @param $precision
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function truncateToPrecision($precision);
 
     /**
      * @return int

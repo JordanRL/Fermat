@@ -7,7 +7,7 @@ interface NumberInterface
 
     /**
      * @param int $base
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface|FractionInterface
      */
     public function convertToBase($base);
 
@@ -19,7 +19,7 @@ interface NumberInterface
     public function compare($value);
 
     /**
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface|FractionInterface
      */
     public function abs();
 
@@ -51,40 +51,40 @@ interface NumberInterface
     /**
      * @param $num
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface|FractionInterface
      */
     public function add($num);
 
     /**
      * @param $num
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface|FractionInterface
      */
     public function subtract($num);
 
     /**
      * @param $num
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface|FractionInterface
      */
     public function multiply($num);
 
     /**
      * @param $num
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface|FractionInterface
      */
     public function divide($num);
 
     /**
      * @param $num
      *
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface|FractionInterface
      */
     public function pow($num);
 
     /**
-     * @return NumberInterface
+     * @return NumberInterface|DecimalInterface|FractionInterface
      */
     public function sqrt();
 
