@@ -26,6 +26,8 @@ abstract class Number implements Hashable
 
     protected $base;
 
+    protected $extensions = true;
+
     public function __construct($value, $precision = 10, $base = 10)
     {
         $this->base = $base;
@@ -63,6 +65,15 @@ abstract class Number implements Hashable
     public function getPrecision()
     {
         return $this->precision;
+    }
+
+    public function setExtensions(bool $flag)
+    {
+
+        $this->extensions = $flag;
+
+        return $this;
+
     }
 
     public function add($num)
@@ -172,7 +183,7 @@ abstract class Number implements Hashable
             throw new IncompatibleObjectState('Can only perform a factorial on a whole number');
         }
 
-        if (function_exists('gmp_fact') && function_exists('gmp_strval')) {
+        if (function_exists('gmp_fact') && function_exists('gmp_strval') && $this->extensions) {
             return $this->setValue(gmp_strval(gmp_fact($this->getValue())))->convertFromModification($oldBase);
         }
 
@@ -559,7 +570,7 @@ abstract class Number implements Hashable
             );
         }
 
-        if (function_exists('gmp_gcd') && function_exists('gmp_strval')) {
+        if (function_exists('gmp_gcd') && function_exists('gmp_strval') && $this->extensions) {
             $val = gmp_strval(gmp_gcd($thisNum->getValue(), $num->getValue()));
 
             return Numbers::make(Numbers::IMMUTABLE, $val);

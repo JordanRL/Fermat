@@ -352,6 +352,12 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('3', $three->getGreatestCommonDivisor($six)->getValue());
         $this->assertEquals('3', $six->getGreatestCommonDivisor($three)->getValue());
 
+        $three->setExtensions(false);
+        $six->setExtensions(false);
+
+        $this->assertEquals('3', $three->getGreatestCommonDivisor($six)->getValue());
+        $this->assertEquals('3', $six->getGreatestCommonDivisor($three)->getValue());
+
     }
 
     public function testRound()
