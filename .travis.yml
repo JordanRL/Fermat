@@ -5,8 +5,8 @@ php:
 sudo: true
 
 install:
-  - apt-get install php7.0-bcmath
-  - apt-get install php7.0-gmp
+  - sudo apt-get install php7.0-bcmath
+  - sudo apt-get install php7.0-gmp
 
 before_script:
   - mkdir build
