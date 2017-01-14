@@ -1,0 +1,13 @@
+language: php
+php:
+  - 7.0
+
+install:
+  - pecl install stats
+  - pecl install gmp
+
+before_script:
+  - mkdir build/logs
+
+script:
+  - phpunit
