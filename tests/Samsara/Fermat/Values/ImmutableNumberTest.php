@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Values;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 
 class ImmutableNumberTest extends TestCase
@@ -134,6 +135,10 @@ class ImmutableNumberTest extends TestCase
 
         $this->assertEquals('2', $ten->divide($five)->getValue());
         $this->assertEquals('0.5', $five->divide($ten)->getValue());
+
+        $oneQuarter = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(4));
+
+        $this->assertEquals('40', $ten->divide($oneQuarter)->getValue());
 
     }
 
@@ -317,6 +322,35 @@ class ImmutableNumberTest extends TestCase
         $piDivTwo = Numbers::makePi()->divide(2);
 
         $this->assertEquals('INF', $piDivTwo->tan()->getValue());
+
+    }
+
+    public function testGetLeastCommonMultiple()
+    {
+
+        $three = new ImmutableNumber(3);
+        $four = new ImmutableNumber(4);
+        $six = new ImmutableNumber(6);
+
+        $this->assertEquals('6', $three->getLeastCommonMultiple($six)->getValue());
+        $this->assertEquals('12', $three->getLeastCommonMultiple($four)->getValue());
+
+        $oneHalf = new ImmutableNumber('0.5');
+
+        $this->setExpectedException(IntegrityConstraint::class);
+
+        $three->getLeastCommonMultiple($oneHalf);
+
+    }
+
+    public function testGetGreatestCommonDivisor()
+    {
+
+        $three = new ImmutableNumber(3);
+        $six = new ImmutableNumber(6);
+
+        $this->assertEquals('3', $three->getGreatestCommonDivisor($six)->getValue());
+        $this->assertEquals('3', $six->getGreatestCommonDivisor($three)->getValue());
 
     }
 

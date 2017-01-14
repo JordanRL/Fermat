@@ -2,20 +2,15 @@ language: php
 php:
   - 7.0
 
-#sudo: true
-
 install:
-  - composer require satooshi/php-coveralls:~0.6@stable
-#  - sudo apt-get -qq update
-#  - sudo apt-cache search php7
-#  - sudo apt-get install php7.0-gmp
+  - composer update
 
 before_script:
   - mkdir build
   - mkdir build/logs
 
 script:
-  - phpunit ./tests/Samsara
+  - phpunit --coverage-text ./tests/Samsara
 
 after_success:
   - wget https://scrutinizer-ci.com/ocular.phar
