@@ -6,7 +6,6 @@ php:
 
 install:
   - composer require satooshi/php-coveralls:~0.6@stable
-  - composer update
 #  - sudo apt-get -qq update
 #  - sudo apt-cache search php7
 #  - sudo apt-get install php7.0-gmp
@@ -19,4 +18,5 @@ script:
   - phpunit ./tests/Samsara
 
 after_success:
-  - php vendor/bin/coveralls -v
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover build/logs/coverage.xml
