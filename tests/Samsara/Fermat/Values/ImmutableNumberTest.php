@@ -166,7 +166,7 @@ class ImmutableNumberTest extends TestCase
 
         $negativeOne->factorial();
 
-        $oneTenth = new ImmutableNumber('0.1');
+        $oneTenth = new ImmutableNumber('1.1');
 
         $this->setExpectedException(IncompatibleObjectState::class, 'Can only perform a factorial on a whole number');
 
@@ -207,9 +207,23 @@ class ImmutableNumberTest extends TestCase
 
         $this->assertEquals('74.088', $fourPointTwo->pow($three)->getValue());
 
+        $fortyTwoTenths = new ImmutableFraction(new ImmutableNumber(42), new ImmutableNumber(10));
+
+        $this->assertEquals('100.9042061088', $three->pow($fortyTwoTenths)->getValue());
+
         $e = Numbers::makeE();
 
         $this->assertEquals('485165195.40979', $e->pow(20)->round(5)->getValue());
+
+    }
+
+    public function testExp()
+    {
+
+        $one = new ImmutableNumber(1);
+        $e = Numbers::makeE();
+
+        $this->assertTrue($one->exp()->truncate(5)->isEqual($e->truncate(5)));
 
     }
 
@@ -332,6 +346,46 @@ class ImmutableNumberTest extends TestCase
 
     }
 
+    public function testCot()
+    {
+
+        $five = new ImmutableNumber(5);
+
+        $this->assertEquals('-0.295812916', $five->cot(9)->getValue());
+        $this->assertEquals('-0.295812915', $five->cot(9, false)->getValue());
+
+    }
+
+    public function testSec()
+    {
+
+        $five = new ImmutableNumber(5);
+
+        $this->assertEquals('3.525320086', $five->sec(9)->getValue());
+        $this->assertEquals('3.525320085', $five->sec(9, false)->getValue());
+
+    }
+
+    public function testCsc()
+    {
+
+        $five = new ImmutableNumber(5);
+
+        $this->assertEquals('-1.042835213', $five->csc(9)->getValue());
+        $this->assertEquals('-1.042835212', $five->csc(9, false)->getValue());
+
+    }
+
+    public function testArctan()
+    {
+
+        $five = new ImmutableNumber(5);
+
+        $this->assertEquals('1.373400767', $five->arctan(9)->getValue());
+        $this->assertEquals('1.373400766', $five->arctan(9, false)->getValue());
+
+    }
+
     public function testGetLeastCommonMultiple()
     {
 
@@ -444,7 +498,8 @@ class ImmutableNumberTest extends TestCase
         $fortyFive = new ImmutableNumber(45);
         $ninetyOne = new ImmutableNumber(91);
         $tenThousandSeven = new ImmutableNumber(10007);
-        $largeNonPrime = new ImmutableNumber('99799811');
+        //$largeNonPrime = new ImmutableNumber('99799811');
+        $oneHalf = new ImmutableNumber('0.5');
 
         $this->assertTrue($two->isPrime());
         $this->assertTrue($three->isPrime());
@@ -454,7 +509,8 @@ class ImmutableNumberTest extends TestCase
         $this->assertFalse($fortyFive->isPrime());
         $this->assertFalse($ninetyOne->isPrime());
         $this->assertTrue($tenThousandSeven->isPrime());
-        $this->assertFalse($largeNonPrime->isPrime());
+        //$this->assertFalse($largeNonPrime->isPrime());
+        $this->assertFalse($oneHalf->isPrime());
 
     }
 

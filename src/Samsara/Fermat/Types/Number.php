@@ -10,6 +10,7 @@ use Samsara\Fermat\Provider\ArithmeticProvider;
 use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
+use Samsara\Fermat\Provider\StatsProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\FractionInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
@@ -248,12 +249,43 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
-        $value = ArithmeticProvider::pow($this->getValue(), $num->getValue());
+        if ($num->isWhole()) {
+            $value = ArithmeticProvider::pow($this->getValue(), $num->getValue());
+        } else {
+            $exponent = $num->multiply($this->ln($this->getPrecision()));
+            $value = $exponent->exp();
+        }
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
 
         return $this->setValue($value);
+    }
+
+    public function exp()
+    {
+        $oldBase = $this->convertForModification();
+
+        $value = SeriesProvider::maclaurinSeries(
+            Numbers::makeOrDont(Numbers::IMMUTABLE, $this),
+            function() {
+                return Numbers::makeOne();
+            },
+            function($n) {
+                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+
+                return $n;
+            },
+            function($n) {
+                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+
+                return $n->factorial();
+            },
+            0,
+            $this->getPrecision()
+        );
+
+        return $this->setValue($value)->convertFromModification($oldBase);
     }
 
     /**
@@ -537,6 +569,423 @@ abstract class Number implements Hashable
 
     }
 
+    public function cot($precision = null, $round = true)
+    {
+
+        $pi = Numbers::makePi();
+        $twoPi = Numbers::make2Pi();
+        $one = Numbers::makeOne();
+        $piDivTwo = $pi->divide(2);
+
+        $oldBase = $this->convertForModification();
+
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
+        }
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+
+        $modPi = $num->continuousModulo($pi)->truncate($precision);
+        $mod2Pi = $num->continuousModulo($twoPi)->truncate($precision);
+
+        if ($mod2Pi->isEqual(0)) {
+            return $this->setValue(static::INFINITY);
+        } elseif($modPi->isEqual(0)) {
+            return $this->setValue(static::NEG_INFINITY);
+        }
+
+        $modPiDiv2 = $num->continuousModulo($piDivTwo)->truncate($precision);
+
+        if ($modPiDiv2->isEqual(0)) {
+            return $this->setValue(0)->convertFromModification($oldBase);
+        }
+
+        $tan = $num->tan($precision+2, $round);
+
+        $answer = $one->divide($tan, $precision+2);
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function sec($precision = null, $round = true)
+    {
+
+        $one = Numbers::makeOne();
+
+        $oldBase = $this->convertForModification();
+
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
+        }
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+
+        $cos = $num->cos($precision+2, $round);
+
+        if ($cos->isEqual(0)) {
+            return $this->setValue(static::INFINITY);
+        }
+
+        $answer = $one->divide($cos, $precision+2);
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function csc($precision = null, $round = true)
+    {
+
+        $one = Numbers::makeOne();
+
+        $oldBase = $this->convertForModification();
+
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
+        }
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+
+        $sin = $num->sin($precision+2, $round);
+
+        if ($sin->isEqual(0)) {
+            return $this->setValue(static::INFINITY);
+        }
+
+        $answer = $one->divide($sin, $precision+2);
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function arcsin($precision = null, $round = true)
+    {
+
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
+        }
+
+        $one = Numbers::makeOne();
+
+        $oldBase = $this->convertForModification();
+
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+
+        if ($z->abs()->isGreaterThan(1)) {
+            throw new IntegrityConstraint(
+                'The input for arcsin must have an absolute value of 1 or smaller',
+                'Only calculate arcsin for values of 1 or smaller',
+                'The arcsin function only has real values for inputs which have an absolute value of 1 or smaller'
+            );
+        }
+
+        $answer = SeriesProvider::maclaurinSeries(
+            $z,
+            function($n) {
+                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+
+                return StatsProvider::binomialCoefficient($n->multiply(2), $n);
+            },
+            function($n) {
+                return SequenceProvider::nthOddNumber($n);
+            },
+            function($n) {
+                $four = Numbers::make(Numbers::IMMUTABLE, 4);
+
+                return $four->pow($n)->multiply(SequenceProvider::nthOddNumber($n));
+            },
+            0,
+            $precision+1
+        );
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function arccos($precision = null, $round = true)
+    {
+
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
+        }
+
+        $piDivTwo = Numbers::makePi()->divide(2);
+
+        $one = Numbers::makeOne();
+
+        $oldBase = $this->convertForModification();
+
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+
+        if ($z->abs()->isGreaterThan(1)) {
+            throw new IntegrityConstraint(
+                'The input for arccos must have an absolute value of 1 or smaller',
+                'Only calculate arccos for values of 1 or smaller',
+                'The arccos function only has real values for inputs which have an absolute value of 1 or smaller'
+            );
+        }
+
+        $answer = $piDivTwo->subtract($z->arcsin($precision, false));
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function arctan($precision = null, $round = true)
+    {
+
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
+        }
+
+        $one = Numbers::makeOne();
+
+        $oldBase = $this->convertForModification();
+
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+
+        if ($z->abs()->isGreaterThan(1)) {
+            $rangeAdjust = Numbers::makePi()->divide(2);
+
+            if ($z->isNegative()) {
+                $rangeAdjust = $rangeAdjust->multiply(-1);
+            }
+
+            $z = $one->divide($z, $precision+1);
+        }
+
+        $answer = SeriesProvider::maclaurinSeries(
+            $z,
+            function($n) {
+                return SequenceProvider::nthPowerNegativeOne($n);
+            },
+            function($n) {
+                return SequenceProvider::nthOddNumber($n);
+            },
+            function($n) {
+                return SequenceProvider::nthOddNumber($n);
+            },
+            0,
+            $precision+1
+        );
+
+        if (isset($rangeAdjust)) {
+            $answer = $rangeAdjust->subtract($answer);
+        }
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function arccot($precision = null, $round = true)
+    {
+
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
+        }
+
+        $one = Numbers::makeOne();
+        $piDivTwo = Numbers::makePi()->divide(2);
+
+        $oldBase = $this->convertForModification();
+
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+
+        if ($z->abs()->isGreaterThan(1)) {
+            $rangeAdjust = Numbers::makePi()->divide(2);
+
+            if ($z->isNegative()) {
+                $rangeAdjust = $rangeAdjust->multiply(3);
+            }
+
+            $z = $one->divide($z, $precision+1);
+        }
+
+        $answer = SeriesProvider::maclaurinSeries(
+            $z,
+            function($n) {
+                return SequenceProvider::nthPowerNegativeOne($n);
+            },
+            function($n) {
+                return SequenceProvider::nthOddNumber($n);
+            },
+            function($n) {
+                return SequenceProvider::nthOddNumber($n);
+            },
+            0,
+            $precision+1
+        );
+
+        $answer = $piDivTwo->subtract($answer);
+
+        if (isset($rangeAdjust)) {
+            $answer = $rangeAdjust->subtract($answer);
+        }
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function arcsec($precision = null, $round = true)
+    {
+
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
+        }
+
+        $piDivTwo = Numbers::makePi()->divide(2);
+
+        $oldBase = $this->convertForModification();
+
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+
+        if ($z->abs()->isLessThan(1)) {
+            throw new IntegrityConstraint(
+                'The input for arcsec must have an absolute value of 1 or larger',
+                'Only calculate arcsec for values of 1 or larger',
+                'The arcsec function only has real values for inputs which have an absolute value of 1 or larger'
+            );
+        }
+
+        $answer = SeriesProvider::maclaurinSeries(
+            $z,
+            function($n) {
+                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+
+                return StatsProvider::binomialCoefficient($n->multiply(2), $n);
+            },
+            function($n) {
+                return SequenceProvider::nthOddNumber($n)->multiply(-1);
+            },
+            function($n) {
+                $four = Numbers::make(Numbers::IMMUTABLE, 4);
+
+                return $four->pow($n)->multiply(SequenceProvider::nthOddNumber($n));
+            },
+            0,
+            $precision+1
+        );
+
+        $answer = $piDivTwo->subtract($answer);
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function arccsc($precision = null, $round = true)
+    {
+
+        $precision = $precision ?? $this->getPrecision();
+
+        if ($precision > 99) {
+            $precision = 99;
+        }
+
+        $oldBase = $this->convertForModification();
+
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+
+        if ($z->abs()->isLessThan(1)) {
+            throw new IntegrityConstraint(
+                'The input for arccsc must have an absolute value of 1 or larger',
+                'Only calculate arccsc for values of 1 or larger',
+                'The arccsc function only has real values for inputs which have an absolute value of 1 or larger'
+            );
+        }
+
+        $answer = SeriesProvider::maclaurinSeries(
+            $z,
+            function($n) {
+                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+
+                return StatsProvider::binomialCoefficient($n->multiply(2), $n);
+            },
+            function($n) {
+                return SequenceProvider::nthOddNumber($n)->multiply(-1);
+            },
+            function($n) {
+                $four = Numbers::make(Numbers::IMMUTABLE, 4);
+
+                return $four->pow($n)->multiply(SequenceProvider::nthOddNumber($n));
+            },
+            0,
+            $precision+1
+        );
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
     public function getLeastCommonMultiple($num)
     {
 
@@ -667,7 +1116,7 @@ abstract class Number implements Hashable
 
     public function isInt(): bool
     {
-        if ($this->getDecimalPart() === 0) {
+        if ($this->getDecimalPart() == 0) {
             return true;
         } else {
             return false;

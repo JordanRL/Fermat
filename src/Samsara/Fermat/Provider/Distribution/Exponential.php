@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Provider\Stats\Distribution;
+namespace Samsara\Fermat\Provider\Distribution;
 
 use RandomLib\Factory;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;

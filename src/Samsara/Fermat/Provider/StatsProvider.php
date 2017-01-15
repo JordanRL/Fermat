@@ -1,13 +1,12 @@
 <?php
 
-namespace Samsara\Fermat\Provider\Stats;
+namespace Samsara\Fermat\Provider;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Provider\SequenceProvider;
-use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\NumberInterface;
 
-class Stats
+class StatsProvider
 {
 
     /**
@@ -116,6 +115,32 @@ class Stats
         } else {
             return $xCur;
         }
+    }
+
+    public static function binomialCoefficient($n, $k)
+    {
+
+        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+        $k = Numbers::makeOrDont(Numbers::IMMUTABLE, $k);
+
+        if ($k->isLessThan(0) || $n->isLessThan($k)) {
+            throw new IntegrityConstraint(
+                '$k must be larger or equal to 0 and less than or equal to $n',
+                'Provide valid $n and $k values such that 0 <= $k <= $n',
+                'For $n choose $k, the values of $n and $k must satisfy the inequality 0 <= $k <= $n'
+            );
+        }
+
+        if (!$n->isInt() || !$k->isInt()) {
+            throw new IntegrityConstraint(
+                '$k and $n must be whole numbers',
+                'Provide whole numbers for $n and $k',
+                'For $n choose $k, the values $n and $k must be whole numbers'
+            );
+        }
+
+        return $n->factorial()->divide($k->factorial()->multiply($n->subtract($k)->factorial()));
+
     }
 
 }
