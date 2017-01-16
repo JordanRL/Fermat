@@ -22,7 +22,56 @@ The project namespace is `Samsara\Fermat\*`. You can view the project on [Packag
 
 ## Documentation
 
-You can read the documentation for Fermat [here](https://github.com/JordanRL/Fermat/wiki/01.-Introduction).
+The `Samsara\Fermat\Numbers` factory class provides a way to use the Value classes in Fermat without being as specific as those classes may require. Consider the following code:
+
+```php
+<?php
+
+use Samsara\Fermat\Numbers;
+
+$five = Numbers::make(Numbers::IMMUTABLE, 5);
+$ten = Numbers::make(Numbers::IMMUTABLE, '10');
+
+echo $five->add($ten); // Prints: "15"
+```
+
+Note that the `make()` method allows you to provide both an int and a string as the value. In fact, it also allows you to provide a float. The first argument is the specific class that will be used for the value, the second argument is the value itself. The third and fourth arguments are optional and represent the precision (in number of decimal places) and the base of the number respectively. The precision and base arguments will only accept integer values.
+
+If you do not specify a precision value, and you are using the default values, it automatically has a precision of either 10, or the string length of the input value, whichever is greater.
+
+Here is an example of using the factory method to make a value that is in a base other than base10:
+
+```php
+<?php
+
+use Samsara\Fermat\Numbers;
+
+$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); // Value in base5
+$ten = Numbers::make(Numbers::IMMUTABLE, '10'); // Value in base10
+
+echo $ten->add($five); // Prints: "15" (The sum in base10)
+echo $five->add($ten); // Prints: "30" (The sum in base5)
+```
+
+You can also use a `Fraction` and `Number` together:
+
+```php
+<?php
+
+use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableFraction;
+
+$five = new ImmutableNumber(5);
+$oneQuarter = new ImmutableFraction(1, 4);
+
+echo $five->add($oneQuarter); // Prints: "5.25"
+// The asDecimal() method is called on $oneQuarter
+
+echo $oneQuarter->add($five); // Prints: "21/4"
+// Calls getValue() on $five and instantiates a new ImmutableFraction
+```
+
+You can read the full documentation for Fermat [here](https://github.com/JordanRL/Fermat/wiki/01.-Introduction).
 
 ## Contributing
 
