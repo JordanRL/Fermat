@@ -8,9 +8,10 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - riimu/kit-baseconversion: v1.*
   - ircmaxell/random-lib: v1.1.*
   - php-ds/php-ds: v1.1.*
+  - ext-bcmath: *
 - **Suggested Extensions**
   - ext-ds: *
-  - ext-stats: *
+  - ext-stats: * (NOTE: This extension can't be used because it is not available for PHP 7+)
   - ext-gmp: *
 - **Dev Dependencies:**
   - phpunit/phpunit: v4.8.*
@@ -30,18 +31,13 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - ImmutableNumber
   - MutableFraction
   - MutableNumber
-- Shapes:
-  - Base:
-    - Line
-    - TwoDimensionNonCurved
 - Providers:
-  - Stats:
-    - Distributions:
-      - Exponential
-      - Normal
-      - Poisson
-    - Stats
+  - Distributions:
+    - Exponential
+    - Normal
+    - Poisson
   - ArithmeticProvider
   - SequenceProvider
   - SeriesProvider
+  - StatsProvider
   - TrigonometryProvider
