@@ -19,7 +19,13 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 
 *Nothing*
 
-## [v1.0.0] - 2017-01-15
+## [1.0.1] - 2017-01-16
+### Changed
+- Composer
+  - **Dependencies:**
+    - samsara/common: dev-master -> 1.*
+
+## 1.0.0 - 2017-01-15
 ### Added
 - Composer
   - **Dependencies:**
@@ -61,4 +67,5 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - StatsProvider
   - TrigonometryProvider
 
-[unreleased]: https://github.com/JordanRL/Fermat/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/JordanRL/Fermat/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/JordanRL/Fermat/compare/v1.0.0...v1.0.1
