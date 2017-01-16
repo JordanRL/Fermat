@@ -3,8 +3,11 @@
 namespace Samsara\Fermat;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Types\Base\CoordinateInterface;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\FractionInterface;
+use Samsara\Fermat\Types\Fraction;
+use Samsara\Fermat\Values\CartesianCoordinate;
 use Samsara\Fermat\Values\Currency;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableNumber;
@@ -19,6 +22,7 @@ class Numbers
     const IMMUTABLE = ImmutableNumber::class;
     const MUTABLE_FRACTION = MutableFraction::class;
     const IMMUTABLE_FRACTION = ImmutableFraction::class;
+    const CARTESIAN_COORDINATE = CartesianCoordinate::class;
     const CURRENCY = Currency::class;
     /* 105 digits after decimal, which is going to be overkill in almost all places */
     const PI = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679';
@@ -38,7 +42,7 @@ class Numbers
      * @param int $base
      *
      * @throws IntegrityConstraint
-     * @return ImmutableNumber|MutableNumber|ImmutableFraction|MutableFraction|NumberInterface
+     * @return ImmutableNumber|MutableNumber|ImmutableFraction|MutableFraction|Currency|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
      */
     public static function make($type, $value, $precision = null, $base = 10)
     {
@@ -55,8 +59,32 @@ class Numbers
             return self::makeFractionFromString($value, $type)->convertToBase($base);
         } elseif ($type == static::MUTABLE_FRACTION) {
             return self::makeFractionFromString($value, $type)->convertToBase($base);
+        } elseif ($type == static::CURRENCY) {
+            return new Currency(trim($value), Currency::DOLLAR, $precision, $base);
+        } elseif ($type == static::CARTESIAN_COORDINATE && is_array($value)) {
+            return new CartesianCoordinate($value);
         } else {
             $reflector = new \ReflectionClass($type);
+
+            if ($reflector->implementsInterface(FractionInterface::class) && $reflector->isSubclassOf(Fraction::class)) {
+                return Numbers::makeFractionFromString($value, $reflector->getName(), $base);
+            }
+
+            if ($reflector->implementsInterface(CoordinateInterface::class) && is_array($value)) {
+                /** @var CoordinateInterface $customCoordinate */
+                $customCoordinate = $reflector->newInstance([
+                    $value
+                ]);
+                return $customCoordinate;
+            }
+
+            if ($reflector->implementsInterface(CoordinateInterface::class) && !is_array($value)) {
+                throw new IntegrityConstraint(
+                    'The $value for a CoordinateInterface must be an array',
+                    'Provide an array for the $value',
+                    'A CoordinateInterface expects the value to be an array of axes and values'
+                );
+            }
 
             if ($reflector->implementsInterface(NumberInterface::class)) {
                 /** @var NumberInterface $customNumber */
@@ -139,10 +167,10 @@ class Numbers
      * @param $value
      * @param $type
      *
-     * @return ImmutableFraction|MutableFraction
+     * @return ImmutableFraction|MutableFraction|FractionInterface
      * @throws IntegrityConstraint
      */
-    public static function makeFractionFromString($value, $type = self::IMMUTABLE_FRACTION)
+    public static function makeFractionFromString($value, $type = self::IMMUTABLE_FRACTION, $base = 10)
     {
         $parts = explode('/', $value);
 
@@ -160,10 +188,22 @@ class Numbers
         $denominator = isset($parts[1]) ? Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[1])))->round() : Numbers::makeOne();
 
         if ($type == self::IMMUTABLE_FRACTION) {
-            return new ImmutableFraction($numerator, $denominator);
+            return new ImmutableFraction($numerator, $denominator, $base);
         } elseif ($type == self::MUTABLE_FRACTION) {
-            return new MutableFraction($numerator, $denominator);
+            return new MutableFraction($numerator, $denominator, $base);
         } else {
+            $reflector = new \ReflectionClass($type);
+
+            if ($reflector->implementsInterface(FractionInterface::class) && $reflector->isSubclassOf(Fraction::class)) {
+                /** @var FractionInterface|Fraction $customFraction */
+                $customFraction = $reflector->newInstance([
+                    $numerator,
+                    $denominator,
+                    $base
+                ]);
+                return $customFraction;
+            }
+
             throw new IntegrityConstraint(
                 'Type must be ImmutableFraction or MutableFraction',
                 'Alter to calling code to use the correct type',

@@ -7,6 +7,8 @@ use Samsara\Fermat\Values\ImmutableNumber;
 interface CoordinateInterface
 {
 
+    public function __construct(array $data);
+
     public function getAxis($axis): ImmutableNumber;
 
     public function numberOfDimensions(): int;
