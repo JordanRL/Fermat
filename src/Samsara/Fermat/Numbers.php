@@ -23,7 +23,6 @@ class Numbers
     const MUTABLE_FRACTION = MutableFraction::class;
     const IMMUTABLE_FRACTION = ImmutableFraction::class;
     const CARTESIAN_COORDINATE = CartesianCoordinate::class;
-    const CURRENCY = Currency::class;
     /* 105 digits after decimal, which is going to be overkill in almost all places */
     const PI = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679';
     /* Tau (2pi) to 100 digits */
@@ -42,7 +41,7 @@ class Numbers
      * @param int $base
      *
      * @throws IntegrityConstraint
-     * @return ImmutableNumber|MutableNumber|ImmutableFraction|MutableFraction|Currency|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
+     * @return ImmutableNumber|MutableNumber|ImmutableFraction|MutableFraction|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
      */
     public static function make($type, $value, $precision = null, $base = 10)
     {
@@ -59,8 +58,6 @@ class Numbers
             return self::makeFractionFromString($value, $type)->convertToBase($base);
         } elseif ($type == static::MUTABLE_FRACTION) {
             return self::makeFractionFromString($value, $type)->convertToBase($base);
-        } elseif ($type == static::CURRENCY) {
-            return new Currency(trim($value), Currency::DOLLAR, $precision, $base);
         } elseif ($type == static::CARTESIAN_COORDINATE && is_array($value)) {
             return new CartesianCoordinate($value);
         } else {
