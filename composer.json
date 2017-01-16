@@ -7,7 +7,7 @@
   "require": {
     "ircmaxell/random-lib": "1.1.*",
     "riimu/kit-baseconversion": "1.*",
-    "samsara/common": "dev-master",
+    "samsara/common": "1.*",
     "php-ds/php-ds": "1.1.*",
     "php": ">=7.0.0",
     "ext-bcmath": "*"
