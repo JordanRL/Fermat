@@ -1,0 +1,17 @@
+language: php
+php:
+  - 7.0
+
+install:
+  - composer update
+
+before_script:
+  - mkdir build
+  - mkdir build/logs
+
+script:
+  - phpunit --coverage-text ./tests/Samsara
+
+after_success:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover build/logs/coverage.xml
