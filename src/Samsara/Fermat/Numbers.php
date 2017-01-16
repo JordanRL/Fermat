@@ -54,16 +54,16 @@ class Numbers
         } elseif ($type == static::MUTABLE) {
             return new MutableNumber(trim($value), $precision, $base);
         } elseif ($type == static::IMMUTABLE_FRACTION) {
-            return self::makeFractionFromString($value, $type)->convertToBase($base);
+            return self::makeFractionFromString($type, $value, $base);
         } elseif ($type == static::MUTABLE_FRACTION) {
-            return self::makeFractionFromString($value, $type)->convertToBase($base);
+            return self::makeFractionFromString($type, $value, $base);
         } elseif ($type == static::CARTESIAN_COORDINATE && is_array($value)) {
             return new CartesianCoordinate($value);
         } else {
             $reflector = new \ReflectionClass($type);
 
             if ($reflector->implementsInterface(FractionInterface::class) && $reflector->isSubclassOf(Fraction::class)) {
-                return Numbers::makeFractionFromString($value, $reflector->getName(), $base);
+                return Numbers::makeFractionFromString($reflector->getName(), $value, $base);
             }
 
             if ($reflector->implementsInterface(CoordinateInterface::class) && is_array($value)) {
@@ -160,13 +160,14 @@ class Numbers
     }
 
     /**
-     * @param $value
-     * @param $type
+     * @param     $type
+     * @param     $value
+     * @param int $base
      *
-     * @return ImmutableFraction|MutableFraction|FractionInterface
+     * @return FractionInterface|ImmutableFraction|MutableFraction
      * @throws IntegrityConstraint
      */
-    public static function makeFractionFromString($value, $type = self::IMMUTABLE_FRACTION, $base = 10)
+    public static function makeFractionFromString($type, $value, $base = 10)
     {
         $parts = explode('/', $value);
 
@@ -342,6 +343,8 @@ class Numbers
     }
 
     /**
+     * @param int|null $precision
+     *
      * @return ImmutableNumber
      */
     public static function makeOne($precision = null)
@@ -350,6 +353,8 @@ class Numbers
     }
 
     /**
+     * @param int|null $precision
+     *
      * @return ImmutableNumber
      */
     public static function makeZero($precision = null)

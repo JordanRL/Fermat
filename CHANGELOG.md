@@ -4,17 +4,36 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 
 ## [Unreleased] - [unreleased]
 ### Added
-- **Dependencies:** 
-  - riimu/kit-baseconversion: v1.*
-  - ircmaxell/random-lib: v1.1.*
-  - php-ds/php-ds: v1.1.*
-  - ext-bcmath: *
-- **Suggested Extensions**
-  - ext-ds: *
-  - ext-stats: * (NOTE: This extension can't be used because it is not available for PHP 7+)
-  - ext-gmp: *
-- **Dev Dependencies:**
-  - phpunit/phpunit: v4.8.*
+
+*Nothing*
+
+### Removed
+
+*Nothing*
+
+### Changed
+
+*Nothing*
+
+### Fixed
+
+*Nothing*
+
+## [v1.0.0] - 2017-01-15
+### Added
+- Composer
+  - **Dependencies:**
+    - riimu/kit-baseconversion: v1.*
+    - ircmaxell/random-lib: v1.1.*
+    - php-ds/php-ds: v1.1.*
+    - samsara/common: dev-master
+    - ext-bcmath: *
+  - **Dev Dependencies:**
+    - phpunit/phpunit: v5.7.*
+  - **Suggested:**
+    - ext-ds: *
+    - ext-stats: * (NOTE: This extension can't be used because it is not available for PHP 7+)
+    - ext-gmp: *
 - Types:
   - Interfaces:
     - CoordinateInterface
@@ -41,3 +60,5 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - SeriesProvider
   - StatsProvider
   - TrigonometryProvider
+
+[unreleased]: https://github.com/JordanRL/Fermat/compare/v1.0.0...HEAD
