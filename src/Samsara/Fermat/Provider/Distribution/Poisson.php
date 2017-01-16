@@ -6,7 +6,6 @@ use RandomLib\Factory;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Provider\Distribution\Base\DistributionInterface;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;

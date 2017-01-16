@@ -3,10 +3,6 @@
 namespace Samsara\Fermat\Provider;
 
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Cartesian;
-use Samsara\Fermat\Types\Tuple;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
 
 class TrigonometryProvider
 {

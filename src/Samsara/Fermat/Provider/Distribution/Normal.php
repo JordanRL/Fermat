@@ -105,9 +105,12 @@ class Normal
         $one = Numbers::makeOne();
         $sqrtTwo = Numbers::make(Numbers::IMMUTABLE, 2)->sqrt();
 
-        return $oneHalf->multiply($one->add(StatsProvider::gaussErrorFunction(
+        /** @var ImmutableNumber $cdf */
+        $cdf = $oneHalf->multiply($one->add(StatsProvider::gaussErrorFunction(
             $x->subtract($this->mean)->divide($this->sd->multiply($sqrtTwo))
         )));
+
+        return $cdf;
     }
 
     /**

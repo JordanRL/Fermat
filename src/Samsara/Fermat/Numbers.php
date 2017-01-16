@@ -8,7 +8,6 @@ use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\FractionInterface;
 use Samsara\Fermat\Types\Fraction;
 use Samsara\Fermat\Values\CartesianCoordinate;
-use Samsara\Fermat\Values\Currency;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableNumber;
 use Samsara\Fermat\Values\MutableFraction;
