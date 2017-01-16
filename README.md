@@ -6,27 +6,23 @@
 
 To install, simply require the package using composer:
 
-    composer require samsara/fermat "*"
+    composer require samsara/fermat "1.*"
     
 Or include it in your `composer.json` file:
 
 ```json
 {
     "require": {
-        "samsara/fermat": "*"
+        "samsara/fermat": "1.*"
     }
 }
 ```
 
 The project namespace is `Samsara\Fermat\*`. You can view the project on [Packagist](https://packagist.org/packages/samsara/fermat).
 
-## Usage
+## Documentation
 
-*Coming soon...*
-
-## Extending
-
-*Coming soon...*
+You can read the documentation for Fermat [here](https://github.com/JordanRL/Fermat/wiki/01.-Introduction).
 
 ## Contributing
 
