@@ -99,6 +99,86 @@ interface DecimalInterface
      */
     public function cos($precision = null, $round = true);
 
+    /**
+     * @param null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function tan($precision = null, $round = true);
+
+    /**
+     * @param null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function cot($precision = null, $round = true);
+
+    /**
+     * @param null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function sec($precision = null, $round = true);
+
+    /**
+     * @param null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function csc($precision = null, $round = true);
+
+    /**
+     * @param null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function arcsin($precision = null, $round = true);
+
+    /**
+     * @param null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function arccos($precision = null, $round = true);
+
+    /**
+     * @param null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function arctan($precision = null, $round = true);
+
+    /**
+     * @param null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function arccot($precision = null, $round = true);
+
+    /**
+     * @param null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function arcsec($precision = null, $round = true);
+
+    /**
+     * @param null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function arccsc($precision = null, $round = true);
+
     public function ln($precision = 10);
 
     public function log10($precision = 10);

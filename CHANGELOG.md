@@ -19,6 +19,21 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 
 *Nothing*
 
+## [1.0.2] - 2017-01-16
+### Fixed
+- DecimalInterface
+  - Added the following to correctly reflect usage:
+    - tan()
+    - cot()
+    - sec()
+    - csc()
+    - arcsin()
+    - arccos()
+    - arctan()
+    - arccot()
+    - arcsec()
+    - arccsc()
+
 ## [1.0.1] - 2017-01-16
 ### Changed
 - Composer
@@ -67,5 +82,6 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - StatsProvider
   - TrigonometryProvider
 
-[unreleased]: https://github.com/JordanRL/Fermat/compare/v1.0.1...HEAD
+[unreleased]: https://github.com/JordanRL/Fermat/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/JordanRL/Fermat/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/JordanRL/Fermat/compare/v1.0.0...v1.0.1
