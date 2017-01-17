@@ -28,7 +28,7 @@ abstract class Number implements Hashable
 
     protected $extensions = true;
 
-    public function __construct($value, $precision = 10, $base = 10)
+    public function __construct($value, $precision = null, $base = 10)
     {
         $this->base = $base;
         $this->value = (string)$value;
@@ -42,7 +42,7 @@ abstract class Number implements Hashable
                 );
             }
 
-            $this->precision = $precision;
+            $this->precision = ($precision > strlen($this->getDecimalPart())) ? $precision : strlen($this->getDecimalPart());
         } else {
             $this->precision = (strlen($this->getDecimalPart()) > 10) ? strlen($this->getDecimalPart()) : 10;
         }
@@ -87,12 +87,14 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
-        $value = ArithmeticProvider::add($this->getValue(), $num->getValue(), $this->getPrecision());
+        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+
+        $value = ArithmeticProvider::add($this->getValue(), $num->getValue(), $internalPrecision);
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
 
-        return $this->setValue($value);
+        return $this->setValue($value)->truncateToPrecision($internalPrecision);
     }
 
     public function subtract($num)
@@ -106,12 +108,14 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
-        $value = ArithmeticProvider::subtract($this->getValue(), $num->getValue(), $this->getPrecision());
+        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+
+        $value = ArithmeticProvider::subtract($this->getValue(), $num->getValue(), $internalPrecision);
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
 
-        return $this->setValue($value);
+        return $this->setValue($value)->truncateToPrecision($internalPrecision);
     }
 
     /**
@@ -130,12 +134,14 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
-        $value = ArithmeticProvider::multiply($this->getValue(), $num->getValue(), $this->getPrecision());
+        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+
+        $value = ArithmeticProvider::multiply($this->getValue(), $num->getValue(), $internalPrecision);
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
 
-        return $this->setValue($value);
+        return $this->setValue($value)->truncateToPrecision($internalPrecision);
     }
 
     /**
@@ -248,17 +254,19 @@ abstract class Number implements Hashable
         $oldBase = $this->convertForModification();
         $numOldBase = $num->convertForModification();
 
+        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+
         if ($num->isWhole()) {
-            $value = ArithmeticProvider::pow($this->getValue(), $num->getValue(), $this->getPrecision());
+            $value = ArithmeticProvider::pow($this->getValue(), $num->getValue(), $internalPrecision);
         } else {
-            $exponent = $num->multiply($this->ln($this->getPrecision()));
+            $exponent = $num->multiply($this->ln($internalPrecision));
             $value = $exponent->exp();
         }
 
         $this->convertFromModification($oldBase);
         $num->convertFromModification($numOldBase);
 
-        return $this->setValue($value);
+        return $this->setValue($value)->truncateToPrecision($internalPrecision);
     }
 
     public function exp()
