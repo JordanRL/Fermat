@@ -13,7 +13,10 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 
 ### Changed
 
-*Nothing*
+- ArithmeticProvider
+  - Added a precision argument to all methods that were missing it.
+- Number
+  - Now passes the precision setting to ALL calls to ArithmeticProvider allowing precision up to 2147483646 digits. (Still limited by constants on log and trig functions.)
 
 ### Fixed
 
