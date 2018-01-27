@@ -5,7 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 ## [Unreleased] - [unreleased]
 ### Added
 
-*Nothing*
+- Types:
+  - Interfaces:
+    - MatrixInterface
+    - NumberCollectionInterface
+  - NumberCollection
 
 ### Removed
 
