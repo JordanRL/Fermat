@@ -16,7 +16,6 @@
     "phpunit/phpunit": "5.7.*"
   },
   "suggest": {
-    "ext-stats": "*",
     "ext-gmp": "*",
     "ext-ds": "*"
   },

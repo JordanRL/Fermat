@@ -13,7 +13,9 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 
 ### Removed
 
-*Nothing*
+- Composer 
+  - **Suggested:**
+    - ext-stats: * (As this library is no longer maintained an unavailable on PHP 7+, it is being removed)
 
 ### Changed
 
