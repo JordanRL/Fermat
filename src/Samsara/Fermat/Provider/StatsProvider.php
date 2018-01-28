@@ -3,8 +3,12 @@
 namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\DecimalInterface;
+use Samsara\Fermat\Types\Base\FractionInterface;
+use Samsara\Fermat\Values\ImmutableNumber;
 
 class StatsProvider
 {
@@ -13,6 +17,7 @@ class StatsProvider
      * @param $x
      *
      * @return NumberInterface
+     * @throws IntegrityConstraint
      */
     public static function normalCDF($x)
     {
@@ -47,6 +52,12 @@ class StatsProvider
 
     }
 
+    /**
+     * @param $x
+     *
+     * @return DecimalInterface|NumberInterface
+     * @throws IntegrityConstraint
+     */
     public static function complementNormalCDF($x)
     {
         $p = self::normalCDF($x);
@@ -55,6 +66,12 @@ class StatsProvider
         return $one->subtract($p);
     }
 
+    /**
+     * @param $x
+     *
+     * @return DecimalInterface|FractionInterface|NumberInterface|ImmutableNumber
+     * @throws IntegrityConstraint
+     */
     public static function gaussErrorFunction($x)
     {
 
@@ -87,7 +104,14 @@ class StatsProvider
 
     }
 
-    public static function inverseNormalCDF($p, $precision = 10)
+    /**
+     * @param     $p
+     * @param int $precision
+     *
+     * @return DecimalInterface|NumberInterface|ImmutableNumber
+     * @throws IntegrityConstraint
+     */
+    public static function inverseNormalCDF($p, int $precision = 10)
     {
         $pi = Numbers::makePi();
         $r2pi = $pi->multiply(2)->sqrt();
@@ -117,6 +141,14 @@ class StatsProvider
         }
     }
 
+    /**
+     * @param $n
+     * @param $k
+     *
+     * @return DecimalInterface|NumberInterface|ImmutableNumber
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
+     */
     public static function binomialCoefficient($n, $k)
     {
 
@@ -141,6 +173,55 @@ class StatsProvider
 
         return $n->factorial()->divide($k->factorial()->multiply($n->subtract($k)->factorial()));
 
+    }
+
+    /**
+     * @param     $z
+     * @param int $precision
+     *
+     * @return DecimalInterface|NumberInterface|ImmutableNumber
+     * @throws IntegrityConstraint
+     */
+    public static function gammaFunction($z, int $precision = 10)
+    {
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
+
+        if ($z->isInt()) {
+            if ($z->isNegative() || $z->isEqual(0)) {
+                throw new IntegrityConstraint(
+                    'Non-positive integers are not valid gamma function arguments',
+                    'Do not provide non-positive integers to this function',
+                    'The gamma function is not defined for zero or negative integers, but is continuous for all other values'
+                );
+            }
+            return $z->subtract(1)->factorial();
+        }
+
+        $x = Numbers::makeZero();
+        $e = Numbers::makeE();
+        $gamma = Numbers::makeZero();
+
+        $continue = true;
+
+        while ($continue) {
+
+            $adjustment = $x->pow(
+                $z->subtract(1)
+            )->multiply(
+                $e->pow(
+                    $x->multiply(-1)
+                )
+            );
+
+            $gamma = $gamma->add($adjustment);
+
+            if ($adjustment->numberOfLeadingZeros() > $precision) {
+                $continue = false;
+            }
+
+        }
+
+        return $gamma;
     }
 
 }

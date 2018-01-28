@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 ## [Unreleased] - [unreleased]
 ### Added
 
+- Providers:
+  - CalculusProvider
+  - ArithmeticProvider
+    - Added a precision argument to all methods that were missing it.
+  - StatsProvider
+    - Added docblocks for all methods
+    - Added gamma function
 - Types:
   - Interfaces:
     - MatrixInterface
@@ -19,10 +26,13 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 
 ### Changed
 
-- ArithmeticProvider
-  - Added a precision argument to all methods that were missing it.
-- Number
-  - Now passes the precision setting to ALL calls to ArithmeticProvider allowing precision up to 2147483646 digits. (Still limited by constants on log and trig functions.)
+- Providers:
+  - Distributions:
+    - Removed references to ext-stats in all distributions
+    - Fixed missing @throws in docblocks in all distributions
+- Types:
+  - Number
+    - Now passes the precision setting to ALL calls to ArithmeticProvider allowing precision up to 2147483646 digits. (Still limited by constants on log and trig functions.)
 
 ### Fixed
 

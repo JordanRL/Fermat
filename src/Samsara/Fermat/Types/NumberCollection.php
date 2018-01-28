@@ -2,6 +2,8 @@
 
 namespace Samsara\Fermat\Types;
 
+use RandomLib\Factory;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\Distribution\Exponential;
@@ -17,18 +19,35 @@ class NumberCollection implements NumberCollectionInterface
 
     private $collection;
 
+    /**
+     * NumberCollection constructor.
+     *
+     * @param array $numbers
+     * @throws IntegrityConstraint
+     */
     public function __construct(array $numbers = [])
     {
         if (count($numbers)) {
             $this->collect($numbers);
+        } else {
+            $this->collection = new Vector();
         }
     }
 
+    /**
+     * @return Vector
+     */
     private function getCollection(): Vector
     {
         return $this->collection;
     }
 
+    /**
+     * @param array $numbers
+     *
+     * @return NumberCollectionInterface
+     * @throws IntegrityConstraint
+     */
     public function collect(array $numbers): NumberCollectionInterface
     {
         $immutableNumbers = [];
@@ -41,6 +60,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param NumberInterface $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function push(NumberInterface $number): NumberCollectionInterface
     {
         $this->getCollection()->push($number);
@@ -48,11 +72,19 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @return NumberInterface
+     */
     public function pop(): NumberInterface
     {
         return $this->getCollection()->pop();
     }
 
+    /**
+     * @param NumberInterface $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function unshift(NumberInterface $number): NumberCollectionInterface
     {
         $this->getCollection()->unshift($number);
@@ -60,11 +92,17 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @return NumberInterface
+     */
     public function shift(): NumberInterface
     {
         return $this->getCollection()->shift();
     }
 
+    /**
+     * @return NumberCollectionInterface
+     */
     public function sort(): NumberCollectionInterface
     {
         $this->getCollection()->sort(function($left, $right){
@@ -74,6 +112,9 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @return NumberCollectionInterface
+     */
     public function reverse(): NumberCollectionInterface
     {
         $this->getCollection()->reverse();
@@ -81,6 +122,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function add($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
@@ -91,6 +137,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function subtract($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
@@ -101,6 +152,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function multiply($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
@@ -111,6 +167,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function divide($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
@@ -121,6 +182,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function pow($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
@@ -131,6 +197,12 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     * @throws IntegrityConstraint
+     */
     public function exp($number): NumberCollectionInterface
     {
         $number = Numbers::makeOrDont(Numbers::IMMUTABLE, $number);
@@ -142,11 +214,37 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param int $key
+     *
+     * @return NumberInterface
+     */
     public function get(int $key): NumberInterface
     {
         return $this->getCollection()->get($key);
     }
 
+    /**
+     * @return NumberInterface
+     */
+    public function getRandom(): NumberInterface
+    {
+        $maxKey = $this->getCollection()->count() - 1;
+
+        try {
+            $key = random_int(0, $maxKey);
+        } catch (\Exception $exception) {
+            $randFactory = new Factory();
+            $generator = $randFactory->getMediumStrengthGenerator();
+            $key = $generator->generateInt(0, $maxKey);
+        }
+
+        return $this->get($key);
+    }
+
+    /**
+     * @return NumberInterface
+     */
     public function sum(): NumberInterface
     {
         $sum = Numbers::makeZero();
@@ -158,11 +256,18 @@ class NumberCollection implements NumberCollectionInterface
         return $sum;
     }
 
+    /**
+     * @return NumberInterface
+     */
     public function mean(): NumberInterface
     {
         return $this->sum()->divide($this->getCollection()->count());
     }
 
+    /**
+     * @return Normal
+     * @throws IntegrityConstraint
+     */
     public function makeNormalDistribution(): Normal
     {
         /** @var ImmutableNumber $mean */
@@ -184,6 +289,10 @@ class NumberCollection implements NumberCollectionInterface
         return new Normal($mean, $sd);
     }
 
+    /**
+     * @return Poisson
+     * @throws IntegrityConstraint
+     */
     public function makePoissonDistribution(): Poisson
     {
         $sum = $this->sum();
@@ -195,6 +304,10 @@ class NumberCollection implements NumberCollectionInterface
         return new Poisson($lambda);
     }
 
+    /**
+     * @return Exponential
+     * @throws IntegrityConstraint
+     */
     public function makeExponentialDistribution(): Exponential
     {
         $average = $this->mean();

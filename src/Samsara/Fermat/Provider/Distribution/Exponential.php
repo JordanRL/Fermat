@@ -60,14 +60,6 @@ class Exponential
             );
         }
 
-        if (
-            function_exists('stats_cdf_exponential') &&
-            $x->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->lambda->isLessThanOrEqualTo(PHP_INT_MAX)
-        ) {
-            return Numbers::make(Numbers::IMMUTABLE, stats_cdf_exponential($x->getValue(), $one->divide($this->lambda)->getValue(), 1));
-        }
-
         /** @var ImmutableNumber $e */
         $e = Numbers::makeE();
 
@@ -88,7 +80,6 @@ class Exponential
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
-        $one = Numbers::makeOne();
 
         if (!$x->isPositive()) {
             throw new IntegrityConstraint(
@@ -96,14 +87,6 @@ class Exponential
                 'Provide a positive x',
                 'Exponential distributions work on time to occurrence; the time to occurrence (x) must be positive'
             );
-        }
-
-        if (
-            function_exists('stats_dens_exponential') &&
-            $x->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->lambda->isLessThanOrEqualTo(PHP_INT_MAX)
-        ) {
-            return Numbers::make(Numbers::IMMUTABLE, stats_dens_exponential($x->getValue(), $one->divide($this->lambda)->getValue()));
         }
 
         /** @var ImmutableNumber $e */
@@ -127,7 +110,6 @@ class Exponential
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
         $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
-        $one = Numbers::makeOne();
 
         if (!$x1->isPositive() || !$x2->isPositive()) {
             throw new IntegrityConstraint(
@@ -135,23 +117,6 @@ class Exponential
                 'Provide a positive x',
                 'Exponential distributions work on time to occurrence; the time to occurrence (x) must be positive'
             );
-        }
-
-        if (
-            function_exists('stats_dens_exponential') &&
-            $x1->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $x2->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->lambda->isLessThanOrEqualTo(PHP_INT_MAX)
-        ) {
-            /** @var ImmutableNumber $pdf1 */
-            $pdf1 = Numbers::make(Numbers::IMMUTABLE, stats_dens_exponential($x1->getValue(), $one->divide($this->lambda)->getValue()));
-            /** @var ImmutableNumber $pdf2 */
-            $pdf2 = Numbers::make(Numbers::IMMUTABLE, stats_dens_exponential($x2->getValue(), $one->divide($this->lambda)->getValue()));
-
-            /** @var ImmutableNumber $rangePdf */
-            $rangePdf = $pdf1->subtract($pdf2)->abs();
-
-            return $rangePdf;
         }
 
         /** @var ImmutableNumber $rangePdf */
