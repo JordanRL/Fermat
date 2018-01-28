@@ -3,7 +3,7 @@
   "type": "library",
   "description": "A library providing math and statistics operations for numbers of arbitrary size.",
   "keywords": ["math", "bigint", "large numbers", "numbers", "stats", "statistics", "gaussian", "poisson"],
-  "license": "GPL-2.0",
+  "license": "GPL-2.0-or-later",
   "require": {
     "ircmaxell/random-lib": "1.1.*",
     "riimu/kit-baseconversion": "1.*",
@@ -16,7 +16,6 @@
     "phpunit/phpunit": "5.7.*"
   },
   "suggest": {
-    "ext-stats": "*",
     "ext-gmp": "*",
     "ext-ds": "*"
   },

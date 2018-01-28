@@ -5,11 +5,17 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 ## [Unreleased] - [unreleased]
 ### Added
 
-*Nothing*
+- Types:
+  - Interfaces:
+    - MatrixInterface
+    - NumberCollectionInterface
+  - NumberCollection
 
 ### Removed
 
-*Nothing*
+- Composer 
+  - **Suggested:**
+    - ext-stats: * (As this library is no longer maintained an unavailable on PHP 7+, it is being removed)
 
 ### Changed
 
@@ -69,7 +75,6 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - Tuple
 - Numbers:
   - CartesianCoordinate
-  - Currency
   - ImmutableFraction
   - ImmutableNumber
   - MutableFraction
