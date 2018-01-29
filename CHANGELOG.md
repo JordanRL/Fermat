@@ -36,7 +36,9 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 
 ### Fixed
 
-*Nothing*
+- Providers:
+  - SequenceProvider
+    - Fixed erroneous limit on Euler Zigzag sequence index (45 -> 50) and updated exception to reflect current limit (39 -> 50)
 
 ## [1.0.2] - 2017-01-16
 ### Fixed

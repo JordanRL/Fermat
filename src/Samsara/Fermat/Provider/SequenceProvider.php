@@ -121,11 +121,11 @@ class SequenceProvider
 
         $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
 
-        if ($n->isGreaterThan(45)) {
+        if ($n->isGreaterThan(50)) {
             throw new IntegrityConstraint(
-                '$n cannot be larger than 39',
-                'Limit your use of the Euler Zigzag Sequence to the 39th index',
-                'This library does not support the Euler Zigzag Sequence (OEIS: A000111) beyond E(39)'
+                '$n cannot be larger than 50',
+                'Limit your use of the Euler Zigzag Sequence to the 50th index',
+                'This library does not support the Euler Zigzag Sequence (OEIS: A000111) beyond E(50)'
             );
         }
 
