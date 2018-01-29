@@ -74,14 +74,6 @@ class Numbers
                 return $customCoordinate;
             }
 
-            if ($reflector->implementsInterface(CoordinateInterface::class) && !is_array($value)) {
-                throw new IntegrityConstraint(
-                    'The $value for a CoordinateInterface must be an array',
-                    'Provide an array for the $value',
-                    'A CoordinateInterface expects the value to be an array of axes and values'
-                );
-            }
-
             if ($reflector->implementsInterface(NumberInterface::class)) {
                 /** @var NumberInterface $customNumber */
                 $customNumber = $reflector->newInstance([
@@ -91,12 +83,20 @@ class Numbers
                 ]);
                 return $customNumber;
             }
+
+            if ($reflector->implementsInterface(CoordinateInterface::class) && !is_array($value)) {
+                throw new IntegrityConstraint(
+                    'The $value for a CoordinateInterface must be an array',
+                    'Provide an array for the $value',
+                    'A CoordinateInterface expects the value to be an array of axes and values'
+                );
+            }
         }
 
         throw new IntegrityConstraint(
-            '$type must be an implementation of NumberInterface',
-            'Provide a type that implements NumberInterface (the Numbers class contains constants for the built in ones)',
-            'The $type argument was not an implementation of NumberInterface'
+            '$type must be an implementation of NumberInterface or CoordinateInterface',
+            'Provide a type that implements NumberInterface or CoordinateInterface (the Numbers class contains constants for the built in ones)',
+            'The $type argument was not an implementation of NumberInterface or CoordinateInterface'
         );
     }
 
@@ -202,9 +202,9 @@ class Numbers
             }
 
             throw new IntegrityConstraint(
-                'Type must be ImmutableFraction or MutableFraction',
+                'Type must be an implementation of FractionInterface',
                 'Alter to calling code to use the correct type',
-                'makeFractionFromString can only make objects of type ImmutableFraction or MutableFraction; '.$type.' given'
+                'makeFractionFromString can only make objects which implement the FractionInterface; '.$type.' given'
             );
         }
     }

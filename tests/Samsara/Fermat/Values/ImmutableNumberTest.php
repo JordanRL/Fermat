@@ -162,13 +162,15 @@ class ImmutableNumberTest extends TestCase
 
         $negativeOne = new ImmutableNumber(-1);
 
-        $this->setExpectedException(IncompatibleObjectState::class, 'Cannot make a factorial with a number less than 1 (other than zero)');
+        $this->expectException(IncompatibleObjectState::class);
+        $this->expectExceptionMessage('Cannot make a factorial with a number less than 1 (other than zero)');
 
         $negativeOne->factorial();
 
         $oneTenth = new ImmutableNumber('1.1');
 
-        $this->setExpectedException(IncompatibleObjectState::class, 'Can only perform a factorial on a whole number');
+        $this->expectException(IncompatibleObjectState::class);
+        $this->expectExceptionMessage('Can only perform a factorial on a whole number');
 
         $oneTenth->factorial();
 
@@ -188,7 +190,8 @@ class ImmutableNumberTest extends TestCase
 
         $oneTenth = new ImmutableNumber('0.1');
 
-        $this->setExpectedException(IncompatibleObjectState::class, 'Can only perform a double factorial on a whole number');
+        $this->expectException(IncompatibleObjectState::class);
+        $this->expectExceptionMessage('Can only perform a double factorial on a whole number');
 
         $oneTenth->doubleFactorial();
 
@@ -398,7 +401,7 @@ class ImmutableNumberTest extends TestCase
 
         $oneHalf = new ImmutableNumber('0.5');
 
-        $this->setExpectedException(IntegrityConstraint::class);
+        $this->expectException(IntegrityConstraint::class);
 
         $three->getLeastCommonMultiple($oneHalf);
 

@@ -8,7 +8,9 @@ use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\StatsProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
+use Samsara\Fermat\Types\Base\NumberCollectionInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\NumberCollection;
 use Samsara\Fermat\Values\ImmutableNumber;
 
 class Normal
@@ -48,7 +50,7 @@ class Normal
      * @return Normal
      * @throws IntegrityConstraint
      */
-    public static function makeFromMean($p, $x, $mean)
+    public static function makeFromMean($p, $x, $mean): Normal
     {
         $one = Numbers::makeOne();
         $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
@@ -70,7 +72,7 @@ class Normal
      * @return Normal
      * @throws IntegrityConstraint
      */
-    public static function makeFromSd($p, $x, $sd)
+    public static function makeFromSd($p, $x, $sd): Normal
     {
         $one = Numbers::makeOne();
         $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
@@ -90,7 +92,7 @@ class Normal
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function cdf($x)
+    public function cdf($x): ImmutableNumber
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
@@ -113,7 +115,7 @@ class Normal
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function pdf($x1, $x2 = null)
+    public function pdf($x1, $x2 = null): ImmutableNumber
     {
 
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
@@ -140,7 +142,7 @@ class Normal
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function percentBelowX($x)
+    public function percentBelowX($x): ImmutableNumber
     {
         return $this->cdf($x);
     }
@@ -151,7 +153,7 @@ class Normal
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function percentAboveX($x)
+    public function percentAboveX($x): ImmutableNumber
     {
         $one = Numbers::makeOne();
 
@@ -159,12 +161,12 @@ class Normal
     }
 
     /**
-     * @param $x
+     * @param int|float|DecimalInterface $x
      *
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function zScoreOfX($x)
+    public function zScoreOfX($x): ImmutableNumber
     {
         /** @var ImmutableNumber $x */
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -181,7 +183,7 @@ class Normal
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function xFromZScore($z)
+    public function xFromZScore($z): ImmutableNumber
     {
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
 
@@ -195,7 +197,7 @@ class Normal
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function random()
+    public function random(): ImmutableNumber
     {
         $randFactory = new Factory();
         $generator = $randFactory->getMediumStrengthGenerator();
@@ -205,10 +207,26 @@ class Normal
         $rand2 = Numbers::make(Numbers::IMMUTABLE, $generator->generateInt(), 20);
         $rand2 = $rand2->divide(PHP_INT_MAX);
 
-        $randomNumber = $rand1->ln()->multiply(-2)->sqrt()->multiply($rand2->multiply(Numbers::TAU)->cos(1, 2, 20));
+        $randomNumber = $rand1->ln()->multiply(-2)->sqrt()->multiply($rand2->multiply(Numbers::TAU)->cos(1, false));
+        /** @var ImmutableNumber $randomNumber */
         $randomNumber = $randomNumber->multiply($this->sd)->add($this->mean);
 
         return $randomNumber;
+    }
+
+    /**
+     * @param int $sampleSize
+     * @return NumberCollection
+     */
+    public function randomSample(int $sampleSize = 10): NumberCollection
+    {
+        $sample = new NumberCollection();
+
+        for ($i = 1;$i < $sampleSize;$i++) {
+            $sample->push($this->random());
+        }
+
+        return $sample;
     }
 
     /**
@@ -220,23 +238,23 @@ class Normal
      * @throws OptionalExit
      * @throws IntegrityConstraint
      */
-    public function rangeRandom($min = 0, $max = PHP_INT_MAX, $maxIterations = 20)
+    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableNumber
     {
         $i = 0;
 
         do {
             $randomNumber = $this->random();
             $i++;
-        } while (($randomNumber->isGreaterThanOrEqualTo($max) || $randomNumber->isLessThanOrEqualTo($min)) && $i < $maxIterations);
+        } while (($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) && $i < $maxIterations);
 
         if ($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) {
             throw new OptionalExit(
                 'All random numbers generated were outside of the requested range',
                 'A suitable random number, restricted by the $max ('.$max.') and $min ('.$min.'), could not be found within '.$maxIterations.' iterations'
             );
-        } else {
-            return $randomNumber;
         }
+
+        return $randomNumber;
     }
 
 }

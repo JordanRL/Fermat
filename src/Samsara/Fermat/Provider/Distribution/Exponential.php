@@ -45,7 +45,7 @@ class Exponential
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function cdf($x)
+    public function cdf($x): ImmutableNumber
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -76,7 +76,7 @@ class Exponential
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function pdf($x)
+    public function pdf($x): ImmutableNumber
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -106,7 +106,7 @@ class Exponential
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function rangePdf($x1, $x2)
+    public function rangePdf($x1, $x2): ImmutableNumber
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
         $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
@@ -128,13 +128,14 @@ class Exponential
     /**
      * @return ImmutableNumber
      */
-    public function random()
+    public function random(): ImmutableNumber
     {
 
         $randFactory = new Factory();
         $generator = $randFactory->getMediumStrengthGenerator();
         $one = Numbers::makeOne();
-        $u = $generator->generateInt() / PHP_INT_MAX;
+        $u = Numbers::make(Numbers::IMMUTABLE, $generator->generateInt(), 20);
+        $u = $u->divide(PHP_INT_MAX);
 
         /** @var ImmutableNumber $random */
         $random = $one->subtract($u)->ln()->divide($this->lambda->multiply(-1));
@@ -151,7 +152,7 @@ class Exponential
      * @return ImmutableNumber
      * @throws OptionalExit
      */
-    public function rangeRandom($min = 0, $max = PHP_INT_MAX, $maxIterations = 20)
+    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableNumber
     {
 
         $i = 0;
@@ -159,17 +160,16 @@ class Exponential
         do {
             $randomNumber = $this->random();
             $i++;
-        } while (($randomNumber->isGreaterThanOrEqualTo($max) || $randomNumber->isLessThanOrEqualTo($min)) && $i < $maxIterations);
+        } while (($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) && $i < $maxIterations);
 
         if ($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) {
             throw new OptionalExit(
                 'All random numbers generated were outside of the requested range',
                 'A suitable random number, restricted by the $max ('.$max.') and $min ('.$min.'), could not be found within '.$maxIterations.' iterations'
             );
-        } else {
-            return $randomNumber;
         }
 
+        return $randomNumber;
     }
 
 }

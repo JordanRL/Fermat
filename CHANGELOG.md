@@ -37,6 +37,9 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 ### Fixed
 
 - Providers:
+  - Distributions:
+    - Exponential
+      - Fixed accidental cast to float in random()
   - SequenceProvider
     - Fixed erroneous limit on Euler Zigzag sequence index (45 -> 50) and updated exception to reflect current limit (39 -> 50)
 
