@@ -571,4 +571,14 @@ class ImmutableNumberTest extends TestCase
 
     }
 
+    public function testPrecisionLimit()
+    {
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('Precision of any number cannot be calculated beyond 2147483646 digits');
+
+        $precisionLimit = new ImmutableNumber(1, 2147483647);
+
+    }
+
 }
