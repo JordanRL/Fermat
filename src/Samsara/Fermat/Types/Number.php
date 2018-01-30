@@ -13,6 +13,7 @@ use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Provider\StatsProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Traits\ArithmeticTrait;
 use Samsara\Fermat\Values\ImmutableNumber;
 
 abstract class Number implements Hashable
@@ -27,6 +28,8 @@ abstract class Number implements Hashable
     protected $base;
 
     protected $extensions = true;
+
+    use ArithmeticTrait;
 
     public function __construct($value, $precision = null, $base = 10)
     {
@@ -74,104 +77,6 @@ abstract class Number implements Hashable
 
         return $this;
 
-    }
-
-    public function add($num)
-    {
-        if (is_object($num) && method_exists($num, 'asDecimal')) {
-            $num = $num->asDecimal($this->getPrecision());
-        } else {
-            $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
-        }
-
-        $oldBase = $this->convertForModification();
-        $numOldBase = $num->convertForModification();
-
-        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
-
-        $value = ArithmeticProvider::add($this->getValue(), $num->getValue(), $internalPrecision);
-
-        $this->convertFromModification($oldBase);
-        $num->convertFromModification($numOldBase);
-
-        return $this->setValue($value)->truncateToPrecision($internalPrecision);
-    }
-
-    public function subtract($num)
-    {
-        if (is_object($num) && method_exists($num, 'asDecimal')) {
-            $num = $num->asDecimal($this->getPrecision());
-        } else {
-            $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
-        }
-
-        $oldBase = $this->convertForModification();
-        $numOldBase = $num->convertForModification();
-
-        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
-
-        $value = ArithmeticProvider::subtract($this->getValue(), $num->getValue(), $internalPrecision);
-
-        $this->convertFromModification($oldBase);
-        $num->convertFromModification($numOldBase);
-
-        return $this->setValue($value)->truncateToPrecision($internalPrecision);
-    }
-
-    /**
-     * @param $num
-     *
-     * @return DecimalInterface|NumberInterface
-     */
-    public function multiply($num)
-    {
-        if (is_object($num) && method_exists($num, 'asDecimal')) {
-            $num = $num->asDecimal($this->getPrecision());
-        } else {
-            $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
-        }
-
-        $oldBase = $this->convertForModification();
-        $numOldBase = $num->convertForModification();
-
-        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
-
-        $value = ArithmeticProvider::multiply($this->getValue(), $num->getValue(), $internalPrecision);
-
-        $this->convertFromModification($oldBase);
-        $num->convertFromModification($numOldBase);
-
-        return $this->setValue($value)->truncateToPrecision($internalPrecision);
-    }
-
-    /**
-     * Note about precision: it uses the smaller of the two precisions (significant figures).
-     *
-     * @param $num
-     * @param $precision
-     * @return DecimalInterface|NumberInterface
-     */
-    public function divide($num, $precision = null)
-    {
-        if (is_object($num) && method_exists($num, 'asDecimal')) {
-            $num = $num->asDecimal($this->getPrecision());
-        } else {
-            $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
-        }
-
-        $oldBase = $this->convertForModification();
-        $numOldBase = $num->convertForModification();
-
-        if (!is_int($precision)) {
-            $precision = ($this->getPrecision() > $num->getPrecision()) ? $num->getPrecision() : $this->getPrecision();
-        }
-
-        $value = ArithmeticProvider::divide($this->getValue(), $num->getValue(), $precision);
-
-        $this->convertFromModification($oldBase);
-        $num->convertFromModification($numOldBase);
-
-        return $this->setValue($value);
     }
 
     public function factorial()

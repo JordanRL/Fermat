@@ -6,6 +6,7 @@ use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\FractionInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Traits\ArithmeticTrait;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableNumber;
 
@@ -23,6 +24,8 @@ abstract class Fraction
      * @var ImmutableNumber
      */
     protected $denominator;
+
+    use ArithmeticTrait;
 
     public function __construct($numerator, $denominator, $base = 10)
     {
@@ -63,74 +66,6 @@ abstract class Fraction
         $denominator = $this->getDenominator()->divide($gcd);
 
         return $this->setValue($numerator, $denominator);
-
-    }
-
-    public function add($num)
-    {
-
-        /** @var ImmutableFraction $num */
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $num);
-
-        if ($this->getDenominator()->isEqual($num->getDenominator())) {
-            $finalDenominator = $this->getDenominator();
-            $finalNumerator = $this->getNumerator()->add($num->getNumerator());
-        } else {
-            $finalDenominator = $this->getSmallestCommonDenominator($num);
-
-            list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($num, $finalDenominator);
-
-            $finalNumerator = $thisNumerator->add($thatNumerator);
-        }
-
-        return $this->setValue($finalNumerator, $finalDenominator);
-
-    }
-
-    public function subtract($num)
-    {
-
-        /** @var ImmutableFraction $num */
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $num);
-
-        if ($this->getDenominator()->isEqual($num->getDenominator())) {
-            $finalDenominator = $this->getDenominator();
-            $finalNumerator = $this->getNumerator()->subtract($num->getNumerator());
-        } else {
-            $finalDenominator = $this->getSmallestCommonDenominator($num);
-
-            list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($num, $finalDenominator);
-
-            $finalNumerator = $thisNumerator->subtract($thatNumerator);
-        }
-
-        return $this->setValue($finalNumerator, $finalDenominator);
-
-    }
-
-    public function multiply($num)
-    {
-
-        /** @var ImmutableFraction $num */
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $num);
-
-        $finalDenominator = $this->getDenominator()->multiply($num->getDenominator());
-        $finalNumerator = $this->getNumerator()->multiply($num->getNumerator());
-
-        return $this->setValue($finalNumerator, $finalDenominator);
-
-    }
-
-    public function divide($num)
-    {
-
-        /** @var ImmutableFraction $num */
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $num);
-
-        $finalDenominator = $this->getDenominator()->multiply($num->getNumerator());
-        $finalNumerator = $this->getNumerator()->multiply($num->getDenominator());
-
-        return $this->setValue($finalNumerator, $finalDenominator);
 
     }
 
