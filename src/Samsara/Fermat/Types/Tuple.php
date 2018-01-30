@@ -23,6 +23,9 @@ class Tuple
     public function __construct(...$data)
     {
         $this->data = [];
+
+        var_dump($data);
+
         foreach ($data as $value) {
             $this->data[] = Numbers::make(Numbers::IMMUTABLE, $value);
         }
