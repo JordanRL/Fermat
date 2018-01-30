@@ -36,4 +36,55 @@ class NumbersTest extends TestCase
 
     }
 
+    public function testMakeFromFloat()
+    {
+
+        $one = Numbers::make(Numbers::IMMUTABLE, 1.1);
+
+        $this->assertEquals('1.1', $one->getValue());
+
+        $one = Numbers::make(Numbers::MUTABLE, 1.1);
+
+        $this->assertEquals('1.1', $one->getValue());
+
+        $one = Numbers::make(Numbers::IMMUTABLE_FRACTION, 1.1);
+
+        $this->assertEquals('1/1', $one->getValue());
+
+        $one = Numbers::make(Numbers::MUTABLE_FRACTION, 1.1);
+
+        $this->assertEquals('1/1', $one->getValue());
+
+    }
+
+    public function testMakeFromString()
+    {
+
+        $one = Numbers::make(Numbers::IMMUTABLE, '1.3');
+
+        $this->assertEquals('1.3', $one->getValue());
+
+        $one = Numbers::make(Numbers::MUTABLE, '1.3');
+
+        $this->assertEquals('1.3', $one->getValue());
+
+        $one = Numbers::make(Numbers::IMMUTABLE_FRACTION, '1.3');
+
+        $this->assertEquals('1/1', $one->getValue());
+
+        $one = Numbers::make(Numbers::MUTABLE_FRACTION, '1.3');
+
+        $this->assertEquals('1/1', $one->getValue());
+
+    }
+
+    public function testMakeCoordinate()
+    {
+        $coords = [1, 5];
+
+        $coordObj = Numbers::make(Numbers::CARTESIAN_COORDINATE, $coords);
+
+        $this->assertEquals('5', $coordObj->get(1));
+    }
+
 }
