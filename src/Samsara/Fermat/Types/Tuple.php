@@ -22,7 +22,10 @@ class Tuple
 
     public function __construct(...$data)
     {
-        $this->data = Numbers::makeOrDont(Numbers::IMMUTABLE, $data);
+        $this->data = [];
+        foreach ($data as $value) {
+            $this->data[] = Numbers::make(Numbers::IMMUTABLE, $value);
+        }
         $this->size = count($this->data);
     }
 
