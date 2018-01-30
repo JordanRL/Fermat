@@ -7,21 +7,56 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\FractionInterface;
+use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableFraction;
+use Samsara\Fermat\Values\ImmutableNumber;
 
 trait ArithmeticTrait
 {
 
-    public function add($num)
+    protected function checkArithmeticTraitAndInterface()
     {
 
         if ($this instanceof DecimalInterface) {
+            return 1;
+        } elseif ($this instanceof FractionInterface) {
+            return 2;
+        } else {
+            throw new IntegrityConstraint(
+                'The ArithmeticTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
+                'Implement either of the required interfaces',
+                'You cannot use the ArithmeticTrait without implementing either the DecimalInterface or FractionInterface'
+            );
+        }
+
+    }
+
+    protected function transformNum($num, $instance)
+    {
+
+        if ($instance == 1) {
             if (is_object($num) && method_exists($num, 'asDecimal')) {
                 $num = $num->asDecimal($this->getPrecision());
             } else {
                 $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
             }
+        } elseif ($instance == 2) {
+            $num = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $num);
+        }
 
+        return $num;
+
+    }
+
+    public function add($num)
+    {
+
+        $check = $this->checkArithmeticTraitAndInterface();
+
+        $num = $this->transformNum($num, $check);
+
+        if ($check == 1) {
+            /** @var DecimalInterface|NumberInterface $num */
             $oldBase = $this->convertForModification();
             $numOldBase = $num->convertForModification();
 
@@ -33,12 +68,11 @@ trait ArithmeticTrait
             $num->convertFromModification($numOldBase);
 
             return $this->setValue($value)->truncateToPrecision($internalPrecision);
-        } elseif ($this instanceof FractionInterface) {
+        } else {
             /**
              * @var ImmutableFraction $num
              * @var FractionInterface $this
              */
-            $num = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $num);
 
             if ($this->getDenominator()->isEqual($num->getDenominator())) {
                 $finalDenominator = $this->getDenominator();
@@ -52,26 +86,17 @@ trait ArithmeticTrait
             }
 
             return $this->setValue($finalNumerator, $finalDenominator);
-        } else {
-            throw new IntegrityConstraint(
-                'The ArithmeticTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
-                'Implement either of the required interfaces',
-                'You cannot use the ArithmeticTrait without implementing either the DecimalInterface or FractionInterface'
-            );
         }
 
     }
 
     public function subtract($num)
     {
+        $check = $this->checkArithmeticTraitAndInterface();
 
-        if ($this instanceof DecimalInterface) {
-            if (is_object($num) && method_exists($num, 'asDecimal')) {
-                $num = $num->asDecimal($this->getPrecision());
-            } else {
-                $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
-            }
+        $num = $this->transformNum($num, $check);
 
+        if ($check == 1) {
             $oldBase = $this->convertForModification();
             $numOldBase = $num->convertForModification();
 
@@ -83,9 +108,8 @@ trait ArithmeticTrait
             $num->convertFromModification($numOldBase);
 
             return $this->setValue($value)->truncateToPrecision($internalPrecision);
-        } elseif ($this instanceof FractionInterface) {
+        } else {
             /** @var ImmutableFraction $num */
-            $num = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $num);
 
             if ($this->getDenominator()->isEqual($num->getDenominator())) {
                 $finalDenominator = $this->getDenominator();
@@ -99,26 +123,17 @@ trait ArithmeticTrait
             }
 
             return $this->setValue($finalNumerator, $finalDenominator);
-        } else {
-            throw new IntegrityConstraint(
-                'The ArithmeticTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
-                'Implement either of the required interfaces',
-                'You cannot use the ArithmeticTrait without implementing either the DecimalInterface or FractionInterface'
-            );
         }
 
     }
 
     public function multiply($num)
     {
+        $check = $this->checkArithmeticTraitAndInterface();
 
-        if ($this instanceof DecimalInterface) {
-            if (is_object($num) && method_exists($num, 'asDecimal')) {
-                $num = $num->asDecimal($this->getPrecision());
-            } else {
-                $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
-            }
+        $num = $this->transformNum($num, $check);
 
+        if ($check == 1) {
             $oldBase = $this->convertForModification();
             $numOldBase = $num->convertForModification();
 
@@ -130,34 +145,24 @@ trait ArithmeticTrait
             $num->convertFromModification($numOldBase);
 
             return $this->setValue($value)->truncateToPrecision($internalPrecision);
-        } elseif ($this instanceof FractionInterface) {
+        } else {
             /** @var ImmutableFraction $num */
-            $num = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $num);
 
             $finalDenominator = $this->getDenominator()->multiply($num->getDenominator());
             $finalNumerator = $this->getNumerator()->multiply($num->getNumerator());
 
             return $this->setValue($finalNumerator, $finalDenominator);
-        } else {
-            throw new IntegrityConstraint(
-                'The ArithmeticTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
-                'Implement either of the required interfaces',
-                'You cannot use the ArithmeticTrait without implementing either the DecimalInterface or FractionInterface'
-            );
         }
 
     }
 
     public function divide($num, $precision = null)
     {
+        $check = $this->checkArithmeticTraitAndInterface();
 
-        if ($this instanceof DecimalInterface) {
-            if (is_object($num) && method_exists($num, 'asDecimal')) {
-                $num = $num->asDecimal($this->getPrecision());
-            } else {
-                $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
-            }
+        $num = $this->transformNum($num, $check);
 
+        if ($check == 1) {
             $oldBase = $this->convertForModification();
             $numOldBase = $num->convertForModification();
 
@@ -171,21 +176,79 @@ trait ArithmeticTrait
             $num->convertFromModification($numOldBase);
 
             return $this->setValue($value);
-        } elseif ($this instanceof FractionInterface) {
+        } else {
             /** @var ImmutableFraction $num */
-            $num = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $num);
 
             $finalDenominator = $this->getDenominator()->multiply($num->getNumerator());
             $finalNumerator = $this->getNumerator()->multiply($num->getDenominator());
 
             return $this->setValue($finalNumerator, $finalDenominator);
-        } else {
-            throw new IntegrityConstraint(
-                'The ArithmeticTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
-                'Implement either of the required interfaces',
-                'You cannot use the ArithmeticTrait without implementing either the DecimalInterface or FractionInterface'
-            );
         }
+    }
+
+    public function pow($num)
+    {
+        $check = $this->checkArithmeticTraitAndInterface();
+
+        $num = $this->transformNum($num, $check);
+
+        if ($check == 1) {
+            $oldBase = $this->convertForModification();
+            $numOldBase = $num->convertForModification();
+
+            $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+
+            if ($num->isWhole()) {
+                $value = ArithmeticProvider::pow($this->getValue(), $num->getValue(), $internalPrecision);
+            } else {
+                $exponent = $num->multiply($this->ln($internalPrecision));
+                $value = $exponent->exp();
+            }
+
+            $this->convertFromModification($oldBase);
+            $num->convertFromModification($numOldBase);
+
+            return $this->setValue($value)->truncateToPrecision($internalPrecision);
+        } else {
+            /** @var ImmutableNumber $powNumerator */
+            $powNumerator = $this->getNumerator()->pow($num);
+            /** @var ImmutableNumber $powDenominator */
+            $powDenominator = $this->getDenominator()->pow($num);
+
+            if ($powNumerator->isWhole() && $powDenominator->isWhole()) {
+                return $this->setValue($powNumerator, $powDenominator);
+            } else {
+                return $powNumerator->divide($powDenominator);
+            }
+        }
+
+    }
+
+    public function sqrt()
+    {
+        $check = $this->checkArithmeticTraitAndInterface();
+
+        if ($check == 1) {
+            $oldBase = $this->convertForModification();
+
+            $value = ArithmeticProvider::squareRoot($this->getValue(), $this->getPrecision());
+
+            $this->convertFromModification($oldBase);
+
+            return $this->setValue($value);
+        } else {
+            /** @var ImmutableNumber $sqrtNumerator */
+            $sqrtNumerator = $this->getNumerator()->sqrt();
+            /** @var ImmutableNumber $sqrtDenominator */
+            $sqrtDenominator = $this->getDenominator()->sqrt();
+
+            if ($sqrtNumerator->isWhole() && $sqrtDenominator->isWhole()) {
+                return $this->setValue($sqrtNumerator, $sqrtDenominator);
+            } else {
+                return $sqrtNumerator->divide($sqrtDenominator);
+            }
+        }
+
     }
 
 }

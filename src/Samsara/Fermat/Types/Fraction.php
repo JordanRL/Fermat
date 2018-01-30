@@ -71,44 +71,6 @@ abstract class Fraction
 
     }
 
-    public function sqrt()
-    {
-
-        /** @var ImmutableNumber $sqrtNumerator */
-        $sqrtNumerator = $this->getNumerator()->sqrt();
-        /** @var ImmutableNumber $sqrtDenominator */
-        $sqrtDenominator = $this->getDenominator()->sqrt();
-
-        if ($sqrtNumerator->isWhole() && $sqrtDenominator->isWhole()) {
-            return $this->setValue($sqrtNumerator, $sqrtDenominator);
-        } else {
-            return $sqrtNumerator->divide($sqrtDenominator);
-        }
-
-    }
-
-    public function pow($num)
-    {
-
-        if (is_object($num) && method_exists($num, 'asDecimal')) {
-            $num = $num->asDecimal();
-        } else {
-            $num = Numbers::makeOrDont($this, $num);
-        }
-
-        /** @var ImmutableNumber $powNumerator */
-        $powNumerator = $this->getNumerator()->pow($num);
-        /** @var ImmutableNumber $powDenominator */
-        $powDenominator = $this->getDenominator()->pow($num);
-
-        if ($powNumerator->isWhole() && $powDenominator->isWhole()) {
-            return $this->setValue($powNumerator, $powDenominator);
-        } else {
-            return $powNumerator->divide($powDenominator);
-        }
-
-    }
-
     public function abs()
     {
         if ($this->isPositive()) {
@@ -136,16 +98,6 @@ abstract class Fraction
         } else {
             return 0;
         }
-    }
-
-    public function isPositive()
-    {
-        return $this->getNumerator()->isPositive();
-    }
-
-    public function isNegative()
-    {
-        return $this->getNumerator()->isNegative();
     }
 
     public function asDecimal($precision = 10)
