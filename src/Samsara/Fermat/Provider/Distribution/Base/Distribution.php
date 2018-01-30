@@ -7,7 +7,7 @@ use Samsara\Fermat\Values\ImmutableNumber;
 
 abstract class Distribution
 {
-    
+
     abstract public function random(): ImmutableNumber;
 
     /**
