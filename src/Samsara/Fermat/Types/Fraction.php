@@ -71,22 +71,6 @@ abstract class Fraction
 
     }
 
-    public function sqrt()
-    {
-
-        /** @var ImmutableNumber $sqrtNumerator */
-        $sqrtNumerator = $this->getNumerator()->sqrt();
-        /** @var ImmutableNumber $sqrtDenominator */
-        $sqrtDenominator = $this->getDenominator()->sqrt();
-
-        if ($sqrtNumerator->isWhole() && $sqrtDenominator->isWhole()) {
-            return $this->setValue($sqrtNumerator, $sqrtDenominator);
-        } else {
-            return $sqrtNumerator->divide($sqrtDenominator);
-        }
-
-    }
-
     public function abs()
     {
         if ($this->isPositive()) {
