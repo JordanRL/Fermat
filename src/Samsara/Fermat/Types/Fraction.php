@@ -7,6 +7,7 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\FractionInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Types\Traits\ArithmeticTrait;
+use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableNumber;
 
@@ -26,6 +27,7 @@ abstract class Fraction
     protected $denominator;
 
     use ArithmeticTrait;
+    use ComparisonTrait;
 
     public function __construct($numerator, $denominator, $base = 10)
     {
@@ -134,91 +136,6 @@ abstract class Fraction
         } else {
             return 0;
         }
-    }
-
-    public function isEqual($number): bool
-    {
-
-        /** @var ImmutableFraction $number */
-        $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
-
-        if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-            list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
-        } else {
-            $thisNumerator = $this->getNumerator();
-            $thatNumerator = $number->getNumerator();
-        }
-
-        return $thisNumerator->isEqual($thatNumerator);
-
-    }
-
-    public function isGreaterThan($number): bool
-    {
-
-        /** @var ImmutableFraction $number */
-        $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
-
-        if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-            list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
-        } else {
-            $thisNumerator = $this->getNumerator();
-            $thatNumerator = $number->getNumerator();
-        }
-
-        return $thisNumerator->isGreaterThan($thatNumerator);
-
-    }
-
-    public function isLessThan($number): bool
-    {
-
-        /** @var ImmutableFraction $number */
-        $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
-
-        if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-            list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
-        } else {
-            $thisNumerator = $this->getNumerator();
-            $thatNumerator = $number->getNumerator();
-        }
-
-        return $thisNumerator->isLessThan($thatNumerator);
-
-    }
-
-    public function isGreaterThanOrEqualTo($number): bool
-    {
-
-        /** @var ImmutableFraction $number */
-        $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
-
-        if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-            list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
-        } else {
-            $thisNumerator = $this->getNumerator();
-            $thatNumerator = $number->getNumerator();
-        }
-
-        return $thisNumerator->isGreaterThanOrEqualTo($thatNumerator);
-
-    }
-
-    public function isLessThanOrEqualTo($number): bool
-    {
-
-        /** @var ImmutableFraction $number */
-        $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
-
-        if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-            list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
-        } else {
-            $thisNumerator = $this->getNumerator();
-            $thatNumerator = $number->getNumerator();
-        }
-
-        return $thisNumerator->isLessThanOrEqualTo($thatNumerator);
-
     }
 
     public function isPositive()

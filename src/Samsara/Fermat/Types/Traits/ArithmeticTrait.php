@@ -188,6 +188,4 @@ trait ArithmeticTrait
         }
     }
 
-    abstract public function getValue();
-
 }
