@@ -139,16 +139,16 @@ class Numbers
             if ($reflector->implementsInterface(NumberInterface::class)) {
                 return static::make($type, $value->getValue(), $precision, $base);
             }
-        } elseif (is_numeric($value)) {
-            return static::make($type, $value, $precision, $base);
         } elseif (is_array($value)) {
             $newInput = [];
-            
+
             foreach ($value as $key => $item) {
                 $newInput[$key] = static::makeOrDont($type, $item, $precision, $base);
             }
 
             return $newInput;
+        } elseif (is_numeric($value)) {
+            return static::make($type, $value, $precision, $base);
         }
 
         throw new IntegrityConstraint(
