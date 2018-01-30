@@ -5,28 +5,52 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 ## [Unreleased] - [unreleased]
 ### Added
 
+- Providers:
+  - Distributions:
+    - Base: Distribution abstract class
+  - ArithmeticProvider
+    - Added a precision argument to all methods that were missing it.
+  - SequenceProvider
+    - `nthFibonacciNumber` function
+  - StatsProvider
+    - Added docblocks for all methods
+    - Added `gammaFunction` function
 - Types:
   - Interfaces:
     - MatrixInterface
     - NumberCollectionInterface
   - NumberCollection
+- Factories:
+  - Collections
 
 ### Removed
 
 - Composer 
   - **Suggested:**
     - ext-stats: * (As this library is no longer maintained an unavailable on PHP 7+, it is being removed)
+- Providers:
+  - SequenceProvider
+    - Removed empty `nthSecTanCoefNumber` function until an implementation exists
 
 ### Changed
 
-- ArithmeticProvider
-  - Added a precision argument to all methods that were missing it.
-- Number
-  - Now passes the precision setting to ALL calls to ArithmeticProvider allowing precision up to 2147483646 digits. (Still limited by constants on log and trig functions.)
+- Providers:
+  - Distributions:
+    - Removed references to ext-stats in all distributions
+    - Fixed missing @throws in docblocks in all distributions
+    - Now extend `Distribution` abstract class
+- Types:
+  - Number
+    - Now passes the precision setting to ALL calls to `ArithmeticProvider` allowing precision up to 2147483646 digits. (Still limited by constants on log and trig functions.)
 
 ### Fixed
 
-*Nothing*
+- Providers:
+  - Distributions:
+    - Exponential
+      - Fixed accidental cast to float in `random` function
+  - SequenceProvider
+    - Fixed erroneous limit on Euler Zigzag sequence index (45 -> 50) and updated exception to reflect current limit (39 -> 50)
 
 ## [1.0.2] - 2017-01-16
 ### Fixed
@@ -73,7 +97,7 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - Fraction
   - Number
   - Tuple
-- Numbers:
+- Values:
   - CartesianCoordinate
   - ImmutableFraction
   - ImmutableNumber

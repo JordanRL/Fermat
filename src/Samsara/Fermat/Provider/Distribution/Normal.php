@@ -3,14 +3,18 @@
 namespace Samsara\Fermat\Provider\Distribution;
 
 use RandomLib\Factory;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Provider\StatsProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
+use Samsara\Fermat\Types\Base\NumberCollectionInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\NumberCollection;
 use Samsara\Fermat\Values\ImmutableNumber;
 
-class Normal
+class Normal extends Distribution
 {
 
     /**
@@ -28,6 +32,7 @@ class Normal
      *
      * @param int|float|DecimalInterface $mean
      * @param int|float|DecimalInterface $sd
+     * @throws IntegrityConstraint
      */
     public function __construct($mean, $sd)
     {
@@ -44,8 +49,9 @@ class Normal
      * @param int|float|DecimalInterface $mean
      *
      * @return Normal
+     * @throws IntegrityConstraint
      */
-    public static function makeFromMean($p, $x, $mean)
+    public static function makeFromMean($p, $x, $mean): Normal
     {
         $one = Numbers::makeOne();
         $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
@@ -65,8 +71,9 @@ class Normal
      * @param int|float|DecimalInterface $sd
      *
      * @return Normal
+     * @throws IntegrityConstraint
      */
-    public static function makeFromSd($p, $x, $sd)
+    public static function makeFromSd($p, $x, $sd): Normal
     {
         $one = Numbers::makeOne();
         $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
@@ -84,22 +91,11 @@ class Normal
      * @param int|float|DecimalInterface $x
      *
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
      */
-    public function cdf($x)
+    public function cdf($x): ImmutableNumber
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
-
-        if (
-            function_exists('stats_cdf_normal') &&
-            $x->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $x->isGreaterThanOrEqualTo(PHP_INT_MIN) &&
-            $this->mean->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->mean->isGreaterThanOrEqualTo(PHP_INT_MIN) &&
-            $this->sd->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->sd->isGreaterThanOrEqualTo(PHP_INT_MIN)
-        ) {
-            return Numbers::make(Numbers::IMMUTABLE, stats_cdf_normal($x->getValue(), $this->mean, $this->sd));
-        }
 
         $oneHalf = Numbers::make(Numbers::IMMUTABLE, '0.5');
         $one = Numbers::makeOne();
@@ -118,8 +114,9 @@ class Normal
      * @param null|int|float|DecimalInterface $x2
      *
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
      */
-    public function pdf($x1, $x2 = null)
+    public function pdf($x1, $x2 = null): ImmutableNumber
     {
 
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
@@ -144,8 +141,9 @@ class Normal
      * @param int|float|DecimalInterface $x
      *
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
      */
-    public function percentBelowX($x)
+    public function percentBelowX($x): ImmutableNumber
     {
         return $this->cdf($x);
     }
@@ -154,8 +152,9 @@ class Normal
      * @param int|float|DecimalInterface $x
      *
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
      */
-    public function percentAboveX($x)
+    public function percentAboveX($x): ImmutableNumber
     {
         $one = Numbers::makeOne();
 
@@ -163,11 +162,12 @@ class Normal
     }
 
     /**
-     * @param $x
+     * @param int|float|DecimalInterface $x
      *
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
      */
-    public function zScoreOfX($x)
+    public function zScoreOfX($x): ImmutableNumber
     {
         /** @var ImmutableNumber $x */
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -182,8 +182,9 @@ class Normal
      * @param int|float|DecimalInterface $z
      *
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
      */
-    public function xFromZScore($z)
+    public function xFromZScore($z): ImmutableNumber
     {
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
 
@@ -195,31 +196,23 @@ class Normal
 
     /**
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
      */
-    public function random()
+    public function random(): ImmutableNumber
     {
-        if (
-            function_exists('stats_rand_gen_normal') &&
-            $this->mean->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->mean->isGreaterThanOrEqualTo(PHP_INT_MIN) &&
-            $this->sd->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->sd->isGreaterThanOrEqualTo(PHP_INT_MIN)
-        ) {
-            return Numbers::make(Numbers::IMMUTABLE, stats_rand_gen_normal($this->mean, $this->sd), 20);
-        } else {
-            $randFactory = new Factory();
-            $generator = $randFactory->getMediumStrengthGenerator();
+        $randFactory = new Factory();
+        $generator = $randFactory->getMediumStrengthGenerator();
 
-            $rand1 = Numbers::make(Numbers::IMMUTABLE, $generator->generateInt(), 20);
-            $rand1 = $rand1->divide(PHP_INT_MAX);
-            $rand2 = Numbers::make(Numbers::IMMUTABLE, $generator->generateInt(), 20);
-            $rand2 = $rand2->divide(PHP_INT_MAX);
+        $rand1 = Numbers::make(Numbers::IMMUTABLE, $generator->generateInt(), 20);
+        $rand1 = $rand1->divide(PHP_INT_MAX);
+        $rand2 = Numbers::make(Numbers::IMMUTABLE, $generator->generateInt(), 20);
+        $rand2 = $rand2->divide(PHP_INT_MAX);
 
-            $randomNumber = $rand1->ln()->multiply(-2)->sqrt()->multiply($rand2->multiply(Numbers::TAU)->cos(1, 2, 20));
-            $randomNumber = $randomNumber->multiply($this->sd)->add($this->mean);
+        $randomNumber = $rand1->ln()->multiply(-2)->sqrt()->multiply($rand2->multiply(Numbers::TAU)->cos(1, false));
+        /** @var ImmutableNumber $randomNumber */
+        $randomNumber = $randomNumber->multiply($this->sd)->add($this->mean);
 
-            return $randomNumber;
-        }
+        return $randomNumber;
     }
 
     /**
@@ -229,24 +222,25 @@ class Normal
      *
      * @return ImmutableNumber
      * @throws OptionalExit
+     * @throws IntegrityConstraint
      */
-    public function rangeRandom($min = 0, $max = PHP_INT_MAX, $maxIterations = 20)
+    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableNumber
     {
         $i = 0;
 
         do {
             $randomNumber = $this->random();
             $i++;
-        } while (($randomNumber->isGreaterThanOrEqualTo($max) || $randomNumber->isLessThanOrEqualTo($min)) && $i < $maxIterations);
+        } while (($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) && $i < $maxIterations);
 
         if ($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) {
             throw new OptionalExit(
                 'All random numbers generated were outside of the requested range',
                 'A suitable random number, restricted by the $max ('.$max.') and $min ('.$min.'), could not be found within '.$maxIterations.' iterations'
             );
-        } else {
-            return $randomNumber;
         }
+
+        return $randomNumber;
     }
 
 }

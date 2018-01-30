@@ -2,6 +2,8 @@
 
 namespace Samsara\Fermat\Types;
 
+use RandomLib\Factory;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\Distribution\Exponential;
@@ -15,22 +17,50 @@ use Samsara\Fermat\Values\ImmutableNumber;
 class NumberCollection implements NumberCollectionInterface
 {
 
+    /**
+     * @var Vector
+     */
     private $collection;
 
+    /**
+     * NumberCollection constructor.
+     *
+     * @param array $numbers
+     * @throws IntegrityConstraint
+     */
     public function __construct(array $numbers = [])
     {
         if (count($numbers)) {
             $this->collect($numbers);
+        } else {
+            $this->collection = new Vector();
         }
     }
 
+    /**
+     * @return Vector
+     */
     private function getCollection(): Vector
     {
         return $this->collection;
     }
 
+    /**
+     * @param array $numbers
+     *
+     * @return NumberCollectionInterface
+     * @throws IntegrityConstraint
+     */
     public function collect(array $numbers): NumberCollectionInterface
     {
+        if ($this->getCollection()->count()) {
+            throw new IntegrityConstraint(
+                'Collections cannot be overwritten',
+                'Instantiate a new NumberCollection for these values',
+                'An attempt was made to collect into a non-empty NumberCollection; use empty NumberCollections for new values, or push the values into the existing collection'
+            );
+        }
+
         $immutableNumbers = [];
         foreach ($numbers as $number) {
             $immutableNumbers[] = Numbers::makeOrDont(Numbers::IMMUTABLE, $number);
@@ -41,6 +71,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param NumberInterface $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function push(NumberInterface $number): NumberCollectionInterface
     {
         $this->getCollection()->push($number);
@@ -48,11 +83,19 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @return NumberInterface
+     */
     public function pop(): NumberInterface
     {
         return $this->getCollection()->pop();
     }
 
+    /**
+     * @param NumberInterface $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function unshift(NumberInterface $number): NumberCollectionInterface
     {
         $this->getCollection()->unshift($number);
@@ -60,11 +103,17 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @return NumberInterface
+     */
     public function shift(): NumberInterface
     {
         return $this->getCollection()->shift();
     }
 
+    /**
+     * @return NumberCollectionInterface
+     */
     public function sort(): NumberCollectionInterface
     {
         $this->getCollection()->sort(function($left, $right){
@@ -74,6 +123,9 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @return NumberCollectionInterface
+     */
     public function reverse(): NumberCollectionInterface
     {
         $this->getCollection()->reverse();
@@ -81,6 +133,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function add($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
@@ -91,6 +148,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function subtract($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
@@ -101,6 +163,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function multiply($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
@@ -111,6 +178,11 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function divide($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
@@ -121,6 +193,13 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    /**
+     * Raises each element in the collection to the exponent $number
+     *
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
     public function pow($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
@@ -131,22 +210,61 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
-    public function exp($number): NumberCollectionInterface
+    /**
+     * Replaces each element in the collection with $base to the power of that value. If no base is given, Euler's number
+     * is assumed to be the base (as is assumed in most cases where an exp() function is encountered in math)
+     *
+     * @param $base
+     *
+     * @return NumberCollectionInterface
+     * @throws IntegrityConstraint
+     */
+    public function exp($base = null): NumberCollectionInterface
     {
-        $number = Numbers::makeOrDont(Numbers::IMMUTABLE, $number);
-        $this->getCollection()->apply(function($value) use ($number){
+        if (is_null($base)) {
+            $base = Numbers::makeE();
+        } else {
+            $base = Numbers::makeOrDont(Numbers::IMMUTABLE, $base);
+        }
+        $this->getCollection()->apply(function($value) use ($base){
             /** @var ImmutableNumber $value */
-            return $number->pow($value);
+            return $base->pow($value);
         });
 
         return $this;
     }
 
+    /**
+     * @param int $key
+     *
+     * @return NumberInterface
+     */
     public function get(int $key): NumberInterface
     {
         return $this->getCollection()->get($key);
     }
 
+    /**
+     * @return NumberInterface
+     */
+    public function getRandom(): NumberInterface
+    {
+        $maxKey = $this->getCollection()->count() - 1;
+
+        try {
+            $key = random_int(0, $maxKey);
+        } catch (\Exception $exception) {
+            $randFactory = new Factory();
+            $generator = $randFactory->getMediumStrengthGenerator();
+            $key = $generator->generateInt(0, $maxKey);
+        }
+
+        return $this->get($key);
+    }
+
+    /**
+     * @return NumberInterface
+     */
     public function sum(): NumberInterface
     {
         $sum = Numbers::makeZero();
@@ -158,11 +276,18 @@ class NumberCollection implements NumberCollectionInterface
         return $sum;
     }
 
+    /**
+     * @return NumberInterface
+     */
     public function mean(): NumberInterface
     {
         return $this->sum()->divide($this->getCollection()->count());
     }
 
+    /**
+     * @return Normal
+     * @throws IntegrityConstraint
+     */
     public function makeNormalDistribution(): Normal
     {
         /** @var ImmutableNumber $mean */
@@ -184,6 +309,10 @@ class NumberCollection implements NumberCollectionInterface
         return new Normal($mean, $sd);
     }
 
+    /**
+     * @return Poisson
+     * @throws IntegrityConstraint
+     */
     public function makePoissonDistribution(): Poisson
     {
         $sum = $this->sum();
@@ -195,6 +324,10 @@ class NumberCollection implements NumberCollectionInterface
         return new Poisson($lambda);
     }
 
+    /**
+     * @return Exponential
+     * @throws IntegrityConstraint
+     */
     public function makeExponentialDistribution(): Exponential
     {
         $average = $this->mean();
