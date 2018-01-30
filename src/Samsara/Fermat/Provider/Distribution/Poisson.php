@@ -3,14 +3,16 @@
 namespace Samsara\Fermat\Provider\Distribution;
 
 use RandomLib\Factory;
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
-class Poisson
+class Poisson extends Distribution
 {
 
     /**
@@ -41,11 +43,13 @@ class Poisson
     }
 
     /**
-     * @param int|DecimalInterface $k
+     * @param int|float|DecimalInterface $k
      *
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    public function probabilityOfKEvents($k)
+    public function probabilityOfKEvents($k): ImmutableNumber
     {
 
         return $this->pmf($k);
@@ -53,12 +57,13 @@ class Poisson
     }
 
     /**
-     * @param $x
+     * @param int|float|DecimalInterface $x
      *
      * @return ImmutableNumber
      * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    public function cdf($x)
+    public function cdf($x): ImmutableNumber
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -69,14 +74,6 @@ class Poisson
                 'Provide an integer value to calculate the CDF',
                 'Poisson distributions describe discrete occurrences; only integers are valid x values'
             );
-        }
-
-        if (
-            function_exists('stats_cdf_poisson') &&
-            $this->lambda->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $x->isLessThanOrEqualTo(PHP_INT_MAX)
-        ) {
-            return Numbers::makeOrDont(Numbers::IMMUTABLE, stats_cdf_poisson($x->getValue(), $this->lambda->getValue(), 1));
         }
 
         $cumulative = Numbers::makeZero();
@@ -90,15 +87,13 @@ class Poisson
     }
 
     /**
-     * Not sure if the usage of stats_dens_pmf_poisson() is correct here because it is undocumented in
-     * the C code for the PHP extension and on PHP.net
-     *
-     * @param int|DecimalInterface $x
+     * @param int|float|DecimalInterface $x
      *
      * @return ImmutableNumber
      * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    public function pmf($x)
+    public function pmf($x): ImmutableNumber
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
@@ -110,14 +105,6 @@ class Poisson
             );
         }
 
-        if (
-            function_exists('stats_dens_pmf_poisson') &&
-            $x->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->lambda->isLessThanOrEqualTo(PHP_INT_MAX)
-        ) {
-            return Numbers::make(Numbers::IMMUTABLE, stats_dens_pmf_poisson($x->getValue(), $this->lambda->getValue()));
-        }
-
         $e = Numbers::makeE();
 
         /** @var ImmutableNumber $pmf */
@@ -127,13 +114,13 @@ class Poisson
     }
 
     /**
-     * @param int|DecimalInterface $x1
-     * @param int|DecimalInterface $x2
+     * @param int|float|DecimalInterface $x1
+     * @param int|float|DecimalInterface $x2
      *
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function rangePmf($x1, $x2)
+    public function rangePmf($x1, $x2): ImmutableNumber
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
         $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
@@ -167,21 +154,16 @@ class Poisson
 
     /**
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    public function random()
+    public function random(): ImmutableNumber
     {
-
-        if (
-            function_exists('stats_gen_rand_ipoisson') &&
-            $this->lambda->isLessThanOrEqualTo(PHP_INT_MAX) // WTF are you doing with a lambda larger than PHP_INT_MAX!?
-        ) {
-            return Numbers::make(Numbers::IMMUTABLE, stats_gen_rand_ipoisson($this->lambda->getValue()));
-        } elseif ($this->lambda->isLessThanOrEqualTo(30)) {
+        if ($this->lambda->isLessThanOrEqualTo(30)) {
             return $this->knuthRandom();
         } else {
             return $this->methodPARandom();
         }
-
     }
 
     /**
@@ -195,14 +177,14 @@ class Poisson
      * @throws OptionalExit
      * @return ImmutableNumber
      */
-    public function rangeRandom($min = 0, $max = PHP_INT_MAX, $maxIterations = 20)
+    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableNumber
     {
         $i = 0;
 
         do {
             $randomNumber = $this->random();
             $i++;
-        } while (($randomNumber->isGreaterThanOrEqualTo($max) || $randomNumber->isLessThanOrEqualTo($min)) && $i < $maxIterations);
+        } while (($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) && $i < $maxIterations);
 
         if ($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) {
             throw new OptionalExit(
@@ -221,8 +203,10 @@ class Poisson
      * As described by John D. Cook: http://www.johndcook.com/blog/2010/06/14/generating-poisson-random-values/
      *
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    protected function methodPARandom()
+    protected function methodPARandom(): ImmutableNumber
     {
         $randFactory = new Factory();
         $generator = $randFactory->getMediumStrengthGenerator();
@@ -281,8 +265,9 @@ class Poisson
 
     /**
      * @return ImmutableNumber
+     * @throws IntegrityConstraint
      */
-    protected function knuthRandom()
+    protected function knuthRandom(): ImmutableNumber
     {
         $randFactory = new Factory();
         /** @var ImmutableNumber $L */

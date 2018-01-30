@@ -179,8 +179,16 @@ interface DecimalInterface
      */
     public function arccsc($precision = null, $round = true);
 
+    /**
+     * @param int $precision
+     * @return NumberInterface|DecimalInterface
+     */
     public function ln($precision = 10);
 
+    /**
+     * @param int $precision
+     * @return NumberInterface|DecimalInterface
+     */
     public function log10($precision = 10);
 
     /**

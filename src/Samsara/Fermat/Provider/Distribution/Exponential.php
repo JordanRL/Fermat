@@ -6,10 +6,11 @@ use RandomLib\Factory;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
-class Exponential
+class Exponential extends Distribution
 {
 
     /**
@@ -45,7 +46,7 @@ class Exponential
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function cdf($x)
+    public function cdf($x): ImmutableNumber
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -58,14 +59,6 @@ class Exponential
                 'Provide a positive x',
                 'Exponential distributions work on time to occurrence; the time to occurrence (x) must be positive'
             );
-        }
-
-        if (
-            function_exists('stats_cdf_exponential') &&
-            $x->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->lambda->isLessThanOrEqualTo(PHP_INT_MAX)
-        ) {
-            return Numbers::make(Numbers::IMMUTABLE, stats_cdf_exponential($x->getValue(), $one->divide($this->lambda)->getValue(), 1));
         }
 
         /** @var ImmutableNumber $e */
@@ -84,11 +77,10 @@ class Exponential
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function pdf($x)
+    public function pdf($x): ImmutableNumber
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
-        $one = Numbers::makeOne();
 
         if (!$x->isPositive()) {
             throw new IntegrityConstraint(
@@ -96,14 +88,6 @@ class Exponential
                 'Provide a positive x',
                 'Exponential distributions work on time to occurrence; the time to occurrence (x) must be positive'
             );
-        }
-
-        if (
-            function_exists('stats_dens_exponential') &&
-            $x->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->lambda->isLessThanOrEqualTo(PHP_INT_MAX)
-        ) {
-            return Numbers::make(Numbers::IMMUTABLE, stats_dens_exponential($x->getValue(), $one->divide($this->lambda)->getValue()));
         }
 
         /** @var ImmutableNumber $e */
@@ -123,11 +107,10 @@ class Exponential
      * @return ImmutableNumber
      * @throws IntegrityConstraint
      */
-    public function rangePdf($x1, $x2)
+    public function rangePdf($x1, $x2): ImmutableNumber
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
         $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
-        $one = Numbers::makeOne();
 
         if (!$x1->isPositive() || !$x2->isPositive()) {
             throw new IntegrityConstraint(
@@ -135,23 +118,6 @@ class Exponential
                 'Provide a positive x',
                 'Exponential distributions work on time to occurrence; the time to occurrence (x) must be positive'
             );
-        }
-
-        if (
-            function_exists('stats_dens_exponential') &&
-            $x1->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $x2->isLessThanOrEqualTo(PHP_INT_MAX) &&
-            $this->lambda->isLessThanOrEqualTo(PHP_INT_MAX)
-        ) {
-            /** @var ImmutableNumber $pdf1 */
-            $pdf1 = Numbers::make(Numbers::IMMUTABLE, stats_dens_exponential($x1->getValue(), $one->divide($this->lambda)->getValue()));
-            /** @var ImmutableNumber $pdf2 */
-            $pdf2 = Numbers::make(Numbers::IMMUTABLE, stats_dens_exponential($x2->getValue(), $one->divide($this->lambda)->getValue()));
-
-            /** @var ImmutableNumber $rangePdf */
-            $rangePdf = $pdf1->subtract($pdf2)->abs();
-
-            return $rangePdf;
         }
 
         /** @var ImmutableNumber $rangePdf */
@@ -163,13 +129,14 @@ class Exponential
     /**
      * @return ImmutableNumber
      */
-    public function random()
+    public function random(): ImmutableNumber
     {
 
         $randFactory = new Factory();
         $generator = $randFactory->getMediumStrengthGenerator();
         $one = Numbers::makeOne();
-        $u = $generator->generateInt() / PHP_INT_MAX;
+        $u = Numbers::make(Numbers::IMMUTABLE, $generator->generateInt(), 20);
+        $u = $u->divide(PHP_INT_MAX);
 
         /** @var ImmutableNumber $random */
         $random = $one->subtract($u)->ln()->divide($this->lambda->multiply(-1));
@@ -186,7 +153,7 @@ class Exponential
      * @return ImmutableNumber
      * @throws OptionalExit
      */
-    public function rangeRandom($min = 0, $max = PHP_INT_MAX, $maxIterations = 20)
+    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableNumber
     {
 
         $i = 0;
@@ -194,17 +161,16 @@ class Exponential
         do {
             $randomNumber = $this->random();
             $i++;
-        } while (($randomNumber->isGreaterThanOrEqualTo($max) || $randomNumber->isLessThanOrEqualTo($min)) && $i < $maxIterations);
+        } while (($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) && $i < $maxIterations);
 
         if ($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) {
             throw new OptionalExit(
                 'All random numbers generated were outside of the requested range',
                 'A suitable random number, restricted by the $max ('.$max.') and $min ('.$min.'), could not be found within '.$maxIterations.' iterations'
             );
-        } else {
-            return $randomNumber;
         }
 
+        return $randomNumber;
     }
 
 }
