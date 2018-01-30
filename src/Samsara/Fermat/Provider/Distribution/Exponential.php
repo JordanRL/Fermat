@@ -6,10 +6,11 @@ use RandomLib\Factory;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
-class Exponential
+class Exponential extends Distribution
 {
 
     /**

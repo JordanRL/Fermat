@@ -6,6 +6,7 @@ use RandomLib\Factory;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Provider\StatsProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberCollectionInterface;
@@ -13,7 +14,7 @@ use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Types\NumberCollection;
 use Samsara\Fermat\Values\ImmutableNumber;
 
-class Normal
+class Normal extends Distribution
 {
 
     /**
@@ -212,21 +213,6 @@ class Normal
         $randomNumber = $randomNumber->multiply($this->sd)->add($this->mean);
 
         return $randomNumber;
-    }
-
-    /**
-     * @param int $sampleSize
-     * @return NumberCollection
-     */
-    public function randomSample(int $sampleSize = 10): NumberCollection
-    {
-        $sample = new NumberCollection();
-
-        for ($i = 1;$i < $sampleSize;$i++) {
-            $sample->push($this->random());
-        }
-
-        return $sample;
     }
 
     /**

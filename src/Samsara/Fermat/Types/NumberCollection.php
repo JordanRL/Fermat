@@ -17,6 +17,9 @@ use Samsara\Fermat\Values\ImmutableNumber;
 class NumberCollection implements NumberCollectionInterface
 {
 
+    /**
+     * @var Vector
+     */
     private $collection;
 
     /**
@@ -50,6 +53,14 @@ class NumberCollection implements NumberCollectionInterface
      */
     public function collect(array $numbers): NumberCollectionInterface
     {
+        if ($this->getCollection()->count()) {
+            throw new IntegrityConstraint(
+                'Collections cannot be overwritten',
+                'Instantiate a new NumberCollection for these values',
+                'An attempt was made to collect into a non-empty NumberCollection; use empty NumberCollections for new values, or push the values into the existing collection'
+            );
+        }
+
         $immutableNumbers = [];
         foreach ($numbers as $number) {
             $immutableNumbers[] = Numbers::makeOrDont(Numbers::IMMUTABLE, $number);
@@ -183,6 +194,8 @@ class NumberCollection implements NumberCollectionInterface
     }
 
     /**
+     * Raises each element in the collection to the exponent $number
+     *
      * @param $number
      *
      * @return NumberCollectionInterface
@@ -198,17 +211,24 @@ class NumberCollection implements NumberCollectionInterface
     }
 
     /**
-     * @param $number
+     * Replaces each element in the collection with $base to the power of that value. If no base is given, Euler's number
+     * is assumed to be the base (as is assumed in most cases where an exp() function is encountered in math)
+     *
+     * @param $base
      *
      * @return NumberCollectionInterface
      * @throws IntegrityConstraint
      */
-    public function exp($number): NumberCollectionInterface
+    public function exp($base = null): NumberCollectionInterface
     {
-        $number = Numbers::makeOrDont(Numbers::IMMUTABLE, $number);
-        $this->getCollection()->apply(function($value) use ($number){
+        if (is_null($base)) {
+            $base = Numbers::makeE();
+        } else {
+            $base = Numbers::makeOrDont(Numbers::IMMUTABLE, $base);
+        }
+        $this->getCollection()->apply(function($value) use ($base){
             /** @var ImmutableNumber $value */
-            return $number->pow($value);
+            return $base->pow($value);
         });
 
         return $this;

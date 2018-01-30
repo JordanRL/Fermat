@@ -6,6 +6,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Values\ImmutableNumber;
 
 class SequenceProvider
 {
@@ -97,6 +98,8 @@ class SequenceProvider
     }
 
     /**
+     * OEIS: A033999
+     *
      * @param $n
      *
      * @return DecimalInterface|NumberInterface
@@ -111,6 +114,8 @@ class SequenceProvider
     }
 
     /**
+     * OEIS: A000111
+     *
      * @param $n
      *
      * @return DecimalInterface|NumberInterface
@@ -130,16 +135,6 @@ class SequenceProvider
         }
 
         return Numbers::make(Numbers::IMMUTABLE, static::EULER_ZIGZAG[$n->asInt()], 100);
-
-    }
-
-    public static function nthSecTanCoefSequence($n)
-    {
-
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
-
-        $pi = Numbers::makePi();
-        $two = Numbers::make(Numbers::IMMUTABLE, 2, 100);
 
     }
 
@@ -175,6 +170,63 @@ class SequenceProvider
 
         return $b;
 
+    }
+
+    /**
+     * OEIS: A000045
+     *
+     * This uses an implementation of the fast-doubling Karatsuba multiplication algorithm as described by 'Nayuki':
+     *
+     * https://www.nayuki.io/page/fast-fibonacci-algorithms
+     *
+     * @param $n
+     * @return ImmutableNumber
+     * @throws IntegrityConstraint
+     */
+    public static function nthFibonacciNumber($n): ImmutableNumber
+    {
+        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+        if (!$n->isInt()) {
+            throw new IntegrityConstraint(
+                'Sequences can only have integer term numbers',
+                'Provide a valid term number',
+                'The nthFibonacciNumber function takes the term number as its argument; provide an integer term number'
+            );
+        }
+
+        if ($n->isLessThan(0)) {
+            throw new IntegrityConstraint(
+                'Negative term numbers not valid for Fibonacci Sequence',
+                'Provide a positive term number',
+                'A negative term number for the Fibonacci sequence was requested; provide a positive term number'
+            );
+        }
+
+        $fastFib = static::_fib($n);
+
+        return $fastFib[0];
+    }
+
+    private static function _fib(ImmutableNumber $number): array
+    {
+        if ($number->isEqual(0)) {
+            return [Numbers::makeZero(), Numbers::makeOne()];
+        }
+
+        /**
+         * @var ImmutableNumber $a
+         * @var ImmutableNumber $b
+         * @var ImmutableNumber $prevCall
+         */
+        $prevCall = $number->divide(2)->floor();
+        list($a, $b) = static::_fib($prevCall);
+        $c = $a->multiply($b->multiply(2)->subtract($a));
+        $d = $a->multiply($a)->add($b->multiply($b));
+        if ($number->modulo(2)->isEqual(0)) {
+            return [$c, $d];
+        } else {
+            return [$d, $c->add($d)];
+        }
     }
 
 }

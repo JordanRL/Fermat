@@ -7,11 +7,12 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
-class Poisson
+class Poisson extends Distribution
 {
 
     /**
@@ -86,9 +87,6 @@ class Poisson
     }
 
     /**
-     * Not sure if the usage of stats_dens_pmf_poisson() is correct here because it is undocumented in
-     * the C code for the PHP extension and on PHP.net
-     *
      * @param int|float|DecimalInterface $x
      *
      * @return ImmutableNumber
