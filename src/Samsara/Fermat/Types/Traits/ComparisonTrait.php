@@ -11,10 +11,29 @@ use Samsara\Fermat\Values\ImmutableFraction;
 trait ComparisonTrait
 {
 
-    public function isEqual($value): bool
+    protected function checkComparisonTraitAndInterface()
     {
 
         if ($this instanceof DecimalInterface) {
+            return 1;
+        } elseif ($this instanceof FractionInterface) {
+            return 2;
+        } else {
+            throw new IntegrityConstraint(
+                'The ComparisonTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
+                'Implement either of the required interfaces',
+                'You cannot use the ComparisonTrait without implementing either the DecimalInterface or FractionInterface'
+            );
+        }
+
+    }
+
+    public function isEqual($value): bool
+    {
+
+        $check = $this->checkComparisonTraitAndInterface();
+
+        if ($check == 1) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
 
             if ($this->compare($value) === 0) {
@@ -22,7 +41,7 @@ trait ComparisonTrait
             } else {
                 return false;
             }
-        } elseif ($this instanceof FractionInterface) {
+        } else {
             /** @var ImmutableFraction $number */
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
 
@@ -34,12 +53,6 @@ trait ComparisonTrait
             }
 
             return $thisNumerator->isEqual($thatNumerator);
-        } else {
-            throw new IntegrityConstraint(
-                'The ComparisonTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
-                'Implement either of the required interfaces',
-                'You cannot use the ComparisonTrait without implementing either the DecimalInterface or FractionInterface'
-            );
         }
 
     }
@@ -47,7 +60,9 @@ trait ComparisonTrait
     public function isGreaterThan($value): bool
     {
 
-        if ($this instanceof DecimalInterface) {
+        $check = $this->checkComparisonTraitAndInterface();
+
+        if ($check == 1) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
 
             if ($this->compare($value) === 1) {
@@ -55,7 +70,7 @@ trait ComparisonTrait
             } else {
                 return false;
             }
-        } elseif ($this instanceof FractionInterface) {
+        } else {
             /** @var ImmutableFraction $number */
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
 
@@ -67,20 +82,15 @@ trait ComparisonTrait
             }
 
             return $thisNumerator->isGreaterThan($thatNumerator);
-        } else {
-            throw new IntegrityConstraint(
-                'The ComparisonTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
-                'Implement either of the required interfaces',
-                'You cannot use the ComparisonTrait without implementing either the DecimalInterface or FractionInterface'
-            );
         }
 
     }
 
     public function isLessThan($value): bool
     {
+        $check = $this->checkComparisonTraitAndInterface();
 
-        if ($this instanceof DecimalInterface) {
+        if ($check == 1) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
 
             if ($this->compare($value) === -1) {
@@ -88,7 +98,7 @@ trait ComparisonTrait
             } else {
                 return false;
             }
-        } elseif ($this instanceof FractionInterface) {
+        } else {
             /** @var ImmutableFraction $number */
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
 
@@ -100,20 +110,15 @@ trait ComparisonTrait
             }
 
             return $thisNumerator->isLessThan($thatNumerator);
-        } else {
-            throw new IntegrityConstraint(
-                'The ComparisonTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
-                'Implement either of the required interfaces',
-                'You cannot use the ComparisonTrait without implementing either the DecimalInterface or FractionInterface'
-            );
         }
 
     }
 
     public function isGreaterThanOrEqualTo($value): bool
     {
+        $check = $this->checkComparisonTraitAndInterface();
 
-        if ($this instanceof DecimalInterface) {
+        if ($check == 1) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
 
             if ($this->compare($value) > -1) {
@@ -121,7 +126,7 @@ trait ComparisonTrait
             } else {
                 return false;
             }
-        } elseif ($this instanceof FractionInterface) {
+        } else {
             /** @var ImmutableFraction $number */
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
 
@@ -133,20 +138,15 @@ trait ComparisonTrait
             }
 
             return $thisNumerator->isGreaterThanOrEqualTo($thatNumerator);
-        } else {
-            throw new IntegrityConstraint(
-                'The ComparisonTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
-                'Implement either of the required interfaces',
-                'You cannot use the ComparisonTrait without implementing either the DecimalInterface or FractionInterface'
-            );
         }
 
     }
 
     public function isLessThanOrEqualTo($value): bool
     {
+        $check = $this->checkComparisonTraitAndInterface();
 
-        if ($this instanceof DecimalInterface) {
+        if ($check == 1) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
 
             if ($this->compare($value) < 1) {
@@ -154,7 +154,7 @@ trait ComparisonTrait
             } else {
                 return false;
             }
-        } elseif ($this instanceof FractionInterface) {
+        } else {
             /** @var ImmutableFraction $number */
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
 
@@ -166,14 +166,67 @@ trait ComparisonTrait
             }
 
             return $thisNumerator->isLessThanOrEqualTo($thatNumerator);
-        } else {
-            throw new IntegrityConstraint(
-                'The ComparisonTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
-                'Implement either of the required interfaces',
-                'You cannot use the ComparisonTrait without implementing either the DecimalInterface or FractionInterface'
-            );
         }
 
+    }
+
+    public function isNegative(): bool
+    {
+        $check = $this->checkComparisonTraitAndInterface();
+
+        if ($check == 1) {
+            if ($this->isEqual(0)) {
+                return false;
+            }
+
+            if (strpos($this->getValue(), '-') === 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return $this->getNumerator()->isNegative();
+        }
+    }
+
+    public function isPositive(): bool
+    {
+        $check = $this->checkComparisonTraitAndInterface();
+
+        if ($check == 1) {
+            if ($this->isEqual(0)) {
+                return false;
+            }
+
+            return !$this->isNegative();
+        } else {
+            return $this->getNumerator()->isPositive();
+        }
+    }
+
+    public function isNatural(): bool
+    {
+        return $this->isInt();
+    }
+
+    public function isWhole(): bool
+    {
+        return $this->isInt();
+    }
+
+    public function isInt(): bool
+    {
+        $check = $this->checkComparisonTraitAndInterface();
+
+        if ($check == 1) {
+            if ($this->getDecimalPart() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return $this->getDenominator()->isEqual(1);
+        }
     }
 
 }

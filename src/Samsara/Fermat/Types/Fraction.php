@@ -100,16 +100,6 @@ abstract class Fraction
         }
     }
 
-    public function isPositive()
-    {
-        return $this->getNumerator()->isPositive();
-    }
-
-    public function isNegative()
-    {
-        return $this->getNumerator()->isNegative();
-    }
-
     public function asDecimal($precision = 10)
     {
 

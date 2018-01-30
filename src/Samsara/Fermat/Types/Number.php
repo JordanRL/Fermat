@@ -18,6 +18,7 @@ use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
 use Samsara\Fermat\Types\Traits\InverseTrigonometryTrait;
 use Samsara\Fermat\Types\Traits\LogTrait;
+use Samsara\Fermat\Types\Traits\PrecisionTrait;
 use Samsara\Fermat\Types\Traits\TrigonometryTrait;
 use Samsara\Fermat\Values\ImmutableNumber;
 
@@ -27,8 +28,6 @@ abstract class Number implements Hashable
     const NEG_INFINITY = '-INF';
     
     protected $value;
-
-    protected $precision;
 
     protected $base;
 
@@ -40,6 +39,7 @@ abstract class Number implements Hashable
     use TrigonometryTrait;
     use InverseTrigonometryTrait;
     use LogTrait;
+    use PrecisionTrait;
 
     public function __construct($value, $precision = null, $base = 10)
     {
@@ -73,11 +73,6 @@ abstract class Number implements Hashable
     public function getBase()
     {
         return $this->base;
-    }
-
-    public function getPrecision()
-    {
-        return $this->precision;
     }
 
     public function setExtensions(bool $flag)
@@ -125,140 +120,6 @@ abstract class Number implements Hashable
         }
     }
 
-    public function isNegative(): bool
-    {
-        if ($this->isEqual(0)) {
-            return false;
-        }
-
-        if (strpos($this->getValue(), '-') === 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function isPositive(): bool
-    {
-        if ($this->isEqual(0)) {
-            return false;
-        }
-
-        return !$this->isNegative();
-    }
-
-    public function isNatural(): bool
-    {
-        return $this->isInt();
-    }
-
-    public function isWhole(): bool
-    {
-        return $this->isInt();
-    }
-
-    public function isInt(): bool
-    {
-        if ($this->getDecimalPart() == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function round($decimals = 0)
-    {
-        $fractional = $this->getDecimalPart();
-        $whole = $this->getWholePart();
-
-        $fractionalArr = str_split($fractional);
-
-        if (!isset($fractionalArr[$decimals])) {
-            return $this;
-        } else {
-            if ($decimals == 0) {
-                if ($fractionalArr[$decimals] >= 5) {
-                    return $this->setValue($whole)->add(1);
-                } else {
-                    return $this->setValue($whole);
-                }
-            } else {
-                if ($fractionalArr[$decimals] >= 5) {
-                    $fractionalArr = $this->reduceDecimals($fractionalArr, $decimals-1, 1);
-                }
-
-                if (is_null($fractionalArr)) {
-                    return $this->setValue($whole)->add(1);
-                }
-
-                $rounded = $whole.'.';
-
-                for ($i = 0;$i < $decimals;$i++) {
-                    $rounded .= $fractionalArr[$i];
-                }
-
-                return $this->setValue($rounded);
-            }
-        }
-    }
-
-    public function truncate($decimals = 0)
-    {
-        $fractional = $this->getDecimalPart();
-        $whole = $this->getWholePart();
-
-        if ($decimals == 0) {
-            return $this->setValue($whole);
-        } else {
-            $truncated = $whole.'.';
-
-            if ($decimals > strlen($fractional)) {
-                $fractional = str_pad($fractional, $decimals, '0');
-            } else {
-                $fractional = substr($fractional, 0, $decimals);
-            }
-
-            $truncated .= $fractional;
-
-            return $this->setValue($truncated);
-        }
-    }
-
-    public function roundToPrecision($precision)
-    {
-
-        $this->precision = $precision;
-
-        return $this->round($precision);
-
-    }
-
-    public function truncateToPrecision($precision)
-    {
-
-        $this->precision = $precision;
-
-        return $this->truncate($precision);
-
-    }
-
-    public function ceil()
-    {
-        $fractional = $this->getDecimalPart();
-        $whole = $this->getWholePart();
-
-        if ($fractional > 0) {
-            $whole = ArithmeticProvider::add($whole, 1, $this->getPrecision());
-        }
-
-        return $this->setValue($whole);
-    }
-
-    public function floor()
-    {
-        return $this->setValue($this->getWholePart());
-    }
-
     /**
      * @param NumberInterface|int|float|string $value
      * @return int
@@ -299,27 +160,6 @@ abstract class Number implements Hashable
 
         return $this->setValue($value);
     }
-    
-    public function numberOfLeadingZeros()
-    {
-        $fractional = $this->getDecimalPart();
-        
-        $total = strlen($fractional);
-        $fractional = ltrim($fractional, '0');
-        
-        return $total-strlen($fractional);
-    }
-
-    public function asInt()
-    {
-
-        if ($this->isGreaterThan(PHP_INT_MAX) || $this->isLessThan(PHP_INT_MIN)) {
-            throw new IncompatibleObjectState('Cannot export number as integer because it is out of range');
-        }
-
-        return intval($this->getValue());
-
-    }
 
     public function __toString()
     {
@@ -339,52 +179,6 @@ abstract class Number implements Hashable
             return $this->isEqual($object);
         } else {
             return false;
-        }
-    }
-
-    protected function getRadixPos()
-    {
-        return strpos($this->value, '.');
-    }
-
-    protected function reduceDecimals(array $decimalArray, $pos, $add)
-    {
-
-        if ($add == 1) {
-            if ($decimalArray[$pos] == 9) {
-                $decimalArray[$pos] = 0;
-
-                if ($pos == 0) {
-                    return null;
-                } else {
-                    return $this->reduceDecimals($decimalArray, $pos-1, $add);
-                }
-            } else {
-                $decimalArray[$pos] += 1;
-            }
-        }
-
-        return $decimalArray;
-
-    }
-
-    protected function getDecimalPart()
-    {
-        $radix = $this->getRadixPos();
-        if ($radix !== false) {
-            return substr($this->getValue(), $radix+1);
-        } else {
-            return 0;
-        }
-    }
-
-    protected function getWholePart()
-    {
-        $radix = $this->getRadixPos();
-        if ($radix !== false) {
-            return substr($this->getValue(), 0, $radix);
-        } else {
-            return $this->getValue();
         }
     }
 
