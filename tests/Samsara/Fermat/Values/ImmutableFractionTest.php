@@ -17,7 +17,7 @@ class ImmutableFractionTest extends TestCase
         $this->assertEquals('4', $sixFourths->getDenominator()->getValue());
 
         $sixFourths = $sixFourths->simplify();
-        
+
         $this->assertEquals('3/2', $sixFourths->getValue());
         $this->assertEquals('3', $sixFourths->getNumerator()->getValue());
         $this->assertEquals('2', $sixFourths->getDenominator()->getValue());
