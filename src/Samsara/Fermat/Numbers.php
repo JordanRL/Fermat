@@ -227,7 +227,7 @@ class Numbers
         }
         
         if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::PI, $precision)->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::PI, $precision)->truncateToPrecision($precision);
         } else {
             return self::make(self::IMMUTABLE, self::PI, 100);
         }
@@ -251,7 +251,7 @@ class Numbers
         }
 
         if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::TAU, $precision)->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::TAU, $precision)->truncateToPrecision($precision);
         } else {
             return self::make(self::IMMUTABLE, self::TAU, 100);
         }
@@ -285,7 +285,7 @@ class Numbers
         }
 
         if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::E, $precision)->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::E, $precision)->truncateToPrecision($precision);
         } else {
             return self::make(self::IMMUTABLE, self::E, 100);
         }
@@ -310,7 +310,7 @@ class Numbers
         }
 
         if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $precision)->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $precision)->truncateToPrecision($precision);
         } else {
             return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, 100);
         }
@@ -335,7 +335,7 @@ class Numbers
         }
 
         if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::LN_10, $precision)->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::LN_10, $precision)->truncateToPrecision($precision);
         } else {
             return self::make(self::IMMUTABLE, self::LN_10, 100);
         }
