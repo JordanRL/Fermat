@@ -24,4 +24,16 @@ class ImmutableFractionTest extends TestCase
 
     }
 
+    public function testSmallestCommonDenominator()
+    {
+
+        $oneThird = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(3));
+        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+
+        $this->assertEquals('6', $oneThird->getSmallestCommonDenominator($oneHalf)->getValue());
+
+        $this->assertEquals('5/6', $oneThird->add($oneHalf)->getValue());
+
+    }
+
 }
