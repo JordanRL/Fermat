@@ -38,4 +38,13 @@ class NormalTest extends TestCase
 
     }
 
+    /*public function testMakes()
+    {
+
+        $normal = Normal::makeFromMean('0.1', 6, 10);
+
+        $this->assertEquals('0.60', $normal->pdf(8)->getValue());
+
+    }*/
+
 }
