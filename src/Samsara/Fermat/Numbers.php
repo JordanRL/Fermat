@@ -139,16 +139,16 @@ class Numbers
             if ($reflector->implementsInterface(NumberInterface::class)) {
                 return static::make($type, $value->getValue(), $precision, $base);
             }
-        } elseif (is_numeric($value)) {
-            return static::make($type, $value, $precision, $base);
         } elseif (is_array($value)) {
             $newInput = [];
-            
+
             foreach ($value as $key => $item) {
                 $newInput[$key] = static::makeOrDont($type, $item, $precision, $base);
             }
 
             return $newInput;
+        } elseif (is_numeric($value)) {
+            return static::make($type, $value, $precision, $base);
         }
 
         throw new IntegrityConstraint(
@@ -227,7 +227,7 @@ class Numbers
         }
         
         if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::PI, $precision)->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::PI, $precision)->truncateToPrecision($precision);
         } else {
             return self::make(self::IMMUTABLE, self::PI, 100);
         }
@@ -251,7 +251,7 @@ class Numbers
         }
 
         if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::TAU, $precision)->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::TAU, $precision)->truncateToPrecision($precision);
         } else {
             return self::make(self::IMMUTABLE, self::TAU, 100);
         }
@@ -285,7 +285,7 @@ class Numbers
         }
 
         if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::E, $precision)->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::E, $precision)->truncateToPrecision($precision);
         } else {
             return self::make(self::IMMUTABLE, self::E, 100);
         }
@@ -310,7 +310,7 @@ class Numbers
         }
 
         if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $precision)->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $precision)->truncateToPrecision($precision);
         } else {
             return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, 100);
         }
@@ -335,7 +335,7 @@ class Numbers
         }
 
         if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::LN_10, $precision)->roundToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::LN_10, $precision)->truncateToPrecision($precision);
         } else {
             return self::make(self::IMMUTABLE, self::LN_10, 100);
         }

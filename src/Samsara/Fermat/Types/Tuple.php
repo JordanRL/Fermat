@@ -22,6 +22,9 @@ class Tuple
 
     public function __construct(...$data)
     {
+        if (is_array($data) && is_array($data[0])) {
+            $data = $data[0];
+        }
         $this->data = Numbers::makeOrDont(Numbers::IMMUTABLE, $data);
         $this->size = count($this->data);
     }

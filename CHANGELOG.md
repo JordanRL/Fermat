@@ -19,6 +19,14 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - Interfaces:
     - MatrixInterface
     - NumberCollectionInterface
+  - Traits:
+    - ArithmeticTrait
+    - ComparisonTrait
+    - IntegerMathTrait
+    - InverseTrigonometryTrait
+    - LogTrait
+    - PrecisionTrait
+    - TrigonometryTrait
   - NumberCollection
 - Factories:
   - Collections
@@ -40,7 +48,10 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Fixed missing @throws in docblocks in all distributions
     - Now extend `Distribution` abstract class
 - Types:
+  - Fraction
+    - Moved many methods into traits
   - Number
+    - Moved many methods into traits
     - Now passes the precision setting to ALL calls to `ArithmeticProvider` allowing precision up to 2147483646 digits. (Still limited by constants on log and trig functions.)
 
 ### Fixed
@@ -51,6 +62,9 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
       - Fixed accidental cast to float in `random` function
   - SequenceProvider
     - Fixed erroneous limit on Euler Zigzag sequence index (45 -> 50) and updated exception to reflect current limit (39 -> 50)
+- Types
+  - Tuple
+    - Changed the constructor so that it properly works with either parameter collection or a single array
 
 ## [1.0.2] - 2017-01-16
 ### Fixed

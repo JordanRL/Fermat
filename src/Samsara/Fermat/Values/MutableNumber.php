@@ -21,10 +21,11 @@ class MutableNumber extends Number implements NumberInterface, DecimalInterface
     {
 
         $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod);
+        $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue());
 
-        $multiple = $this->divide($mod)->floor();
+        $multiple = $oldNum->divide($mod)->floor();
 
-        $remainder = $this->subtract($mod->multiply($multiple));
+        $remainder = $oldNum->subtract($mod->multiply($multiple));
 
         return Numbers::make(Numbers::MUTABLE, $remainder->getValue());
 
