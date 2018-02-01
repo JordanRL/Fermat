@@ -28,7 +28,7 @@ class StatsProvider
         $one = Numbers::makeOne();
 
         $eExponent = Numbers::make(Numbers::IMMUTABLE, $x->getValue());
-        $eExponent->pow(2)->divide(2)->multiply(-1);
+        $eExponent = $eExponent->pow(2)->divide(2)->multiply(-1);
 
         $answer = Numbers::make(Numbers::IMMUTABLE, 0.5);
         $answer = $answer->add(

@@ -53,7 +53,7 @@ class NumberCollection implements NumberCollectionInterface
      */
     public function collect(array $numbers): NumberCollectionInterface
     {
-        if ($this->getCollection()->count()) {
+        if (!is_null($this->collection) && $this->getCollection()->count()) {
             throw new IntegrityConstraint(
                 'Collections cannot be overwritten',
                 'Instantiate a new NumberCollection for these values',
