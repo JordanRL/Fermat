@@ -43,7 +43,7 @@ trait ComparisonTrait
             }
         } else {
             /** @var ImmutableFraction $number */
-            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
+            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
 
             if (!$this->getDenominator()->isEqual($number->getDenominator())) {
                 list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
@@ -72,7 +72,7 @@ trait ComparisonTrait
             }
         } else {
             /** @var ImmutableFraction $number */
-            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
+            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
 
             if (!$this->getDenominator()->isEqual($number->getDenominator())) {
                 list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
@@ -100,7 +100,7 @@ trait ComparisonTrait
             }
         } else {
             /** @var ImmutableFraction $number */
-            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
+            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
 
             if (!$this->getDenominator()->isEqual($number->getDenominator())) {
                 list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
@@ -128,7 +128,7 @@ trait ComparisonTrait
             }
         } else {
             /** @var ImmutableFraction $number */
-            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
+            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
 
             if (!$this->getDenominator()->isEqual($number->getDenominator())) {
                 list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
@@ -156,7 +156,7 @@ trait ComparisonTrait
             }
         } else {
             /** @var ImmutableFraction $number */
-            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $number);
+            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
 
             if (!$this->getDenominator()->isEqual($number->getDenominator())) {
                 list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
