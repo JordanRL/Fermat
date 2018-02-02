@@ -37,14 +37,14 @@ class SeriesProvider
      */
     public static function maclaurinSeries(
         NumberInterface $input, // x value in series
-        callable $numerator, // a function determining what the sign (+/-) at the nth term
+        callable $numerator, // a function determining what the sign (+/-) is at the nth term
         callable $exponent, // a function determining the exponent of x at the nth term
         callable $denominator, // a function determining the denominator at the nth term
         $startTermAt = 0,
         $precision = 10)
     {
 
-        $x = Numbers::makeZero(100);
+        $sum = Numbers::makeZero(100);
         $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue());
 
         $continue = true;
@@ -62,9 +62,10 @@ class SeriesProvider
                     ->divide($denominator($termNumber), 100)
                     ->multiply($numerator($termNumber));
             } catch (IntegrityConstraint $constraint) {
-                return $x->roundToPrecision($currentPrecision+1);
+                return $sum->truncateToPrecision($currentPrecision+1);
             }
 
+            /** @var ImmutableNumber $term */
             if ($term->numberOfLeadingZeros() >= $precision) {
                 $continue = false;
             }
@@ -81,12 +82,12 @@ class SeriesProvider
                 $continue = false;
             }
 
-            $x = $x->add($term);
+            $sum = $sum->add($term);
 
             $termNumber++;
         }
 
-        return $x->roundToPrecision($precision);
+        return $sum->truncateToPrecision($precision);
 
     }
 
