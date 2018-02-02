@@ -87,7 +87,7 @@ class SeriesProvider
             $termNumber++;
         }
 
-        return $sum->truncateToPrecision($precision);
+        return $sum->roundToPrecision($precision);
 
     }
 
