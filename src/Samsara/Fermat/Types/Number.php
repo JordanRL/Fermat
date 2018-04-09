@@ -26,12 +26,18 @@ abstract class Number implements Hashable
 {
     const INFINITY = 'INF';
     const NEG_INFINITY = '-INF';
+
+    const MODE_PRECISION = 1;
+    const MODE_NATIVE = 2;
+    const MODE_SIMPLE_TRIG = 3;
     
     protected $value;
 
     protected $base;
 
     protected $extensions = true;
+
+    protected $mode;
 
     use ArithmeticTrait;
     use IntegerMathTrait;
@@ -45,6 +51,7 @@ abstract class Number implements Hashable
     {
         $this->base = $base;
         $this->value = (string)$value;
+        $this->mode = Number::MODE_PRECISION;
         
         if (!is_null($precision)) {
             if ($precision > 2147483646) {
@@ -59,6 +66,13 @@ abstract class Number implements Hashable
         } else {
             $this->precision = (strlen($this->getDecimalPart()) > 10) ? strlen($this->getDecimalPart()) : 10;
         }
+    }
+
+    public function setMode(int $mode)
+    {
+        $this->mode = $mode;
+
+        return $this;
     }
 
     public function getValue()

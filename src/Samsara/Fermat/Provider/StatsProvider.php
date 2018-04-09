@@ -125,7 +125,13 @@ class StatsProvider
         while ($continue) {
 
             $cumulative = self::normalCDF($xCur);
-            $dx = $cumulative->subtract($p)->divide($r2pi->multiply($e->pow($xCur->pow(2))->divide(-2)));
+            $dx = $cumulative->subtract($p)->divide(
+                $r2pi->multiply(
+                    $e->pow(
+                        $xCur->pow(2)
+                    )->divide(-2)
+                )
+            );
             $xCur = $xCur->subtract($dx);
 
             if ($dx->numberOfLeadingZeros() > $precision) {
