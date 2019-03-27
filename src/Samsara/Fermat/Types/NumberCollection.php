@@ -30,10 +30,10 @@ class NumberCollection implements NumberCollectionInterface
      */
     public function __construct(array $numbers = [])
     {
+        $this->collection = new Vector();
+
         if (count($numbers)) {
             $this->collect($numbers);
-        } else {
-            $this->collection = new Vector();
         }
     }
 

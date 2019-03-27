@@ -1362,10 +1362,41 @@ abstract class Number implements Hashable
     {
         $fractional = $this->getDecimalPart();
         
-        $total = strlen($fractional);
+        $total = Numbers::make(Numbers::IMMUTABLE, strlen($fractional));
         $fractional = ltrim($fractional, '0');
         
-        return $total-strlen($fractional);
+        return $total->subtract(strlen($fractional));
+    }
+
+    public function numberOfTotalDigits()
+    {
+        $wholeDigits = $this->getWholePart();
+        $decimalDigits = $this->getDecimalPart();
+
+        $digits = Numbers::makeZero();
+
+        $digits->add(strlen($wholeDigits))->add(strlen($decimalDigits));
+
+        return $digits;
+    }
+
+    public function numberOfIntDigits()
+    {
+        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getWholePart()));
+    }
+
+    public function numberOfDecimalDigits()
+    {
+        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getDecimalPart()));
+    }
+
+    public function numberOfSigDecimalDigits()
+    {
+        $decimalPart = $this->getDecimalPart();
+
+        $sigDigits = ltrim($decimalPart, '0');
+
+        return Numbers::make(Numbers::IMMUTABLE, strlen($sigDigits));
     }
 
     public function asInt()
