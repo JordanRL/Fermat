@@ -160,6 +160,58 @@ abstract class Number implements Hashable
 
         return $this->setValue($value);
     }
+    
+    public function numberOfLeadingZeros()
+    {
+        $fractional = $this->getDecimalPart();
+        
+        $total = Numbers::make(Numbers::IMMUTABLE, strlen($fractional));
+        $fractional = ltrim($fractional, '0');
+        
+        return $total->subtract(strlen($fractional));
+    }
+
+    public function numberOfTotalDigits()
+    {
+        $wholeDigits = $this->getWholePart();
+        $decimalDigits = $this->getDecimalPart();
+
+        $digits = Numbers::makeZero();
+
+        $digits->add(strlen($wholeDigits))->add(strlen($decimalDigits));
+
+        return $digits;
+    }
+
+    public function numberOfIntDigits()
+    {
+        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getWholePart()));
+    }
+
+    public function numberOfDecimalDigits()
+    {
+        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getDecimalPart()));
+    }
+
+    public function numberOfSigDecimalDigits()
+    {
+        $decimalPart = $this->getDecimalPart();
+
+        $sigDigits = ltrim($decimalPart, '0');
+
+        return Numbers::make(Numbers::IMMUTABLE, strlen($sigDigits));
+    }
+
+    public function asInt()
+    {
+
+        if ($this->isGreaterThan(PHP_INT_MAX) || $this->isLessThan(PHP_INT_MIN)) {
+            throw new IncompatibleObjectState('Cannot export number as integer because it is out of range');
+        }
+
+        return intval($this->getValue());
+
+    }
 
     public function __toString()
     {
