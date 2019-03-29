@@ -65,8 +65,12 @@ trait TrigonometryTrait
         $twoPi = Numbers::make2Pi();
         $pi = Numbers::makePi();
 
-        if ($pi->truncate($precision)->isEqual($this) || $twoPi->truncate($precision)->isEqual($this)) {
+        if ($twoPi->truncate($precision)->isEqual($this)) {
             return $this->setValue(1);
+        }
+
+        if ($pi->truncate($precision)->isEqual($this)) {
+            return $this->setValue(-1);
         }
 
         $modulo = $this->continuousModulo($twoPi);
