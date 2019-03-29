@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
@@ -26,12 +27,12 @@ class SeriesProvider
      * The function continues adding terms until a term has MORE leading zeros than the $precision setting. (That is,
      * until it adds zero to the total when considering significant digits.)
      *
-     * @param NumberInterface $input
-     * @param callable        $numerator
-     * @param callable        $exponent
-     * @param callable        $denominator
-     * @param int             $startTermAt
-     * @param int             $precision
+     * @param NumberInterface       $input
+     * @param callable              $numerator
+     * @param callable              $exponent
+     * @param callable              $denominator
+     * @param int                   $startTermAt
+     * @param int|DecimalInterface  $precision
      *
      * @return NumberInterface
      */

@@ -19,11 +19,12 @@ trait TrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        if ($precision > 99) {
-            $precision = 99;
-        }
-
         $twoPi = Numbers::make2Pi();
+        $pi = Numbers::makePi();
+
+        if ($pi->truncate($precision)->isEqual($this) || $twoPi->truncate($precision)->isEqual($this)) {
+            return $this->setValue(0);
+        }
 
         $modulo = $this->continuousModulo($twoPi);
 
@@ -61,11 +62,16 @@ trait TrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        if ($precision > 99) {
-            $precision = 99;
+        $twoPi = Numbers::make2Pi();
+        $pi = Numbers::makePi();
+
+        if ($twoPi->truncate($precision)->isEqual($this)) {
+            return $this->setValue(1);
         }
 
-        $twoPi = Numbers::make2Pi();
+        if ($pi->truncate($precision)->isEqual($this)) {
+            return $this->setValue(-1);
+        }
 
         $modulo = $this->continuousModulo($twoPi);
 
@@ -96,10 +102,6 @@ trait TrigonometryTrait
         $oldBase = $this->convertForModification();
 
         $precision = $precision ?? $this->getPrecision();
-
-        if ($precision > 99) {
-            $precision = 99;
-        }
 
         $pi = Numbers::makePi();
         $piDivTwo = Numbers::makePi()->divide(2);
@@ -203,10 +205,6 @@ trait TrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        if ($precision > 99) {
-            $precision = 99;
-        }
-
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
 
         $modPi = $num->continuousModulo($pi)->truncate($precision);
@@ -247,10 +245,6 @@ trait TrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        if ($precision > 99) {
-            $precision = 99;
-        }
-
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
 
         $cos = $num->cos($precision+2, $round);
@@ -279,10 +273,6 @@ trait TrigonometryTrait
         $oldBase = $this->convertForModification();
 
         $precision = $precision ?? $this->getPrecision();
-
-        if ($precision > 99) {
-            $precision = 99;
-        }
 
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
 

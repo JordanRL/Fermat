@@ -64,7 +64,11 @@ abstract class Number implements Hashable
 
             $this->precision = ($precision > strlen($this->getDecimalPart())) ? $precision : strlen($this->getDecimalPart());
         } else {
-            $this->precision = (strlen($this->getDecimalPart()) > 10) ? strlen($this->getDecimalPart()) : 10;
+            if ($this->getDecimalPart() === 0) {
+                $this->precision = (strlen($this->getWholePart()) > 10) ? strlen($this->getWholePart()) : 10;
+            } else {
+                $this->precision = (strlen($this->getDecimalPart()) > 10) ? strlen($this->getDecimalPart()) : 10;
+            }
         }
     }
 
@@ -175,36 +179,36 @@ abstract class Number implements Hashable
         return $this->setValue($value);
     }
     
-    public function numberOfLeadingZeros()
+    public function numberOfLeadingZeros(): int
     {
         $fractional = $this->getDecimalPart();
         
         $total = Numbers::make(Numbers::IMMUTABLE, strlen($fractional));
         $fractional = ltrim($fractional, '0');
         
-        return $total->subtract(strlen($fractional));
+        return $total->subtract(strlen($fractional))->asInt();
     }
 
-    public function numberOfTotalDigits()
+    public function numberOfTotalDigits(): int
     {
         $wholeDigits = $this->getWholePart();
         $decimalDigits = $this->getDecimalPart();
 
         $digits = Numbers::makeZero();
 
-        $digits->add(strlen($wholeDigits))->add(strlen($decimalDigits));
+        $digits = $digits->add(strlen($wholeDigits))->add(strlen($decimalDigits));
 
-        return $digits;
+        return $digits->asInt();
     }
 
     public function numberOfIntDigits()
     {
-        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getWholePart()));
+        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getWholePart()))->asInt();
     }
 
     public function numberOfDecimalDigits()
     {
-        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getDecimalPart()));
+        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getDecimalPart()))->asInt();
     }
 
     public function numberOfSigDecimalDigits()
@@ -213,7 +217,7 @@ abstract class Number implements Hashable
 
         $sigDigits = ltrim($decimalPart, '0');
 
-        return Numbers::make(Numbers::IMMUTABLE, strlen($sigDigits));
+        return Numbers::make(Numbers::IMMUTABLE, strlen($sigDigits))->asInt();
     }
 
     public function asInt()
@@ -239,7 +243,11 @@ abstract class Number implements Hashable
 
     public function equals($object): bool
     {
-        $reflection = new \ReflectionClass($object);
+        try {
+            $reflection = new \ReflectionClass($object);
+        } catch (\ReflectionException $exception) {
+            return false;
+        }
 
         if ($reflection->implementsInterface(NumberInterface::class) || is_numeric($object)) {
             return $this->isEqual($object);

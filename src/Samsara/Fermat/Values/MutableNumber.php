@@ -20,14 +20,14 @@ class MutableNumber extends Number implements NumberInterface, DecimalInterface
     public function continuousModulo($mod)
     {
 
-        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod);
-        $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue());
+        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, $this->precision+1);
+        $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(), $this->precision+1);
 
         $multiple = $oldNum->divide($mod)->floor();
 
         $remainder = $oldNum->subtract($mod->multiply($multiple));
 
-        return Numbers::make(Numbers::MUTABLE, $remainder->getValue());
+        return Numbers::make(Numbers::MUTABLE, $remainder->truncate($this->precision)->getValue());
 
     }
 
