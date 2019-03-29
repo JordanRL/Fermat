@@ -182,6 +182,10 @@ class StatsProvider
     }
 
     /**
+     * Below is the integral for the gamma function, not the sum. That is, this implementation won't actually work. I
+     * either need to implement a generalized integral, or I need to find a summation representation of the gamma
+     * function.
+     *
      * @param     $z
      * @param int $precision
      *
