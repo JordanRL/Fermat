@@ -239,6 +239,6 @@ interface DecimalInterface
     /**
      * @return int
      */
-    public function asInt(): int;
+    public function asInt();
 
 }
