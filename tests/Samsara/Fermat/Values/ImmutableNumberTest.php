@@ -301,7 +301,7 @@ class ImmutableNumberTest extends TestCase
         /** @var ImmutableNumber $pi */
         $pi = Numbers::makePi();
 
-        $this->assertEquals('0', $pi->sin()->getValue());
+        $this->assertEquals('0', $pi->sin(100, false)->getValue());
 
         $four = new ImmutableNumber(4);
 
