@@ -72,6 +72,16 @@ abstract class Number implements Hashable
         }
     }
 
+    /**
+     * Allows you to set a mode on a number to select the calculation methods.
+     *
+     * MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the precision setting.
+     * MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
+     * MODE_SIMPLE_TRIG: Use simpler versions of the trig functions, which lose accuracy as significant figures grows.
+     *
+     * @param int $mode
+     * @return $this
+     */
     public function setMode(int $mode)
     {
         $this->mode = $mode;
@@ -79,6 +89,11 @@ abstract class Number implements Hashable
         return $this;
     }
 
+    /**
+     * Returns the current value as a string.
+     *
+     * @return string
+     */
     public function getValue()
     {
         if ($this->getRadixPos()) {
@@ -88,11 +103,23 @@ abstract class Number implements Hashable
         }
     }
 
-    public function getBase()
+    /**
+     * Returns the current base that the value is in.
+     *
+     * @return int
+     */
+    public function getBase(): int
     {
         return $this->base;
     }
 
+    /**
+     * Allows the object to ignore PHP extensions (such a GMP) and use only the Fermat implementations. NOTE: This does
+     * not ignore ext-bcmath or ext-decimal, as those are necessary for the string math itself.
+     *
+     * @param bool $flag
+     * @return $this
+     */
     public function setExtensions(bool $flag)
     {
 
@@ -102,6 +129,13 @@ abstract class Number implements Hashable
 
     }
 
+    /**
+     * Takes an object and converts it to base10 so that math can be performed on it. Returns the native base if it is
+     * something other than 10, and returns false (for a performance early exit in convertFromModification()) if the
+     * native base is already 10.
+     *
+     * @return bool|int
+     */
     public function convertForModification()
     {
         if ($this->getBase() == 10) {
@@ -113,6 +147,12 @@ abstract class Number implements Hashable
         }
     }
 
+    /**
+     * Returns an object to its native base after calculation.
+     *
+     * @param $oldBase
+     * @return $this|NumberInterface
+     */
     public function convertFromModification($oldBase)
     {
         if ($oldBase !== false) {
@@ -122,6 +162,11 @@ abstract class Number implements Hashable
         return $this;
     }
 
+    /**
+     * Returns the current object as the absolute value of itself.
+     *
+     * @return DecimalInterface|NumberInterface
+     */
     public function abs()
     {
         $newValue = $this->absValue();
@@ -129,6 +174,11 @@ abstract class Number implements Hashable
         return $this->setValue($newValue);
     }
 
+    /**
+     * Returns the string of the absolute value of the current object.
+     *
+     * @return string
+     */
     public function absValue(): string
     {
         if ($this->isNegative()) {
@@ -139,6 +189,8 @@ abstract class Number implements Hashable
     }
 
     /**
+     * Returns the sort compare integer (-1, 0, 1) for the two numbers.
+     *
      * @param NumberInterface|int|float|string $value
      * @return int
      */
@@ -163,6 +215,8 @@ abstract class Number implements Hashable
     }
 
     /**
+     * Converts the object to a different base.
+     *
      * @param $base
      * @return NumberInterface
      */
@@ -178,7 +232,12 @@ abstract class Number implements Hashable
 
         return $this->setValue($value);
     }
-    
+
+    /**
+     * The number of digits between the radix and the for non-zero digit in the decimal part.
+     *
+     * @return int
+     */
     public function numberOfLeadingZeros(): int
     {
         $fractional = $this->getDecimalPart();
@@ -189,6 +248,11 @@ abstract class Number implements Hashable
         return $total->subtract(strlen($fractional))->asInt();
     }
 
+    /**
+     * The number of digits (excludes the radix).
+     *
+     * @return int
+     */
     public function numberOfTotalDigits(): int
     {
         $wholeDigits = $this->getWholePart();
@@ -201,17 +265,32 @@ abstract class Number implements Hashable
         return $digits->asInt();
     }
 
-    public function numberOfIntDigits()
+    /**
+     * The number of digits in the integer part.
+     *
+     * @return int
+     */
+    public function numberOfIntDigits(): int
     {
         return Numbers::make(Numbers::IMMUTABLE, strlen($this->getWholePart()))->asInt();
     }
 
-    public function numberOfDecimalDigits()
+    /**
+     * The number of digits in the decimal part.
+     *
+     * @return int
+     */
+    public function numberOfDecimalDigits(): int
     {
         return Numbers::make(Numbers::IMMUTABLE, strlen($this->getDecimalPart()))->asInt();
     }
 
-    public function numberOfSigDecimalDigits()
+    /**
+     * The number of digits in the decimal part, excluding leading zeros.
+     *
+     * @return int
+     */
+    public function numberOfSigDecimalDigits(): int
     {
         $decimalPart = $this->getDecimalPart();
 
@@ -220,7 +299,14 @@ abstract class Number implements Hashable
         return Numbers::make(Numbers::IMMUTABLE, strlen($sigDigits))->asInt();
     }
 
-    public function asInt()
+    /**
+     * Returns the current value as an integer if it is within the max a min int values on the current system. Uses the
+     * intval() function to convert the string to an integer type.
+     *
+     * @return int
+     * @throws IncompatibleObjectState
+     */
+    public function asInt(): int
     {
 
         if ($this->isGreaterThan(PHP_INT_MAX) || $this->isLessThan(PHP_INT_MIN)) {
@@ -231,16 +317,30 @@ abstract class Number implements Hashable
 
     }
 
-    public function __toString()
+    /**
+     * @return string
+     */
+    public function __toString(): string
     {
         return $this->getValue();
     }
 
-    public function hash()
+    /**
+     * Implemented to satisfy Hashable implementation
+     *
+     * @return string
+     */
+    public function hash(): string
     {
         return get_class($this).$this->getValue();
     }
 
+    /**
+     * Implemented to satisfy Hashable implementation
+     *
+     * @param mixed $object
+     * @return bool
+     */
     public function equals($object): bool
     {
         try {
