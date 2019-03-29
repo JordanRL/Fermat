@@ -23,10 +23,7 @@ class SeriesProviderTest extends TestCase
                 $val = new ImmutableNumber(10);
 
                 return $val->pow($num);
-            },
-            0,
-            10,
-            true
+            }
         );
 
         $this->assertEquals('1.1111111111', $value->getValue());
