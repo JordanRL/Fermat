@@ -236,4 +236,9 @@ interface DecimalInterface
      */
     public function convertFromModification($oldBase);
 
+    /**
+     * @return int
+     */
+    public function asInt(): int;
+
 }
