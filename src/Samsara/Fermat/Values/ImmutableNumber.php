@@ -20,8 +20,14 @@ class ImmutableNumber extends Number implements NumberInterface, DecimalInterfac
     public function continuousModulo($mod)
     {
 
+        if (is_object($mod) && method_exists($mod, 'getPrecision')) {
+            $precision = ($this->getPrecision() < $mod->getPrecision()) ? $mod->getPrecision() : $this->getPrecision();
+        } else {
+            $precision = $this->getPrecision();
+        }
+
         $oldPrecision = $this->precision;
-        $newPrecision = $oldPrecision+1;
+        $newPrecision = $precision+1;
 
         $this->precision = $newPrecision;
 
