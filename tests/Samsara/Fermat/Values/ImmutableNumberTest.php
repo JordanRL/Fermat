@@ -602,9 +602,9 @@ class ImmutableNumberTest extends TestCase
 
         $twoPi = new ImmutableNumber(Numbers::TAU);
 
-        $twoPi->add(2);
+        $twoPiPlusTwo = $twoPi->add(2);
 
-        $this->assertEquals('2', $twoPi->continuousModulo(Numbers::PI)->getValue());
+        $this->assertEquals('2', $twoPiPlusTwo->continuousModulo(Numbers::PI)->getValue());
 
     }
 
