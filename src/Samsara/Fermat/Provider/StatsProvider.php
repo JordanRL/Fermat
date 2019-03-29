@@ -28,7 +28,7 @@ class StatsProvider
         $one = Numbers::makeOne();
 
         $eExponent = Numbers::make(Numbers::IMMUTABLE, $x->getValue());
-        $eExponent->pow(2)->divide(2)->multiply(-1);
+        $eExponent = $eExponent->pow(2)->divide(2)->multiply(-1);
 
         $answer = Numbers::make(Numbers::IMMUTABLE, 0.5);
         $answer = $answer->add(
@@ -125,7 +125,13 @@ class StatsProvider
         while ($continue) {
 
             $cumulative = self::normalCDF($xCur);
-            $dx = $cumulative->subtract($p)->divide($r2pi->multiply($e->pow($xCur->pow(2))->divide(-2)));
+            $dx = $cumulative->subtract($p)->divide(
+                $r2pi->multiply(
+                    $e->pow(
+                        $xCur->pow(2)
+                    )->divide(-2)
+                )
+            );
             $xCur = $xCur->subtract($dx);
 
             if ($dx->numberOfLeadingZeros() > $precision) {

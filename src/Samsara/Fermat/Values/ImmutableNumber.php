@@ -20,13 +20,30 @@ class ImmutableNumber extends Number implements NumberInterface, DecimalInterfac
     public function continuousModulo($mod)
     {
 
-        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, 100);
+        if (is_object($mod) && method_exists($mod, 'getPrecision')) {
+            $precision = ($this->getPrecision() < $mod->getPrecision()) ? $mod->getPrecision() : $this->getPrecision();
+        } else {
+            $precision = $this->getPrecision();
+        }
+
+        $oldPrecision = $this->precision;
+        $newPrecision = $precision+1;
+
+        $this->precision = $newPrecision;
+
+        if (is_object($mod) && method_exists($mod, 'truncateToPrecision')) {
+            $mod = $mod->truncateToPrecision($newPrecision);
+        } else {
+            $mod = Numbers::make(Numbers::IMMUTABLE, $mod, $newPrecision);
+        }
 
         $multiple = $this->divide($mod)->floor();
 
         $remainder = $this->subtract($mod->multiply($multiple));
 
-        return $remainder;
+        $this->precision = $oldPrecision;
+
+        return $remainder->truncateToPrecision($oldPrecision);
 
     }
 

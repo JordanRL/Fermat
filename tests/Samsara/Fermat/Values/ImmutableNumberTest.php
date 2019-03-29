@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\FractionInterface;
+use Samsara\Fermat\Types\NumberCollection;
 
 class ImmutableNumberTest extends TestCase
 {
@@ -293,7 +293,7 @@ class ImmutableNumberTest extends TestCase
 
         $largeInt = new ImmutableNumber('1000000000000000000000000000');
 
-        $this->assertEquals('31622776601683.7933199889', $largeInt->sqrt()->getValue());
+        $this->assertEquals('31622776601683.7933199889', $largeInt->sqrt(10)->getValue());
 
     }
 
@@ -302,7 +302,7 @@ class ImmutableNumberTest extends TestCase
         /** @var ImmutableNumber $pi */
         $pi = Numbers::makePi();
 
-        $this->assertEquals('0', $pi->sin()->getValue());
+        $this->assertEquals('0', $pi->sin(10, false)->getValue());
 
         $four = new ImmutableNumber(4);
 
@@ -578,6 +578,94 @@ class ImmutableNumberTest extends TestCase
         $this->expectExceptionMessage('Precision of any number cannot be calculated beyond 2147483646 digits');
 
         $precisionLimit = new ImmutableNumber(1, 2147483647);
+
+    }
+
+    public function testModulo()
+    {
+
+        $four = new ImmutableNumber(4);
+
+        $this->assertEquals('0', $four->modulo(2)->getValue());
+
+        $five = new ImmutableNumber(5);
+
+        $this->assertEquals('1', $five->modulo(2)->getValue());
+
+    }
+
+    public function testContinuousModulo()
+    {
+
+        $pi = new ImmutableNumber(Numbers::PI);
+
+        $this->assertEquals('0', $pi->continuousModulo(Numbers::PI)->getValue());
+
+        $twoPi = new ImmutableNumber(Numbers::TAU);
+
+        $twoPiPlusTwo = $twoPi->add(2);
+
+        $this->assertEquals('2', $twoPiPlusTwo->continuousModulo(Numbers::PI)->getValue());
+
+    }
+
+    public function testAsInt()
+    {
+
+        $num2 = new ImmutableNumber('15');
+
+        $this->assertEquals(15, $num2->asInt());
+
+        $this->assertEquals(15, $num2->add('0.2')->asInt());
+
+        $this->expectException(IncompatibleObjectState::class);
+        $this->expectExceptionMessage('Cannot export number as integer because it is out of range');
+
+        $num = new ImmutableNumber('1000000000000000000000000000000000000000000000000000000');
+        $num->asInt();
+
+    }
+
+    public function testDigitCounts()
+    {
+
+        $num1 = new ImmutableNumber('15.242');
+
+        $this->assertEquals(5, $num1->numberOfTotalDigits());
+        $this->assertEquals(2, $num1->numberOfIntDigits());
+        $this->assertEquals(3, $num1->numberOfDecimalDigits());
+        $this->assertEquals(3, $num1->numberOfSigDecimalDigits());
+
+        $num2 = new ImmutableNumber('0.0000242');
+
+        $this->assertEquals(3,$num2->numberOfSigDecimalDigits());
+        $this->assertEquals(4, $num2->numberOfLeadingZeros());
+
+    }
+
+    public function testObjectEquality()
+    {
+
+        $in1 = new ImmutableNumber(12);
+        $in2 = new ImmutableNumber('12');
+        $in3 = new ImmutableNumber(16);
+
+        $this->assertEquals('Samsara\\Fermat\\Values\\ImmutableNumber12', $in1->hash());
+        $this->assertEquals('Samsara\\Fermat\\Values\\ImmutableNumber12', $in2->hash());
+        $this->assertEquals('Samsara\\Fermat\\Values\\ImmutableNumber16', $in3->hash());
+
+        $mn1 = new MutableNumber(12);
+        $mn2 = new MutableNumber(16);
+
+        $this->assertTrue($in1->equals($mn1));
+        $this->assertTrue($in1->equals($in2));
+        $this->assertFalse($in1->equals($in3));
+        $this->assertFalse($in1->equals($mn2));
+
+        $nc = new NumberCollection([12,14,16]);
+
+        $this->assertFalse($in1->equals('blahblah'));
+        $this->assertFalse($in1->equals($nc));
 
     }
 
