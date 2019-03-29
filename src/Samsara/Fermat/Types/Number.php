@@ -182,7 +182,7 @@ abstract class Number implements Hashable
 
         $digits = Numbers::makeZero();
 
-        $digits->add(strlen($wholeDigits))->add(strlen($decimalDigits));
+        $digits = $digits->add(strlen($wholeDigits))->add(strlen($decimalDigits));
 
         return $digits->asInt();
     }
@@ -229,7 +229,11 @@ abstract class Number implements Hashable
 
     public function equals($object): bool
     {
-        $reflection = new \ReflectionClass($object);
+        try {
+            $reflection = new \ReflectionClass($object);
+        } catch (\ReflectionException $exception) {
+            return false;
+        }
 
         if ($reflection->implementsInterface(NumberInterface::class) || is_numeric($object)) {
             return $this->isEqual($object);
