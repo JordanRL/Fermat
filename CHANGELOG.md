@@ -28,6 +28,11 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - PrecisionTrait
     - TrigonometryTrait
   - NumberCollection
+  - Number
+    - numberOfTotalDigits()
+    - numberOfIntDigits()
+    - numberOfDecimalDigits()
+    - numberOfSigDecimalDigits()
 - Factories:
   - Collections
 
@@ -35,7 +40,7 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 
 - Composer 
   - **Suggested:**
-    - ext-stats: * (As this library is no longer maintained an unavailable on PHP 7+, it is being removed)
+    - ext-stats: * (As this library is no longer maintained and unavailable on PHP 7+, it is being removed)
 - Providers:
   - SequenceProvider
     - Removed empty `nthSecTanCoefNumber` function until an implementation exists
@@ -52,7 +57,9 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Moved many methods into traits
   - Number
     - Moved many methods into traits
-    - Now passes the precision setting to ALL calls to `ArithmeticProvider` allowing precision up to 2147483646 digits. (Still limited by constants on log and trig functions.)
+    - Now passes the precision setting to ALL calls to `ArithmeticProvider` allowing precision up to 2147483646 digits.
+    - Trig functions are now arbitrary precision
+    - numberOfLeadingZeros() now returns `int` type, as was originally intended
 
 ### Fixed
 
@@ -65,6 +72,10 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 - Types
   - Tuple
     - Changed the constructor so that it properly works with either parameter collection or a single array
+  - ImmutableNumber
+    - Fixed problem with precision in continuousModulo()
+  - MutableNumber
+    - Fixed problem with precision in continuousModulo()
 
 ## [1.0.2] - 2017-01-16
 ### Fixed
