@@ -41,6 +41,8 @@ class ImmutableNumber extends Number implements NumberInterface, DecimalInterfac
 
         $remainder = $this->subtract($mod->multiply($multiple));
 
+        $this->precision = $oldPrecision;
+
         return $remainder->truncateToPrecision($oldPrecision);
 
     }
