@@ -241,7 +241,7 @@ class ImmutableNumberTest extends TestCase
 
         $fifteen = new ImmutableNumber(15);
 
-        $this->assertEquals('2.70805020110', $fifteen->ln(11)->getValue());
+        $this->assertContains('2.7080502011', $fifteen->ln(11)->getValue());
 
         $oneFifty = new ImmutableNumber(150);
 
