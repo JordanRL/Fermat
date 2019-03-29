@@ -31,7 +31,11 @@ class ImmutableNumber extends Number implements NumberInterface, DecimalInterfac
 
         $this->precision = $newPrecision;
 
-        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, $newPrecision);
+        if (is_object($mod) && method_exists($mod, 'truncateToPrecision')) {
+            $mod = $mod->truncateToPrecision($newPrecision);
+        } else {
+            $mod = Numbers::make(Numbers::IMMUTABLE, $mod, $newPrecision);
+        }
 
         $multiple = $this->divide($mod)->floor();
 
