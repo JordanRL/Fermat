@@ -20,6 +20,11 @@ trait TrigonometryTrait
         $precision = $precision ?? $this->getPrecision();
 
         $twoPi = Numbers::make2Pi();
+        $pi = Numbers::makePi();
+
+        if ($pi->truncate($precision)->isEqual($this) || $twoPi->truncate($precision)->isEqual($this)) {
+            return $this->setValue(0);
+        }
 
         $modulo = $this->continuousModulo($twoPi);
 
@@ -58,6 +63,11 @@ trait TrigonometryTrait
         $precision = $precision ?? $this->getPrecision();
 
         $twoPi = Numbers::make2Pi();
+        $pi = Numbers::makePi();
+
+        if ($pi->truncate($precision)->isEqual($this) || $twoPi->truncate($precision)->isEqual($this)) {
+            return $this->setValue(1);
+        }
 
         $modulo = $this->continuousModulo($twoPi);
 
