@@ -20,7 +20,7 @@ class ImmutableNumber extends Number implements NumberInterface, DecimalInterfac
     public function continuousModulo($mod)
     {
 
-        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, 100);
+        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, $this->precision+1);
 
         $multiple = $this->divide($mod)->floor();
 
