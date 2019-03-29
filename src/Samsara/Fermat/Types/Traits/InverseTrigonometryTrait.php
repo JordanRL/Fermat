@@ -17,10 +17,6 @@ trait InverseTrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        if ($precision > 99) {
-            $precision = 99;
-        }
-
         $one = Numbers::makeOne();
 
         $oldBase = $this->convertForModification();
@@ -69,10 +65,6 @@ trait InverseTrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        if ($precision > 99) {
-            $precision = 99;
-        }
-
         $piDivTwo = Numbers::makePi()->divide(2);
 
         $one = Numbers::makeOne();
@@ -105,10 +97,6 @@ trait InverseTrigonometryTrait
     {
 
         $precision = $precision ?? $this->getPrecision();
-
-        if ($precision > 99) {
-            $precision = 99;
-        }
 
         $one = Numbers::makeOne();
 
@@ -159,10 +147,6 @@ trait InverseTrigonometryTrait
     {
 
         $precision = $precision ?? $this->getPrecision();
-
-        if ($precision > 99) {
-            $precision = 99;
-        }
 
         $one = Numbers::makeOne();
         $piDivTwo = Numbers::makePi()->divide(2);
@@ -217,10 +201,6 @@ trait InverseTrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        if ($precision > 99) {
-            $precision = 99;
-        }
-
         $piDivTwo = Numbers::makePi()->divide(2);
 
         $oldBase = $this->convertForModification();
@@ -270,10 +250,6 @@ trait InverseTrigonometryTrait
     {
 
         $precision = $precision ?? $this->getPrecision();
-
-        if ($precision > 99) {
-            $precision = 99;
-        }
 
         $oldBase = $this->convertForModification();
 
