@@ -1,18 +1,29 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<phpunit bootstrap="tests/bootstrap.php"
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="tests/bootstrap.php"
          colors="true"
-         verbose="true">
-    <testsuites name="Fermat Values">
-        <directory>/tests/Samsara/Fermat/Values/*Test.php</directory>
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+
+    <testsuites name="Fermat Test Suites">
+        <testsuite name="Values Test Suite">
+            <directory suffix=".php">./tests/Samsara/Fermat/Values</directory>
+        </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory suffix=".php">./src</directory>
+            <directory suffix=".php">./src/Samsara/Fermat/</directory>
         </whitelist>
     </filter>
 
     <logging>
         <log type="coverage-clover" target="build/logs/coverage.xml" />
     </logging>
+
 </phpunit>
