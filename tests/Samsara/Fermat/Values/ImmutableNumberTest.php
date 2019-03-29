@@ -292,7 +292,7 @@ class ImmutableNumberTest extends TestCase
 
         $largeInt = new ImmutableNumber('1000000000000000000000000000');
 
-        $this->assertEquals('31622776601683.7933199889', $largeInt->sqrt()->getValue());
+        $this->assertEquals('31622776601683.7933199889', $largeInt->sqrt(10)->getValue());
 
     }
 

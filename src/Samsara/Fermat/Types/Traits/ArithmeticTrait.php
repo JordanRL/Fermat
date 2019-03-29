@@ -224,23 +224,27 @@ trait ArithmeticTrait
 
     }
 
-    public function sqrt()
+    public function sqrt($precision = null)
     {
         $check = $this->checkArithmeticTraitAndInterface();
 
         if ($check == 1) {
             $oldBase = $this->convertForModification();
 
-            $value = ArithmeticProvider::squareRoot($this->getValue(), $this->getPrecision());
+            if (!is_null($precision) && is_int($precision)) {
+                $value = ArithmeticProvider::squareRoot($this->getValue(), $precision);
+            } else {
+                $value = ArithmeticProvider::squareRoot($this->getValue(), $this->getPrecision());
+            }
 
             $this->convertFromModification($oldBase);
 
             return $this->setValue($value);
         } else {
             /** @var ImmutableNumber $sqrtNumerator */
-            $sqrtNumerator = $this->getNumerator()->sqrt();
+            $sqrtNumerator = $this->getNumerator()->sqrt($precision);
             /** @var ImmutableNumber $sqrtDenominator */
-            $sqrtDenominator = $this->getDenominator()->sqrt();
+            $sqrtDenominator = $this->getDenominator()->sqrt($precision);
 
             if ($sqrtNumerator->isWhole() && $sqrtDenominator->isWhole()) {
                 return $this->setValue($sqrtNumerator, $sqrtDenominator);
