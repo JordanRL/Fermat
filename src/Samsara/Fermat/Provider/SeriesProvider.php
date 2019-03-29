@@ -45,10 +45,6 @@ class SeriesProvider
         $precision = 10)
     {
 
-        if (is_object($precision) && $precision instanceof DecimalInterface) {
-            $precision = $precision->asInt();
-        }
-
         $x = Numbers::makeZero(100);
         $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue());
 

@@ -175,11 +175,4 @@ trait IntegerMathTrait
         return true;
     }
 
-    public function asInt(): int
-    {
-
-        return intval($this->getValue());
-
-    }
-
 }
