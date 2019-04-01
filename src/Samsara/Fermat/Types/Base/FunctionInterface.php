@@ -5,8 +5,8 @@ namespace Samsara\Fermat\Types\Base;
 interface FunctionInterface
 {
 
-    public function derivativeExpression(): ExpressionInterface;
+    public function derivativeExpression(): FunctionInterface;
 
-    public function integralExpression(): ExpressionInterface;
+    public function integralExpression(): FunctionInterface;
 
 }
