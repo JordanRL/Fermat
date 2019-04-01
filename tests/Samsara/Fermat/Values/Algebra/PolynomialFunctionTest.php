@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Values\Algebra;
 
 use PHPUnit\Framework\TestCase;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 
 class PolynomialFunctionTest extends TestCase
 {
@@ -91,6 +92,32 @@ class PolynomialFunctionTest extends TestCase
 
         $this->assertEquals($shape, $integral->describeShape());
         $this->assertEquals('10', $integral->evaluateAt(2)->getValue());
+
+        $shape = [
+            0 => '5',
+            1 => '1',
+            3 => '1'
+        ];
+
+        $integral = $polynomial->integralExpression(5);
+
+        $this->assertEquals($shape, $integral->describeShape());
+        $this->assertEquals('15', $integral->evaluateAt(2)->getValue());
+
+    }
+
+    public function testBadConstructor()
+    {
+
+        $coeff = [
+            'string' => 1,
+            2 => 2
+        ];
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The key string was found in the $coefficients array; an integer was expected');
+
+        $polynomial = new PolynomialFunction($coeff);
 
     }
 

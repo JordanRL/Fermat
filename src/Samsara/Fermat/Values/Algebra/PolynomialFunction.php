@@ -55,10 +55,6 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
             $xPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
             foreach ($sanitizedCoefficients as $exponent => $coefficient) {
-                if ($coefficient->isEqual(0)) {
-                    continue;
-                }
-
                 if ($exponent == 0) {
                     $value = $value->add($coefficient);
                 } else {
