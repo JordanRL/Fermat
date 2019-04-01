@@ -7,6 +7,11 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\NumberCollection;
+use Samsara\Fermat\Types\Traits\ArithmeticTrait;
+
+class DummyNumber {
+    use ArithmeticTrait;
+}
 
 class ImmutableNumberTest extends TestCase
 {
@@ -300,9 +305,11 @@ class ImmutableNumberTest extends TestCase
     public function testSin()
     {
         /** @var ImmutableNumber $pi */
-        $pi = Numbers::makePi();
+        $pi = Numbers::makePi(10);
+        $zero = new ImmutableNumber(0);
 
-        $this->assertEquals('0', $pi->sin(10, false)->getValue());
+        $this->assertEquals('0', $pi->sin()->getValue());
+        $this->assertEquals('0', $zero->sin()->getValue());
 
         $four = new ImmutableNumber(4);
 
@@ -357,6 +364,10 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('-0.295812916', $five->cot(9)->getValue());
         $this->assertEquals('-0.295812915', $five->cot(9, false)->getValue());
 
+        $test = new ImmutableNumber('-0.7853981633');
+
+        $this->assertEquals('1', $test->cot(2)->getValue());
+
     }
 
     public function testSec()
@@ -386,6 +397,170 @@ class ImmutableNumberTest extends TestCase
 
         $this->assertEquals('1.373400767', $five->arctan(9)->getValue());
         $this->assertEquals('1.373400766', $five->arctan(9, false)->getValue());
+
+        $oneHalf = new ImmutableNumber('0.5');
+
+        $this->assertEquals('0.463647609', $oneHalf->arctan(9, false)->getValue());
+
+        $oneHalf = new ImmutableNumber('-0.5');
+
+        $this->assertEquals('-0.463647609', $oneHalf->arctan(9, false)->getValue());
+
+    }
+
+    public function testArcsin()
+    {
+
+        $one = new ImmutableNumber(1);
+
+        $this->assertEquals('1.5707963267', $one->arcsin(10, false)->getValue());
+        $this->assertEquals('1.5707963268', $one->arcsin(10)->getValue());
+
+        $zero = new ImmutableNumber(0);
+
+        $this->assertEquals('0', $zero->arcsin(10, false)->getValue());
+        $this->assertEquals('0', $zero->arcsin(10)->getValue());
+
+        $negOne = new ImmutableNumber(-1);
+
+        $this->assertEquals('-1.5707963267', $negOne->arcsin(10, false)->getValue());
+        $this->assertEquals('-1.5707963268', $negOne->arcsin(10)->getValue());
+
+        $oneHalf = new ImmutableNumber('0.5');
+
+        $this->assertEquals('0.5235987755', $oneHalf->arcsin(10, false)->getValue());
+        $this->assertEquals('0.5235987756', $oneHalf->arcsin(10)->getValue());
+
+        $onePointFive = new ImmutableNumber('1.5');
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The arcsin function only has real values for inputs which have an absolute value of 1 or smaller');
+
+        $onePointFive->arcsin();
+
+    }
+
+    public function testArccos()
+    {
+
+        $one = new ImmutableNumber(1);
+
+        $this->assertEquals('0', $one->arccos()->getValue());
+
+        $zero = new ImmutableNumber(0);
+
+        $this->assertEquals('1.5707963267', $zero->arccos(10, false)->getValue());
+        $this->assertEquals('1.5707963268', $zero->arccos(10)->getValue());
+
+        $negOne = new ImmutableNumber(-1);
+
+        $this->assertEquals('3.1415926535', $negOne->arccos(10, false)->getValue());
+        $this->assertEquals('3.1415926536', $negOne->arccos(10)->getValue());
+
+        $oneHalf = new ImmutableNumber('0.5');
+
+        $this->assertEquals('1.0471975511', $oneHalf->arccos(10, false)->getValue());
+        $this->assertEquals('1.0471975512', $oneHalf->arccos(10)->getValue());
+
+        $onePointFive = new ImmutableNumber('1.5');
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The arccos function only has real values for inputs which have an absolute value of 1 or smaller');
+
+        $onePointFive->arccos();
+
+    }
+
+    public function testArccot()
+    {
+        $one = new ImmutableNumber(1);
+
+        $this->assertEquals('0.7853981633', $one->arccot(10, false)->getValue());
+        $this->assertEquals('0.7853981634', $one->arccot(10)->getValue());
+
+        $zero = new ImmutableNumber(0);
+
+        $this->assertEquals('1.5707963267', $zero->arccot(10, false)->getValue());
+        $this->assertEquals('1.5707963268', $zero->arccot(10)->getValue());
+
+        $negOne = new ImmutableNumber(-1);
+
+        $this->assertEquals('2.3561944901', $negOne->arccot(10, false)->getValue());
+        $this->assertEquals('2.3561944902', $negOne->arccot(10)->getValue());
+
+        $oneHalf = new ImmutableNumber('0.5');
+
+        $this->assertEquals('1.1071487177', $oneHalf->arccot(10, false)->getValue());
+        $this->assertEquals('1.1071487178', $oneHalf->arccot(10)->getValue());
+
+        $negOneHalf = new ImmutableNumber('-0.5');
+
+        $this->assertEquals('2.0344439357', $negOneHalf->arccot(10, false)->getValue());
+        $this->assertEquals('2.0344439358', $negOneHalf->arccot(10)->getValue());
+
+        $negPointNine = new ImmutableNumber('-0.9');
+
+        $this->assertEquals('2.3036114285', $negPointNine->arccot(10, false)->getValue());
+        $this->assertEquals('2.3036114286', $negPointNine->arccot(10)->getValue());
+
+        $negOnePointOne = new ImmutableNumber('-1.1');
+
+        $this->assertEquals('2.4037775934', $negOnePointOne->arccot(10, false)->getValue());
+        $this->assertEquals('2.4037775935', $negOnePointOne->arccot(10)->getValue());
+
+    }
+
+    public function testArcsec()
+    {
+
+        $one = new ImmutableNumber(1);
+
+        $this->assertEquals('0', $one->arcsec(10, false)->getValue());
+
+        $negOne = new ImmutableNumber(-1);
+
+        $this->assertEquals('3.1415926535', $negOne->arcsec(10, false)->getValue());
+        $this->assertEquals('3.1415926536', $negOne->arcsec(10)->getValue());
+
+        $oneHalf = new ImmutableNumber('1.5');
+
+        $this->assertEquals('0.8410686705', $oneHalf->arcsec(10, false)->getValue());
+        $this->assertEquals('0.8410686706', $oneHalf->arcsec(10)->getValue());
+
+        $oneHalf = new ImmutableNumber('0.5');
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The arcsec function only has real values for inputs which have an absolute value greater than 1');
+
+        $oneHalf->arcsec();
+
+    }
+
+    public function testArccsc()
+    {
+
+        $one = new ImmutableNumber(1);
+
+        $this->assertEquals('1.5707963267', $one->arccsc(10, false)->getValue());
+        $this->assertEquals('1.5707963268', $one->arccsc(10)->getValue());
+
+        $negOne = new ImmutableNumber(-1);
+
+        $this->assertEquals('-1.5707963267', $negOne->arccsc(10, false)->getValue());
+        $this->assertEquals('-1.5707963268', $negOne->arccsc(10)->getValue());
+
+
+        $oneAndAHalf = new ImmutableNumber('1.5');
+
+        $this->assertEquals('0.7297276562', $oneAndAHalf->arccsc(10, false)->getValue());
+        $this->assertEquals('0.7297276562', $oneAndAHalf->arccsc(10)->getValue());
+
+        $oneHalf = new ImmutableNumber('0.5');
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The arccsc function only has real values for inputs which have an absolute value greater than 1');
+
+        $oneHalf->arccsc();
 
     }
 
@@ -527,7 +702,7 @@ class ImmutableNumberTest extends TestCase
 
     }
 
-    public function testRound()
+    public function testRoundAndTruncate()
     {
 
         $pointFive = new ImmutableNumber('0.5');
@@ -541,6 +716,7 @@ class ImmutableNumberTest extends TestCase
         $testNum = new ImmutableNumber('62.169797510839');
 
         $this->assertEquals('62.1697975108', $testNum->round(10)->getValue());
+        $this->assertEquals('62', $testNum->truncate()->getValue());
 
         $closeToOne = new ImmutableNumber('0.999999999999999');
 
@@ -638,7 +814,7 @@ class ImmutableNumberTest extends TestCase
 
         $num2 = new ImmutableNumber('0.0000242');
 
-        $this->assertEquals(3,$num2->numberOfSigDecimalDigits());
+        $this->assertEquals(3, $num2->numberOfSigDecimalDigits());
         $this->assertEquals(4, $num2->numberOfLeadingZeros());
 
     }
@@ -666,6 +842,18 @@ class ImmutableNumberTest extends TestCase
 
         $this->assertFalse($in1->equals('blahblah'));
         $this->assertFalse($in1->equals($nc));
+
+    }
+
+    public function testArithmeticTraitCheck()
+    {
+
+        $dummy = new DummyNumber();
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('You cannot use the ArithmeticTrait without implementing either the DecimalInterface or FractionInterface');
+
+        $dummy->add(1);
 
     }
 

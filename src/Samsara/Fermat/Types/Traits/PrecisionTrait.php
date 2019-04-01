@@ -3,6 +3,8 @@
 namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 
 trait PrecisionTrait
@@ -62,7 +64,7 @@ trait PrecisionTrait
             $truncated = $whole.'.';
 
             if ($decimals > strlen($fractional)) {
-                $fractional = str_pad($fractional, $decimals, '0');
+                $fractional = str_pad($fractional, $decimals, '0', STR_PAD_RIGHT);
             } else {
                 $fractional = substr($fractional, 0, $decimals);
             }
@@ -108,17 +110,87 @@ trait PrecisionTrait
         return $this->setValue($this->getWholePart());
     }
 
-    public function numberOfLeadingZeros()
+    /**
+     * The number of digits between the radix and the for non-zero digit in the decimal part.
+     *
+     * @return int
+     */
+    public function numberOfLeadingZeros(): int
     {
         $fractional = $this->getDecimalPart();
 
-        $total = strlen($fractional);
+        $total = Numbers::make(Numbers::IMMUTABLE, strlen($fractional));
         $fractional = ltrim($fractional, '0');
 
-        return $total-strlen($fractional);
+        return $total->subtract(strlen($fractional))->asInt();
     }
 
-    public function asInt()
+    /**
+     * The number of digits (excludes the radix).
+     *
+     * @return int
+     * @throws IncompatibleObjectState
+     */
+    public function numberOfTotalDigits(): int
+    {
+        $wholeDigits = $this->getWholePart();
+        $decimalDigits = $this->getDecimalPart();
+
+        $digits = Numbers::makeZero();
+
+        $digits = $digits->add(strlen($wholeDigits))->add(strlen($decimalDigits));
+
+        return $digits->asInt();
+    }
+
+    /**
+     * The number of digits in the integer part.
+     *
+     * @return int
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
+     */
+    public function numberOfIntDigits(): int
+    {
+        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getWholePart()))->asInt();
+    }
+
+    /**
+     * The number of digits in the decimal part.
+     *
+     * @return int
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
+     */
+    public function numberOfDecimalDigits(): int
+    {
+        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getDecimalPart()))->asInt();
+    }
+
+    /**
+     * The number of digits in the decimal part, excluding leading zeros.
+     *
+     * @return int
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
+     */
+    public function numberOfSigDecimalDigits(): int
+    {
+        $decimalPart = $this->getDecimalPart();
+
+        $sigDigits = ltrim($decimalPart, '0');
+
+        return Numbers::make(Numbers::IMMUTABLE, strlen($sigDigits))->asInt();
+    }
+
+    /**
+     * Returns the current value as an integer if it is within the max a min int values on the current system. Uses the
+     * intval() function to convert the string to an integer type.
+     *
+     * @return int
+     * @throws IncompatibleObjectState
+     */
+    public function asInt(): int
     {
 
         if ($this->isGreaterThan(PHP_INT_MAX) || $this->isLessThan(PHP_INT_MIN)) {
