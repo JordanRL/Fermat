@@ -8,6 +8,7 @@ build:
 build_failure_conditions:
     - 'elements.rating(<= D).new.exists'
     - 'project.metric_change("scrutinizer.test_coverage", < -0.05)'
+    - 'project.metric("scrutinizer.test_coverage", < 0.70)'
     - 'project.metric("scrutinizer.quality", < 8)'
 tools:
     external_code_coverage:
