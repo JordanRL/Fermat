@@ -527,7 +527,7 @@ class ImmutableNumberTest extends TestCase
 
     }
 
-    public function testRound()
+    public function testRoundAndTruncate()
     {
 
         $pointFive = new ImmutableNumber('0.5');
@@ -541,6 +541,7 @@ class ImmutableNumberTest extends TestCase
         $testNum = new ImmutableNumber('62.169797510839');
 
         $this->assertEquals('62.1697975108', $testNum->round(10)->getValue());
+        $this->assertEquals('62', $testNum->truncate()->getValue());
 
         $closeToOne = new ImmutableNumber('0.999999999999999');
 
@@ -638,7 +639,7 @@ class ImmutableNumberTest extends TestCase
 
         $num2 = new ImmutableNumber('0.0000242');
 
-        $this->assertEquals(3,$num2->numberOfSigDecimalDigits());
+        $this->assertEquals(3, $num2->numberOfSigDecimalDigits());
         $this->assertEquals(4, $num2->numberOfLeadingZeros());
 
     }

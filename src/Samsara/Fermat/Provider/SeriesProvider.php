@@ -35,6 +35,7 @@ class SeriesProvider
      * @param int|DecimalInterface  $precision
      *
      * @return NumberInterface
+     * @throws IntegrityConstraint
      */
     public static function maclaurinSeries(
         NumberInterface $input, // x value in series
