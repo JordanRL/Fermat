@@ -398,11 +398,11 @@ class ImmutableNumberTest extends TestCase
 
         $oneHalf = new ImmutableNumber('0.5');
 
-        $this->assertEquals('0.4636476090', $oneHalf->arctan(10, false)->getValue());
+        $this->assertEquals('0.463647609', $oneHalf->arctan(9, false)->getValue());
 
         $oneHalf = new ImmutableNumber('-0.5');
 
-        $this->assertEquals('-0.4636476090', $oneHalf->arctan(10, false)->getValue());
+        $this->assertEquals('-0.463647609', $oneHalf->arctan(9, false)->getValue());
 
     }
 
@@ -429,6 +429,13 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('0.5235987755', $oneHalf->arcsin(10, false)->getValue());
         $this->assertEquals('0.5235987756', $oneHalf->arcsin(10)->getValue());
 
+        $onePointFive = new ImmutableNumber('1.5');
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The arcsin function only has real values for inputs which have an absolute value of 1 or smaller');
+
+        $onePointFive->arcsin();
+
     }
 
     public function testArccos()
@@ -452,6 +459,13 @@ class ImmutableNumberTest extends TestCase
 
         $this->assertEquals('1.0471975511', $oneHalf->arccos(10, false)->getValue());
         $this->assertEquals('1.0471975512', $oneHalf->arccos(10)->getValue());
+
+        $onePointFive = new ImmutableNumber('1.5');
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The arccos function only has real values for inputs which have an absolute value of 1 or smaller');
+
+        $onePointFive->arccos();
 
     }
 
