@@ -42,10 +42,13 @@ class ImmutableFractionTest extends TestCase
         $negOneHalf = new ImmutableFraction(new ImmutableNumber(-1), new ImmutableNumber(2));
 
         $this->assertEquals('1/2', $negOneHalf->absValue());
-
         $this->assertEquals('-1/2', $negOneHalf->getValue());
-
         $this->assertEquals('1/2', $negOneHalf->abs()->getValue());
+
+        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+
+        $this->assertEquals('1/2', $oneHalf->absValue());
+        $this->assertEquals('1/2', $oneHalf->abs()->getValue());
 
     }
 

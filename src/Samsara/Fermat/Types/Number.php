@@ -51,7 +51,7 @@ abstract class Number implements Hashable
     {
         $this->base = $base;
         $this->value = (string)$value;
-        $this->mode = Number::MODE_PRECISION;
+        $this->setMode(Number::MODE_PRECISION);
         
         if (!is_null($precision)) {
             if ($precision > 2147483646) {
