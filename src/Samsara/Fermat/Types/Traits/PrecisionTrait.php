@@ -64,7 +64,7 @@ trait PrecisionTrait
             $truncated = $whole.'.';
 
             if ($decimals > strlen($fractional)) {
-                $fractional = str_pad($fractional, $decimals, '0');
+                $fractional = str_pad($fractional, $decimals, '0', STR_PAD_RIGHT);
             } else {
                 $fractional = substr($fractional, 0, $decimals);
             }

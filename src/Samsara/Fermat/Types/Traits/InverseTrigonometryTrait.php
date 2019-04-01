@@ -17,39 +17,30 @@ trait InverseTrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        $one = Numbers::makeOne();
-
         $oldBase = $this->convertForModification();
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+        if ($this->isEqual(1) || $this->isEqual(-1)) {
+            $pi = Numbers::makePi();
+            $answer = $pi->divide(2);
+            if ($this->isNegative()) {
+                $answer = $answer->multiply(-1);
+            }
+        } elseif ($this->isEqual(0)) {
+            $answer = Numbers::makeZero();
+        } else {
+            $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision + 2);
+            $one = Numbers::makeOne($precision+2);
 
-        if ($z->abs()->isGreaterThan(1)) {
-            throw new IntegrityConstraint(
-                'The input for arcsin must have an absolute value of 1 or smaller',
-                'Only calculate arcsin for values of 1 or smaller',
-                'The arcsin function only has real values for inputs which have an absolute value of 1 or smaller'
-            );
+            if ($z->abs()->isGreaterThan(1)) {
+                throw new IntegrityConstraint(
+                    'The input for arcsin must have an absolute value of 1 or smaller',
+                    'Only calculate arcsin for values of 1 or smaller',
+                    'The arcsin function only has real values for inputs which have an absolute value of 1 or smaller'
+                );
+            }
+
+            $answer = $z->divide($one->subtract($z->pow(2))->sqrt($precision + 2), $precision + 2)->arctan($precision + 2, false);
         }
-
-        $answer = SeriesProvider::maclaurinSeries(
-            $z,
-            function($n) {
-                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
-
-                return StatsProvider::binomialCoefficient($n->multiply(2), $n);
-            },
-            function($n) {
-                return SequenceProvider::nthOddNumber($n);
-            },
-            function($n) {
-                $four = Numbers::make(Numbers::IMMUTABLE, 4);
-
-                return $four->pow($n)->multiply(SequenceProvider::nthOddNumber($n));
-            },
-            0,
-            $precision+1
-        );
-
         if ($round) {
             $answer = $answer->roundToPrecision($precision);
         } else {
@@ -65,23 +56,32 @@ trait InverseTrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        $piDivTwo = Numbers::makePi()->divide(2);
-
-        $one = Numbers::makeOne();
-
         $oldBase = $this->convertForModification();
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+        if ($this->isEqual(-1)) {
+            $answer = Numbers::makePi($precision+1);
+        } elseif ($this->isEqual(0)) {
+            $answer = Numbers::makePi($precision+2);
+            $answer = $answer->divide(2, $precision+2);
+        } elseif ($this->isEqual(1)) {
+            $answer = Numbers::makeZero();
+        } else {
+            $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision + 2);
+            $one = Numbers::makeOne($precision + 2);
 
-        if ($z->abs()->isGreaterThan(1)) {
-            throw new IntegrityConstraint(
-                'The input for arccos must have an absolute value of 1 or smaller',
-                'Only calculate arccos for values of 1 or smaller',
-                'The arccos function only has real values for inputs which have an absolute value of 1 or smaller'
-            );
+            if ($z->abs()->isGreaterThan(1)) {
+                throw new IntegrityConstraint(
+                    'The input for arccos must have an absolute value of 1 or smaller',
+                    'Only calculate arccos for values of 1 or smaller',
+                    'The arccos function only has real values for inputs which have an absolute value of 1 or smaller'
+                );
+            }
+
+            $answer = $one->subtract($z->pow(2))
+                ->sqrt($precision + 2)
+                ->divide($z, $precision + 2)
+                ->arctan($precision + 2, false);
         }
-
-        $answer = $piDivTwo->subtract($z->arcsin($precision, false));
 
         if ($round) {
             $answer = $answer->roundToPrecision($precision);
@@ -98,39 +98,46 @@ trait InverseTrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        $one = Numbers::makeOne();
+        $one = Numbers::makeOne($precision + 2);
 
         $oldBase = $this->convertForModification();
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision + 2);
 
-        if ($z->abs()->isGreaterThan(1)) {
-            $rangeAdjust = Numbers::makePi()->divide(2);
+        if ($z->isEqual(1)) {
+            $answer = Numbers::makePi($precision + 2)->divide(4, $precision + 2);
+        } elseif ($z->isEqual(-1)) {
+            $answer = Numbers::makePi($precision + 2)->divide(4, $precision +2)->multiply(-1);
+        } else {
 
-            if ($z->isNegative()) {
-                $rangeAdjust = $rangeAdjust->multiply(-1);
+            if ($z->abs()->isGreaterThan(1)) {
+                $rangeAdjust = Numbers::makePi($precision + 2)->divide(2, $precision + 2);
+
+                if ($z->isNegative()) {
+                    $rangeAdjust = $rangeAdjust->multiply(-1);
+                }
+
+                $z = $one->divide($z, $precision + 2);
             }
 
-            $z = $one->divide($z, $precision+1);
-        }
+            $answer = SeriesProvider::maclaurinSeries(
+                $z,
+                function ($n) {
+                    return SequenceProvider::nthPowerNegativeOne($n);
+                },
+                function ($n) {
+                    return SequenceProvider::nthOddNumber($n);
+                },
+                function ($n) {
+                    return SequenceProvider::nthOddNumber($n);
+                },
+                0,
+                $precision + 1
+            );
 
-        $answer = SeriesProvider::maclaurinSeries(
-            $z,
-            function($n) {
-                return SequenceProvider::nthPowerNegativeOne($n);
-            },
-            function($n) {
-                return SequenceProvider::nthOddNumber($n);
-            },
-            function($n) {
-                return SequenceProvider::nthOddNumber($n);
-            },
-            0,
-            $precision+1
-        );
-
-        if (isset($rangeAdjust)) {
-            $answer = $rangeAdjust->subtract($answer);
+            if (isset($rangeAdjust)) {
+                $answer = $rangeAdjust->subtract($answer);
+            }
         }
 
         if ($round) {
@@ -148,43 +155,15 @@ trait InverseTrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        $one = Numbers::makeOne();
-        $piDivTwo = Numbers::makePi()->divide(2);
+        $piDivTwo = Numbers::makePi($precision + 2)->divide(2, $precision + 2);
 
         $oldBase = $this->convertForModification();
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision + 2);
 
-        if ($z->abs()->isGreaterThan(1)) {
-            $rangeAdjust = Numbers::makePi()->divide(2);
+        $arctan = $z->arctan($precision+2, false);
 
-            if ($z->isNegative()) {
-                $rangeAdjust = $rangeAdjust->multiply(3);
-            }
-
-            $z = $one->divide($z, $precision+1);
-        }
-
-        $answer = SeriesProvider::maclaurinSeries(
-            $z,
-            function($n) {
-                return SequenceProvider::nthPowerNegativeOne($n);
-            },
-            function($n) {
-                return SequenceProvider::nthOddNumber($n);
-            },
-            function($n) {
-                return SequenceProvider::nthOddNumber($n);
-            },
-            0,
-            $precision+1
-        );
-
-        $answer = $piDivTwo->subtract($answer);
-
-        if (isset($rangeAdjust)) {
-            $answer = $rangeAdjust->subtract($answer);
-        }
+        $answer = $piDivTwo->subtract($arctan);
 
         if ($round) {
             $answer = $answer->roundToPrecision($precision);
@@ -201,40 +180,20 @@ trait InverseTrigonometryTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        $piDivTwo = Numbers::makePi()->divide(2);
-
         $oldBase = $this->convertForModification();
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+        $one = Numbers::makeOne($precision + 2);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+2);
 
         if ($z->abs()->isLessThan(1)) {
             throw new IntegrityConstraint(
-                'The input for arcsec must have an absolute value of 1 or larger',
-                'Only calculate arcsec for values of 1 or larger',
-                'The arcsec function only has real values for inputs which have an absolute value of 1 or larger'
+                'The input for arcsec must have an absolute value greater than 1',
+                'Only calculate arcsec for values greater than 1',
+                'The arcsec function only has real values for inputs which have an absolute value greater than 1'
             );
         }
 
-        $answer = SeriesProvider::maclaurinSeries(
-            $z,
-            function($n) {
-                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
-
-                return StatsProvider::binomialCoefficient($n->multiply(2), $n);
-            },
-            function($n) {
-                return SequenceProvider::nthOddNumber($n)->multiply(-1);
-            },
-            function($n) {
-                $four = Numbers::make(Numbers::IMMUTABLE, 4);
-
-                return $four->pow($n)->multiply(SequenceProvider::nthOddNumber($n));
-            },
-            0,
-            $precision+1
-        );
-
-        $answer = $piDivTwo->subtract($answer);
+        $answer = $one->divide($z, $precision + 2)->arccos($precision + 2);
 
         if ($round) {
             $answer = $answer->roundToPrecision($precision);
@@ -253,35 +212,18 @@ trait InverseTrigonometryTrait
 
         $oldBase = $this->convertForModification();
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+        $one = Numbers::makeOne($precision + 2);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+2);
 
         if ($z->abs()->isLessThan(1)) {
             throw new IntegrityConstraint(
-                'The input for arccsc must have an absolute value of 1 or larger',
-                'Only calculate arccsc for values of 1 or larger',
-                'The arccsc function only has real values for inputs which have an absolute value of 1 or larger'
+                'The input for arccsc must have an absolute value greater than 1',
+                'Only calculate arccsc for values greater than 1',
+                'The arccsc function only has real values for inputs which have an absolute value greater than 1'
             );
         }
 
-        /** @var ImmutableNumber $answer */
-        $answer = SeriesProvider::maclaurinSeries(
-            $z,
-            function($n) {
-                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
-
-                return StatsProvider::binomialCoefficient($n->multiply(2), $n);
-            },
-            function($n) {
-                return SequenceProvider::nthOddNumber($n)->multiply(-1);
-            },
-            function($n) {
-                $four = Numbers::make(Numbers::IMMUTABLE, 4);
-
-                return $four->pow($n)->multiply(SequenceProvider::nthOddNumber($n));
-            },
-            0,
-            $precision+1
-        );
+        $answer = $one->divide($z, $precision + 2)->arcsin($precision + 2);
 
         if ($round) {
             $answer = $answer->roundToPrecision($precision);
@@ -296,5 +238,11 @@ trait InverseTrigonometryTrait
     abstract public function roundToPrecision($precision);
 
     abstract public function truncateToPrecision($precision);
+
+    abstract public function getPrecision();
+
+    abstract public function convertForModification();
+
+    abstract public function convertFromModification($base);
 
 }

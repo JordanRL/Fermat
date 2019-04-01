@@ -33,12 +33,17 @@ trait ArithmeticTrait
 
     protected function transformNum($num, $instance)
     {
-
-        if ($instance == 1) {
+        if ($instance == 1 || (is_string($num) && strpos($num, '.') !== false) || is_float($num)) {
             if (is_object($num) && method_exists($num, 'asDecimal')) {
                 $num = $num->asDecimal($this->getPrecision());
             } else {
-                $num = Numbers::makeOrDont($this, $num, $this->getPrecision());
+                if (method_exists($this, 'getPrecision')) {
+                    $precision = $this->getPrecision();
+                } else {
+                    $precision = 10;
+                }
+
+                $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num, $precision);
             }
         } elseif ($instance == 2) {
             $num = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $num);
