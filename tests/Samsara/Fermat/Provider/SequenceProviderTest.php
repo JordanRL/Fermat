@@ -63,15 +63,25 @@ class SequenceProviderTest extends TestCase
 
         $this->assertEquals('21', $eight->getValue());
 
+    }
+
+    public function testDecimalFibonacci()
+    {
+
         $this->expectException(IntegrityConstraint::class);
         $this->expectExceptionMessage('The nthFibonacciNumber function takes the term number as its argument; provide an integer term number');
 
         SequenceProvider::nthFibonacciNumber(new ImmutableNumber('0.5'));
 
+    }
+
+    public function testNegativeFibonacci()
+    {
+
         $this->expectException(IntegrityConstraint::class);
         $this->expectExceptionMessage('A negative term number for the Fibonacci sequence was requested; provide a positive term number');
 
-        SequenceProvider::nthFibonacciNumber(new ImmutableNumber('-1'));
+        SequenceProvider::nthFibonacciNumber(-1);
 
     }
 
