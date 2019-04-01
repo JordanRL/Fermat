@@ -38,6 +38,7 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
                 );
             }
 
+            /** @var ImmutableNumber $fermatCoefficient */
             $fermatCoefficient = Numbers::make(Numbers::IMMUTABLE, $coefficient);
 
             if (!$fermatCoefficient->isEqual(0)) {
