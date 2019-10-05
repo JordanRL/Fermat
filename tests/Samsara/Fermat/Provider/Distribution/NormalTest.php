@@ -18,10 +18,12 @@ class NormalTest extends TestCase
 
     }
 
-    public function testCDF()
+    public function testPercentBelowX()
     {
 
         $normal = new Normal(10, 2);
+
+        $this->assertEquals('0.1586552539', $normal->percentBelowX(8)->getValue());
 
         $this->assertEquals('0.1586552539', $normal->cdf(8)->getValue());
 

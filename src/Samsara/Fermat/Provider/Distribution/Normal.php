@@ -43,6 +43,16 @@ class Normal extends Distribution
         $this->sd = $sd;
     }
 
+    public function getSD()
+    {
+        return $this->sd;
+    }
+
+    public function getMean()
+    {
+        return $this->mean;
+    }
+
     /**
      * @param int|float|DecimalInterface $p
      * @param int|float|DecimalInterface $x
