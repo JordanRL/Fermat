@@ -9,6 +9,7 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Provider\StatsProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
+use Samsara\Fermat\Types\Base\FunctionInterface;
 use Samsara\Fermat\Types\Base\NumberCollectionInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Types\NumberCollection;
@@ -51,6 +52,24 @@ class Normal extends Distribution
     public function getMean()
     {
         return $this->mean;
+    }
+
+    public function evaluateAt($x): ImmutableNumber
+    {
+
+        $one = Numbers::makeOne();
+        $twoPi = Numbers::make2Pi();
+        $e = Numbers::makeE();
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+
+        $left = $one->divide($twoPi->multiply($this->getSD()->pow(2))->sqrt());
+        $right = $e->pow($x->subtract($this->getMean())->pow(2)->divide($this->getSD()->pow(2)->multiply(2))->multiply(-1));
+
+        /** @var ImmutableNumber $value */
+        $value = $left->multiply($right);
+
+        return $value;
+
     }
 
     /**
@@ -143,6 +162,26 @@ class Normal extends Distribution
 
         /** @var ImmutableNumber $pdf */
         $pdf = $this->cdf($x1)->subtract($this->cdf($x2))->abs();
+
+        return $pdf;
+    }
+
+    public function cdfProduct(FunctionInterface $function, $x): ImmutableNumber
+    {
+
+        $integral = $function->integralExpression();
+
+        /** @var ImmutableNumber $cdf */
+        $cdf = $integral->evaluateAt($x)->multiply($this->evaluateAt($x))->add($function->evaluateAt($x)->multiply($this->cdf($x)));
+
+        return $cdf;
+
+    }
+
+    public function pdfProduct(FunctionInterface $function, $x1, $x2): ImmutableNumber
+    {
+        /** @var ImmutableNumber $pdf */
+        $pdf = $this->cdfProduct($function, $x1)->subtract($this->cdfProduct($function, $x2))->abs();
 
         return $pdf;
     }
