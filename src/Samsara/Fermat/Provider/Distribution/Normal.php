@@ -7,6 +7,8 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Distribution\Base\Distribution;
+use Samsara\Fermat\Provider\SequenceProvider;
+use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Provider\StatsProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\FunctionInterface;
@@ -166,13 +168,31 @@ class Normal extends Distribution
         return $pdf;
     }
 
+    /**
+     * @param FunctionInterface $function
+     * @param $x
+     * @return ImmutableNumber
+     * @throws IntegrityConstraint
+     */
     public function cdfProduct(FunctionInterface $function, $x): ImmutableNumber
     {
 
-        $integral = $function->integralExpression();
+        $loop = 0;
+
+        $cdf = Numbers::makeZero();
+
+        while (true) {
+            if (count($function->describeShape()) == 0) {
+                break;
+            }
+
+            $cdf = $cdf->add($function->evaluateAt($x)->multiply(SequenceProvider::nthPowerNegativeOne($loop)));
+
+            $function = $function->derivativeExpression();
+        }
 
         /** @var ImmutableNumber $cdf */
-        $cdf = $integral->evaluateAt($x)->multiply($this->evaluateAt($x))->add($function->evaluateAt($x)->multiply($this->cdf($x)));
+        $cdf = $cdf->multiply($this->cdf($x));
 
         return $cdf;
 
@@ -181,7 +201,7 @@ class Normal extends Distribution
     public function pdfProduct(FunctionInterface $function, $x1, $x2): ImmutableNumber
     {
         /** @var ImmutableNumber $pdf */
-        $pdf = $this->cdfProduct($function, $x1)->subtract($this->cdfProduct($function, $x2))->abs();
+        $pdf = $this->cdfProduct($function, $x2)->subtract($this->cdfProduct($function, $x1));
 
         return $pdf;
     }
@@ -207,7 +227,10 @@ class Normal extends Distribution
     {
         $one = Numbers::makeOne();
 
-        return $one->subtract($this->cdf($x));
+        /** @var ImmutableNumber $perc */
+        $perc = $one->subtract($this->cdf($x));
+
+        return $perc;
     }
 
     /**

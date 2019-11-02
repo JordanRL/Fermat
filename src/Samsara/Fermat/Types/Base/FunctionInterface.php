@@ -12,4 +12,6 @@ interface FunctionInterface
 
     public function integralExpression(): FunctionInterface;
 
+    public function describeShape(): array;
+
 }

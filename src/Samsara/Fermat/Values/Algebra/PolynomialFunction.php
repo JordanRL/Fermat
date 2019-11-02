@@ -64,6 +64,10 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
                 }
             }
 
+            if ($value->isEqual(0)) {
+                $value = Numbers::makeOne();
+            }
+
             return $value;
         };
     }
