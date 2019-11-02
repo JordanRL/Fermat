@@ -138,7 +138,7 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
         return new PolynomialFunction($newCoefficients);
     }
 
-    public function describeShape()
+    public function describeShape(): array 
     {
 
         $shape = [];
