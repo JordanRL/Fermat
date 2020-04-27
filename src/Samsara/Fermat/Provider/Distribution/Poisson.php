@@ -2,12 +2,12 @@
 
 namespace Samsara\Fermat\Provider\Distribution;
 
-use RandomLib\Factory;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Distribution\Base\Distribution;
+use Samsara\Fermat\Provider\PolyfillProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
@@ -208,8 +208,6 @@ class Poisson extends Distribution
      */
     protected function methodPARandom(): ImmutableNumber
     {
-        $randFactory = new Factory();
-        $generator = $randFactory->getMediumStrengthGenerator();
         /** @var ImmutableNumber $c */
         $c = $this->lambda->pow(-1)->multiply(3.36)->multiply(-1)->add(0.767);
         /** @var ImmutableNumber $beta */
@@ -227,7 +225,7 @@ class Poisson extends Distribution
 
         while (true) {
             /** @var ImmutableNumber $u */
-            $u = $generator->generateInt() / PHP_INT_MAX;
+            $u = PolyfillProvider::randomInt(0, PHP_INT_MAX) / PHP_INT_MAX;
             /** @var ImmutableNumber $x */
             $x = $alpha->subtract($one->subtract($u)->divide($u)->ln(20)->divide($beta));
             /** @var ImmutableNumber $n */
@@ -238,7 +236,7 @@ class Poisson extends Distribution
             }
 
             /** @var ImmutableNumber $v */
-            $v = $generator->generateInt() / PHP_INT_MAX;
+            $v = PolyfillProvider::randomInt(0, PHP_INT_MAX) / PHP_INT_MAX;
             /** @var ImmutableNumber $y */
             $y = $alpha->subtract($beta->multiply($x));
             /** @var ImmutableNumber $lhs */
@@ -269,7 +267,6 @@ class Poisson extends Distribution
      */
     protected function knuthRandom(): ImmutableNumber
     {
-        $randFactory = new Factory();
         /** @var ImmutableNumber $L */
         $L = Numbers::makeE()->pow($this->lambda->multiply(-1));
         /** @var ImmutableNumber $k */
@@ -280,7 +277,7 @@ class Poisson extends Distribution
         do {
             $k = $k->add(1);
             /** @var ImmutableNumber $u */
-            $u = $randFactory->getMediumStrengthGenerator()->generateInt() / PHP_INT_MAX;
+            $u = PolyfillProvider::randomInt(0, PHP_INT_MAX) / PHP_INT_MAX;
             $p = $p->multiply($u);
         } while ($p->isGreaterThan($L));
 

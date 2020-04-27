@@ -2,11 +2,11 @@
 
 namespace Samsara\Fermat\Provider\Distribution;
 
-use RandomLib\Factory;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Distribution\Base\Distribution;
+use Samsara\Fermat\Provider\PolyfillProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableNumber;
 
@@ -132,10 +132,9 @@ class Exponential extends Distribution
     public function random(): ImmutableNumber
     {
 
-        $randFactory = new Factory();
-        $generator = $randFactory->getMediumStrengthGenerator();
+        $randomInt = PolyfillProvider::randomInt(0, PHP_INT_MAX);
         $one = Numbers::makeOne();
-        $u = Numbers::make(Numbers::IMMUTABLE, $generator->generateInt(), 20);
+        $u = Numbers::make(Numbers::IMMUTABLE, $randomInt, 20);
         $u = $u->divide(PHP_INT_MAX);
 
         /** @var ImmutableNumber $random */

@@ -2,7 +2,6 @@
 
 namespace Samsara\Fermat\Types;
 
-use RandomLib\Factory;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;

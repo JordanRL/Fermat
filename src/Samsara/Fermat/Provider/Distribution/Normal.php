@@ -2,19 +2,16 @@
 
 namespace Samsara\Fermat\Provider\Distribution;
 
-use RandomLib\Factory;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Distribution\Base\Distribution;
+use Samsara\Fermat\Provider\PolyfillProvider;
 use Samsara\Fermat\Provider\SequenceProvider;
-use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Provider\StatsProvider;
 use Samsara\Fermat\Types\Base\DecimalInterface;
 use Samsara\Fermat\Types\Base\FunctionInterface;
-use Samsara\Fermat\Types\Base\NumberCollectionInterface;
 use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Types\NumberCollection;
 use Samsara\Fermat\Values\ImmutableNumber;
 
 class Normal extends Distribution
@@ -272,12 +269,12 @@ class Normal extends Distribution
      */
     public function random(): ImmutableNumber
     {
-        $randFactory = new Factory();
-        $generator = $randFactory->getMediumStrengthGenerator();
+        $int1 = PolyfillProvider::randomInt(0, PHP_INT_MAX);
+        $int2 = PolyfillProvider::randomInt(0, PHP_INT_MAX);
 
-        $rand1 = Numbers::make(Numbers::IMMUTABLE, $generator->generateInt(), 20);
+        $rand1 = Numbers::make(Numbers::IMMUTABLE, $int1, 20);
         $rand1 = $rand1->divide(PHP_INT_MAX);
-        $rand2 = Numbers::make(Numbers::IMMUTABLE, $generator->generateInt(), 20);
+        $rand2 = Numbers::make(Numbers::IMMUTABLE, $int2, 20);
         $rand2 = $rand2->divide(PHP_INT_MAX);
 
         $randomNumber = $rand1->ln()->multiply(-2)->sqrt()->multiply($rand2->multiply(Numbers::TAU)->cos(1, false));
