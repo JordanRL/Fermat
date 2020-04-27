@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Types\Traits;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
@@ -39,12 +40,12 @@ trait LogTrait
     }
 
     /**
-     * @param int $precision The number of digits which should be accurate
+     * @param int|null $precision The number of digits which should be accurate
      * @param bool $round Whether or not to round to the $precision value. If true, will round. If false, will truncate.
      *
      * @return DecimalInterface|NumberInterface
      */
-    public function ln($precision = 10, $round = true)
+    public function ln($precision = null, $round = true)
     {
         $oldBase = $this->convertForModification();
 
@@ -52,9 +53,10 @@ trait LogTrait
             return $this->setValue(log($this->getValue()))->convertFromModification($oldBase);
         }
 
-        $internalPrecision = ($precision+1 > strlen($this->value)) ? $precision+1 : strlen($this->value);
+        $internalPrecision = $precision ?? $this->precision;
+        $internalPrecision += 1;
 
-        $this->precision = $internalPrecision;
+        $num = $this->truncateToPrecision($internalPrecision);
 
         $ePow = 0;
         $eDiv = 1;
@@ -77,18 +79,18 @@ trait LogTrait
             $eDiv = $prevDiv;
         }
 
-        $adjustedNum = $this->divide($eDiv, $internalPrecision);
+        $adjustedNum = $num->divide($eDiv);
 
         /** @var ImmutableNumber $y */
         $y = Numbers::makeOne($internalPrecision);
-        $y = $y->multiply($adjustedNum->subtract(1))->divide($adjustedNum->add(1), $internalPrecision);
+        $y = $y->multiply($adjustedNum->subtract(1))->divide($adjustedNum->add(1));
 
         $answer = SeriesProvider::genericTwoPartSeries(
             function($term) use ($y, $internalPrecision) {
                 $two = Numbers::make(Numbers::IMMUTABLE, 2, $internalPrecision);
                 $odd = SequenceProvider::nthOddNumber($term);
 
-                return $two->divide($odd, $internalPrecision);
+                return $two->divide($odd);
             },
             function($term) use ($y) {
                 return $y;
@@ -103,24 +105,33 @@ trait LogTrait
         $answer = $answer->add($ePow);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToPrecision($internalPrecision-1);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToPrecision($internalPrecision-1);
         }
 
         return $this->setValue($answer)->convertFromModification($oldBase);
     }
 
-    public function log10($precision = 10, $round = true)
+    /**
+     * @param null $precision
+     * @param bool $round
+     * @return mixed
+     * @throws IntegrityConstraint
+     */
+    public function log10($precision = null, $round = true)
     {
         $log10 = Numbers::makeNaturalLog10();
 
-        $value = $this->ln($precision+1)->divide($log10, $precision+1);
+        $internalPrecision = $precision ?? $this->precision;
+        $internalPrecision += 1;
+
+        $value = $this->ln($internalPrecision)->divide($log10);
 
         if ($round) {
-            $value = $value->roundToPrecision($precision);
+            $value = $value->roundToPrecision($internalPrecision-1);
         } else {
-            $value = $value->truncateToPrecision($precision);
+            $value = $value->truncateToPrecision($internalPrecision-1);
         }
 
         return $this->setValue($value);

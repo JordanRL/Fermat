@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - ComplexInterface
     - DecimalInterface:
       - Added hyperbolic trig functions
+      - Added `exp()`
     - NumberInterface:
       - Added `isComplex(): bool` method
   - Traits:
@@ -74,6 +75,10 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Now extend `Distribution` abstract class
     - Use the randomInt() method in PolyfillProvider instead of RandomLib directly
 - Types:
+  - Base:
+    - DecimalInterface:
+      - Changed signature of `log10()` and `ln()` to `$precision = null` instead of `$precision = 10`
+      - Changed type of `$precision` parameter in `log10()` and `ln()` from `int` to `int|null`
   - Fraction:
     - Moved many methods into traits
   - Number:
@@ -91,12 +96,15 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - SequenceProvider:
     - Fixed erroneous limit on Euler Zigzag sequence index (45 -> 50) and updated exception to reflect current limit (39 -> 50)
 - Types:
+  - Traits:
+    - LogTrait:
+      - Fixed `$precision` to work the way it does in other functions for `log10()` and `ln()`
   - Tuple:
     - Changed the constructor so that it properly works with either parameter collection or a single array
   - ImmutableNumber:
-    - Fixed problem with precision in continuousModulo()
+    - Fixed the problem with precision in continuousModulo()
   - MutableNumber:
-    - Fixed problem with precision in continuousModulo()
+    - Fixed the problem with precision in continuousModulo()
 
 ## [1.0.2] - 2017-01-16
 ### Fixed

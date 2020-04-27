@@ -228,16 +228,16 @@ interface DecimalInterface
     public function csch($precision = null, $round = true);
 
     /**
-     * @param int $precision
+     * @param int|null $precision
      * @return NumberInterface|DecimalInterface
      */
-    public function ln($precision = 10);
+    public function ln($precision = null);
 
     /**
-     * @param int $precision
+     * @param int|null $precision
      * @return NumberInterface|DecimalInterface
      */
-    public function log10($precision = 10);
+    public function log10($precision = null);
 
     /**
      * @return NumberInterface|DecimalInterface
