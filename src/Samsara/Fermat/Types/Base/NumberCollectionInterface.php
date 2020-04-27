@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Types\Base;
 use Samsara\Fermat\Provider\Distribution\Exponential;
 use Samsara\Fermat\Provider\Distribution\Normal;
 use Samsara\Fermat\Provider\Distribution\Poisson;
+use Samsara\Fermat\Values\Algebra\PolynomialFunction;
 
 interface NumberCollectionInterface
 {
@@ -128,5 +129,10 @@ interface NumberCollectionInterface
      * @return Exponential
      */
     public function makeExponentialDistribution(): Exponential;
+
+    /**
+     * @return PolynomialFunction
+     */
+    public function makePolynomialFunction(): PolynomialFunction;
 
 }

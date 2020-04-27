@@ -2,20 +2,22 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/). At least so much as we feel like it.
 
-## [Unreleased] - [unreleased]
+## [Unreleased]
 ### Added
 
 - Providers:
   - Distributions:
     - Base: Distribution abstract class
-  - ArithmeticProvider
+  - ArithmeticProvider:
     - Added a precision argument to all methods that were missing it.
-  - SequenceProvider
+  - PolyfillProvider
+  - SequenceProvider:
     - `nthFibonacciNumber` function
-  - StatsProvider
+  - StatsProvider:
     - Added docblocks for all methods
     - Added `gammaFunction` function
 - Types:
+  - Expression
   - Interfaces:
     - MatrixInterface
     - NumberCollectionInterface
@@ -28,17 +30,20 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - PrecisionTrait
     - TrigonometryTrait
   - NumberCollection
-  - Number
+  - Number:
     - numberOfTotalDigits()
     - numberOfIntDigits()
     - numberOfDecimalDigits()
     - numberOfSigDecimalDigits()
+- Values:
+  - Algebra
+    - PolynomialFunction
 - Factories:
   - Collections
 
 ### Removed
 
-- Composer 
+- Composer: 
   - **Suggested:**
     - ext-stats: * (As this library is no longer maintained and unavailable on PHP 7+, it is being removed)
 - Providers:
@@ -53,9 +58,9 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Fixed missing @throws in docblocks in all distributions
     - Now extend `Distribution` abstract class
 - Types:
-  - Fraction
+  - Fraction:
     - Moved many methods into traits
-  - Number
+  - Number:
     - Moved many methods into traits
     - Now passes the precision setting to ALL calls to `ArithmeticProvider` allowing precision up to 2147483646 digits.
     - Trig functions are now arbitrary precision
@@ -65,16 +70,16 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 
 - Providers:
   - Distributions:
-    - Exponential
+    - Exponential:
       - Fixed accidental cast to float in `random` function
-  - SequenceProvider
+  - SequenceProvider:
     - Fixed erroneous limit on Euler Zigzag sequence index (45 -> 50) and updated exception to reflect current limit (39 -> 50)
-- Types
-  - Tuple
+- Types:
+  - Tuple:
     - Changed the constructor so that it properly works with either parameter collection or a single array
-  - ImmutableNumber
+  - ImmutableNumber:
     - Fixed problem with precision in continuousModulo()
-  - MutableNumber
+  - MutableNumber:
     - Fixed problem with precision in continuousModulo()
 
 ## [1.0.2] - 2017-01-16
@@ -139,6 +144,6 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - StatsProvider
   - TrigonometryProvider
 
-[unreleased]: https://github.com/JordanRL/Fermat/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/JordanRL/Fermat/compare/v1.0.2...HEAD
 [1.0.2]: https://github.com/JordanRL/Fermat/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/JordanRL/Fermat/compare/v1.0.0...v1.0.1

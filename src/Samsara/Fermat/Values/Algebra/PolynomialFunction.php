@@ -11,7 +11,7 @@ use Samsara\Fermat\Types\Base\NumberInterface;
 use Samsara\Fermat\Types\Expression;
 use Samsara\Fermat\Values\ImmutableNumber;
 
-class PolynomialFunction extends Expression implements ExpressionInterface, FunctionInterface
+class PolynomialFunction extends Expression implements FunctionInterface
 {
     /** @var array  */
     protected $coefficients = [];
@@ -76,7 +76,6 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
      * @param int|float|string|NumberInterface|DecimalInterface $x
      *
      * @return ImmutableNumber
-     * @throws IntegrityConstraint
      */
     public function evaluateAt($x): ImmutableNumber
     {
@@ -138,7 +137,7 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
         return new PolynomialFunction($newCoefficients);
     }
 
-    public function describeShape(): array 
+    public function describeShape(): array
     {
 
         $shape = [];
@@ -153,6 +152,73 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
 
         return $shape;
 
+    }
+
+    /**
+     * This function performs a FOIL expansion on a list of parameters.
+     *
+     * Assumptions:
+     *      1. The coefficients are the numbers provided in the arrays
+     *      2. The coefficients are listed in descending order of their exponent on the function variable. For example,
+     *         if you were multiplying (2 + 3x)*(5 - 1x^2 + 1x), it would expect these inputs:
+     *              -  [3, 2], [-1, 1, 5]
+     *      3. If not all exponents are used continuously, a zero must be provided for the position that is skipped. For
+     *         example, if one of the provided groups was 4x^2 + 2, it would expect: [4, 0, 2]
+     *
+     * @param int|float|NumberInterface[] $group1
+     * @param int|float|NumberInterface[] $group2
+     *
+     * @return PolynomialFunction
+     * @throws IntegrityConstraint
+     */
+    public static function createFromFoil(array $group1, array $group2): PolynomialFunction
+    {
+        $group1exp = count($group1)-1;
+        $group2exp = count($group2)-1;
+
+        /** @var ImmutableNumber[] $finalCoefs */
+        $finalCoefs = [];
+
+        $group1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $group1);
+        $group2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $group2);
+
+        if ($group1exp <= $group2exp) {
+            $largerGroup = $group2;
+            $largerExp = $group2exp;
+            $smallerGroup = $group1;
+            $smallerExp = $group1exp;
+        } else {
+            $largerGroup = $group1;
+            $largerExp = $group1exp;
+            $smallerGroup = $group2;
+            $smallerExp = $group2exp;
+        }
+
+        /**
+         * @var int $key1
+         * @var ImmutableNumber $value1
+         */
+        foreach ($largerGroup as $key1 => $value1) {
+            $largerKey = $largerExp - $key1;
+
+            /**
+             * @var int             $key2
+             * @var ImmutableNumber $value2
+             */
+            foreach ($smallerGroup as $key2 => $value2) {
+                $smallerKey = $smallerExp - $key2;
+                $newVal = $value1->multiply($value2);
+                $newExp = $largerKey + $smallerKey;
+
+                if (isset($finalCoefs[$newExp])) {
+                    $finalCoefs[$newExp] = $finalCoefs[$newExp]->add($newVal);
+                } else {
+                    $finalCoefs[$newExp] = $newVal;
+                }
+            }
+        }
+
+        return new PolynomialFunction($finalCoefs);
     }
 
 }

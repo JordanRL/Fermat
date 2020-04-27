@@ -9,9 +9,11 @@ use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\Distribution\Exponential;
 use Samsara\Fermat\Provider\Distribution\Normal;
 use Samsara\Fermat\Provider\Distribution\Poisson;
+use Samsara\Fermat\Provider\PolyfillProvider;
 use Samsara\Fermat\Types\Base\NumberCollectionInterface;
 use Ds\Vector;
 use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Values\ImmutableNumber;
 
 class NumberCollection implements NumberCollectionInterface
@@ -251,13 +253,7 @@ class NumberCollection implements NumberCollectionInterface
     {
         $maxKey = $this->getCollection()->count() - 1;
 
-        try {
-            $key = random_int(0, $maxKey);
-        } catch (\Exception $exception) {
-            $randFactory = new Factory();
-            $generator = $randFactory->getMediumStrengthGenerator();
-            $key = $generator->generateInt(0, $maxKey);
-        }
+        $key = PolyfillProvider::randomInt(0, $maxKey);
 
         return $this->get($key);
     }
@@ -337,6 +333,19 @@ class NumberCollection implements NumberCollectionInterface
         $lambda = $one->divide($average);
 
         return new Exponential($lambda);
+    }
+
+    /**
+     * @return PolynomialFunction
+     * @throws IntegrityConstraint
+     */
+    public function makePolynomialFunction(): PolynomialFunction
+    {
+
+        $coefs = $this->collection->toArray();
+
+        return new PolynomialFunction($coefs);
+
     }
 
 }

@@ -2,7 +2,9 @@
 
 namespace Samsara\Fermat\Types;
 
-abstract class Expression
+use Samsara\Fermat\Types\Base\ExpressionInterface;
+
+abstract class Expression implements ExpressionInterface
 {
     const POLYNOMIAL = 1;
     const EXPONENTIAL = 2;
@@ -18,5 +20,7 @@ abstract class Expression
     {
         $this->type = $type;
     }
+
+    abstract function evaluateAt($x);
 
 }
