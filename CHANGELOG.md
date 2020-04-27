@@ -17,10 +17,10 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Added docblocks for all methods
     - Added `gammaFunction` function
 - Types:
-  - Expression
-  - Interfaces:
-    - MatrixInterface
-    - NumberCollectionInterface
+  - Base:
+    - ComplexInterface
+    - NumberInterface
+      - Added `isComplex(): bool` method
   - Traits:
     - ArithmeticTrait
     - ComparisonTrait
@@ -29,6 +29,10 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - LogTrait
     - PrecisionTrait
     - TrigonometryTrait
+  - Expression
+  - Interfaces:
+    - MatrixInterface
+    - NumberCollectionInterface
   - NumberCollection
   - Number:
     - numberOfTotalDigits()
@@ -38,6 +42,14 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 - Values:
   - Algebra
     - PolynomialFunction
+  - ImmutableFraction
+    - Added implementation of `isComplex(): bool`
+  - ImmutableNumber
+    - Added implementation of `isComplex(): bool`
+  - MutableFraction
+    - Added implementation of `isComplex(): bool`
+  - MutableNumber
+    - Added implementation of `isComplex(): bool`
 - Factories:
   - Collections
 
@@ -57,6 +69,7 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Removed references to ext-stats in all distributions
     - Fixed missing @throws in docblocks in all distributions
     - Now extend `Distribution` abstract class
+    - Use the randomInt() method in PolyfillProvider instead of RandomLib directly
 - Types:
   - Fraction:
     - Moved many methods into traits

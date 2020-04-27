@@ -272,6 +272,8 @@ abstract class Number implements Hashable
         }
     }
 
+    abstract public function isComplex(): bool;
+
     /**
      * @param $mod
      *

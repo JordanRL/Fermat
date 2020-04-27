@@ -16,4 +16,12 @@ class ImmutableFraction extends Fraction implements NumberInterface, FractionInt
 
     }
 
+    /**
+     * @return bool
+     */
+    public function isComplex(): bool
+    {
+        return false;
+    }
+
 }

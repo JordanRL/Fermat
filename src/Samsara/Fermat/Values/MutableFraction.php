@@ -19,4 +19,12 @@ class MutableFraction extends Fraction implements NumberInterface, FractionInter
 
     }
 
+    /**
+     * @return bool
+     */
+    public function isComplex(): bool
+    {
+        return false;
+    }
+
 }

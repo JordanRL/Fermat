@@ -48,6 +48,14 @@ class ImmutableNumber extends Number implements NumberInterface, DecimalInterfac
     }
 
     /**
+     * @return bool
+     */
+    public function isComplex(): bool
+    {
+        return false;
+    }
+
+    /**
      * @param $value
      *
      * @return ImmutableNumber

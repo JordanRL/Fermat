@@ -43,4 +43,12 @@ class MutableNumber extends Number implements NumberInterface, DecimalInterface
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isComplex(): bool
+    {
+        return false;
+    }
+
 }

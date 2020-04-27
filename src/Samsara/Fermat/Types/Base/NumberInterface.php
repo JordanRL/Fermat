@@ -125,4 +125,6 @@ interface NumberInterface
      */
     public function isLessThanOrEqualTo($value): bool;
 
+    public function isComplex(): bool;
+
 }
