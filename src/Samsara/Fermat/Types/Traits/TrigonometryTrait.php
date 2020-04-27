@@ -294,4 +294,140 @@ trait TrigonometryTrait
 
     }
 
+    public function sinh($precision = null, $round = true)
+    {
+
+        $oldBase = $this->convertForModification();
+
+        $two = Numbers::make(Numbers::IMMUTABLE, 2);
+
+        $precision = $precision ?? $this->getPrecision();
+
+        $this->precision = $precision;
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+
+        $answer = $num->multiply(2)->exp()->subtract(1)->divide($two->multiply($num->exp()));
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function cosh($precision = null, $round = true)
+    {
+
+        $oldBase = $this->convertForModification();
+
+        $two = Numbers::make(Numbers::IMMUTABLE, 2);
+
+        $precision = $precision ?? $this->getPrecision();
+
+        $this->precision = $precision;
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+
+        $answer = $num->multiply(2)->exp()->add(1)->divide($two->multiply($num->exp()));
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function tanh($precision = null, $round = true)
+    {
+
+        $oldBase = $this->convertForModification();
+
+        $precision = $precision ?? $this->getPrecision();
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+
+        $answer = $num->sinh($precision+1, false)->divide($num->cosh($precision+1, false));
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function coth($precision = null, $round = true)
+    {
+
+        $oldBase = $this->convertForModification();
+
+        $precision = $precision ?? $this->getPrecision();
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+
+        $answer = $num->cosh($precision+1, false)->divide($num->sinh($precision+1, false));
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function sech($precision = null, $round = true)
+    {
+
+        $oldBase = $this->convertForModification();
+
+        $precision = $precision ?? $this->getPrecision();
+
+        $one = Numbers::makeOne();
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+
+        $answer = $one->divide($num->cosh($precision+1, false));
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
+    public function csch($precision = null, $round = true)
+    {
+
+        $oldBase = $this->convertForModification();
+
+        $precision = $precision ?? $this->getPrecision();
+
+        $one = Numbers::makeOne();
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+
+        $answer = $one->divide($num->sinh($precision+1, false));
+
+        if ($round) {
+            $answer = $answer->roundToPrecision($precision);
+        } else {
+            $answer = $answer->truncateToPrecision($precision);
+        }
+
+        return $this->setValue($answer)->convertFromModification($oldBase);
+
+    }
+
 }

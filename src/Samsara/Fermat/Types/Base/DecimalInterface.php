@@ -84,7 +84,7 @@ interface DecimalInterface
     public function semiFactorial();
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -92,7 +92,7 @@ interface DecimalInterface
     public function sin($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -100,7 +100,7 @@ interface DecimalInterface
     public function cos($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -108,7 +108,7 @@ interface DecimalInterface
     public function tan($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -116,7 +116,7 @@ interface DecimalInterface
     public function cot($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -124,7 +124,7 @@ interface DecimalInterface
     public function sec($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -132,7 +132,7 @@ interface DecimalInterface
     public function csc($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -140,7 +140,7 @@ interface DecimalInterface
     public function arcsin($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -148,7 +148,7 @@ interface DecimalInterface
     public function arccos($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -156,7 +156,7 @@ interface DecimalInterface
     public function arctan($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -164,7 +164,7 @@ interface DecimalInterface
     public function arccot($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
@@ -172,12 +172,60 @@ interface DecimalInterface
     public function arcsec($precision = null, $round = true);
 
     /**
-     * @param null $precision
+     * @param int|null $precision
      * @param bool $round
      *
      * @return NumberInterface|DecimalInterface
      */
     public function arccsc($precision = null, $round = true);
+
+    /**
+     * @param int|null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function sinh($precision = null, $round = true);
+
+    /**
+     * @param int|null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function cosh($precision = null, $round = true);
+
+    /**
+     * @param int|null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function tanh($precision = null, $round = true);
+
+    /**
+     * @param int|null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function coth($precision = null, $round = true);
+
+    /**
+     * @param int|null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function sech($precision = null, $round = true);
+
+    /**
+     * @param int|null $precision
+     * @param bool $round
+     *
+     * @return NumberInterface|DecimalInterface
+     */
+    public function csch($precision = null, $round = true);
 
     /**
      * @param int $precision
@@ -190,6 +238,11 @@ interface DecimalInterface
      * @return NumberInterface|DecimalInterface
      */
     public function log10($precision = 10);
+
+    /**
+     * @return NumberInterface|DecimalInterface
+     */
+    public function exp();
 
     /**
      * @param int $decimals

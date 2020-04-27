@@ -19,7 +19,9 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 - Types:
   - Base:
     - ComplexInterface
-    - NumberInterface
+    - DecimalInterface:
+      - Added hyperbolic trig functions
+    - NumberInterface:
       - Added `isComplex(): bool` method
   - Traits:
     - ArithmeticTrait
@@ -28,7 +30,8 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - InverseTrigonometryTrait
     - LogTrait
     - PrecisionTrait
-    - TrigonometryTrait
+    - TrigonometryTrait:
+      - Added implementation of hyperbolic trig functions
   - Expression
   - Interfaces:
     - MatrixInterface
