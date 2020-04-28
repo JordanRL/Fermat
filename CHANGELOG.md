@@ -47,16 +47,16 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - Algebra
     - PolynomialFunction
   - ImmutableComplexNumber
-  - ImmutableFraction
+  - ImmutableFraction:
     - Added implementation of `isComplex(): bool`
   - ImmutableMatrix
-  - ImmutableNumber
+  - ImmutableNumber:
     - Added implementation of `isComplex(): bool`
   - MutableComplexNumber
-  - MutableFraction
+  - MutableFraction:
     - Added implementation of `isComplex(): bool`
   - MutableMatrix
-  - MutableNumber
+  - MutableNumber:
     - Added implementation of `isComplex(): bool`
 - Factories:
   - Collections

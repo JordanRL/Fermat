@@ -36,6 +36,12 @@ abstract class Matrix implements MatrixInterface
     public function __construct(array $data, string $mode = Matrix::MODE_ROWS_INPUT)
     {
 
+        $this->normalizeInputData($data, $mode);
+
+    }
+
+    protected function normalizeInputData(array $data, string $mode)
+    {
         if ($mode === Matrix::MODE_ROWS_INPUT) {
             $this->rows = $data;
             $this->columns = self::swapArrayHierarchy($data);
@@ -47,7 +53,6 @@ abstract class Matrix implements MatrixInterface
             $this->numRows = count($this->rows);
             $this->numColumns = count($this->columns);
         }
-
     }
 
     public function isSquare(): bool
