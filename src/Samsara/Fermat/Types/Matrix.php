@@ -7,11 +7,10 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Matrices;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
-use Samsara\Fermat\Types\Base\MatrixInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableFraction;
+use Samsara\Fermat\Types\Base\Interfaces\MatrixInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
 use Samsara\Fermat\Values\ImmutableMatrix;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 abstract class Matrix implements MatrixInterface
 {
@@ -84,7 +83,7 @@ abstract class Matrix implements MatrixInterface
         return clone $this->columns[$column];
     }
 
-    public function getDeterminant(): ImmutableNumber
+    public function getDeterminant(): ImmutableDecimal
     {
         if (!$this->isSquare()) {
             throw new IncompatibleObjectState(
@@ -107,7 +106,7 @@ abstract class Matrix implements MatrixInterface
                 $determinant = $determinant->add($value->multiply($childMatrix->getDeterminant())->multiply(SequenceProvider::nthPowerNegativeOne($key)));
             }
         } else {
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             $determinant = $this->rows[0]->get(0)->multiply($this->rows[1]->get(1))->subtract($this->rows[1]->get(0)->multiply($this->rows[0]->get(1)));
         }
 

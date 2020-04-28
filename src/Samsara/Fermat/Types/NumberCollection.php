@@ -9,11 +9,11 @@ use Samsara\Fermat\Provider\Distribution\Exponential;
 use Samsara\Fermat\Provider\Distribution\Normal;
 use Samsara\Fermat\Provider\Distribution\Poisson;
 use Samsara\Fermat\Provider\PolyfillProvider;
-use Samsara\Fermat\Types\Base\NumberCollectionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberCollectionInterface;
 use Ds\Vector;
-use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
 use Samsara\Fermat\Values\Algebra\PolynomialFunction;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class NumberCollection implements NumberCollectionInterface
 {
@@ -169,7 +169,7 @@ class NumberCollection implements NumberCollectionInterface
     public function add($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $value->add($number);
         });
 
@@ -184,7 +184,7 @@ class NumberCollection implements NumberCollectionInterface
     public function subtract($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $value->subtract($number);
         });
 
@@ -199,7 +199,7 @@ class NumberCollection implements NumberCollectionInterface
     public function multiply($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $value->multiply($number);
         });
 
@@ -214,7 +214,7 @@ class NumberCollection implements NumberCollectionInterface
     public function divide($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $value->divide($number);
         });
 
@@ -231,7 +231,7 @@ class NumberCollection implements NumberCollectionInterface
     public function pow($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $value->pow($number);
         });
 
@@ -255,7 +255,7 @@ class NumberCollection implements NumberCollectionInterface
             $base = Numbers::makeOrDont(Numbers::IMMUTABLE, $base);
         }
         $this->getCollection()->apply(function($value) use ($base){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $base->pow($value);
         });
 
@@ -312,12 +312,12 @@ class NumberCollection implements NumberCollectionInterface
      */
     public function makeNormalDistribution(): Normal
     {
-        /** @var ImmutableNumber $mean */
+        /** @var ImmutableDecimal $mean */
         $mean = $this->mean();
 
         $squaredSum = Numbers::makeZero();
 
-        /** @var ImmutableNumber $number */
+        /** @var ImmutableDecimal $number */
         foreach ($this->getCollection() as $number) {
             $squaredSum = $squaredSum->add($number->subtract($mean)->pow(2));
         }

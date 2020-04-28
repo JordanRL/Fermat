@@ -3,12 +3,12 @@
 namespace Samsara\Fermat\Provider\Distribution\Base;
 
 use Samsara\Fermat\Types\NumberCollection;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 abstract class Distribution
 {
 
-    abstract public function random(): ImmutableNumber;
+    abstract public function random(): ImmutableDecimal;
 
     /**
      * @param int $sampleSize
@@ -25,6 +25,6 @@ abstract class Distribution
         return $sample;
     }
 
-     abstract public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableNumber;
+     abstract public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableDecimal;
 
 }

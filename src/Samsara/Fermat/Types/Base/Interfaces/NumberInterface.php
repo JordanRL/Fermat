@@ -1,15 +1,9 @@
 <?php
 
-namespace Samsara\Fermat\Types\Base;
+namespace Samsara\Fermat\Types\Base\Interfaces;
 
 interface NumberInterface
 {
-
-    /**
-     * @param int $base
-     * @return NumberInterface|DecimalInterface|FractionInterface
-     */
-    public function convertToBase($base);
 
     /**
      * @param $value
@@ -124,6 +118,10 @@ interface NumberInterface
      * @return bool
      */
     public function isLessThanOrEqualTo($value): bool;
+
+    public function isImaginary(): bool;
+
+    public function isReal(): bool;
 
     public function isComplex(): bool;
 

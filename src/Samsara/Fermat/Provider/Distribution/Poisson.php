@@ -8,15 +8,15 @@ use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Provider\PolyfillProvider;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class Poisson extends Distribution
 {
 
     /**
-     * @var ImmutableNumber
+     * @var ImmutableDecimal
      */
     private $lambda;
 
@@ -45,11 +45,11 @@ class Poisson extends Distribution
     /**
      * @param int|float|DecimalInterface $k
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
-    public function probabilityOfKEvents($k): ImmutableNumber
+    public function probabilityOfKEvents($k): ImmutableDecimal
     {
 
         return $this->pmf($k);
@@ -59,11 +59,11 @@ class Poisson extends Distribution
     /**
      * @param int|float|DecimalInterface $x
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
-    public function cdf($x): ImmutableNumber
+    public function cdf($x): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -89,11 +89,11 @@ class Poisson extends Distribution
     /**
      * @param int|float|DecimalInterface $x
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
-    public function pmf($x): ImmutableNumber
+    public function pmf($x): ImmutableDecimal
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
@@ -107,7 +107,7 @@ class Poisson extends Distribution
 
         $e = Numbers::makeE();
 
-        /** @var ImmutableNumber $pmf */
+        /** @var ImmutableDecimal $pmf */
         $pmf = $this->lambda->pow($x)->multiply($e->pow($this->lambda->multiply(-1)))->divide($x->factorial());
 
         return $pmf;
@@ -117,10 +117,10 @@ class Poisson extends Distribution
      * @param int|float|DecimalInterface $x1
      * @param int|float|DecimalInterface $x2
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function rangePmf($x1, $x2): ImmutableNumber
+    public function rangePmf($x1, $x2): ImmutableDecimal
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
         $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
@@ -153,11 +153,11 @@ class Poisson extends Distribution
     }
 
     /**
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
-    public function random(): ImmutableNumber
+    public function random(): ImmutableDecimal
     {
         if ($this->lambda->isLessThanOrEqualTo(30)) {
             return $this->knuthRandom();
@@ -174,10 +174,10 @@ class Poisson extends Distribution
      * @param int|float|NumberInterface $max
      * @param int $maxIterations
      *
-     * @throws OptionalExit
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
+     *@throws OptionalExit
      */
-    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableNumber
+    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableDecimal
     {
         $i = 0;
 
@@ -202,46 +202,46 @@ class Poisson extends Distribution
      *
      * As described by John D. Cook: http://www.johndcook.com/blog/2010/06/14/generating-poisson-random-values/
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
-    protected function methodPARandom(): ImmutableNumber
+    protected function methodPARandom(): ImmutableDecimal
     {
-        /** @var ImmutableNumber $c */
+        /** @var ImmutableDecimal $c */
         $c = $this->lambda->pow(-1)->multiply(3.36)->multiply(-1)->add(0.767);
-        /** @var ImmutableNumber $beta */
+        /** @var ImmutableDecimal $beta */
         $beta = Numbers::makePi()->divide($this->lambda->multiply(3)->sqrt());
-        /** @var ImmutableNumber $alpha */
+        /** @var ImmutableDecimal $alpha */
         $alpha = $this->lambda->multiply($beta);
-        /** @var ImmutableNumber $k */
+        /** @var ImmutableDecimal $k */
         $k = $c->ln(20)->subtract($this->lambda)->subtract($beta->ln(20));
-        /** @var ImmutableNumber $one */
+        /** @var ImmutableDecimal $one */
         $one = Numbers::makeOne();
-        /** @var ImmutableNumber $oneHalf */
+        /** @var ImmutableDecimal $oneHalf */
         $oneHalf = Numbers::make(Numbers::IMMUTABLE, '0.5');
-        /** @var ImmutableNumber $e */
+        /** @var ImmutableDecimal $e */
         $e = Numbers::makeE();
 
         while (true) {
-            /** @var ImmutableNumber $u */
+            /** @var ImmutableDecimal $u */
             $u = PolyfillProvider::randomInt(0, PHP_INT_MAX) / PHP_INT_MAX;
-            /** @var ImmutableNumber $x */
+            /** @var ImmutableDecimal $x */
             $x = $alpha->subtract($one->subtract($u)->divide($u)->ln(20)->divide($beta));
-            /** @var ImmutableNumber $n */
+            /** @var ImmutableDecimal $n */
             $n = $x->add($oneHalf)->floor();
 
             if ($n->isNegative()) {
                 continue;
             }
 
-            /** @var ImmutableNumber $v */
+            /** @var ImmutableDecimal $v */
             $v = PolyfillProvider::randomInt(0, PHP_INT_MAX) / PHP_INT_MAX;
-            /** @var ImmutableNumber $y */
+            /** @var ImmutableDecimal $y */
             $y = $alpha->subtract($beta->multiply($x));
-            /** @var ImmutableNumber $lhs */
+            /** @var ImmutableDecimal $lhs */
             $lhs = $y->add($v->divide($e->pow($y)->add($one)->pow(2)));
-            /** @var ImmutableNumber $rhs */
+            /** @var ImmutableDecimal $rhs */
             $rhs = $k->add($n->multiply($this->lambda->ln(20)))->subtract($n->factorial()->ln(20));
 
             if ($lhs->isLessThanOrEqualTo($rhs)) {
@@ -262,21 +262,21 @@ class Poisson extends Distribution
     }
 
     /**
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    protected function knuthRandom(): ImmutableNumber
+    protected function knuthRandom(): ImmutableDecimal
     {
-        /** @var ImmutableNumber $L */
+        /** @var ImmutableDecimal $L */
         $L = Numbers::makeE()->pow($this->lambda->multiply(-1));
-        /** @var ImmutableNumber $k */
+        /** @var ImmutableDecimal $k */
         $k = Numbers::makeZero();
-        /** @var ImmutableNumber $p */
+        /** @var ImmutableDecimal $p */
         $p = Numbers::makeOne();
 
         do {
             $k = $k->add(1);
-            /** @var ImmutableNumber $u */
+            /** @var ImmutableDecimal $u */
             $u = PolyfillProvider::randomInt(0, PHP_INT_MAX) / PHP_INT_MAX;
             $p = $p->multiply($u);
         } while ($p->isGreaterThan($L));

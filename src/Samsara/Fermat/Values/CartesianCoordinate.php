@@ -5,7 +5,7 @@ namespace Samsara\Fermat\Values;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Tuple;
-use Samsara\Fermat\Types\Base\CoordinateInterface;
+use Samsara\Fermat\Types\Base\Interfaces\CoordinateInterface;
 
 class CartesianCoordinate extends Tuple implements CoordinateInterface
 {
@@ -27,7 +27,7 @@ class CartesianCoordinate extends Tuple implements CoordinateInterface
         parent::__construct($zeroIndexedData);
     }
 
-    public function getAxis($axis): ImmutableNumber
+    public function getAxis($axis): ImmutableDecimal
     {
         return $this->get($this->axes[$axis]);
     }
@@ -42,7 +42,7 @@ class CartesianCoordinate extends Tuple implements CoordinateInterface
         return $this->all();
     }
 
-    public function distanceTo(CoordinateInterface $coordinate): ImmutableNumber
+    public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal
     {
         if (!($coordinate instanceof CartesianCoordinate)) {
             throw new IntegrityConstraint(
@@ -60,7 +60,7 @@ class CartesianCoordinate extends Tuple implements CoordinateInterface
             );
         }
 
-        /** @var ImmutableNumber $n */
+        /** @var ImmutableDecimal $n */
         $n = Numbers::makeZero();
 
         foreach ($this->all() as $index => $value) {

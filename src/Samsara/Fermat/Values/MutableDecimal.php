@@ -2,19 +2,17 @@
 
 namespace Samsara\Fermat\Values;
 
-use Samsara\Fermat\Types\Number;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Numbers;
 
-class MutableNumber extends Number implements NumberInterface, DecimalInterface
+class MutableDecimal extends Decimal
 {
 
     public function modulo($mod)
     {
         $oldBase = $this->convertForModification();
 
-        return (new MutableNumber(bcmod($this->getValue(), $mod), $this->getPrecision()))->convertFromModification($oldBase);
+        return (new MutableDecimal(bcmod($this->getValue(), $mod), $this->getPrecision()))->convertFromModification($oldBase);
     }
 
     public function continuousModulo($mod)
@@ -32,13 +30,13 @@ class MutableNumber extends Number implements NumberInterface, DecimalInterface
     }
 
     /**
-     * @param $value
+     * @param string $value
      *
-     * @return MutableNumber
+     * @return MutableDecimal
      */
-    protected function setValue($value)
+    protected function setValue(string $value)
     {
-        $this->value = $value;
+        $this->value = $this->translateValue($value);
 
         return $this;
     }

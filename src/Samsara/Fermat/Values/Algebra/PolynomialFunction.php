@@ -4,12 +4,11 @@ namespace Samsara\Fermat\Values\Algebra;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\ExpressionInterface;
-use Samsara\Fermat\Types\Base\FunctionInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\FunctionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
 use Samsara\Fermat\Types\Expression;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class PolynomialFunction extends Expression implements FunctionInterface
 {
@@ -38,7 +37,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
                 );
             }
 
-            /** @var ImmutableNumber $fermatCoefficient */
+            /** @var ImmutableDecimal $fermatCoefficient */
             $fermatCoefficient = Numbers::make(Numbers::IMMUTABLE, $coefficient);
 
             if (!$fermatCoefficient->isEqual(0)) {
@@ -48,14 +47,14 @@ class PolynomialFunction extends Expression implements FunctionInterface
 
         $this->coefficients = $sanitizedCoefficients;
 
-        $this->expression = function($x) use ($sanitizedCoefficients): ImmutableNumber {
-            /** @var ImmutableNumber $value */
+        $this->expression = function($x): ImmutableDecimal {
+            /** @var ImmutableDecimal $value */
             $value = Numbers::makeZero();
 
-            /** @var ImmutableNumber $xPart */
+            /** @var ImmutableDecimal $xPart */
             $xPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-            foreach ($sanitizedCoefficients as $exponent => $coefficient) {
+            foreach ($this->coefficients as $exponent => $coefficient) {
                 if ($exponent == 0) {
                     $value = $value->add($coefficient);
                 } else {
@@ -75,9 +74,9 @@ class PolynomialFunction extends Expression implements FunctionInterface
     /**
      * @param int|float|string|NumberInterface|DecimalInterface $x
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      */
-    public function evaluateAt($x): ImmutableNumber
+    public function evaluateAt($x): ImmutableDecimal
     {
         /** @var callable $answer */
         $answer = $this->expression;
@@ -95,7 +94,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
 
         /**
          * @var int             $exponent
-         * @var ImmutableNumber $coefficient
+         * @var ImmutableDecimal $coefficient
          */
         foreach ($this->coefficients as $exponent => $coefficient) {
             if ($exponent == 0) {
@@ -126,7 +125,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
 
         /**
          * @var int             $exponent
-         * @var ImmutableNumber $coefficient
+         * @var ImmutableDecimal $coefficient
          */
         foreach ($this->coefficients as $exponent => $coefficient) {
             $newExponent = $exponent+1;
@@ -144,7 +143,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
 
         /**
          * @var int             $exponent
-         * @var ImmutableNumber $coefficient
+         * @var ImmutableDecimal $coefficient
          */
         foreach ($this->coefficients as $exponent => $coefficient) {
             $shape[$exponent] = $coefficient->getValue();
@@ -165,8 +164,8 @@ class PolynomialFunction extends Expression implements FunctionInterface
      *      3. If not all exponents are used continuously, a zero must be provided for the position that is skipped. For
      *         example, if one of the provided groups was 4x^2 + 2, it would expect: [4, 0, 2]
      *
-     * @param int|float|NumberInterface[] $group1
-     * @param int|float|NumberInterface[] $group2
+     * @param int[]|float[]|NumberInterface[] $group1
+     * @param int[]|float[]|NumberInterface[] $group2
      *
      * @return PolynomialFunction
      * @throws IntegrityConstraint
@@ -176,11 +175,11 @@ class PolynomialFunction extends Expression implements FunctionInterface
         $group1exp = count($group1)-1;
         $group2exp = count($group2)-1;
 
-        /** @var ImmutableNumber[] $finalCoefs */
+        /** @var ImmutableDecimal[] $finalCoefs */
         $finalCoefs = [];
 
-        $group1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $group1);
-        $group2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $group2);
+        $group1 = Numbers::make(Numbers::IMMUTABLE, $group1);
+        $group2 = Numbers::make(Numbers::IMMUTABLE, $group2);
 
         if ($group1exp <= $group2exp) {
             $largerGroup = $group2;
@@ -196,14 +195,14 @@ class PolynomialFunction extends Expression implements FunctionInterface
 
         /**
          * @var int $key1
-         * @var ImmutableNumber $value1
+         * @var ImmutableDecimal $value1
          */
         foreach ($largerGroup as $key1 => $value1) {
             $largerKey = $largerExp - $key1;
 
             /**
              * @var int             $key2
-             * @var ImmutableNumber $value2
+             * @var ImmutableDecimal $value2
              */
             foreach ($smallerGroup as $key2 => $value2) {
                 $smallerKey = $smallerExp - $key2;

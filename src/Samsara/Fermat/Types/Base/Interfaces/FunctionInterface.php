@@ -1,12 +1,12 @@
 <?php
 
-namespace Samsara\Fermat\Types\Base;
+namespace Samsara\Fermat\Types\Base\Interfaces;
 
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 interface FunctionInterface
 {
-    public function evaluateAt($x): ImmutableNumber;
+    public function evaluateAt($x): ImmutableDecimal;
 
     public function derivativeExpression(): FunctionInterface;
 

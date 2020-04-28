@@ -3,19 +3,19 @@
 namespace Samsara\Fermat\Types;
 
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\ComplexInterface;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\ComplexInterface;
+use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
 use Samsara\Fermat\Values\ImmutableFraction;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 abstract class ComplexNumber implements ComplexInterface, NumberInterface, DecimalInterface
 {
 
-    /** @var ImmutableNumber|ImmutableFraction */
+    /** @var ImmutableDecimal|ImmutableFraction */
     protected $realPart;
 
-    /** @var ImmutableNumber|ImmutableFraction */
+    /** @var ImmutableDecimal|ImmutableFraction */
     protected $complexPart;
 
     public function __construct($realPart, $complexPart, $precision = null, $base = 10)

@@ -201,11 +201,6 @@ trait PrecisionTrait
 
     }
 
-    protected function getRadixPos()
-    {
-        return strpos($this->value, '.');
-    }
-
     protected function reduceDecimals(array $decimalArray, $pos, $add)
     {
 
@@ -229,22 +224,12 @@ trait PrecisionTrait
 
     protected function getDecimalPart()
     {
-        $radix = $this->getRadixPos();
-        if ($radix !== false) {
-            return substr($this->getValue(), $radix+1);
-        } else {
-            return 0;
-        }
+        return $this->value[1];
     }
 
     protected function getWholePart()
     {
-        $radix = $this->getRadixPos();
-        if ($radix !== false) {
-            return substr($this->getValue(), 0, $radix);
-        } else {
-            return $this->getValue();
-        }
+        return $this->value[0];
     }
 
 }

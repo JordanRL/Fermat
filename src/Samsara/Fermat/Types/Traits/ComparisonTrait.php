@@ -4,8 +4,8 @@ namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\FractionInterface;
 use Samsara\Fermat\Values\ImmutableFraction;
 
 trait ComparisonTrait
@@ -179,11 +179,7 @@ trait ComparisonTrait
                 return false;
             }
 
-            if (strpos($this->getValue(), '-') === 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return !$this->sign;
         } else {
             return $this->getNumerator()->isNegative();
         }
@@ -198,7 +194,7 @@ trait ComparisonTrait
                 return false;
             }
 
-            return !$this->isNegative();
+            return $this->sign;
         } else {
             return $this->getNumerator()->isPositive();
         }

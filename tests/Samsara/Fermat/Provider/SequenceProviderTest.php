@@ -4,7 +4,7 @@ namespace Samsara\Fermat\Provider;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class SequenceProviderTest extends TestCase
 {
@@ -71,7 +71,7 @@ class SequenceProviderTest extends TestCase
         $this->expectException(IntegrityConstraint::class);
         $this->expectExceptionMessage('The nthFibonacciNumber function takes the term number as its argument; provide an integer term number');
 
-        SequenceProvider::nthFibonacciNumber(new ImmutableNumber('0.5'));
+        SequenceProvider::nthFibonacciNumber(new ImmutableDecimal('0.5'));
 
     }
 

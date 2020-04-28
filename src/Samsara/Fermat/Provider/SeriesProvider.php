@@ -4,9 +4,9 @@ namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class SeriesProvider
 {
@@ -67,7 +67,7 @@ class SeriesProvider
                 return $sum->truncateToPrecision($currentPrecision+1);
             }
 
-            /** @var ImmutableNumber $term */
+            /** @var ImmutableDecimal $term */
             if ($term->numberOfLeadingZeros() >= $precision) {
                 $continue = false;
             }
@@ -109,7 +109,7 @@ class SeriesProvider
         while ($continue) {
             $term = Numbers::makeOne($precision+1);
 
-            /** @var ImmutableNumber $term */
+            /** @var ImmutableDecimal $term */
             $term = $term->multiply($part2($termNumber))->pow($exponent($termNumber))
                 ->multiply($part1($termNumber));
 

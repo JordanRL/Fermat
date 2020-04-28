@@ -3,18 +3,16 @@
 namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Number;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Decimal;
 
-class ImmutableNumber extends Number implements NumberInterface, DecimalInterface
+class ImmutableDecimal extends Decimal
 {
 
     public function modulo($mod)
     {
         $oldBase = $this->convertForModification();
 
-        return (new ImmutableNumber(bcmod($this->getValue(), $mod), $this->getPrecision(), $this->getBase()))->convertFromModification($oldBase);
+        return (new ImmutableDecimal(bcmod($this->getValue(), $mod), $this->getPrecision(), $this->getBase()))->convertFromModification($oldBase);
     }
 
     public function continuousModulo($mod)
@@ -56,13 +54,13 @@ class ImmutableNumber extends Number implements NumberInterface, DecimalInterfac
     }
 
     /**
-     * @param $value
+     * @param string $value
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      */
-    protected function setValue($value)
+    protected function setValue(string $value)
     {
-        return new ImmutableNumber($value, $this->getPrecision(), $this->getBase());
+        return new ImmutableDecimal($value, $this->getPrecision(), $this->getBase());
     }
 
 }

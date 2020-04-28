@@ -60,10 +60,10 @@ You can also use a `Fraction` and `Number` together:
 ```php
 <?php
 
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 use Samsara\Fermat\Values\ImmutableFraction;
 
-$five = new ImmutableNumber(5);
+$five = new ImmutableDecimal(5);
 $oneQuarter = new ImmutableFraction(1, 4);
 
 echo $five->add($oneQuarter); // Prints: "5.25"

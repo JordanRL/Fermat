@@ -5,7 +5,7 @@ namespace Samsara\Fermat\Types;
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class NumberCollectionTest extends TestCase
 {
@@ -38,17 +38,17 @@ class NumberCollectionTest extends TestCase
 
         $collection->get(0);
 
-        $collection->push(new ImmutableNumber(5));
+        $collection->push(new ImmutableDecimal(5));
 
         $this->assertEquals('5', $collection->get(0)->getValue());
 
-        $collection->push(new ImmutableNumber(8));
+        $collection->push(new ImmutableDecimal(8));
 
         $this->assertEquals('8', $collection->get(1)->getValue());
 
         $this->assertEquals('5', $collection->shift()->getValue());
 
-        $collection->unshift(new ImmutableNumber(11));
+        $collection->unshift(new ImmutableDecimal(11));
 
         $this->assertEquals('8', $collection->pop()->getValue());
 

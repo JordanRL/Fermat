@@ -1,8 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Types\Base;
-
-use Samsara\Fermat\Types\Fraction;
+namespace Samsara\Fermat\Types\Base\Interfaces;
 
 interface FractionInterface
 {

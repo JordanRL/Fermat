@@ -5,8 +5,8 @@ namespace Samsara\Fermat\Types\Traits;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 trait IntegerMathTrait
 {
@@ -78,7 +78,7 @@ trait IntegerMathTrait
     public function getLeastCommonMultiple($num)
     {
 
-        /** @var ImmutableNumber $num */
+        /** @var ImmutableDecimal $num */
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num);
 
         if (!$this->isInt() || !$num->isInt()) {
@@ -95,9 +95,9 @@ trait IntegerMathTrait
 
     public function getGreatestCommonDivisor($num)
     {
-        /** @var ImmutableNumber $num */
+        /** @var ImmutableDecimal $num */
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num)->abs();
-        /** @var ImmutableNumber $thisNum */
+        /** @var ImmutableDecimal $thisNum */
         $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this)->abs();
 
         if (!$this->isInt() || !$num->isInt()) {

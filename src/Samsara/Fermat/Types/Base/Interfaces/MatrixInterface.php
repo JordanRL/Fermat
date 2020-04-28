@@ -1,9 +1,9 @@
 <?php
 
-namespace Samsara\Fermat\Types\Base;
+namespace Samsara\Fermat\Types\Base\Interfaces;
 
 use Samsara\Fermat\Types\NumberCollection;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 interface MatrixInterface
 {
@@ -18,7 +18,7 @@ interface MatrixInterface
 
     public function getColumn(int $column): NumberCollection;
 
-    public function getDeterminant(): ImmutableNumber;
+    public function getDeterminant(): ImmutableDecimal;
 
     public function pushRow(NumberCollection $row): MatrixInterface;
 

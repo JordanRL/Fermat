@@ -3,22 +3,22 @@
 namespace Samsara\Fermat;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Types\Base\CoordinateInterface;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\CoordinateInterface;
+use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
 use Samsara\Fermat\Types\Fraction;
 use Samsara\Fermat\Values\CartesianCoordinate;
 use Samsara\Fermat\Values\ImmutableFraction;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 use Samsara\Fermat\Values\MutableFraction;
-use Samsara\Fermat\Values\MutableNumber;
-use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Values\MutableDecimal;
 
 class Numbers
 {
 
-    const MUTABLE = MutableNumber::class;
-    const IMMUTABLE = ImmutableNumber::class;
+    const MUTABLE = MutableDecimal::class;
+    const IMMUTABLE = ImmutableDecimal::class;
     const MUTABLE_FRACTION = MutableFraction::class;
     const IMMUTABLE_FRACTION = ImmutableFraction::class;
     const CARTESIAN_COORDINATE = CartesianCoordinate::class;
@@ -39,8 +39,8 @@ class Numbers
      * @param int|null $precision
      * @param int $base
      *
-     * @throws IntegrityConstraint
-     * @return ImmutableNumber|MutableNumber|ImmutableFraction|MutableFraction|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
+     * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
+     *@throws IntegrityConstraint
      */
     public static function make($type, $value, $precision = null, $base = 10)
     {
@@ -50,9 +50,9 @@ class Numbers
         }
 
         if ($type == static::IMMUTABLE) {
-            return new ImmutableNumber(trim($value), $precision, $base);
+            return new ImmutableDecimal(trim($value), $precision, $base);
         } elseif ($type == static::MUTABLE) {
-            return new MutableNumber(trim($value), $precision, $base);
+            return new MutableDecimal(trim($value), $precision, $base);
         } elseif ($type == static::IMMUTABLE_FRACTION) {
             return self::makeFractionFromString($type, $value, $base);
         } elseif ($type == static::MUTABLE_FRACTION) {
@@ -110,7 +110,7 @@ class Numbers
     public static function makeFromBase10($type, $value, $precision = null, $base = 10)
     {
         /**
-         * @var ImmutableNumber|MutableNumber
+         * @var ImmutableDecimal|MutableDecimal
          */
         $number = self::make($type, $value, $precision, 10);
 
@@ -123,8 +123,8 @@ class Numbers
      * @param int|null $precision
      * @param int $base
      *
+     * @return ImmutableDecimal|MutableDecimal|NumberInterface|ImmutableDecimal[]|MutableDecimal[]|NumberInterface[]
      * @throws IntegrityConstraint
-     * @return ImmutableNumber|MutableNumber|NumberInterface|ImmutableNumber[]|MutableNumber[]|NumberInterface[]
      */
     public static function makeOrDont($type, $value, $precision = null, $base = 10)
     {
@@ -179,9 +179,9 @@ class Numbers
             );
         }
 
-        /** @var ImmutableNumber $numerator */
+        /** @var ImmutableDecimal $numerator */
         $numerator = Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[0])))->round();
-        /** @var ImmutableNumber $denominator */
+        /** @var ImmutableDecimal $denominator */
         $denominator = isset($parts[1]) ? Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[1])))->round() : Numbers::makeOne();
 
         if ($type == self::IMMUTABLE_FRACTION) {
@@ -345,7 +345,7 @@ class Numbers
     /**
      * @param int|null $precision
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      */
     public static function makeOne($precision = null)
     {
@@ -355,7 +355,7 @@ class Numbers
     /**
      * @param int|null $precision
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      */
     public static function makeZero($precision = null)
     {

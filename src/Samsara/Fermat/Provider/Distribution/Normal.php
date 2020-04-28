@@ -9,21 +9,21 @@ use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Provider\PolyfillProvider;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\StatsProvider;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\FunctionInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\FunctionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class Normal extends Distribution
 {
 
     /**
-     * @var ImmutableNumber
+     * @var ImmutableDecimal
      */
     private $mean;
 
     /**
-     * @var ImmutableNumber
+     * @var ImmutableDecimal
      */
     private $sd;
 
@@ -53,7 +53,7 @@ class Normal extends Distribution
         return $this->mean;
     }
 
-    public function evaluateAt($x): ImmutableNumber
+    public function evaluateAt($x): ImmutableDecimal
     {
 
         $one = Numbers::makeOne();
@@ -64,7 +64,7 @@ class Normal extends Distribution
         $left = $one->divide($twoPi->multiply($this->getSD()->pow(2))->sqrt());
         $right = $e->pow($x->subtract($this->getMean())->pow(2)->divide($this->getSD()->pow(2)->multiply(2))->multiply(-1));
 
-        /** @var ImmutableNumber $value */
+        /** @var ImmutableDecimal $value */
         $value = $left->multiply($right);
 
         return $value;
@@ -118,10 +118,10 @@ class Normal extends Distribution
     /**
      * @param int|float|DecimalInterface $x
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function cdf($x): ImmutableNumber
+    public function cdf($x): ImmutableDecimal
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
@@ -129,7 +129,7 @@ class Normal extends Distribution
         $one = Numbers::makeOne();
         $sqrtTwo = Numbers::make(Numbers::IMMUTABLE, 2)->sqrt();
 
-        /** @var ImmutableNumber $cdf */
+        /** @var ImmutableDecimal $cdf */
         $cdf = $oneHalf->multiply($one->add(StatsProvider::gaussErrorFunction(
             $x->subtract($this->mean)->divide($this->sd->multiply($sqrtTwo))
         )));
@@ -141,10 +141,10 @@ class Normal extends Distribution
      * @param int|float|DecimalInterface $x1
      * @param null|int|float|DecimalInterface $x2
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function pdf($x1, $x2 = null): ImmutableNumber
+    public function pdf($x1, $x2 = null): ImmutableDecimal
     {
 
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
@@ -159,7 +159,7 @@ class Normal extends Distribution
             }
         }
 
-        /** @var ImmutableNumber $pdf */
+        /** @var ImmutableDecimal $pdf */
         $pdf = $this->cdf($x1)->subtract($this->cdf($x2))->abs();
 
         return $pdf;
@@ -168,10 +168,10 @@ class Normal extends Distribution
     /**
      * @param FunctionInterface $function
      * @param $x
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function cdfProduct(FunctionInterface $function, $x): ImmutableNumber
+    public function cdfProduct(FunctionInterface $function, $x): ImmutableDecimal
     {
 
         $loop = 0;
@@ -188,16 +188,16 @@ class Normal extends Distribution
             $function = $function->derivativeExpression();
         }
 
-        /** @var ImmutableNumber $cdf */
+        /** @var ImmutableDecimal $cdf */
         $cdf = $cdf->multiply($this->cdf($x));
 
         return $cdf;
 
     }
 
-    public function pdfProduct(FunctionInterface $function, $x1, $x2): ImmutableNumber
+    public function pdfProduct(FunctionInterface $function, $x1, $x2): ImmutableDecimal
     {
-        /** @var ImmutableNumber $pdf */
+        /** @var ImmutableDecimal $pdf */
         $pdf = $this->cdfProduct($function, $x2)->subtract($this->cdfProduct($function, $x1));
 
         return $pdf;
@@ -206,10 +206,10 @@ class Normal extends Distribution
     /**
      * @param int|float|DecimalInterface $x
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function percentBelowX($x): ImmutableNumber
+    public function percentBelowX($x): ImmutableDecimal
     {
         return $this->cdf($x);
     }
@@ -217,14 +217,14 @@ class Normal extends Distribution
     /**
      * @param int|float|DecimalInterface $x
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function percentAboveX($x): ImmutableNumber
+    public function percentAboveX($x): ImmutableDecimal
     {
         $one = Numbers::makeOne();
 
-        /** @var ImmutableNumber $perc */
+        /** @var ImmutableDecimal $perc */
         $perc = $one->subtract($this->cdf($x));
 
         return $perc;
@@ -233,15 +233,15 @@ class Normal extends Distribution
     /**
      * @param int|float|DecimalInterface $x
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function zScoreOfX($x): ImmutableNumber
+    public function zScoreOfX($x): ImmutableDecimal
     {
-        /** @var ImmutableNumber $x */
+        /** @var ImmutableDecimal $x */
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        /** @var ImmutableNumber $z */
+        /** @var ImmutableDecimal $z */
         $z = $x->subtract($this->mean)->divide($this->sd);
 
         return $z;
@@ -250,24 +250,24 @@ class Normal extends Distribution
     /**
      * @param int|float|DecimalInterface $z
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function xFromZScore($z): ImmutableNumber
+    public function xFromZScore($z): ImmutableDecimal
     {
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
 
-        /** @var ImmutableNumber $x */
+        /** @var ImmutableDecimal $x */
         $x = $z->multiply($this->sd)->add($this->mean);
 
         return $x;
     }
 
     /**
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function random(): ImmutableNumber
+    public function random(): ImmutableDecimal
     {
         $int1 = PolyfillProvider::randomInt(0, PHP_INT_MAX);
         $int2 = PolyfillProvider::randomInt(0, PHP_INT_MAX);
@@ -278,7 +278,7 @@ class Normal extends Distribution
         $rand2 = $rand2->divide(PHP_INT_MAX);
 
         $randomNumber = $rand1->ln()->multiply(-2)->sqrt()->multiply($rand2->multiply(Numbers::TAU)->cos(1, false));
-        /** @var ImmutableNumber $randomNumber */
+        /** @var ImmutableDecimal $randomNumber */
         $randomNumber = $randomNumber->multiply($this->sd)->add($this->mean);
 
         return $randomNumber;
@@ -289,11 +289,11 @@ class Normal extends Distribution
      * @param int|float|NumberInterface $max
      * @param int $maxIterations
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws OptionalExit
      * @throws IntegrityConstraint
      */
-    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableNumber
+    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableDecimal
     {
         $i = 0;
 

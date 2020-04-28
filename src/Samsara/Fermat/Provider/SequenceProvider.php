@@ -4,9 +4,9 @@ namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class SequenceProvider
 {
@@ -180,10 +180,10 @@ class SequenceProvider
      * https://www.nayuki.io/page/fast-fibonacci-algorithms
      *
      * @param $n
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function nthFibonacciNumber($n): ImmutableNumber
+    public static function nthFibonacciNumber($n): ImmutableDecimal
     {
         $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
         if (!$n->isInt()) {
@@ -207,16 +207,16 @@ class SequenceProvider
         return $fastFib[0];
     }
 
-    private static function _fib(ImmutableNumber $number): array
+    private static function _fib(ImmutableDecimal $number): array
     {
         if ($number->isEqual(0)) {
             return [Numbers::makeZero(), Numbers::makeOne()];
         }
 
         /**
-         * @var ImmutableNumber $a
-         * @var ImmutableNumber $b
-         * @var ImmutableNumber $prevCall
+         * @var ImmutableDecimal $a
+         * @var ImmutableDecimal $b
+         * @var ImmutableDecimal $prevCall
          */
         $prevCall = $number->divide(2)->floor();
         list($a, $b) = static::_fib($prevCall);

@@ -6,8 +6,6 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
-use Samsara\Fermat\Provider\StatsProvider;
-use Samsara\Fermat\Values\ImmutableNumber;
 
 trait InverseTrigonometryTrait
 {

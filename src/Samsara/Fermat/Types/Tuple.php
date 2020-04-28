@@ -4,7 +4,7 @@ namespace Samsara\Fermat\Types;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class Tuple
 {
@@ -15,7 +15,7 @@ class Tuple
     private $size;
 
     /**
-     * @var ImmutableNumber[]
+     * @var ImmutableDecimal[]
      */
     private $data;
 
@@ -32,10 +32,10 @@ class Tuple
     /**
      * @param $index
      *
-     * @throws IncompatibleObjectState
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
+     *@throws IncompatibleObjectState
      */
-    public function get(int $index): ImmutableNumber
+    public function get(int $index): ImmutableDecimal
     {
         if (array_key_exists($index, $this->data)) {
             return $this->data[$index];
@@ -46,12 +46,12 @@ class Tuple
 
     /**
      * @param int $index
-     * @param ImmutableNumber $value
+     * @param ImmutableDecimal $value
      *
-     * @throws IncompatibleObjectState
      * @return $this
+     *@throws IncompatibleObjectState
      */
-    public function set(int $index, ImmutableNumber $value)
+    public function set(int $index, ImmutableDecimal $value)
     {
         if (array_key_exists($index, $this->data)) {
             $this->data[$index] = $value;

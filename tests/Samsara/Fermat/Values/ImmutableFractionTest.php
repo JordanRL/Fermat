@@ -10,7 +10,7 @@ class ImmutableFractionTest extends TestCase
     public function testSimplify()
     {
 
-        $sixFourths = new ImmutableFraction(new ImmutableNumber(6), new ImmutableNumber(4));
+        $sixFourths = new ImmutableFraction(new ImmutableDecimal(6), new ImmutableDecimal(4));
 
         $this->assertEquals('6/4', $sixFourths->getValue());
         $this->assertEquals('6', $sixFourths->getNumerator()->getValue());
@@ -27,8 +27,8 @@ class ImmutableFractionTest extends TestCase
     public function testSmallestCommonDenominator()
     {
 
-        $oneThird = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(3));
-        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+        $oneThird = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(3));
+        $oneHalf = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(2));
 
         $this->assertEquals('6', $oneThird->getSmallestCommonDenominator($oneHalf)->getValue());
 
@@ -39,13 +39,13 @@ class ImmutableFractionTest extends TestCase
     public function testAbsFunctions()
     {
 
-        $negOneHalf = new ImmutableFraction(new ImmutableNumber(-1), new ImmutableNumber(2));
+        $negOneHalf = new ImmutableFraction(new ImmutableDecimal(-1), new ImmutableDecimal(2));
 
         $this->assertEquals('1/2', $negOneHalf->absValue());
         $this->assertEquals('-1/2', $negOneHalf->getValue());
         $this->assertEquals('1/2', $negOneHalf->abs()->getValue());
 
-        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+        $oneHalf = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(2));
 
         $this->assertEquals('1/2', $oneHalf->absValue());
         $this->assertEquals('1/2', $oneHalf->abs()->getValue());
@@ -55,8 +55,8 @@ class ImmutableFractionTest extends TestCase
     public function testCompare()
     {
 
-        $oneThird = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(3));
-        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+        $oneThird = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(3));
+        $oneHalf = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(2));
 
         $this->assertEquals(1, $oneHalf->compare($oneThird));
 
@@ -69,8 +69,8 @@ class ImmutableFractionTest extends TestCase
     public function testAdd()
     {
 
-        $oneThird = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(3));
-        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+        $oneThird = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(3));
+        $oneHalf = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(2));
 
         $this->assertEquals('5/6', $oneThird->add($oneHalf)->getValue());
         $this->assertEquals('2/3', $oneThird->add($oneThird)->getValue());
@@ -80,12 +80,12 @@ class ImmutableFractionTest extends TestCase
     public function testSubtract()
     {
 
-        $oneThird = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(3));
-        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+        $oneThird = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(3));
+        $oneHalf = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(2));
 
         $this->assertEquals('1/6', $oneHalf->subtract($oneThird)->getValue());
 
-        $twoThirds = new ImmutableFraction(new ImmutableNumber(2), new ImmutableNumber(3));
+        $twoThirds = new ImmutableFraction(new ImmutableDecimal(2), new ImmutableDecimal(3));
 
         $this->assertEquals('1/3', $twoThirds->subtract($oneThird)->getValue());
 
@@ -94,8 +94,8 @@ class ImmutableFractionTest extends TestCase
     public function testMultiply()
     {
 
-        $oneThird = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(3));
-        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+        $oneThird = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(3));
+        $oneHalf = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(2));
 
         $this->assertEquals('1/6', $oneThird->multiply($oneHalf)->getValue());
 
@@ -104,8 +104,8 @@ class ImmutableFractionTest extends TestCase
     public function testDivide()
     {
 
-        $oneThird = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(3));
-        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+        $oneThird = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(3));
+        $oneHalf = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(2));
 
         $this->assertEquals('2/3', $oneThird->divide($oneHalf)->getValue());
 
@@ -114,7 +114,7 @@ class ImmutableFractionTest extends TestCase
     public function testConvertBase()
     {
 
-        $oneFifth = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(5));
+        $oneFifth = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(5));
 
         $this->assertEquals(10, $oneFifth->getBase());
 
@@ -129,7 +129,7 @@ class ImmutableFractionTest extends TestCase
     public function testPow()
     {
 
-        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+        $oneHalf = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(2));
 
         $this->assertEquals('1/4', $oneHalf->pow(2)->getValue());
         $this->assertEquals('0.2176376408', $oneHalf->pow('2.2')->getValue());
@@ -139,11 +139,11 @@ class ImmutableFractionTest extends TestCase
     public function testSqrt()
     {
 
-        $oneQuarter = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(4));
+        $oneQuarter = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
 
         $this->assertEquals('1/2', $oneQuarter->sqrt()->getValue());
 
-        $oneHalf = new ImmutableFraction(new ImmutableNumber(1), new ImmutableNumber(2));
+        $oneHalf = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(2));
 
         $this->assertEquals('0.7071067812', $oneHalf->sqrt()->getValue());
 

@@ -6,9 +6,9 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 trait LogTrait
 {
@@ -81,7 +81,7 @@ trait LogTrait
 
         $adjustedNum = $num->divide($eDiv);
 
-        /** @var ImmutableNumber $y */
+        /** @var ImmutableDecimal $y */
         $y = Numbers::makeOne($internalPrecision);
         $y = $y->multiply($adjustedNum->subtract(1))->divide($adjustedNum->add(1));
 

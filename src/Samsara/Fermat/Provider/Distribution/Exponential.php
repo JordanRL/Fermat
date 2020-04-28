@@ -7,14 +7,14 @@ use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Provider\PolyfillProvider;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class Exponential extends Distribution
 {
 
     /**
-     * @var ImmutableNumber
+     * @var ImmutableDecimal
      */
     private $lambda;
 
@@ -43,14 +43,14 @@ class Exponential extends Distribution
     /**
      * @param int|float|DecimalInterface $x
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function cdf($x): ImmutableNumber
+    public function cdf($x): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
-        /** @var ImmutableNumber $one */
+        /** @var ImmutableDecimal $one */
         $one = Numbers::makeOne();
 
         if (!$x->isPositive()) {
@@ -61,10 +61,10 @@ class Exponential extends Distribution
             );
         }
 
-        /** @var ImmutableNumber $e */
+        /** @var ImmutableDecimal $e */
         $e = Numbers::makeE();
 
-        /** @var ImmutableNumber $cdf */
+        /** @var ImmutableDecimal $cdf */
         $cdf = $one->subtract($e->pow($x->multiply($this->lambda)->multiply(-1)));
 
         return $cdf;
@@ -74,10 +74,10 @@ class Exponential extends Distribution
     /**
      * @param $x
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function pdf($x): ImmutableNumber
+    public function pdf($x): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -90,10 +90,10 @@ class Exponential extends Distribution
             );
         }
 
-        /** @var ImmutableNumber $e */
+        /** @var ImmutableDecimal $e */
         $e = Numbers::makeE();
 
-        /** @var ImmutableNumber $pdf */
+        /** @var ImmutableDecimal $pdf */
         $pdf = $this->lambda->multiply($e->pow($this->lambda->multiply(-1)->multiply($x)));
 
         return $pdf;
@@ -104,10 +104,10 @@ class Exponential extends Distribution
      * @param $x1
      * @param $x2
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function rangePdf($x1, $x2): ImmutableNumber
+    public function rangePdf($x1, $x2): ImmutableDecimal
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
         $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
@@ -120,16 +120,16 @@ class Exponential extends Distribution
             );
         }
 
-        /** @var ImmutableNumber $rangePdf */
+        /** @var ImmutableDecimal $rangePdf */
         $rangePdf = $this->pdf($x2)->subtract($this->pdf($x1))->abs();
 
         return $rangePdf;
     }
 
     /**
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      */
-    public function random(): ImmutableNumber
+    public function random(): ImmutableDecimal
     {
 
         $randomInt = PolyfillProvider::randomInt(0, PHP_INT_MAX);
@@ -137,7 +137,7 @@ class Exponential extends Distribution
         $u = Numbers::make(Numbers::IMMUTABLE, $randomInt, 20);
         $u = $u->divide(PHP_INT_MAX);
 
-        /** @var ImmutableNumber $random */
+        /** @var ImmutableDecimal $random */
         $random = $one->subtract($u)->ln()->divide($this->lambda->multiply(-1));
 
         return $random;
@@ -149,10 +149,10 @@ class Exponential extends Distribution
      * @param int|float|DecimalInterface $max
      * @param int $maxIterations
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
      * @throws OptionalExit
      */
-    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableNumber
+    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableDecimal
     {
 
         $i = 0;
