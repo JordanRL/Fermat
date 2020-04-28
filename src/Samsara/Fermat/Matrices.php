@@ -19,4 +19,9 @@ class Matrices
 
     }
 
+    public static function identityMatrix(string $type, int $size): MatrixInterface
+    {
+
+    }
+
 }

@@ -24,6 +24,8 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
       - Added `exp()`
     - NumberInterface:
       - Added `isComplex(): bool` method
+    - MatrixInterface
+    - NumberCollectionInterface
   - Traits:
     - ArithmeticTrait
     - ComparisonTrait
@@ -34,28 +36,32 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - TrigonometryTrait:
       - Added implementation of hyperbolic trig functions
   - Expression
-  - Interfaces:
-    - MatrixInterface
-    - NumberCollectionInterface
-  - NumberCollection
+  - Matrix
   - Number:
     - numberOfTotalDigits()
     - numberOfIntDigits()
     - numberOfDecimalDigits()
     - numberOfSigDecimalDigits()
+  - NumberCollection
 - Values:
   - Algebra
     - PolynomialFunction
+  - ImmutableComplexNumber
   - ImmutableFraction
     - Added implementation of `isComplex(): bool`
+  - ImmutableMatrix
   - ImmutableNumber
     - Added implementation of `isComplex(): bool`
+  - MutableComplexNumber
   - MutableFraction
     - Added implementation of `isComplex(): bool`
+  - MutableMatrix
   - MutableNumber
     - Added implementation of `isComplex(): bool`
 - Factories:
   - Collections
+  - ComplexNumbers
+  - Matrices
 
 ### Removed
 

@@ -2,29 +2,56 @@
 
 namespace Samsara\Fermat\Types\Base;
 
+use Samsara\Fermat\Types\NumberCollection;
+use Samsara\Fermat\Values\ImmutableNumber;
+
 interface MatrixInterface
 {
 
+    public function isSquare(): bool;
+
     public function getRowCount(): int;
 
-    public function getRow(): array;
+    public function getRow(int $row): NumberCollection;
 
     public function getColumnCount(): int;
 
-    public function getColumn(): array;
+    public function getColumn(int $column): NumberCollection;
 
-    public function pushRow(array $row): MatrixInterface;
+    public function getDeterminant(): ImmutableNumber;
 
-    public function pushColumn(array $column): MatrixInterface;
+    public function pushRow(NumberCollection $row): MatrixInterface;
 
-    public function rowColumnInvert(): MatrixInterface;
+    public function pushColumn(NumberCollection $column): MatrixInterface;
 
-    public function add($value): MatrixInterface;
+    public function popRow(): NumberCollection;
 
-    public function subtract($value): MatrixInterface;
+    public function popColumn(): NumberCollection;
+
+    public function unshiftRow(NumberCollection $row): MatrixInterface;
+
+    public function unshiftColumn(NumberCollection $column): MatrixInterface;
+
+    public function shiftRow(): NumberCollection;
+
+    public function shiftColumn(): NumberCollection;
+
+    public function rotate(bool $clockwise = true): MatrixInterface;
+
+    public function add(MatrixInterface $value): MatrixInterface;
+
+    public function addScalarAsI(NumberInterface $value): MatrixInterface;
+
+    public function addScalarAsJ(NumberInterface $value): MatrixInterface;
+
+    public function subtract(MatrixInterface $value): MatrixInterface;
+
+    public function subtractScalarAsI(NumberInterface $value): MatrixInterface;
+
+    public function subtractScalarAsJ(NumberInterface $value): MatrixInterface;
 
     public function multiply($value): MatrixInterface;
 
-    public function divide($value): MatrixInterface;
+    public function inverseMatrix(): MatrixInterface;
 
 }

@@ -18,6 +18,16 @@ interface NumberCollectionInterface
     public function collect(array $numbers): NumberCollectionInterface;
 
     /**
+     * @return int
+     */
+    public function count(): int;
+
+    /**
+     * @return array
+     */
+    public function toArray(): array;
+
+    /**
      * @param NumberInterface $number
      *
      * @return NumberCollectionInterface

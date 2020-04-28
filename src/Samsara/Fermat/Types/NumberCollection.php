@@ -72,6 +72,16 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    public function count(): int
+    {
+        return $this->getCollection()->count();
+    }
+
+    public function toArray(): array
+    {
+        return $this->collection->toArray();
+    }
+
     /**
      * @param NumberInterface $number
      *
@@ -110,6 +120,23 @@ class NumberCollection implements NumberCollectionInterface
     public function shift(): NumberInterface
     {
         return $this->getCollection()->shift();
+    }
+
+    public function filterByKeys(array $filters): NumberCollection
+    {
+
+        $filteredCollection = new NumberCollection();
+
+        foreach ($this->collection as $key => $value) {
+            if (in_array($key, $filters)) {
+                continue;
+            }
+
+            $filteredCollection->push($value);
+        }
+
+        return $filteredCollection;
+
     }
 
     /**
