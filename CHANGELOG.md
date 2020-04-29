@@ -18,14 +18,21 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Added `gammaFunction` function
 - Types:
   - Base:
-    - ComplexInterface
-    - DecimalInterface:
-      - Added hyperbolic trig functions
-      - Added `exp()`
-    - NumberInterface:
-      - Added `isComplex(): bool` method
-    - MatrixInterface
-    - NumberCollectionInterface
+    - Interfaces:
+        - BaseConversionInterface
+        - ComplexInterface
+        - DecimalInterface:
+          - Added hyperbolic trig functions
+          - Added `exp()`
+        - NumberInterface:
+          - Added `isComplex(): bool` method
+        - MatrixInterface
+        - NumberCollectionInterface
+    - Number:
+      - numberOfTotalDigits()
+      - numberOfIntDigits()
+      - numberOfDecimalDigits()
+      - numberOfSigDecimalDigits()
   - Traits:
     - ArithmeticTrait
     - ComparisonTrait
@@ -37,11 +44,6 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
       - Added implementation of hyperbolic trig functions
   - Expression
   - Matrix
-  - Number:
-    - numberOfTotalDigits()
-    - numberOfIntDigits()
-    - numberOfDecimalDigits()
-    - numberOfSigDecimalDigits()
   - NumberCollection
 - Values:
   - Algebra
@@ -82,16 +84,22 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Use the randomInt() method in PolyfillProvider instead of RandomLib directly
 - Types:
   - Base:
-    - DecimalInterface:
-      - Changed signature of `log10()` and `ln()` to `$precision = null` instead of `$precision = 10`
-      - Changed type of `$precision` parameter in `log10()` and `ln()` from `int` to `int|null`
+    - Interfaces:
+      - ALL: Changed namespace from `Samsara\Fermat\Types\Base` to `Samsara\Fermat\Types\Base\Interfaces`
+      - DecimalInterface:
+        - Changed signature of `log10()` and `ln()` to `$precision = null` instead of `$precision = 10`
+        - Changed type of `$precision` parameter in `log10()` and `ln()` from `int` to `int|null`
+      - NumberInterface:
+        - Moved the `convertToBase()` method to the new `BaseConversionInterface`
+    - Number:
+      - Changed namespace from `Samsara\Fermat\Types` to `Samsara\Fermat\Types\Base`
+      - Moved many methods into traits
+      - Now passes the precision setting to ALL calls to `ArithmeticProvider` allowing precision up to 2147483646 digits.
+      - Trig functions are now arbitrary precision
+      - numberOfLeadingZeros() now returns `int` type, as was originally intended
   - Fraction:
     - Moved many methods into traits
-  - Number:
-    - Moved many methods into traits
-    - Now passes the precision setting to ALL calls to `ArithmeticProvider` allowing precision up to 2147483646 digits.
-    - Trig functions are now arbitrary precision
-    - numberOfLeadingZeros() now returns `int` type, as was originally intended
+  
 
 ### Fixed
 
