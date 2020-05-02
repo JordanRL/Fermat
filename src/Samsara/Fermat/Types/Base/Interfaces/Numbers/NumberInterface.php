@@ -53,11 +53,11 @@ interface NumberInterface
     public function pow($num);
 
     /**
-     * @param $precision
+     * @param int? $precision
      *
      * @return NumberInterface|DecimalInterface|FractionInterface
      */
-    public function sqrt($precision);
+    public function sqrt(int $precision = null);
 
     /**
      * @param int|string|NumberInterface $value
