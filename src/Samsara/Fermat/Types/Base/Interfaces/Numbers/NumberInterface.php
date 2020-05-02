@@ -1,16 +1,11 @@
 <?php
 
-namespace Samsara\Fermat\Types\Base\Interfaces;
+namespace Samsara\Fermat\Types\Base\Interfaces\Numbers;
+
+use Samsara\Fermat\Types\ComplexNumber;
 
 interface NumberInterface
 {
-
-    /**
-     * @param $value
-     *
-     * @return int
-     */
-    public function compare($value);
 
     /**
      * @return NumberInterface|DecimalInterface|FractionInterface
@@ -20,27 +15,7 @@ interface NumberInterface
     /**
      * @return string
      */
-    public function absValue();
-
-    /**
-     * @return bool
-     */
-    public function isNegative();
-
-    /**
-     * @return bool
-     */
-    public function isPositive();
-
-    /**
-     * @return string
-     */
-    public function getValue();
-
-    /**
-     * @return int
-     */
-    public function getBase();
+    public function absValue(): string;
 
     /**
      * @param $num
@@ -91,38 +66,12 @@ interface NumberInterface
      */
     public function isEqual($value): bool;
 
-    /**
-     * @param int|string|NumberInterface $value
-     *
-     * @return bool
-     */
-    public function isGreaterThan($value): bool;
-
-    /**
-     * @param int|string|NumberInterface $value
-     *
-     * @return bool
-     */
-    public function isLessThan($value): bool;
-
-    /**
-     * @param int|string|NumberInterface $value
-     *
-     * @return bool
-     */
-    public function isGreaterThanOrEqualTo($value): bool;
-
-    /**
-     * @param int|string|NumberInterface $value
-     *
-     * @return bool
-     */
-    public function isLessThanOrEqualTo($value): bool;
-
     public function isImaginary(): bool;
 
     public function isReal(): bool;
 
     public function isComplex(): bool;
+
+    public function asComplex(): ComplexNumber;
 
 }

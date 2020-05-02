@@ -33,6 +33,8 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
       - numberOfIntDigits()
       - numberOfDecimalDigits()
       - numberOfSigDecimalDigits()
+      - isComplex()
+      - asComplex()
   - Traits:
     - ArithmeticTrait
     - ComparisonTrait
@@ -42,12 +44,21 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - PrecisionTrait
     - TrigonometryTrait:
       - Added implementation of hyperbolic trig functions
+  - ComplexNumber
+  - Coordinate
+  - Decimal
   - Expression
   - Matrix
   - NumberCollection
 - Values:
   - Algebra
     - PolynomialFunction
+  - Geometry
+    - CoordinateSystems
+      - CartesianCoordinate
+      - CylindricalCoordinate
+      - PolarCoordinate
+      - SphericalCoordinate
   - ImmutableComplexNumber
   - ImmutableFraction:
     - Added implementation of `isComplex(): bool`
@@ -91,6 +102,9 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
         - Changed type of `$precision` parameter in `log10()` and `ln()` from `int` to `int|null`
       - NumberInterface:
         - Moved the `convertToBase()` method to the new `BaseConversionInterface`
+    - Traits:
+      - ArithmeticTrait:
+        - Updated all arithmetic functions to work with imaginary numbers, complex numbers, and negative numbers (square root)
     - Number:
       - Changed namespace from `Samsara\Fermat\Types` to `Samsara\Fermat\Types\Base`
       - Moved many methods into traits

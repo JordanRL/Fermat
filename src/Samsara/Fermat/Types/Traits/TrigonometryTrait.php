@@ -15,8 +15,6 @@ trait TrigonometryTrait
             return $this;
         }
 
-        $oldBase = $this->convertForModification();
-
         $precision = $precision ?? $this->getPrecision();
 
         $twoPi = Numbers::make2Pi();
@@ -46,9 +44,9 @@ trait TrigonometryTrait
         );
 
         if ($round) {
-            return $this->setValue($answer->getValue())->roundToPrecision($precision)->convertFromModification($oldBase);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToPrecision($precision);
         } else {
-            return $this->setValue($answer->getValue())->truncateToPrecision($precision)->convertFromModification($oldBase);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToPrecision($precision);
         }
     }
 
@@ -57,8 +55,6 @@ trait TrigonometryTrait
         if ($this->isEqual(0)) {
             return $this->setValue(1);
         }
-
-        $oldBase = $this->convertForModification();
 
         $precision = $precision ?? $this->getPrecision();
 
@@ -91,16 +87,14 @@ trait TrigonometryTrait
         );
 
         if ($round) {
-            return $this->setValue($answer->getValue())->roundToPrecision($precision)->convertFromModification($oldBase);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToPrecision($precision);
         } else {
-            return $this->setValue($answer->getValue())->truncateToPrecision($precision)->convertFromModification($oldBase);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToPrecision($precision);
         }
     }
 
     public function tan($precision = null, $round = true)
     {
-        $oldBase = $this->convertForModification();
-
         $precision = $precision ?? $this->getPrecision();
 
         $pi = Numbers::makePi();
@@ -115,7 +109,7 @@ trait TrigonometryTrait
         $exitModulo = $this->continuousModulo($pi);
 
         if ($exitModulo->truncate(99)->isEqual(0)) {
-            return $this->setValue(0)->convertFromModification($oldBase);
+            return $this->setValue(0);
         }
 
         $modulo = $this->continuousModulo($twoPi);
@@ -186,9 +180,9 @@ trait TrigonometryTrait
         }
 
         if ($round) {
-            return $this->setValue($answer->getValue())->roundToPrecision($precision)->convertFromModification($oldBase);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToPrecision($precision);
         } else {
-            return $this->setValue($answer->getValue())->truncateToPrecision($precision)->convertFromModification($oldBase);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToPrecision($precision);
         }
 
     }
@@ -200,8 +194,6 @@ trait TrigonometryTrait
         $twoPi = Numbers::make2Pi();
         $one = Numbers::makeOne();
         $piDivTwo = $pi->divide(2);
-
-        $oldBase = $this->convertForModification();
 
         $precision = $precision ?? $this->getPrecision();
 
@@ -219,7 +211,7 @@ trait TrigonometryTrait
         $modPiDiv2 = $num->continuousModulo($piDivTwo)->truncate($precision);
 
         if ($modPiDiv2->isEqual(0)) {
-            return $this->setValue(0)->convertFromModification($oldBase);
+            return $this->setValue(0, $this->getBase());
         }
 
         $tan = $num->tan($precision+2, $round);
@@ -232,7 +224,7 @@ trait TrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer, $this->getBase());
 
     }
 
@@ -240,8 +232,6 @@ trait TrigonometryTrait
     {
 
         $one = Numbers::makeOne();
-
-        $oldBase = $this->convertForModification();
 
         $precision = $precision ?? $this->getPrecision();
 
@@ -261,7 +251,7 @@ trait TrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer, $this->getBase());
 
     }
 
@@ -269,8 +259,6 @@ trait TrigonometryTrait
     {
 
         $one = Numbers::makeOne();
-
-        $oldBase = $this->convertForModification();
 
         $precision = $precision ?? $this->getPrecision();
 
@@ -290,14 +278,12 @@ trait TrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer, $this->getBase());
 
     }
 
     public function sinh($precision = null, $round = true)
     {
-
-        $oldBase = $this->convertForModification();
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
 
@@ -315,14 +301,12 @@ trait TrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer, $this->getBase());
 
     }
 
     public function cosh($precision = null, $round = true)
     {
-
-        $oldBase = $this->convertForModification();
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
 
@@ -340,14 +324,12 @@ trait TrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer, $this->getBase());
 
     }
 
     public function tanh($precision = null, $round = true)
     {
-
-        $oldBase = $this->convertForModification();
 
         $precision = $precision ?? $this->getPrecision();
 
@@ -361,14 +343,12 @@ trait TrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer, $this->getBase());
 
     }
 
     public function coth($precision = null, $round = true)
     {
-
-        $oldBase = $this->convertForModification();
 
         $precision = $precision ?? $this->getPrecision();
 
@@ -382,14 +362,12 @@ trait TrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer, $this->getBase());
 
     }
 
     public function sech($precision = null, $round = true)
     {
-
-        $oldBase = $this->convertForModification();
 
         $precision = $precision ?? $this->getPrecision();
 
@@ -404,14 +382,12 @@ trait TrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer, $this->getBase());
 
     }
 
     public function csch($precision = null, $round = true)
     {
-
-        $oldBase = $this->convertForModification();
 
         $precision = $precision ?? $this->getPrecision();
 
@@ -426,7 +402,7 @@ trait TrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer, $this->getBase());
 
     }
 

@@ -6,10 +6,11 @@ use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
-use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\BaseConversionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Characteristics\BaseConversionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Number;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
 use Samsara\Fermat\Types\Traits\ArithmeticTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
@@ -31,10 +32,14 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     use LogTrait;
     use PrecisionTrait;
 
-    public function __construct($value, $precision = null, $base = 10)
+    public function __construct($value, $precision = null, $base = 10, bool $baseTenInput = false)
     {
 
         $this->base = $base;
+
+        if ($base != 10 && !$baseTenInput) {
+            $value = $this->convertValue($value, $base, 10);
+        }
 
         $value = (string)$value;
         $this->value = $this->translateValue($value);
@@ -88,6 +93,24 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         return $resultValue;
     }
 
+    protected function convertObject()
+    {
+        if ($this->getBase() == 10) {
+            return $this->getAsBaseTenRealNumber();
+        } else {
+            return $this->convertValue($this->getAsBaseTenRealNumber(), 10, $this->getBase());
+        }
+    }
+
+    protected function convertValue(string $value, int $oldBase, int $newBase)
+    {
+        $converter = new BaseConverter($oldBase, $newBase);
+
+        $converter->setPrecision($this->getPrecision());
+
+        return $converter->convert($value);
+    }
+
     /**
      * Returns the current base that the value is in.
      *
@@ -98,7 +121,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         return $this->base;
     }
 
-    public function getValue()
+    public function getAsBaseTenRealNumber():string
     {
         $string = '';
 
@@ -112,11 +135,18 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
             $string .= '.'.$this->value[1];
         }
 
+        return $string;
+    }
+
+    public function getValue($base = null): string // TODO: Check usages to see if it should be replaced with rawString()
+    {
+        $value = $this->convertObject();
+
         if ($this->isImaginary()) {
-            $string .= 'i';
+            $value .= 'i';
         }
 
-        return $string;
+        return $value;
     }
 
     /**
@@ -129,20 +159,16 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     {
         $value = Numbers::makeOrDont($this, $value, $this->getPrecision());
 
-        $thisBase = $this->convertForModification();
-        $thatBase = $value->convertForModification();
-
-        $thisValue = $this->getValue();
-        $thatValue = $value->getValue();
+        // TODO: Handle comparison of imaginary numbers
+        if ($value instanceof FractionInterface) {
+            $value = $value->asDecimal($this->getPrecision());
+        }
+        $thisValue = $this->getAsBaseTenRealNumber();
+        $thatValue = $value->getAsBaseTenRealNumber();
 
         $precision = ($this->getPrecision() < $value->getPrecision()) ? $this->getPrecision() : $value->getPrecision();
 
-        $comparison = ArithmeticProvider::compare($thisValue, $thatValue, $precision);
-
-        $this->convertFromModification($thisBase);
-        $value->convertFromModification($thatBase);
-
-        return $comparison;
+        return ArithmeticProvider::compare($thisValue, $thatValue, $precision);
     }
 
     /**
@@ -153,48 +179,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
      */
     public function convertToBase($base)
     {
-        $converter = new BaseConverter($this->getBase(), $base);
-
-        $converter->setPrecision($this->getPrecision());
-
-        $value = $converter->convert($this->getValue());
-
-        $this->base = $base;
-
-        return $this->setValue($value);
-    }
-
-    /**
-     * Takes an object and converts it to base10 so that math can be performed on it. Returns the native base if it is
-     * something other than 10, and returns false (for a performance early exit in convertFromModification()) if the
-     * native base is already 10.
-     *
-     * @return bool|int
-     */
-    public function convertForModification()
-    {
-        if ($this->getBase() == 10) {
-            return false;
-        } else {
-            $oldBase = $this->getBase();
-            $this->convertToBase(10);
-            return $oldBase;
-        }
-    }
-
-    /**
-     * Returns an object to its native base after calculation.
-     *
-     * @param $oldBase
-     * @return $this|NumberInterface
-     */
-    public function convertFromModification($oldBase)
-    {
-        if ($oldBase !== false) {
-            return $this->convertToBase($oldBase);
-        }
-
-        return $this;
+        return $this->setValue($this->getValue($base), null, $base);
     }
 
     /**
@@ -206,7 +191,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     {
         $newValue = $this->absValue();
 
-        return $this->setValue($newValue);
+        return $this->setValue($newValue, $this->getBase());
     }
 
     /**
@@ -216,18 +201,39 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
      */
     public function absValue(): string
     {
-        if ($this->isNegative()) {
-            return substr($this->getValue(), 1);
-        } else {
-            return $this->getValue();
+        $makeImaginary = false;
+        $makeNegative = false;
+
+        if ($this->isImaginary()) {
+            $makeImaginary = true;
+            $this->imaginary = false;
         }
+
+        if ($this->isNegative()) {
+            $makeNegative = true;
+            $this->sign = true;
+        }
+
+        $value = $this->getValue();
+
+        if ($makeNegative) {
+            $this->sign = false;
+        }
+
+        if ($makeImaginary) {
+            $this->imaginary = true;
+        }
+
+        return $value;
     }
 
     /**
      * @param string $value
+     * @param int $precision
+     * @param int $base
      *
      * @return NumberInterface|DecimalInterface
      */
-    abstract protected function setValue(string $value);
+    abstract protected function setValue(string $value, int $precision = null, int $base = 10); // TODO: Check usages for base correctness & preservation
 
 }

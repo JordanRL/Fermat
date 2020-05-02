@@ -7,8 +7,8 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Matrices;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
-use Samsara\Fermat\Types\Base\Interfaces\MatrixInterface;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Groups\MatrixInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Values\ImmutableMatrix;
 use Samsara\Fermat\Values\ImmutableDecimal;
 

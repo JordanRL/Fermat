@@ -3,7 +3,10 @@
 namespace Samsara\Fermat\Types\Base;
 
 use Ds\Hashable;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\ComplexNumber;
+use Samsara\Fermat\Values\ImmutableComplexNumber;
 
 abstract class Number implements Hashable, NumberInterface
 {
@@ -116,7 +119,7 @@ abstract class Number implements Hashable, NumberInterface
     }
 
     /**
-     * This function returns true if the number is imaginary, and false in the number is real
+     * This function returns true if the number is imaginary, and false in the number is real or complex
      *
      * @return bool
      */
@@ -126,15 +129,24 @@ abstract class Number implements Hashable, NumberInterface
     }
 
     /**
-     * This function returns true if the number is real, and false if the number is imaginary
+     * This function returns true if the number is real, and false if the number is imaginary or complex
      *
      * @return bool
      */
     public function isReal(): bool
     {
-        return !$this->isImaginary();
+        return !$this->imaginary;
     }
 
     abstract public function isComplex(): bool;
+
+    public function asComplex(): ComplexNumber
+    {
+        if ($this->isReal()) {
+            return new ImmutableComplexNumber(clone $this, Numbers::makeZero());
+        } else {
+            return new ImmutableComplexNumber(Numbers::makeZero(), clone $this);
+        }
+    }
 
 }

@@ -2,10 +2,11 @@
 
 namespace Samsara\Fermat\Provider;
 
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 class SequenceProvider
@@ -71,6 +72,7 @@ class SequenceProvider
      * @param $n
      *
      * @return DecimalInterface|NumberInterface
+     * @throws IntegrityConstraint
      */
     public static function nthOddNumber($n)
     {
@@ -87,6 +89,7 @@ class SequenceProvider
      * @param $n
      *
      * @return DecimalInterface|NumberInterface
+     * @throws IntegrityConstraint
      */
     public static function nthEvenNumber($n)
     {
@@ -103,6 +106,7 @@ class SequenceProvider
      * @param $n
      *
      * @return DecimalInterface|NumberInterface
+     * @throws IntegrityConstraint
      */
     public static function nthPowerNegativeOne($n)
     {
@@ -120,6 +124,7 @@ class SequenceProvider
      *
      * @return DecimalInterface|NumberInterface
      * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
     public static function nthEulerZigzag($n)
     {
@@ -144,6 +149,7 @@ class SequenceProvider
      * @param $n
      *
      * @return DecimalInterface|NumberInterface
+     * @throws IntegrityConstraint
      */
     public static function nthBernoulliNumber($n)
     {

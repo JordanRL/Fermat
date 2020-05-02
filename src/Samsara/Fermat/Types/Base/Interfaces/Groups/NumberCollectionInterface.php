@@ -1,11 +1,12 @@
 <?php
 
-namespace Samsara\Fermat\Types\Base\Interfaces;
+namespace Samsara\Fermat\Types\Base\Interfaces\Groups;
 
 use Samsara\Fermat\Provider\Distribution\Exponential;
 use Samsara\Fermat\Provider\Distribution\Normal;
 use Samsara\Fermat\Provider\Distribution\Poisson;
 use Samsara\Fermat\Values\Algebra\PolynomialFunction;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 
 interface NumberCollectionInterface
 {

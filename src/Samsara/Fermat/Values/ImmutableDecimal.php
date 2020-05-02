@@ -55,12 +55,33 @@ class ImmutableDecimal extends Decimal
 
     /**
      * @param string $value
+     * @param int $precision
+     * @param int $base
      *
      * @return ImmutableDecimal
      */
-    protected function setValue(string $value)
+    protected function setValue(string $value, int $precision = null, int $base = 10)
     {
-        return new ImmutableDecimal($value, $this->getPrecision(), $this->getBase());
+        $imaginary = false;
+
+        if (strpos($value, 'i') !== false) {
+            $value = str_replace('i', '', $value);
+            $imaginary = true;
+        }
+
+        if ($base != 10) {
+            $value = $this->convertValue($value, 10, $base);
+        }
+
+        if ($imaginary) {
+            $value .= 'i';
+        }
+
+        if (is_null($precision)) {
+            $precision = $this->getPrecision();
+        }
+
+        return new ImmutableDecimal($value, $precision, $base);
     }
 
 }

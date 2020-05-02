@@ -6,8 +6,8 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
-use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 trait LogTrait
@@ -15,8 +15,6 @@ trait LogTrait
 
     public function exp()
     {
-        $oldBase = $this->convertForModification();
-
         $value = SeriesProvider::maclaurinSeries(
             Numbers::makeOrDont(Numbers::IMMUTABLE, $this),
             function() {
@@ -36,7 +34,7 @@ trait LogTrait
             $this->getPrecision()
         );
 
-        return $this->setValue($value)->convertFromModification($oldBase);
+        return $this->setValue($value);
     }
 
     /**
@@ -47,10 +45,8 @@ trait LogTrait
      */
     public function ln($precision = null, $round = true)
     {
-        $oldBase = $this->convertForModification();
-
         if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX) && $precision <= 10) {
-            return $this->setValue(log($this->getValue()))->convertFromModification($oldBase);
+            return $this->setValue(log($this->getValue()));
         }
 
         $internalPrecision = $precision ?? $this->precision;
@@ -110,7 +106,7 @@ trait LogTrait
             $answer = $answer->truncateToPrecision($internalPrecision-1);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer);
     }
 
     /**

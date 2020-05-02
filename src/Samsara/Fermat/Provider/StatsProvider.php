@@ -4,10 +4,11 @@ namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
-use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 class StatsProvider
@@ -18,6 +19,7 @@ class StatsProvider
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
     public static function normalCDF($x)
     {
@@ -57,6 +59,7 @@ class StatsProvider
      *
      * @return DecimalInterface|NumberInterface
      * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
     public static function complementNormalCDF($x)
     {
@@ -71,6 +74,7 @@ class StatsProvider
      *
      * @return DecimalInterface|FractionInterface|NumberInterface|ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
     public static function gaussErrorFunction($x)
     {
@@ -110,6 +114,7 @@ class StatsProvider
      *
      * @return DecimalInterface|NumberInterface|ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
     public static function inverseNormalCDF($p, int $precision = 10)
     {

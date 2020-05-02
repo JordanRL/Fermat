@@ -2,7 +2,7 @@
 
 namespace Samsara\Fermat\Values;
 
-use Samsara\Fermat\Types\Base\Interfaces\MatrixInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Groups\MatrixInterface;
 use Samsara\Fermat\Types\Matrix;
 
 class ImmutableMatrix extends Matrix

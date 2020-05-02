@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Types\Base\Interfaces;
+namespace Samsara\Fermat\Types\Base\Interfaces\Evaluateables;
 
 use Samsara\Fermat\Values\ImmutableDecimal;
 

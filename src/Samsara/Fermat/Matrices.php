@@ -2,7 +2,7 @@
 
 namespace Samsara\Fermat;
 
-use Samsara\Fermat\Types\Base\Interfaces\MatrixInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Groups\MatrixInterface;
 
 class Matrices
 {

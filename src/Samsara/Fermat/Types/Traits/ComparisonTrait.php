@@ -4,8 +4,8 @@ namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Values\ImmutableFraction;
 
 trait ComparisonTrait

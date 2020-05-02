@@ -3,9 +3,11 @@
 namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 class SeriesProvider
@@ -27,23 +29,28 @@ class SeriesProvider
      * The function continues adding terms until a term has MORE leading zeros than the $precision setting. (That is,
      * until it adds zero to the total when considering significant digits.)
      *
-     * @param NumberInterface       $input
+     * @param SimpleNumberInterface $input
      * @param callable              $numerator
      * @param callable              $exponent
      * @param callable              $denominator
      * @param int                   $startTermAt
-     * @param int|DecimalInterface  $precision
+     * @param int                   $precision
+     * @param int                   $consecutiveDivergeLimit
+     * @param int                   $totalDivergeLimit
      *
-     * @return NumberInterface
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
     public static function maclaurinSeries(
-        NumberInterface $input, // x value in series
+        SimpleNumberInterface $input, // x value in series
         callable $numerator, // a function determining what the sign (+/-) is at the nth term
         callable $exponent, // a function determining the exponent of x at the nth term
         callable $denominator, // a function determining the denominator at the nth term
-        $startTermAt = 0,
-        $precision = 10)
+        int $startTermAt = 0,
+        int $precision = 10,
+        int $consecutiveDivergeLimit = 5,
+        int $totalDivergeLimit = 10)
     {
 
         $sum = Numbers::makeZero(100);
@@ -53,7 +60,9 @@ class SeriesProvider
         $termNumber = $startTermAt;
 
         $adjustmentOfZero = 0;
-
+        $prevTerm = Numbers::makeZero();
+        $divergeCount = 0;
+        $persistentDivergeCount = 0;
         $currentPrecision = 0;
 
         while ($continue) {
@@ -61,10 +70,24 @@ class SeriesProvider
 
             try {
                 $term = $term->multiply($value->pow($exponent($termNumber)))
-                    ->divide($denominator($termNumber), 100)
+                    ->divide($denominator($termNumber))
                     ->multiply($numerator($termNumber));
             } catch (IntegrityConstraint $constraint) {
                 return $sum->truncateToPrecision($currentPrecision+1);
+            }
+
+            if (!$prevTerm->isEqual(0) && $prevTerm->isGreaterThan($term->absValue())) {
+                $divergeCount++;
+                $persistentDivergeCount++;
+            } else {
+                $divergeCount = 0;
+            }
+
+            if ($divergeCount == $consecutiveDivergeLimit || $persistentDivergeCount == $totalDivergeLimit) {
+                throw new OptionalExit(
+                    'Series appear to be diverging.',
+                    'A call was made to SeriesProvider::maclaurinSeries() that seems to be diverging. Exiting the loop.'
+                );
             }
 
             /** @var ImmutableDecimal $term */
@@ -93,12 +116,21 @@ class SeriesProvider
 
     }
 
+    /**
+     * @param callable $part1
+     * @param callable $part2
+     * @param callable $exponent
+     * @param int $startTermAt
+     * @param int $precision
+     *
+     * @return ImmutableDecimal
+     */
     public static function genericTwoPartSeries(
         callable $part1,
         callable $part2,
         callable $exponent,
-        $startTermAt = 0,
-        $precision = 10)
+        int $startTermAt = 0,
+        int $precision = 10): ImmutableDecimal
     {
 
         $x = Numbers::makeZero($precision+1);

@@ -7,7 +7,7 @@ use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Provider\PolyfillProvider;
-use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 class Exponential extends Distribution

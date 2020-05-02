@@ -2,7 +2,7 @@
 
 namespace Samsara\Fermat\Types;
 
-use Samsara\Fermat\Types\Base\Interfaces\ExpressionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Evaluateables\ExpressionInterface;
 
 abstract class Expression implements ExpressionInterface
 {

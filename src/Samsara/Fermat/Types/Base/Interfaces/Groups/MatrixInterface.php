@@ -1,9 +1,10 @@
 <?php
 
-namespace Samsara\Fermat\Types\Base\Interfaces;
+namespace Samsara\Fermat\Types\Base\Interfaces\Groups;
 
 use Samsara\Fermat\Types\NumberCollection;
 use Samsara\Fermat\Values\ImmutableDecimal;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 
 interface MatrixInterface
 {

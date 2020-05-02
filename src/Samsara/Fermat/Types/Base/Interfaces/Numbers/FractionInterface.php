@@ -1,29 +1,29 @@
 <?php
 
-namespace Samsara\Fermat\Types\Base\Interfaces;
+namespace Samsara\Fermat\Types\Base\Interfaces\Numbers;
 
-interface FractionInterface
+interface FractionInterface extends SimpleNumberInterface
 {
 
     /**
-     * @return NumberInterface|FractionInterface
+     * @return FractionInterface
      */
     public function simplify();
 
     /**
-     * @return NumberInterface|DecimalInterface
+     * @return DecimalInterface
      */
     public function getNumerator();
 
     /**
-     * @return NumberInterface|DecimalInterface
+     * @return DecimalInterface
      */
     public function getDenominator();
 
     /**
      * @param FractionInterface $fraction
      *
-     * @return NumberInterface|FractionInterface
+     * @return DecimalInterface
      */
     public function getSmallestCommonDenominator(FractionInterface $fraction);
 

@@ -3,10 +3,10 @@
 namespace Samsara\Fermat;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Types\Base\Interfaces\CoordinateInterface;
-use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\FractionInterface;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Fraction;
 use Samsara\Fermat\Values\CartesianCoordinate;
 use Samsara\Fermat\Values\ImmutableFraction;
@@ -32,6 +32,8 @@ class Numbers
     const GOLDEN_RATIO = '1.618033988749894848204586834365638117720309179805762862135448622705260462818902449707207204189391137';
     /* Natural log of 10 to 100 digits */
     const LN_10 = '2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298';
+    /* The value of i^i */
+    const I_POW_I = '0.2078795763507619085469556198349787700338778416317696080751358830554198772854821397886002778654260353';
 
     /**
      * @param $type

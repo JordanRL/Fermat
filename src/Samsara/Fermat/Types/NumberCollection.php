@@ -9,9 +9,9 @@ use Samsara\Fermat\Provider\Distribution\Exponential;
 use Samsara\Fermat\Provider\Distribution\Normal;
 use Samsara\Fermat\Provider\Distribution\Poisson;
 use Samsara\Fermat\Provider\PolyfillProvider;
-use Samsara\Fermat\Types\Base\Interfaces\NumberCollectionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Ds\Vector;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
 use Samsara\Fermat\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Values\ImmutableDecimal;
 

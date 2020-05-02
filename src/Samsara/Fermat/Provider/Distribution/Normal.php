@@ -9,9 +9,9 @@ use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Provider\PolyfillProvider;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\StatsProvider;
-use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\FunctionInterface;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Evaluateables\FunctionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 class Normal extends Distribution

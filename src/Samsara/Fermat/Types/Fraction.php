@@ -4,9 +4,9 @@ namespace Samsara\Fermat\Types;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\Interfaces\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Number;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
 use Samsara\Fermat\Types\Traits\ArithmeticTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Values\ImmutableDecimal;

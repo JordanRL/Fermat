@@ -8,8 +8,8 @@ use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\Distribution\Base\Distribution;
 use Samsara\Fermat\Provider\PolyfillProvider;
-use Samsara\Fermat\Types\Base\Interfaces\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 class Poisson extends Distribution
@@ -175,7 +175,9 @@ class Poisson extends Distribution
      * @param int $maxIterations
      *
      * @return ImmutableDecimal
-     *@throws OptionalExit
+     * @throws OptionalExit
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
     public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableDecimal
     {

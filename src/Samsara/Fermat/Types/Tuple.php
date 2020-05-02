@@ -37,7 +37,7 @@ class Tuple
      */
     public function get(int $index): ImmutableDecimal
     {
-        if (array_key_exists($index, $this->data)) {
+        if ($this->hasIndex($index)) {
             return $this->data[$index];
         }
 
@@ -53,7 +53,7 @@ class Tuple
      */
     public function set(int $index, ImmutableDecimal $value)
     {
-        if (array_key_exists($index, $this->data)) {
+        if ($this->hasIndex($index)) {
             $this->data[$index] = $value;
 
             return $this;
@@ -70,6 +70,11 @@ class Tuple
     public function size(): int
     {
         return $this->size;
+    }
+
+    public function hasIndex(int $index): bool
+    {
+        return array_key_exists($index, $this->data);
     }
 
 }
