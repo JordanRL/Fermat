@@ -129,10 +129,12 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
             $string .= '-';
         }
 
-        $string .= $this->value[1];
+        $string .= $this->value[0];
 
-        if (Numbers::makeZero()->isLessThan($this->value[1])) {
-            $string .= '.'.$this->value[1];
+        $decimalVal = trim($this->value[1], '0');
+
+        if (strlen($decimalVal) > 0) {
+            $string .= '.'.rtrim($decimalVal, '0');
         }
 
         return $string;

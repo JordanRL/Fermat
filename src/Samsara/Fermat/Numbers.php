@@ -8,7 +8,7 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Fraction;
-use Samsara\Fermat\Values\CartesianCoordinate;
+use Samsara\Fermat\Values\Geometry\CoordinateSystems\CartesianCoordinate;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableDecimal;
 use Samsara\Fermat\Values\MutableFraction;
@@ -108,6 +108,7 @@ class Numbers
      * @param int|null $precision
      * @param int $base
      * @return NumberInterface
+     * @throws IntegrityConstraint
      */
     public static function makeFromBase10($type, $value, $precision = null, $base = 10)
     {
@@ -126,7 +127,7 @@ class Numbers
      * @param int $base
      *
      * @return ImmutableDecimal|MutableDecimal|NumberInterface|ImmutableDecimal[]|MutableDecimal[]|NumberInterface[]
-     * @throws IntegrityConstraint
+     * @throws IntegrityConstraint|\ReflectionException
      */
     public static function makeOrDont($type, $value, $precision = null, $base = 10)
     {
@@ -167,7 +168,7 @@ class Numbers
      * @param int $base
      *
      * @return FractionInterface|ImmutableFraction|MutableFraction
-     * @throws IntegrityConstraint
+     * @throws IntegrityConstraint|\ReflectionException
      */
     public static function makeFractionFromString($type, $value, $base = 10)
     {
@@ -263,6 +264,7 @@ class Numbers
      * @param int|null $precision
      *
      * @return NumberInterface
+     * @throws IntegrityConstraint
      */
     public static function make2Pi($precision = null)
     {
@@ -348,6 +350,7 @@ class Numbers
      * @param int|null $precision
      *
      * @return ImmutableDecimal
+     * @throws IntegrityConstraint
      */
     public static function makeOne($precision = null)
     {
@@ -358,6 +361,7 @@ class Numbers
      * @param int|null $precision
      *
      * @return ImmutableDecimal
+     * @throws IntegrityConstraint
      */
     public static function makeZero($precision = null)
     {
