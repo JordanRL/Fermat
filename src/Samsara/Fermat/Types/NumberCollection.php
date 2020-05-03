@@ -145,7 +145,7 @@ class NumberCollection implements NumberCollectionInterface
     public function sort(): NumberCollectionInterface
     {
         $this->getCollection()->sort(function($left, $right){
-            return ArithmeticProvider::compare($left, $right);
+            return ArithmeticProvider::compare($left->getAsBaseTenRealNumber(), $right->getAsBaseTenRealNumber());
         });
 
         return $this;
