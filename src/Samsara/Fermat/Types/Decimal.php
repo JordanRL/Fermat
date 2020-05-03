@@ -237,7 +237,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
      * @param int $precision
      * @param int $base
      *
-     * @return NumberInterface|DecimalInterface
+     * @return DecimalInterface
      */
     abstract protected function setValue(string $value, int $precision = null, int $base = 10); // TODO: Check usages for base correctness & preservation
 

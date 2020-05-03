@@ -60,7 +60,7 @@ abstract class Fraction extends Number implements FractionInterface
 
     }
 
-    public function getValue()
+    public function getValue(): string
     {
         return $this->getNumerator()->getValue().'/'.$this->getDenominator()->getValue();
     }
@@ -108,7 +108,7 @@ abstract class Fraction extends Number implements FractionInterface
         }
     }
 
-    public function absValue()
+    public function absValue(): string
     {
         if ($this->isPositive()) {
             return $this->getValue();
@@ -117,7 +117,7 @@ abstract class Fraction extends Number implements FractionInterface
         }
     }
 
-    public function compare($number)
+    public function compare($number): int
     {
         if ($this->isGreaterThan($number)) {
             return 1;
