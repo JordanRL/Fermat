@@ -140,6 +140,7 @@ abstract class Fraction extends Number implements FractionInterface
 
     /**
      * @return NumberInterface
+     * @throws IntegrityConstraint
      */
     public function getGreatestCommonDivisor()
     {
@@ -155,6 +156,11 @@ abstract class Fraction extends Number implements FractionInterface
         $lcm = $thisDenominator->getLeastCommonMultiple($thatDenominator);
 
         return $lcm;
+    }
+
+    public function getAsBaseTenRealNumber(): string
+    {
+        return $this->getNumerator()->getAsBaseTenRealNumber().'/'.$this->getDenominator()->getAsBaseTenRealNumber();
     }
 
     protected function getNumeratorsWithSameDenominator(FractionInterface $fraction, NumberInterface $lcm = null)
