@@ -60,7 +60,21 @@ class Numbers
         } elseif ($type == static::MUTABLE_FRACTION) {
             return self::makeFractionFromString($type, $value, $base);
         } elseif ($type == static::CARTESIAN_COORDINATE && is_array($value)) {
-            return new CartesianCoordinate($value);
+            $x = $value[0];
+
+            if (isset($value[1])) {
+                $y = $value[1];
+            } else {
+                $y = null;
+            }
+
+            if (isset($value[2])) {
+                $z = $value[2];
+            } else {
+                $z = null;
+            }
+
+            return new CartesianCoordinate($x, $y, $z);
         } else {
             $reflector = new \ReflectionClass($type);
 

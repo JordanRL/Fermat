@@ -70,7 +70,9 @@ trait ArithmeticTrait
 
         $num = $this->transformNum($num, $check);
 
-        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+        if (!($this instanceof FractionInterface)) {
+            $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+        }
 
         if ($this->isComplex() || $num->isComplex()) {
             if (!$num->isComplex()) {
@@ -150,7 +152,9 @@ trait ArithmeticTrait
 
         $num = $this->transformNum($num, $check);
 
-        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+        if (!($this instanceof FractionInterface)) {
+            $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+        }
 
         if ($this->isComplex() || $num->isComplex()) {
             if (!$num->isComplex()) {
@@ -230,7 +234,9 @@ trait ArithmeticTrait
 
         $num = $this->transformNum($num, $check);
 
-        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+        if (!($this instanceof FractionInterface)) {
+            $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+        }
 
         if ($this->isComplex() || $num->isComplex()) {
             if ($this->isComplex() && $num->isComplex()) {
@@ -290,7 +296,7 @@ trait ArithmeticTrait
 
         $num = $this->transformNum($num, $check);
 
-        if (!is_int($precision)) {
+        if (!is_int($precision) && !($this instanceof FractionInterface)) {
             $precision = ($this->getPrecision() > $num->getPrecision()) ? $num->getPrecision() : $this->getPrecision();
         }
 
@@ -343,7 +349,9 @@ trait ArithmeticTrait
 
         $num = $this->transformNum($num, $check);
 
-        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+        if (!($this instanceof FractionInterface)) {
+            $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+        }
 
         if (!$this->isReal() || !$num->isReal()) {
             if ($this->isReal()) {

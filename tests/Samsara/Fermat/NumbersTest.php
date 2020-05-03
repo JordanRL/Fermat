@@ -85,7 +85,7 @@ class NumbersTest extends TestCase
 
         $coordObj = Numbers::make(Numbers::CARTESIAN_COORDINATE, $coords);
 
-        $this->assertEquals('5', $coordObj->get(1));
+        $this->assertEquals('5', $coordObj->getAxis('y'));
     }
 
     public function testMakeFromBase10()

@@ -111,6 +111,7 @@ class ImmutableFractionTest extends TestCase
 
     }
 
+    /**
     public function testConvertBase()
     {
 
@@ -125,6 +126,7 @@ class ImmutableFractionTest extends TestCase
         $this->assertEquals('1/10', $oneFifth->getValue());
 
     }
+    /**/
 
     public function testPow()
     {

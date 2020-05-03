@@ -10,9 +10,7 @@ class ImmutableDecimal extends Decimal
 
     public function modulo($mod)
     {
-        $oldBase = $this->convertForModification();
-
-        return (new ImmutableDecimal(bcmod($this->getValue(), $mod), $this->getPrecision(), $this->getBase()))->convertFromModification($oldBase);
+        return $this->setValue(bcmod($this->getAsBaseTenRealNumber(), $mod), $this->getPrecision(), $this->getBase());
     }
 
     public function continuousModulo($mod)
