@@ -11,7 +11,7 @@ before_script:
   - mkdir build/logs
 
 script:
-  - phpunit --coverage-text ./tests/Samsara
+  - php vendor/bin/phpunit --coverage-text ./tests/Samsara
 
 after_success:
   - wget https://scrutinizer-ci.com/ocular.phar
