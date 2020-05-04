@@ -41,6 +41,11 @@ abstract class Coordinate implements CoordinateInterface
         return $this->values->all();
     }
 
+    protected function getAxisByIndex($axis): ImmutableDecimal
+    {
+        return $this->values->get($axis);
+    }
+
     abstract public function getDistanceFromOrigin(): ImmutableDecimal;
 
     abstract public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal;

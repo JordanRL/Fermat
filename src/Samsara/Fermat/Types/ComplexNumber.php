@@ -41,7 +41,7 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
 
         $this->precision = ($this->realPart->getPrecision() > $this->imaginaryPart->getPrecision()) ? $this->realPart->getPrecision() : $this->imaginaryPart->getPrecision();
 
-        $cartesian = new CartesianCoordinate($realPart, $imaginaryPart);
+        $cartesian = new CartesianCoordinate($realPart, Numbers::make(Numbers::IMMUTABLE, $imaginaryPart->getAsBaseTenRealNumber()));
         $this->cachedCartesian = $cartesian;
 
         $polar = $cartesian->asPolar();
@@ -177,7 +177,13 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
 
     public function getValue(): string
     {
-        return $this->getRealPart()->getValue().$this->getImaginaryPart()->getValue();
+        if (!$this->getImaginaryPart()->isNegative()) {
+            $joiner = '+';
+        } else {
+            $joiner = '';
+        }
+
+        return $this->getRealPart()->getValue().$joiner.$this->getImaginaryPart()->getValue();
     }
 
     public function asComplex(): ComplexNumber

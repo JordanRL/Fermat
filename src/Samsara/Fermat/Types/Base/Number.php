@@ -31,12 +31,6 @@ abstract class Number implements Hashable, NumberInterface
     public function __construct($value)
     {
         $this->setMode(Number::MODE_PRECISION);
-
-        if (strpos($value, 'i') !== false) {
-            $this->imaginary = true;
-        } else {
-            $this->imaginary = false;
-        }
     }
 
     /**

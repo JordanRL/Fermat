@@ -41,6 +41,13 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
             $value = $this->convertValue($value, $base, 10);
         }
 
+        if (strpos($value, 'i') !== false) {
+            $this->imaginary = true;
+            $value = str_replace('i', '', $value);
+        } else {
+            $this->imaginary = false;
+        }
+
         $value = (string)$value;
         $this->value = $this->translateValue($value);
 

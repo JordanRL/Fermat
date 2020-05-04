@@ -112,8 +112,13 @@ class SequenceProvider
     {
 
         $negOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1, 100);
+        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
 
-        return $negOne->pow($n);
+        if ($n->modulo(2)->isEqual(0)) {
+            return Numbers::makeOne();
+        } else {
+            return $negOne;
+        }
 
     }
 

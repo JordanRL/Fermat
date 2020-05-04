@@ -36,22 +36,36 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
 
     public function getAxis($axis): ImmutableDecimal
     {
-        if (!$this->values->hasIndex($this->parameters[$axis])) {
+        if (is_int($axis)) {
+            $axisIndex = $axis;
+        } else {
+            $axisIndex = $this->parameters[$axis];
+        }
+
+        if (!$this->values->hasIndex($axisIndex)) {
             return Numbers::makeZero();
         }
 
-        return parent::getAxis($axis);
+        return $this->getAxisByIndex($axisIndex);
     }
 
     public function getDistanceFromOrigin(): ImmutableDecimal
     {
-        $origin = [];
+        $x = 0;
 
-        foreach ($this->parameters as $key => $valueKey) {
-            $origin[$key] = 0;
+        if ($this->numberOfDimensions() > 1) {
+            $y = 0;
+        } else {
+            $y = null;
         }
 
-        return $this->distanceTo(new CartesianCoordinate($origin));
+        if ($this->numberOfDimensions() > 2) {
+            $z = 0;
+        } else {
+            $z = null;
+        }
+
+        return $this->distanceTo(new CartesianCoordinate($x, $y, $z));
     }
 
     public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal

@@ -113,20 +113,30 @@ trait InverseTrigonometryTrait
                 $z = $one->divide($z, $precision + 2);
             }
 
+            $y = $z->pow(2)->divide($z->pow(2)->add(1));
+            $coef = $y->divide($z);
+
             $answer = SeriesProvider::maclaurinSeries(
-                $z,
+                $y,
                 function ($n) {
-                    return SequenceProvider::nthPowerNegativeOne($n);
+                    $nthOdd = SequenceProvider::nthOddNumber($n)->subtract(1);
+
+                    return $nthOdd->doubleFactorial();
                 },
                 function ($n) {
-                    return SequenceProvider::nthOddNumber($n);
+                    return $n;
                 },
                 function ($n) {
-                    return SequenceProvider::nthOddNumber($n);
+                    $nthOdd = SequenceProvider::nthOddNumber($n);
+
+                    return $nthOdd->doubleFactorial();
                 },
                 0,
                 $precision + 1
             );
+
+            $answer = $answer->add(1);
+            $answer = $answer->multiply($coef);
 
             if (isset($rangeAdjust)) {
                 $answer = $rangeAdjust->subtract($answer);

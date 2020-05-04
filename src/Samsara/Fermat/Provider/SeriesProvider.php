@@ -98,12 +98,14 @@ class SeriesProvider
             $sum = $sum->add($term);
             $currDiff = $sum->subtract($prevSum)->abs();
 
+            /*
             if ($prevDiff->isLessThan($currDiff)) {
                 $divergeCount++;
                 $persistentDivergeCount++;
             } else {
                 $divergeCount = 0;
             }
+            */
 
             if ($divergeCount == $consecutiveDivergeLimit || $persistentDivergeCount == $totalDivergeLimit) {
                 throw new OptionalExit(
