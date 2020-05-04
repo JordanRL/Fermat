@@ -229,4 +229,20 @@ class NumbersTest extends TestCase
         $this->assertEquals('0', $zero->getValue());
     }
 
+    /**
+     * @medium
+     */
+    public function testMakeImaginary()
+    {
+
+        $oneI = Numbers::make(Numbers::IMMUTABLE, '1i');
+
+        $this->assertEquals('1i', $oneI->getValue());
+
+        $twoI = Numbers::makeOrDont(Numbers::IMMUTABLE, '2i');
+
+        $this->assertEquals('2i', $twoI->getValue());
+
+    }
+
 }

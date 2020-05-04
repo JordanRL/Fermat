@@ -78,10 +78,10 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
         $n = Numbers::makeZero();
 
         $firstValues = ($this->numberOfDimensions() >= $coordinate->numberOfDimensions()) ? $this->axesValues() : $coordinate->axesValues();
-        $secondValues = ($this->numberOfDimensions() >= $coordinate->numberOfDimensions()) ? $coordinate : $this;
+        $secondValues = ($this->numberOfDimensions() >= $coordinate->numberOfDimensions()) ? $coordinate->axesValues() : $this->axesValues();
 
         foreach ($firstValues as $index => $value) {
-            $n = $n->add($secondValues->getAxis($index)->subtract($value)->pow(2));
+            $n = $n->add($secondValues[$index]->subtract($value)->pow(2));
         }
 
         $n = $n->sqrt();

@@ -30,18 +30,22 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
 
         if (is_object($realPart) && $realPart instanceof Fraction) {
             $this->realPart = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $realPart, $precision, $base);
-        } else {
+        } elseif (!is_object($realPart) && !($realPart instanceof ImmutableDecimal)) {
             $this->realPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $realPart, $precision, $base);
+        } else {
+            $this->realPart = $realPart;
         }
         if (is_object($imaginaryPart) && $imaginaryPart instanceof Fraction) {
             $this->imaginaryPart = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $imaginaryPart, $precision, $base);
-        } else {
+        } elseif (!is_object($imaginaryPart) || !($imaginaryPart instanceof ImmutableDecimal)) {
             $this->imaginaryPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $imaginaryPart, $precision, $base);
+        } else {
+            $this->imaginaryPart = $imaginaryPart;
         }
 
         $this->precision = ($this->realPart->getPrecision() > $this->imaginaryPart->getPrecision()) ? $this->realPart->getPrecision() : $this->imaginaryPart->getPrecision();
 
-        $cartesian = new CartesianCoordinate($realPart, Numbers::make(Numbers::IMMUTABLE, $imaginaryPart->getAsBaseTenRealNumber()));
+        $cartesian = new CartesianCoordinate($this->realPart, Numbers::make(Numbers::IMMUTABLE, $this->imaginaryPart->getAsBaseTenRealNumber()));
         $this->cachedCartesian = $cartesian;
 
         $polar = $cartesian->asPolar();

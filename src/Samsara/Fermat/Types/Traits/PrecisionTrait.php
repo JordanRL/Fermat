@@ -22,6 +22,12 @@ trait PrecisionTrait
         $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
 
+        $iPart = '';
+
+        if ($this->isImaginary()) {
+            $iPart = 'i';
+        }
+
         if ($this->sign == true) {
             $whole = '-'.$whole;
         }
@@ -33,9 +39,9 @@ trait PrecisionTrait
         } else {
             if ($decimals == 0) {
                 if ($fractionalArr[$decimals] >= 5) {
-                    return $this->setValue($whole)->add(1);
+                    return $this->setValue($whole.$iPart)->add(1);
                 } else {
-                    return $this->setValue($whole);
+                    return $this->setValue($whole.$iPart);
                 }
             } else {
                 if ($fractionalArr[$decimals] >= 5) {
@@ -43,7 +49,7 @@ trait PrecisionTrait
                 }
 
                 if (is_null($fractionalArr)) {
-                    return $this->setValue($whole)->add(1);
+                    return $this->setValue($whole.$iPart)->add(1);
                 }
 
                 $rounded = $whole.'.';
@@ -52,7 +58,7 @@ trait PrecisionTrait
                     $rounded .= $fractionalArr[$i];
                 }
 
-                return $this->setValue($rounded);
+                return $this->setValue($rounded.$iPart);
             }
         }
     }
@@ -67,7 +73,7 @@ trait PrecisionTrait
         }
 
         if ($decimals == 0) {
-            return $this->setValue($whole);
+            $result = $whole;
         } else {
             $truncated = $whole.'.';
 
@@ -79,8 +85,14 @@ trait PrecisionTrait
 
             $truncated .= $fractional;
 
-            return $this->setValue($truncated);
+            $result = $truncated;
         }
+
+        if ($this->isImaginary()) {
+            $result .= 'i';
+        }
+
+        return $this->setValue($result);
     }
 
     public function roundToPrecision($precision)

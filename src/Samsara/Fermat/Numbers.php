@@ -147,13 +147,11 @@ class Numbers
     {
 
         if (is_object($value)) {
-            $reflector = new \ReflectionClass($value);
-
             if ($value instanceof $type) {
                 return $value;
             }
 
-            if ($reflector->implementsInterface(NumberInterface::class)) {
+            if ($value instanceof NumberInterface) {
                 return static::make($type, $value->getValue(), $precision, $base);
             }
         } elseif (is_array($value)) {
@@ -164,14 +162,18 @@ class Numbers
             }
 
             return $newInput;
-        } elseif (is_numeric($value)) {
-            return static::make($type, $value, $precision, $base);
+        } elseif (is_numeric($value) || is_string($value)) {
+            $isImaginary = strpos($value, 'i') !== false;
+
+            if (is_numeric($value) || $isImaginary) {
+                return static::make($type, $value, $precision, $base);
+            }
         }
 
         throw new IntegrityConstraint(
             '$input must be an int, float, numeric string, or an implementation of NumberInterface',
             'Provide any of the MANY valid inputs',
-            'The $input argument was not numeric or an implementation of NumberInterface.'
+            'The $input argument was not numeric or an implementation of NumberInterface. Given value: '.$value
         );
 
     }

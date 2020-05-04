@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
@@ -46,6 +48,8 @@ trait ArithmeticTrait
         if ($instance == 1 || (is_string($num) && strpos($num, '.') !== false) || is_float($num) || is_int($num)) {
             if (is_object($num) && $num instanceof FractionInterface) {
                 $num = $num->asDecimal($this->getPrecision());
+            } elseif (is_object($num) && $num instanceof ComplexNumberInterface) {
+                return $num;
             } else {
                 if (method_exists($this, 'getPrecision')) {
                     $precision = $this->getPrecision();
@@ -97,7 +101,10 @@ trait ArithmeticTrait
                     $thisImaginaryPart = clone $this;
                 }
 
-                return new ImmutableComplexNumber($thisRealPart->add($numRealPart), $thisImaginaryPart->add($numImaginaryPart), $internalPrecision);
+                $newRealPart = $thisRealPart->add($numRealPart);
+                $newImaginaryPart = $thisImaginaryPart->add($numImaginaryPart);
+
+                return new ImmutableComplexNumber($newRealPart, $newImaginaryPart, $internalPrecision);
             } else {
                 $newRealPart = $this->getRealPart()->add($numRealPart);
                 $newImaginaryPart = $this->getImaginaryPart()->add($numImaginaryPart);
@@ -195,10 +202,18 @@ trait ArithmeticTrait
                 return $this->setValue($newRealPart, $newImaginaryPart);
             }
         } elseif (($this->isReal() xor $num->isReal()) && ($this->isImaginary() xor $num->isImaginary())) {
-            $newRealPart = $this->isReal() ? clone $this : Numbers::make(Numbers::IMMUTABLE, $num->getAsBaseTenRealNumber())->multiply(-1);
-            $newImaginaryPart = $this->isImaginary() ? clone $this : Numbers::make(Numbers::IMMUTABLE, $num->getAsBaseTenRealNumber())->multiply(-1);
+            if ($this->isEqual(0) || $num->isEqual(0)) {
+                if ($num->isEqual(0)) {
+                    return $this;
+                } else {
+                    return $num->multiply(-1);
+                }
+            } else {
+                $newRealPart = $this->isReal() ? clone $this : $num->multiply(-1);
+                $newImaginaryPart = $this->isImaginary() ? clone $this : $num->multiply(-1);
 
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart, $internalPrecision);
+                return new ImmutableComplexNumber($newRealPart, $newImaginaryPart, $internalPrecision);
+            }
         }
 
         if ($check == 1) {
@@ -230,13 +245,15 @@ trait ArithmeticTrait
 
     public function multiply($num)
     {
+        /*
         if (is_string($num) && $this instanceof DecimalInterface && $num === 'i') {
             if ($this->isImaginary()) {
-                return $this->multiply(-1);
+                return $this->setValue($this->getAsBaseTenRealNumber())->multiply(-1);
             } else {
                 return $this->setValue($this->getAsBaseTenRealNumber().'i');
             }
         }
+        */
 
         $check = $this->checkArithmeticTraitAndInterface();
 
@@ -448,7 +465,7 @@ trait ArithmeticTrait
             $value = ArithmeticProvider::pow($this->getValue(), $num->getValue(), $internalPrecision);
         } else {
             $exponent = $num->multiply($this->ln($internalPrecision));
-            $value = $exponent->exp($internalPrecision);
+            $value = $exponent->exp($internalPrecision)->getValue();
         }
 
         return $this->setValue($value)->truncateToPrecision($internalPrecision-5);

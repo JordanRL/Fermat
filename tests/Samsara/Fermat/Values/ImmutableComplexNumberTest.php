@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Samsara\Fermat\Values;
 
 use PHPUnit\Framework\TestCase;
@@ -12,7 +14,7 @@ class ImmutableComplexNumberTest extends TestCase
 {
 
     /**
-     * @small
+     * @medium
      */
     public function testConstruct()
     {
@@ -32,7 +34,7 @@ class ImmutableComplexNumberTest extends TestCase
     }
 
     /**
-     * @small
+     * @medium
      */
     public function testAbsValue()
     {
@@ -56,6 +58,7 @@ class ImmutableComplexNumberTest extends TestCase
     }
 
     /**
+     * @group testing
      * @medium
      */
     public function testAdd()
@@ -68,6 +71,9 @@ class ImmutableComplexNumberTest extends TestCase
 
         $this->assertEquals('2+2i', $complex->add($one)->getValue());
         $this->assertEquals('1+4i', $complex->add($twoI)->getValue());
+
+        $this->assertEquals('2+2i', $one->add($complex)->getValue());
+        $this->assertEquals('1+4i', $twoI->add($complex)->getValue());
 
     }
 

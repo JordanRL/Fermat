@@ -37,9 +37,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
         $this->base = $base;
 
-        if ($base != 10 && !$baseTenInput) {
-            $value = $this->convertValue($value, $base, 10);
-        }
+        $value = (string)$value;
 
         if (strpos($value, 'i') !== false) {
             $this->imaginary = true;
@@ -48,7 +46,10 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
             $this->imaginary = false;
         }
 
-        $value = (string)$value;
+        if ($base != 10 && !$baseTenInput) {
+            $value = $this->convertValue($value, $base, 10);
+        }
+
         $this->value = $this->translateValue($value);
 
         if (!is_null($precision)) {

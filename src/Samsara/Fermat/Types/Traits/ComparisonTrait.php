@@ -36,12 +36,12 @@ trait ComparisonTrait
         if ($check == 1) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
 
+            if ($this->isImaginary() xor $value->isImaginary()) {
+                return false;
+            }
+
             if ($this->compare($value->getAsBaseTenRealNumber()) === 0) {
-                if ($this->isImaginary() xor $value->isImaginary()) {
-                    return false;
-                } else {
-                    return true;
-                }
+                return true;
             } else {
                 return false;
             }
