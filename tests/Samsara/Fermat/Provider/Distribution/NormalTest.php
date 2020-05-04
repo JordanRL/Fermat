@@ -10,9 +10,9 @@ use PHPUnit\Framework\TestCase;
  */
 class NormalTest extends TestCase
 {
-    /**
+    /*
      * @medium
-     */
+     *
     public function testPercentAboveX()
     {
 
@@ -25,7 +25,7 @@ class NormalTest extends TestCase
     }
     /**
      * @medium
-     */
+     *
     public function testPercentBelowX()
     {
 
@@ -36,6 +36,7 @@ class NormalTest extends TestCase
         $this->assertEquals('0.1586552539', $normal->cdf(8)->getValue());
 
     }
+    */
     /**
      * @medium
      */
