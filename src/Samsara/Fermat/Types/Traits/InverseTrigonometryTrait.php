@@ -15,10 +15,12 @@ trait InverseTrigonometryTrait
     {
 
         $precision = $precision ?? $this->getPrecision();
+        $precision += 2;
+        $pi = Numbers::makePi();
+        $piDivTwo = $pi->divide(2, $precision+2);
 
         if ($this->isEqual(1) || $this->isEqual(-1)) {
-            $pi = Numbers::makePi();
-            $answer = $pi->divide(2);
+            $answer = $piDivTwo;
             if ($this->isNegative()) {
                 $answer = $answer->multiply(-1);
             }
@@ -36,12 +38,25 @@ trait InverseTrigonometryTrait
                 );
             }
 
-            $answer = $z->divide($one->subtract($z->pow(2))->sqrt($precision + 2), $precision + 2)->arctan($precision + 2, false);
+            $prevAnswer = $z;
+            $answer = $z;
+            $count = 0;
+
+            do {
+                $answer = $answer->subtract(
+                    $answer->sin($precision)->subtract($z)->divide($answer->cos($precision), $precision)
+                );
+                $diff = $answer->subtract($prevAnswer)->abs();
+                $prevAnswer = $answer;
+                $count++;
+            } while ($diff->numberOfLeadingZeros() <= $precision && $count < 15);
+
+
         }
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToPrecision($precision-2);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToPrecision($precision-2);
         }
 
         return $this->setValue($answer);
@@ -52,12 +67,13 @@ trait InverseTrigonometryTrait
     {
 
         $precision = $precision ?? $this->getPrecision();
+        $pi = Numbers::makePi($precision+2);
+        $piDivTwo = $pi->divide(2, $precision+2);
 
         if ($this->isEqual(-1)) {
             $answer = Numbers::makePi($precision+1);
         } elseif ($this->isEqual(0)) {
-            $answer = Numbers::makePi($precision+2);
-            $answer = $answer->divide(2, $precision+2);
+            $answer = $piDivTwo;
         } elseif ($this->isEqual(1)) {
             $answer = Numbers::makeZero();
         } else {
@@ -72,10 +88,7 @@ trait InverseTrigonometryTrait
                 );
             }
 
-            $answer = $one->subtract($z->pow(2))
-                ->sqrt($precision + 2)
-                ->divide($z, $precision + 2)
-                ->arctan($precision + 2, false);
+            $answer = $piDivTwo->subtract($z->arcsin($precision+2));
         }
 
         if ($round) {
@@ -92,61 +105,18 @@ trait InverseTrigonometryTrait
     {
 
         $precision = $precision ?? $this->getPrecision();
+        $precision += 5;
 
-        $one = Numbers::makeOne($precision + 2);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision + 2);
+        $one = Numbers::makeOne();
 
-        if ($z->isEqual(1)) {
-            $answer = Numbers::makePi($precision + 2)->divide(4, $precision + 2);
-        } elseif ($z->isEqual(-1)) {
-            $answer = Numbers::makePi($precision + 2)->divide(4, $precision +2)->multiply(-1);
-        } else {
-
-            if ($z->abs()->isGreaterThan(1)) {
-                $rangeAdjust = Numbers::makePi($precision + 2)->divide(2, $precision + 2);
-
-                if ($z->isNegative()) {
-                    $rangeAdjust = $rangeAdjust->multiply(-1);
-                }
-
-                $z = $one->divide($z, $precision + 2);
-            }
-
-            $y = $z->pow(2)->divide($z->pow(2)->add(1));
-            $coef = $y->divide($z);
-
-            $answer = SeriesProvider::maclaurinSeries(
-                $y,
-                function ($n) {
-                    $nthOdd = SequenceProvider::nthOddNumber($n)->subtract(1);
-
-                    return $nthOdd->doubleFactorial();
-                },
-                function ($n) {
-                    return $n;
-                },
-                function ($n) {
-                    $nthOdd = SequenceProvider::nthOddNumber($n);
-
-                    return $nthOdd->doubleFactorial();
-                },
-                0,
-                $precision + 1
-            );
-
-            $answer = $answer->add(1);
-            $answer = $answer->multiply($coef);
-
-            if (isset($rangeAdjust)) {
-                $answer = $rangeAdjust->subtract($answer);
-            }
-        }
+        $answer = $z->divide($one->add($z->pow(2))->sqrt($precision), $precision)->arcsin($precision);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToPrecision($precision-5);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToPrecision($precision-5);
         }
 
         return $this->setValue($answer);

@@ -449,6 +449,11 @@ class ImmutableNumberTest extends TestCase
 
         $this->assertEquals('-0.463647609', $oneHalf->arctan(9, false)->getValue());
 
+        $five = new ImmutableDecimal(25);
+
+        $this->assertEquals('1.5308176396', $five->arctan(10, false)->getValue());
+        $this->assertEquals('1.5308176397', $five->arctan(10)->getValue());
+
     }
     /**
      * @medium

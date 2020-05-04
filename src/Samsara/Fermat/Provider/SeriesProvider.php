@@ -53,6 +53,8 @@ class SeriesProvider
         int $totalDivergeLimit = 10)
     {
 
+        $precision += 1;
+
         $sum = Numbers::makeZero($precision);
         $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue(), $precision);
 
@@ -91,7 +93,7 @@ class SeriesProvider
                 $adjustmentOfZero = 0;
             }
 
-            if ($adjustmentOfZero > 5) {
+            if ($adjustmentOfZero > 15) {
                 $continue = false;
             }
 

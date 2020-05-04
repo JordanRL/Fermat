@@ -55,7 +55,7 @@ trait IntegerMathTrait
 
         while ($continue) {
             $newVal = $newVal->multiply($num->getValue());
-            $num->subtract(2);
+            $num = $num->subtract(2);
 
             if ($num->isLessThanOrEqualTo(1)) {
                 $continue = false;

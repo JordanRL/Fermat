@@ -43,8 +43,15 @@ class ImmutableComplexNumberTest extends TestCase
         $complex = new ImmutableComplexNumber($three, $fourI);
 
         $this->assertEquals('5', $complex->absValue());
-
         $this->assertEquals('5', $complex->abs()->getValue());
+
+        $one = new ImmutableDecimal('1');
+        $twoI = new ImmutableDecimal('2i');
+
+        $complex = new ImmutableComplexNumber($one, $twoI);
+
+        $this->assertEquals('2.2360679774', $complex->absValue());
+        $this->assertEquals('2.2360679774', $complex->abs()->getValue());
 
     }
 
@@ -60,7 +67,7 @@ class ImmutableComplexNumberTest extends TestCase
         $complex = new ImmutableComplexNumber($one, $twoI);
 
         $this->assertEquals('2+2i', $complex->add($one)->getValue());
-        //$this->assertEquals('1+4i', $complex->add($twoI)->getValue());
+        $this->assertEquals('1+4i', $complex->add($twoI)->getValue());
 
     }
 
