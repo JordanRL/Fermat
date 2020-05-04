@@ -332,7 +332,7 @@ trait ArithmeticTrait
                 $value .= 'i';
             }
 
-            return $this->setValue($value);
+            return $this->setValue($value, $precision, $this->getBase());
         } else {
             /** @var ImmutableFraction $num */
 
@@ -349,8 +349,22 @@ trait ArithmeticTrait
 
         $num = $this->transformNum($num, $check);
 
+        if ($check == 2) {
+            /** @var ImmutableDecimal $powNumerator */
+            $powNumerator = $this->getNumerator()->pow($num);
+            /** @var ImmutableDecimal $powDenominator */
+            $powDenominator = $this->getDenominator()->pow($num);
+
+            if ($powNumerator->isWhole() && $powDenominator->isWhole()) {
+                return $this->setValue($powNumerator, $powDenominator);
+            } else {
+                return $powNumerator->divide($powDenominator);
+            }
+        }
+
         if (!($this instanceof FractionInterface)) {
             $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
+            $internalPrecision += 5;
         }
 
         if (!$this->isReal() || !$num->isReal()) {
@@ -407,7 +421,7 @@ trait ArithmeticTrait
                 $newVal = $newRealPart->absValue() == '0' ? $newRealPart : $newImaginaryPart;
 
                 if ($this instanceof DecimalInterface) {
-                    return $thisRho->setValue($newVal->getValue(), $internalPrecision);
+                    return $thisRho->setValue($newVal->getValue());
                 } else {
                     return $newVal;
                 }
@@ -422,27 +436,14 @@ trait ArithmeticTrait
             return $this->setValue($newRealPart, $newImaginaryPart);
         }
 
-        if ($check == 1) {
-            if ($num->isWhole()) {
-                $value = ArithmeticProvider::pow($this->getValue(), $num->getValue(), $internalPrecision);
-            } else {
-                $exponent = $num->multiply($this->ln($internalPrecision));
-                $value = $exponent->exp();
-            }
-
-            return $this->setValue($value)->truncateToPrecision($internalPrecision);
+        if ($num->isWhole()) {
+            $value = ArithmeticProvider::pow($this->getValue(), $num->getValue(), $internalPrecision);
         } else {
-            /** @var ImmutableDecimal $powNumerator */
-            $powNumerator = $this->getNumerator()->pow($num);
-            /** @var ImmutableDecimal $powDenominator */
-            $powDenominator = $this->getDenominator()->pow($num);
-
-            if ($powNumerator->isWhole() && $powDenominator->isWhole()) {
-                return $this->setValue($powNumerator, $powDenominator);
-            } else {
-                return $powNumerator->divide($powDenominator);
-            }
+            $exponent = $num->multiply($this->ln($internalPrecision));
+            $value = $exponent->exp($internalPrecision);
         }
+
+        return $this->setValue($value)->truncateToPrecision($internalPrecision-5);
 
     }
 
@@ -463,7 +464,9 @@ trait ArithmeticTrait
     {
         $check = $this->checkArithmeticTraitAndInterface();
 
-        $precision = !is_null($precision) && is_int($precision) ? $precision : $this->getPrecision();
+        if (!($this instanceof FractionInterface)) {
+            $precision = !is_null($precision) && is_int($precision) ? $precision : $this->getPrecision();
+        }
 
         if (!$this->isReal() || $this->isNegative()) {
             /** @var ComplexNumber $complex */

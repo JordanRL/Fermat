@@ -13,9 +13,15 @@ class DummyNumber {
     use ArithmeticTrait;
 }
 
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class ImmutableNumberTest extends TestCase
 {
-
+    /**
+     * @medium
+     */
     public function testGetters()
     {
 
@@ -40,7 +46,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals(5, $five->getBase());
 
     }
-
+    /**
+     * @medium
+     */
     public function testAdd()
     {
 
@@ -73,7 +81,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('0.10000000001', $oneTenth->add($elevenPrecision)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testSubtract()
     {
 
@@ -106,7 +116,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('0.09999999999', $oneTenth->subtract($elevenPrecision)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testMultiply()
     {
 
@@ -132,7 +144,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('0.02', $twoTenths->multiply($oneTenth)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testDivide()
     {
 
@@ -147,7 +161,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('40', $ten->divide($oneQuarter)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testFactorial()
     {
 
@@ -180,7 +196,9 @@ class ImmutableNumberTest extends TestCase
         $oneTenth->factorial();
 
     }
-
+    /**
+     * @medium
+     */
     public function testDoubleFactorial()
     {
 
@@ -201,7 +219,9 @@ class ImmutableNumberTest extends TestCase
         $oneTenth->doubleFactorial();
 
     }
-
+    /**
+     * @medium
+     */
     public function testPow()
     {
 
@@ -224,7 +244,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('485165195.40979', $e->pow(20)->round(5)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testExp()
     {
 
@@ -234,19 +256,22 @@ class ImmutableNumberTest extends TestCase
         $this->assertTrue($one->exp()->truncate(5)->isEqual($e->truncate(5)));
 
     }
-
+    /**
+     * @medium
+     */
     public function testLn()
     {
 
         $five = new ImmutableDecimal(5);
 
-        $this->assertEquals('1.6094379124341', $five->ln()->getValue());
+        $answer1 = $five->ln()->getValue();
+        $this->assertEquals('1.6094379124', $answer1);
 
         $this->assertEquals('1.60943791243', $five->ln(11)->getValue());
 
         $fifteen = new ImmutableDecimal(15);
 
-        $this->assertContains('2.7080502011', $fifteen->ln(11)->getValue());
+        $this->assertEquals('2.7080502011', $fifteen->ln(11)->getValue());
 
         $oneFifty = new ImmutableDecimal(150);
 
@@ -259,7 +284,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('62.16979', $largeInt->ln(5, false)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testLog10()
     {
 
@@ -284,7 +311,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('27', $largeInt->log10(5, false)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testSqrt()
     {
 
@@ -301,7 +330,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('31622776601683.7933199889', $largeInt->sqrt(10)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testSin()
     {
         /** @var ImmutableDecimal $pi */
@@ -322,7 +353,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('0.71806349613911', $largeInt->sin(14, false)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testCos()
     {
         /** @var ImmutableDecimal $pi */
@@ -341,7 +374,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('-0.695977596990353', $largeInt->cos(15, false)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testTan()
     {
 
@@ -355,7 +390,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('INF', $piDivTwo->tan()->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testCot()
     {
 
@@ -369,7 +406,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('1', $test->cot(2)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testSec()
     {
 
@@ -379,7 +418,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('3.525320085', $five->sec(9, false)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testCsc()
     {
 
@@ -389,7 +430,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('-1.042835212', $five->csc(9, false)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testArctan()
     {
 
@@ -407,7 +450,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('-0.463647609', $oneHalf->arctan(9, false)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testArcsin()
     {
 
@@ -439,7 +484,9 @@ class ImmutableNumberTest extends TestCase
         $onePointFive->arcsin();
 
     }
-
+    /**
+     * @medium
+     */
     public function testArccos()
     {
 
@@ -470,7 +517,9 @@ class ImmutableNumberTest extends TestCase
         $onePointFive->arccos();
 
     }
-
+    /**
+     * @medium
+     */
     public function testArccot()
     {
         $one = new ImmutableDecimal(1);
@@ -509,7 +558,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('2.4037775935', $negOnePointOne->arccot(10)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testArcsec()
     {
 
@@ -535,7 +586,9 @@ class ImmutableNumberTest extends TestCase
         $oneHalf->arcsec();
 
     }
-
+    /**
+     * @medium
+     */
     public function testArccsc()
     {
 
@@ -563,7 +616,9 @@ class ImmutableNumberTest extends TestCase
         $oneHalf->arccsc();
 
     }
-
+    /**
+     * @medium
+     */
     public function testGetLeastCommonMultiple()
     {
 
@@ -581,7 +636,9 @@ class ImmutableNumberTest extends TestCase
         $three->getLeastCommonMultiple($oneHalf);
 
     }
-
+    /**
+     * @medium
+     */
     public function testGetGreatestCommonDivisor()
     {
 
@@ -598,7 +655,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('3', $six->getGreatestCommonDivisor($three)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testConverts()
     {
 
@@ -614,7 +673,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('20', $five->add($five)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testAbsMethods()
     {
 
@@ -629,7 +690,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('5', $five->absValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testNumberState()
     {
 
@@ -664,7 +727,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertFalse($zero->isNegative());
 
     }
-
+    /**
+     * @medium
+     */
     public function testIsPrime()
     {
 
@@ -691,7 +756,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertFalse($oneHalf->isPrime());
 
     }
-
+    /**
+     * @medium
+     */
     public function testCeilFloor()
     {
 
@@ -701,7 +768,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('0', $oneHalf->floor()->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testRoundAndTruncate()
     {
 
@@ -724,7 +793,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('1', $closeToOne->round(4)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testNumberOfLeadingZeros()
     {
 
@@ -733,7 +804,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals(10, $num->numberOfLeadingZeros());
 
     }
-
+    /**
+     * @medium
+     */
     public function testOverflow()
     {
 
@@ -746,7 +819,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('100000000000000000000000000000', $largeInt->add(1)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testPrecisionLimit()
     {
 
@@ -756,7 +831,9 @@ class ImmutableNumberTest extends TestCase
         $precisionLimit = new ImmutableDecimal(1, 2147483647);
 
     }
-
+    /**
+     * @medium
+     */
     public function testModulo()
     {
 
@@ -769,7 +846,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('1', $five->modulo(2)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testContinuousModulo()
     {
 
@@ -784,7 +863,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals('2', $twoPiPlusTwo->continuousModulo(Numbers::PI)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testAsInt()
     {
 
@@ -801,7 +882,9 @@ class ImmutableNumberTest extends TestCase
         $num->asInt();
 
     }
-
+    /**
+     * @medium
+     */
     public function testDigitCounts()
     {
 
@@ -818,7 +901,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertEquals(4, $num2->numberOfLeadingZeros());
 
     }
-
+    /**
+     * @medium
+     */
     public function testObjectEquality()
     {
 
@@ -826,9 +911,9 @@ class ImmutableNumberTest extends TestCase
         $in2 = new ImmutableDecimal('12');
         $in3 = new ImmutableDecimal(16);
 
-        $this->assertEquals('Samsara\\Fermat\\Values\\ImmutableNumber12', $in1->hash());
-        $this->assertEquals('Samsara\\Fermat\\Values\\ImmutableNumber12', $in2->hash());
-        $this->assertEquals('Samsara\\Fermat\\Values\\ImmutableNumber16', $in3->hash());
+        $this->assertEquals('Samsara\\Fermat\\Values\\ImmutableDecimal12', $in1->hash());
+        $this->assertEquals('Samsara\\Fermat\\Values\\ImmutableDecimal12', $in2->hash());
+        $this->assertEquals('Samsara\\Fermat\\Values\\ImmutableDecimal16', $in3->hash());
 
         $mn1 = new MutableDecimal(12);
         $mn2 = new MutableDecimal(16);
@@ -844,7 +929,9 @@ class ImmutableNumberTest extends TestCase
         $this->assertFalse($in1->equals($nc));
 
     }
-
+    /**
+     * @medium
+     */
     public function testArithmeticTraitCheck()
     {
 

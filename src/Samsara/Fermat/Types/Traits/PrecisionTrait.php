@@ -22,6 +22,10 @@ trait PrecisionTrait
         $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
 
+        if ($this->sign == true) {
+            $whole = '-'.$whole;
+        }
+
         $fractionalArr = str_split($fractional);
 
         if (!isset($fractionalArr[$decimals])) {
@@ -57,6 +61,10 @@ trait PrecisionTrait
     {
         $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
+
+        if ($this->sign == true) {
+            $whole = '-'.$whole;
+        }
 
         if ($decimals == 0) {
             return $this->setValue($whole);
@@ -119,10 +127,10 @@ trait PrecisionTrait
     {
         $fractional = $this->getDecimalPart();
 
-        $total = Numbers::make(Numbers::IMMUTABLE, strlen($fractional));
+        $total = strlen($fractional);
         $fractional = ltrim($fractional, '0');
 
-        return $total->subtract(strlen($fractional))->asInt();
+        return ($total - strlen($fractional));
     }
 
     /**

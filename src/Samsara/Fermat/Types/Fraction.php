@@ -17,6 +17,8 @@ abstract class Fraction extends Number implements FractionInterface
     protected $base;
     /** @var ImmutableDecimal[] */
     protected $value;
+    /** @var bool */
+    protected $sign;
 
     use ArithmeticTrait;
     use ComparisonTrait;
@@ -56,13 +58,19 @@ abstract class Fraction extends Number implements FractionInterface
 
         $this->base = $base;
 
+        if ($numerator->isNegative() xor $denominator->isNegative()) {
+            $this->sign = true;
+        }
+
         parent::__construct($dummyValue);
 
     }
 
     public function getValue(): string
     {
-        return $this->getNumerator()->getValue().'/'.$this->getDenominator()->getValue();
+        $baseAnswer = $this->getNumerator()->getValue().'/'.$this->getDenominator()->getValue();
+
+        return $baseAnswer;
     }
 
     public function getBase()
@@ -78,6 +86,14 @@ abstract class Fraction extends Number implements FractionInterface
     public function getDenominator()
     {
         return $this->value[1];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isComplex(): bool
+    {
+        return false;
     }
 
     public function simplify()
@@ -110,11 +126,7 @@ abstract class Fraction extends Number implements FractionInterface
 
     public function absValue(): string
     {
-        if ($this->isPositive()) {
-            return $this->getValue();
-        } else {
-            return substr($this->getValue(), 1);
-        }
+        return $this->getNumerator()->absValue().'/'.$this->getDenominator()->absValue();
     }
 
     public function compare($number): int

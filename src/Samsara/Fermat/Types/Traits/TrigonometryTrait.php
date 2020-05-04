@@ -53,7 +53,7 @@ trait TrigonometryTrait
     public function cos($precision = null, $round = true)
     {
         if ($this->isEqual(0)) {
-            return $this->setValue(1);
+            return $this->setValue('1');
         }
 
         $precision = $precision ?? $this->getPrecision();
@@ -62,11 +62,11 @@ trait TrigonometryTrait
         $pi = Numbers::makePi();
 
         if ($twoPi->truncate($precision)->isEqual($this)) {
-            return $this->setValue(1);
+            return $this->setValue('1');
         }
 
         if ($pi->truncate($precision)->isEqual($this)) {
-            return $this->setValue(-1);
+            return $this->setValue('-1');
         }
 
         $modulo = $this->continuousModulo($twoPi);

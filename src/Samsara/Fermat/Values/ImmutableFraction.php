@@ -14,12 +14,4 @@ class ImmutableFraction extends Fraction
 
     }
 
-    /**
-     * @return bool
-     */
-    public function isComplex(): bool
-    {
-        return false;
-    }
-
 }

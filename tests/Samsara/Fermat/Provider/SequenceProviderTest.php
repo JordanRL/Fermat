@@ -6,9 +6,15 @@ use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class SequenceProviderTest extends TestCase
 {
-
+    /**
+     * @medium
+     */
     public function testNthEulerZigzag()
     {
 
@@ -22,7 +28,9 @@ class SequenceProviderTest extends TestCase
         SequenceProvider::nthEulerZigzag(51);
 
     }
-
+    /**
+     * @medium
+     */
     public function testNthBernoulliNumber()
     {
 
@@ -43,7 +51,9 @@ class SequenceProviderTest extends TestCase
         $this->assertEquals('0.16666', $two->truncateToPrecision(5)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testNthFibonacciNumber()
     {
 
@@ -64,7 +74,9 @@ class SequenceProviderTest extends TestCase
         $this->assertEquals('21', $eight->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testDecimalFibonacci()
     {
 
@@ -74,7 +86,9 @@ class SequenceProviderTest extends TestCase
         SequenceProvider::nthFibonacciNumber(new ImmutableDecimal('0.5'));
 
     }
-
+    /**
+     * @medium
+     */
     public function testNegativeFibonacci()
     {
 

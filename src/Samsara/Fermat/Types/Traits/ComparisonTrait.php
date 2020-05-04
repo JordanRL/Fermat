@@ -179,7 +179,7 @@ trait ComparisonTrait
                 return false;
             }
 
-            return !$this->sign;
+            return $this->sign;
         } else {
             return $this->getNumerator()->isNegative();
         }
@@ -194,7 +194,7 @@ trait ComparisonTrait
                 return false;
             }
 
-            return $this->sign;
+            return !$this->sign;
         } else {
             return $this->getNumerator()->isPositive();
         }
@@ -215,10 +215,13 @@ trait ComparisonTrait
         $check = $this->checkComparisonTraitAndInterface();
 
         if ($check == 1) {
-            if ($this->getDecimalPart() == 0) {
-                return true;
-            } else {
+            $checkVal = $this->getDecimalPart();
+            $checkVal = trim($checkVal,'0');
+
+            if (strlen($checkVal) > 0 ) {
                 return false;
+            } else {
+                return true;
             }
         } else {
             return $this->getDenominator()->isEqual(1);

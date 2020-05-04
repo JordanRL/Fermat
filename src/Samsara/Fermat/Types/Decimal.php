@@ -55,10 +55,13 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
             $this->precision = ($precision > strlen($this->getDecimalPart())) ? $precision : strlen($this->getDecimalPart());
         } else {
-            if ($this->getDecimalPart() === 0) {
-                $this->precision = (strlen($this->getWholePart()) > 10) ? strlen($this->getWholePart()) : 10;
-            } else {
+            $checkVal = $this->getDecimalPart();
+            $checkVal = trim($checkVal,'0');
+
+            if (strlen($checkVal) > 0) {
                 $this->precision = (strlen($this->getDecimalPart()) > 10) ? strlen($this->getDecimalPart()) : 10;
+            } else {
+                $this->precision = (strlen($this->getWholePart()) > 10) ? strlen($this->getWholePart()) : 10;
             }
         }
 
@@ -66,14 +69,20 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
     }
 
+    public function modulo($mod)
+    {
+        return $this->setValue(bcmod($this->getAsBaseTenRealNumber(), $mod), $this->getPrecision(), $this->getBase());
+    }
+
     protected function translateValue(string $value)
     {
         $value = trim($value);
 
         if ($value[0] == '-') {
-            $this->sign = false;
-        } else {
             $this->sign = true;
+            $value = trim($value, '-');
+        } else {
+            $this->sign = false;
         }
 
         if (strpos($value, '.') !== false) {
@@ -125,7 +134,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     {
         $string = '';
 
-        if (!$this->sign) {
+        if ($this->sign) {
             $string .= '-';
         }
 
@@ -134,7 +143,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         $decimalVal = trim($this->value[1], '0');
 
         if (strlen($decimalVal) > 0) {
-            $string .= '.'.rtrim($decimalVal, '0');
+            $string .= '.'.rtrim($this->value[1], '0');
         }
 
         return $string;
@@ -213,13 +222,13 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
         if ($this->isNegative()) {
             $makeNegative = true;
-            $this->sign = true;
+            $this->sign = false;
         }
 
         $value = $this->getValue();
 
         if ($makeNegative) {
-            $this->sign = false;
+            $this->sign = true;
         }
 
         if ($makeImaginary) {

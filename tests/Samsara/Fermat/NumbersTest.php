@@ -5,9 +5,15 @@ namespace Samsara\Fermat;
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class NumbersTest extends TestCase
 {
-
+    /**
+     * @medium
+     */
     public function testMakeFromInteger()
     {
 
@@ -36,7 +42,9 @@ class NumbersTest extends TestCase
         $this->assertEquals(PHP_INT_MAX.'/1', $max->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testMakeFromFloat()
     {
 
@@ -57,7 +65,9 @@ class NumbersTest extends TestCase
         $this->assertEquals('1/1', $one->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testMakeFromString()
     {
 
@@ -78,7 +88,9 @@ class NumbersTest extends TestCase
         $this->assertEquals('1/1', $one->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testMakeCoordinate()
     {
         $coords = [1, 5];
@@ -87,7 +99,9 @@ class NumbersTest extends TestCase
 
         $this->assertEquals('5', $coordObj->getAxis('y'));
     }
-
+    /**
+     * @medium
+     */
     public function testMakeFromBase10()
     {
 
@@ -96,7 +110,9 @@ class NumbersTest extends TestCase
         $this->assertEquals('10', $five->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testMakePi()
     {
 
@@ -114,7 +130,9 @@ class NumbersTest extends TestCase
         Numbers::makePi(200);
 
     }
-
+    /**
+     * @medium
+     */
     public function testMakeTau()
     {
 
@@ -132,7 +150,9 @@ class NumbersTest extends TestCase
         Numbers::makeTau(200);
 
     }
-
+    /**
+     * @medium
+     */
     public function testMakeE()
     {
 
@@ -150,7 +170,9 @@ class NumbersTest extends TestCase
         Numbers::makeE(200);
 
     }
-
+    /**
+     * @medium
+     */
     public function testMakeGoldenRatio()
     {
 
@@ -168,7 +190,9 @@ class NumbersTest extends TestCase
         Numbers::makeGoldenRatio(200);
 
     }
-
+    /**
+     * @medium
+     */
     public function testMakeLn10()
     {
 
@@ -186,14 +210,18 @@ class NumbersTest extends TestCase
         Numbers::makeNaturalLog10(200);
 
     }
-
+    /**
+     * @medium
+     */
     public function testMakeOne()
     {
         $one = Numbers::makeOne();
 
         $this->assertEquals('1', $one->getValue());
     }
-
+    /**
+     * @medium
+     */
     public function testMakeZero()
     {
         $zero = Numbers::makeZero();

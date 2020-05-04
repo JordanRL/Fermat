@@ -240,9 +240,10 @@ interface DecimalInterface extends SimpleNumberInterface
     public function log10($precision = null);
 
     /**
+     * @param int|null $precision
      * @return DecimalInterface
      */
-    public function exp();
+    public function exp($precision = null);
 
     /**
      * @param int $decimals

@@ -8,13 +8,6 @@ use Samsara\Fermat\Numbers;
 class MutableDecimal extends Decimal
 {
 
-    public function modulo($mod)
-    {
-        $oldBase = $this->convertForModification();
-
-        return (new MutableDecimal(bcmod($this->getValue(), $mod), $this->getPrecision()))->convertFromModification($oldBase);
-    }
-
     public function continuousModulo($mod)
     {
 

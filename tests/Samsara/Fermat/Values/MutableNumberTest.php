@@ -7,9 +7,15 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class MutableNumberTest extends TestCase
 {
-
+    /**
+     * @medium
+     */
     public function testModulo()
     {
 
@@ -22,7 +28,9 @@ class MutableNumberTest extends TestCase
         $this->assertEquals('1', $five->modulo(2)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testContinuousModulo()
     {
 

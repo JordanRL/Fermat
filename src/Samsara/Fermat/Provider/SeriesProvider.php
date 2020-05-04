@@ -53,45 +53,33 @@ class SeriesProvider
         int $totalDivergeLimit = 10)
     {
 
-        $sum = Numbers::makeZero(100);
-        $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue());
+        $sum = Numbers::makeZero($precision);
+        $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue(), $precision);
 
         $continue = true;
         $termNumber = $startTermAt;
 
         $adjustmentOfZero = 0;
-        $prevTerm = Numbers::makeZero();
-        $divergeCount = 0;
-        $persistentDivergeCount = 0;
+        $prevDiff = Numbers::makeZero($precision);
+        $prevSum = $sum;
+        $divergeCount = -1;
+        $persistentDivergeCount = -1;
         $currentPrecision = 0;
 
         while ($continue) {
-            $term = Numbers::makeOne(100);
+            $term = Numbers::makeOne($precision);
 
             try {
-                $term = $term->multiply($value->pow($exponent($termNumber)))
-                    ->divide($denominator($termNumber))
-                    ->multiply($numerator($termNumber));
+                $exTerm = $value->pow($exponent($termNumber));
+                $term = $term->multiply($exTerm);
+                $term = $term->divide($denominator($termNumber));
+                $term = $term->multiply($numerator($termNumber));
             } catch (IntegrityConstraint $constraint) {
                 return $sum->truncateToPrecision($currentPrecision+1);
             }
 
-            if (!$prevTerm->isEqual(0) && $prevTerm->isGreaterThan($term->absValue())) {
-                $divergeCount++;
-                $persistentDivergeCount++;
-            } else {
-                $divergeCount = 0;
-            }
-
-            if ($divergeCount == $consecutiveDivergeLimit || $persistentDivergeCount == $totalDivergeLimit) {
-                throw new OptionalExit(
-                    'Series appear to be diverging.',
-                    'A call was made to SeriesProvider::maclaurinSeries() that seems to be diverging. Exiting the loop.'
-                );
-            }
-
             /** @var ImmutableDecimal $term */
-            if ($term->numberOfLeadingZeros() >= $precision) {
+            if ($term->numberOfLeadingZeros() >= $precision && !$term->isWhole()) {
                 $continue = false;
             }
 
@@ -108,6 +96,24 @@ class SeriesProvider
             }
 
             $sum = $sum->add($term);
+            $currDiff = $sum->subtract($prevSum)->abs();
+
+            if ($prevDiff->isLessThan($currDiff)) {
+                $divergeCount++;
+                $persistentDivergeCount++;
+            } else {
+                $divergeCount = 0;
+            }
+
+            if ($divergeCount == $consecutiveDivergeLimit || $persistentDivergeCount == $totalDivergeLimit) {
+                throw new OptionalExit(
+                    'Series appear to be diverging. Current diverge count: '.$divergeCount.' | Persistent diverge count: '.$persistentDivergeCount,
+                    'A call was made to SeriesProvider::maclaurinSeries() that seems to be diverging. Exiting the loop.'
+                );
+            }
+
+            $prevDiff = $currDiff;
+            $prevSum = $sum;
 
             $termNumber++;
         }

@@ -8,11 +8,6 @@ use Samsara\Fermat\Types\Decimal;
 class ImmutableDecimal extends Decimal
 {
 
-    public function modulo($mod)
-    {
-        return $this->setValue(bcmod($this->getAsBaseTenRealNumber(), $mod), $this->getPrecision(), $this->getBase());
-    }
-
     public function continuousModulo($mod)
     {
 
@@ -67,7 +62,8 @@ class ImmutableDecimal extends Decimal
             $imaginary = true;
         }
 
-        if ($base != 10) {
+        if ($base != 10 || $this->getBase() != 10) {
+            $base = $base == 10 ? $this->getBase() : $base;
             $value = $this->convertValue($value, 10, $base);
         }
 

@@ -4,9 +4,15 @@ namespace Samsara\Fermat\Values;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class ImmutableFractionTest extends TestCase
 {
-
+    /**
+     * @medium
+     */
     public function testSimplify()
     {
 
@@ -23,7 +29,9 @@ class ImmutableFractionTest extends TestCase
         $this->assertEquals('2', $sixFourths->getDenominator()->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testSmallestCommonDenominator()
     {
 
@@ -35,11 +43,13 @@ class ImmutableFractionTest extends TestCase
         $this->assertEquals('5/6', $oneThird->add($oneHalf)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testAbsFunctions()
     {
 
-        $negOneHalf = new ImmutableFraction(new ImmutableDecimal(-1), new ImmutableDecimal(2));
+        $negOneHalf = new ImmutableFraction(new ImmutableDecimal('-1'), new ImmutableDecimal('2'));
 
         $this->assertEquals('1/2', $negOneHalf->absValue());
         $this->assertEquals('-1/2', $negOneHalf->getValue());
@@ -51,7 +61,9 @@ class ImmutableFractionTest extends TestCase
         $this->assertEquals('1/2', $oneHalf->abs()->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testCompare()
     {
 
@@ -65,7 +77,9 @@ class ImmutableFractionTest extends TestCase
         $this->assertEquals(0, $oneHalf->compare($oneHalf));
 
     }
-
+    /**
+     * @medium
+     */
     public function testAdd()
     {
 
@@ -76,7 +90,9 @@ class ImmutableFractionTest extends TestCase
         $this->assertEquals('2/3', $oneThird->add($oneThird)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testSubtract()
     {
 
@@ -90,7 +106,9 @@ class ImmutableFractionTest extends TestCase
         $this->assertEquals('1/3', $twoThirds->subtract($oneThird)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testMultiply()
     {
 
@@ -100,7 +118,9 @@ class ImmutableFractionTest extends TestCase
         $this->assertEquals('1/6', $oneThird->multiply($oneHalf)->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testDivide()
     {
 
@@ -111,7 +131,7 @@ class ImmutableFractionTest extends TestCase
 
     }
 
-    /**
+    /*
     public function testConvertBase()
     {
 
@@ -127,7 +147,9 @@ class ImmutableFractionTest extends TestCase
 
     }
     /**/
-
+    /**
+     * @medium
+     */
     public function testPow()
     {
 
@@ -137,7 +159,9 @@ class ImmutableFractionTest extends TestCase
         $this->assertEquals('0.2176376408', $oneHalf->pow('2.2')->getValue());
 
     }
-
+    /**
+     * @medium
+     */
     public function testSqrt()
     {
 

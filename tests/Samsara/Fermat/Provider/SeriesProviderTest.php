@@ -5,9 +5,16 @@ namespace Samsara\Fermat\Provider;
 use PHPUnit\Framework\TestCase;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class SeriesProviderTest extends TestCase
 {
 
+    /**
+     * @medium
+     */
     public function testMaclaurinSeriesStops()
     {
 
