@@ -178,8 +178,8 @@ class PolynomialFunction extends Expression implements FunctionInterface
         /** @var ImmutableDecimal[] $finalCoefs */
         $finalCoefs = [];
 
-        $group1 = Numbers::make(Numbers::IMMUTABLE, $group1);
-        $group2 = Numbers::make(Numbers::IMMUTABLE, $group2);
+        $group1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $group1);
+        $group2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $group2);
 
         if ($group1exp <= $group2exp) {
             $largerGroup = $group2;

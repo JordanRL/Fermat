@@ -17,7 +17,7 @@ class DummyNumber {
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class ImmutableNumberTest extends TestCase
+class ImmutableDecimalTest extends TestCase
 {
     /**
      * @medium
@@ -47,6 +47,7 @@ class ImmutableNumberTest extends TestCase
 
     }
     /**
+     * @group arithmetic
      * @medium
      */
     public function testAdd()
@@ -82,6 +83,7 @@ class ImmutableNumberTest extends TestCase
 
     }
     /**
+     * @group arithmetic
      * @medium
      */
     public function testSubtract()
@@ -117,6 +119,7 @@ class ImmutableNumberTest extends TestCase
 
     }
     /**
+     * @group arithmetic
      * @medium
      */
     public function testMultiply()
@@ -145,6 +148,7 @@ class ImmutableNumberTest extends TestCase
 
     }
     /**
+     * @group arithmetic
      * @medium
      */
     public function testDivide()
@@ -220,6 +224,7 @@ class ImmutableNumberTest extends TestCase
 
     }
     /**
+     * @group arithmetic
      * @medium
      */
     public function testPow()
@@ -312,6 +317,7 @@ class ImmutableNumberTest extends TestCase
 
     }
     /**
+     * @group arithmetic
      * @medium
      */
     public function testSqrt()
@@ -935,6 +941,7 @@ class ImmutableNumberTest extends TestCase
 
     }
     /**
+     * @group arithmetic
      * @medium
      */
     public function testArithmeticTraitCheck()
@@ -950,6 +957,8 @@ class ImmutableNumberTest extends TestCase
     }
 
     /**
+     * @group arithmetic
+     * @group complex
      * @medium
      */
     public function testImaginaryAdd()
@@ -978,6 +987,8 @@ class ImmutableNumberTest extends TestCase
     }
 
     /**
+     * @group arithmetic
+     * @group complex
      * @medium
      */
     public function testImaginarySubtract()

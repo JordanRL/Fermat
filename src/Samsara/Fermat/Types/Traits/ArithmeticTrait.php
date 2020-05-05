@@ -104,12 +104,28 @@ trait ArithmeticTrait
                 $newRealPart = $thisRealPart->add($numRealPart);
                 $newImaginaryPart = $thisImaginaryPart->add($numImaginaryPart);
 
-                return new ImmutableComplexNumber($newRealPart, $newImaginaryPart, $internalPrecision);
+                if ($newRealPart->isEqual(0) xor $newImaginaryPart->isEqual(0)) {
+                    $newNum = $newRealPart->isEqual(0) ? $newImaginaryPart : $newRealPart;
+
+                    return $this->setValue($newNum->getValue(), $internalPrecision);
+                } elseif ($newRealPart->isEqual(0) && $newImaginaryPart->isEqual(0)) {
+                    return $this->setValue('0', $internalPrecision);
+                } else {
+                    return new ImmutableComplexNumber($newRealPart, $newImaginaryPart, $internalPrecision);
+                }
             } else {
                 $newRealPart = $this->getRealPart()->add($numRealPart);
                 $newImaginaryPart = $this->getImaginaryPart()->add($numImaginaryPart);
 
-                return $this->setValue($newRealPart, $newImaginaryPart);
+                if ($newRealPart->isEqual(0) xor $newImaginaryPart->isEqual(0)) {
+                    $newNum = $newRealPart->isEqual(0) ? $newImaginaryPart : $newRealPart;
+
+                    return new ImmutableDecimal($newNum->getValue(), $internalPrecision);
+                } elseif ($newRealPart->isEqual(0) && $newImaginaryPart->isEqual(0)) {
+                    return new ImmutableDecimal('0', $internalPrecision);
+                } else {
+                    return $this->setValue($newRealPart, $newImaginaryPart);
+                }
             }
         } elseif (($this->isReal() xor $num->isReal()) && ($this->isImaginary() xor $num->isImaginary())) {
             if ($this->isEqual(0) || $num->isEqual(0)) {
@@ -194,12 +210,31 @@ trait ArithmeticTrait
                     $thisImaginaryPart = clone $this;
                 }
 
-                return new ImmutableComplexNumber($thisRealPart->subtract($numRealPart), $thisImaginaryPart->subtract($numImaginaryPart), $internalPrecision);
+                $newRealPart = $thisRealPart->subtract($numRealPart);
+                $newImaginaryPart = $thisImaginaryPart->subtract($numImaginaryPart);
+
+                if ($newRealPart->isEqual(0) xor $newImaginaryPart->isEqual(0)) {
+                    $newNum = $newRealPart->isEqual(0) ? $newImaginaryPart : $newRealPart;
+
+                    return $this->setValue($newNum->getValue(), $internalPrecision);
+                } elseif ($newRealPart->isEqual(0) && $newImaginaryPart->isEqual(0)) {
+                    return $this->setValue('0', $internalPrecision);
+                } else {
+                    return new ImmutableComplexNumber($newRealPart, $newImaginaryPart, $internalPrecision);
+                }
             } else {
                 $newRealPart = $this->getRealPart()->subtract($numRealPart);
                 $newImaginaryPart = $this->getImaginaryPart()->subtract($numImaginaryPart);
 
-                return $this->setValue($newRealPart, $newImaginaryPart);
+                if ($newRealPart->isEqual(0) xor $newImaginaryPart->isEqual(0)) {
+                    $newNum = $newRealPart->isEqual(0) ? $newImaginaryPart : $newRealPart;
+
+                    return new ImmutableDecimal($newNum->getValue(), $internalPrecision);
+                } elseif ($newRealPart->isEqual(0) && $newImaginaryPart->isEqual(0)) {
+                    return new ImmutableDecimal('0', $internalPrecision);
+                } else {
+                    return $this->setValue($newRealPart, $newImaginaryPart);
+                }
             }
         } elseif (($this->isReal() xor $num->isReal()) && ($this->isImaginary() xor $num->isImaginary())) {
             if ($this->isEqual(0) || $num->isEqual(0)) {
@@ -278,19 +313,32 @@ trait ArithmeticTrait
                 $newRealPart = new ImmutableDecimal($parts[0], $internalPrecision);
                 $newImaginaryPart = new ImmutableDecimal($parts[1], $internalPrecision);
                 /** @var ImmutableDecimal $newRealPart */
-                $newRealPart = $newRealPart->subtract($parts[2]);
+                $newRealPart = $newRealPart->add($parts[2]);
             } else {
                 $complexPart = $this->isComplex() ? $this : $num;
                 $simplePart = !$this->isComplex() ? $this : $num;
 
-                $newRealPart = $complexPart->getRealPart()->multiply($simplePart);
-                $newImaginaryPart = $complexPart->getImaginaryPart()->multiply($simplePart);
+                $value1 = $complexPart->getRealPart()->multiply($simplePart);
+                $value2 = $complexPart->getImaginaryPart()->multiply($simplePart);
+
+                $newRealPart = $value1->isReal() ? $value1 : $value2;
+                $newImaginaryPart = $value1->isImaginary() ? $value1 : $value2;
             }
 
-            if ($this->isComplex()) {
-                return $this->setValue($newRealPart, $newImaginaryPart);
+            if (!$newRealPart->isEqual(0) && !$newImaginaryPart->isEqual(0)) {
+                if ($this->isComplex()) {
+                    return $this->setValue($newRealPart, $newImaginaryPart);
+                } else {
+                    return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
+                }
             } else {
-                return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
+                $value = $newRealPart->isEqual(0) ? $newImaginaryPart : $newRealPart;
+
+                if ($this->isComplex()) {
+                    return new ImmutableDecimal($value->getValue(), $internalPrecision);
+                } else {
+                    return $this->setValue($value->getValue(), $internalPrecision);
+                }
             }
         }
 

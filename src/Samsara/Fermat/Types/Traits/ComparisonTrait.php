@@ -36,7 +36,7 @@ trait ComparisonTrait
         if ($check == 1) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
 
-            if ($this->isImaginary() xor $value->isImaginary()) {
+            if (($this->isImaginary() xor $value->isImaginary()) && $this->getAsBaseTenRealNumber() != '0') {
                 return false;
             }
 

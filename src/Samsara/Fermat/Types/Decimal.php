@@ -85,8 +85,9 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     protected function translateValue(string $value)
     {
         $value = trim($value);
+        $valueArr = str_split($value);
 
-        if ($value[0] == '-') {
+        if ($valueArr[0] == '-') {
             $this->sign = true;
             $value = trim($value, '-');
         } else {
