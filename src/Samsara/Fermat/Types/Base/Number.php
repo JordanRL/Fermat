@@ -3,34 +3,90 @@
 namespace Samsara\Fermat\Types\Base;
 
 use Ds\Hashable;
+use Samsara\Fermat\ComplexNumbers;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\ComplexNumber;
+use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticNativeTrait;
+use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticPrecisionTrait;
+use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
 use Samsara\Fermat\Values\ImmutableComplexNumber;
+use Samsara\Fermat\Values\ImmutableFraction;
 
 abstract class Number implements Hashable, NumberInterface
 {
     const INFINITY = 'INF';
     const NEG_INFINITY = '-INF';
 
-    const MODE_PRECISION = 1;
-    const MODE_NATIVE = 2;
-    const MODE_SIMPLE_TRIG = 3;
-
     /** @var array */
     protected $value;
     /** @var bool  */
     protected $extensions = true;
-    /** @var int */
-    protected $mode;
     /** @var bool  */
     protected $imaginary;
     /** @var bool */
     protected $sign;
 
+    use ArithmeticSelectionTrait;
+    use ArithmeticPrecisionTrait;
+    use ArithmeticNativeTrait;
+
     public function __construct($value)
     {
-        $this->setMode(Number::MODE_PRECISION);
+        $this->setMode(Selectable::MODE_PRECISION);
+    }
+
+    protected function translateToParts($left, $right, $identity = 0)
+    {
+        if (is_int($right) || is_float($right)) {
+            $right = Numbers::make(Numbers::IMMUTABLE, $right);
+        } elseif (is_string($right)) {
+            $right = trim($right);
+            if (strpos($right, '/') !== false) {
+                $right = Numbers::makeFractionFromString(Numbers::IMMUTABLE_FRACTION, $right);
+            } elseif (strrpos($right, '+') || strrpos($right, '-')) {
+                $right = ComplexNumbers::make(ComplexNumbers::IMMUTABLE, $right);
+            } else {
+                $right = Numbers::make(Numbers::IMMUTABLE, $right);
+            }
+        } else {
+            $right = Numbers::makeOrDont(Numbers::IMMUTABLE, $right);
+        }
+
+        if ($right->isComplex()) {
+            /** @var ImmutableComplexNumber $right */
+            $thatRealPart = $right->getRealPart();
+            /** @var DecimalInterface|FractionInterface $thatImaginaryPart */
+            $thatImaginaryPart = $right->getImaginaryPart();
+
+            if ($left->isImaginary() && $thatImaginaryPart instanceof FractionInterface && !($left instanceof FractionInterface)) {
+                /** @var FractionInterface $thatImaginaryPart */
+                $thatImaginaryPart = $thatImaginaryPart->asDecimal();
+            }
+
+            if ($left->isReal() && $thatRealPart instanceof FractionInterface && !($left instanceof FractionInterface)) {
+                /** @var FractionInterface $thatRealPart */
+                $thatRealPart = $thatRealPart->asDecimal();
+            }
+        } elseif ($right instanceof FractionInterface) {
+            if ($left instanceof FractionInterface) {
+                $thatRealPart = $right->isReal() ? $right : new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
+                $thatImaginaryPart = $right->isImaginary() ? $right : new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
+            } else {
+                $thatRealPart = $right->isReal() ? $right->asDecimal() : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+                $thatImaginaryPart = $right->isImaginary() ? $right->asDecimal() : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+            }
+        } else {
+            $thatRealPart = $right->isReal() ? $right : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+            $thatImaginaryPart = $right->isImaginary() ? $right : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+        }
+
+        $thisRealPart = $left->isReal() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+        $thisImaginaryPart = $left->isImaginary() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+
+        return [$thatRealPart, $thatImaginaryPart, $thisRealPart, $thisImaginaryPart];
     }
 
     /**
@@ -131,6 +187,13 @@ abstract class Number implements Hashable, NumberInterface
     {
         return !$this->imaginary;
     }
+
+    public function asReal(): string
+    {
+        return $this->getAsBaseTenRealNumber();
+    }
+
+    abstract public function getAsBaseTenRealNumber();
 
     abstract public function isComplex(): bool;
 

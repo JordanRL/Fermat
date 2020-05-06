@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Types\Traits;
+namespace Samsara\Fermat\Types\Traits\Decimal;
 
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;

@@ -67,7 +67,7 @@ trait ArithmeticTrait
 
     }
 
-    public function add($num)
+    public function addPrecision($num)
     {
 
         $check = $this->checkArithmeticTraitAndInterface();
@@ -177,7 +177,7 @@ trait ArithmeticTrait
 
     }
 
-    public function subtract($num)
+    public function subtractPrecision($num)
     {
         $check = $this->checkArithmeticTraitAndInterface();
 
@@ -278,7 +278,7 @@ trait ArithmeticTrait
 
     }
 
-    public function multiply($num)
+    public function multiplyPrecision($num)
     {
         /*
         if (is_string($num) && $this instanceof DecimalInterface && $num === 'i') {
@@ -363,7 +363,7 @@ trait ArithmeticTrait
 
     }
 
-    public function divide($num, $precision = null)
+    public function dividePrecision($num, $precision = null)
     {
         $check = $this->checkArithmeticTraitAndInterface();
 
@@ -416,7 +416,7 @@ trait ArithmeticTrait
         }
     }
 
-    public function pow($num)
+    public function powPrecision($num)
     {
         $check = $this->checkArithmeticTraitAndInterface();
 
@@ -533,7 +533,7 @@ trait ArithmeticTrait
      * @return ComplexNumber|Decimal|Fraction
      * @throws IntegrityConstraint
      */
-    public function sqrt(int $precision = null)
+    public function sqrtPrecision(int $precision = null)
     {
         $check = $this->checkArithmeticTraitAndInterface();
 

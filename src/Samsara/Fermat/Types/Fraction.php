@@ -7,6 +7,8 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Number;
+use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
+use Samsara\Fermat\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Types\Traits\ArithmeticTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Values\ImmutableDecimal;
@@ -20,7 +22,7 @@ abstract class Fraction extends Number implements FractionInterface
     /** @var bool */
     protected $sign;
 
-    use ArithmeticTrait;
+    use ArithmeticSimpleTrait;
     use ComparisonTrait;
 
     /**
