@@ -7,6 +7,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\NumberCollection;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 class SequenceProvider
@@ -69,55 +70,87 @@ class SequenceProvider
     /**
      * OEIS: A005408
      *
-     * @param $n
+     * @param int $n
+     * @param bool $asCollection
+     * @param int $collectionSize
      *
-     * @return DecimalInterface|NumberInterface
-     * @throws IntegrityConstraint
+     * @return DecimalInterface|NumberInterface|NumberCollection
+     * @throws IntegrityConstraint|\ReflectionException
      */
-    public static function nthOddNumber($n)
+    public static function nthOddNumber(int $n, bool $asCollection = false, int $collectionSize = 10)
     {
+        if ($asCollection) {
+            $sequence = [];
+            for ($i = 0;$i < $collectionSize;$i++) {
+                $sequence[] = self::nthOddNumber($n + $i);
+            }
 
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
+            return new NumberCollection($sequence);
+        } else {
+            $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
 
-        return $n->multiply(2)->add(1);
+            return $n->multiply(2)->add(1);
+        }
 
     }
 
     /**
      * OEIS: A005843
      *
-     * @param $n
+     * @param int $n
+     * @param bool $asCollection
+     * @param int $collectionSize
      *
-     * @return DecimalInterface|NumberInterface
+     * @return DecimalInterface|NumberInterface|NumberCollection
      * @throws IntegrityConstraint
      */
-    public static function nthEvenNumber($n)
+    public static function nthEvenNumber(int $n, bool $asCollection = false, int $collectionSize = 10)
     {
 
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
+        if ($asCollection) {
+            $sequence = [];
+            for ($i = 0;$i < $collectionSize;$i++) {
+                $sequence[] = self::nthEvenNumber($n + $i);
+            }
 
-        return $n->multiply(2);
+            return new NumberCollection($sequence);
+        } else {
+            $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
+
+            return $n->multiply(2);
+        }
 
     }
 
     /**
      * OEIS: A033999
      *
-     * @param $n
+     * @param int $n
+     * @param bool $asCollection
+     * @param int $collectionSize
      *
-     * @return DecimalInterface|NumberInterface
+     * @return DecimalInterface|NumberInterface|NumberCollection
      * @throws IntegrityConstraint
      */
-    public static function nthPowerNegativeOne($n)
+    public static function nthPowerNegativeOne(int $n, bool $asCollection = false, int $collectionSize = 10)
     {
 
-        $negOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1, 100);
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+        if ($asCollection) {
+            $sequence = [];
+            for ($i = 0;$i < $collectionSize;$i++) {
+                $sequence[] = self::nthPowerNegativeOne($n + $i);
+            }
 
-        if ($n->modulo(2)->isEqual(0)) {
-            return Numbers::makeOne();
+            return new NumberCollection($sequence);
         } else {
-            return $negOne;
+            $negOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1, 100);
+            $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+
+            if ($n->modulo(2)->isEqual(0)) {
+                return Numbers::makeOne();
+            } else {
+                return $negOne;
+            }
         }
 
     }
@@ -125,26 +158,34 @@ class SequenceProvider
     /**
      * OEIS: A000111
      *
-     * @param $n
+     * @param int $n
+     * @param bool $asCollection
+     * @param int $collectionSize
      *
-     * @return DecimalInterface|NumberInterface
+     * @return DecimalInterface|NumberInterface|NumberCollection
      * @throws IntegrityConstraint
-     * @throws IncompatibleObjectState
      */
-    public static function nthEulerZigzag($n)
+    public static function nthEulerZigzag(int $n, bool $asCollection = false, int $collectionSize = 10)
     {
 
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
+        if ($asCollection) {
+            $sequence = [];
+            for ($i = 0;$i < $collectionSize;$i++) {
+                $sequence[] = self::nthEulerZigzag($n + $i);
+            }
 
-        if ($n->isGreaterThan(50)) {
-            throw new IntegrityConstraint(
-                '$n cannot be larger than 50',
-                'Limit your use of the Euler Zigzag Sequence to the 50th index',
-                'This library does not support the Euler Zigzag Sequence (OEIS: A000111) beyond E(50)'
-            );
+            return new NumberCollection($sequence);
+        } else {
+            if ($n > 50) {
+                throw new IntegrityConstraint(
+                    '$n cannot be larger than 50',
+                    'Limit your use of the Euler Zigzag Sequence to the 50th index',
+                    'This library does not support the Euler Zigzag Sequence (OEIS: A000111) beyond E(50)'
+                );
+            }
+
+            return Numbers::make(Numbers::IMMUTABLE, static::EULER_ZIGZAG[$n], 100);
         }
-
-        return Numbers::make(Numbers::IMMUTABLE, static::EULER_ZIGZAG[$n->asInt()], 100);
 
     }
 
@@ -190,11 +231,14 @@ class SequenceProvider
      *
      * https://www.nayuki.io/page/fast-fibonacci-algorithms
      *
-     * @param $n
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
+     * @param int $n
+     * @param bool $asCollection
+     * @param int $collectionSize
+     *
+     * @return ImmutableDecimal|NumberCollection
+     * @throws IntegrityConstraint|\ReflectionException
      */
-    public static function nthFibonacciNumber($n): ImmutableDecimal
+    public static function nthFibonacciNumber(int $n, bool $asCollection = false, int $collectionSize = 10)
     {
         $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
         if (!$n->isInt()) {
@@ -215,9 +259,25 @@ class SequenceProvider
 
         $fastFib = static::_fib($n);
 
-        return $fastFib[0];
+        if ($asCollection) {
+            $sequence = [];
+            $sequence[] = $fastFib[0];
+            $sequence[] = $fastFib[1];
+            for ($i = 0;$i < ($collectionSize-2);$i++) {
+                $sequence[] = $sequence[$i]->add($sequence[$i+1]);
+            }
+
+            return new NumberCollection($sequence);
+        } else {
+            return $fastFib[0];
+        }
     }
 
+    /**
+     * @param ImmutableDecimal $number
+     * @return ImmutableDecimal[]
+     * @throws IntegrityConstraint
+     */
     private static function _fib(ImmutableDecimal $number): array
     {
         if ($number->isEqual(0)) {
