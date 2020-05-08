@@ -3,19 +3,10 @@
 namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Number;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Decimal;
 
-class ImmutableNumber extends Number implements NumberInterface, DecimalInterface
+class ImmutableDecimal extends Decimal
 {
-
-    public function modulo($mod)
-    {
-        $oldBase = $this->convertForModification();
-
-        return (new ImmutableNumber(bcmod($this->getValue(), $mod), $this->getPrecision(), $this->getBase()))->convertFromModification($oldBase);
-    }
 
     public function continuousModulo($mod)
     {
@@ -48,13 +39,43 @@ class ImmutableNumber extends Number implements NumberInterface, DecimalInterfac
     }
 
     /**
-     * @param $value
-     *
-     * @return ImmutableNumber
+     * @return bool
      */
-    protected function setValue($value)
+    public function isComplex(): bool
     {
-        return new ImmutableNumber($value, $this->getPrecision(), $this->getBase());
+        return false;
+    }
+
+    /**
+     * @param string $value
+     * @param int $precision
+     * @param int $base
+     *
+     * @return ImmutableDecimal
+     */
+    protected function setValue(string $value, int $precision = null, int $base = 10)
+    {
+        $imaginary = false;
+
+        if (strpos($value, 'i') !== false) {
+            $value = str_replace('i', '', $value);
+            $imaginary = true;
+        }
+
+        if ($base != 10 || $this->getBase() != 10) {
+            $base = $base == 10 ? $this->getBase() : $base;
+            $value = $this->convertValue($value, 10, $base);
+        }
+
+        if ($imaginary) {
+            $value .= 'i';
+        }
+
+        if (is_null($precision)) {
+            $precision = $this->getPrecision();
+        }
+
+        return new ImmutableDecimal($value, $precision, $base);
     }
 
 }

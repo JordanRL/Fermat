@@ -4,11 +4,12 @@ namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\FractionInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class StatsProvider
 {
@@ -18,6 +19,7 @@ class StatsProvider
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
     public static function normalCDF($x)
     {
@@ -57,6 +59,7 @@ class StatsProvider
      *
      * @return DecimalInterface|NumberInterface
      * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
     public static function complementNormalCDF($x)
     {
@@ -69,8 +72,9 @@ class StatsProvider
     /**
      * @param $x
      *
-     * @return DecimalInterface|FractionInterface|NumberInterface|ImmutableNumber
+     * @return DecimalInterface|FractionInterface|NumberInterface|ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
     public static function gaussErrorFunction($x)
     {
@@ -108,8 +112,9 @@ class StatsProvider
      * @param     $p
      * @param int $precision
      *
-     * @return DecimalInterface|NumberInterface|ImmutableNumber
+     * @return DecimalInterface|NumberInterface|ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
     public static function inverseNormalCDF($p, int $precision = 10)
     {
@@ -151,7 +156,7 @@ class StatsProvider
      * @param $n
      * @param $k
      *
-     * @return DecimalInterface|NumberInterface|ImmutableNumber
+     * @return DecimalInterface|NumberInterface|ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
@@ -185,7 +190,7 @@ class StatsProvider
      * @param     $z
      * @param int $precision
      *
-     * @return DecimalInterface|NumberInterface|ImmutableNumber
+     * @return DecimalInterface|NumberInterface|ImmutableDecimal
      * @throws IntegrityConstraint
      */
     public static function gammaFunction($z, int $precision = 10)

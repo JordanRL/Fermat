@@ -4,14 +4,13 @@ namespace Samsara\Fermat\Values\Algebra;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\ExpressionInterface;
-use Samsara\Fermat\Types\Base\FunctionInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Evaluateables\FunctionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Expression;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
-class PolynomialFunction extends Expression implements ExpressionInterface, FunctionInterface
+class PolynomialFunction extends Expression implements FunctionInterface
 {
     /** @var array  */
     protected $coefficients = [];
@@ -38,7 +37,7 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
                 );
             }
 
-            /** @var ImmutableNumber $fermatCoefficient */
+            /** @var ImmutableDecimal $fermatCoefficient */
             $fermatCoefficient = Numbers::make(Numbers::IMMUTABLE, $coefficient);
 
             if (!$fermatCoefficient->isEqual(0)) {
@@ -48,20 +47,24 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
 
         $this->coefficients = $sanitizedCoefficients;
 
-        $this->expression = function($x) use ($sanitizedCoefficients): ImmutableNumber {
-            /** @var ImmutableNumber $value */
+        $this->expression = function($x): ImmutableDecimal {
+            /** @var ImmutableDecimal $value */
             $value = Numbers::makeZero();
 
-            /** @var ImmutableNumber $xPart */
+            /** @var ImmutableDecimal $xPart */
             $xPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-            foreach ($sanitizedCoefficients as $exponent => $coefficient) {
+            foreach ($this->coefficients as $exponent => $coefficient) {
                 if ($exponent == 0) {
                     $value = $value->add($coefficient);
                 } else {
                     $term = $coefficient->multiply($xPart->pow($exponent));
                     $value = $value->add($term);
                 }
+            }
+
+            if ($value->isEqual(0)) {
+                $value = Numbers::makeOne();
             }
 
             return $value;
@@ -71,10 +74,9 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
     /**
      * @param int|float|string|NumberInterface|DecimalInterface $x
      *
-     * @return ImmutableNumber
-     * @throws IntegrityConstraint
+     * @return ImmutableDecimal
      */
-    public function evaluateAt($x): ImmutableNumber
+    public function evaluateAt($x): ImmutableDecimal
     {
         /** @var callable $answer */
         $answer = $this->expression;
@@ -92,7 +94,7 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
 
         /**
          * @var int             $exponent
-         * @var ImmutableNumber $coefficient
+         * @var ImmutableDecimal $coefficient
          */
         foreach ($this->coefficients as $exponent => $coefficient) {
             if ($exponent == 0) {
@@ -123,7 +125,7 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
 
         /**
          * @var int             $exponent
-         * @var ImmutableNumber $coefficient
+         * @var ImmutableDecimal $coefficient
          */
         foreach ($this->coefficients as $exponent => $coefficient) {
             $newExponent = $exponent+1;
@@ -134,14 +136,14 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
         return new PolynomialFunction($newCoefficients);
     }
 
-    public function describeShape()
+    public function describeShape(): array
     {
 
         $shape = [];
 
         /**
          * @var int             $exponent
-         * @var ImmutableNumber $coefficient
+         * @var ImmutableDecimal $coefficient
          */
         foreach ($this->coefficients as $exponent => $coefficient) {
             $shape[$exponent] = $coefficient->getValue();
@@ -149,6 +151,73 @@ class PolynomialFunction extends Expression implements ExpressionInterface, Func
 
         return $shape;
 
+    }
+
+    /**
+     * This function performs a FOIL expansion on a list of parameters.
+     *
+     * Assumptions:
+     *      1. The coefficients are the numbers provided in the arrays
+     *      2. The coefficients are listed in descending order of their exponent on the function variable. For example,
+     *         if you were multiplying (2 + 3x)*(5 - 1x^2 + 1x), it would expect these inputs:
+     *              -  [3, 2], [-1, 1, 5]
+     *      3. If not all exponents are used continuously, a zero must be provided for the position that is skipped. For
+     *         example, if one of the provided groups was 4x^2 + 2, it would expect: [4, 0, 2]
+     *
+     * @param int[]|float[]|NumberInterface[] $group1
+     * @param int[]|float[]|NumberInterface[] $group2
+     *
+     * @return PolynomialFunction
+     * @throws IntegrityConstraint
+     */
+    public static function createFromFoil(array $group1, array $group2): PolynomialFunction
+    {
+        $group1exp = count($group1)-1;
+        $group2exp = count($group2)-1;
+
+        /** @var ImmutableDecimal[] $finalCoefs */
+        $finalCoefs = [];
+
+        $group1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $group1);
+        $group2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $group2);
+
+        if ($group1exp <= $group2exp) {
+            $largerGroup = $group2;
+            $largerExp = $group2exp;
+            $smallerGroup = $group1;
+            $smallerExp = $group1exp;
+        } else {
+            $largerGroup = $group1;
+            $largerExp = $group1exp;
+            $smallerGroup = $group2;
+            $smallerExp = $group2exp;
+        }
+
+        /**
+         * @var int $key1
+         * @var ImmutableDecimal $value1
+         */
+        foreach ($largerGroup as $key1 => $value1) {
+            $largerKey = $largerExp - $key1;
+
+            /**
+             * @var int             $key2
+             * @var ImmutableDecimal $value2
+             */
+            foreach ($smallerGroup as $key2 => $value2) {
+                $smallerKey = $smallerExp - $key2;
+                $newVal = $value1->multiply($value2);
+                $newExp = $largerKey + $smallerKey;
+
+                if (isset($finalCoefs[$newExp])) {
+                    $finalCoefs[$newExp] = $finalCoefs[$newExp]->add($newVal);
+                } else {
+                    $finalCoefs[$newExp] = $newVal;
+                }
+            }
+        }
+
+        return new PolynomialFunction($finalCoefs);
     }
 
 }

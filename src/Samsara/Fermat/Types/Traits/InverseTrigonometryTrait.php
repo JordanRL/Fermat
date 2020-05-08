@@ -6,8 +6,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
-use Samsara\Fermat\Provider\StatsProvider;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 trait InverseTrigonometryTrait
 {
@@ -16,12 +15,12 @@ trait InverseTrigonometryTrait
     {
 
         $precision = $precision ?? $this->getPrecision();
-
-        $oldBase = $this->convertForModification();
+        $precision += 2;
+        $pi = Numbers::makePi();
+        $piDivTwo = $pi->divide(2, $precision+2);
 
         if ($this->isEqual(1) || $this->isEqual(-1)) {
-            $pi = Numbers::makePi();
-            $answer = $pi->divide(2);
+            $answer = $piDivTwo;
             if ($this->isNegative()) {
                 $answer = $answer->multiply(-1);
             }
@@ -39,30 +38,42 @@ trait InverseTrigonometryTrait
                 );
             }
 
-            $answer = $z->divide($one->subtract($z->pow(2))->sqrt($precision + 2), $precision + 2)->arctan($precision + 2, false);
+            $prevAnswer = $z;
+            $answer = $z;
+            $count = 0;
+
+            do {
+                $answer = $answer->subtract(
+                    $answer->sin($precision)->subtract($z)->divide($answer->cos($precision), $precision)
+                );
+                $diff = $answer->subtract($prevAnswer)->abs();
+                $prevAnswer = $answer;
+                $count++;
+            } while ($diff->numberOfLeadingZeros() <= $precision && $count < 15);
+
+
         }
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToPrecision($precision-2);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToPrecision($precision-2);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer);
 
     }
 
-    public function arccos($precision = null, $round = true)
+    public function arccos($precision = null, $round = true): DecimalInterface
     {
 
         $precision = $precision ?? $this->getPrecision();
-
-        $oldBase = $this->convertForModification();
+        $pi = Numbers::makePi($precision+2);
+        $piDivTwo = $pi->divide(2, $precision+2);
 
         if ($this->isEqual(-1)) {
             $answer = Numbers::makePi($precision+1);
         } elseif ($this->isEqual(0)) {
-            $answer = Numbers::makePi($precision+2);
-            $answer = $answer->divide(2, $precision+2);
+            $answer = $piDivTwo;
         } elseif ($this->isEqual(1)) {
             $answer = Numbers::makeZero();
         } else {
@@ -77,10 +88,7 @@ trait InverseTrigonometryTrait
                 );
             }
 
-            $answer = $one->subtract($z->pow(2))
-                ->sqrt($precision + 2)
-                ->divide($z, $precision + 2)
-                ->arctan($precision + 2, false);
+            $answer = $piDivTwo->subtract($z->arcsin($precision+2));
         }
 
         if ($round) {
@@ -89,7 +97,7 @@ trait InverseTrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer);
 
     }
 
@@ -97,56 +105,21 @@ trait InverseTrigonometryTrait
     {
 
         $precision = $precision ?? $this->getPrecision();
+        $precision += 5;
 
-        $one = Numbers::makeOne($precision + 2);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
 
-        $oldBase = $this->convertForModification();
+        $one = Numbers::makeOne();
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision + 2);
-
-        if ($z->isEqual(1)) {
-            $answer = Numbers::makePi($precision + 2)->divide(4, $precision + 2);
-        } elseif ($z->isEqual(-1)) {
-            $answer = Numbers::makePi($precision + 2)->divide(4, $precision +2)->multiply(-1);
-        } else {
-
-            if ($z->abs()->isGreaterThan(1)) {
-                $rangeAdjust = Numbers::makePi($precision + 2)->divide(2, $precision + 2);
-
-                if ($z->isNegative()) {
-                    $rangeAdjust = $rangeAdjust->multiply(-1);
-                }
-
-                $z = $one->divide($z, $precision + 2);
-            }
-
-            $answer = SeriesProvider::maclaurinSeries(
-                $z,
-                function ($n) {
-                    return SequenceProvider::nthPowerNegativeOne($n);
-                },
-                function ($n) {
-                    return SequenceProvider::nthOddNumber($n);
-                },
-                function ($n) {
-                    return SequenceProvider::nthOddNumber($n);
-                },
-                0,
-                $precision + 1
-            );
-
-            if (isset($rangeAdjust)) {
-                $answer = $rangeAdjust->subtract($answer);
-            }
-        }
+        $answer = $z->divide($one->add($z->pow(2))->sqrt($precision), $precision)->arcsin($precision);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToPrecision($precision-5);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToPrecision($precision-5);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer);
 
     }
 
@@ -156,8 +129,6 @@ trait InverseTrigonometryTrait
         $precision = $precision ?? $this->getPrecision();
 
         $piDivTwo = Numbers::makePi($precision + 2)->divide(2, $precision + 2);
-
-        $oldBase = $this->convertForModification();
 
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision + 2);
 
@@ -171,7 +142,7 @@ trait InverseTrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer);
 
     }
 
@@ -179,8 +150,6 @@ trait InverseTrigonometryTrait
     {
 
         $precision = $precision ?? $this->getPrecision();
-
-        $oldBase = $this->convertForModification();
 
         $one = Numbers::makeOne($precision + 2);
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+2);
@@ -201,7 +170,7 @@ trait InverseTrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer);
 
     }
 
@@ -209,8 +178,6 @@ trait InverseTrigonometryTrait
     {
 
         $precision = $precision ?? $this->getPrecision();
-
-        $oldBase = $this->convertForModification();
 
         $one = Numbers::makeOne($precision + 2);
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+2);
@@ -231,7 +198,7 @@ trait InverseTrigonometryTrait
             $answer = $answer->truncateToPrecision($precision);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        return $this->setValue($answer);
 
     }
 
@@ -240,9 +207,5 @@ trait InverseTrigonometryTrait
     abstract public function truncateToPrecision($precision);
 
     abstract public function getPrecision();
-
-    abstract public function convertForModification();
-
-    abstract public function convertFromModification($base);
 
 }

@@ -9,11 +9,11 @@
     "riimu/kit-baseconversion": "^1",
     "samsara/common": "^1",
     "php-ds/php-ds": "^1.1",
-    "php": ">=7.0.0",
+    "php": ">=7.3.0",
     "ext-bcmath": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^6.5"
+    "phpunit/phpunit": "9.*"
   },
   "suggest": {
     "ext-gmp": "*",

@@ -4,7 +4,7 @@ namespace Samsara\Fermat\Types;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class TupleTest extends TestCase
 {
@@ -29,13 +29,13 @@ class TupleTest extends TestCase
 
         $this->assertEquals('10', $tuple->get(1)->getValue());
 
-        $tuple->set(1, new ImmutableNumber(6));
+        $tuple->set(1, new ImmutableDecimal(6));
 
         $this->assertEquals('6', $tuple->get(1)->getValue());
 
         $this->expectException(IncompatibleObjectState::class);
 
-        $tuple->set(2, new ImmutableNumber(10));
+        $tuple->set(2, new ImmutableDecimal(10));
 
     }
 

@@ -2,46 +2,75 @@
 
 namespace Samsara\Fermat\Types;
 
-use Riimu\Kit\BaseConversion\BaseConverter;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\FractionInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\Base\Number;
 use Samsara\Fermat\Types\Traits\ArithmeticTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
-use Samsara\Fermat\Values\ImmutableFraction;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
-abstract class Fraction
+abstract class Fraction extends Number implements FractionInterface
 {
 
     protected $base;
-
-    /**
-     * @var ImmutableNumber
-     */
-    protected $numerator;
-
-    /**
-     * @var ImmutableNumber
-     */
-    protected $denominator;
+    /** @var ImmutableDecimal[] */
+    protected $value;
+    /** @var bool */
+    protected $sign;
 
     use ArithmeticTrait;
     use ComparisonTrait;
 
+    /**
+     * Fraction constructor.
+     * @param $numerator
+     * @param $denominator
+     * @param int $base
+     *
+     * @throws IntegrityConstraint
+     */
     public function __construct($numerator, $denominator, $base = 10)
     {
 
-        $this->numerator = Numbers::makeOrDont(Numbers::IMMUTABLE, $numerator, null, $base)->round();
-        $this->denominator = Numbers::makeOrDont(Numbers::IMMUTABLE, $denominator, null, $base)->round();
+        $numerator = Numbers::makeOrDont(Numbers::IMMUTABLE, $numerator, null, $base)->round();
+        $denominator = Numbers::makeOrDont(Numbers::IMMUTABLE, $denominator, null, $base)->round();
+
+        if ($denominator->isEqual(0)) {
+            throw new IntegrityConstraint(
+                'The denominator of a fraction cannot be zero.',
+                'Provide a denominator other than zero.',
+                'Cannot create new instance of Fraction with denominator of zero.'
+            );
+        }
+
+        if ($numerator->isImaginary() xor $denominator->isImaginary()) {
+            $dummyValue = 'i';
+        } else {
+            $dummyValue = '';
+        }
+
+        $this->value = [
+            $numerator,
+            $denominator
+        ];
 
         $this->base = $base;
 
+        if ($numerator->isNegative() xor $denominator->isNegative()) {
+            $this->sign = true;
+        }
+
+        parent::__construct($dummyValue);
+
     }
 
-    public function getValue()
+    public function getValue(): string
     {
-        return $this->getNumerator()->getValue().'/'.$this->getDenominator()->getValue();
+        $baseAnswer = $this->getNumerator()->getValue().'/'.$this->getDenominator()->getValue();
+
+        return $baseAnswer;
     }
 
     public function getBase()
@@ -51,12 +80,20 @@ abstract class Fraction
 
     public function getNumerator()
     {
-        return $this->numerator;
+        return $this->value[0];
     }
 
     public function getDenominator()
     {
-        return $this->denominator;
+        return $this->value[1];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isComplex(): bool
+    {
+        return false;
     }
 
     public function simplify()
@@ -76,20 +113,23 @@ abstract class Fraction
         if ($this->isPositive()) {
             return $this;
         } else {
-            return $this->setValue($this->getNumerator()->abs(), $this->getDenominator()->abs());
+            /** @var ImmutableDecimal $numerator */
+            $numerator = $this->getNumerator()->abs();
+            /** @var ImmutableDecimal $denominator */
+            $denominator = $this->getDenominator()->abs();
+            return $this->setValue(
+                $numerator,
+                $denominator
+            );
         }
     }
 
-    public function absValue()
+    public function absValue(): string
     {
-        if ($this->isPositive()) {
-            return $this->getValue();
-        } else {
-            return substr($this->getValue(), 1);
-        }
+        return $this->getNumerator()->absValue().'/'.$this->getDenominator()->absValue();
     }
 
-    public function compare($number)
+    public function compare($number): int
     {
         if ($this->isGreaterThan($number)) {
             return 1;
@@ -103,7 +143,7 @@ abstract class Fraction
     public function asDecimal($precision = 10)
     {
 
-        /** @var ImmutableNumber $decimal */
+        /** @var ImmutableDecimal $decimal */
         $decimal = $this->getNumerator()->divide($this->getDenominator(), $precision);
 
         return $decimal;
@@ -112,6 +152,7 @@ abstract class Fraction
 
     /**
      * @return NumberInterface
+     * @throws IntegrityConstraint
      */
     public function getGreatestCommonDivisor()
     {
@@ -129,20 +170,9 @@ abstract class Fraction
         return $lcm;
     }
 
-    public function convertToBase($base)
+    public function getAsBaseTenRealNumber(): string
     {
-        $converter = new BaseConverter($this->getBase(), $base);
-
-        $converter->setPrecision(10);
-
-        /** @var ImmutableNumber $numerator */
-        $numerator = $this->getNumerator()->convertToBase($base);
-        /** @var ImmutableNumber $denominator */
-        $denominator = $this->getDenominator()->convertToBase($base);
-
-        $this->base = $base;
-
-        return $this->setValue($numerator, $denominator);
+        return $this->getNumerator()->getAsBaseTenRealNumber().'/'.$this->getDenominator()->getAsBaseTenRealNumber();
     }
 
     protected function getNumeratorsWithSameDenominator(FractionInterface $fraction, NumberInterface $lcm = null)
@@ -163,10 +193,11 @@ abstract class Fraction
     }
 
     /**
-     * @param ImmutableNumber $numerator
-     * @param ImmutableNumber $denominator
+     * @param ImmutableDecimal $numerator
+     * @param ImmutableDecimal $denominator
+     *
      * @return Fraction
      */
-    abstract protected function setValue(ImmutableNumber $numerator, ImmutableNumber $denominator);
+    abstract protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator);
 
 }

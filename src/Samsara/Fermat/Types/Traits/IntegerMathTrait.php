@@ -5,16 +5,14 @@ namespace Samsara\Fermat\Types\Traits;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 trait IntegerMathTrait
 {
 
     public function factorial()
     {
-        $oldBase = $this->convertForModification();
-
         if ($this->isLessThan(1)) {
             if ($this->isEqual(0)) {
                 return $this->setValue(1);
@@ -27,7 +25,7 @@ trait IntegerMathTrait
         }
 
         if (function_exists('gmp_fact') && function_exists('gmp_strval') && $this->extensions) {
-            return $this->setValue(gmp_strval(gmp_fact($this->getValue())))->convertFromModification($oldBase);
+            return $this->setValue(gmp_strval(gmp_fact($this->getValue())));
         }
 
         $curVal = $this->getValue();
@@ -37,7 +35,7 @@ trait IntegerMathTrait
             $calcVal = $calcVal->multiply($i);
         }
 
-        return $this->setValue($calcVal->getValue())->convertFromModification($oldBase);
+        return $this->setValue($calcVal->getValue());
 
     }
 
@@ -49,8 +47,6 @@ trait IntegerMathTrait
             throw new IncompatibleObjectState('Can only perform a double factorial on a whole number');
         }
 
-        $oldBase = $this->convertForModification();
-
         $num = Numbers::make(Numbers::MUTABLE, $this->getValue(), $this->getPrecision(), $this->getBase());
 
         $newVal = Numbers::makeOne();
@@ -59,14 +55,14 @@ trait IntegerMathTrait
 
         while ($continue) {
             $newVal = $newVal->multiply($num->getValue());
-            $num->subtract(2);
+            $num = $num->subtract(2);
 
             if ($num->isLessThanOrEqualTo(1)) {
                 $continue = false;
             }
         }
 
-        return $this->setValue($newVal->getValue())->convertFromModification($oldBase);
+        return $this->setValue($newVal->getValue());
 
     }
 
@@ -78,7 +74,7 @@ trait IntegerMathTrait
     public function getLeastCommonMultiple($num)
     {
 
-        /** @var ImmutableNumber $num */
+        /** @var ImmutableDecimal $num */
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num);
 
         if (!$this->isInt() || !$num->isInt()) {
@@ -95,9 +91,9 @@ trait IntegerMathTrait
 
     public function getGreatestCommonDivisor($num)
     {
-        /** @var ImmutableNumber $num */
+        /** @var ImmutableDecimal $num */
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num)->abs();
-        /** @var ImmutableNumber $thisNum */
+        /** @var ImmutableDecimal $thisNum */
         $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this)->abs();
 
         if (!$this->isInt() || !$num->isInt()) {

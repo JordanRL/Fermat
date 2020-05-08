@@ -4,8 +4,8 @@ namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Values\ImmutableFraction;
 
 trait ComparisonTrait
@@ -36,7 +36,11 @@ trait ComparisonTrait
         if ($check == 1) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
 
-            if ($this->compare($value) === 0) {
+            if (($this->isImaginary() xor $value->isImaginary()) && $this->getAsBaseTenRealNumber() != '0') {
+                return false;
+            }
+
+            if ($this->compare($value->getAsBaseTenRealNumber()) === 0) {
                 return true;
             } else {
                 return false;
@@ -179,11 +183,7 @@ trait ComparisonTrait
                 return false;
             }
 
-            if (strpos($this->getValue(), '-') === 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return $this->sign;
         } else {
             return $this->getNumerator()->isNegative();
         }
@@ -198,7 +198,7 @@ trait ComparisonTrait
                 return false;
             }
 
-            return !$this->isNegative();
+            return !$this->sign;
         } else {
             return $this->getNumerator()->isPositive();
         }
@@ -219,10 +219,13 @@ trait ComparisonTrait
         $check = $this->checkComparisonTraitAndInterface();
 
         if ($check == 1) {
-            if ($this->getDecimalPart() == 0) {
-                return true;
-            } else {
+            $checkVal = $this->getDecimalPart();
+            $checkVal = trim($checkVal,'0');
+
+            if (strlen($checkVal) > 0 ) {
                 return false;
+            } else {
+                return true;
             }
         } else {
             return $this->getDenominator()->isEqual(1);

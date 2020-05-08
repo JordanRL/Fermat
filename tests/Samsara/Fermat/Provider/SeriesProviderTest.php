@@ -3,24 +3,31 @@
 namespace Samsara\Fermat\Provider;
 
 use PHPUnit\Framework\TestCase;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class SeriesProviderTest extends TestCase
 {
 
+    /**
+     * @medium
+     */
     public function testMaclaurinSeriesStops()
     {
 
         $value = SeriesProvider::maclaurinSeries(
-            new ImmutableNumber(1),
+            new ImmutableDecimal(1),
             function($num) {
-                return new ImmutableNumber(1);
+                return new ImmutableDecimal(1);
             },
             function($num) {
-                return new ImmutableNumber(1);
+                return new ImmutableDecimal(1);
             },
             function($num) {
-                $val = new ImmutableNumber(10);
+                $val = new ImmutableDecimal(10);
 
                 return $val->pow($num);
             }

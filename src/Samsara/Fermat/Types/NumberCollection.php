@@ -2,17 +2,18 @@
 
 namespace Samsara\Fermat\Types;
 
-use RandomLib\Factory;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\Distribution\Exponential;
 use Samsara\Fermat\Provider\Distribution\Normal;
 use Samsara\Fermat\Provider\Distribution\Poisson;
-use Samsara\Fermat\Types\Base\NumberCollectionInterface;
+use Samsara\Fermat\Provider\PolyfillProvider;
+use Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Ds\Vector;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\Algebra\PolynomialFunction;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class NumberCollection implements NumberCollectionInterface
 {
@@ -71,6 +72,16 @@ class NumberCollection implements NumberCollectionInterface
         return $this;
     }
 
+    public function count(): int
+    {
+        return $this->getCollection()->count();
+    }
+
+    public function toArray(): array
+    {
+        return $this->collection->toArray();
+    }
+
     /**
      * @param NumberInterface $number
      *
@@ -111,13 +122,30 @@ class NumberCollection implements NumberCollectionInterface
         return $this->getCollection()->shift();
     }
 
+    public function filterByKeys(array $filters): NumberCollection
+    {
+
+        $filteredCollection = new NumberCollection();
+
+        foreach ($this->collection as $key => $value) {
+            if (in_array($key, $filters)) {
+                continue;
+            }
+
+            $filteredCollection->push($value);
+        }
+
+        return $filteredCollection;
+
+    }
+
     /**
      * @return NumberCollectionInterface
      */
     public function sort(): NumberCollectionInterface
     {
         $this->getCollection()->sort(function($left, $right){
-            return ArithmeticProvider::compare($left, $right);
+            return ArithmeticProvider::compare($left->getAsBaseTenRealNumber(), $right->getAsBaseTenRealNumber());
         });
 
         return $this;
@@ -141,7 +169,7 @@ class NumberCollection implements NumberCollectionInterface
     public function add($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $value->add($number);
         });
 
@@ -156,7 +184,7 @@ class NumberCollection implements NumberCollectionInterface
     public function subtract($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $value->subtract($number);
         });
 
@@ -171,7 +199,7 @@ class NumberCollection implements NumberCollectionInterface
     public function multiply($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $value->multiply($number);
         });
 
@@ -186,7 +214,7 @@ class NumberCollection implements NumberCollectionInterface
     public function divide($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $value->divide($number);
         });
 
@@ -203,7 +231,7 @@ class NumberCollection implements NumberCollectionInterface
     public function pow($number): NumberCollectionInterface
     {
         $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $value->pow($number);
         });
 
@@ -227,7 +255,7 @@ class NumberCollection implements NumberCollectionInterface
             $base = Numbers::makeOrDont(Numbers::IMMUTABLE, $base);
         }
         $this->getCollection()->apply(function($value) use ($base){
-            /** @var ImmutableNumber $value */
+            /** @var ImmutableDecimal $value */
             return $base->pow($value);
         });
 
@@ -251,13 +279,7 @@ class NumberCollection implements NumberCollectionInterface
     {
         $maxKey = $this->getCollection()->count() - 1;
 
-        try {
-            $key = random_int(0, $maxKey);
-        } catch (\Exception $exception) {
-            $randFactory = new Factory();
-            $generator = $randFactory->getMediumStrengthGenerator();
-            $key = $generator->generateInt(0, $maxKey);
-        }
+        $key = PolyfillProvider::randomInt(0, $maxKey);
 
         return $this->get($key);
     }
@@ -290,12 +312,12 @@ class NumberCollection implements NumberCollectionInterface
      */
     public function makeNormalDistribution(): Normal
     {
-        /** @var ImmutableNumber $mean */
+        /** @var ImmutableDecimal $mean */
         $mean = $this->mean();
 
         $squaredSum = Numbers::makeZero();
 
-        /** @var ImmutableNumber $number */
+        /** @var ImmutableDecimal $number */
         foreach ($this->getCollection() as $number) {
             $squaredSum = $squaredSum->add($number->subtract($mean)->pow(2));
         }
@@ -337,6 +359,19 @@ class NumberCollection implements NumberCollectionInterface
         $lambda = $one->divide($average);
 
         return new Exponential($lambda);
+    }
+
+    /**
+     * @return PolynomialFunction
+     * @throws IntegrityConstraint
+     */
+    public function makePolynomialFunction(): PolynomialFunction
+    {
+
+        $coefs = $this->collection->toArray();
+
+        return new PolynomialFunction($coefs);
+
     }
 
 }

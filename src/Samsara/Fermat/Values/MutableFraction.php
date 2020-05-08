@@ -3,13 +3,11 @@
 namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Types\Fraction;
-use Samsara\Fermat\Types\Base\FractionInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
 
-class MutableFraction extends Fraction implements NumberInterface, FractionInterface
+class MutableFraction extends Fraction
 {
 
-    protected function setValue(ImmutableNumber $numerator, ImmutableNumber $denominator)
+    protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator)
     {
 
         $this->numerator = $numerator;

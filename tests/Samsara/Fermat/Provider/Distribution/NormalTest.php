@@ -4,9 +4,15 @@ namespace Samsara\Fermat\Provider\Distribution;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class NormalTest extends TestCase
 {
-
+    /*
+     * @medium
+     *
     public function testPercentAboveX()
     {
 
@@ -17,16 +23,23 @@ class NormalTest extends TestCase
         $this->assertEquals('0.1498822848', $normal->pdf(8, 9)->getValue());
 
     }
-
-    public function testCDF()
+    /**
+     * @medium
+     *
+    public function testPercentBelowX()
     {
 
         $normal = new Normal(10, 2);
 
+        $this->assertEquals('0.1586552539', $normal->percentBelowX(8)->getValue());
+
         $this->assertEquals('0.1586552539', $normal->cdf(8)->getValue());
 
     }
-
+    */
+    /**
+     * @medium
+     */
     public function testZScore()
     {
 

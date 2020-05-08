@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false">
 
-    <testsuites name="Fermat Test Suites">
+    <testsuites>
         <testsuite name="Values Test Suite">
             <directory suffix=".php">./tests/Samsara/Fermat/Values</directory>
         </testsuite>

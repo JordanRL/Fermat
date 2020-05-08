@@ -3,22 +3,22 @@
 namespace Samsara\Fermat;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Types\Base\CoordinateInterface;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Fraction;
-use Samsara\Fermat\Values\CartesianCoordinate;
+use Samsara\Fermat\Values\Geometry\CoordinateSystems\CartesianCoordinate;
 use Samsara\Fermat\Values\ImmutableFraction;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 use Samsara\Fermat\Values\MutableFraction;
-use Samsara\Fermat\Values\MutableNumber;
-use Samsara\Fermat\Types\Base\NumberInterface;
+use Samsara\Fermat\Values\MutableDecimal;
 
 class Numbers
 {
 
-    const MUTABLE = MutableNumber::class;
-    const IMMUTABLE = ImmutableNumber::class;
+    const MUTABLE = MutableDecimal::class;
+    const IMMUTABLE = ImmutableDecimal::class;
     const MUTABLE_FRACTION = MutableFraction::class;
     const IMMUTABLE_FRACTION = ImmutableFraction::class;
     const CARTESIAN_COORDINATE = CartesianCoordinate::class;
@@ -32,6 +32,8 @@ class Numbers
     const GOLDEN_RATIO = '1.618033988749894848204586834365638117720309179805762862135448622705260462818902449707207204189391137';
     /* Natural log of 10 to 100 digits */
     const LN_10 = '2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298';
+    /* The value of i^i */
+    const I_POW_I = '0.2078795763507619085469556198349787700338778416317696080751358830554198772854821397886002778654260353';
 
     /**
      * @param $type
@@ -39,8 +41,8 @@ class Numbers
      * @param int|null $precision
      * @param int $base
      *
-     * @throws IntegrityConstraint
-     * @return ImmutableNumber|MutableNumber|ImmutableFraction|MutableFraction|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
+     * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
+     *@throws IntegrityConstraint
      */
     public static function make($type, $value, $precision = null, $base = 10)
     {
@@ -50,15 +52,29 @@ class Numbers
         }
 
         if ($type == static::IMMUTABLE) {
-            return new ImmutableNumber(trim($value), $precision, $base);
+            return new ImmutableDecimal(trim($value), $precision, $base);
         } elseif ($type == static::MUTABLE) {
-            return new MutableNumber(trim($value), $precision, $base);
+            return new MutableDecimal(trim($value), $precision, $base);
         } elseif ($type == static::IMMUTABLE_FRACTION) {
             return self::makeFractionFromString($type, $value, $base);
         } elseif ($type == static::MUTABLE_FRACTION) {
             return self::makeFractionFromString($type, $value, $base);
         } elseif ($type == static::CARTESIAN_COORDINATE && is_array($value)) {
-            return new CartesianCoordinate($value);
+            $x = $value[0];
+
+            if (isset($value[1])) {
+                $y = $value[1];
+            } else {
+                $y = null;
+            }
+
+            if (isset($value[2])) {
+                $z = $value[2];
+            } else {
+                $z = null;
+            }
+
+            return new CartesianCoordinate($x, $y, $z);
         } else {
             $reflector = new \ReflectionClass($type);
 
@@ -106,11 +122,12 @@ class Numbers
      * @param int|null $precision
      * @param int $base
      * @return NumberInterface
+     * @throws IntegrityConstraint
      */
     public static function makeFromBase10($type, $value, $precision = null, $base = 10)
     {
         /**
-         * @var ImmutableNumber|MutableNumber
+         * @var ImmutableDecimal|MutableDecimal
          */
         $number = self::make($type, $value, $precision, 10);
 
@@ -123,20 +140,18 @@ class Numbers
      * @param int|null $precision
      * @param int $base
      *
-     * @throws IntegrityConstraint
-     * @return ImmutableNumber|MutableNumber|NumberInterface|ImmutableNumber[]|MutableNumber[]|NumberInterface[]
+     * @return ImmutableDecimal|MutableDecimal|NumberInterface|ImmutableDecimal[]|MutableDecimal[]|NumberInterface[]
+     * @throws IntegrityConstraint|\ReflectionException
      */
     public static function makeOrDont($type, $value, $precision = null, $base = 10)
     {
 
         if (is_object($value)) {
-            $reflector = new \ReflectionClass($value);
-
             if ($value instanceof $type) {
                 return $value;
             }
 
-            if ($reflector->implementsInterface(NumberInterface::class)) {
+            if ($value instanceof NumberInterface) {
                 return static::make($type, $value->getValue(), $precision, $base);
             }
         } elseif (is_array($value)) {
@@ -147,14 +162,18 @@ class Numbers
             }
 
             return $newInput;
-        } elseif (is_numeric($value)) {
-            return static::make($type, $value, $precision, $base);
+        } elseif (is_numeric($value) || is_string($value)) {
+            $isImaginary = strpos($value, 'i') !== false;
+
+            if (is_numeric($value) || $isImaginary) {
+                return static::make($type, $value, $precision, $base);
+            }
         }
 
         throw new IntegrityConstraint(
             '$input must be an int, float, numeric string, or an implementation of NumberInterface',
             'Provide any of the MANY valid inputs',
-            'The $input argument was not numeric or an implementation of NumberInterface.'
+            'The $input argument was not numeric or an implementation of NumberInterface. Given value: '.$value
         );
 
     }
@@ -165,7 +184,7 @@ class Numbers
      * @param int $base
      *
      * @return FractionInterface|ImmutableFraction|MutableFraction
-     * @throws IntegrityConstraint
+     * @throws IntegrityConstraint|\ReflectionException
      */
     public static function makeFractionFromString($type, $value, $base = 10)
     {
@@ -179,9 +198,9 @@ class Numbers
             );
         }
 
-        /** @var ImmutableNumber $numerator */
+        /** @var ImmutableDecimal $numerator */
         $numerator = Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[0])))->round();
-        /** @var ImmutableNumber $denominator */
+        /** @var ImmutableDecimal $denominator */
         $denominator = isset($parts[1]) ? Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[1])))->round() : Numbers::makeOne();
 
         if ($type == self::IMMUTABLE_FRACTION) {
@@ -261,6 +280,7 @@ class Numbers
      * @param int|null $precision
      *
      * @return NumberInterface
+     * @throws IntegrityConstraint
      */
     public static function make2Pi($precision = null)
     {
@@ -345,7 +365,8 @@ class Numbers
     /**
      * @param int|null $precision
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
      */
     public static function makeOne($precision = null)
     {
@@ -355,7 +376,8 @@ class Numbers
     /**
      * @param int|null $precision
      *
-     * @return ImmutableNumber
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
      */
     public static function makeZero($precision = null)
     {

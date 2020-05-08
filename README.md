@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/JordanRL/Fermat.svg?branch=master)](https://travis-ci.org/JordanRL/Fermat) [![Code Coverage](https://scrutinizer-ci.com/g/JordanRL/Fermat/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/JordanRL/Fermat/?branch=master) [![Latest Stable Version](https://poser.pugx.org/samsara/fermat/v/stable)](https://packagist.org/packages/samsara/fermat) [![Total Downloads](https://poser.pugx.org/samsara/fermat/downloads)](https://packagist.org/packages/samsara/fermat) [![Latest Unstable Version](https://poser.pugx.org/samsara/fermat/v/unstable)](https://packagist.org/packages/samsara/fermat) [![License](https://poser.pugx.org/samsara/fermat/license)](https://packagist.org/packages/samsara/fermat)
 
-**This project is unit tested against 7.X, and merges are not accepted unless the tests pass.**
+**This project is unit tested against 7.2+, and merges are not accepted unless the tests pass.**
 
 ## Installation
 
@@ -60,10 +60,10 @@ You can also use a `Fraction` and `Number` together:
 ```php
 <?php
 
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Values\ImmutableDecimal;
 use Samsara\Fermat\Values\ImmutableFraction;
 
-$five = new ImmutableNumber(5);
+$five = new ImmutableDecimal(5);
 $oneQuarter = new ImmutableFraction(1, 4);
 
 echo $five->add($oneQuarter); // Prints: "5.25"

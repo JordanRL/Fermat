@@ -2,128 +2,136 @@
 
 namespace Samsara\Fermat\Types\Traits;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
-use Samsara\Fermat\Types\Base\DecimalInterface;
-use Samsara\Fermat\Types\Base\NumberInterface;
-use Samsara\Fermat\Values\ImmutableNumber;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 trait LogTrait
 {
 
-    public function exp()
+    public function exp($precision = null)
     {
-        $oldBase = $this->convertForModification();
+        $precision = $precision ?? $this->getPrecision();
 
         $value = SeriesProvider::maclaurinSeries(
-            Numbers::makeOrDont(Numbers::IMMUTABLE, $this),
-            function() {
-                return Numbers::makeOne();
+            Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision),
+            function() use ($precision) {
+                return Numbers::makeOne($precision);
             },
-            function($n) {
-                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+            function($n) use ($precision) {
+                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, $precision);
 
                 return $n;
             },
-            function($n) {
-                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+            function($n) use ($precision) {
+                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, $precision);
 
                 return $n->factorial();
             },
             0,
-            $this->getPrecision()
+            $precision
         );
 
-        return $this->setValue($value)->convertFromModification($oldBase);
+        return $this->setValue($value->getAsBaseTenRealNumber(), $precision, $this->getBase());
     }
 
     /**
-     * @param int $precision The number of digits which should be accurate
+     * @param int|null $precision The number of digits which should be accurate
      * @param bool $round Whether or not to round to the $precision value. If true, will round. If false, will truncate.
      *
      * @return DecimalInterface|NumberInterface
      */
-    public function ln($precision = 10, $round = true)
+    public function ln($precision = null, $round = true)
     {
-        $oldBase = $this->convertForModification();
-
+        /*
         if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX) && $precision <= 10) {
-            return $this->setValue(log($this->getValue()))->convertFromModification($oldBase);
+            return $this->setValue(log($this->getValue()));
         }
+        */
 
-        $internalPrecision = ($precision+1 > strlen($this->value)) ? $precision+1 : strlen($this->value);
+        $internalPrecision = $precision ?? $this->getPrecision();
+        $internalPrecision += 5;
 
+        $oldPrecision = $this->getPrecision();
         $this->precision = $internalPrecision;
 
-        $ePow = 0;
-        $eDiv = 1;
-        $e = Numbers::makeE();
+        $num = new ImmutableDecimal($this->getAsBaseTenRealNumber(), $internalPrecision);
 
-        if ($this->isGreaterThan(10)) {
-            $continue = true;
-            do {
-                $prevDiv = $eDiv;
-                $eDiv = $e->pow($ePow);
+        $e = Numbers::makeE($internalPrecision);
+        $e2 = $e->multiply(2);
+        $adjustedNum = Numbers::makeZero($internalPrecision);
 
-                if ($eDiv->isGreaterThan($this)) {
-                    $continue = false;
-                } else {
-                    $ePow++;
-                }
-            } while ($continue);
+        $eExp = 0;
 
-            $ePow--;
-            $eDiv = $prevDiv;
+        while ($num->isGreaterThan($e2)) {
+            $num = $num->divide($e, $internalPrecision);
+            $eExp++;
         }
 
-        $adjustedNum = $this->divide($eDiv, $internalPrecision);
+        while ($num->isLessThan($e)) {
+            $num = $num->multiply($e);
+            $eExp--;
+        }
 
-        /** @var ImmutableNumber $y */
-        $y = Numbers::makeOne($internalPrecision);
-        $y = $y->multiply($adjustedNum->subtract(1))->divide($adjustedNum->add(1), $internalPrecision);
+        $count = 0;
+        $expComponent = Numbers::makeZero();
 
-        $answer = SeriesProvider::genericTwoPartSeries(
-            function($term) use ($y, $internalPrecision) {
-                $two = Numbers::make(Numbers::IMMUTABLE, 2, $internalPrecision);
-                $odd = SequenceProvider::nthOddNumber($term);
+        do {
+            if ($adjustedNum->isEqual(0)) {
+                $adjustedNum = $adjustedNum->add($num->subtract(1)->divide($num->add(1), $internalPrecision)->multiply(2));
+            } else {
+                $adjustedNum = $adjustedNum->add(
+                    $num->subtract($expComponent)->divide($num->add($expComponent), $internalPrecision)->multiply(2)
+                );
+            }
 
-                return $two->divide($odd, $internalPrecision);
-            },
-            function($term) use ($y) {
-                return $y;
-            },
-            function($term) {
-                return SequenceProvider::nthOddNumber($term);
-            },
-            0,
-            $internalPrecision
-        );
+            $expComponent = $adjustedNum->exp($internalPrecision);
 
-        $answer = $answer->add($ePow);
+            $diff = $expComponent->subtract($num)->truncateToPrecision($internalPrecision-4);
+
+            //echo 'Internal Precision: '.$internalPrecision.' | Object Precision: '.$this->getPrecision().' Num Precision: '.$num->getPrecision().' | Adjusted Num Precision: '.$adjustedNum->getPrecision().PHP_EOL;
+            //$count++;
+        } while (!$diff->isEqual(0) && $count < 15);
+
+        $answer = $adjustedNum->add($eExp);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToPrecision($internalPrecision-5);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToPrecision($internalPrecision-5);
         }
 
-        return $this->setValue($answer)->convertFromModification($oldBase);
+        $this->precision = $oldPrecision;
+
+        return $this->setValue($answer->getAsBaseTenRealNumber(), $precision, $this->getBase());
     }
 
-    public function log10($precision = 10, $round = true)
+    /**
+     * @param null $precision
+     * @param bool $round
+     * @return mixed
+     * @throws IntegrityConstraint
+     */
+    public function log10($precision = null, $round = true)
     {
         $log10 = Numbers::makeNaturalLog10();
 
-        $value = $this->ln($precision+1)->divide($log10, $precision+1);
+        $internalPrecision = $precision ?? $this->precision;
+        $internalPrecision += 1;
+
+        $value = $this->ln($internalPrecision)->divide($log10);
 
         if ($round) {
-            $value = $value->roundToPrecision($precision);
+            $value = $value->roundToPrecision($internalPrecision-1);
         } else {
-            $value = $value->truncateToPrecision($precision);
+            $value = $value->truncateToPrecision($internalPrecision-1);
         }
 
-        return $this->setValue($value);
+        return $this->setValue($value->getAsBaseTenRealNumber(), $precision, $this->getBase());
     }
 
 }
