@@ -135,7 +135,7 @@ class Numbers
     }
 
     /**
-     * @param $type
+     * @param string|object $type
      * @param int|float|string|NumberInterface|DecimalInterface|FractionInterface $value
      * @param int|null $precision
      * @param int $base

@@ -99,7 +99,7 @@ class StatsProvider
                 function ($n) {
                     $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
 
-                    return $n->factorial()->multiply(SequenceProvider::nthOddNumber($n));
+                    return $n->factorial()->multiply(SequenceProvider::nthOddNumber($n->asInt()));
                 }
             )
         );

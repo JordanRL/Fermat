@@ -56,7 +56,7 @@ abstract class Matrix implements MatrixInterface
 
     public function isSquare(): bool
     {
-        if ($this->numRows === $this->numColumns) {
+        if ($this->getRowCount() === $this->getColumnCount()) {
             return true;
         } else {
             return false;

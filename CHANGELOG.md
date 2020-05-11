@@ -93,6 +93,8 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Fixed missing @throws in docblocks in all distributions
     - Now extend `Distribution` abstract class
     - Use the randomInt() method in PolyfillProvider instead of RandomLib directly
+  - SequenceProvider:
+    - Allowed `nthEvenNumber()`, `nthOddNumber()`, `nthPowerNegativeOne()`, `nthEulerZigzag()`, and `nthFibonacciNumber()` to return windows of the sequence as a NumberCollection object
 - Types:
   - Base:
     - Interfaces:
