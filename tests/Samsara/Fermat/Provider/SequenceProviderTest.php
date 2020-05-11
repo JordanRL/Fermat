@@ -13,6 +13,62 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 class SequenceProviderTest extends TestCase
 {
     /**
+     * @small
+     */
+    public function testOddNumber()
+    {
+
+        $five = SequenceProvider::nthOddNumber(2);
+
+        $this->assertEquals('5', $five->getValue());
+
+        $firstFiveOdds = SequenceProvider::nthOddNumber(0, true, 5);
+
+        $this->assertEquals(5, $firstFiveOdds->count());
+
+        $this->assertEquals('5', $firstFiveOdds->get(2)->getValue());
+
+    }
+
+    /**
+     * @small
+     */
+    public function testEvenNumber()
+    {
+
+        $four = SequenceProvider::nthEvenNumber(2);
+
+        $this->assertEquals('4', $four->getValue());
+
+        $firstFiveEvens = SequenceProvider::nthEvenNumber(0, true, 5);
+
+        $this->assertEquals(5, $firstFiveEvens->count());
+
+        $this->assertEquals('4', $firstFiveEvens->get(2)->getValue());
+
+    }
+
+    /**
+     * @small
+     */
+    public function testPowNegOne()
+    {
+
+        $one = SequenceProvider::nthPowerNegativeOne(2);
+
+        $this->assertEquals('1', $one->getValue());
+
+        $firstFivePows = SequenceProvider::nthPowerNegativeOne(0, true, 5);
+
+        $this->assertEquals(5, $firstFivePows->count());
+
+        $this->assertEquals('-1', $firstFivePows->get(1)->getValue());
+        $this->assertEquals('1', $firstFivePows->get(2)->getValue());
+        $this->assertEquals('-1', $firstFivePows->get(3)->getValue());
+
+    }
+
+    /**
      * @medium
      */
     public function testNthEulerZigzag()
@@ -22,11 +78,15 @@ class SequenceProviderTest extends TestCase
 
         $this->assertEquals('16', $fifth->getValue());
 
+        $eulerZigzagCollection = SequenceProvider::nthEulerZigzag(2, true, 3);
+
+        $this->assertEquals(3, $eulerZigzagCollection->count());
+        $this->assertEquals('5', $eulerZigzagCollection->get(2)->getValue());
+
         $this->expectException(IntegrityConstraint::class);
         $this->expectExceptionMessage('This library does not support the Euler Zigzag Sequence (OEIS: A000111) beyond E(50)');
 
         SequenceProvider::nthEulerZigzag(51);
-
     }
     /**
      * @medium
@@ -73,17 +133,16 @@ class SequenceProviderTest extends TestCase
 
         $this->assertEquals('21', $eight->getValue());
 
-    }
-    /**
-     * @medium
-     */
-    public function testDecimalFibonacci()
-    {
 
-        $this->expectException(IntegrityConstraint::class);
-        $this->expectExceptionMessage('The nthFibonacciNumber function takes the term number as its argument; provide an integer term number');
+        $firstTenFibs = SequenceProvider::nthFibonacciNumber(0, true, 10);
 
-        SequenceProvider::nthFibonacciNumber(new ImmutableDecimal('0.5'));
+        $this->assertEquals(10, $firstTenFibs->count());
+        $this->assertEquals('21', $firstTenFibs->get(8)->getValue());
+
+        $collectionFibs = SequenceProvider::nthFibonacciNumber(7, true, 3);
+
+        $this->assertEquals(3, $collectionFibs->count());
+        $this->assertEquals('34', $collectionFibs->get(2)->getValue());
 
     }
     /**

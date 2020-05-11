@@ -80,17 +80,18 @@ class SequenceProvider
     public static function nthOddNumber(int $n, bool $asCollection = false, int $collectionSize = 10)
     {
         if ($asCollection) {
-            $sequence = [];
+            $sequence = new NumberCollection();
+
             for ($i = 0;$i < $collectionSize;$i++) {
-                $sequence[] = self::nthOddNumber($n + $i);
+                $sequence->push(self::nthOddNumber($n + $i));
             }
 
-            return new NumberCollection($sequence);
-        } else {
-            $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
-
-            return $n->multiply(2)->add(1);
+            return $sequence;
         }
+
+        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
+
+        return $n->multiply(2)->add(1);
 
     }
 
@@ -108,17 +109,18 @@ class SequenceProvider
     {
 
         if ($asCollection) {
-            $sequence = [];
+            $sequence = new NumberCollection();
+
             for ($i = 0;$i < $collectionSize;$i++) {
-                $sequence[] = self::nthEvenNumber($n + $i);
+                $sequence->push(self::nthEvenNumber($n + $i));
             }
 
-            return new NumberCollection($sequence);
-        } else {
-            $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
-
-            return $n->multiply(2);
+            return $sequence;
         }
+
+        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
+
+        return $n->multiply(2);
 
     }
 
@@ -136,22 +138,23 @@ class SequenceProvider
     {
 
         if ($asCollection) {
-            $sequence = [];
+            $sequence = new NumberCollection();
+
             for ($i = 0;$i < $collectionSize;$i++) {
-                $sequence[] = self::nthPowerNegativeOne($n + $i);
+                $sequence->push(self::nthPowerNegativeOne($n + $i));
             }
 
-            return new NumberCollection($sequence);
-        } else {
-            $negOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1, 100);
-            $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
-
-            if ($n->modulo(2)->isEqual(0)) {
-                return Numbers::makeOne();
-            } else {
-                return $negOne;
-            }
+            return $sequence;
         }
+
+        $negOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1, 100);
+        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+
+        if ($n->modulo(2)->isEqual(0)) {
+            return Numbers::makeOne();
+        }
+
+        return $negOne;
 
     }
 
@@ -169,23 +172,24 @@ class SequenceProvider
     {
 
         if ($asCollection) {
-            $sequence = [];
+            $sequence = new NumberCollection();
+
             for ($i = 0;$i < $collectionSize;$i++) {
-                $sequence[] = self::nthEulerZigzag($n + $i);
+                $sequence->push(self::nthEulerZigzag($n + $i));
             }
 
-            return new NumberCollection($sequence);
-        } else {
-            if ($n > 50) {
-                throw new IntegrityConstraint(
-                    '$n cannot be larger than 50',
-                    'Limit your use of the Euler Zigzag Sequence to the 50th index',
-                    'This library does not support the Euler Zigzag Sequence (OEIS: A000111) beyond E(50)'
-                );
-            }
-
-            return Numbers::make(Numbers::IMMUTABLE, static::EULER_ZIGZAG[$n], 100);
+            return $sequence;
         }
+
+        if ($n > 50) {
+            throw new IntegrityConstraint(
+                '$n cannot be larger than 50',
+                'Limit your use of the Euler Zigzag Sequence to the 50th index',
+                'This library does not support the Euler Zigzag Sequence (OEIS: A000111) beyond E(50)'
+            );
+        }
+
+        return Numbers::make(Numbers::IMMUTABLE, static::EULER_ZIGZAG[$n], 100);
 
     }
 
@@ -204,7 +208,9 @@ class SequenceProvider
 
         if ($n->isEqual(0)) {
             return Numbers::makeOne();
-        } elseif ($n->isEqual(1)) {
+        }
+
+        if ($n->isEqual(1)) {
             return Numbers::make(Numbers::IMMUTABLE, '0.5', 100);
         }
 
@@ -218,7 +224,7 @@ class SequenceProvider
 
         $b = $b->pow($n->divide(2)->floor())
             ->multiply($n->divide($two->pow($n)->subtract($four->pow($n))))
-            ->multiply(static::nthEulerZigzag($n));
+            ->multiply(static::nthEulerZigzag($n->asInt()));
 
         return $b;
 
@@ -241,13 +247,6 @@ class SequenceProvider
     public static function nthFibonacciNumber(int $n, bool $asCollection = false, int $collectionSize = 10)
     {
         $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
-        if (!$n->isInt()) {
-            throw new IntegrityConstraint(
-                'Sequences can only have integer term numbers',
-                'Provide a valid term number',
-                'The nthFibonacciNumber function takes the term number as its argument; provide an integer term number'
-            );
-        }
 
         if ($n->isLessThan(0)) {
             throw new IntegrityConstraint(
@@ -260,17 +259,17 @@ class SequenceProvider
         $fastFib = static::_fib($n);
 
         if ($asCollection) {
-            $sequence = [];
-            $sequence[] = $fastFib[0];
-            $sequence[] = $fastFib[1];
+            $sequence = new NumberCollection();
+            $sequence->push($fastFib[0]);
+            $sequence->push($fastFib[1]);
             for ($i = 0;$i < ($collectionSize-2);$i++) {
-                $sequence[] = $sequence[$i]->add($sequence[$i+1]);
+                $sequence->push($sequence->get($i)->add($sequence[$i+1]));
             }
 
-            return new NumberCollection($sequence);
-        } else {
-            return $fastFib[0];
+            return $sequence;
         }
+
+        return $fastFib[0];
     }
 
     /**
@@ -290,14 +289,15 @@ class SequenceProvider
          * @var ImmutableDecimal $prevCall
          */
         $prevCall = $number->divide(2)->floor();
-        list($a, $b) = static::_fib($prevCall);
+        [$a, $b] = static::_fib($prevCall);
         $c = $a->multiply($b->multiply(2)->subtract($a));
         $d = $a->multiply($a)->add($b->multiply($b));
+
         if ($number->modulo(2)->isEqual(0)) {
             return [$c, $d];
-        } else {
-            return [$d, $c->add($d)];
         }
+
+        return [$d, $c->add($d)];
     }
 
 }
