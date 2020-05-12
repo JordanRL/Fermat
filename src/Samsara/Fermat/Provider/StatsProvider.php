@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Provider;
 
+use Ds\Vector;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\OptionalExit;
@@ -10,24 +11,33 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
+use Samsara\Fermat\Values\ImmutableFraction;
 
 class StatsProvider
 {
+
+    /**
+     * @var Vector
+     */
+    protected static $inverseErrorCoefs;
 
     /**
      * @param $x
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
-     * @throws OptionalExit
+     * @throws OptionalExit|\ReflectionException
      */
-    public static function normalCDF($x)
+    public static function normalCDF($x): ImmutableDecimal
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        $pi = Numbers::makePi();
-        $e = Numbers::makeE();
-        $one = Numbers::makeOne();
+        $precision = $x->getPrecision();
+        $internalPrecision = $precision+2;
+
+        $pi = Numbers::makePi($internalPrecision);
+        $e = Numbers::makeE($internalPrecision);
+        $one = Numbers::makeOne($internalPrecision);
 
         $eExponent = Numbers::make(Numbers::IMMUTABLE, $x->getValue());
         $eExponent = $eExponent->pow(2)->divide(2)->multiply(-1);
@@ -46,11 +56,13 @@ class StatsProvider
                     },
                     function ($n) {
                         return SequenceProvider::nthOddNumber($n)->doubleFactorial();
-                    }
+                    },
+                    0,
+                    $internalPrecision
                 ))
         );
 
-        return $answer;
+        return $answer->truncateToPrecision($precision);
 
     }
 
@@ -61,7 +73,7 @@ class StatsProvider
      * @throws IntegrityConstraint
      * @throws OptionalExit
      */
-    public static function complementNormalCDF($x)
+    public static function complementNormalCDF($x): ImmutableDecimal
     {
         $p = self::normalCDF($x);
         $one = Numbers::makeOne();
@@ -76,12 +88,16 @@ class StatsProvider
      * @throws IntegrityConstraint
      * @throws OptionalExit
      */
-    public static function gaussErrorFunction($x)
+    public static function gaussErrorFunction($x): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
-        $answer = Numbers::makeOne();
-        $pi = Numbers::makePi();
+
+        $precision = $x->getPrecision();
+        $internalPrecision = $precision + 2;
+
+        $answer = Numbers::makeOne($internalPrecision);
+        $pi = Numbers::makePi($internalPrecision);
 
         $answer = $answer->multiply(2)->divide($pi->sqrt());
 
@@ -100,11 +116,13 @@ class StatsProvider
                     $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
 
                     return $n->factorial()->multiply(SequenceProvider::nthOddNumber($n->asInt()));
-                }
+                },
+                0,
+                $internalPrecision
             )
         );
 
-        return $answer;
+        return $answer->truncateToPrecision($precision);
 
     }
 
@@ -116,40 +134,17 @@ class StatsProvider
      * @throws IntegrityConstraint
      * @throws OptionalExit
      */
-    public static function inverseNormalCDF($p, int $precision = 10)
+    public static function inverseNormalCDF($p, int $precision = 10): ImmutableDecimal
     {
-        $pi = Numbers::makePi();
-        $r2pi = $pi->multiply(2)->sqrt();
-        $e = Numbers::makeE();
         $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
 
-        $continue = true;
+        $precision = $precision ?? $p->getPrecision();
+        $internalPrecision = $precision + 2;
 
-        $xCur = Numbers::make(Numbers::IMMUTABLE, $p);
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, $internalPrecision);
+        $invErfArg = $two->multiply($p)->subtract(1);
 
-        while ($continue) {
-
-            $cumulative = self::normalCDF($xCur);
-            $dx = $cumulative->subtract($p)->divide(
-                $r2pi->multiply(
-                    $e->pow(
-                        $xCur->pow(2)
-                    )->divide(-2)
-                )
-            );
-            $xCur = $xCur->subtract($dx);
-
-            if ($dx->numberOfLeadingZeros() > $precision) {
-                $continue = false;
-            }
-
-        }
-
-        if ($p->isLessThan(0.5)) {
-            return $xCur->multiply(-1);
-        } else {
-            return $xCur;
-        }
+        return StatsProvider::inverseGaussErrorFunction($invErfArg, $internalPrecision)->multiply($two->sqrt($internalPrecision))->roundToPrecision($precision);
     }
 
     /**
@@ -160,7 +155,7 @@ class StatsProvider
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
-    public static function binomialCoefficient($n, $k)
+    public static function binomialCoefficient($n, $k): ImmutableDecimal
     {
 
         $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
@@ -186,53 +181,91 @@ class StatsProvider
 
     }
 
+    public static function inverseErrorCoefficients(int $termIndex): ImmutableFraction
+    {
+
+        $terms =& static::$inverseErrorCoefs;
+
+        if (is_null(static::$inverseErrorCoefs)) {
+            $terms = new Vector();
+            $terms->push(new ImmutableFraction(Numbers::makeOne(), Numbers::makeOne()));
+            $terms->push(new ImmutableFraction(Numbers::makeOne(), Numbers::makeOne()));
+        }
+
+        if ($terms->offsetExists($termIndex)) {
+            return $terms->get($termIndex);
+        }
+
+        $nextTerm = $terms->count();
+
+        for ($k = $nextTerm;$k <= $termIndex;$k++) {
+            $termValue = new ImmutableFraction(new ImmutableDecimal('0'), new ImmutableDecimal('1'));
+            for ($m = 0;$m <= ($k - 1);$m++) {
+                $part1 = $terms->get($m);
+                $part2 = $terms->get($k - 1 - $m);
+                $part3 = $part1->multiply($part2);
+                $part4 = ($m + 1)*($m*2 + 1);
+                $part5 = $part3->divide($part4);
+                $termValue = $termValue->add($part5);
+            }
+
+            $termValue = $termValue->simplify();
+
+            $terms->push($termValue);
+        }
+
+        return $terms->get($termIndex);
+
+    }
+
     /**
-     * @param     $z
+     * @param $z
      * @param int $precision
      *
-     * @return DecimalInterface|NumberInterface|ImmutableDecimal
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws \ReflectionException
      */
-    public static function gammaFunction($z, int $precision = 10)
+    public static function inverseGaussErrorFunction($z, int $precision = 10): ImmutableDecimal
     {
+
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
 
-        if ($z->isInt()) {
-            if ($z->isNegative() || $z->isEqual(0)) {
-                throw new IntegrityConstraint(
-                    'Non-positive integers are not valid gamma function arguments',
-                    'Do not provide non-positive integers to this function',
-                    'The gamma function is not defined for zero or negative integers, but is continuous for all other values'
-                );
-            }
-            return $z->subtract(1)->factorial();
-        }
+        $precision = $precision ?? $z->getPrecision();
+        $internalPrecision = $precision + 1;
 
-        $x = Numbers::makeZero();
-        $e = Numbers::makeE();
-        $gamma = Numbers::makeZero();
+        $pi = Numbers::makePi($internalPrecision);
 
-        $continue = true;
+        $answer = SeriesProvider::maclaurinSeries(
+            $z,
+            function ($n) use ($pi) {
+                if ($n > 0) {
+                    return $pi->pow($n)->multiply(StatsProvider::inverseErrorCoefficients($n));
+                }
 
-        while ($continue) {
+                return Numbers::makeOne();
+            },
+            function ($n) {
+                return SequenceProvider::nthOddNumber($n);
+            },
+            function ($n) {
+                if ($n > 0) {
+                    $extra = Numbers::make(Numbers::IMMUTABLE, 2)->pow(SequenceProvider::nthEvenNumber($n));
+                } else {
+                    $extra = Numbers::makeOne();
+                }
 
-            $adjustment = $x->pow(
-                $z->subtract(1)
-            )->multiply(
-                $e->pow(
-                    $x->multiply(-1)
-                )
-            );
+                return SequenceProvider::nthOddNumber($n)->multiply($extra);
+            },
+            0,
+            $internalPrecision
+        );
 
-            $gamma = $gamma->add($adjustment);
+        $answer = $answer->multiply($pi->sqrt($internalPrecision)->divide(2, $internalPrecision));
 
-            if ($adjustment->numberOfLeadingZeros() > $precision) {
-                $continue = false;
-            }
+        return $answer->roundToPrecision($precision);
 
-        }
-
-        return $gamma;
     }
 
 }

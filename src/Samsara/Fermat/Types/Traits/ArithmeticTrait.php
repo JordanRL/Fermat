@@ -108,11 +108,13 @@ trait ArithmeticTrait
                     $newNum = $newRealPart->isEqual(0) ? $newImaginaryPart : $newRealPart;
 
                     return $this->setValue($newNum->getValue(), $internalPrecision);
-                } elseif ($newRealPart->isEqual(0) && $newImaginaryPart->isEqual(0)) {
-                    return $this->setValue('0', $internalPrecision);
-                } else {
-                    return new ImmutableComplexNumber($newRealPart, $newImaginaryPart, $internalPrecision);
                 }
+
+                if ($newRealPart->isEqual(0) && $newImaginaryPart->isEqual(0)) {
+                    return $this->setValue('0', $internalPrecision);
+                }
+
+                return new ImmutableComplexNumber($newRealPart, $newImaginaryPart, $internalPrecision);
             } else {
                 $newRealPart = $this->getRealPart()->add($numRealPart);
                 $newImaginaryPart = $this->getImaginaryPart()->add($numImaginaryPart);
@@ -280,15 +282,6 @@ trait ArithmeticTrait
 
     public function multiply($num)
     {
-        /*
-        if (is_string($num) && $this instanceof DecimalInterface && $num === 'i') {
-            if ($this->isImaginary()) {
-                return $this->setValue($this->getAsBaseTenRealNumber())->multiply(-1);
-            } else {
-                return $this->setValue($this->getAsBaseTenRealNumber().'i');
-            }
-        }
-        */
 
         $check = $this->checkArithmeticTraitAndInterface();
 
@@ -407,10 +400,16 @@ trait ArithmeticTrait
 
             return $this->setValue($value, $precision, $this->getBase());
         } else {
-            /** @var ImmutableFraction $num */
+            if ($num instanceof DecimalInterface) {
+                $numerator = $num;
+                $denominator = Numbers::makeOne();
+            } else {
+                $numerator = $num->getNumerator();
+                $denominator = $num->getDenominator();
+            }
 
-            $finalDenominator = $this->getDenominator()->multiply($num->getNumerator());
-            $finalNumerator = $this->getNumerator()->multiply($num->getDenominator());
+            $finalDenominator = $this->getDenominator()->multiply($numerator);
+            $finalNumerator = $this->getNumerator()->multiply($denominator);
 
             return $this->setValue($finalNumerator, $finalDenominator);
         }

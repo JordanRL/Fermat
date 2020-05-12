@@ -2,29 +2,32 @@
 
 namespace Samsara\Fermat\Types;
 
+use ReflectionException;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Matrices;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Groups\MatrixInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableMatrix;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 abstract class Matrix implements MatrixInterface
 {
-    const MODE_ROWS_INPUT = 'rows';
-    const MODE_COLUMNS_INPUT = 'columns';
+    public const MODE_ROWS_INPUT = 'rows';
+    public const MODE_COLUMNS_INPUT = 'columns';
 
     /** @var NumberCollection[] */
-    protected $rows;
+    protected array $rows;
     /** @var NumberCollection[] */
-    protected $columns;
+    protected array $columns;
     /** @var int */
-    protected $numRows;
+    protected int $numRows;
     /** @var int */
-    protected $numColumns;
+    protected int $numColumns;
 
     /**
      * Matrix constructor. The array of number collections can be an array of rows, or an array of columns. Default is rows.
@@ -39,14 +42,18 @@ abstract class Matrix implements MatrixInterface
 
     }
 
-    protected function normalizeInputData(array $data, string $mode)
+    /**
+     * @param array $data
+     * @param string $mode
+     */
+    protected function normalizeInputData(array $data, string $mode): void
     {
-        if ($mode === Matrix::MODE_ROWS_INPUT) {
+        if ($mode === self::MODE_ROWS_INPUT) {
             $this->rows = $data;
             $this->columns = self::swapArrayHierarchy($data);
             $this->numRows = count($this->rows);
             $this->numColumns = count($this->columns);
-        } elseif ($mode === Matrix::MODE_COLUMNS_INPUT) {
+        } elseif ($mode === self::MODE_COLUMNS_INPUT) {
             $this->columns = $data;
             $this->rows = self::swapArrayHierarchy($data);
             $this->numRows = count($this->rows);
@@ -54,35 +61,80 @@ abstract class Matrix implements MatrixInterface
         }
     }
 
+    /**
+     * @return bool
+     */
     public function isSquare(): bool
     {
-        if ($this->getRowCount() === $this->getColumnCount()) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->getRowCount() === $this->getColumnCount();
     }
 
+    /**
+     * @return int
+     */
     public function getRowCount(): int
     {
         return $this->numRows;
     }
 
+    /**
+     * @param int $row
+     * @return NumberCollection
+     */
     public function getRow(int $row): NumberCollection
     {
         return clone $this->rows[$row];
     }
 
+    /**
+     * @return int
+     */
     public function getColumnCount(): int
     {
         return $this->numColumns;
     }
 
+    /**
+     * @param int $column
+     * @return NumberCollection
+     */
     public function getColumn(int $column): NumberCollection
     {
         return clone $this->columns[$column];
     }
 
+    /**
+     * @return MatrixInterface
+     */
+    public function getAdjoint(): MatrixInterface
+    {
+        $rows = $this->columns;
+
+        return $this->setValue($rows);
+    }
+
+    /**
+     * @return MatrixInterface
+     */
+    public function getAdjugate(): MatrixInterface
+    {
+        return $this->getAdjoint();
+    }
+
+    /**
+     * @return MatrixInterface
+     */
+    public function transpose(): MatrixInterface
+    {
+        return $this->getAdjoint();
+    }
+
+    /**
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     * @throws ReflectionException
+     */
     public function getDeterminant(): ImmutableDecimal
     {
         if (!$this->isSquare()) {
@@ -91,6 +143,7 @@ abstract class Matrix implements MatrixInterface
             );
         }
 
+        // TODO: Fix child matrix stuff
         if ($this->numRows > 2) {
             $determinant = Numbers::makeZero();
 
@@ -113,9 +166,14 @@ abstract class Matrix implements MatrixInterface
         return $determinant;
     }
 
+    /**
+     * @param NumberCollection $row
+     * @return $this
+     * @throws IntegrityConstraint
+     */
     public function pushRow(NumberCollection $row): MatrixInterface
     {
-        if ($row->count() != $this->numColumns) {
+        if ($row->count() !== $this->numColumns) {
             throw new IntegrityConstraint(
                 'The members of a new row must match the number of columns in a matrix.',
                 'Provide a NumberCollection that has the right number of members.',
@@ -129,14 +187,19 @@ abstract class Matrix implements MatrixInterface
             $this->columns[$key]->push($value);
         }
 
-        $this->numRows += 1;
+        ++$this->numRows;
 
         return $this;
     }
 
+    /**
+     * @param NumberCollection $column
+     * @return $this
+     * @throws IntegrityConstraint
+     */
     public function pushColumn(NumberCollection $column): MatrixInterface
     {
-        if ($column->count() != $this->numRows) {
+        if ($column->count() !== $this->numRows) {
             throw new IntegrityConstraint(
                 'The members of a new row must match the number of columns in a matrix.',
                 'Provide a NumberCollection that has the right number of members.',
@@ -150,28 +213,39 @@ abstract class Matrix implements MatrixInterface
             $this->rows[$key]->push($value);
         }
 
-        $this->numColumns += 1;
+        ++$this->numColumns;
 
         return $this;
     }
 
+    /**
+     * @return NumberCollection
+     */
     public function popRow(): NumberCollection
     {
-        $this->numRows -= 1;
+        --$this->numRows;
 
         return array_pop($this->rows);
     }
 
+    /**
+     * @return NumberCollection
+     */
     public function popColumn(): NumberCollection
     {
-        $this->numColumns -= 1;
+        --$this->numColumns;
 
         return array_pop($this->columns);
     }
 
+    /**
+     * @param NumberCollection $row
+     * @return $this
+     * @throws IntegrityConstraint
+     */
     public function unshiftRow(NumberCollection $row): MatrixInterface
     {
-        if ($row->count() != $this->numColumns) {
+        if ($row->count() !== $this->numColumns) {
             throw new IntegrityConstraint(
                 'The members of a new row must match the number of columns in a matrix.',
                 'Provide a NumberCollection that has the right number of members.',
@@ -185,14 +259,19 @@ abstract class Matrix implements MatrixInterface
             $this->columns[$key]->unshift($value);
         }
 
-        $this->numRows += 1;
+        ++$this->numRows;
 
         return $this;
     }
 
+    /**
+     * @param NumberCollection $column
+     * @return $this
+     * @throws IntegrityConstraint
+     */
     public function unshiftColumn(NumberCollection $column): MatrixInterface
     {
-        if ($column->count() != $this->numRows) {
+        if ($column->count() !== $this->numRows) {
             throw new IntegrityConstraint(
                 'The members of a new row must match the number of columns in a matrix.',
                 'Provide a NumberCollection that has the right number of members.',
@@ -206,45 +285,53 @@ abstract class Matrix implements MatrixInterface
             $this->rows[$key]->unshift($value);
         }
 
-        $this->numColumns += 1;
+        ++$this->numColumns;
 
         return $this;
     }
 
+    /**
+     * @return NumberCollection
+     */
     public function shiftRow(): NumberCollection
     {
-        $this->numRows -= 1;
+        --$this->numRows;
 
         return array_shift($this->rows);
     }
 
+    /**
+     * @return NumberCollection
+     */
     public function shiftColumn(): NumberCollection
     {
-        $this->numColumns -= 1;
+        --$this->numColumns;
 
         return array_shift($this->columns);
     }
 
+    /**
+     * @param bool $clockwise
+     * @return MatrixInterface
+     */
     public function rotate(bool $clockwise = true): MatrixInterface
     {
-        if ($clockwise) {
-            $tempData = $this->rows;
+        $tempData =  $clockwise ? $this->rows :  $this->columns;
+        $mode = $clockwise ? self::MODE_COLUMNS_INPUT : self::MODE_ROWS_INPUT;
 
-            $tempData = array_reverse($tempData);
+        $tempData = array_reverse($tempData);
 
-            return $this->setValue($tempData, Matrix::MODE_COLUMNS_INPUT);
-        } else {
-            $tempData = $this->columns;
-
-            $tempData = array_reverse($tempData);
-
-            return $this->setValue($tempData, Matrix::MODE_ROWS_INPUT);
-        }
+        return $this->setValue($tempData, $mode);
     }
 
+    /**
+     * @param MatrixInterface $value
+     * @return MatrixInterface
+     * @throws IntegrityConstraint
+     */
     public function add(MatrixInterface $value): MatrixInterface
     {
-        if ($this->getRowCount() != $value->getRowCount() || $this->getColumnCount() != $value->getColumnCount()) {
+        if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
             throw new IntegrityConstraint(
                 'Matrices must be the same size in order to be added.',
                 'Only add two matrices if they are the same size.',
@@ -268,6 +355,11 @@ abstract class Matrix implements MatrixInterface
         return $this->setValue($resultArray, self::MODE_ROWS_INPUT);
     }
 
+    /**
+     * @param NumberInterface $value
+     * @return MatrixInterface
+     * @throws IntegrityConstraint
+     */
     public function addScalarAsI(NumberInterface $value): MatrixInterface
     {
         if (!$this->isSquare()) {
@@ -284,6 +376,11 @@ abstract class Matrix implements MatrixInterface
         return $this->add($I);
     }
 
+    /**
+     * @param NumberInterface $value
+     * @return MatrixInterface
+     * @throws IntegrityConstraint
+     */
     public function addScalarAsJ(NumberInterface $value): MatrixInterface
     {
         $J = Matrices::onesMatrix(Matrices::IMMUTABLE_MATRIX, $this->getRowCount(), $this->getColumnCount());
@@ -292,9 +389,14 @@ abstract class Matrix implements MatrixInterface
         return $this->add($J);
     }
 
+    /**
+     * @param MatrixInterface $value
+     * @return MatrixInterface
+     * @throws IntegrityConstraint
+     */
     public function subtract(MatrixInterface $value): MatrixInterface
     {
-        if ($this->getRowCount() != $value->getRowCount() || $this->getColumnCount() != $value->getColumnCount()) {
+        if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
             throw new IntegrityConstraint(
                 'Matrices must be the same size in order to be subtracted.',
                 'Only subtract two matrices if they are the same size.',
@@ -318,6 +420,12 @@ abstract class Matrix implements MatrixInterface
         return $this->setValue($resultArray, self::MODE_ROWS_INPUT);
     }
 
+    /**
+     * @param NumberInterface $value
+     *
+     * @return MatrixInterface
+     * @throws IntegrityConstraint
+     */
     public function subtractScalarAsI(NumberInterface $value): MatrixInterface
     {
         $value = $value->multiply(-1);
@@ -325,6 +433,12 @@ abstract class Matrix implements MatrixInterface
         return $this->addScalarAsI($value);
     }
 
+    /**
+     * @param NumberInterface $value
+     *
+     * @return MatrixInterface
+     * @throws IntegrityConstraint
+     */
     public function subtractScalarAsJ(NumberInterface $value): MatrixInterface
     {
         $value = $value->multiply(-1);
@@ -332,10 +446,17 @@ abstract class Matrix implements MatrixInterface
         return $this->addScalarAsJ($value);
     }
 
+    /**
+     * @param $value
+     *
+     * @return MatrixInterface
+     * @throws IntegrityConstraint
+     * @throws ReflectionException
+     */
     public function multiply($value): MatrixInterface
     {
         if ($value instanceof MatrixInterface) {
-            if ($this->getColumnCount() != $value->getRowCount()) {
+            if ($this->getColumnCount() !== $value->getRowCount()) {
                 throw new IntegrityConstraint(
                     'The columns of matrix A must equal the columns of matrix B.',
                     'Ensure that compatible matrices are multiplied.',
@@ -377,13 +498,56 @@ abstract class Matrix implements MatrixInterface
      * @return MatrixInterface
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public function inverseMatrix(): MatrixInterface
     {
         $determinant = $this->getDeterminant();
-        $inverseDeterminant = Numbers::makeOne()->divide($determinant);
+        $inverseDeterminant = new ImmutableFraction(Numbers::makeOne(), $determinant);
+
+        $data = $this->rows;
+        $columnCount = $this->getColumnCount();
+
+        $newMatrixData = [];
+
+        // TODO: Implement minors & cofactors method https://www.mathsisfun.com/algebra/matrix-inverse-minors-cofactors-adjugate.html
+        for ($i = 0;$i < $columnCount;$i++) {
+            for ($r = 0;$r < $columnCount;$r++) {
+
+            }
+        }
 
         return $this->multiply($inverseDeterminant);
+    }
+
+    public function minors()
+    {
+
+
+
+    }
+
+    /**
+     * @param int $excludeRow
+     * @param int $excludeColumn
+     *
+     * @return MatrixInterface
+     */
+    protected function childMatrix(int $excludeRow, int $excludeColumn)
+    {
+
+        $newRows = [];
+
+        for ($i = 0;$i < $this->getRowCount();$i++) {
+            if ($i === $excludeRow) {
+                continue;
+            }
+
+            $newRows[] = $this->getRow($i)->filterByKeys([$excludeColumn]);
+        }
+
+        return $this->setValue($newRows);
+
     }
 
     /**
@@ -391,7 +555,7 @@ abstract class Matrix implements MatrixInterface
      *
      * @return NumberCollection[]
      */
-    protected static function swapArrayHierarchy(array $data)
+    protected static function swapArrayHierarchy(array $data): array
     {
         $swappedArray = [];
 

@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Provider\Distribution;
 
+use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
@@ -32,27 +33,44 @@ class Normal extends Distribution
      *
      * @param int|float|DecimalInterface $mean
      * @param int|float|DecimalInterface $sd
+     *
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public function __construct($mean, $sd)
     {
+        /** @var ImmutableDecimal $mean */
         $mean = Numbers::makeOrDont(Numbers::IMMUTABLE, $mean);
+        /** @var ImmutableDecimal $sd   */
         $sd = Numbers::makeOrDont(Numbers::IMMUTABLE, $sd);
 
         $this->mean = $mean;
         $this->sd = $sd;
     }
 
-    public function getSD()
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getSD(): ImmutableDecimal
     {
         return $this->sd;
     }
 
-    public function getMean()
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getMean(): ImmutableDecimal
     {
         return $this->mean;
     }
 
+    /**
+     * @param $x
+     *
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     * @throws ReflectionException
+     */
     public function evaluateAt($x): ImmutableDecimal
     {
 
@@ -78,6 +96,8 @@ class Normal extends Distribution
      *
      * @return Normal
      * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws ReflectionException
      */
     public static function makeFromMean($p, $x, $mean): Normal
     {
@@ -100,6 +120,8 @@ class Normal extends Distribution
      *
      * @return Normal
      * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws ReflectionException
      */
     public static function makeFromSd($p, $x, $sd): Normal
     {
@@ -120,6 +142,8 @@ class Normal extends Distribution
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws ReflectionException
      */
     public function cdf($x): ImmutableDecimal
     {
@@ -143,6 +167,7 @@ class Normal extends Distribution
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public function pdf($x1, $x2 = null): ImmutableDecimal
     {
@@ -170,6 +195,7 @@ class Normal extends Distribution
      * @param $x
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public function cdfProduct(FunctionInterface $function, $x): ImmutableDecimal
     {
@@ -179,7 +205,7 @@ class Normal extends Distribution
         $cdf = Numbers::makeZero();
 
         while (true) {
-            if (count($function->describeShape()) == 0) {
+            if (count($function->describeShape()) === 0) {
                 break;
             }
 
@@ -195,6 +221,15 @@ class Normal extends Distribution
 
     }
 
+    /**
+     * @param FunctionInterface $function
+     * @param $x1
+     * @param $x2
+     *
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     * @throws ReflectionException
+     */
     public function pdfProduct(FunctionInterface $function, $x1, $x2): ImmutableDecimal
     {
         /** @var ImmutableDecimal $pdf */
@@ -219,6 +254,7 @@ class Normal extends Distribution
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public function percentAboveX($x): ImmutableDecimal
     {
@@ -235,6 +271,7 @@ class Normal extends Distribution
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public function zScoreOfX($x): ImmutableDecimal
     {
@@ -252,6 +289,7 @@ class Normal extends Distribution
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public function xFromZScore($z): ImmutableDecimal
     {
@@ -266,6 +304,7 @@ class Normal extends Distribution
     /**
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public function random(): ImmutableDecimal
     {
@@ -292,6 +331,7 @@ class Normal extends Distribution
      * @return ImmutableDecimal
      * @throws OptionalExit
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableDecimal
     {
