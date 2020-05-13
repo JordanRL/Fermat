@@ -161,7 +161,7 @@ trait TrigonometryTrait
                 function ($n) {
                     $nthOddNumber = SequenceProvider::nthOddNumber($n);
 
-                    return SequenceProvider::nthEulerZigzag($nthOddNumber);
+                    return SequenceProvider::nthEulerZigzag($nthOddNumber->asInt());
                 },
                 function ($n) {
 

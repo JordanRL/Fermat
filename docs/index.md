@@ -15,7 +15,7 @@ That said, this library does offer ways for you to integrate. The state of all o
 
 Despite the fact that performance is not a primary goal of this library, it does use built in functions wherever possible (where doing so does not affect precision), and it will utilize the GMP functions, Stats functions, and PHP-DS types if those extensions are present in your installation of PHP. Installing these extensions should slightly increase performance in most use-cases.
 
-# Limitations
+# Limitations 
 
 This library implements certain constants (Pi, Tau, Euler's Number, and the Golden Ratio) as hardcoded constants out to 100 digits. Because many of the functions it performs (such as logarithms and trigonometry functions) depend on these constants, this library is not actually truly *arbitrary* precision. Instead, you can work with numbers that are accurate out to 100 decimal places, and you can calculate trigonometry functions out to 99 decimal places.
 
