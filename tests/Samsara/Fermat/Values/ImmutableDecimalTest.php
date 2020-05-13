@@ -7,11 +7,6 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\NumberCollection;
-use Samsara\Fermat\Types\Traits\ArithmeticTrait;
-
-class DummyNumber {
-    use ArithmeticTrait;
-}
 
 /**
  * @runTestsInSeparateProcesses
@@ -938,21 +933,6 @@ class ImmutableDecimalTest extends TestCase
 
         $this->assertFalse($in1->equals('blahblah'));
         $this->assertFalse($in1->equals($nc));
-
-    }
-    /**
-     * @group arithmetic
-     * @medium
-     */
-    public function testArithmeticTraitCheck()
-    {
-
-        $dummy = new DummyNumber();
-
-        $this->expectException(IntegrityConstraint::class);
-        $this->expectExceptionMessage('You cannot use the ArithmeticTrait without implementing either the DecimalInterface or FractionInterface');
-
-        $dummy->add(1);
 
     }
 
