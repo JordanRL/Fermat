@@ -74,7 +74,7 @@ class StatsProviderTest extends TestCase
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testInverseNormalCDF()
     {

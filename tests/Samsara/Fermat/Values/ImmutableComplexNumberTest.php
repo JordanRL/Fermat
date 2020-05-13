@@ -62,7 +62,7 @@ class ImmutableComplexNumberTest extends TestCase
      * @group testing
      * @group arithmetic
      * @group complex
-     * @medium
+     * @large
      */
     public function testAdd()
     {
@@ -97,7 +97,7 @@ class ImmutableComplexNumberTest extends TestCase
      * @group arithmetic
      * @group complex
      * @group testing
-     * @medium
+     * @large
      */
     public function testSubtract()
     {

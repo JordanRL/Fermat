@@ -7,6 +7,8 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Number;
+use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
+use Samsara\Fermat\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Types\Traits\ArithmeticTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Values\ImmutableDecimal;
@@ -19,8 +21,10 @@ abstract class Fraction extends Number implements FractionInterface
     protected $value;
     /** @var bool */
     protected $sign;
+    /** @var int */
+    protected $precision;
 
-    use ArithmeticTrait;
+    use ArithmeticSimpleTrait;
     use ComparisonTrait;
 
     /**
@@ -45,10 +49,15 @@ abstract class Fraction extends Number implements FractionInterface
             );
         }
 
+        $this->precision = $numerator->getPrecision() >= $denominator->getPrecision() ? $numerator->getPrecision() : $denominator->getPrecision();
+
+        $numerator = $numerator->truncateToPrecision($this->precision);
+        $denominator = $denominator->truncateToPrecision($this->precision);
+
         if ($numerator->isImaginary() xor $denominator->isImaginary()) {
-            $dummyValue = 'i';
+            $this->imaginary = true;
         } else {
-            $dummyValue = '';
+            $this->imaginary = false;
         }
 
         $this->value = [
@@ -62,15 +71,18 @@ abstract class Fraction extends Number implements FractionInterface
             $this->sign = true;
         }
 
-        parent::__construct($dummyValue);
+        parent::__construct();
 
     }
 
     public function getValue(): string
     {
-        $baseAnswer = $this->getNumerator()->getValue().'/'.$this->getDenominator()->getValue();
+        return $this->getNumerator()->getValue().'/'.$this->getDenominator()->getValue();
+    }
 
-        return $baseAnswer;
+    public function getPrecision()
+    {
+        return $this->precision;
     }
 
     public function getBase()
