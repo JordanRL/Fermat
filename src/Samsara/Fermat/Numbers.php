@@ -164,7 +164,7 @@ class Numbers
             }
 
             return $newInput;
-        } elseif (is_string($value)) {
+        } elseif (is_string($value) || is_int($value) || is_float($value)) {
             $isImaginary = strpos($value, 'i') !== false;
 
             if (is_numeric($value) || $isImaginary) {
