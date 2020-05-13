@@ -21,13 +21,13 @@ abstract class Matrix implements MatrixInterface
     public const MODE_COLUMNS_INPUT = 'columns';
 
     /** @var NumberCollection[] */
-    protected array $rows;
+    protected $rows;
     /** @var NumberCollection[] */
-    protected array $columns;
+    protected $columns;
     /** @var int */
-    protected int $numRows;
+    protected $numRows;
     /** @var int */
-    protected int $numColumns;
+    protected $numColumns;
 
     /**
      * Matrix constructor. The array of number collections can be an array of rows, or an array of columns. Default is rows.
