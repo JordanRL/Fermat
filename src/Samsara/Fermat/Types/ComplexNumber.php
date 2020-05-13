@@ -7,7 +7,7 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\ComplexNumberInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
-use Samsara\Fermat\Types\Traits\ArithmeticTrait;
+use Samsara\Fermat\Types\Traits\ArithmeticComplexTrait;
 use Samsara\Fermat\Values\Geometry\CoordinateSystems\CartesianCoordinate;
 use Samsara\Fermat\Values\Geometry\CoordinateSystems\PolarCoordinate;
 use Samsara\Fermat\Values\ImmutableFraction;
@@ -23,7 +23,7 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
     /** @var int */
     protected $precision;
 
-    use ArithmeticTrait;
+    use ArithmeticComplexTrait;
 
     public function __construct($realPart, $imaginaryPart, $precision = null, $base = 10)
     {
@@ -82,6 +82,11 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
     public function isReal(): bool
     {
         return false;
+    }
+
+    public function asReal(): string
+    {
+        return $this->getDistanceFromOrigin();
     }
 
     public function isEqual($value): bool

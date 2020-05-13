@@ -77,11 +77,6 @@ interface DecimalInterface extends SimpleNumberInterface
     public function floor();
 
     /**
-     * @return int|null
-     */
-    public function getPrecision();
-
-    /**
      * @return DecimalInterface
      */
     public function factorial();

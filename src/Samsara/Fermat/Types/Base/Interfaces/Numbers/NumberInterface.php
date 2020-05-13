@@ -67,6 +67,11 @@ interface NumberInterface
      */
     public function isEqual($value): bool;
 
+    /**
+     * @return int|null
+     */
+    public function getPrecision();
+
     public function isImaginary(): bool;
 
     public function isReal(): bool;

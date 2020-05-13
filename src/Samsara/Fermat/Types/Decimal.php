@@ -11,8 +11,7 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Number;
-use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
-use Samsara\Fermat\Types\Traits\ArithmeticTrait;
+use Samsara\Fermat\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
 use Samsara\Fermat\Types\Traits\Decimal\InverseTrigonometryTrait;
@@ -25,7 +24,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
     protected $base;
 
-    use ArithmeticSelectionTrait;
+    use ArithmeticSimpleTrait;
     use ComparisonTrait;
     use IntegerMathTrait;
     use TrigonometryTrait;
@@ -74,7 +73,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
             }
         }
 
-        parent::__construct($value);
+        parent::__construct();
 
     }
 

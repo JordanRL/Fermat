@@ -4,11 +4,16 @@
 namespace Samsara\Fermat\Types\Traits\Arithmetic;
 
 
+use ReflectionException;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\ComplexNumbers;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\ComplexNumberInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Selectable;
-use Samsara\Fermat\Values\ImmutableComplexNumber;
+use Samsara\Fermat\Values\ImmutableFraction;
 
 trait ArithmeticSelectionTrait
 {
@@ -18,188 +23,60 @@ trait ArithmeticSelectionTrait
     /** @var array */
     protected $modeRegister;
 
-    public function add($num)
+    /**
+     * @param $left
+     * @param $right
+     * @param int $identity
+     *
+     * @return array
+     * @throws ReflectionException
+     * @throws IntegrityConstraint
+     */
+    protected function translateToParts($left, $right, $identity = 0)
     {
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart
-        ] = $this->translateToParts($this, $num, 0);
-
-        if (($this->isReal() xor $num->isReal()) || $num->isComplex()) {
-            $newRealPart = $thisRealPart->add($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->add($thatImaginaryPart);
-
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
-        } elseif ($this instanceof FractionInterface) {
-            if ($this->getDenominator()->isEqual($num->getDenominator())) {
-                $finalDenominator = $this->getDenominator();
-                $finalNumerator = $this->getNumerator()->add($num->getNumerator());
+        if (is_numeric($right)) {
+            $right = Numbers::make(Numbers::IMMUTABLE, $right);
+        } elseif (is_string($right)) {
+            $right = trim($right);
+            if (strpos($right, '/') !== false) {
+                $right = Numbers::makeFractionFromString(Numbers::IMMUTABLE_FRACTION, $right);
+            } elseif (strrpos($right, '+') || strrpos($right, '-')) {
+                $right = ComplexNumbers::make(ComplexNumbers::IMMUTABLE, $right);
             } else {
-                $finalDenominator = $this->getSmallestCommonDenominator($num);
-
-                list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($num, $finalDenominator);
-
-                $finalNumerator = $thisNumerator->add($thatNumerator);
+                $right = Numbers::make(Numbers::IMMUTABLE, $right);
             }
-
-            return $this->setValue(
-                $finalNumerator,
-                $finalDenominator
-            );
-        } else {
-            $value = $this->addSelector($num);
-
-            if ($this->isImaginary()) {
-                $value .= 'i';
-            }
-
-            return $this->setValue($value);
+        } elseif (!($right instanceof NumberInterface)) {
+            $right = Numbers::makeOrDont(Numbers::IMMUTABLE, $right);
         }
-    }
 
-    public function subtract($num)
-    {
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart
-        ] = $this->translateToParts($this, $num, 0);
-
-        if (($this->isReal() xor $num->isReal()) || $num->isComplex()) {
-            $newRealPart = $thisRealPart->subtract($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->subtract($thatImaginaryPart);
-
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
-        } elseif ($this instanceof FractionInterface) {
-            if ($this->getDenominator()->isEqual($num->getDenominator())) {
-                $finalDenominator = $this->getDenominator();
-                $finalNumerator = $this->getNumerator()->subtract($num->getNumerator());
+        if ($right instanceof FractionInterface) {
+            if ($left instanceof FractionInterface) {
+                $thatRealPart = $right->isReal() ? $right : new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
+                $thatImaginaryPart = $right->isImaginary() ? $right : new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
             } else {
-                $finalDenominator = $this->getSmallestCommonDenominator($num);
-
-                list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($num, $finalDenominator);
-
-                $finalNumerator = $thisNumerator->subtract($thatNumerator);
+                $thatRealPart = $right->isReal() ? $right->asDecimal() : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+                $thatImaginaryPart = $right->isImaginary() ? $right->asDecimal() : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
+                $right = $right->asDecimal();
             }
-
-            return $this->setValue(
-                $finalNumerator,
-                $finalDenominator
-            );
+        } elseif ($right instanceof ComplexNumberInterface) {
+            /** @var ComplexNumberInterface $right */
+            $thatRealPart = $right->getRealPart();
+            /** @var ComplexNumberInterface $right */
+            $thatImaginaryPart = $right->getImaginaryPart();
         } else {
-            $value = $this->subtractSelector($num);
-
-            if ($this->isImaginary()) {
-                $value .= 'i';
-            }
-
-            return $this->setValue($value);
+            $thatRealPart = $right->isReal() ? $right : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+            $thatImaginaryPart = $right->isImaginary() ? $right : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
         }
-    }
 
-    public function multiply($num)
-    {
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart
-        ] = $this->translateToParts($this, $num, 1);
-
-        if (($this->isReal() xor $num->isReal()) || $num->isComplex()) {
-            $newRealPart = $thisRealPart->multiply($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->multiply($thatImaginaryPart);
-
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
-        } elseif ($this instanceof FractionInterface) {
-            return $this->setValue(
-                $this->getNumerator()->multiply($num->getNumerator()),
-                $this->getDenominator()->multiply($num->getDenominator())
-            );
+        if ($this instanceof ComplexNumberInterface) {
+            $thisRealPart = $this->getRealPart();
+            $thisImaginaryPart = $this->getImaginaryPart();
         } else {
-            $value = $this->multiplySelector($num);
-
-            if ($this->isImaginary() xor $num->isImaginary()) {
-                $value .= 'i';
-            } elseif ($this->isImaginary() && $num->isImaginary()) {
-                $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
-            }
-
-            return $this->setValue($value);
-        }
-    }
-
-    public function divide($num, ?int $precision = null)
-    {
-        $precision = is_null($precision) ? $this->getPrecision() : $precision;
-
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart
-        ] = $this->translateToParts($this, $num, 1);
-
-        if (($this->isReal() xor $num->isReal()) || $num->isComplex()) {
-            $newRealPart = $thisRealPart->divide($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->divide($thatImaginaryPart);
-
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
-        } elseif ($this instanceof FractionInterface) {
-            return $this->setValue(
-                $this->getNumerator()->multiply($num->getDenominator()),
-                $this->getDenominator()->multiply($num->getNumerator())
-            );
-        } else {
-            $value = $this->divideSelector($num, $precision);
-
-            if ($this->isImaginary()) {
-                $value .= 'i';
-            }
-
-            return $this->setValue($value);
-        }
-    }
-
-    public function pow($num)
-    {
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart
-        ] = $this->translateToParts($this, $num, 1);
-
-        if (($this->isReal() xor $num->isReal()) || $num->isComplex()) {
-            $newRealPart = $thisRealPart->pow($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->pow($thatImaginaryPart);
-
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
-        } else {
-            $value = $this->powSelector($num);
-
-            if ($this->isImaginary()) {
-                $value .= 'i';
-            }
-
-            return $this->setValue($value);
-        }
-    }
-
-    public function sqrt(?int $precision = null)
-    {
-        $precision = is_null($precision) ? $this->getPrecision() : $precision;
-
-        $value = $this->sqrtSelector($precision);
-
-        if ($this->isImaginary()) {
-            $value .= 'i';
+            $thisRealPart = $left->isReal() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+            $thisImaginaryPart = $left->isImaginary() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
         }
 
-        return $this->setValue($value);
+        return [$thatRealPart, $thatImaginaryPart, $thisRealPart, $thisImaginaryPart, $right];
     }
 
     protected function addSelector(DecimalInterface $num)
@@ -214,7 +91,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             default:
-                return call_user_func([$this, $this->modeRegister[Selectable::MODE_FALLBACK]['add']], $num);
+                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['add']}($num);
                 break;
         }
     }
@@ -231,7 +108,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             default:
-                return call_user_func([$this, $this->modeRegister[Selectable::MODE_FALLBACK]['subtract']], $num);
+                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['subtract']}($num);
                 break;
         }
     }
@@ -248,7 +125,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             default:
-                return call_user_func([$this, $this->modeRegister[Selectable::MODE_FALLBACK]['multiply']], $num);
+                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['multiply']}($num);
                 break;
         }
     }
@@ -265,7 +142,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             default:
-                return call_user_func([$this, $this->modeRegister[Selectable::MODE_FALLBACK]['divide']], $num, $precision);
+                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['divide']}($num, $precision);
                 break;
         }
     }
@@ -282,7 +159,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             default:
-                return call_user_func([$this, $this->modeRegister[Selectable::MODE_FALLBACK]['pow']], $num);
+                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['pow']}($num);
                 break;
         }
     }
@@ -299,7 +176,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             default:
-                return call_user_func([$this, $this->modeRegister[Selectable::MODE_FALLBACK]['sqrt']], $precision);
+                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['sqrt']}($precision);
                 break;
         }
     }

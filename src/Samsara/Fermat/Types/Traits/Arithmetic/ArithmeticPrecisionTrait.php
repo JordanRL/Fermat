@@ -38,7 +38,7 @@ trait ArithmeticPrecisionTrait
 
         $precision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
 
-        return ArithmeticProvider::subtract($this->asReal(), $num->asReal());
+        return ArithmeticProvider::subtract($this->asReal(), $num->asReal(), $precision);
 
     }
 
@@ -47,7 +47,7 @@ trait ArithmeticPrecisionTrait
 
         $precision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
 
-        return ArithmeticProvider::multiply($this->asReal(), $num->asReal());
+        return ArithmeticProvider::multiply($this->asReal(), $num->asReal(), $precision);
 
     }
 
@@ -58,7 +58,7 @@ trait ArithmeticPrecisionTrait
             $precision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
         }
 
-        return ArithmeticProvider::add($this->asReal(), $num->asReal(), $precision);
+        return ArithmeticProvider::divide($this->asReal(), $num->asReal(), $precision);
 
     }
 
@@ -67,7 +67,13 @@ trait ArithmeticPrecisionTrait
 
         $precision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
 
-        return ArithmeticProvider::pow($this->asReal(), $num->asReal());
+        if (!$num->isWhole()) {
+            $precision += 5;
+            $exponent = $num->multiply($this->ln($precision));
+            return $exponent->exp($precision)->truncateToPrecision($precision - 5)->getValue();
+        }
+
+        return ArithmeticProvider::pow($this->asReal(), $num->asReal(), $precision);
 
     }
 
@@ -76,7 +82,7 @@ trait ArithmeticPrecisionTrait
 
         $precision = $precision ?? $this->getPrecision();
 
-        return ArithmeticProvider::squareRoot($this->getAsBaseTenRealNumber());
+        return ArithmeticProvider::squareRoot($this->getAsBaseTenRealNumber(), $precision);
 
     }
 
