@@ -24,6 +24,53 @@ class MatrixTest extends TestCase
         $this->assertEquals(2, $matrix->getRowCount());
         $this->assertEquals(2, $matrix->getColumnCount());
 
+        $matrix->pushRow(new NumberCollection([
+            Numbers::make(Numbers::IMMUTABLE, '1'),
+            Numbers::make(Numbers::IMMUTABLE, '6'),
+        ]));
+
+        $this->assertEquals(3, $matrix->getRowCount());
+        $this->assertEquals(2, $matrix->getColumnCount());
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The provided row did not have the correct number of members.');
+
+        $matrix->pushRow(new NumberCollection([
+            Numbers::make(Numbers::IMMUTABLE, '1'),
+            Numbers::make(Numbers::IMMUTABLE, '6'),
+            Numbers::make(Numbers::IMMUTABLE, '6'),
+        ]));
+
+    }
+
+    public function testPushColumn()
+    {
+        $matrixData = [
+            new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '3'), Numbers::make(Numbers::IMMUTABLE, '5')]), // row 1
+            new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '4'), Numbers::make(Numbers::IMMUTABLE, '2')]), // row 2
+        ];
+
+        $matrix = new ImmutableMatrix($matrixData);
+
+        $this->assertEquals(2, $matrix->getRowCount());
+        $this->assertEquals(2, $matrix->getColumnCount());
+
+        $matrix->pushColumn(new NumberCollection([
+            Numbers::make(Numbers::IMMUTABLE, '1'),
+            Numbers::make(Numbers::IMMUTABLE, '6'),
+        ]));
+
+        $this->assertEquals(2, $matrix->getRowCount());
+        $this->assertEquals(3, $matrix->getColumnCount());
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The provided column did not have the correct number of members.');
+
+        $matrix->pushColumn(new NumberCollection([
+            Numbers::make(Numbers::IMMUTABLE, '1'),
+            Numbers::make(Numbers::IMMUTABLE, '6'),
+            Numbers::make(Numbers::IMMUTABLE, '6'),
+        ]));
     }
 
     public function testSubtractScalarAsJ()
@@ -76,6 +123,22 @@ class MatrixTest extends TestCase
         $this->assertEquals('2', $row->get(1)->getValue());
     }
 
+    public function testPopColumn()
+    {
+        $matrixData = [
+            new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '3'), Numbers::make(Numbers::IMMUTABLE, '5')]), // row 1
+            new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '4'), Numbers::make(Numbers::IMMUTABLE, '2')]), // row 2
+        ];
+
+        $matrix = new ImmutableMatrix($matrixData);
+
+        $row = $matrix->popColumn();
+
+        $this->assertEquals(1, $matrix->getColumnCount());
+        $this->assertEquals('5', $row->get(0)->getValue());
+        $this->assertEquals('2', $row->get(1)->getValue());
+    }
+
     public function testUnshiftRow()
     {
         $matrixData = [
@@ -91,6 +154,41 @@ class MatrixTest extends TestCase
         $this->assertEquals('5', $matrix->getRow(0)->get(1)->getValue());
         $this->assertEquals('4', $matrix->getRow(1)->get(0)->getValue());
         $this->assertEquals('2', $matrix->getRow(1)->get(1)->getValue());
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The provided row did not have the correct number of members.');
+
+        $matrix->unshiftRow(new NumberCollection([
+            Numbers::make(Numbers::IMMUTABLE, '1'),
+            Numbers::make(Numbers::IMMUTABLE, '6'),
+            Numbers::make(Numbers::IMMUTABLE, '6'),
+        ]));
+    }
+
+    public function testUnshiftColumn()
+    {
+        $matrixData = [
+            new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '3'), Numbers::make(Numbers::IMMUTABLE, '4')]), // row 2
+        ];
+
+        $matrix = new ImmutableMatrix($matrixData, Matrix::MODE_COLUMNS_INPUT);
+
+        $matrix->unshiftColumn(new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '5'), Numbers::make(Numbers::IMMUTABLE, '2')]));
+
+        $this->assertEquals(2, $matrix->getColumnCount());
+        $this->assertEquals('5', $matrix->getRow(0)->get(0)->getValue());
+        $this->assertEquals('3', $matrix->getRow(0)->get(1)->getValue());
+        $this->assertEquals('2', $matrix->getRow(1)->get(0)->getValue());
+        $this->assertEquals('4', $matrix->getRow(1)->get(1)->getValue());
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The provided column did not have the correct number of members.');
+
+        $matrix->unshiftColumn(new NumberCollection([
+            Numbers::make(Numbers::IMMUTABLE, '1'),
+            Numbers::make(Numbers::IMMUTABLE, '6'),
+            Numbers::make(Numbers::IMMUTABLE, '6'),
+        ]));
     }
 
     public function testMultiply()
@@ -151,6 +249,31 @@ class MatrixTest extends TestCase
         $this->expectExceptionMessage('Attempted addition on matrices of different sizes.');
 
         $matrix->add($matrix3);
+    }
+
+    public function testSubtract()
+    {
+        $matrixData = [
+            new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '3'), Numbers::make(Numbers::IMMUTABLE, '5')]), // row 1
+            new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '4'), Numbers::make(Numbers::IMMUTABLE, '2')]), // row 2
+        ];
+
+        $matrix = new ImmutableMatrix($matrixData);
+        $matrix2 = Matrices::onesMatrix(Matrices::IMMUTABLE_MATRIX, 2, 2);
+
+        $matrix = $matrix->subtract($matrix2);
+
+        $this->assertEquals('2', $matrix->getRow(0)->get(0)->getValue());
+        $this->assertEquals('4', $matrix->getRow(0)->get(1)->getValue());
+        $this->assertEquals('3', $matrix->getRow(1)->get(0)->getValue());
+        $this->assertEquals('1', $matrix->getRow(1)->get(1)->getValue());
+
+        $matrix3 = Matrices::onesMatrix(Matrices::IMMUTABLE_MATRIX, 1, 1);
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('Attempted subtraction on matrices of different sizes.');
+
+        $matrix->subtract($matrix3);
     }
 
     public function testGetRow()
@@ -290,11 +413,6 @@ class MatrixTest extends TestCase
     }
 
     public function testUnshiftColumn()
-    {
-
-    }
-
-    public function testPushColumn()
     {
 
     }

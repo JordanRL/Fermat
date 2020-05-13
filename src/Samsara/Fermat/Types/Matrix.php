@@ -24,7 +24,11 @@ abstract class Matrix implements MatrixInterface
     protected $rows;
     /** @var NumberCollection[] */
     protected $columns;
-    /** @var int */
+    /** @var
+     *
+     *
+     * int
+     */
     protected $numRows;
     /** @var int */
     protected $numColumns;
@@ -143,18 +147,11 @@ abstract class Matrix implements MatrixInterface
             );
         }
 
-        // TODO: Fix child matrix stuff
         if ($this->numRows > 2) {
             $determinant = Numbers::makeZero();
 
             foreach ($this->rows[0]->toArray() as $key => $value) {
-                $childMatrixData = [];
-
-                for ($i = 1;$i < $this->numRows;$i++) {
-                    $childMatrixData[$i-1] = $this->rows[$i]->filterByKeys([$key]);
-                }
-
-                $childMatrix = new ImmutableMatrix($childMatrixData);
+                $childMatrix = $this->childMatrix(0, $key);
 
                 $determinant = $determinant->add($value->multiply($childMatrix->getDeterminant())->multiply(SequenceProvider::nthPowerNegativeOne($key)));
             }
@@ -201,9 +198,9 @@ abstract class Matrix implements MatrixInterface
     {
         if ($column->count() !== $this->numRows) {
             throw new IntegrityConstraint(
-                'The members of a new row must match the number of columns in a matrix.',
+                'The members of a new column must match the number of rows in a matrix.',
                 'Provide a NumberCollection that has the right number of members.',
-                'The provided row did not have the correct number of members. Expected '.$this->numColumns.', found '.$column->count()
+                'The provided column did not have the correct number of members. Expected '.$this->numColumns.', found '.$column->count()
             );
         }
 
@@ -273,9 +270,9 @@ abstract class Matrix implements MatrixInterface
     {
         if ($column->count() !== $this->numRows) {
             throw new IntegrityConstraint(
-                'The members of a new row must match the number of columns in a matrix.',
+                'The members of a new column must match the number of rows in a matrix.',
                 'Provide a NumberCollection that has the right number of members.',
-                'The provided row did not have the correct number of members. Expected '.$this->numColumns.', found '.$column->count()
+                'The provided column did not have the correct number of members. Expected '.$this->numColumns.', found '.$column->count()
             );
         }
 
@@ -530,10 +527,11 @@ abstract class Matrix implements MatrixInterface
     /**
      * @param int $excludeRow
      * @param int $excludeColumn
+     * @param bool $forceNewMatrix
      *
      * @return MatrixInterface
      */
-    protected function childMatrix(int $excludeRow, int $excludeColumn)
+    protected function childMatrix(int $excludeRow, int $excludeColumn, bool $forceNewMatrix = false)
     {
 
         $newRows = [];
@@ -546,7 +544,7 @@ abstract class Matrix implements MatrixInterface
             $newRows[] = $this->getRow($i)->filterByKeys([$excludeColumn]);
         }
 
-        return $this->setValue($newRows);
+        return $forceNewMatrix ? new ImmutableMatrix($newRows) : $this->setValue($newRows);
 
     }
 

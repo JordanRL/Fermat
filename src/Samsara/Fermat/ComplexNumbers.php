@@ -2,24 +2,32 @@
 
 namespace Samsara\Fermat;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Values\MutableComplexNumber;
 
 class ComplexNumbers
 {
 
-    const IMMUTABLE = ImmutableComplexNumber::class;
-    const MUTABLE = MutableComplexNumber::class;
+    public const IMMUTABLE = ImmutableComplexNumber::class;
+    public const MUTABLE = MutableComplexNumber::class;
 
+    /**
+     * @param $type
+     * @param $value
+     *
+     * @return Types\ComplexNumber
+     * @throws IntegrityConstraint
+     */
     public static function make($type, $value)
     {
 
         if (is_string($value)) {
-            if ($type == self::IMMUTABLE) {
-                return ImmutableComplexNumber::makeFromString($value);
-            } elseif ($type == self::MUTABLE) {
+            if ($type === self::MUTABLE) {
                 return MutableComplexNumber::makeFromString($value);
             }
+
+            return ImmutableComplexNumber::makeFromString($value);
         }
 
     }
