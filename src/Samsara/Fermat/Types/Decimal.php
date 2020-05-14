@@ -46,7 +46,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
             $this->imaginary = false;
         }
 
-        if ($base != 10 && !$baseTenInput) {
+        if ($base !== 10 && !$baseTenInput) {
             $value = $this->convertValue($value, $base, 10);
         }
 
@@ -87,7 +87,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         $value = trim($value);
         $valueArr = str_split($value);
 
-        if ($valueArr[0] == '-') {
+        if ($valueArr[0] === '-') {
             $this->sign = true;
             $value = trim($value, '-');
         } else {
@@ -95,6 +95,28 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         }
 
         if (strpos($value, '.') !== false) {
+            if (strpos($value, 'E')) {
+                [$baseNum, $exp] = explode('E', $value);
+                [$left, $right] = explode('.', $baseNum);
+
+                if ($exp > 0) {
+                    $exp -= strlen($right);
+                    if ($exp >= 0) {
+                        $right = str_pad($right, $exp - 1, '0').'.0';
+                    } else {
+                        $right = substr($right, 0, strlen($right) + $exp).'.'.substr($right, strlen($right) + $exp + 1);
+                    }
+                } else {
+                    $exp += strlen($left);
+                    if ($exp >= 0) {
+                        $left = substr($left, 0, $exp).'.'.substr($left, $exp + 1);
+                    } else {
+                        $left = '0.'.str_pad($left, $exp, '0', STR_PAD_LEFT);
+                    }
+                }
+                $value = $left.$right;
+            }
+
             list($wholePart, $decimalPart) = explode('.', $value);
 
             $resultValue = [

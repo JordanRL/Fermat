@@ -9,7 +9,10 @@
          convertWarningsToExceptions="true"
          processIsolation="true"
          stopOnFailure="false"
-         beStrictAboutOutputDuringTests="true">
+         beStrictAboutOutputDuringTests="true"
+         timeoutForSmallTests="2"
+         timeoutForMediumTests="15"
+         timeoutForLargeTests="60">
 
     <testsuites>
         <testsuite name="Providers">
