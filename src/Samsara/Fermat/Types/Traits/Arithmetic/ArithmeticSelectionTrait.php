@@ -4,7 +4,6 @@
 namespace Samsara\Fermat\Types\Traits\Arithmetic;
 
 
-use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\ComplexNumbers;
 use Samsara\Fermat\Numbers;
@@ -13,7 +12,6 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\ComplexNumberInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
-use Samsara\Fermat\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Types\Base\Selectable;
 use Samsara\Fermat\Types\ComplexNumber;
 use Samsara\Fermat\Values\Geometry\CoordinateSystems\CartesianCoordinate;
@@ -56,32 +54,9 @@ trait ArithmeticSelectionTrait
         }
         /** @var DecimalInterface|ComplexNumberInterface|FractionInterface $right */
 
-        if ($right instanceof FractionInterface) {
-            if ($left instanceof FractionInterface) {
-                $thatRealPart = $right->isReal() ? $right : new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
-                $thatImaginaryPart = $right->isImaginary() ? $right : new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
-            } else {
-                $thatRealPart = $right->isReal() ? $right->asDecimal() : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
-                $thatImaginaryPart = $right->isImaginary() ? $right->asDecimal() : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
-                $right = $right->asDecimal();
-            }
-        } elseif ($right instanceof ComplexNumberInterface) {
-            /** @var ComplexNumberInterface $right */
-            $thatRealPart = $right->getRealPart();
-            /** @var ComplexNumberInterface $right */
-            $thatImaginaryPart = $right->getImaginaryPart();
-        } else {
-            $thatRealPart = $right->isReal() ? $right : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
-            $thatImaginaryPart = $right->isImaginary() ? $right : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
-        }
+        [$thatRealPart, $thatImaginaryPart, $right] = self::rightSelector($left, $right, $identity);
 
-        if ($this instanceof ComplexNumberInterface) {
-            $thisRealPart = $this->getRealPart();
-            $thisImaginaryPart = $this->getImaginaryPart();
-        } else {
-            $thisRealPart = $left->isReal() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
-            $thisImaginaryPart = $left->isImaginary() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
-        }
+        [$thisRealPart, $thisImaginaryPart] = self::leftSelector($left, $identity);
 
         return [$thatRealPart, $thatImaginaryPart, $thisRealPart, $thisImaginaryPart, $right];
     }
@@ -104,6 +79,53 @@ trait ArithmeticSelectionTrait
         }
 
         return $input;
+
+    }
+
+    protected static function rightSelector($left, $right, $identity)
+    {
+
+        if ($right instanceof ComplexNumberInterface) {
+            /** @var ComplexNumberInterface $right */
+            $thatRealPart = $right->getRealPart();
+            /** @var ComplexNumberInterface $right */
+            $thatImaginaryPart = $right->getImaginaryPart();
+        } else {
+            if ($right instanceof FractionInterface) {
+                if ($left instanceof FractionInterface) {
+                    $rightPart = $right;
+                    $otherPart = new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
+                } else {
+                    $rightPart = $right->asDecimal();
+                    $otherPart = Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+
+                    $right = $right->asDecimal();
+                }
+            } else {
+                $rightPart = $right;
+                $otherPart = Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+            }
+
+            $thatRealPart = $right->isReal() ? $rightPart : $otherPart;
+            $thatImaginaryPart = $right->isImaginary() ? $rightPart : $otherPart->multiply('i');
+        }
+
+        return [$thatRealPart, $thatImaginaryPart, $right];
+
+    }
+
+    protected static function leftSelector($left, $identity)
+    {
+
+        if ($left instanceof ComplexNumberInterface) {
+            $thisRealPart = $left->getRealPart();
+            $thisImaginaryPart = $left->getImaginaryPart();
+        } else {
+            $thisRealPart = $left->isReal() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+            $thisImaginaryPart = $left->isImaginary() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
+        }
+
+        return [$thisRealPart, $thisImaginaryPart];
 
     }
 

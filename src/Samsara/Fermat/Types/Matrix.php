@@ -60,7 +60,6 @@ abstract class Matrix implements MatrixInterface
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public function getDeterminant(): ImmutableDecimal
     {
@@ -213,7 +212,6 @@ abstract class Matrix implements MatrixInterface
      *
      * @return MatrixInterface
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public function multiply($value): MatrixInterface
     {
@@ -260,7 +258,6 @@ abstract class Matrix implements MatrixInterface
      * @return MatrixInterface
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public function inverseMatrix(): MatrixInterface
     {
