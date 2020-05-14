@@ -165,10 +165,6 @@ class NumbersTest extends TestCase
 
         $this->assertEquals('2.71828', $e2->getValue());
 
-        $this->expectException(IntegrityConstraint::class);
-
-        Numbers::makeE(200);
-
     }
     /**
      * @medium

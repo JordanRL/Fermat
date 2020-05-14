@@ -13,7 +13,7 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 trait LogTrait
 {
 
-    public function exp($precision = null)
+    public function exp($precision = null): DecimalInterface
     {
         $precision = $precision ?? $this->getPrecision();
 
@@ -45,7 +45,7 @@ trait LogTrait
      *
      * @return DecimalInterface|NumberInterface
      */
-    public function ln($precision = null, $round = true)
+    public function ln($precision = null, $round = true): DecimalInterface
     {
         /*
         if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX) && $precision <= 10) {
@@ -116,7 +116,7 @@ trait LogTrait
      * @return mixed
      * @throws IntegrityConstraint
      */
-    public function log10($precision = null, $round = true)
+    public function log10($precision = null, $round = true): DecimalInterface
     {
         $log10 = Numbers::makeNaturalLog10();
 

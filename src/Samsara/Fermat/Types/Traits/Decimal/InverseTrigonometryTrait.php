@@ -11,7 +11,7 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 trait InverseTrigonometryTrait
 {
 
-    public function arcsin($precision = null, $round = true)
+    public function arcsin($precision = null, $round = true): DecimalInterface
     {
 
         $precision = $precision ?? $this->getPrecision();
@@ -101,7 +101,7 @@ trait InverseTrigonometryTrait
 
     }
 
-    public function arctan($precision = null, $round = true)
+    public function arctan($precision = null, $round = true): DecimalInterface
     {
 
         $precision = $precision ?? $this->getPrecision();
@@ -123,7 +123,7 @@ trait InverseTrigonometryTrait
 
     }
 
-    public function arccot($precision = null, $round = true)
+    public function arccot($precision = null, $round = true): DecimalInterface
     {
 
         $precision = $precision ?? $this->getPrecision();
@@ -146,7 +146,7 @@ trait InverseTrigonometryTrait
 
     }
 
-    public function arcsec($precision = null, $round = true)
+    public function arcsec($precision = null, $round = true): DecimalInterface
     {
 
         $precision = $precision ?? $this->getPrecision();
@@ -174,7 +174,7 @@ trait InverseTrigonometryTrait
 
     }
 
-    public function arccsc($precision = null, $round = true)
+    public function arccsc($precision = null, $round = true): DecimalInterface
     {
 
         $precision = $precision ?? $this->getPrecision();
@@ -202,10 +202,10 @@ trait InverseTrigonometryTrait
 
     }
 
-    abstract public function roundToPrecision($precision);
+    abstract public function roundToPrecision($precision): DecimalInterface;
 
-    abstract public function truncateToPrecision($precision);
+    abstract public function truncateToPrecision($precision): DecimalInterface;
 
-    abstract public function getPrecision();
+    abstract public function getPrecision(): ?int;
 
 }

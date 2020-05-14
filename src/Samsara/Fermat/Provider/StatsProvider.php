@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Provider;
 
 use Ds\Vector;
+use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\OptionalExit;
@@ -26,7 +27,7 @@ class StatsProvider
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
-     * @throws OptionalExit|\ReflectionException
+     * @throws OptionalExit|ReflectionException
      */
     public static function normalCDF($x): ImmutableDecimal
     {
@@ -225,7 +226,7 @@ class StatsProvider
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function inverseGaussErrorFunction($z, int $precision = 10): ImmutableDecimal
     {
@@ -239,17 +240,17 @@ class StatsProvider
 
         $answer = SeriesProvider::maclaurinSeries(
             $z,
-            function ($n) use ($pi) {
+            static function ($n) use ($pi) {
                 if ($n > 0) {
                     return $pi->pow($n)->multiply(StatsProvider::inverseErrorCoefficients($n));
                 }
 
                 return Numbers::makeOne();
             },
-            function ($n) {
+            static function ($n) {
                 return SequenceProvider::nthOddNumber($n);
             },
-            function ($n) {
+            static function ($n) {
                 if ($n > 0) {
                     $extra = Numbers::make(Numbers::IMMUTABLE, 2)->pow(SequenceProvider::nthEvenNumber($n));
                 } else {

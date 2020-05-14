@@ -6,18 +6,19 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 trait PrecisionTrait
 {
 
     protected $precision;
 
-    public function getPrecision()
+    public function getPrecision(): ?int
     {
         return $this->precision;
     }
 
-    public function round($decimals = 0)
+    public function round($decimals = 0): DecimalInterface
     {
         $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
@@ -63,7 +64,7 @@ trait PrecisionTrait
         }
     }
 
-    public function truncate($decimals = 0)
+    public function truncate($decimals = 0): DecimalInterface
     {
         $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
@@ -95,7 +96,7 @@ trait PrecisionTrait
         return $this->setValue($result);
     }
 
-    public function roundToPrecision($precision)
+    public function roundToPrecision($precision): DecimalInterface
     {
 
         $this->precision = $precision;
@@ -104,7 +105,7 @@ trait PrecisionTrait
 
     }
 
-    public function truncateToPrecision($precision)
+    public function truncateToPrecision($precision): DecimalInterface
     {
 
         $this->precision = $precision;
@@ -113,7 +114,7 @@ trait PrecisionTrait
 
     }
 
-    public function ceil()
+    public function ceil(): DecimalInterface
     {
         $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
@@ -125,7 +126,7 @@ trait PrecisionTrait
         return $this->setValue($whole);
     }
 
-    public function floor()
+    public function floor(): DecimalInterface
     {
         return $this->setValue($this->getWholePart());
     }

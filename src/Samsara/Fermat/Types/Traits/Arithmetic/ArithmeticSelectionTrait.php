@@ -51,7 +51,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             case 'object':
-                $right = ($right instanceof NumberInterface) ? Numbers::makeOrDont(Numbers::IMMUTABLE, $right) : $right;
+                $right = !($right instanceof NumberInterface) ? Numbers::makeOrDont(Numbers::IMMUTABLE, $right) : $right;
                 break;
         }
         /** @var DecimalInterface|ComplexNumberInterface|FractionInterface $right */

@@ -6,13 +6,14 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\NumberCollection;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 trait IntegerMathTrait
 {
 
-    public function factorial()
+    public function factorial(): DecimalInterface
     {
         if ($this->isLessThan(1)) {
             if ($this->isEqual(0)) {
@@ -40,7 +41,7 @@ trait IntegerMathTrait
 
     }
 
-    public function doubleFactorial()
+    public function doubleFactorial(): DecimalInterface
     {
         if ($this->isWhole() && $this->isLessThanOrEqualTo(1)) {
             return $this->setValue('1');
@@ -67,12 +68,12 @@ trait IntegerMathTrait
 
     }
 
-    public function semiFactorial()
+    public function semiFactorial(): DecimalInterface
     {
         return $this->doubleFactorial();
     }
 
-    public function getLeastCommonMultiple($num)
+    public function getLeastCommonMultiple($num): DecimalInterface
     {
 
         /** @var ImmutableDecimal $num */
@@ -90,7 +91,7 @@ trait IntegerMathTrait
 
     }
 
-    public function getGreatestCommonDivisor($num)
+    public function getGreatestCommonDivisor($num): DecimalInterface
     {
         /** @var ImmutableDecimal $num */
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num)->abs();
