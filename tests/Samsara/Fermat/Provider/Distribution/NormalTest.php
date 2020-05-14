@@ -10,9 +10,9 @@ use PHPUnit\Framework\TestCase;
  */
 class NormalTest extends TestCase
 {
-    /*
+    /**
      * @medium
-     *
+     */
     public function testPercentAboveX()
     {
 
@@ -25,7 +25,7 @@ class NormalTest extends TestCase
     }
     /**
      * @medium
-     *
+     */
     public function testPercentBelowX()
     {
 
@@ -36,7 +36,6 @@ class NormalTest extends TestCase
         $this->assertEquals('0.1586552539', $normal->cdf(8)->getValue());
 
     }
-    */
     /**
      * @medium
      */
@@ -51,13 +50,30 @@ class NormalTest extends TestCase
 
     }
 
-    /*public function testMakes()
+    public function testPdf()
+    {
+
+        $normal = new Normal(0, 1);
+
+        $this->assertEquals('0.6826894921', $normal->pdf(-1, 1)->getValue());
+        $this->assertEquals('0.6826894921', $normal->pdf(1, -1)->getValue());
+
+        $this->assertEquals('0.6826894921', $normal->pdf(1)->getValue());
+        $this->assertEquals('0.6826894921', $normal->pdf(-1)->getValue());
+
+    }
+
+    /*
+     * @large
+     *
+    public function testMakes()
     {
 
         $normal = Normal::makeFromMean('0.1', 6, 10);
 
         $this->assertEquals('0.60', $normal->pdf(8)->getValue());
 
-    }*/
+    }
+    */
 
 }

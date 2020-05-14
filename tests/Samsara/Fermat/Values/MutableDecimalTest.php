@@ -3,15 +3,13 @@
 namespace Samsara\Fermat\Values;
 
 use PHPUnit\Framework\TestCase;
-use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class MutableNumberTest extends TestCase
+class MutableDecimalTest extends TestCase
 {
     /**
      * @medium

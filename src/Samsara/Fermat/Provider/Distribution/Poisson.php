@@ -238,7 +238,7 @@ class Poisson extends Distribution
             }
 
             /** @var ImmutableDecimal $v */
-            $v = PolyfillProvider::randomInt(0, PHP_INT_MAX) / PHP_INT_MAX;
+            $v = Numbers::make(Numbers::IMMUTABLE, PolyfillProvider::randomInt(0, PHP_INT_MAX))->divide(PHP_INT_MAX);
             /** @var ImmutableDecimal $y */
             $y = $alpha->subtract($beta->multiply($x));
             /** @var ImmutableDecimal $lhs */

@@ -163,28 +163,24 @@ trait ArithmeticSimpleTrait
             return $this;
         }
 
-        /*
-        if ($this->isReal() xor $num->isReal()) {
-            $newRealPart = $thisRealPart->multiply($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->multiply($thatImaginaryPart);
-
-            if ($newImaginaryPart->isEqual(0)) {
-                return $this->setValue($newRealPart->getValue());
-            }
-
-            if ($newRealPart->isEqual(0)) {
-                return $this->setValue($newImaginaryPart->getValue());
-            }
-
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
-        }
-        */
-
         if ($this instanceof FractionInterface) {
-            return $this->setValue(
-                $this->getNumerator()->multiply($num->getNumerator()),
-                $this->getDenominator()->multiply($num->getDenominator())
-            );
+            if ($num instanceof FractionInterface) {
+                return $this->setValue(
+                    $this->getNumerator()->multiply($num->getNumerator()),
+                    $this->getDenominator()->multiply($num->getDenominator())
+                );
+            }
+
+            if ($num->isWhole()) {
+                return $this->setValue(
+                    $this->getNumerator()->multiply($num),
+                    $this->getDenominator()
+                );
+            }
+
+            $value = $this->asDecimal()->multiply($num);
+
+            return new ImmutableDecimal($value, $this->getPrecision());
         }
 
         $value = $this->multiplySelector($num);
@@ -218,26 +214,24 @@ trait ArithmeticSimpleTrait
             return $this;
         }
 
-        if ($this->isReal() xor $num->isReal()) {
-            $newRealPart = $thisRealPart->divide($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->divide($thatImaginaryPart);
-
-            if ($newImaginaryPart->isEqual(0)) {
-                return $this->setValue($newRealPart->getValue());
-            }
-
-            if ($newRealPart->isEqual(0)) {
-                return $this->setValue($newImaginaryPart->getValue());
-            }
-
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
-        }
-
         if ($this instanceof FractionInterface) {
-            return $this->setValue(
-                $this->getNumerator()->multiply($num->getDenominator()),
-                $this->getDenominator()->multiply($num->getNumerator())
-            );
+            if ($num instanceof FractionInterface) {
+                return $this->setValue(
+                    $this->getNumerator()->multiply($num->getDenominator()),
+                    $this->getDenominator()->multiply($num->getNumerator())
+                );
+            }
+
+            if ($num->isWhole()) {
+                return $this->setValue(
+                    $this->getNumerator(),
+                    $this->getDenominator()->multiply($num)
+                );
+            }
+
+            $value = $this->asDecimal($precision)->divide($num);
+
+            return new ImmutableDecimal($value, $precision);
         }
 
         $value = $this->divideSelector($num, $precision);

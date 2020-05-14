@@ -82,16 +82,16 @@ trait ArithmeticSelectionTrait
     protected function addSelector(DecimalInterface $num)
     {
         switch ($this->mode) {
-            case Selectable::MODE_PRECISION:
+            case Selectable::CALC_MODE_PRECISION:
                 return $this->addPrecision($num);
                 break;
 
-            case Selectable::MODE_NATIVE:
+            case Selectable::CALC_MODE_NATIVE:
                 return $this->addNative($num);
                 break;
 
             default:
-                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['add']}($num);
+                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['add']}($num);
                 break;
         }
     }
@@ -99,16 +99,16 @@ trait ArithmeticSelectionTrait
     protected function subtractSelector(DecimalInterface $num)
     {
         switch ($this->mode) {
-            case Selectable::MODE_PRECISION:
+            case Selectable::CALC_MODE_PRECISION:
                 return $this->subtractPrecision($num);
                 break;
 
-            case Selectable::MODE_NATIVE:
+            case Selectable::CALC_MODE_NATIVE:
                 return $this->subtractNative($num);
                 break;
 
             default:
-                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['subtract']}($num);
+                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['subtract']}($num);
                 break;
         }
     }
@@ -116,16 +116,16 @@ trait ArithmeticSelectionTrait
     protected function multiplySelector(DecimalInterface $num)
     {
         switch ($this->mode) {
-            case Selectable::MODE_PRECISION:
+            case Selectable::CALC_MODE_PRECISION:
                 return $this->multiplyPrecision($num);
                 break;
 
-            case Selectable::MODE_NATIVE:
+            case Selectable::CALC_MODE_NATIVE:
                 return $this->multiplyNative($num);
                 break;
 
             default:
-                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['multiply']}($num);
+                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['multiply']}($num);
                 break;
         }
     }
@@ -133,16 +133,16 @@ trait ArithmeticSelectionTrait
     protected function divideSelector(DecimalInterface $num, int $precision)
     {
         switch ($this->mode) {
-            case Selectable::MODE_PRECISION:
+            case Selectable::CALC_MODE_PRECISION:
                 return $this->dividePrecision($num, $precision);
                 break;
 
-            case Selectable::MODE_NATIVE:
+            case Selectable::CALC_MODE_NATIVE:
                 return $this->divideNative($num);
                 break;
 
             default:
-                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['divide']}($num, $precision);
+                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['divide']}($num, $precision);
                 break;
         }
     }
@@ -150,16 +150,16 @@ trait ArithmeticSelectionTrait
     protected function powSelector(DecimalInterface $num)
     {
         switch ($this->mode) {
-            case Selectable::MODE_PRECISION:
+            case Selectable::CALC_MODE_PRECISION:
                 return $this->powPrecision($num);
                 break;
 
-            case Selectable::MODE_NATIVE:
+            case Selectable::CALC_MODE_NATIVE:
                 return $this->powNative($num);
                 break;
 
             default:
-                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['pow']}($num);
+                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['pow']}($num);
                 break;
         }
     }
@@ -167,16 +167,16 @@ trait ArithmeticSelectionTrait
     protected function sqrtSelector(int $precision)
     {
         switch ($this->mode) {
-            case Selectable::MODE_PRECISION:
+            case Selectable::CALC_MODE_PRECISION:
                 return $this->sqrtPrecision($precision);
                 break;
 
-            case Selectable::MODE_NATIVE:
+            case Selectable::CALC_MODE_NATIVE:
                 return $this->sqrtNative();
                 break;
 
             default:
-                return $this->{$this->modeRegister[Selectable::MODE_FALLBACK]['sqrt']}($precision);
+                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['sqrt']}($precision);
                 break;
         }
     }

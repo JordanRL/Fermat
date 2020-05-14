@@ -17,9 +17,9 @@ class TrigonometryProvider
     public static function radiansToDegrees($radians)
     {
         $radians = Numbers::makeOrDont(Numbers::IMMUTABLE, $radians);
-        $pi = Numbers::makePi();
+        $pi = Numbers::makePi($radians->getPrecision() + 2);
         
-        return $radians->multiply(180)->divide($pi)->getValue();
+        return $radians->multiply(180)->divide($pi)->round($radians->getPrecision()-2)->getValue();
     }
 
     /**
@@ -31,9 +31,9 @@ class TrigonometryProvider
     public static function degreesToRadians($degrees)
     {
         $degrees = Numbers::makeOrDont(Numbers::IMMUTABLE, $degrees);
-        $pi = Numbers::makePi();
+        $pi = Numbers::makePi($degrees->getPrecision() + 1);
 
-        return $degrees->multiply($pi)->divide(180)->getValue();
+        return $degrees->multiply($pi)->divide(180)->round($degrees->getPrecision())->getValue();
     }
 
 }

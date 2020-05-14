@@ -2,11 +2,10 @@
 
 namespace Samsara\Fermat\Provider;
 
+use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
@@ -30,17 +29,18 @@ class SeriesProvider
      * until it adds zero to the total when considering significant digits.)
      *
      * @param SimpleNumberInterface $input
-     * @param callable              $numerator
-     * @param callable              $exponent
-     * @param callable              $denominator
-     * @param int                   $startTermAt
-     * @param int                   $precision
-     * @param int                   $consecutiveDivergeLimit
-     * @param int                   $totalDivergeLimit
+     * @param callable $numerator
+     * @param callable $exponent
+     * @param callable $denominator
+     * @param int $startTermAt
+     * @param int $precision
+     * @param int $consecutiveDivergeLimit
+     * @param int $totalDivergeLimit
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
+     * @throws ReflectionException
      */
     public static function maclaurinSeries(
         SimpleNumberInterface $input, // x value in series
@@ -50,10 +50,10 @@ class SeriesProvider
         int $startTermAt = 0,
         int $precision = 10,
         int $consecutiveDivergeLimit = 5,
-        int $totalDivergeLimit = 10)
+        int $totalDivergeLimit = 10): ImmutableDecimal
     {
 
-        $precision += 1;
+        ++$precision;
 
         $sum = Numbers::makeZero($precision);
         $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue(), $precision);
@@ -97,19 +97,18 @@ class SeriesProvider
                 $continue = false;
             }
 
+            /** @var ImmutableDecimal $sum */
             $sum = $sum->add($term);
             $currDiff = $sum->subtract($prevSum)->abs();
 
-            /*
             if ($prevDiff->isLessThan($currDiff)) {
                 $divergeCount++;
                 $persistentDivergeCount++;
             } else {
                 $divergeCount = 0;
             }
-            */
 
-            if ($divergeCount == $consecutiveDivergeLimit || $persistentDivergeCount == $totalDivergeLimit) {
+            if ($divergeCount === $consecutiveDivergeLimit || $persistentDivergeCount === $totalDivergeLimit) {
                 throw new OptionalExit(
                     'Series appear to be diverging. Current diverge count: '.$divergeCount.' | Persistent diverge count: '.$persistentDivergeCount,
                     'A call was made to SeriesProvider::maclaurinSeries() that seems to be diverging. Exiting the loop.'
@@ -123,48 +122,6 @@ class SeriesProvider
         }
 
         return $sum->roundToPrecision($precision);
-
-    }
-
-    /**
-     * @param callable $part1
-     * @param callable $part2
-     * @param callable $exponent
-     * @param int $startTermAt
-     * @param int $precision
-     *
-     * @return ImmutableDecimal
-     */
-    public static function genericTwoPartSeries(
-        callable $part1,
-        callable $part2,
-        callable $exponent,
-        int $startTermAt = 0,
-        int $precision = 10): ImmutableDecimal
-    {
-
-        $x = Numbers::makeZero($precision+1);
-
-        $continue = true;
-        $termNumber = $startTermAt;
-
-        while ($continue) {
-            $term = Numbers::makeOne($precision+1);
-
-            /** @var ImmutableDecimal $term */
-            $term = $term->multiply($part2($termNumber))->pow($exponent($termNumber))
-                ->multiply($part1($termNumber));
-
-            if ($term->numberOfLeadingZeros()-1 >= $precision) {
-                $continue = false;
-            }
-
-            $x = $x->add($term);
-
-            $termNumber++;
-        }
-
-        return $x->roundToPrecision($precision+1);
 
     }
     

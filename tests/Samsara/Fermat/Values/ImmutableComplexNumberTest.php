@@ -13,6 +13,32 @@ use PHPUnit\Framework\TestCase;
 class ImmutableComplexNumberTest extends TestCase
 {
 
+    protected static $complexOneOne;
+    protected static $complexOneTwo;
+    protected static $complexTwoTwo;
+    protected static $complexOneNegTwo;
+    protected static $complexNegOneNegTwo;
+    protected static $complexThreeFour;
+
+    public static function setUpBeforeClass(): void
+    {
+        $one = new ImmutableDecimal('1');
+        $negOne = new ImmutableDecimal('-1');
+        $oneI = new ImmutableDecimal('1i');
+        $two = new ImmutableDecimal('2');
+        $twoI = new ImmutableDecimal('2i');
+        $negTwoI = new ImmutableDecimal('-2i');
+        $three = new ImmutableDecimal('3');
+        $fourI = new ImmutableDecimal('4i');
+
+        self::$complexOneTwo = new ImmutableComplexNumber($one, $twoI);
+        self::$complexOneNegTwo = new ImmutableComplexNumber($one, $negTwoI);
+        self::$complexThreeFour = new ImmutableComplexNumber($three, $fourI);
+        self::$complexNegOneNegTwo = new ImmutableComplexNumber($negOne, $negTwoI);
+        self::$complexTwoTwo = new ImmutableComplexNumber($two, $twoI);
+        self::$complexOneOne = new ImmutableComplexNumber($one, $oneI);
+    }
+
     /**
      * @medium
      */
@@ -40,18 +66,12 @@ class ImmutableComplexNumberTest extends TestCase
     public function testAbsValue()
     {
 
-        $three = new ImmutableDecimal('3');
-        $fourI = new ImmutableDecimal('4i');
-
-        $complex = new ImmutableComplexNumber($three, $fourI);
+        $complex = self::$complexThreeFour;
 
         $this->assertEquals('5', $complex->absValue());
         $this->assertEquals('5', $complex->abs()->getValue());
 
-        $one = new ImmutableDecimal('1');
-        $twoI = new ImmutableDecimal('2i');
-
-        $complex = new ImmutableComplexNumber($one, $twoI);
+        $complex = self::$complexOneTwo;
 
         $this->assertEquals('2.2360679774', $complex->absValue());
         $this->assertEquals('2.2360679774', $complex->abs()->getValue());
@@ -59,7 +79,6 @@ class ImmutableComplexNumberTest extends TestCase
     }
 
     /**
-     * @group testing
      * @group arithmetic
      * @group complex
      * @large
@@ -73,7 +92,7 @@ class ImmutableComplexNumberTest extends TestCase
         $negOne = new ImmutableDecimal('-1');
         $negTwoI = new ImmutableDecimal('-2i');
 
-        $complex = new ImmutableComplexNumber($one, $twoI);
+        $complex = self::$complexOneTwo;
 
         $this->assertEquals('2+2i', $complex->add($one)->getValue());
         $this->assertEquals('1+4i', $complex->add($twoI)->getValue());
@@ -81,7 +100,7 @@ class ImmutableComplexNumberTest extends TestCase
         $this->assertEquals('2+2i', $one->add($complex)->getValue());
         $this->assertEquals('1+4i', $twoI->add($complex)->getValue());
 
-        $negComplex = new ImmutableComplexNumber($negOne, $negTwoI);
+        $negComplex = self::$complexNegOneNegTwo;
 
         $this->assertEquals('2i', $complex->add($negOne)->getValue());
         $this->assertEquals('1', $complex->add($negTwoI)->getValue());
@@ -96,7 +115,6 @@ class ImmutableComplexNumberTest extends TestCase
     /**
      * @group arithmetic
      * @group complex
-     * @group testing
      * @large
      */
     public function testSubtract()
@@ -107,7 +125,7 @@ class ImmutableComplexNumberTest extends TestCase
         $oneI = new ImmutableDecimal('1i');
         $twoI = new ImmutableDecimal('2i');
 
-        $complex = new ImmutableComplexNumber($two, $twoI);
+        $complex = self::$complexTwoTwo;
 
         $this->assertEquals('1+2i', $complex->subtract($one)->getValue());
         $this->assertEquals('2+1i', $complex->subtract($oneI)->getValue());
@@ -122,19 +140,15 @@ class ImmutableComplexNumberTest extends TestCase
     /**
      * @group arithmetic
      * @group complex
-     * @group testing
      * @medium
      */
     public function testMultiplySimple()
     {
 
-        $one = new ImmutableDecimal('1');
         $two = new ImmutableDecimal('2');
-        $oneI = new ImmutableDecimal('1i');
         $twoI = new ImmutableDecimal('2i');
 
-        $complex = new ImmutableComplexNumber($two, $twoI);
-        $complexSmall = new ImmutableComplexNumber($one, $oneI);
+        $complexSmall = self::$complexOneOne;
 
         $this->assertEquals('2+2i', $complexSmall->multiply($two)->getValue());
         $this->assertEquals('-2+2i', $complexSmall->multiply($twoI)->getValue());
@@ -144,19 +158,15 @@ class ImmutableComplexNumberTest extends TestCase
     /**
      * @group arithmetic
      * @group complex
-     * @group testing
      * @medium
      */
     public function testMultiplyNegativeSimple()
     {
 
-        $one = new ImmutableDecimal('1');
         $two = new ImmutableDecimal('-2');
-        $oneI = new ImmutableDecimal('1i');
         $twoI = new ImmutableDecimal('-2i');
 
-        $complex = new ImmutableComplexNumber($two, $twoI);
-        $complexSmall = new ImmutableComplexNumber($one, $oneI);
+        $complexSmall = self::$complexOneOne;
 
         $this->assertEquals('-2-2i', $complexSmall->multiply($two)->getValue());
         $this->assertEquals('2-2i', $complexSmall->multiply($twoI)->getValue());
@@ -166,20 +176,13 @@ class ImmutableComplexNumberTest extends TestCase
     /**
      * @group arithmetic
      * @group complex
-     * @group testing
-     * @group failing
      * @medium
      */
     public function testMultiplyComplexFoil()
     {
 
-        $one = new ImmutableDecimal('1');
-        $two = new ImmutableDecimal('2');
-        $oneI = new ImmutableDecimal('1i');
-        $twoI = new ImmutableDecimal('2i');
-
-        $complex = new ImmutableComplexNumber($two, $twoI);
-        $complexSmall = new ImmutableComplexNumber($one, $oneI);
+        $complex = self::$complexTwoTwo;
+        $complexSmall = self::$complexOneOne;
 
         $this->assertEquals('4i', $complexSmall->multiply($complex)->getValue());
 

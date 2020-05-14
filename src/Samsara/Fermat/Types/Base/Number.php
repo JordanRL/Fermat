@@ -25,7 +25,7 @@ abstract class Number implements Hashable, NumberInterface
 
     public function __construct()
     {
-        $this->setMode(Selectable::MODE_PRECISION);
+        $this->setMode(Selectable::CALC_MODE_PRECISION);
     }
 
     /**
