@@ -172,8 +172,8 @@ class PolynomialFunction extends Expression implements FunctionInterface
      */
     public static function createFromFoil(array $group1, array $group2): PolynomialFunction
     {
-        $group1exp = count($group1)-1;
-        $group2exp = count($group2)-1;
+        $group1exp = count($group1) - 1;
+        $group2exp = count($group2) - 1;
 
         /** @var ImmutableDecimal[] $finalCoefs */
         $finalCoefs = [];

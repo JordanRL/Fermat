@@ -2,6 +2,8 @@
 
 namespace Samsara\Fermat\Types\Base\Interfaces\Numbers;
 
+use Samsara\Fermat\Types\NumberCollection;
+
 interface DecimalInterface extends SimpleNumberInterface
 {
 
@@ -49,9 +51,20 @@ interface DecimalInterface extends SimpleNumberInterface
     public function isInt(): bool;
 
     /**
+     * @return int
+     */
+    public function asInt(): int;
+
+    public function isFloat(): bool;
+
+    public function asFloat(): float;
+
+    /**
      * @return bool
      */
     public function isPrime(): bool;
+
+    public function asPrimeFactors(): NumberCollection;
 
     /**
      * @return DecimalInterface
@@ -62,11 +75,6 @@ interface DecimalInterface extends SimpleNumberInterface
      * @return DecimalInterface
      */
     public function floor();
-
-    /**
-     * @return int|null
-     */
-    public function getPrecision();
 
     /**
      * @return DecimalInterface
@@ -277,10 +285,5 @@ interface DecimalInterface extends SimpleNumberInterface
      * @return int
      */
     public function numberOfLeadingZeros();
-
-    /**
-     * @return int
-     */
-    public function asInt();
 
 }

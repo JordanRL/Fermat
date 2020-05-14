@@ -33,7 +33,7 @@ class SeriesProviderTest extends TestCase
             }
         );
 
-        $this->assertEquals('1.1111111111', $value->getValue());
+        $this->assertEquals('1.11111111111', $value->getValue());
 
     }
 

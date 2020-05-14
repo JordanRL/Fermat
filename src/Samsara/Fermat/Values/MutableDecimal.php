@@ -45,7 +45,7 @@ class MutableDecimal extends Decimal
         }
 
         if (is_null($precision)) {
-            $precision = $this->getPrecision();
+            $this->precision = $this->getPrecision();
         }
 
         $this->value = $this->translateValue($value);

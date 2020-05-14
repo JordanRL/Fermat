@@ -10,8 +10,20 @@ class MutableFraction extends Fraction
     protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator)
     {
 
-        $this->numerator = $numerator;
-        $this->denominator = $denominator;
+        if ($numerator->isImaginary() xor $denominator->isImaginary()) {
+            $this->imaginary = true;
+        } else {
+            $this->imaginary = false;
+        }
+
+        $this->value = [
+            $numerator,
+            $denominator
+        ];
+
+        if ($numerator->isNegative() xor $denominator->isNegative()) {
+            $this->sign = true;
+        }
 
         return $this;
 

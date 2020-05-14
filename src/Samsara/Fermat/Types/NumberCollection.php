@@ -15,7 +15,7 @@ use Ds\Vector;
 use Samsara\Fermat\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
-class NumberCollection implements NumberCollectionInterface
+class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \IteratorAggregate
 {
 
     /**
@@ -374,4 +374,28 @@ class NumberCollection implements NumberCollectionInterface
 
     }
 
+    public function offsetExists($offset)
+    {
+        return $this->getCollection()->offsetExists($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->getCollection()->offsetGet($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->getCollection()->offsetSet($offset, $value);
+    }
+
+    public function offsetUnset($offset)
+    {
+        $this->getCollection()->offsetUnset($offset);
+    }
+
+    public function getIterator()
+    {
+        return $this->getCollection()->getIterator();
+    }
 }

@@ -11,20 +11,20 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Number;
-use Samsara\Fermat\Types\Traits\ArithmeticTrait;
+use Samsara\Fermat\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
-use Samsara\Fermat\Types\Traits\InverseTrigonometryTrait;
-use Samsara\Fermat\Types\Traits\LogTrait;
-use Samsara\Fermat\Types\Traits\PrecisionTrait;
-use Samsara\Fermat\Types\Traits\TrigonometryTrait;
+use Samsara\Fermat\Types\Traits\Decimal\InverseTrigonometryTrait;
+use Samsara\Fermat\Types\Traits\Decimal\LogTrait;
+use Samsara\Fermat\Types\Traits\Decimal\PrecisionTrait;
+use Samsara\Fermat\Types\Traits\Decimal\TrigonometryTrait;
 
 abstract class Decimal extends Number implements DecimalInterface, BaseConversionInterface
 {
 
     protected $base;
 
-    use ArithmeticTrait;
+    use ArithmeticSimpleTrait;
     use ComparisonTrait;
     use IntegerMathTrait;
     use TrigonometryTrait;
@@ -46,7 +46,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
             $this->imaginary = false;
         }
 
-        if ($base != 10 && !$baseTenInput) {
+        if ($base !== 10 && !$baseTenInput) {
             $value = $this->convertValue($value, $base, 10);
         }
 
@@ -73,7 +73,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
             }
         }
 
-        parent::__construct($value);
+        parent::__construct();
 
     }
 
@@ -87,7 +87,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         $value = trim($value);
         $valueArr = str_split($value);
 
-        if ($valueArr[0] == '-') {
+        if ($valueArr[0] === '-') {
             $this->sign = true;
             $value = trim($value, '-');
         } else {
@@ -95,6 +95,28 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         }
 
         if (strpos($value, '.') !== false) {
+            if (strpos($value, 'E')) {
+                [$baseNum, $exp] = explode('E', $value);
+                [$left, $right] = explode('.', $baseNum);
+
+                if ($exp > 0) {
+                    $exp -= strlen($right);
+                    if ($exp >= 0) {
+                        $right = str_pad($right, $exp - 1, '0').'.0';
+                    } else {
+                        $right = substr($right, 0, strlen($right) + $exp).'.'.substr($right, strlen($right) + $exp + 1);
+                    }
+                } else {
+                    $exp += strlen($left);
+                    if ($exp >= 0) {
+                        $left = substr($left, 0, $exp).'.'.substr($left, $exp + 1);
+                    } else {
+                        $left = '0.'.str_pad($left, $exp, '0', STR_PAD_LEFT);
+                    }
+                }
+                $value = $left.$right;
+            }
+
             list($wholePart, $decimalPart) = explode('.', $value);
 
             $resultValue = [
@@ -139,7 +161,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         return $this->base;
     }
 
-    public function getAsBaseTenRealNumber():string
+    public function getAsBaseTenRealNumber(): string
     {
         $string = '';
 

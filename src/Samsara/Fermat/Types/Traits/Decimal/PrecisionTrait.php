@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Types\Traits;
+namespace Samsara\Fermat\Types\Traits\Decimal;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
@@ -218,6 +218,24 @@ trait PrecisionTrait
         }
 
         return intval($this->getValue());
+
+    }
+
+    public function isFloat(): bool
+    {
+
+        return (bool)ArithmeticProvider::compare($this->getDecimalPart(), '0');
+
+    }
+
+    public function asFloat(): float
+    {
+
+        if ($this->isGreaterThan(PHP_FLOAT_MAX) || $this->isLessThan(PHP_FLOAT_MIN)) {
+            throw new IncompatibleObjectState('Cannot export number as integer because it is out of range');
+        }
+
+        return (float)$this->asReal();
 
     }
 

@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat;
 
+use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
@@ -17,23 +18,23 @@ use Samsara\Fermat\Values\MutableDecimal;
 class Numbers
 {
 
-    const MUTABLE = MutableDecimal::class;
-    const IMMUTABLE = ImmutableDecimal::class;
-    const MUTABLE_FRACTION = MutableFraction::class;
-    const IMMUTABLE_FRACTION = ImmutableFraction::class;
-    const CARTESIAN_COORDINATE = CartesianCoordinate::class;
+    public const MUTABLE = MutableDecimal::class;
+    public const IMMUTABLE = ImmutableDecimal::class;
+    public const MUTABLE_FRACTION = MutableFraction::class;
+    public const IMMUTABLE_FRACTION = ImmutableFraction::class;
+    public const CARTESIAN_COORDINATE = CartesianCoordinate::class;
     /* 105 digits after decimal, which is going to be overkill in almost all places */
-    const PI = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679';
+    public const PI = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679';
     /* Tau (2pi) to 100 digits */
-    const TAU = '6.283185307179586476925286766559005768394338798750211641949889184615632812572417997256069650684234136';
+    public const TAU = '6.283185307179586476925286766559005768394338798750211641949889184615632812572417997256069650684234136';
     /* Euler's Number to 100 digits */
-    const E = '2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427';
+    public const E = '2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427';
     /* Golden Ratio to 100 digits */
-    const GOLDEN_RATIO = '1.618033988749894848204586834365638117720309179805762862135448622705260462818902449707207204189391137';
+    public const GOLDEN_RATIO = '1.618033988749894848204586834365638117720309179805762862135448622705260462818902449707207204189391137';
     /* Natural log of 10 to 100 digits */
-    const LN_10 = '2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298';
+    public const LN_10 = '2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298';
     /* The value of i^i */
-    const I_POW_I = '0.2078795763507619085469556198349787700338778416317696080751358830554198772854821397886002778654260353';
+    public const I_POW_I = '0.2078795763507619085469556198349787700338778416317696080751358830554198772854821397886002778654260353';
 
     /**
      * @param $type
@@ -42,7 +43,8 @@ class Numbers
      * @param int $base
      *
      * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
-     *@throws IntegrityConstraint
+     * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public static function make($type, $value, $precision = null, $base = 10)
     {
@@ -51,62 +53,60 @@ class Numbers
             $type = get_class($type);
         }
 
-        if ($type == static::IMMUTABLE) {
+        if ($type === static::IMMUTABLE) {
             return new ImmutableDecimal(trim($value), $precision, $base);
-        } elseif ($type == static::MUTABLE) {
+        }
+
+        if ($type === static::MUTABLE) {
             return new MutableDecimal(trim($value), $precision, $base);
-        } elseif ($type == static::IMMUTABLE_FRACTION) {
+        }
+
+        if ($type === static::IMMUTABLE_FRACTION) {
             return self::makeFractionFromString($type, $value, $base);
-        } elseif ($type == static::MUTABLE_FRACTION) {
+        }
+
+        if ($type === static::MUTABLE_FRACTION) {
             return self::makeFractionFromString($type, $value, $base);
-        } elseif ($type == static::CARTESIAN_COORDINATE && is_array($value)) {
+        }
+
+        if ($type === static::CARTESIAN_COORDINATE && is_array($value)) {
             $x = $value[0];
-
-            if (isset($value[1])) {
-                $y = $value[1];
-            } else {
-                $y = null;
-            }
-
-            if (isset($value[2])) {
-                $z = $value[2];
-            } else {
-                $z = null;
-            }
+            $y = $value[1] ?? null;
+            $z = $value[2] ?? null;
 
             return new CartesianCoordinate($x, $y, $z);
-        } else {
-            $reflector = new \ReflectionClass($type);
+        }
 
-            if ($reflector->implementsInterface(FractionInterface::class) && $reflector->isSubclassOf(Fraction::class)) {
-                return Numbers::makeFractionFromString($reflector->getName(), $value, $base);
-            }
+        $reflector = new \ReflectionClass($type);
 
-            if ($reflector->implementsInterface(CoordinateInterface::class) && is_array($value)) {
-                /** @var CoordinateInterface $customCoordinate */
-                $customCoordinate = $reflector->newInstance([
-                    $value
-                ]);
-                return $customCoordinate;
-            }
+        if ($reflector->implementsInterface(FractionInterface::class) && $reflector->isSubclassOf(Fraction::class)) {
+            return self::makeFractionFromString($reflector->getName(), $value, $base);
+        }
 
-            if ($reflector->implementsInterface(NumberInterface::class)) {
-                /** @var NumberInterface $customNumber */
-                $customNumber = $reflector->newInstance([
-                    trim($value),
-                    $precision,
-                    $base
-                ]);
-                return $customNumber;
-            }
+        if ($reflector->implementsInterface(CoordinateInterface::class) && is_array($value)) {
+            /** @var CoordinateInterface $customCoordinate */
+            $customCoordinate = $reflector->newInstance([
+                $value
+            ]);
+            return $customCoordinate;
+        }
 
-            if ($reflector->implementsInterface(CoordinateInterface::class) && !is_array($value)) {
-                throw new IntegrityConstraint(
-                    'The $value for a CoordinateInterface must be an array',
-                    'Provide an array for the $value',
-                    'A CoordinateInterface expects the value to be an array of axes and values'
-                );
-            }
+        if ($reflector->implementsInterface(NumberInterface::class)) {
+            /** @var NumberInterface $customNumber */
+            $customNumber = $reflector->newInstance([
+                trim($value),
+                $precision,
+                $base
+            ]);
+            return $customNumber;
+        }
+
+        if ($reflector->implementsInterface(CoordinateInterface::class) && !is_array($value)) {
+            throw new IntegrityConstraint(
+                'The $value for a CoordinateInterface must be an array',
+                'Provide an array for the $value',
+                'A CoordinateInterface expects the value to be an array of axes and values'
+            );
         }
 
         throw new IntegrityConstraint(
@@ -121,10 +121,12 @@ class Numbers
      * @param $value
      * @param int|null $precision
      * @param int $base
+     *
      * @return NumberInterface
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
-    public static function makeFromBase10($type, $value, $precision = null, $base = 10)
+    public static function makeFromBase10($type, $value, $precision = null, $base = 10): NumberInterface
     {
         /**
          * @var ImmutableDecimal|MutableDecimal
@@ -135,13 +137,13 @@ class Numbers
     }
 
     /**
-     * @param $type
-     * @param int|float|string|NumberInterface|DecimalInterface|FractionInterface $value
+     * @param string|object $type
+     * @param int|float|string|array|NumberInterface|DecimalInterface|FractionInterface $value
      * @param int|null $precision
      * @param int $base
      *
      * @return ImmutableDecimal|MutableDecimal|NumberInterface|ImmutableDecimal[]|MutableDecimal[]|NumberInterface[]
-     * @throws IntegrityConstraint|\ReflectionException
+     * @throws IntegrityConstraint|ReflectionException
      */
     public static function makeOrDont($type, $value, $precision = null, $base = 10)
     {
@@ -162,7 +164,7 @@ class Numbers
             }
 
             return $newInput;
-        } elseif (is_numeric($value) || is_string($value)) {
+        } elseif (is_string($value) || is_int($value) || is_float($value)) {
             $isImaginary = strpos($value, 'i') !== false;
 
             if (is_numeric($value) || $isImaginary) {
@@ -184,9 +186,9 @@ class Numbers
      * @param int $base
      *
      * @return FractionInterface|ImmutableFraction|MutableFraction
-     * @throws IntegrityConstraint|\ReflectionException
+     * @throws IntegrityConstraint|ReflectionException
      */
-    public static function makeFractionFromString($type, $value, $base = 10)
+    public static function makeFractionFromString($type, $value, int $base = 10): FractionInterface
     {
         $parts = explode('/', $value);
 
@@ -199,81 +201,85 @@ class Numbers
         }
 
         /** @var ImmutableDecimal $numerator */
-        $numerator = Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[0])))->round();
+        $numerator = self::make(self::IMMUTABLE, trim(ltrim($parts[0])))->round();
         /** @var ImmutableDecimal $denominator */
-        $denominator = isset($parts[1]) ? Numbers::make(Numbers::IMMUTABLE, trim(ltrim($parts[1])))->round() : Numbers::makeOne();
+        $denominator = isset($parts[1]) ? self::make(self::IMMUTABLE, trim(ltrim($parts[1])))->round() : self::makeOne();
 
-        if ($type == self::IMMUTABLE_FRACTION) {
+        if ($type === self::IMMUTABLE_FRACTION) {
             return new ImmutableFraction($numerator, $denominator, $base);
-        } elseif ($type == self::MUTABLE_FRACTION) {
-            return new MutableFraction($numerator, $denominator, $base);
-        } else {
-            $reflector = new \ReflectionClass($type);
+        }
 
-            if ($reflector->implementsInterface(FractionInterface::class) && $reflector->isSubclassOf(Fraction::class)) {
-                /** @var FractionInterface|Fraction $customFraction */
-                $customFraction = $reflector->newInstance([
-                    $numerator,
-                    $denominator,
-                    $base
-                ]);
-                return $customFraction;
+        if ($type === self::MUTABLE_FRACTION) {
+            return new MutableFraction($numerator, $denominator, $base);
+        }
+
+        $reflector = new \ReflectionClass($type);
+
+        if ($reflector->implementsInterface(FractionInterface::class) && $reflector->isSubclassOf(Fraction::class)) {
+            /** @var FractionInterface|Fraction $customFraction */
+            $customFraction = $reflector->newInstance([
+                $numerator,
+                $denominator,
+                $base
+            ]);
+            return $customFraction;
+        }
+
+        throw new IntegrityConstraint(
+            'Type must be an implementation of FractionInterface',
+            'Alter to calling code to use the correct type',
+            'makeFractionFromString can only make objects which implement the FractionInterface; '.$type.' given'
+        );
+    }
+
+    /**
+     * @param int|null $precision
+     *
+     * @return NumberInterface
+     * @throws ReflectionException
+     * @throws IntegrityConstraint
+     */
+    public static function makePi(int $precision = null)
+    {
+
+        if (!is_null($precision)) {
+            if ($precision > 100 || $precision < 1) {
+                throw new IntegrityConstraint(
+                    '$precision must be between 1 and 100 inclusive',
+                    'Provide a precision within range',
+                    'The PI constant cannot have a precision higher than the constant stored (100)'
+                );
             }
 
-            throw new IntegrityConstraint(
-                'Type must be an implementation of FractionInterface',
-                'Alter to calling code to use the correct type',
-                'makeFractionFromString can only make objects which implement the FractionInterface; '.$type.' given'
-            );
-        }
-    }
-
-    /**
-     * @param int|null $precision
-     *
-     * @throws IntegrityConstraint
-     * @return NumberInterface
-     */
-    public static function makePi($precision = null)
-    {
-        
-        if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
-            throw new IntegrityConstraint(
-                '$precision must be between 1 and 100 inclusive',
-                'Provide a precision within range',
-                'The PI constant cannot have a precision higher than the constant stored (100)'
-            );
-        }
-        
-        if (!is_null($precision)) {
             return self::make(self::IMMUTABLE, self::PI, $precision)->truncateToPrecision($precision);
-        } else {
-            return self::make(self::IMMUTABLE, self::PI, 100);
         }
-        
+
+        return self::make(self::IMMUTABLE, self::PI, 100);
+
     }
 
     /**
      * @param int|null $precision
      *
-     * @throws IntegrityConstraint
      * @return NumberInterface
+     * @throws ReflectionException
+     * @throws IntegrityConstraint
      */
     public static function makeTau($precision = null)
     {
-        if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
-            throw new IntegrityConstraint(
-                '$precision must be between 1 and 100 inclusive',
-                'Provide a precision within range',
-                'The TAU constant cannot have a precision higher than the constant stored (100)'
-            );
+        if (!is_null($precision)) {
+            if ($precision > 100 || $precision < 1) {
+                throw new IntegrityConstraint(
+                    '$precision must be between 1 and 100 inclusive',
+                    'Provide a precision within range',
+                    'The TAU constant cannot have a precision higher than the constant stored (100)'
+                );
+            }
+
+            return self::make(self::IMMUTABLE, self::TAU, $precision)->truncateToPrecision($precision);
         }
 
-        if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::TAU, $precision)->truncateToPrecision($precision);
-        } else {
-            return self::make(self::IMMUTABLE, self::TAU, 100);
-        }
+        return self::make(self::IMMUTABLE, self::TAU, 100);
     }
 
     /**
@@ -281,6 +287,7 @@ class Numbers
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public static function make2Pi($precision = null)
     {
@@ -290,75 +297,78 @@ class Numbers
     /**
      * @param int|null $precision
      *
-     * @throws IntegrityConstraint
      * @return NumberInterface
+     * @throws ReflectionException
+     * @throws IntegrityConstraint
      */
     public static function makeE($precision = null)
     {
 
-        if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
-            throw new IntegrityConstraint(
-                '$precision must be between 1 and 100 inclusive',
-                'Provide a precision within range',
-                'The E constant cannot have a precision higher than the constant stored (100)'
-            );
+        if (!is_null($precision)) {
+            if ($precision > 100 || $precision < 1) {
+                throw new IntegrityConstraint(
+                    '$precision must be between 1 and 100 inclusive',
+                    'Provide a precision within range',
+                    'The E constant cannot have a precision higher than the constant stored (100)'
+                );
+            }
+
+            return self::make(self::IMMUTABLE, self::E, $precision)->truncateToPrecision($precision);
         }
 
-        if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::E, $precision)->truncateToPrecision($precision);
-        } else {
-            return self::make(self::IMMUTABLE, self::E, 100);
-        }
+        return self::make(self::IMMUTABLE, self::E, 100);
 
     }
 
     /**
      * @param int|null $precision
      *
-     * @throws IntegrityConstraint
      * @return NumberInterface
+     * @throws ReflectionException
+     * @throws IntegrityConstraint
      */
     public static function makeGoldenRatio($precision = null)
     {
 
-        if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
-            throw new IntegrityConstraint(
-                '$precision must be between 1 and 100 inclusive',
-                'Provide a precision within range',
-                'The Golden Ratio constant cannot have a precision higher than the constant stored (100)'
-            );
+        if (!is_null($precision)) {
+            if ($precision > 100 || $precision < 1) {
+                throw new IntegrityConstraint(
+                    '$precision must be between 1 and 100 inclusive',
+                    'Provide a precision within range',
+                    'The Golden Ratio constant cannot have a precision higher than the constant stored (100)'
+                );
+            }
+
+            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $precision)->truncateToPrecision($precision);
         }
 
-        if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $precision)->truncateToPrecision($precision);
-        } else {
-            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, 100);
-        }
+        return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, 100);
 
     }
 
     /**
      * @param int|null $precision
      *
-     * @throws IntegrityConstraint
      * @return NumberInterface
+     * @throws ReflectionException
+     * @throws IntegrityConstraint
      */
     public static function makeNaturalLog10($precision = null)
     {
 
-        if (!is_null($precision) && ($precision > 100 || $precision < 1)) {
-            throw new IntegrityConstraint(
-                '$precision must be between 1 and 100 inclusive',
-                'Provide a precision within range',
-                'The natural log of 10 constant cannot have a precision higher than the constant stored (100)'
-            );
+        if (!is_null($precision)) {
+            if ($precision > 100 || $precision < 1) {
+                throw new IntegrityConstraint(
+                    '$precision must be between 1 and 100 inclusive',
+                    'Provide a precision within range',
+                    'The natural log of 10 constant cannot have a precision higher than the constant stored (100)'
+                );
+            }
+
+            return self::make(self::IMMUTABLE, self::LN_10, $precision)->truncateToPrecision($precision);
         }
 
-        if (!is_null($precision)) {
-            return self::make(self::IMMUTABLE, self::LN_10, $precision)->truncateToPrecision($precision);
-        } else {
-            return self::make(self::IMMUTABLE, self::LN_10, 100);
-        }
+        return self::make(self::IMMUTABLE, self::LN_10, 100);
 
     }
 
@@ -367,6 +377,7 @@ class Numbers
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public static function makeOne($precision = null)
     {
@@ -378,6 +389,7 @@ class Numbers
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws ReflectionException
      */
     public static function makeZero($precision = null)
     {

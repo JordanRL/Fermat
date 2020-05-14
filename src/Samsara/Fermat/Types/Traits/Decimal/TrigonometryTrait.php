@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Types\Traits;
+namespace Samsara\Fermat\Types\Traits\Decimal;
 
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
@@ -161,7 +161,7 @@ trait TrigonometryTrait
                 function ($n) {
                     $nthOddNumber = SequenceProvider::nthOddNumber($n);
 
-                    return SequenceProvider::nthEulerZigzag($nthOddNumber);
+                    return SequenceProvider::nthEulerZigzag($nthOddNumber->asInt());
                 },
                 function ($n) {
 

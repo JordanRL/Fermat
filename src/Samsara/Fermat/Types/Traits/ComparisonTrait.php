@@ -218,18 +218,14 @@ trait ComparisonTrait
     {
         $check = $this->checkComparisonTraitAndInterface();
 
-        if ($check == 1) {
+        if ($check === 1) {
             $checkVal = $this->getDecimalPart();
             $checkVal = trim($checkVal,'0');
 
-            if (strlen($checkVal) > 0 ) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return $this->getDenominator()->isEqual(1);
+            return !($checkVal !== '');
         }
+
+        return $this->getDenominator()->isEqual(1);
     }
 
 }

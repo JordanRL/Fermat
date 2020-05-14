@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Types\Base;
 
 use Ds\Hashable;
+use ReflectionException;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\ComplexNumber;
@@ -10,27 +11,21 @@ use Samsara\Fermat\Values\ImmutableComplexNumber;
 
 abstract class Number implements Hashable, NumberInterface
 {
-    const INFINITY = 'INF';
-    const NEG_INFINITY = '-INF';
-
-    const MODE_PRECISION = 1;
-    const MODE_NATIVE = 2;
-    const MODE_SIMPLE_TRIG = 3;
+    public const INFINITY = 'INF';
+    public const NEG_INFINITY = '-INF';
 
     /** @var array */
     protected $value;
     /** @var bool  */
     protected $extensions = true;
-    /** @var int */
-    protected $mode;
     /** @var bool  */
     protected $imaginary;
     /** @var bool */
     protected $sign;
 
-    public function __construct($value)
+    public function __construct()
     {
-        $this->setMode(Number::MODE_PRECISION);
+        $this->setMode(Selectable::CALC_MODE_PRECISION);
     }
 
     /**
@@ -101,7 +96,7 @@ abstract class Number implements Hashable, NumberInterface
     {
         try {
             $reflection = new \ReflectionClass($object);
-        } catch (\ReflectionException $exception) {
+        } catch (ReflectionException $exception) {
             return false;
         }
 
@@ -131,6 +126,13 @@ abstract class Number implements Hashable, NumberInterface
     {
         return !$this->imaginary;
     }
+
+    public function asReal(): string
+    {
+        return $this->getAsBaseTenRealNumber();
+    }
+
+    abstract public function getAsBaseTenRealNumber();
 
     abstract public function isComplex(): bool;
 
