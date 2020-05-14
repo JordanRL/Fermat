@@ -125,9 +125,16 @@ class NumbersTest extends TestCase
 
         $this->assertEquals('3.14159', $pi2->getValue());
 
+        $pi3 = Numbers::makePi(103);
+
+        $this->assertEquals(
+            '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821',
+            $pi3->getValue()
+        );
+
         $this->expectException(IntegrityConstraint::class);
 
-        Numbers::makePi(200);
+        Numbers::makePi(-1);
 
     }
     /**
@@ -145,13 +152,20 @@ class NumbersTest extends TestCase
 
         $this->assertEquals('6.28318', $tau2->getValue());
 
+        $tau3 = Numbers::makeTau(103);
+
+        $this->assertEquals(
+            '6.2831853071795864769252867665590057683943387987502116419498891846156328125724179972560696506842341359642',
+            $tau3->getValue()
+        );
+
         $this->expectException(IntegrityConstraint::class);
 
-        Numbers::makeTau(200);
+        Numbers::makeTau(-1);
 
     }
     /**
-     * @medium
+     * @large
      */
     public function testMakeE()
     {
@@ -164,6 +178,18 @@ class NumbersTest extends TestCase
         $e2 = Numbers::makeE(5);
 
         $this->assertEquals('2.71828', $e2->getValue());
+
+        $e3 = Numbers::makeE(103);
+
+        $this->assertEquals(
+            '2.7182818284590452353602874713526624977572470936999595749669676277240766303535475945713821785251664274274',
+            $e3->getValue()
+        );
+
+        $this->expectException(IntegrityConstraint::class);
+        $this->expectExceptionMessage('The E constant cannot have a precision less than 1');
+
+        Numbers::makeE(-1);
 
     }
     /**

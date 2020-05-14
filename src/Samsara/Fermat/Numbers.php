@@ -193,19 +193,23 @@ class Numbers
     /**
      * @param int|null $precision
      *
-     * @return NumberInterface
+     * @return DecimalInterface
      * @throws IntegrityConstraint
      */
     public static function makePi(int $precision = null)
     {
 
         if (!is_null($precision)) {
-            if ($precision > 100 || $precision < 1) {
+            if ($precision < 1) {
                 throw new IntegrityConstraint(
-                    '$precision must be between 1 and 100 inclusive',
+                    '$precision must be at least 1',
                     'Provide a precision within range',
-                    'The PI constant cannot have a precision higher than the constant stored (100)'
+                    'The pi constant cannot have a precision less than 1'
                 );
+            }
+
+            if ($precision > 100) {
+                return self::make(self::IMMUTABLE, ConstantProvider::makePi($precision), $precision);
             }
 
             return self::make(self::IMMUTABLE, self::PI, $precision)->truncateToPrecision($precision);
@@ -218,18 +222,23 @@ class Numbers
     /**
      * @param int|null $precision
      *
-     * @return NumberInterface
+     * @return DecimalInterface
      * @throws IntegrityConstraint
      */
     public static function makeTau($precision = null)
     {
         if (!is_null($precision)) {
-            if ($precision > 100 || $precision < 1) {
+            if ($precision < 1) {
                 throw new IntegrityConstraint(
-                    '$precision must be between 1 and 100 inclusive',
+                    '$precision must be at least 1',
                     'Provide a precision within range',
-                    'The TAU constant cannot have a precision higher than the constant stored (100)'
+                    'The E constant cannot have a precision less than 1'
                 );
+            }
+
+            if ($precision > 100) {
+                $pi = self::make(self::IMMUTABLE, ConstantProvider::makePi($precision), $precision + 2);
+                return $pi->multiply(2)->truncateToPrecision($precision);
             }
 
             return self::make(self::IMMUTABLE, self::TAU, $precision)->truncateToPrecision($precision);
@@ -241,7 +250,7 @@ class Numbers
     /**
      * @param int|null $precision
      *
-     * @return NumberInterface
+     * @return DecimalInterface
      * @throws IntegrityConstraint
      */
     public static function make2Pi($precision = null)
@@ -252,7 +261,7 @@ class Numbers
     /**
      * @param int|null $precision
      *
-     * @return NumberInterface
+     * @return DecimalInterface
      * @throws IntegrityConstraint
      */
     public static function makeE(int $precision = null)
