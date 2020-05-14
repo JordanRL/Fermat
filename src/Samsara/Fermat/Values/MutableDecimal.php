@@ -4,11 +4,12 @@ namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 class MutableDecimal extends Decimal
 {
 
-    public function continuousModulo($mod)
+    public function continuousModulo($mod): DecimalInterface
     {
 
         $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, $this->precision+1);

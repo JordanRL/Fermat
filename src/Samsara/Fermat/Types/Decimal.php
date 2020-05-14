@@ -77,7 +77,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
     }
 
-    public function modulo($mod)
+    public function modulo($mod): DecimalInterface
     {
         return $this->setValue(bcmod($this->getAsBaseTenRealNumber(), $mod), $this->getPrecision(), $this->getBase());
     }
@@ -117,7 +117,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
                 $value = $left.$right;
             }
 
-            list($wholePart, $decimalPart) = explode('.', $value);
+            [$wholePart, $decimalPart] = explode('.', $value);
 
             $resultValue = [
                 $wholePart,
@@ -135,11 +135,11 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
     protected function convertObject()
     {
-        if ($this->getBase() == 10) {
+        if ($this->getBase() === 10) {
             return $this->getAsBaseTenRealNumber();
-        } else {
-            return $this->convertValue($this->getAsBaseTenRealNumber(), 10, $this->getBase());
         }
+
+        return $this->convertValue($this->getAsBaseTenRealNumber(), 10, $this->getBase());
     }
 
     protected function convertValue(string $value, int $oldBase, int $newBase)

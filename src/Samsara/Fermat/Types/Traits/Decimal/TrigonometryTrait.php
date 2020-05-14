@@ -5,11 +5,12 @@ namespace Samsara\Fermat\Types\Traits\Decimal;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 trait TrigonometryTrait
 {
 
-    public function sin($precision = null, $round = true)
+    public function sin($precision = null, $round = true): DecimalInterface
     {
         if ($this->isEqual(0)) {
             return $this;
@@ -50,7 +51,7 @@ trait TrigonometryTrait
         }
     }
 
-    public function cos($precision = null, $round = true)
+    public function cos($precision = null, $round = true): DecimalInterface
     {
         if ($this->isEqual(0)) {
             return $this->setValue('1');
@@ -93,7 +94,7 @@ trait TrigonometryTrait
         }
     }
 
-    public function tan($precision = null, $round = true)
+    public function tan($precision = null, $round = true): DecimalInterface
     {
         $precision = $precision ?? $this->getPrecision();
 
@@ -187,7 +188,7 @@ trait TrigonometryTrait
 
     }
 
-    public function cot($precision = null, $round = true)
+    public function cot($precision = null, $round = true): DecimalInterface
     {
 
         $pi = Numbers::makePi();
@@ -228,7 +229,7 @@ trait TrigonometryTrait
 
     }
 
-    public function sec($precision = null, $round = true)
+    public function sec($precision = null, $round = true): DecimalInterface
     {
 
         $one = Numbers::makeOne();
@@ -255,7 +256,7 @@ trait TrigonometryTrait
 
     }
 
-    public function csc($precision = null, $round = true)
+    public function csc($precision = null, $round = true): DecimalInterface
     {
 
         $one = Numbers::makeOne();
@@ -282,7 +283,7 @@ trait TrigonometryTrait
 
     }
 
-    public function sinh($precision = null, $round = true)
+    public function sinh($precision = null, $round = true): DecimalInterface
     {
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
@@ -305,7 +306,7 @@ trait TrigonometryTrait
 
     }
 
-    public function cosh($precision = null, $round = true)
+    public function cosh($precision = null, $round = true): DecimalInterface
     {
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
@@ -328,7 +329,7 @@ trait TrigonometryTrait
 
     }
 
-    public function tanh($precision = null, $round = true)
+    public function tanh($precision = null, $round = true): DecimalInterface
     {
 
         $precision = $precision ?? $this->getPrecision();
@@ -347,7 +348,7 @@ trait TrigonometryTrait
 
     }
 
-    public function coth($precision = null, $round = true)
+    public function coth($precision = null, $round = true): DecimalInterface
     {
 
         $precision = $precision ?? $this->getPrecision();
@@ -366,7 +367,7 @@ trait TrigonometryTrait
 
     }
 
-    public function sech($precision = null, $round = true)
+    public function sech($precision = null, $round = true): DecimalInterface
     {
 
         $precision = $precision ?? $this->getPrecision();
@@ -386,7 +387,7 @@ trait TrigonometryTrait
 
     }
 
-    public function csch($precision = null, $round = true)
+    public function csch($precision = null, $round = true): DecimalInterface
     {
 
         $precision = $precision ?? $this->getPrecision();
