@@ -12,28 +12,28 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function modulo($mod);
+    public function modulo($mod): DecimalInterface;
 
     /**
      * @param $mod
      *
      * @return DecimalInterface
      */
-    public function continuousModulo($mod);
+    public function continuousModulo($mod): DecimalInterface;
 
     /**
      * @param $num
      *
      * @return DecimalInterface
      */
-    public function getLeastCommonMultiple($num);
+    public function getLeastCommonMultiple($num): DecimalInterface;
 
     /**
      * @param $num
      *
      * @return DecimalInterface
      */
-    public function getGreatestCommonDivisor($num);
+    public function getGreatestCommonDivisor($num): DecimalInterface;
 
     /**
      * @return bool
@@ -69,35 +69,27 @@ interface DecimalInterface extends SimpleNumberInterface
     /**
      * @return DecimalInterface
      */
-    public function ceil();
+    public function ceil(): DecimalInterface;
 
     /**
      * @return DecimalInterface
      */
-    public function floor();
+    public function floor(): DecimalInterface;
 
     /**
      * @return DecimalInterface
      */
-    public function factorial();
+    public function factorial(): DecimalInterface;
 
     /**
      * @return DecimalInterface
      */
-    public function doubleFactorial();
+    public function doubleFactorial(): DecimalInterface;
 
     /**
      * @return DecimalInterface
      */
-    public function semiFactorial();
-
-    /**
-     * @param int|null $precision
-     * @param bool $round
-     *
-     * @return DecimalInterface
-     */
-    public function sin($precision = null, $round = true);
+    public function semiFactorial(): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -105,7 +97,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function cos($precision = null, $round = true);
+    public function sin($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -113,7 +105,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function tan($precision = null, $round = true);
+    public function cos($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -121,7 +113,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function cot($precision = null, $round = true);
+    public function tan($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -129,7 +121,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function sec($precision = null, $round = true);
+    public function cot($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -137,7 +129,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function csc($precision = null, $round = true);
+    public function sec($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -145,7 +137,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function arcsin($precision = null, $round = true);
+    public function csc($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -153,7 +145,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function arccos($precision = null, $round = true);
+    public function arcsin($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -161,7 +153,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function arctan($precision = null, $round = true);
+    public function arccos($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -169,7 +161,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function arccot($precision = null, $round = true);
+    public function arctan($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -177,7 +169,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function arcsec($precision = null, $round = true);
+    public function arccot($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -185,7 +177,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function arccsc($precision = null, $round = true);
+    public function arcsec($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -193,7 +185,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function sinh($precision = null, $round = true);
+    public function arccsc($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -201,7 +193,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function cosh($precision = null, $round = true);
+    public function sinh($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -209,7 +201,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function tanh($precision = null, $round = true);
+    public function cosh($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -217,7 +209,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function coth($precision = null, $round = true);
+    public function tanh($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -225,7 +217,7 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function sech($precision = null, $round = true);
+    public function coth($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
@@ -233,57 +225,65 @@ interface DecimalInterface extends SimpleNumberInterface
      *
      * @return DecimalInterface
      */
-    public function csch($precision = null, $round = true);
+    public function sech($precision = null, $round = true): DecimalInterface;
+
+    /**
+     * @param int|null $precision
+     * @param bool $round
+     *
+     * @return DecimalInterface
+     */
+    public function csch($precision = null, $round = true): DecimalInterface;
 
     /**
      * @param int|null $precision
      * @return DecimalInterface
      */
-    public function ln($precision = null);
+    public function ln($precision = null): DecimalInterface;
 
     /**
      * @param int|null $precision
      * @return DecimalInterface
      */
-    public function log10($precision = null);
+    public function log10($precision = null): DecimalInterface;
 
     /**
      * @param int|null $precision
      * @return DecimalInterface
      */
-    public function exp($precision = null);
+    public function exp($precision = null): DecimalInterface;
 
     /**
      * @param int $decimals
      *
      * @return DecimalInterface
      */
-    public function round($decimals = 0);
+    public function round($decimals = 0): DecimalInterface;
 
     /**
      * @param int $decimals
      *
      * @return DecimalInterface
      */
-    public function truncate($decimals = 0);
+    public function truncate($decimals = 0): DecimalInterface;
 
     /**
      * @param $precision
      *
      * @return DecimalInterface
      */
-    public function roundToPrecision($precision);
+    public function roundToPrecision($precision): DecimalInterface;
 
     /**
      * @param $precision
      *
      * @return DecimalInterface
      */
-    public function truncateToPrecision($precision);
+    public function truncateToPrecision($precision): DecimalInterface;
 
     /**
      * @return int
      */
-    public function numberOfLeadingZeros();
+    public function numberOfLeadingZeros(): int;
 
 }

@@ -24,7 +24,7 @@ use Samsara\Fermat\Values\MutableFraction;
 trait ArithmeticPrecisionTrait
 {
 
-    public function addPrecision($num)
+    protected function addPrecision($num)
     {
 
         $precision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
@@ -33,7 +33,7 @@ trait ArithmeticPrecisionTrait
 
     }
 
-    public function subtractPrecision($num)
+    protected function subtractPrecision($num)
     {
 
         $precision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
@@ -42,7 +42,7 @@ trait ArithmeticPrecisionTrait
 
     }
 
-    public function multiplyPrecision($num)
+    protected function multiplyPrecision($num)
     {
 
         $precision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
@@ -51,7 +51,7 @@ trait ArithmeticPrecisionTrait
 
     }
 
-    public function dividePrecision($num, ?int $precision)
+    protected function dividePrecision($num, ?int $precision)
     {
 
         if (is_null($precision)) {
@@ -62,7 +62,7 @@ trait ArithmeticPrecisionTrait
 
     }
 
-    public function powPrecision($num)
+    protected function powPrecision($num)
     {
 
         $precision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
@@ -77,7 +77,7 @@ trait ArithmeticPrecisionTrait
 
     }
 
-    public function sqrtPrecision(?int $precision)
+    protected function sqrtPrecision(?int $precision)
     {
 
         $precision = $precision ?? $this->getPrecision();

@@ -8,18 +8,25 @@ use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\ComplexNumbers;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\ComplexNumberInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Types\Base\Selectable;
+use Samsara\Fermat\Types\ComplexNumber;
+use Samsara\Fermat\Values\Geometry\CoordinateSystems\CartesianCoordinate;
+use Samsara\Fermat\Values\ImmutableDecimal;
 use Samsara\Fermat\Values\ImmutableFraction;
+use Samsara\Fermat\Values\MutableDecimal;
+use Samsara\Fermat\Values\MutableFraction;
 
 trait ArithmeticSelectionTrait
 {
 
     /** @var int */
-    protected $mode;
+    protected $calcMode;
     /** @var array */
     protected $modeRegister;
 
@@ -29,25 +36,25 @@ trait ArithmeticSelectionTrait
      * @param int $identity
      *
      * @return array
-     * @throws ReflectionException
      * @throws IntegrityConstraint
      */
-    protected function translateToParts($left, $right, $identity = 0)
+    protected function translateToParts($left, $right, $identity = 0): array
     {
-        if (is_numeric($right)) {
-            $right = Numbers::make(Numbers::IMMUTABLE, $right);
-        } elseif (is_string($right)) {
-            $right = trim($right);
-            if (strpos($right, '/') !== false) {
-                $right = Numbers::makeFractionFromString(Numbers::IMMUTABLE_FRACTION, $right);
-            } elseif (strrpos($right, '+') || strrpos($right, '-')) {
-                $right = ComplexNumbers::make(ComplexNumbers::IMMUTABLE, $right);
-            } else {
+        switch (gettype($right)) {
+            case 'integer':
+            case 'double':
                 $right = Numbers::make(Numbers::IMMUTABLE, $right);
-            }
-        } elseif (!($right instanceof NumberInterface)) {
-            $right = Numbers::makeOrDont(Numbers::IMMUTABLE, $right);
+                break;
+
+            case 'string':
+                $right = self::stringSelector($right);
+                break;
+
+            case 'object':
+                $right = !($right instanceof NumberInterface) ? Numbers::makeOrDont(Numbers::IMMUTABLE, $right) : $right;
+                break;
         }
+        /** @var DecimalInterface|ComplexNumberInterface|FractionInterface $right */
 
         if ($right instanceof FractionInterface) {
             if ($left instanceof FractionInterface) {
@@ -79,9 +86,30 @@ trait ArithmeticSelectionTrait
         return [$thatRealPart, $thatImaginaryPart, $thisRealPart, $thisImaginaryPart, $right];
     }
 
+    /**
+     * @param string $input
+     * @return CoordinateInterface|FractionInterface|NumberInterface|ComplexNumber|CartesianCoordinate|ImmutableDecimal|ImmutableFraction|MutableDecimal|MutableFraction
+     * @throws IntegrityConstraint
+     */
+    protected static function stringSelector(string $input)
+    {
+
+        $input = trim($input);
+        if (strpos($input, '/') !== false) {
+            $input = Numbers::makeFractionFromString(Numbers::IMMUTABLE_FRACTION, $input);
+        } elseif (strrpos($input, '+') || strrpos($input, '-')) {
+            $input = ComplexNumbers::make(ComplexNumbers::IMMUTABLE, $input);
+        } else {
+            $input = Numbers::make(Numbers::IMMUTABLE, $input);
+        }
+
+        return $input;
+
+    }
+
     protected function addSelector(DecimalInterface $num)
     {
-        switch ($this->mode) {
+        switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
                 return $this->addPrecision($num);
                 break;
@@ -98,7 +126,7 @@ trait ArithmeticSelectionTrait
 
     protected function subtractSelector(DecimalInterface $num)
     {
-        switch ($this->mode) {
+        switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
                 return $this->subtractPrecision($num);
                 break;
@@ -115,7 +143,7 @@ trait ArithmeticSelectionTrait
 
     protected function multiplySelector(DecimalInterface $num)
     {
-        switch ($this->mode) {
+        switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
                 return $this->multiplyPrecision($num);
                 break;
@@ -132,7 +160,7 @@ trait ArithmeticSelectionTrait
 
     protected function divideSelector(DecimalInterface $num, int $precision)
     {
-        switch ($this->mode) {
+        switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
                 return $this->dividePrecision($num, $precision);
                 break;
@@ -149,7 +177,7 @@ trait ArithmeticSelectionTrait
 
     protected function powSelector(DecimalInterface $num)
     {
-        switch ($this->mode) {
+        switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
                 return $this->powPrecision($num);
                 break;
@@ -166,7 +194,7 @@ trait ArithmeticSelectionTrait
 
     protected function sqrtSelector(int $precision)
     {
-        switch ($this->mode) {
+        switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
                 return $this->sqrtPrecision($precision);
                 break;

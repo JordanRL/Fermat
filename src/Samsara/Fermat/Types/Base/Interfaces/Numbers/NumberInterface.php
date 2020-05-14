@@ -70,7 +70,7 @@ interface NumberInterface
     /**
      * @return int|null
      */
-    public function getPrecision();
+    public function getPrecision(): ?int;
 
     public function isImaginary(): bool;
 

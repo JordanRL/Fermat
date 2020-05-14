@@ -80,7 +80,7 @@ abstract class Fraction extends Number implements FractionInterface
         return $this->getNumerator()->getValue().'/'.$this->getDenominator()->getValue();
     }
 
-    public function getPrecision()
+    public function getPrecision(): ?int
     {
         return $this->precision;
     }
@@ -152,7 +152,7 @@ abstract class Fraction extends Number implements FractionInterface
         }
     }
 
-    public function asDecimal($precision = 10)
+    public function asDecimal($precision = 10): ImmutableDecimal
     {
 
         /** @var ImmutableDecimal $decimal */

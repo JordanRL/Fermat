@@ -4,11 +4,12 @@ namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Decimal;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 class ImmutableDecimal extends Decimal
 {
 
-    public function continuousModulo($mod)
+    public function continuousModulo($mod): DecimalInterface
     {
 
         if (is_object($mod) && method_exists($mod, 'getPrecision')) {
@@ -48,7 +49,7 @@ class ImmutableDecimal extends Decimal
 
     /**
      * @param string $value
-     * @param int $precision
+     * @param int|null $precision
      * @param int $base
      *
      * @return ImmutableDecimal
@@ -57,22 +58,20 @@ class ImmutableDecimal extends Decimal
     {
         $imaginary = false;
 
+        $precision = $precision ?? $this->getPrecision();
+
         if (strpos($value, 'i') !== false) {
             $value = str_replace('i', '', $value);
             $imaginary = true;
         }
 
-        if ($base != 10 || $this->getBase() != 10) {
-            $base = $base == 10 ? $this->getBase() : $base;
+        if ($base !== 10 || $this->getBase() !== 10) {
+            $base = $base === 10 ? $this->getBase() : $base;
             $value = $this->convertValue($value, 10, $base);
         }
 
         if ($imaginary) {
             $value .= 'i';
-        }
-
-        if (is_null($precision)) {
-            $precision = $this->getPrecision();
         }
 
         return new ImmutableDecimal($value, $precision, $base);

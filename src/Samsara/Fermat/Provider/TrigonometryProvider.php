@@ -19,7 +19,7 @@ class TrigonometryProvider
         $radians = Numbers::makeOrDont(Numbers::IMMUTABLE, $radians);
         $pi = Numbers::makePi($radians->getPrecision() + 2);
         
-        return $radians->multiply(180)->divide($pi)->round($radians->getPrecision()-2)->getValue();
+        return $radians->multiply(180)->divide($pi, $radians->getPrecision() + 2)->round($radians->getPrecision() - 2)->getValue();
     }
 
     /**
