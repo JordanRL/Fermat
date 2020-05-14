@@ -4,10 +4,12 @@ namespace Samsara\Fermat;
 
 use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Provider\ConstantProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\Base\Selectable;
 use Samsara\Fermat\Types\Fraction;
 use Samsara\Fermat\Values\Geometry\CoordinateSystems\CartesianCoordinate;
 use Samsara\Fermat\Values\ImmutableFraction;
@@ -36,6 +38,8 @@ class Numbers
     /* The value of i^i */
     public const I_POW_I = '0.2078795763507619085469556198349787700338778416317696080751358830554198772854821397886002778654260353';
 
+    protected static $defaultCalcMode = Selectable::CALC_MODE_PRECISION;
+
     /**
      * @param $type
      * @param $value
@@ -44,7 +48,6 @@ class Numbers
      *
      * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public static function make($type, $value, $precision = null, $base = 10)
     {
@@ -77,40 +80,8 @@ class Numbers
             return new CartesianCoordinate($x, $y, $z);
         }
 
-        $reflector = new \ReflectionClass($type);
-
-        if ($reflector->implementsInterface(FractionInterface::class) && $reflector->isSubclassOf(Fraction::class)) {
-            return self::makeFractionFromString($reflector->getName(), $value, $base);
-        }
-
-        if ($reflector->implementsInterface(CoordinateInterface::class) && is_array($value)) {
-            /** @var CoordinateInterface $customCoordinate */
-            $customCoordinate = $reflector->newInstance([
-                $value
-            ]);
-            return $customCoordinate;
-        }
-
-        if ($reflector->implementsInterface(NumberInterface::class)) {
-            /** @var NumberInterface $customNumber */
-            $customNumber = $reflector->newInstance([
-                trim($value),
-                $precision,
-                $base
-            ]);
-            return $customNumber;
-        }
-
-        if ($reflector->implementsInterface(CoordinateInterface::class) && !is_array($value)) {
-            throw new IntegrityConstraint(
-                'The $value for a CoordinateInterface must be an array',
-                'Provide an array for the $value',
-                'A CoordinateInterface expects the value to be an array of axes and values'
-            );
-        }
-
         throw new IntegrityConstraint(
-            '$type must be an implementation of NumberInterface or CoordinateInterface',
+            '$type must be an implemented concrete class that is supported',
             'Provide a type that implements NumberInterface or CoordinateInterface (the Numbers class contains constants for the built in ones)',
             'The $type argument was not an implementation of NumberInterface or CoordinateInterface'
         );
@@ -124,7 +95,6 @@ class Numbers
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public static function makeFromBase10($type, $value, $precision = null, $base = 10): NumberInterface
     {
@@ -143,7 +113,7 @@ class Numbers
      * @param int $base
      *
      * @return ImmutableDecimal|MutableDecimal|NumberInterface|ImmutableDecimal[]|MutableDecimal[]|NumberInterface[]
-     * @throws IntegrityConstraint|ReflectionException
+     * @throws IntegrityConstraint
      */
     public static function makeOrDont($type, $value, $precision = null, $base = 10)
     {
@@ -181,14 +151,14 @@ class Numbers
     }
 
     /**
-     * @param     $type
-     * @param     $value
+     * @param string $type
+     * @param string $value
      * @param int $base
      *
      * @return FractionInterface|ImmutableFraction|MutableFraction
-     * @throws IntegrityConstraint|ReflectionException
+     * @throws IntegrityConstraint
      */
-    public static function makeFractionFromString($type, $value, int $base = 10): FractionInterface
+    public static function makeFractionFromString(string $type, string $value, int $base = 10): FractionInterface
     {
         $parts = explode('/', $value);
 
@@ -213,18 +183,6 @@ class Numbers
             return new MutableFraction($numerator, $denominator, $base);
         }
 
-        $reflector = new \ReflectionClass($type);
-
-        if ($reflector->implementsInterface(FractionInterface::class) && $reflector->isSubclassOf(Fraction::class)) {
-            /** @var FractionInterface|Fraction $customFraction */
-            $customFraction = $reflector->newInstance([
-                $numerator,
-                $denominator,
-                $base
-            ]);
-            return $customFraction;
-        }
-
         throw new IntegrityConstraint(
             'Type must be an implementation of FractionInterface',
             'Alter to calling code to use the correct type',
@@ -236,7 +194,6 @@ class Numbers
      * @param int|null $precision
      *
      * @return NumberInterface
-     * @throws ReflectionException
      * @throws IntegrityConstraint
      */
     public static function makePi(int $precision = null)
@@ -262,7 +219,6 @@ class Numbers
      * @param int|null $precision
      *
      * @return NumberInterface
-     * @throws ReflectionException
      * @throws IntegrityConstraint
      */
     public static function makeTau($precision = null)
@@ -287,7 +243,6 @@ class Numbers
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public static function make2Pi($precision = null)
     {
@@ -298,19 +253,22 @@ class Numbers
      * @param int|null $precision
      *
      * @return NumberInterface
-     * @throws ReflectionException
      * @throws IntegrityConstraint
      */
-    public static function makeE($precision = null)
+    public static function makeE(int $precision = null)
     {
 
         if (!is_null($precision)) {
-            if ($precision > 100 || $precision < 1) {
+            if ($precision < 1) {
                 throw new IntegrityConstraint(
-                    '$precision must be between 1 and 100 inclusive',
+                    '$precision must be at least 1',
                     'Provide a precision within range',
-                    'The E constant cannot have a precision higher than the constant stored (100)'
+                    'The E constant cannot have a precision less than 1'
                 );
+            }
+
+            if ($precision > 100) {
+                return self::make(self::IMMUTABLE, ConstantProvider::makeE($precision), $precision);
             }
 
             return self::make(self::IMMUTABLE, self::E, $precision)->truncateToPrecision($precision);
@@ -324,7 +282,6 @@ class Numbers
      * @param int|null $precision
      *
      * @return NumberInterface
-     * @throws ReflectionException
      * @throws IntegrityConstraint
      */
     public static function makeGoldenRatio($precision = null)
@@ -350,7 +307,6 @@ class Numbers
      * @param int|null $precision
      *
      * @return NumberInterface
-     * @throws ReflectionException
      * @throws IntegrityConstraint
      */
     public static function makeNaturalLog10($precision = null)
@@ -377,7 +333,6 @@ class Numbers
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public static function makeOne($precision = null)
     {
@@ -389,11 +344,20 @@ class Numbers
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public static function makeZero($precision = null)
     {
         return self::make(self::IMMUTABLE, 0, $precision);
+    }
+
+    public static function getDefaultCalcMode(): int
+    {
+        return self::$defaultCalcMode;
+    }
+
+    public static function setDefaultCalcMode(int $mode): void
+    {
+        self::$defaultCalcMode = $mode;
     }
 
 }

@@ -25,7 +25,7 @@ abstract class Number implements Hashable, NumberInterface
 
     public function __construct()
     {
-        $this->setMode(Selectable::CALC_MODE_PRECISION);
+        $this->setMode(Numbers::getDefaultCalcMode());
     }
 
     /**
@@ -33,14 +33,13 @@ abstract class Number implements Hashable, NumberInterface
      *
      * MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the precision setting.
      * MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
-     * MODE_SIMPLE_TRIG: Use simpler versions of the trig functions, which lose accuracy as significant figures grows.
      *
      * @param int $mode
      * @return $this
      */
-    public function setMode(int $mode)
+    public function setMode(int $mode): self
     {
-        $this->mode = $mode;
+        $this->calcMode = $mode;
 
         return $this;
     }
@@ -50,7 +49,7 @@ abstract class Number implements Hashable, NumberInterface
      *
      * @return string
      */
-    abstract public function getValue();
+    abstract public function getValue(): string;
 
     /**
      * Allows the object to ignore PHP extensions (such a GMP) and use only the Fermat implementations. NOTE: This does
@@ -59,7 +58,7 @@ abstract class Number implements Hashable, NumberInterface
      * @param bool $flag
      * @return $this
      */
-    public function setExtensions(bool $flag)
+    public function setExtensions(bool $flag): self
     {
 
         $this->extensions = $flag;
@@ -132,7 +131,7 @@ abstract class Number implements Hashable, NumberInterface
         return $this->getAsBaseTenRealNumber();
     }
 
-    abstract public function getAsBaseTenRealNumber();
+    abstract public function getAsBaseTenRealNumber(): string;
 
     abstract public function isComplex(): bool;
 
@@ -140,9 +139,9 @@ abstract class Number implements Hashable, NumberInterface
     {
         if ($this->isReal()) {
             return new ImmutableComplexNumber(clone $this, Numbers::makeZero());
-        } else {
-            return new ImmutableComplexNumber(Numbers::makeZero(), clone $this);
         }
+
+        return new ImmutableComplexNumber(Numbers::makeZero(), clone $this);
     }
 
 }
