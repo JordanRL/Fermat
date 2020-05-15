@@ -2,11 +2,16 @@ site_name: Fermat - PHP Math Library
 extra_css:
   - css/custom.css
 nav:
-  - 'Introduction': 'index.md'
-  - 'Getting Started': 'getting-started/index.md'
-  - 'Helper Methods': 'helpers/index.md'
-  - 'Arithmetic': 'arithmetic/index.md'
-  - 'Trigonometry': 'trigonometry/index.md'
+  - 'Introduction': 'numbers.md'
+  - 'Getting Started': 'getting-started/numbers.md'
+  - 'Interfaces'
+      - Numbers: 'interfaces/numbers.md'
+      - Groups: 'interfaces/groups.md'
+      - Coordinates: 'interfaces/coordinates.md'
+      - Evaluateables: 'interfaces/evaluateables.md'
+      - Characteristics: 'interfaces/characteristics.md'
+  - 'Arithmetic': 'arithmetic/numbers.md'
+  - 'Trigonometry': 'trigonometry/numbers.md'
 theme:
   name: readthedocs
   highlightjs: true

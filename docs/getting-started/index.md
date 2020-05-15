@@ -96,8 +96,8 @@ This factory method returns a square matrix where the dimensions match the integ
 !!! tip "For Example"
     An identity matrix of size three would look like:
     
-    [1 0 0]
-    [0 1 0]
+    [1 0 0]  
+    [0 1 0]  
     [0 0 1]
 
 #### Matrices::cofactorMatrix(string $type, int $size)
@@ -109,8 +109,8 @@ When multiplied by another matrix, this will swap the sign of every other value 
 !!! tip "For Example"
     A cofactor matrix of size three would look like:
     
-    [+ - +]
-    [- + -]
+    [+ - +]  
+    [- + -]  
     [+ - +]
 
 ### The Numbers Factory Class
@@ -139,8 +139,10 @@ Here is an example of using the factory method to make a value that is in a base
 
 use Samsara\Fermat\Numbers;
 
-$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); // Value in base5
-$ten = Numbers::make(Numbers::IMMUTABLE, '10'); // Value in base10
+// Value in base5
+$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); 
+// Value in base10
+$ten = Numbers::make(Numbers::IMMUTABLE, '10');
 
 echo $ten->add($five); // Prints: "15" (The sum in base10)
 echo $five->add($ten); // Prints: "30" (The sum in base5)
@@ -153,8 +155,10 @@ You can convert the base of a number freely:
 
 use Samsara\Fermat\Numbers;
 
-$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); // Value in base5
-$ten = Numbers::make(Numbers::IMMUTABLE, '10'); // Value in base10
+// Value in base5
+$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); 
+// Value in base10
+$ten = Numbers::make(Numbers::IMMUTABLE, '10');
 
 $fifteen = $five->add($ten);
 
@@ -170,9 +174,11 @@ You can also pass strings, integers, and floats directly to the arithmetic metho
 
 use Samsara\Fermat\Numbers;
 
-$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); // Value in base5
+// Value in base5
+$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); 
 
-echo $five->add(10)->convertToBase(10); // Prints: "15" (The sum in base10)
+echo $five->add(10)->convertToBase(10); 
+// Prints: "15" (The sum in base10)
 ```
 
 Sometimes you will have a variable that *might* be an instance of a Value, or might be a string/int/float, and you're not sure which. If you want to ensure that it has a specific class, you can use the `makeOrDont()` method. This is especially useful if you want to change a Mutable Value to an Immutable Value without affecting the original instance:
@@ -192,10 +198,10 @@ $second = Numbers::makeOrDont(Numbers::IMMUTABLE, $fiveImmutable);
 $third  = Numbers::makeOrDont(Numbers::IMMUTABLE, $fiveString);
 $fourth = Numbers::makeOrDont(Numbers::IMMUTABLE, $fiveInt);
 
-echo get_class($first);  // Prints: "Samsara\Fermat\Values\ImmutableNumber"
-echo get_class($second); // Prints: "Samsara\Fermat\Values\ImmutableNumber"
-echo get_class($third);  // Prints: "Samsara\Fermat\Values\ImmutableNumber"
-echo get_class($fourth); // Prints: "Samsara\Fermat\Values\ImmutableNumber"
+echo get_class($first);  // "Samsara\Fermat\Values\ImmutableNumber"
+echo get_class($second); // "Samsara\Fermat\Values\ImmutableNumber"
+echo get_class($third);  // "Samsara\Fermat\Values\ImmutableNumber"
+echo get_class($fourth); // "Samsara\Fermat\Values\ImmutableNumber"
 ```
 
 This allows you to pass in any implementation of `NumberInterface` and get an object matching your desired Value. It also allows you to pass in an array of values, of any acceptable types in any combination, and get back an array with matching keys where the values are all of your desired Value.
