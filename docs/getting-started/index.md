@@ -52,7 +52,7 @@ The current list of values is:
 - MutableFraction
 - MutableMatrix
 
-## Values
+## Using Values
 
 There are two main ways of using this library: through direct instantiation and through the `Samsara\Fermat\Numbers` factory class.
 

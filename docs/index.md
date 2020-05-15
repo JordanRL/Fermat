@@ -70,4 +70,5 @@ This is related to PHP's internal structure of hashtables and zvals, and how the
 
 Because PHP doesn't allow operator overloading, using the native math operators on Fermat objects directly can very easily result in loss of precision, overflows and underflows, PHP fatal errors (f.e. when the object is in a non-base-10 format), and incorrect calculation (f.e. with complex and imaginary numbers).
 
-For example, a `ComplexNumber` object that has the value `2 + 2i` added to the integer `4` with the `+` operator will issue a notice and give the result `6` instead of `6 + 2i`.
+!!! tip "For Example"
+    A `ComplexNumber` object that has the value `2 + 2i` added to the integer `4` with the `+` operator will issue a notice and give the result `6` instead of `6 + 2i`.
