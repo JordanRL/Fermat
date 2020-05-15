@@ -30,7 +30,6 @@ nav:
       - 'Using Distributions': 'statistics/distributions.md'
       - 'Using Static Methods': 'statistics/static-methods.md'
   - 'Extending':
-      - '
   - 'REFERENCE':
       - 'Interfaces':
           - Numbers: 'reference/interfaces/numbers.md'
