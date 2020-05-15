@@ -2,7 +2,7 @@
 
 Arithmetic can be performed on any class that implements the `NumberInterface`, and the rules for using arithmetic methods are consistent and straight-forward: you can put any value that is valid for an `ImmutableNumber` constructor in, or you can put in any instance of an object that implements `NumberInterface` itself.
 
-!!! caution "You Might Not Expect"
+!!! potential-bugs "You Might Not Expect"
     If two objects which have different calculation modes are used in an arithmetic operation, the calculation mode of the object which makes the function call is used, and the calculation mode of the object supplied as an argument is ignored.
     
     Additionally, the object returned will be of the same class as the object making the function call if that is possible. This means that fractions will be converted to decimals when they are the argument for a decimal function call, or visa versa.

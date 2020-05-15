@@ -2,6 +2,107 @@
     background: rgba(0, 0, 0, 0.05);
 }
 
+.rst-content .note {
+    background: inherit;
+}
+
+.rst-content .note .admonition-title {
+    background: inherit;
+    color: #FFFFFF;
+}
+
 .rst-content .note .admonition-title::before {
-    content: url("../svg/pencil-alt-solid.svg");
+    content: "";
+}
+
+.rst-content .caution {
+    background: inherit;
+}
+
+.rst-content .caution .admonition-title {
+    background: inherit;
+    color: #FFFFFF;
+}
+
+.rst-content .caution .admonition-title::before {
+    content: "";
+}
+
+.rst-content .tip {
+    background: inherit;
+}
+
+.rst-content .tip .admonition-title {
+    background: inherit;
+    color: #FFFFFF;
+}
+
+.rst-content .tip .admonition-title::before {
+    content: "";
+}
+
+.rst-content .example {
+    background: inherit;
+}
+
+.rst-content .example .admonition-title {
+    background: inherit;
+    color: #FFFFFF;
+}
+
+.rst-content .example .admonition-title::before {
+    content: "";
+}
+
+.rst-content .warning {
+    background: inherit;
+}
+
+.rst-content .warning .admonition-title {
+    background: inherit;
+    color: #FFFFFF;
+}
+
+.rst-content .warning .admonition-title::before {
+    content: "";
+}
+
+.rst-content .danger {
+    background: inherit;
+}
+
+.rst-content .danger .admonition-title {
+    background: inherit;
+    color: #FFFFFF;
+}
+
+.rst-content .danger .admonition-title::before {
+    content: "";
+}
+
+.rst-content .see-also {
+    background: inherit;
+}
+
+.rst-content .see-also .admonition-title {
+    background: inherit;
+    color: #FFFFFF;
+}
+
+.rst-content .see-also .admonition-title::before {
+    content: "";
+}
+
+.rst-content .potential-bugs {
+    background: #ffcceb;
+}
+
+.rst-content .potential-bugs .admonition-title {
+    background: #ff88c4;
+    color: #ffffff;
+}
+
+.rst-content .potential-bugs .admonition-title::before {
+    content: "";
+    color: #ff33b1;
 }
