@@ -1,0 +1,4 @@
+site_name: Fermat - PHP Math Library
+nav:
+  - 'Getting Started': 'index.md'
+theme: readthedocs
