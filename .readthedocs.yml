@@ -3,9 +3,8 @@
 # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
 
 # Required
-version: 2.0.0
+version: 2
 
 # Build documentation with MkDocs
 mkdocs:
   configuration: mkdocs.yml
-  
