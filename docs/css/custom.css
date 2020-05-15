@@ -57,16 +57,16 @@
 }
 
 .rst-content .example {
-    background: inherit;
+    border-color: #8b33ff;
 }
 
 .rst-content .example .admonition-title {
-    background: inherit;
-    color: #FFFFFF;
+    background: #e9d9ff;
 }
 
 .rst-content .example .admonition-title::before {
-    content: "";
+    content: "";
+    color: #8b33ff;
 }
 
 .rst-content .warning {

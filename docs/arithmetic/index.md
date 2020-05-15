@@ -13,6 +13,11 @@ Arithmetic can be performed on any class that implements the `NumberInterface`, 
     This is a test box. It will have text that explains things or points to a particular location.
     
     It may also contain several lines.
+    
+!!! example "For Example"
+    This is a test box. It will have text that explains things or points to a particular location.
+    
+    It may also contain several lines.
 
 The following arithmetic methods are available.
 
