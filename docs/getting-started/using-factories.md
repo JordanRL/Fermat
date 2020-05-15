@@ -1,9 +1,9 @@
 Fermat provides factory classes to make it easier to get instances of the various Value classes. The available factories are:
 
-- `Samsara\Fermat\Collections`
-- `Samsara\Fermat\ComplexNumbers`
-- `Samsara\Fermat\Matrices`
-- `Samsara\Fermat\Numbers`
+- **Samsara\Fermat\Collections**
+- **Samsara\Fermat\ComplexNumbers**
+- **Samsara\Fermat\Matrices**
+- **Samsara\Fermat\Numbers**
 
 All factories are classes that have only static methods and constants. 
 
@@ -15,17 +15,75 @@ The `Samsara\Fermat\Collections` factory class currently has no methods or const
 
 The `Samsara\Fermat\ComplexNumbers` factory class allows you to create instances of the Value classes which implement the `ComplexNumberInterface`.
 
+### Available Constants
+
+The following constants are available on the **ComplexNumbers** class.
+
+###### IMMUTABLE_COMPLEX
+
+The fully qualified class name of the **ImmutableComplexNumber** class.
+
+###### MUTABLE_COMPLEX
+
+The fully qualified class name of the **MutableComplexNumber** class.
+
+### Available Factory Methods
+
+The following factory methods are available on the **ComplexNumbers** class.
+
+###### ComplexNumbers::make(string $type, string|array|NumberCollectionInterface $value)
+
+This factory method returns the requested type of complex number with the given value. If the value is a **string**, it is assumed to be in the format: REAL + IMAGINARY or REAL - IMAGINARY
+
+!!! note "Note"
+    In string format, the input for this factory method **MAY** have a minus sign in front of the real part, but **MUST** have either a plus or minus sign in front of the imaginary part.
+    
+    The sign is applied to the number that follows and is stored in the **ImmutableDecimal** for that number.
+
+You may also provide either an **array** or a **NumberCollection** that have exactly two values which implement the **SimpleNumberInterface**.
+
+!!! potential-bugs "You Might Not Expect"
+    The real part must have a key of 0, and the imaginary part must have a key of 1 in the given array or NumberCollection.
+
 # The Matrices Factory Class
 
 The `Samsara\Fermat\Matrices` factory class provides access to several pre-built matrices that may be useful in common situations.
+
+### Available Constants
+
+The following constants are available on the **Matrices** class.
+
+###### IMMUTABLE_MATRIX
+ 
+The fully qualified class name of the **ImmutableMatrix** class.
+
+###### MUTABLE_MATRIX 
+
+The fully qualified class name of the **MutableMatrix** class.
+
+### Available Factory Methods
+
+The following factory methods are available on the **Matrices** class.
 
 ###### Matrices::zeroMatrix(string $type, int $rows, int $columns)
 
 This factory method returns an instance of the specified matrix type with the given dimensions where all values in the matrix are the number zero.
 
+!!! tip "For Example"
+    A zero matrix two rows and three columns would look like:
+    
+    [0 0 0]  
+    [0 0 0]
+
 ###### Matrices::onesMatrix(string $type, int $rows, int $columns)
 
 This factory method returns an instance of the specified matrix type with the given dimensions where all values in the matrix are the number one.
+
+!!! tip "For Example"
+    A ones matrix two rows and three columns would look like:
+    
+    [1 1 1]  
+    [1 1 1]
 
 ###### Matrices::identityMatrix(string $type, int $size)
 
@@ -55,118 +113,46 @@ When multiplied by another matrix, this will swap the sign of every other value 
 
 The `Samsara\Fermat\Numbers` factory class provides a way to use the Value classes which implement the `SimpleNumberInterface` in Fermat without being as specific as those classes may require. Consider the following code:
 
-```php
-<?php
+### Available Constants
 
-use Samsara\Fermat\Numbers;
+The following constants are available on the **Numbers** class.
 
-$five = Numbers::make(Numbers::IMMUTABLE, 5);
-$ten = Numbers::make(Numbers::IMMUTABLE, '10');
+###### IMMUTABLE
+ 
+The fully qualified class name of the **ImmutableDecimal** class.
 
-echo $five->add($ten); // Prints: "15"
-```
+###### MUTABLE
+ 
+The fully qualified class name of the **MutableDecimal** class.
 
-Note that the `make()` method allows you to provide both an int and a string as the value. In fact, it also allows you to provide a float. The first argument is the specific class that will be used for the value, the second argument is the value itself. The third and fourth arguments are optional and represent the precision (in number of decimal places) and the base of the number respectively. The precision and base arguments will only accept integer values.
+###### IMMUTABLE_FRACTION
+ 
+The fully qualified class name of the **ImmutableFraction** class.
 
-If you do not specify a precision value, and you are using the default values, it automatically has a precision of either 10, or the string length of the input value, whichever is greater.
+###### MUTABLE_FRACTION
+ 
+The fully qualified class name of the **MutableFraction** class.
 
-Here is an example of using the factory method to make a value that is in a base other than base10:
+###### PI
 
-```php
-<?php
+The value of the constant pi (π) pre-computed to 100 decimal places.
 
-use Samsara\Fermat\Numbers;
+###### TAU
 
-// Value in base5
-$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); 
-// Value in base10
-$ten = Numbers::make(Numbers::IMMUTABLE, '10');
+The value of the constant tau (τ) pre-computed to 100 decimal places. This is equivalent to 2π.
 
-echo $ten->add($five); // Prints: "15" (The sum in base10)
-echo $five->add($ten); // Prints: "30" (The sum in base5)
-```
+###### E
 
-You can convert the base of a number freely:
+The value of Euler's constant (e) pre-computed to 100 decimal places.
 
-```php
-<?php
+###### GOLDEN_RATIO
 
-use Samsara\Fermat\Numbers;
+The value of the Golden Ratio (φ) pre-computed to 100 decimal places.
 
-// Value in base5
-$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); 
-// Value in base10
-$ten = Numbers::make(Numbers::IMMUTABLE, '10');
+###### LN_10
 
-$fifteen = $five->add($ten);
+The value of the natural logarithm of 10 pre-computed to 100 decimal places.
 
-echo $fifteen; // Prints: "30" (The sum in base5)
-echo $fifteen->convertToBase(10); // Prints: "15" (The sum in base10)
-echo $fifteen->convertToBase(16); // Prints: "F" (The sum in base16)
-```
+###### I_POW_I
 
-You can also pass strings, integers, and floats directly to the arithmetic methods instead of instances of Values, but whenever you do this it will always be assumed that the number being passed as an argument is in base10:
-
-```php
-<?php
-
-use Samsara\Fermat\Numbers;
-
-// Value in base5
-$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); 
-
-echo $five->add(10)->convertToBase(10); 
-// Prints: "15" (The sum in base10)
-```
-
-Sometimes you will have a variable that *might* be an instance of a Value, or might be a string/int/float, and you're not sure which. If you want to ensure that it has a specific class, you can use the `makeOrDont()` method. This is especially useful if you want to change a Mutable Value to an Immutable Value without affecting the original instance:
-
-```php
-<?php
-
-use Samsara\Fermat\Numbers;
-
-$fiveMutable   = Numbers::make(Numbers::MUTABLE, 5);
-$fiveImmutable = Numbers::make(Numbers::IMMUTABLE, 5);
-$fiveString    = '5';
-$fiveInt       = 5;
-
-$first  = Numbers::makeOrDont(Numbers::IMMUTABLE, $fiveMutable);
-$second = Numbers::makeOrDont(Numbers::IMMUTABLE, $fiveImmutable);
-$third  = Numbers::makeOrDont(Numbers::IMMUTABLE, $fiveString);
-$fourth = Numbers::makeOrDont(Numbers::IMMUTABLE, $fiveInt);
-
-echo get_class($first);  // "Samsara\Fermat\Values\ImmutableNumber"
-echo get_class($second); // "Samsara\Fermat\Values\ImmutableNumber"
-echo get_class($third);  // "Samsara\Fermat\Values\ImmutableNumber"
-echo get_class($fourth); // "Samsara\Fermat\Values\ImmutableNumber"
-```
-
-This allows you to pass in any implementation of `NumberInterface` and get an object matching your desired Value. It also allows you to pass in an array of values, of any acceptable types in any combination, and get back an array with matching keys where the values are all of your desired Value.
-
-The factory class also contains helper methods for several common math constants. These methods are:
-
-- `makePi($precision = null)`: The pi constant
-- `make2Pi($precision = null)`: The pi constant multiplied by 2 (also known as tau)
-- `makeTau($precision = null)`: The tau constant (pi multiplied by 2)
-- `makeE($precision = null)`: Euler's Number
-- `makeGoldenRatio($precision = null)`: The golden ratio
-- `makeNaturalLog10($precision = null)`: The natural log of 10
-- `makeOne($precision = null)`: The number 1
-- `makeZero($precision = null)`: The number 0
-
-All of these are returned as instances of `ImmutableNumber` with a default precision of 100. These constants are also available as strings on the `Numbers` class using the following constants:
-
-- `Numbers::PI`
-- `Numbers::TAU`
-- `Numbers::E`
-- `Numbers::GOLDEN_RATIO`
-- `Numbers::LN_10`
-
-The fully qualified class names for the built in values, as strings, are available as constants also, which is what has been demonstrated so far in these examples:
-
-- `Numbers::IMMUTABLE`: ImmutableNumber
-- `Numbers::MUTABLE`: MutableNumber
-- `Numbers::IMMUTABLE_FRACTION`: ImmutableFraction
-- `Numbers::MUTABLE_FRACTION`: MutableFraction
-- `Numbers::CARTESIAN_COORDINATE`: CartesianCoordinate
+The value of i^i pre-computed to 100 decimal places.

@@ -11,7 +11,7 @@ The Fermat library is available on [Packagist](https://packagist.org/packages/sa
     - riimu/kit-baseconversion: Provides the base conversion library used internally
     - samsara/common: Provides the exception model used in Fermat
     
-    It also requires the [BCMath]() extension for PHP, however since 7.0 this extension has been included by default in distributions.
+    It also requires the [BCMath](https://www.php.net/manual/en/book.bc.php) extension for PHP, however since 7.0 this extension has been included by default in distributions.
 
 !!! tip "Improve Performance With Suggested Extensions"
     Fermat suggests that you also install the **ext-ds** extension and the **ext-gmp** extension. When present, these help reduce memory usage and computation time.

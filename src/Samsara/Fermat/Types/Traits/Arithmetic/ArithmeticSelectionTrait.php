@@ -98,7 +98,7 @@ trait ArithmeticSelectionTrait
         if (strpos($input, '/') !== false) {
             $input = Numbers::makeFractionFromString(Numbers::IMMUTABLE_FRACTION, $input);
         } elseif (strrpos($input, '+') || strrpos($input, '-')) {
-            $input = ComplexNumbers::make(ComplexNumbers::IMMUTABLE, $input);
+            $input = ComplexNumbers::make(ComplexNumbers::IMMUTABLE_COMPLEX, $input);
         } else {
             $input = Numbers::make(Numbers::IMMUTABLE, $input);
         }

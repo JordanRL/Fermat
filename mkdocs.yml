@@ -44,7 +44,6 @@ theme:
   highlightjs: true
   hljs_languages:
     - php
-  titles_only: true
 markdown_extensions:
   - codehilite
   - toc:

@@ -2,6 +2,11 @@
     background: rgba(0, 0, 0, 0.05);
 }
 
+h1, h2 {
+    background: rgba(0, 0, 0, 0.25);
+    color: #FFFFFF;
+}
+
 .rst-content .admonition {
     padding: 12px;
     line-height: 24px;
