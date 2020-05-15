@@ -29,7 +29,7 @@ nav:
   - 'Statistics':
       - 'Using Distributions': 'statistics/distributions.md'
       - 'Using Static Methods': 'statistics/static-methods.md'
-  - 'Extending':
+  - 'Extending': 'test.md'
   - 'REFERENCE':
       - 'Interfaces':
           - Numbers: 'reference/interfaces/numbers.md'
@@ -37,8 +37,8 @@ nav:
           - Coordinates: 'reference/interfaces/coordinates.md'
           - Evaluateables: 'reference/interfaces/evaluateables.md'
           - Characteristics: 'reference/interfaces/characteristics.md'
-      - 'Providers':
-      - 'Distributions':
+      - 'Providers': 'test.md'
+      - 'Distributions': 'test.md'
 theme:
   name: readthedocs
   highlightjs: true
