@@ -3,5 +3,5 @@
 }
 
 .rst-content .note .admonition-title::before {
-    content: url("../svg/pencil-alt-solid.svg");
+    content: "";
 }
