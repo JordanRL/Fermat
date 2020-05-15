@@ -1,3 +1,5 @@
+# Concepts
+
 Fermat has some vocabulary and concepts that are unique to this library, and they are documented here.
 
 ## Providers
@@ -52,13 +54,68 @@ The current list of values is:
 - MutableFraction
 - MutableMatrix
 
-## Using Values
+# Using Values
 
 There are two main ways of using this library: through direct instantiation and through the `Samsara\Fermat\Numbers` factory class.
 
-### Using the Factory
+## Using the Factories
 
-The `Samsara\Fermat\Numbers` factory class provides a way to use the Value classes in Fermat without being as specific as those classes may require. Consider the following code:
+Fermat provides factory classes to make it easier to get instances of the various Value classes. The available factories are:
+
+- `Samsara\Fermat\Collections`
+- `Samsara\Fermat\ComplexNumbers`
+- `Samsara\Fermat\Matrices`
+- `Samsara\Fermat\Numbers`
+
+All factories are classes that have only static methods and constants. 
+
+### The Collections Factory Class
+
+The `Samsara\Fermat\Collections` factory class currently has no methods or constants, and exists as a placeholder.
+
+### The ComplexNumbers Factory Class
+
+The `Samsara\Fermat\ComplexNumbers` factory class allows you to create instances of the Value classes which implement the `ComplexNumberInterface`.
+
+### The Matrices Factory Class
+
+The `Samsara\Fermat\Matrices` factory class provides access to several pre-built matrices that may be useful in common situations.
+
+#### Matrices::zeroMatrix(string $type, int $rows, int $columns)
+
+This factory method returns an instance of the specified matrix type with the given dimensions where all values in the matrix are the number zero.
+
+#### Matrices::onesMatrix(string $type, int $rows, int $columns)
+
+This factory method returns an instance of the specified matrix type with the given dimensions where all values in the matrix are the number one.
+
+#### Matrices::identityMatrix(string $type, int $size)
+
+This factory method returns a square matrix where the dimensions match the integer given in `$size`. This matrix is an identity matrix, which is often used in matrix math, where the diagonal consists of ones, and all other values are zero.
+
+!!! tip "For Example"
+    An identity matrix of size three would look like:
+    
+    [1 0 0]
+    [0 1 0]
+    [0 0 1]
+
+#### Matrices::cofactorMatrix(string $type, int $size)
+
+This factory method returns a square matrix where the dimensions match the integer given in `$size`. The matrix is filled with alternating values of 1 and -1 in a checkerboard pattern, starting with positive 1 in position [0, 0].
+
+When multiplied by another matrix, this will swap the sign of every other value in the matrix.
+
+!!! tip "For Example"
+    A cofactor matrix of size three would look like:
+    
+    [+ - +]
+    [- + -]
+    [+ - +]
+
+### The Numbers Factory Class
+
+The `Samsara\Fermat\Numbers` factory class provides a way to use the Value classes which implement the `SimpleNumberInterface` in Fermat without being as specific as those classes may require. Consider the following code:
 
 ```php
 <?php
@@ -170,11 +227,11 @@ The fully qualified class names for the built in values, as strings, are availab
 - `Numbers::MUTABLE_FRACTION`: MutableFraction
 - `Numbers::CARTESIAN_COORDINATE`: CartesianCoordinate
 
-### Direct Instantiation
+## Direct Instantiation
 
 You can also directly instantiate the Value classes if you wish, and sometimes it is desirable to do so.
 
-#### ImmutableNumber and MutableNumber
+### ImmutableNumber and MutableNumber
 
 These classes extend the `Samsara\Fermat\Types\Decimal` abstract class, and their constructors have the following signature:
 
@@ -182,7 +239,7 @@ These classes extend the `Samsara\Fermat\Types\Decimal` abstract class, and thei
 
 **These classes implement the `SimpleNumberInterface` and `DecimalInterface`**
 
-#### ImmutableFraction and MutableFraction
+### ImmutableFraction and MutableFraction
 
 These classes extend the `Samsara\Fermat\Types\Fraction` abstract class, and their constructors have the following signature:
 
@@ -192,7 +249,7 @@ Note that if either $numerator or $denominator are not whole numbers, they will 
 
 **These classes implement the `SimpleNumberInterface` and `FractionInterface`**
 
-#### CartesianCoordinate
+### CartesianCoordinate
 
 This class extends the `Samsara\Fermat\Types\Coordinate` class, and its constructor has the following signature:
 
