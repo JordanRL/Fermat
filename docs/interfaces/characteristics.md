@@ -1,0 +1,3 @@
+# Characteristics Interfaces
+
+## BaseConversionInterface

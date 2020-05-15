@@ -2,29 +2,20 @@
 
 Arithmetic can be performed on any class that implements the `NumberInterface`, and the rules for using arithmetic methods are consistent and straight-forward: you can put any value that is valid for an `ImmutableNumber` constructor in, or you can put in any instance of an object that implements `NumberInterface` itself.
 
+!!! caution "You Might Not Expect"
+    If two objects which have different calculation modes are used in an arithmetic operation, the calculation mode of the object which makes the function call is used, and the calculation mode of the object supplied as an argument is ignored.
+    
+    Additionally, the object returned will be of the same class as the object making the function call if that is possible. This means that fractions will be converted to decimals when they are the argument for a decimal function call, or visa versa.
+    
+    If the result **must** be represented in a particular way, such as with complex numbers, the returned value will be the immutable version of the class that can respresent the result. This means adding two classes that implement DecimalInterface can return a class that implement ComplexNumberInterface if one is an imaginary number, and one is a real number.
+
 The following arithmetic methods are available.
 
 ### add(int|float|numeric|NumberInterface $num): self
 
-This adds the argument to the Value using the `ArithmeticProvider` (which uses the BCMath library internally) and returns the newly calculated Value.
+This adds the argument to the Value using the `ArithmeticProvider` or the native `+` operator depending on the calculation mode of the original object. 
 
-When an object that implements `DecimalInterface` and another that implements `FractionInterface` are added together, the one that is provided as an argument is coerced into the type of original object. For example:
-
-```php
-<?php
-
-use Samsara\Fermat\Values\ImmutableNumber;
-use Samsara\Fermat\Values\ImmutableFraction;
-
-$five = new ImmutableNumber(5);
-$oneQuarter = new ImmutableFraction(1, 4);
-
-echo $five->add($oneQuarter); // Prints: "5.25" 
-// The asDecimal() method is called on $oneQuarter
-
-echo $oneQuarter->add($five); // Prints: "21/4" 
-// Calls getValue() on $five and instantiates a new ImmutableFraction
-```
+When an object that implements `DecimalInterface` and another that implements `FractionInterface` are added together, the one that is provided as an argument is coerced into the type of original object. The result is returned as an instance of a value object, depending on the result of the calculation. 
 
 ### subtract(int|float|numeric|NumberInterface $num): self
 
