@@ -11,3 +11,7 @@ theme:
   hljs_languages:
     - php
   titles_only: true
+markdown_extensions:
+  - codehilite
+  - toc:
+      toc_depth: 2
