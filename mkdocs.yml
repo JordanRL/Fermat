@@ -4,7 +4,7 @@ extra_css:
 nav:
   - 'Introduction': 'numbers.md'
   - 'Getting Started': 'getting-started/numbers.md'
-  - 'Interfaces'
+  - 'Interfaces':
       - Numbers: 'interfaces/numbers.md'
       - Groups: 'interfaces/groups.md'
       - Coordinates: 'interfaces/coordinates.md'
