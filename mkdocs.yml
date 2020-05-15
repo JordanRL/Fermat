@@ -1,5 +1,6 @@
 site_name: Fermat - PHP Math Library
-extra_css: [custom.css]
+extra_css:
+  - css/custom.css
 nav:
   - 'Introduction': 'index.md'
   - 'Getting Started': 'getting-started/index.md'

@@ -50,7 +50,8 @@ Some areas of math are ambiguously defined, depending on the exact axioms used. 
 
 This is most obvious in the arc functions, such as `arctan()`. However, other areas make assumptions that may not be entirely clear at first.
 
-For instance, calling `isEqual()` on a ComplexNumber will return false unless it is being compared to another ComplexNumber that has the same values for its real and imaginary part. More surprisingly perhaps, ComplexNumber objects do not have any of the `GreaterThan` or `LessThan` functions, as inequality comparison is poorly defined even between two complex numbers.
+!!! tip "For Example"
+    Calling `isEqual()` on a ComplexNumber will return false unless it is being compared to another ComplexNumber that has the same values for its real and imaginary part. More surprisingly perhaps, ComplexNumber objects do not have any of the `GreaterThan` or `LessThan` functions, as inequality comparison is poorly defined even between two complex numbers.
 
 These peculiarities are documented, as accurately as possible, in this documentation where they occur.
 
