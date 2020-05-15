@@ -1,5 +1,8 @@
 site_name: Fermat - PHP Math Library
 nav:
   - 'Introduction': 'index.md'
-  - 'Getting Started': 'getting_started/index.md'
+  - 'Getting Started': 'getting-started/index.md'
+  - 'Helper Methods': 'helpers/index.md'
+  - 'Arithmetic': 'arithmetic/index.md'
+  - 'Trigonometry': 'trigonometry/index.md'
 theme: readthedocs

@@ -1,14 +1,14 @@
-# Concepts
-
 Fermat has some vocabulary and concepts that are unique to this library, and they are documented here.
 
 ## Providers
 
-A provider in Fermat is a class that makes an interface available for a kind of task. It makes this interface available using static methods and wherever possible is permissive about the values it accepts as arguments. What is meant by that is you can, in most cases, pass an implementation of NumberInterface, a numeric string, an int, or a float. Please note that there are exceptions to this general principle and consult the method documentation.
+A provider in Fermat is a static class which provides a specific functionality to the entire library. It makes this interface available using static methods and wherever possible is permissive about the values it accepts as arguments. What is meant by that is you can, in most cases, pass an implementation of NumberInterface, a numeric string, an int, or a float. Please note that there are exceptions to this general principle and consult the method documentation.
 
 The current list of providers, documented in more detail in the section for Providers, is:
 
 - ArithmeticProvider
+- ConstantProvider
+- PolyfillProvider
 - SequenceProvider
 - SeriesProvider
 - StatsProvider
@@ -16,12 +16,17 @@ The current list of providers, documented in more detail in the section for Prov
 
 ## Types
 
-A type in Fermat is an implementation of a class of number or math concept. These are (with the exception of Tuple) abstract classes that are meant to be extended into classes which can be instantiated. This is mostly to provide both mutable and immutable versions of each type. Tuples are not treated in this way as a Tuple is inherently immutable.
+A type in Fermat is an implementation of a class of number or math concept. These are (with the exception of Tuple and NumberCollection) abstract classes that are meant to be extended into classes which can be instantiated. This is mostly to provide both mutable and immutable versions of each type. Tuples are not treated in this way as a Tuple is inherently immutable.
 
 The current list of types is:
 
+- ComplexNumber
+- Coordinate
+- Decimal
+- Expression
 - Fraction
-- Number
+- Matrix
+- NumberCollection
 - Tuple
 
 ## Values
@@ -30,17 +35,28 @@ A value in Fermat is a usable implementation that can be directly worked with to
 
 The current list of values is:
 
-- CartesianCoordinate
+- Algebra
+  - PolynomialFunction
+- Geometry
+  - CoordinateSystems
+    - CartesianCoordinate
+    - CylindricalCoordinate
+    - PolarCoordinate
+    - SphericalCoordinate
+- ImmutableComplexNumber
+- ImmutableDecimal
 - ImmutableFraction
-- ImmutableNumber
+- ImmutableMatrix
+- MutableComplexNumber
+- MutableDecimal
 - MutableFraction
-- MutableNumber
+- MutableMatrix
 
-# Basic Usage
+## Values
 
 There are two main ways of using this library: through direct instantiation and through the `Samsara\Fermat\Numbers` factory class.
 
-## Using the Factory
+### Using the Factory
 
 The `Samsara\Fermat\Numbers` factory class provides a way to use the Value classes in Fermat without being as specific as those classes may require. Consider the following code:
 
@@ -154,19 +170,19 @@ The fully qualified class names for the built in values, as strings, are availab
 - `Numbers::MUTABLE_FRACTION`: MutableFraction
 - `Numbers::CARTESIAN_COORDINATE`: CartesianCoordinate
 
-## Direct Instantiation
+### Direct Instantiation
 
 You can also directly instantiate the Value classes if you wish, and sometimes it is desirable to do so.
 
-### ImmutableNumber and MutableNumber
+#### ImmutableNumber and MutableNumber
 
-These classes extend the `Samsara\Fermat\Types\Number` abstract class, and their constructors have the following signature:
+These classes extend the `Samsara\Fermat\Types\Decimal` abstract class, and their constructors have the following signature:
 
 `__construct(int|float|numeric $value, $precision = 10, $base = 10)`
 
-**These classes implement the `NumberInterface` and `DecimalInterface`**
+**These classes implement the `SimpleNumberInterface` and `DecimalInterface`**
 
-### ImmutableFraction and MutableFraction
+#### ImmutableFraction and MutableFraction
 
 These classes extend the `Samsara\Fermat\Types\Fraction` abstract class, and their constructors have the following signature:
 
@@ -174,11 +190,11 @@ These classes extend the `Samsara\Fermat\Types\Fraction` abstract class, and the
 
 Note that if either $numerator or $denominator are not whole numbers, they will be rounded. Both the numerator and denominator are stored internally by `Fraction` as instances of `ImmutableNumber`, and they will be coerced into this Value.
 
-**These classes implement the `NumberInterface` and `FractionInterface`**
+**These classes implement the `SimpleNumberInterface` and `FractionInterface`**
 
-### CartesianCoordinate
+#### CartesianCoordinate
 
-This class extends the `Samsara\Fermat\Types\Tuple` class, and its constructor has the following signature:
+This class extends the `Samsara\Fermat\Types\Coordinate` class, and its constructor has the following signature:
 
 `__construct(array $data)`
 
