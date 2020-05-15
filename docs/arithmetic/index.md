@@ -18,6 +18,31 @@ Arithmetic can be performed on any class that implements the `NumberInterface`, 
     This is a test box. It will have text that explains things or points to a particular location.
     
     It may also contain several lines.
+    
+!!! warning "Warning"
+    This is a test box. It will have text that explains things or points to a particular location.
+    
+    It may also contain several lines.
+    
+!!! danger "Danger"
+    This is a test box. It will have text that explains things or points to a particular location.
+    
+    It may also contain several lines.
+    
+!!! caution "Caution"
+    This is a test box. It will have text that explains things or points to a particular location.
+    
+    It may also contain several lines.
+    
+!!! tip "Tip"
+    This is a test box. It will have text that explains things or points to a particular location.
+    
+    It may also contain several lines.
+    
+!!! note "Note"
+    This is a test box. It will have text that explains things or points to a particular location.
+    
+    It may also contain several lines.
 
 The following arithmetic methods are available.
 
