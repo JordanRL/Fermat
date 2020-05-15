@@ -20,7 +20,7 @@ h6 {
 }
 
 h6::before {
-    content: "";
+    content: "";
     font-family: "FontAwesome";
     display: inline-block;
     font-style: normal;
@@ -29,6 +29,7 @@ h6::before {
     text-decoration: inherit;
     font-size: 16px;
     margin-right: 4px;
+    color: #338fff;
 }
 
 .rst-content .admonition {
