@@ -3,5 +3,5 @@
 }
 
 .rst-content .note .admonition-title::before {
-    background: url('../svg/info-circle-solid.svg');
+    content: url("../svg/pencil-alt-solid.svg");
 }
