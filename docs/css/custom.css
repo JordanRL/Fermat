@@ -3,8 +3,32 @@
 }
 
 h1, h2 {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.45);
     color: #FFFFFF;
+    padding: 2px 12px;
+}
+
+h3 {
+    border-bottom: 3px solid rgba(0, 0, 0, 0.45);
+}
+
+h6 {
+    font-family: "Lucida Console", Monaco, monospace;
+    font-weight: normal;
+    font-variant-caps: small-caps;
+    font-size: 16px;
+}
+
+h6::before {
+    content: "";
+    font-family: "FontAwesome";
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-decoration: inherit;
+    font-size: 16px;
+    margin-right: 4px;
 }
 
 .rst-content .admonition {
