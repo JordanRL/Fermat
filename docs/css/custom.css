@@ -6,10 +6,15 @@
     padding: 12px;
     line-height: 24px;
     margin-bottom: 24px;
-    background: rgba(0, 0, 0, 0.05);
+    background: #FFFFFF;
     border-left: 5px solid #000000;
     border-radius: 3px;
-    box-shadow: 0 .2rem .5rem rgba(0,0,0,.05),0 0 .05rem rgba(0,0,0,.1);
+    box-shadow: 0 0 .5rem rgba(0,0,0,.15),0 0 .05rem rgba(0,0,0,.25);
+    color: #000000;
+}
+
+.rst-content .admonition-title {
+    color: #333333;
 }
 
 .rst-content .note {
@@ -91,26 +96,24 @@
 }
 
 .rst-content .see-also {
-    background: inherit;
+    border-color: #338fff;
 }
 
 .rst-content .see-also .admonition-title {
-    background: inherit;
-    color: #FFFFFF;
+    background: #d9ebff;
 }
 
 .rst-content .see-also .admonition-title::before {
-    content: "";
+    content: "";
+    color: #338fff;
 }
 
 .rst-content .potential-bugs {
     border-color: #ff33b1;
-    color: #000000;
 }
 
 .rst-content .potential-bugs .admonition-title {
     background: #ffe6f6;
-    color: #333333;
 }
 
 .rst-content .potential-bugs .admonition-title::before {
