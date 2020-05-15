@@ -5,4 +5,9 @@ nav:
   - 'Helper Methods': 'helpers/index.md'
   - 'Arithmetic': 'arithmetic/index.md'
   - 'Trigonometry': 'trigonometry/index.md'
-theme: readthedocs
+theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - php
+  titles_only: true
