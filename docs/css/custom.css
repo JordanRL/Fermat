@@ -1,3 +1,7 @@
 .codehilite {
     background: rgba(0, 0, 0, 0.05);
 }
+
+.rst-content .note .admonition-title:before {
+    background: url('svg/info-circle-solid.svg');
+}
