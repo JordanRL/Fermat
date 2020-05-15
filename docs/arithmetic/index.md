@@ -8,51 +8,16 @@ Arithmetic can be performed on any class that implements the `NumberInterface`, 
     Additionally, the object returned will be of the same class as the object making the function call if that is possible. This means that fractions will be converted to decimals when they are the argument for a decimal function call, or visa versa.
     
     If the result **must** be represented in a particular way, such as with complex numbers, the returned value will be the immutable version of the class that can respresent the result. This means adding two classes that implement `DecimalInterface` can return a class that implements `ComplexNumberInterface` if one is an imaginary number, and one is a real number.
-    
-!!! see-also "See Also"
-    This is a test box. It will have text that explains things or points to a particular location.
-    
-    It may also contain several lines.
-    
-!!! example "For Example"
-    This is a test box. It will have text that explains things or points to a particular location.
-    
-    It may also contain several lines.
-    
-!!! warning "Warning"
-    This is a test box. It will have text that explains things or points to a particular location.
-    
-    It may also contain several lines.
-    
-!!! danger "Danger"
-    This is a test box. It will have text that explains things or points to a particular location.
-    
-    It may also contain several lines.
-    
-!!! caution "Caution"
-    This is a test box. It will have text that explains things or points to a particular location.
-    
-    It may also contain several lines.
-    
-!!! tip "Tip"
-    This is a test box. It will have text that explains things or points to a particular location.
-    
-    It may also contain several lines.
-    
-!!! note "Note"
-    This is a test box. It will have text that explains things or points to a particular location.
-    
-    It may also contain several lines.
 
 The following arithmetic methods are available.
 
-### add(int|float|numeric|NumberInterface $num): self
+###### add(int|float|numeric|NumberInterface $num): self
 
 This adds the argument to the Value using the `ArithmeticProvider` or the native `+` operator depending on the calculation mode of the original object. 
 
 When an object that implements `DecimalInterface` and another that implements `FractionInterface` are added together, the one that is provided as an argument is coerced into the type of original object. The result is returned as an instance of a value object, depending on the result of the calculation. 
 
-### subtract(int|float|numeric|NumberInterface $num): self
+###### subtract(int|float|numeric|NumberInterface $num): self
 
 This subtracts the argument from the Value using the `ArithmeticProvider` (which uses the BCMath library internally) and returns the newly calculated Value.
 
@@ -74,7 +39,7 @@ echo $oneQuarter->subtract($five); // Prints: "-19/4"
 // Calls getValue() on $five and instantiates a new ImmutableFraction
 ```
 
-### multiply(int|float|numeric|NumberInterface $num): self
+###### multiply(int|float|numeric|NumberInterface $num): self
 
 This multiplies the argument from the Value using the `ArithmeticProvider` (which uses the BCMath library internally) and returns the newly calculated Value.
 
@@ -96,7 +61,7 @@ echo $oneQuarter->multiply($five); // Prints: "5/4"
 // Calls getValue() on $five and instantiates a new ImmutableFraction
 ```
 
-### divide(int|float|numeric|NumberInterface $num, int $precision = null): self
+###### divide(int|float|numeric|NumberInterface $num, int $precision = null): self
 
 This divides the argument from the Value using the `ArithmeticProvider` (which uses the BCMath library internally) and returns the newly calculated Value.
 

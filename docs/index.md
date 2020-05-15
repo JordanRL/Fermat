@@ -61,7 +61,7 @@ For this reason, you should limit your requested precision to the smallest value
 
 ### Some Types of Math Require Assumptions
 
-Some areas of math are ambiguously defined, depending on the exact axioms used. More generally, there are some types of calculations which give consistent behavior for a variety of axioms and mappings.
+Some areas of math are ambiguously defined, depending on the exact axioms used. More generally, there are some types of calculations which give consistent behavior for a variety of axioms and mappings, or for which there is no consistent behavior defined within mathematics.
 
 This is most obvious in the arc functions, such as `arctan()`. However, other areas make assumptions that may not be entirely clear at first.
 
