@@ -1,19 +1,36 @@
 # Goals of this Library
 
-Fermat is a PHP library intended to accomplish the following goals:
+## Fermat is a PHP library intended to accomplish the following goals
 
-1. Provide a consistent way to perform **arbitrary precision math** without making it easy to accidentally use PHP features (such as arithmetic operators or built in functions) that will reduce precision by casting to native `int` or `float` types.
-2. Provide a library that enables the use of common complex math tasks, such as working with basic statistics functions, while still preserving arbitrary precision.
-3. Provide a framework for working with non-integer and non-float math concepts such as fractions, coordinates, and shapes.
+### Consistent arbitrary precision math
 
-Things this library is NOT intended to do:
+Provide a consistent way to perform **arbitrary precision math** without making it easy to accidentally use PHP features (such as arithmetic operators or built in functions) that will reduce precision by casting to native `int` or `float` types.
 
-1. Be extremely performant. This library is concerned with always providing the program the desired answer wherever it is possible, regardless of how difficult that answer may be to calculate. Any calling code should keep in mind its tolerance for performance when using this library and use it accordingly. *This library will always try to give you the precision you ask for, even when that greatly slows down execution.*
-2. Work with other libraries which offer math capabilities. Everything is self-contained within this library, and if you need to use another math library or a built-in math function to accomplish something, please create a GitHub issue here so that it can be added to the library and keep in mind that this library is not necessarily designed to guarantee compatibility.
+### Complex math functions
 
-That said, this library does offer ways for you to integrate. The state of all objects is available for reading at all times so you can put data into other libraries or functions, and the classes are all left open for extension. The references within the library are almost all to a base abstract class or interface, making it easier for a developer to extend a class with their own code.
+Provide a library that enables the use of common complex math tasks, such as working with basic statistics functions, while still preserving arbitrary precision.
+
+### Non-Integer & non-float number types
+
+Provide a framework for working with non-integer and non-float math concepts such as fractions, coordinates, imaginary numbers, complex numbers, and shapes.
+
+### Abstraction of math concepts
+
+Provide a consistent abstraction for nearly any math concept that is likely to be relevant to a computer program, including many scientific programs.
+
+## Things this library is NOT intended to do
+
+### Be extremely performant. 
+
+While Fermat has different modes that allow you to control performance to a degree, the abstraction and comprehensive nature of the library means that for certain uses, such as working with complex numbers, a large number of object instances may be created temporarily during a calculation, leading to significantly more overhead than using operands directly when doing basic math within common precision limitations.
 
 Despite the fact that performance is not a primary goal of this library, it does use built in functions wherever possible (where doing so does not affect precision), and it will utilize the GMP functions, Stats functions, and PHP-DS types if those extensions are present in your installation of PHP. Installing these extensions should slightly increase performance in most use-cases.
+
+### Work with other libraries which offer math capabilities. 
+
+Everything is self-contained within this library, and if you need to use another math library or a built-in math function to accomplish something, please create a GitHub issue here so that it can be added to the library and keep in mind that this library is not necessarily designed to guarantee compatibility.
+
+That said, this library does offer ways for you to integrate. The state of all objects is available for reading at all times so you can put data into other libraries or functions, and the classes are all left open for extension. The references within the library are almost all to a base abstract class or interface, making it easier for a developer to extend a class with their own code.
 
 # Limitations 
 
