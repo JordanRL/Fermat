@@ -2,6 +2,15 @@
     background: rgba(0, 0, 0, 0.05);
 }
 
+.rst-content .admonition {
+    padding: 12px;
+    line-height: 24px;
+    margin-bottom: 24px;
+    background: rgba(0, 0, 0, 0.05);
+    border-left: 0.2rem solid #000000;
+    border-radius: 0.1rem;
+}
+
 .rst-content .note {
     background: inherit;
 }
@@ -94,12 +103,12 @@
 }
 
 .rst-content .potential-bugs {
-    background: #ffcceb;
+    border-color: #ff33b1;
 }
 
 .rst-content .potential-bugs .admonition-title {
-    background: #ff88c4;
-    color: #ffffff;
+    background: #ffcceb;
+    color: #333333;
 }
 
 .rst-content .potential-bugs .admonition-title::before {
