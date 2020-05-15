@@ -7,7 +7,7 @@ Arithmetic can be performed on any class that implements the `NumberInterface`, 
     
     Additionally, the object returned will be of the same class as the object making the function call if that is possible. This means that fractions will be converted to decimals when they are the argument for a decimal function call, or visa versa.
     
-    If the result **must** be represented in a particular way, such as with complex numbers, the returned value will be the immutable version of the class that can respresent the result. This means adding two classes that implement DecimalInterface can return a class that implement ComplexNumberInterface if one is an imaginary number, and one is a real number.
+    If the result **must** be represented in a particular way, such as with complex numbers, the returned value will be the immutable version of the class that can respresent the result. This means adding two classes that implement `DecimalInterface` can return a class that implements `ComplexNumberInterface` if one is an imaginary number, and one is a real number.
 
 The following arithmetic methods are available.
 
