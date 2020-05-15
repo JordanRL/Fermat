@@ -16,6 +16,9 @@ The current list of providers, documented in more detail in the section for Prov
 - StatsProvider
 - TrigonometryProvider
 
+!!! see-also "See Also"
+    The Providers included in Fermat are documented in more detail under "Reference".
+
 ## Types
 
 A type in Fermat is an implementation of a class of number or math concept. These are (with the exception of Tuple and NumberCollection) abstract classes that are meant to be extended into classes which can be instantiated. This is mostly to provide both mutable and immutable versions of each type. Tuples are not treated in this way as a Tuple is inherently immutable.
@@ -30,6 +33,9 @@ The current list of types is:
 - Matrix
 - NumberCollection
 - Tuple
+
+!!! see-also "See Also"
+    The Types included in Fermat are documented in more detail under "Types & Values".
 
 ## Values
 
@@ -53,6 +59,9 @@ The current list of values is:
 - MutableDecimal
 - MutableFraction
 - MutableMatrix
+
+!!! see-also "See Also"
+    The Values included in Fermat are documented in more detail under "Types & Values".
 
 # Using Values
 

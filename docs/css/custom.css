@@ -22,7 +22,7 @@
 }
 
 .rst-content .note .admonition-title {
-    background: #a0bdb8;
+    background: #ddFFEE;
 }
 
 .rst-content .note .admonition-title::before {
@@ -48,7 +48,7 @@
 }
 
 .rst-content .tip .admonition-title {
-    background: #b3c7bb;
+    background: #CCFFDD;
 }
 
 .rst-content .tip .admonition-title::before {

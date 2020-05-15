@@ -24,6 +24,16 @@ While Fermat has different modes that allow you to control performance to a degr
 
 Despite the fact that performance is not a primary goal of this library, it does use built in functions wherever possible (where doing so does not affect precision), and it will utilize the GMP functions and PHP-DS types if those extensions are present in your installation of PHP. Installing these extensions should slightly increase performance in most use-cases.
 
+!!! tip "Tip"
+    A good way to increase performance is to avoid using imaginary and complex numbers if possible. The actual math involved in calculating simple operations involving these values is algorithmically complex, and leads to much longer execution times.
+    
+    Installing the suggested extensions will also help improve performance, in some situations quite significantly.
+    
+!!! caution "Other Extensions"
+    Like many programs, this library's performance suffers enormously if xDebug is enabled. This can lead to execution times of more than one second for a single operation on complex numbers, making them almost totally unusable for the web.
+    
+    To avoid this, make sure that your production environment does not have xDebug enabled.
+
 ### Integration With Other Math Libraries
 
 Everything is self-contained within this library, and if you need to use another math library or a built-in math function to accomplish something, please create a GitHub issue so that it can be added to the library. Keep in mind that this library is not necessarily designed to guarantee compatibility.
@@ -42,6 +52,11 @@ For instance, while the library would faithfully collect the first 10,000 digits
 
 There are also several features in this library that by the nature of the math behind them can lead to infinite loops with the wrong inputs. While some basic measures exist within the library to detect and exit these situations with a thrown exception, doing so comprehensively is an example of the halting problem. This should not occur without direct calls to these areas, such as `SeriesProvider::maclaurenSeries()`.
 
+!!! caution "Avoid Direct Usage"
+    While the **SeriesProvider** methods are public, and can certainly be used directly, the internal workings of the functions are complicated to understand and simple to get wrong.
+    
+    In general, you should try to use consumers of the **SeriesProvider** first, such as the various distributions, or the **StatsProvider**.
+
 For this reason, you should limit your requested precision to the smallest value which will still work for your intended application.
 
 ### Some Types of Math Require Assumptions
@@ -50,10 +65,10 @@ Some areas of math are ambiguously defined, depending on the exact axioms used. 
 
 This is most obvious in the arc functions, such as `arctan()`. However, other areas make assumptions that may not be entirely clear at first.
 
-!!! tip "For Example"
+!!! example "For Example"
     Calling `isEqual()` on a ComplexNumber will return false unless it is being compared to another ComplexNumber that has the same values for its real and imaginary part. More surprisingly perhaps, ComplexNumber objects do not have any of the `GreaterThan` or `LessThan` functions, as inequality comparison is poorly defined even between two complex numbers.
 
-These peculiarities are documented, as accurately as possible, in this documentation where they occur.
+These peculiarities are documented as accurately as possible in this documentation where they occur.
 
 ### Immutables Are Used Internally
 
@@ -67,9 +82,14 @@ However, methods which act as array manipulation tools, such a `popRow()` and `s
 
 This is related to PHP's internal structure of hashtables and zvals, and how these interact with the object model that PHP uses.
 
+!!! see-also "See Also"
+    The PHP Documentation contains examples on the specifics of how objects are passed between scopes. While it isn't exactly the same as passing by reference, it behaves in a very similar way in most situations.
+    
+    See the [php.net page](https://www.php.net/manual/en/language.oop5.references.php) for more information.
+
 ### This Library Can't Be Reliably Used With Math Operators
 
 Because PHP doesn't allow operator overloading, using the native math operators on Fermat objects directly can very easily result in loss of precision, overflows and underflows, PHP fatal errors (f.e. when the object is in a non-base-10 format), and incorrect calculation (f.e. with complex and imaginary numbers).
 
-!!! tip "For Example"
+!!! example "For Example"
     A `ComplexNumber` object that has the value `2 + 2i` added to the integer `4` with the `+` operator will issue a notice and give the result `6` instead of `6 + 2i`.
