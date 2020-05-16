@@ -73,6 +73,10 @@ h6::before {
     color: #000000;
 }
 
+.rst-content .admonition p:last-child {
+    margin-bottom: 0;
+}
+
 .rst-content .admonition-title {
     color: #333333;
 }

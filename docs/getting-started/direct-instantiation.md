@@ -34,8 +34,12 @@ These classes extend the `Decimal` abstract class, which comes with the followin
 The constructor will take an `integer`, a `float`, or any `numeric string` as its input value. The precision and base must be given as integers, and can be omitted where they will take their default values of 10. This means that by default instances of `Decimal` will be in base-10 and calculate 10 digits of precision for all operations.
 
 !!! potential-bugs "You Might Not Expect"
-    If an instance of `Decimal` is provided, it will be treated as a string and will construct correctly. However, it will not inherit the `$precision` or `$base` settings for the instance provided as a `$value`. If the instance provided is in a base other than 10, the `$base` provided to the constructor should match that value, or you will eventually get exceptions and potentially PHP fatals.
+    If an instance of `Decimal` is provided, it will be treated as a string and will construct correctly. However, it will not inherit the `$precision` or `$base` settings for the instance provided as a `$value`. 
     
+!!! warning "Warning"
+    If the instance provided is in a base other than 10, the `$base` provided to the constructor should match that value, or you will eventually get exceptions and potentially PHP fatals.
+    
+!!! danger "Danger"
     Providing an instance of `Fraction` or `ComplexNumber` will appear to build the new instance correctly, but will result in a PHP fatal error on calls to any methods on the new instance.
 
 ## ImmutableNumber
@@ -76,7 +80,7 @@ The constructor will take an `integer`, a `float`, any `numeric string`, or an i
 !!! potential-bugs "Rounding"
     In the constructor, non-integer values for the numerator or denominator are automatically rounded to the nearest integer using the "half up" method.
 
-!!! potential-bugs "You Might Not Expect"
+!!! potential-bugs "Type Coercion"
     If an instance implementing `DecimalInterface` is provided, it will be coerced into an `ImmutableDecimal`. This will leave the original instance unaffected by operations performed on the `Fraction`, even if an instance of `MutableDecimal` was originally provided.
 
 ## ImmutableFraction
@@ -124,8 +128,24 @@ The specific interfaces, traits, and constructor for the different values of `Co
 
 ## CartesianCoordinate
 
+A set of coordinates where each value represents the position along a single plane. These are the coordinates that are most commonly used in algebra and geometry, typically presented in format `(x, y)` for two-dimensional coordinates, and `(x, y, z)` for three-dimensional coordinates.
+
 ## CylindricalCoordinate
+
+A set of three-dimensional coordinates represented by `(r, θ, z)`, where `(r, θ)` are the polar coordinates of the *xy*-plane, and `(z)` is the normal *z*-coordinate in a Cartesian coordinate representation.
+
+![Comparison of Cartesian and Cylindrical Coordinates](../images/cylindrical-coordinates.png)
+
+*This image is licensed under [CC-BY-NC-SA-4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) and was created by Gilbert Strang & Edwin “Jed” Herman*
 
 ## PolarCoordinate
 
+A set of two-dimensional coordinates represented by `(r, θ)`, where `(r)` is the distance to the origin, and `(θ)` is the angle in radians from the positive *x*-axis.
+
 ## SphericalCoordinate
+
+A set of three-dimensional coordinates represented by `(ρ, θ, φ)`, where `(ρ)` is the distance to the origin, `(θ)` is the angle in radians from the positive *x*-axis in the *xy*-plane, and `(φ)` is the angle in radians from the positive *z*-axis to the line formed by `(ρ)`.
+
+![Comparison of Cartesian and Spherical Coordinates](../images/sphecial-coordinates.png)
+
+*This image is licensed under [CC-BY-NC-SA-4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) and was created by Gilbert Strang & Edwin “Jed” Herman*

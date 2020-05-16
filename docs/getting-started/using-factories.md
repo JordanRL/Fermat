@@ -42,7 +42,7 @@ This factory method returns the requested type of complex number with the given 
 
 You may also provide either an `array` or a `NumberCollection` that have exactly two values which implement the `SimpleNumberInterface`.
 
-!!! potential-bugs "You Might Not Expect"
+!!! warning "Warning"
     The real part must have a key of `0`, and the imaginary part must have a key of `1` in the given `array` or `NumberCollection`.
 
 # The Matrices Factory Class
@@ -165,6 +165,12 @@ The following factory methods are available on the `Numbers` class.
 
 This factory method returns an instance of `DecimalInterface` or `FractionInterface`, depending on the `$type` given and the `$value` provided.
 
+!!! tip "Type Can Be An Instance"
+    Instead of providing a fully qualified class name for `$type`, you can provide an instance of a supported object. The `make()` function will attempt to force the `$value` into that type.
+
+!!! warning "Type Must Be A Supported FQCN or Class"
+    If `$type` is the fully qualified class name or instance of an object other than `ImmutableDecimal`, `MutableDecimal`, `ImmutableFraction`, or `MutableFraction`, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
+
 ###### Numbers::makeFromBase10(string $type, mixed $value, ?int $precision = null, int $base = 10)
 
 This factory method will created a base-10 instance of `$type` using the provided `$value`, then convert that value in the `$base` provided. This allows you to provide a `$value` in base-10, but get an instance in a different base.
@@ -177,6 +183,9 @@ If the provided `$value` already matches the requested `$type`, then it is retur
 
 This is how the math operations such as `add($num)` are able to accept virtually any input directly.
 
+!!! note "Arrays of Values"
+    An array can be provided as the `$value` argument to this function. If it is, then a recursive call on `Numbers::makeOrDont()` is made. This will be done at any level of nested arrays.
+
 !!! tip "Low Cost Function Call"
     This factory method returns the provided value after only making a call to `is_object()` and a single use of `instanceof` if the provided `$value` matches the requested `$type`.
     
@@ -184,33 +193,68 @@ This is how the math operations such as `add($num)` are able to accept virtually
     
     This makes calls to this factory method very low cost from both a memory and computation perspective if you need the value to be a guaranteed instance of a particular class.
     
+!!! warning "Mixed Argument Limitations"
+    The `$values` argument is listed in this documentation as `mixed`. In fact, the valid input types are:
+    
+    - An `integer`
+    - A `float`
+    - A `string` that contains only a single number in base 10
+    - A `string` that contains only a single number in base 10 with the `i` character at the end, denoting an imaginary value
+    - An `object` that implements `NumberInterface`
+    
+    If the provided `$value` matches none of these, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
+    
 ###### Numbers::makeFractionFromString(string $type, string $value, int $base = 10)
 
 This factory method will take a string as its input and provide an instance of either `ImmutableFraction` or `MutableFraction` depending on the value given for `$type`.
+
+!!! warning "Type Must Be A Supported FQCN"
+    If `$type` is the fully qualified class name of an object other than `ImmutableFraction` or `MutableFraction`, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
+    
+!!! warning "Value Must Contain at Most One Fraction Bar '/'"
+    If `$value` contains more than one fraction bar, which is assumed to be represented by the character `/`, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
 ###### Numbers::makePi(?int $precision = null)
 
 This factory method will return the number pi (π) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::PI` constant. If a precision of greater than 100 is requested, then a call is made to `ConstantProvider::makePi()` which computes digits of pi using the most efficient computational method currently available.
 
+!!! warning "Precision Must Be Positive"
+    If a precision of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
+
 ###### Numbers::makeTau(?int $precision = null)
 
 This factory method will return the number tau (τ) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::TAU` constant. If a precision of greater than 100 is requested, then a call is made to `Numbers::makePi()` which uses the methods described above, after which the result is multiplied by 2.
+
+!!! warning "Precision Must Be Positive"
+    If a precision of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
 ###### Numbers::make2Pi(?int $precision = null)
 
 This factory method is an alias for `Numbers::makeTau()`.
 
+!!! warning "Precision Must Be Positive"
+    If a precision of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
+
 ###### Numbers::makeE(?int $precision = null)
 
 This factory method will return Euler's number (e) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::E` constant. If a precision of greater than 100 is requested, then a call is made to `ConstantProvider::makeE()` which uses a fast converging series to calculate digits of e.
 
+!!! warning "Precision Must Be Positive"
+    If a precision of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
+
 ###### Numbers::makeGoldenRatio(?int $precision = null)
 
-This factory method will return the golden ratio (φ) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::GOLDEN_RATION` constant. If a precision of greater than 100 is requested, then an exception is thrown.
+This factory method will return the golden ratio (φ) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::GOLDEN_RATION` constant.
+
+!!! warning "Precision Must Be 1-100"
+    If a precision of less than 1 or greater than 100 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
 ###### Numbers::makeNaturalLog10(?int $precision = null)
 
 This factory method will return the natural log of 10 as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::LN_10` constant. If a precision of greater than 100 is requested, then an exception is thrown.
+
+!!! warning "Precision Must Be 1-100"
+    If a precision of less than 1 or greater than 100 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
 ###### Numbers::makeOne(?int $precision = null)
 

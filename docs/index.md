@@ -123,5 +123,10 @@ This is related to PHP's internal structure of hashtables and zvals, and how the
 
 Because PHP doesn't allow operator overloading, using the native math operators on Fermat objects directly can very easily result in loss of precision, overflows and underflows, PHP fatal errors (f.e. when the object is in a non-base-10 format), and incorrect calculation (f.e. with complex and imaginary numbers).
 
-!!! example "For Example"
-    A `ComplexNumber` object that has the value `2+2i` added to the integer `4` with the `+` operator will issue a notice and give the result `6` instead of `6+2i`.
+!!! warning "Non-Base-10 Values With Native Operators"
+    Using a value that is in a base larger than base-10 with math operators can result in PHP fatal errors. For instance, the value `15` in base `16` will output the string `F`. When used with the operator `/` as the value on the right of the operator, this would result in a "Division by Zero" PHP fatal error. 
+    
+    This occurs because PHP will attempt to cast the string `F` to an `integer`, which will result in the value `0`.
+
+!!! danger "Complex Numbers With Native Operators"
+    A `ComplexNumber` object that has the value `2+2i` added to the integer `4` with the `+` operator will issue a notice and give the result `6` instead of `6+2i`. This will silently succeed, and at no point throw any kind of error or warning, making it very difficult to pin down the source of the incorrect result if notices are not turned on with the `E_NOTICE` or `E_ALL` levels in `php.ini`.
