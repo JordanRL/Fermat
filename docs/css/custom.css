@@ -1,10 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500&display=swap');
+
 .codehilite {
     background: rgba(0, 0, 0, 0.05);
+}
+
+code {
+    font-family: "Source Code Pro";
+    font-weight: 500;
+    background: #333;
+    color: #EEE;
 }
 
 h1, h2 {
     background: #FFFFFF;
     border-left: 5px solid #000000;
+    border-bottom: 5px solid #000000;
     border-radius: 3px;
     color: #333333;
     padding: 2px 12px;
@@ -16,7 +26,7 @@ h3 {
 }
 
 h6 {
-    font-family: "Lucida Console", Monaco, monospace;
+    font-family: 'Source Code Pro';
     font-weight: normal;
     font-variant-caps: small-caps;
     font-size: 16px;
