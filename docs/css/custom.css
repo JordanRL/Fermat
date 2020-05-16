@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap');
 
 .codehilite {
     background: rgba(0, 0, 0, 0.05);
@@ -9,6 +9,15 @@ code {
     font-weight: 500;
     background: #333;
     color: #EEE;
+    font-size: 95%;
+}
+
+li code {
+    background: inherit;
+    color: inherit;
+    font-weight: 700;
+    border: none;
+    padding: inherit;
 }
 
 h1, h2 {
@@ -27,8 +36,7 @@ h3 {
 
 h6 {
     font-family: 'Source Code Pro';
-    font-weight: normal;
-    font-variant-caps: small-caps;
+    font-weight: 500;
     font-size: 16px;
 }
 

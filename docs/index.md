@@ -30,9 +30,9 @@ Despite the fact that performance is not a primary goal of this library, it does
     Installing the suggested extensions will also help improve performance, in some situations quite significantly.
     
 !!! caution "Other Extensions"
-    Like many programs, this library's performance suffers enormously if xDebug is enabled. This can lead to execution times of more than one second for a single operation on complex numbers, making them almost totally unusable for the web.
+    Like many programs, this library's performance suffers enormously if `xDebug` is enabled. This can lead to execution times of more than one second for a single operation on complex numbers, making them almost totally unusable for the web.
     
-    To avoid this, make sure that your production environment does not have xDebug enabled.
+    To avoid this, make sure that your production environment does not have `xDebug` enabled.
 
 ### Integration With Other Math Libraries
 
@@ -53,9 +53,9 @@ For instance, while the library would faithfully collect the first 10,000 digits
 There are also several features in this library that by the nature of the math behind them can lead to infinite loops with the wrong inputs. While some basic measures exist within the library to detect and exit these situations with a thrown exception, doing so comprehensively is an example of the halting problem. This should not occur without direct calls to these areas, such as `SeriesProvider::maclaurenSeries()`.
 
 !!! caution "Avoid Direct Usage"
-    While the **SeriesProvider** methods are public, and can certainly be used directly, the internal workings of the functions are complicated to understand and simple to get wrong.
+    While the `SeriesProvider` methods are public, and can certainly be used directly, the internal workings of the functions are complicated to understand and simple to get wrong.
     
-    In general, you should try to use consumers of the **SeriesProvider** first, such as the various distributions, or the **StatsProvider**.
+    In general, you should try to use consumers of the `SeriesProvider` first, such as the various distributions, or the `StatsProvider`.
 
 For this reason, you should limit your requested precision to the smallest value which will still work for your intended application.
 
@@ -66,7 +66,7 @@ Some areas of math are ambiguously defined, depending on the exact axioms used. 
 This is most obvious in the arc functions, such as `arctan()`. However, other areas make assumptions that may not be entirely clear at first.
 
 !!! example "For Example"
-    Calling `isEqual()` on a ComplexNumber will return false unless it is being compared to another ComplexNumber that has the same values for its real and imaginary part. More surprisingly perhaps, ComplexNumber objects do not have any of the `GreaterThan` or `LessThan` functions, as inequality comparison is poorly defined even between two complex numbers.
+    Calling `isEqual()` on a ComplexNumber will return false unless it is being compared to another `ComplexNumber` that has the same values for its real and imaginary part. More surprisingly perhaps, `ComplexNumber` objects do not have any of the `GreaterThan` or `LessThan` functions, as inequality comparison is poorly defined even between two complex numbers.
 
 These peculiarities are documented as accurately as possible in this documentation where they occur.
 
@@ -92,4 +92,4 @@ This is related to PHP's internal structure of hashtables and zvals, and how the
 Because PHP doesn't allow operator overloading, using the native math operators on Fermat objects directly can very easily result in loss of precision, overflows and underflows, PHP fatal errors (f.e. when the object is in a non-base-10 format), and incorrect calculation (f.e. with complex and imaginary numbers).
 
 !!! example "For Example"
-    A `ComplexNumber` object that has the value `2 + 2i` added to the integer `4` with the `+` operator will issue a notice and give the result `6` instead of `6 + 2i`.
+    A `ComplexNumber` object that has the value `2+2i` added to the integer `4` with the `+` operator will issue a notice and give the result `6` instead of `6+2i`.
