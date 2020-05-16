@@ -1,3 +1,35 @@
+# Using This Documentation
+
+A best effort is made to keep this documentation current, and the entire documentation is reviewed before every tagged release, however the documentation under v:latest may at times be out of date or incomplete.
+
+### Info Boxes
+
+Additional information is provided throughout this documentation using color coded information boxes. These are the styles used and what they are used for.
+
+!!! note "Notes"
+    This type of box is used to provide additional notes about a topic that may be rare use cases, or more detailed technical information that is not relevant to all readers of this documentation.
+    
+!!! tip "Tips"
+    This type of box is used to give helpful tips on using the code described in the section where it appears. Sometimes this may be tips on architecture, while others it could be a tip on how to improve performance or help accomplish a common task.
+    
+!!! example "Examples"
+    This type of box is used to provide examples of code, inputs, and outputs that illustrate a point which may be difficult to explain using just words. 
+    
+!!! see-also "See Also"
+    This type of box is used to point you towards other parts of this documentation, or documentation elsewhere on the internet, which might provide more information on the section being described.
+    
+!!! potential-bugs "Potential Bugs"
+    This type of box is used to provide a warning about common ways a programmer using this library might introduce a bug into their software through this library. It often details potentially unexpected type conversions, assumptions made that may not be obvious, or limitations that are inherent to this library or to PHP.
+    
+!!! caution "Cautions"
+    This type of box is used to caution the developer about incorrect usage of the section being detailed. It is used when the incorrect usage will not result in exceptions on unexpected results, but instead might simply have undesirable side effects.
+    
+!!! warning "Warnings"
+    This type of box is used to warn the developer about incorrect usage of the section being detailed. It is used when the incorrect usage will result in exceptions, but not unexpected results.
+    
+!!! danger "Danger"
+    This type of box is used to alert the developer about potentially hard to find bugs that will result from an incorrect usage of the section being detailed. It is used when the incorrect usage will result in unexpected result without any exceptions or errors.
+
 # What This Library Is For
 
 ### Consistent arbitrary precision math
