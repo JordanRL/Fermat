@@ -69,7 +69,7 @@ The following factory methods are available on the `Matrices` class.
 
 This factory method returns an instance of the specified matrix type with the given dimensions where all values in the matrix are the number zero.
 
-!!! tip "For Example"
+!!! example "For Example"
     A zero matrix two rows and three columns would look like:
     
     `[0 0 0]`  
@@ -79,7 +79,7 @@ This factory method returns an instance of the specified matrix type with the gi
 
 This factory method returns an instance of the specified matrix type with the given dimensions where all values in the matrix are the number one.
 
-!!! tip "For Example"
+!!! example "For Example"
     A ones matrix two rows and three columns would look like:
     
     `[1 1 1]`  
@@ -89,7 +89,7 @@ This factory method returns an instance of the specified matrix type with the gi
 
 This factory method returns a square matrix where the dimensions match the integer given in `$size`. This matrix is an identity matrix, which is often used in matrix math, where the diagonal consists of ones, and all other values are zero.
 
-!!! tip "For Example"
+!!! example "For Example"
     An identity matrix of size three would look like:
     
     `[1 0 0]`  
@@ -102,7 +102,7 @@ This factory method returns a square matrix where the dimensions match the integ
 
 When multiplied by another matrix, this will swap the sign of every other value in the matrix.
 
-!!! tip "For Example"
+!!! example "For Example"
     A cofactor matrix of size three would look like:
     
     `[+ - +]`  
@@ -156,3 +156,90 @@ The value of the natural logarithm of 10 pre-computed to 100 decimal places.
 ###### I_POW_I
 
 The value of i^i pre-computed to 100 decimal places.
+
+### Available Factory Methods
+
+The following factory methods are available on the `Numbers` class.
+
+###### Numbers::make(string $type, mixed $value, ?int $precision = null, int $base = 10)
+
+This factory method returns an instance of `DecimalInterface` or `FractionInterface`, depending on the `$type` given and the `$value` provided.
+
+###### Numbers::makeFromBase10(string $type, mixed $value, ?int $precision = null, int $base = 10)
+
+This factory method will created a base-10 instance of `$type` using the provided `$value`, then convert that value in the `$base` provided. This allows you to provide a `$value` in base-10, but get an instance in a different base.
+
+###### Numbers::makeOrDont(string $type, mixed $value, ?int $precision = null, int $base = 10)
+
+This factory method will coerce the given `$value` into the requested `$type`. Unlike using [direct instantiation](direct-instantiation.md), this factory will perform all the correct conversions on the various possible values necessary to ensure a valid instance is constructed.
+
+If the provided `$value` already matches the requested `$type`, then it is returned without modification. This makes the `makeOrDont()` factory ideal for accepting any possible valid constructor value as an input while also guaranteeing that your implementation is working with a particular value.
+
+This is how the math operations such as `add($num)` are able to accept virtually any input directly.
+
+!!! tip "Low Cost Function Call"
+    This factory method returns the provided value after only making a call to `is_object()` and a single use of `instanceof` if the provided `$value` matches the requested `$type`.
+    
+    In general, it is written a way to build the requested `$type` in the most efficient way possible given the provided inputs.
+    
+    This makes calls to this factory method very low cost from both a memory and computation perspective if you need the value to be a guaranteed instance of a particular class.
+    
+###### Numbers::makeFractionFromString(string $type, string $value, int $base = 10)
+
+This factory method will take a string as its input and provide an instance of either `ImmutableFraction` or `MutableFraction` depending on the value given for `$type`.
+
+###### Numbers::makePi(?int $precision = null)
+
+This factory method will return the number pi (π) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::PI` constant. If a precision of greater than 100 is requested, then a call is made to `ConstantProvider::makePi()` which computes digits of pi using the most efficient computational method currently available.
+
+###### Numbers::makeTau(?int $precision = null)
+
+This factory method will return the number tau (τ) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::TAU` constant. If a precision of greater than 100 is requested, then a call is made to `Numbers::makePi()` which uses the methods described above, after which the result is multiplied by 2.
+
+###### Numbers::make2Pi(?int $precision = null)
+
+This factory method is an alias for `Numbers::makeTau()`.
+
+###### Numbers::makeE(?int $precision = null)
+
+This factory method will return Euler's number (e) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::E` constant. If a precision of greater than 100 is requested, then a call is made to `ConstantProvider::makeE()` which uses a fast converging series to calculate digits of e.
+
+###### Numbers::makeGoldenRatio(?int $precision = null)
+
+This factory method will return the golden ratio (φ) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::GOLDEN_RATION` constant. If a precision of greater than 100 is requested, then an exception is thrown.
+
+###### Numbers::makeNaturalLog10(?int $precision = null)
+
+This factory method will return the natural log of 10 as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::LN_10` constant. If a precision of greater than 100 is requested, then an exception is thrown.
+
+###### Numbers::makeOne(?int $precision = null)
+
+This factory method will return the natural log of 10 as an instance of `ImmutableNumber` with a value of `1` and a precision setting of `$precision`. If `$precision` is null, then the instance returned will have a precision of 100.
+
+###### Numbers::makeZero(?int $precision = null)
+
+This factory method will return the natural log of 10 as an instance of `ImmutableNumber` with a value of `0` and a precision setting of `$precision`. If `$precision` is null, then the instance returned will have a precision of 100.
+
+### Static Methods
+
+The `Numbers` factory class also has two static methods that work as a global variable for the Fermat library.
+
+###### Numbers::getDefaultCalcMode()
+
+This static method returns the current value of the protected parameter `Numbers::$defaultCalcMode`. By default, this value is set to `Selectable::CALC_MODE_PRECISION`, resulting in the arbitrary precision implementations being used for all math functions.
+
+!!! caution "For Internal Use"
+    This function is meant to be called within the constructors of values that implement the `NumberInterface` and which use the provided arithmetic traits. It is likely to have limited utility outside of these situations.
+
+###### Numbers::setDefaultCalcMode(int $mode)
+
+This static method sets the protected parameter `Numbers::$defaultCalcMode` to the provided `$mode`. The Fermat library assumes that only values which are constants on the `Selectable` class are used as inputs for this function.
+
+Using other values for `$mode` may be possible in the event you are extending the Fermat classes with your own implementations, however an unknown `$mode` will cause the classes provided in this library to fall back to `Selectable::CALC_MODE_PRECISION`.
+
+This behavior could be changed by overriding the methods defined in the `ArithmeticSelectionTrait`.
+
+!!! see-also "See Also"
+    For more information on the calculation modes available in Fermat, see the page on [Calculation Modes](calculation-modes.md). 
+    
+    For more information on extending these values, please see the documentation in the "Extending" section.
