@@ -37,35 +37,34 @@ Which format you use is entirely up to you, but there are some situations that l
 
 First, lets look at the differences in your code that using one or the other might cause by taking the number 5 and adding 10.
 
-#### Immutable Example 1
-
-```php
-<?php
-
-use Samsara\Fermat\Values\ImmutableDecimal;
-
-$balance = new ImmutableDecimal(5);
-
-$newBalance = $balance->add(10);
-
-echo 'Current Balance: '.$newBalance->getValue();
-// Prints: 'Current Balance: 15'
-```
-
-#### Mutable Example 1
-
-```php
-<?php
-
-use Samsara\Fermat\Values\MutableDecimal;
-
-$balance = new MutableDecimal(5);
-
-$balance->add(10);
-
-echo 'Current Balance: '.$balance->getValue();
-// Prints: 'Current Balance: 15'
-```
+!!! example "Example 1: Basic Usage of Both"
+    === Immutable
+    ```php
+    <?php
+    
+    use Samsara\Fermat\Values\ImmutableDecimal;
+    
+    $balance = new ImmutableDecimal(5);
+    
+    $newBalance = $balance->add(10);
+    
+    echo 'Current Balance: '.$newBalance->getValue();
+    // Prints: 'Current Balance: 15'
+    ```
+    
+    === Mutable
+    ```php
+    <?php
+    
+    use Samsara\Fermat\Values\MutableDecimal;
+    
+    $balance = new MutableDecimal(5);
+    
+    $balance->add(10);
+    
+    echo 'Current Balance: '.$balance->getValue();
+    // Prints: 'Current Balance: 15'
+    ```
 
 ### How To Create Equivalence Between the Two
 
@@ -73,104 +72,103 @@ In general, you can get the behavior of mutable objects with immutable objects b
 
 So then, why ever use immutable objects? It seems like using immutables will use a much larger amount of memory while doing the same exact thing. Well, consider the next example.
 
-#### Immutable Example 2
-
-```php
-<?php
-
-use Samsara\Fermat\Values\ImmutableDecimal;
-
-$oldBalance = new ImmutableDecimal(5);
-$deposit = new ImmutableDecimal(10);
-
-$newBalance = $oldBalance->add($deposit);
-
-echo 'Original Balance: '.$oldBalance.PHP_EOL;
-echo 'Deposit: '.$deposit.PHP_EOL;
-echo 'Current Balance: '.$newBalance;
-// Prints:
-// Original Balance: 5
-// Deposit: 10
-// Current Balance: 15
-```
-
-#### Mutable Example 2
-
-```php
-<?php
-
-use Samsara\Fermat\Values\MutableDecimal;
-
-$oldBalance = new MutableDecimal(5);
-$deposit = new MutableDecimal(10);
-
-$newBalance = $oldBalance->add($deposit);
-
-echo 'Original Balance: '.$oldBalance.PHP_EOL;
-echo 'Deposit: '.$deposit.PHP_EOL;
-echo 'Current Balance: '.$newBalance;
-// Prints:
-// Original Balance: 15
-// Deposit: 10
-// Current Balance: 15
-```
+!!! example "Example 2: Side Effects"
+    === Immutable
+    ```php
+    <?php
+    
+    use Samsara\Fermat\Values\ImmutableDecimal;
+    
+    $oldBalance = new ImmutableDecimal(5);
+    $deposit = new ImmutableDecimal(10);
+    
+    $newBalance = $oldBalance->add($deposit);
+    
+    echo 'Original Balance: '.$oldBalance.PHP_EOL;
+    echo 'Deposit: '.$deposit.PHP_EOL;
+    echo 'Current Balance: '.$newBalance;
+    // Prints:
+    // Original Balance: 5
+    // Deposit: 10
+    // Current Balance: 15
+    ```
+    
+    === Mutable
+    ```php
+    <?php
+    
+    use Samsara\Fermat\Values\MutableDecimal;
+    
+    $oldBalance = new MutableDecimal(5);
+    $deposit = new MutableDecimal(10);
+    
+    $newBalance = $oldBalance->add($deposit);
+    
+    echo 'Original Balance: '.$oldBalance.PHP_EOL;
+    echo 'Deposit: '.$deposit.PHP_EOL;
+    echo 'Current Balance: '.$newBalance;
+    // Prints:
+    // Original Balance: 15
+    // Deposit: 10
+    // Current Balance: 15
+    ```
 
 ### Side Effects and Consistency
 
 As we can see from the second set of examples, *assigning a value from a mutable function call can have side effects beyond the variable assignment*. In fact, preserving the value of the original object requires a lot of attention to detail in the calling code. To achieve the same result as the immutable example with the mutable example, we would need to make a whole new object just for the calculation, which would look something like this:
 
-```php
-<?php 
-use Samsara\Fermat\Values\MutableDecimal;
-
-$oldBalance = new MutableDecimal(5);
-$deposit = new MutableDecimal(10);
-
-$newBalance = new MutableDecimal($oldBalance->getValue());
-$newBalance->add($deposit);
-
-echo 'Original Balance: '.$oldBalance.PHP_EOL;
-echo 'Deposit: '.$deposit.PHP_EOL;
-echo 'Current Balance: '.$newBalance;
-// Prints:
-// Original Balance: 5
-// Deposit: 10
-// Current Balance: 15
-```
+!!! example "Example 3: Mutables Used Without Side Effects"
+    ```php
+    <?php 
+    use Samsara\Fermat\Values\MutableDecimal;
+    
+    $oldBalance = new MutableDecimal(5);
+    $deposit = new MutableDecimal(10);
+    
+    $newBalance = new MutableDecimal($oldBalance->getValue());
+    $newBalance->add($deposit);
+    
+    echo 'Original Balance: '.$oldBalance.PHP_EOL;
+    echo 'Deposit: '.$deposit.PHP_EOL;
+    echo 'Current Balance: '.$newBalance;
+    // Prints:
+    // Original Balance: 5
+    // Deposit: 10
+    // Current Balance: 15
+    ```
 
 Creating a new object on the fly to perform a calculation is in fact exactly how the implementation of immutables in Fermat is accomplished. Internally, any time a calculation has been performed, the new string with the resulting answer is stored in a newly created instance, instead of the instance that initiated the calculation.
 
 This can be seen if you look at the different implementations of the `setValue()` abstract method in the `ImmutableDecimal` and `MutableDecimal` classes.
 
-#### Immutable Implementation of `setValue()`
-
-```php
-<?php
-class ImmutableDecimal {
-  protected function setValue($value, $precision = null, $base = 10)
-  {
-    /* omitted transformations and sanity checks */
+!!! example "Implementations of setValue()"
+    === ImmutableDecimal
+    ```php
+    <?php
+    class ImmutableDecimal {
+      protected function setValue($value, $precision = null, $base = 10)
+      {
+        /* omitted transformations and sanity checks */
+        
+        return new ImmutableDecimal($value, $precision, $base);
+      }
+    }
+    ```
     
-    return new ImmutableDecimal($value, $precision, $base);
-  }
-}
-```
-
-#### Mutable Implementation of `setValue()`
-
-```php
-<?php
-class MutableDecimal {
-  protected function setValue($value, $precision = null, $base = 10)
-  {
-    /* omitted transformations and sanity checks */
-
-    $this->value = $this->translateValue($value);
-
-    return $this;
-  }
-}
-```
+    === MutableDecimal
+    ```php
+    <?php
+    class MutableDecimal {
+      protected function setValue($value, $precision = null, $base = 10)
+      {
+        /* omitted transformations and sanity checks */
+    
+        $this->value = $this->translateValue($value);
+    
+        return $this;
+      }
+    }
+    ```
 
 The `ImmutableDecimal` implementation returns a new instance, while the `MutableDecimal` implementation sets the internal `$value` property directly and returns the current instance. This is the only meaningful difference between the two classes.
 
