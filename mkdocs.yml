@@ -62,8 +62,6 @@ theme:
   hljs_languages:
     - php
 markdown_extensions:
-  - codehilite:
-      linenums: true
   - toc:
       toc_depth: 2
   - admonition
@@ -72,3 +70,5 @@ markdown_extensions:
       insert_fonts_css: true
   - pymdownx.tabbed
   - pymdownx.superfences
+  - pymdownx.highlight:
+      linenums: true
