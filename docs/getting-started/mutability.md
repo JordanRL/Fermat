@@ -154,7 +154,7 @@ protected function setValue($value, $precision = null, $base = 10)
 The `ImmutableDecimal` implementation returns a new instance, while the `MutableDecimal` implementation sets the internal `$value` property directly and returns the current instance. This is the only meaningful difference between the two classes.
 
 !!! note "setValue() As a Protected Method"
-    For both mutable and immutable values, the `setValue()` method has a visibility of `protected`, preventing the calling scope from using it. This is intentional, as the values in these objects are meant to represent something closer to memory address than a normal variable.
+    For both mutable and immutable values, the `setValue()` method has a visibility of `protected`, preventing the calling scope from using it. This is intentional, as the values in these objects are meant to represent something closer to a memory address than a normal variable.
     
     Allowing `setValue()` to be called directly, even for mutable objects, could lead to some of the same problems that make memory address safety an issue for desktop applications. 
     
