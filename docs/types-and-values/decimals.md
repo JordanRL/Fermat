@@ -12,7 +12,7 @@ The following interfaces and traits are available on classes which extend `Decim
 
 ###### BaseConversionInterface
 
---8<-- "has-interface/base-comparison.md"
+--8<-- "has-interface/base-conversion.md"
 
 ###### NumberInterface
 
