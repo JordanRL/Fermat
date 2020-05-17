@@ -85,6 +85,10 @@ div.highlight, .tabbed-set .highlight {
     margin-top: 12px;
 }
 
+.tabbed-set div:last-child {
+    margin-bottom: 0;
+}
+
 div.highlight pre {
     border: 0;
     border-left: 2px solid #333333;
