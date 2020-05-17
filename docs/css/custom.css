@@ -91,6 +91,10 @@ div.highlight pre {
     font-family: "Source Code Pro";
 }
 
+.tabbed-set .highlight pre:last-child {
+    margin-bottom: 0;
+}
+
 .rst-content .admonition {
     padding: 12px;
     line-height: 24px;
