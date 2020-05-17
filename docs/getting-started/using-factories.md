@@ -189,7 +189,7 @@ This is how the math operations such as `add($num)` are able to accept virtually
 !!! tip "Low Cost Function Call"
     This factory method returns the provided value after only making a call to `is_object()` and a single use of `instanceof` if the provided `$value` matches the requested `$type`.
     
-    In general, it is written a way to build the requested `$type` in the most efficient way possible given the provided inputs.
+    In general, it is written to build the requested `$type` in the most efficient way possible given the provided inputs.
     
     This makes calls to this factory method very low cost from both a memory and computation perspective if you need the value to be a guaranteed instance of a particular class.
     
