@@ -26,7 +26,10 @@ In this mode, the native PHP math operators are used for calculation. The result
 !!! note "Loss Of Precision"
     The precision defined in the object is ignored when this mode is used. This will result in values which behave as math operations in PHP would natively, including issues such as overflow and underflow.
     
-# Controlling Mode
+!!! tip "Better Performance In Low Precision Situations"
+    As a trade-off for accepting more ambiguous precision in the result, using this mode will decrease the computation required for basic math operations, in some cases quite significantly. If you are absolutely certain that your math will not result in an overflow or underflow, and your application is not sensitive to loss of precision in `float` values, using this mode will reduce the cost of each mathematical operation.
+    
+# Controlling the Mode of Objects
 
 There are two main ways of controlling the mode used by your Fermat objects. The first is through the use of the default mode, and the second is with the use of the `setMode()` method.
 
