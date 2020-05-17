@@ -76,6 +76,12 @@ h6::before {
     color: #00c853;
 }
 
+div.highlight pre {
+    background: #EEEEEE;
+    border: 0;
+    font-family: "Source Code Pro";
+}
+
 .rst-content .admonition {
     padding: 12px;
     line-height: 24px;
