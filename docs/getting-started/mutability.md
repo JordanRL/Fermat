@@ -44,12 +44,12 @@ First, lets look at the differences in your code that using one or the other mig
 
 use Samsara\Fermat\Values\ImmutableDecimal;
 
-$five = new ImmutableDecimal(5);
+$balance = new ImmutableDecimal(5);
 
-$newVal = $five->add(10);
+$newBalance = $balance->add(10);
 
-echo $newVal->getValue();
-// Prints: 15
+echo 'Current Balance: '.$newBalance->getValue();
+// Prints: 'Current Balance: 15'
 ```
 
 #### Mutable Example 1
@@ -59,12 +59,12 @@ echo $newVal->getValue();
 
 use Samsara\Fermat\Values\MutableDecimal;
 
-$five = new MutableDecimal(5);
+$balance = new MutableDecimal(5);
 
-$five->add(10);
+$balance->add(10);
 
-echo $five->getValue();
-// Prints: 15
+echo 'Current Balance: '.$balance->getValue();
+// Prints: 'Current Balance: 15'
 ```
 
 ### How To Create Equivalence Between the Two
@@ -80,13 +80,18 @@ So then, why ever use immutable objects? It seems like using immutables will use
 
 use Samsara\Fermat\Values\ImmutableDecimal;
 
-$five = new ImmutableDecimal(5);
-$ten = new ImmutableDecimal(10);
+$oldBalance = new ImmutableDecimal(5);
+$deposit = new ImmutableDecimal(10);
 
-$fifteen = $five->add($ten);
+$newBalance = $oldBalance->add($deposit);
 
-echo $five.' + '.$ten.' = '.$fifteen;
-// Prints: '5 + 10 = 15'
+echo 'Original Balance: '.$oldBalance.PHP_EOL;
+echo 'Deposit: '.$deposit.PHP_EOL;
+echo 'Current Balance: '.$newBalance;
+// Prints:
+// Original Balance: 5
+// Deposit: 10
+// Current Balance: 15
 ```
 
 #### Mutable Example 2
@@ -96,13 +101,18 @@ echo $five.' + '.$ten.' = '.$fifteen;
 
 use Samsara\Fermat\Values\MutableDecimal;
 
-$five = new MutableDecimal(5);
-$ten = new MutableDecimal(10);
+$oldBalance = new MutableDecimal(5);
+$deposit = new MutableDecimal(10);
 
-$fifteen = $five->add(10);
+$newBalance = $oldBalance->add($deposit);
 
-echo $five.' + '.$ten.' = '.$fifteen;
-// Prints: '15 + 10 = 15'
+echo 'Original Balance: '.$oldBalance.PHP_EOL;
+echo 'Deposit: '.$deposit.PHP_EOL;
+echo 'Current Balance: '.$newBalance;
+// Prints:
+// Original Balance: 15
+// Deposit: 10
+// Current Balance: 15
 ```
 
 ### Side Effects and Consistency
@@ -113,14 +123,19 @@ As we can see from the second set of examples, *assigning a value from a mutable
 <?php 
 use Samsara\Fermat\Values\MutableDecimal;
 
-$five = new MutableDecimal(5);
-$ten = new MutableDecimal(10);
+$oldBalance = new MutableDecimal(5);
+$deposit = new MutableDecimal(10);
 
-$fifteen = new MutableDecimal($five->getValue());
-$fifteen->add($ten);
+$newBalance = new MutableDecimal($oldBalance->getValue());
+$newBalance->add($deposit);
 
-echo $five.' + '.$ten.' = '.$fifteen;
-// Prints: '5 + 10 = 15'
+echo 'Original Balance: '.$oldBalance.PHP_EOL;
+echo 'Deposit: '.$deposit.PHP_EOL;
+echo 'Current Balance: '.$newBalance;
+// Prints:
+// Original Balance: 5
+// Deposit: 10
+// Current Balance: 15
 ```
 
 Creating a new object on the fly to perform a calculation is in fact exactly how the implementation of immutables in Fermat is accomplished. Internally, any time a calculation has been performed, the new string with the resulting answer is stored in a newly created instance, instead of the instance that initiated the calculation.
