@@ -12,6 +12,19 @@ The following interfaces and traits are available on classes which extend `[clas
 
 interface description
 
+!!! exmaple "ImmutableDecimal Ex. 1"
+    ```php
+    <?php
+    class ImmutableDecimal {
+      protected function setValue($value, $precision = null, $base = 10)
+      {
+        /* omitted transformations and sanity checks */
+        
+        return new ImmutableDecimal($value, $precision, $base);
+      }
+    }
+    ```
+
 ###### Interface2
 
 interface description
