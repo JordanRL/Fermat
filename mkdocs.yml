@@ -73,3 +73,5 @@ markdown_extensions:
   - pymdownx.highlight:
       linenums: true
       linenums_style: inline
+  - pymdownx.snippets:
+      check_paths: true
