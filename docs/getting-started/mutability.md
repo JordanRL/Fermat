@@ -22,10 +22,12 @@ This is not an issue for some applications, mainly those where all operations ar
 
 Because of these factors, mutability in Fermat is generally left up to the developer using the library. Both mutable and immutable implementations are provided for most values, and the developer using Fermat is asked to choose which type they want at the time it is created.
 
-!!! tip "Less Experienced Developers Should Use Immutables"
-    Although dealing with mutables doesn't represent a significant level of understanding, in practice it is often easier for a less experienced developer to create inadvertent bugs while using them. For this reason, immutables are gently suggested for developers who are less experienced with PHP or programming in general.
+!!! tip "Mutables Are For Niche Use-Cases In This Library"
+    Although there are real use-cases for having a mutable numeric value, as detailed within this page, mutables generally make little sense for numeric types, such as `integer` or `float`. The values in this library should be treated more like numeric types that have fluent object interfaces than like normal PHP objects.
     
-    A less experienced developer who feels confident in their attention to detail is of course free to use mutables where they might work best, but special attention should be paid to the state at any given point in the program execution.
+    For this reason, most developers in most situations should use the immutable types provided in this library. Immutables are returned automatically in all situations where the library generates or creates a number, such as from the `SequenceProvider` or from `Numbers::makePi()`.
+    
+    Unless you are absolutely certain that your use-case calls for a mutable numeric, it is generally safer to use the immutable values. Mutables have been provided to support specific behaviors seen for native `integer` and `float` types, namely reassignment operators like `+=` and `/=`.
 
 The exceptions to this rule are usually noted within this documentation, and nearly always represent an underlying data-structure that should always be treated one way or the other.
 
@@ -37,7 +39,7 @@ Which format you use is entirely up to you, but there are some situations that l
 
 First, lets look at the differences in your code that using one or the other might cause by taking the number 5 and adding 10.
 
-!!! example "Example 1: Basic Usage of Both"
+!!! example "Example 1: Basic Usage Of Both"
     === "Immutable"
         ```php
         <?php
@@ -141,7 +143,7 @@ Creating a new object on the fly to perform a calculation is in fact exactly how
 
 This can be seen if you look at the different implementations of the `setValue()` abstract method in the `ImmutableDecimal` and `MutableDecimal` classes.
 
-!!! example "Implementations of setValue()"
+!!! example "Implementations Of setValue()"
     === "ImmutableDecimal"
         ```php
         <?php
@@ -172,7 +174,7 @@ This can be seen if you look at the different implementations of the `setValue()
 
 The `ImmutableDecimal` implementation returns a new instance, while the `MutableDecimal` implementation sets the internal `$value` property directly and returns the current instance. This is the only meaningful difference between the two classes.
 
-!!! note "setValue() As a Protected Method"
+!!! note "setValue() As A Protected Method"
     For both mutable and immutable values, the `setValue()` method has a visibility of `protected`, preventing the calling scope from using it. This is intentional, as the values in these objects are meant to represent something closer to a memory address than a normal variable.
     
     Allowing `setValue()` to be called directly, even for mutable objects, could lead to some of the same problems that make memory address safety an issue for desktop applications. 
