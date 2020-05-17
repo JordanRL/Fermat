@@ -76,9 +76,13 @@ h6::before {
     color: #00c853;
 }
 
-div.highlight {
+div.highlight, .tabbed-set .highlight {
     border: 0;
     background: #fcfcfc;
+}
+
+.tabbed-set .highlight {
+    margin-top: 12px;
 }
 
 div.highlight pre {
