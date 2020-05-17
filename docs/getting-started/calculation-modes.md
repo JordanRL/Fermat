@@ -32,7 +32,7 @@ There are two main ways of controlling the mode used by your Fermat objects. The
 
 ## Default Mode
 
-All objects that extend the `Number` abstract class set their current mode to the default calculation mode returned by `Numbers::getDefaultCalcMode()`. This check is only done during instantiation, meaning that changing the detault calculation mode using `Numbers::setDefaultCalcMode()` will only affect objects instantiated after this change is made.
+All objects that extend the `Number` abstract class set their current mode to the default calculation mode returned by `Numbers::getDefaultCalcMode()`. This check is only done during instantiation, meaning that changing the default calculation mode using `Numbers::setDefaultCalcMode()` will only affect objects instantiated after this change is made.
 
 !!! potential-bugs "Interaction With Immutable Objects"
     Because immutable objects create new instances for every mathematical operation performed, changing the default calculation mode in the middle of application execution will result in all previously created immutables utilizing the original mode for their first mathematical operation, and the new mode for every subsequent operation.

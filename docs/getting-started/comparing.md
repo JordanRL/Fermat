@@ -2,7 +2,7 @@
 
 For values that cannot be represented as an `integer` or `float` accurately, using the native inequality operators will result in erroneous results. In some cases, this might also result in underflow and overflow of the native types.
 
-Because of this, all comparisons, including equality comparisons which would normally be `==` or `===` in PHP, should be performed using the comparison operators provided on all objects which extend the `Number` abstract class.
+Because of this, all comparisons, including equality comparisons which would normally be `==` or `===` in PHP, should be performed using the comparison methods provided on all objects which extend the `Number` abstract class.
 
 !!! warning "Complex Number Limitations"
     The `ComplexNumber` abstract class, and all of its child classes, only implement the `isEqual()` method. This is because inequality is poorly defined for complex numbers. There is no sensible and consistent way to evaluate the statement `(2+2i) >= (1+1i)`, even though one might expect this to return true.
