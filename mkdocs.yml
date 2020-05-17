@@ -66,5 +66,8 @@ markdown_extensions:
   - toc:
       toc_depth: 2
   - admonition
-  - tabbed
-  - superfences
+  - markdown_katex:
+      no_inline_svg: true
+      insert_fonts_css: true
+  - pymdown.tabbed
+  - pymdown.superfences
