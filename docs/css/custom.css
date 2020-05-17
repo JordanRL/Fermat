@@ -43,6 +43,10 @@ h3 {
     border-bottom: 3px solid rgba(0, 0, 0, 0.45);
 }
 
+h4 {
+    font-variant-caps: all-small-caps;
+}
+
 h6 {
     font-family: 'Source Code Pro';
     font-weight: 500;
