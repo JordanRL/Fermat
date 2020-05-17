@@ -91,6 +91,14 @@ div.highlight pre {
     font-family: "Source Code Pro";
 }
 
+div.highlight pre span.lineno {
+    border-right: 1px solid #333;
+    margin-right: 5px;
+    display: inline-block;
+    width: 1.5em;
+    color: #999;
+}
+
 .tabbed-set .highlight pre:last-child {
     margin-bottom: 0;
 }
