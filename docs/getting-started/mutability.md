@@ -2,7 +2,7 @@
 
 Mutability is a property of instances of objects in object oriented languages. It refers to whether or not a method on the object changes the data referenced by that object's pointer (or in the case of PHP, its zval). If the method changes the data referenced by the object's zval, it is considered to be mutable. If the method does not change the data referenced, it is considered immutable.
 
-In general, mutable objects have no memory of their previous states and evolve with the code as more operations are performed on them. Most objects that represent database results are mutable, such as those used in Doctrine or Elloquent. This reflects two properties of database results:
+In general, mutable objects have no memory of their previous states and evolve with the code as more operations are performed on them. Most objects that represent database results are mutable, such as those used in Doctrine or Eloquent. This reflects two properties of database results:
 
 1. A change in the data should still point to the same database entry.
 2. There should only ever be one set of data associated with a single database entry.
