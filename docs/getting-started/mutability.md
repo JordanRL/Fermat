@@ -130,24 +130,30 @@ This can be seen if you look at the different implementations of the `setValue()
 #### Immutable Implementation of `setValue()`
 
 ```php
-protected function setValue($value, $precision = null, $base = 10)
-{
+<?php
+class ImmutableDecimal {
+  protected function setValue($value, $precision = null, $base = 10)
+  {
     /* omitted transformations and sanity checks */
-
+    
     return new ImmutableDecimal($value, $precision, $base);
+  }
 }
 ```
 
 #### Mutable Implementation of `setValue()`
 
 ```php
-protected function setValue($value, $precision = null, $base = 10)
-{
+<?php
+class ImmutableDecimal {
+  protected function setValue($value, $precision = null, $base = 10)
+  {
     /* omitted transformations and sanity checks */
 
     $this->value = $this->translateValue($value);
 
     return $this;
+  }
 }
 ```
 
