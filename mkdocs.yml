@@ -66,3 +66,5 @@ markdown_extensions:
   - toc:
       toc_depth: 2
   - admonition
+  - tabbed
+  - superfences
