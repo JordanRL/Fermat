@@ -14,38 +14,38 @@ class ConstantProvider
     public static function makePi(int $digits): string
     {
 
-        $internalPrecision = $digits + 10;
+        $internalScale = $digits + 10;
 
-        $C = Numbers::make(Numbers::IMMUTABLE, '10005', $internalPrecision)->sqrt($internalPrecision)->multiply(426880);
-        $M = Numbers::make(Numbers::IMMUTABLE, '1', $internalPrecision);
-        $L = Numbers::make(Numbers::IMMUTABLE, '13591409', $internalPrecision);
-        $K = Numbers::make(Numbers::IMMUTABLE, '6', $internalPrecision);
+        $C = Numbers::make(Numbers::IMMUTABLE, '10005', $internalScale)->sqrt($internalScale)->multiply(426880);
+        $M = Numbers::make(Numbers::IMMUTABLE, '1', $internalScale);
+        $L = Numbers::make(Numbers::IMMUTABLE, '13591409', $internalScale);
+        $K = Numbers::make(Numbers::IMMUTABLE, '6', $internalScale);
         $X = Numbers::make(Numbers::IMMUTABLE, '1');
-        $sum = Numbers::make(Numbers::MUTABLE,'0', $internalPrecision + 2);
+        $sum = Numbers::make(Numbers::MUTABLE,'0', $internalScale + 2);
         $termNum = 0;
-        $one = Numbers::makeOne($internalPrecision);
+        $one = Numbers::makeOne($internalScale);
 
         $continue = true;
 
         while ($continue) {
             $term = $M->multiply($L)->divide($X);
 
-            if ($term->numberOfLeadingZeros() > $internalPrecision || $term->isEqual(0)) {
+            if ($term->numberOfLeadingZeros() > $internalScale || $term->isEqual(0)) {
                 $continue = false;
             }
 
             $sum->add($term);
 
-            $M = $M->multiply($K->pow(3)->subtract($K->multiply(16))->divide($one->add($termNum)->pow(3), $internalPrecision));
+            $M = $M->multiply($K->pow(3)->subtract($K->multiply(16))->divide($one->add($termNum)->pow(3), $internalScale));
             $L = $L->add(545140134);
             $X = $X->multiply('-262537412640768000');
             $K = $K->add(12);
             $termNum++;
         }
 
-        $pi = $C->divide($sum, $internalPrecision);
+        $pi = $C->divide($sum, $internalScale);
 
-        return $pi->truncateToPrecision($digits)->getValue();
+        return $pi->truncateToScale($digits)->getValue();
 
     }
 
@@ -67,12 +67,12 @@ class ConstantProvider
     public static function makeE(int $digits): string
     {
 
-        $internalPrecision = $digits + 3;
+        $internalScale = $digits + 3;
 
-        $one = Numbers::makeOne($internalPrecision+5)->setMode(Selectable::CALC_MODE_PRECISION);
-        $denominator = Numbers::make(Numbers::MUTABLE, '1', $internalPrecision)->setMode(Selectable::CALC_MODE_PRECISION);
-        $e = Numbers::make(NUmbers::MUTABLE, '2', $internalPrecision)->setMode(Selectable::CALC_MODE_PRECISION);
-        $n = Numbers::make(Numbers::MUTABLE, '2', $internalPrecision)->setMode(Selectable::CALC_MODE_PRECISION);
+        $one = Numbers::makeOne($internalScale+5)->setMode(Selectable::CALC_MODE_PRECISION);
+        $denominator = Numbers::make(Numbers::MUTABLE, '1', $internalScale)->setMode(Selectable::CALC_MODE_PRECISION);
+        $e = Numbers::make(NUmbers::MUTABLE, '2', $internalScale)->setMode(Selectable::CALC_MODE_PRECISION);
+        $n = Numbers::make(Numbers::MUTABLE, '2', $internalScale)->setMode(Selectable::CALC_MODE_PRECISION);
 
         $continue = true;
 
@@ -81,14 +81,14 @@ class ConstantProvider
             $n->add($one);
             $term = $one->divide($denominator);
 
-            if ($term->numberOfLeadingZeros() > $internalPrecision || $term->isEqual(0)) {
+            if ($term->numberOfLeadingZeros() > $internalScale || $term->isEqual(0)) {
                 $continue = false;
             }
 
             $e->add($term);
         }
 
-        return $e->truncateToPrecision($digits)->getValue();
+        return $e->truncateToScale($digits)->getValue();
 
     }
 

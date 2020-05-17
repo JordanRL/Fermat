@@ -61,8 +61,8 @@ trait ArithmeticSelectionTrait
                 $thatRealPart = $right->isReal() ? $right : new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
                 $thatImaginaryPart = $right->isImaginary() ? $right : new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
             } else {
-                $thatRealPart = $right->isReal() ? $right->asDecimal() : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
-                $thatImaginaryPart = $right->isImaginary() ? $right->asDecimal() : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
+                $thatRealPart = $right->isReal() ? $right->asDecimal() : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
+                $thatImaginaryPart = $right->isImaginary() ? $right->asDecimal() : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getScale());
                 $right = $right->asDecimal();
             }
         } elseif ($right instanceof ComplexNumberInterface) {
@@ -71,16 +71,16 @@ trait ArithmeticSelectionTrait
             /** @var ComplexNumberInterface $right */
             $thatImaginaryPart = $right->getImaginaryPart();
         } else {
-            $thatRealPart = $right->isReal() ? $right : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
-            $thatImaginaryPart = $right->isImaginary() ? $right : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
+            $thatRealPart = $right->isReal() ? $right : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
+            $thatImaginaryPart = $right->isImaginary() ? $right : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getScale());
         }
 
         if ($this instanceof ComplexNumberInterface) {
             $thisRealPart = $this->getRealPart();
             $thisImaginaryPart = $this->getImaginaryPart();
         } else {
-            $thisRealPart = $left->isReal() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
-            $thisImaginaryPart = $left->isImaginary() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
+            $thisRealPart = $left->isReal() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
+            $thisImaginaryPart = $left->isImaginary() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getScale());
         }
 
         return [$thatRealPart, $thatImaginaryPart, $thisRealPart, $thisImaginaryPart, $right];
@@ -111,7 +111,7 @@ trait ArithmeticSelectionTrait
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->addPrecision($num);
+                return $this->addScale($num);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -128,7 +128,7 @@ trait ArithmeticSelectionTrait
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->subtractPrecision($num);
+                return $this->subtractScale($num);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -145,7 +145,7 @@ trait ArithmeticSelectionTrait
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->multiplyPrecision($num);
+                return $this->multiplyScale($num);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -158,11 +158,11 @@ trait ArithmeticSelectionTrait
         }
     }
 
-    protected function divideSelector(DecimalInterface $num, int $precision)
+    protected function divideSelector(DecimalInterface $num, int $scale)
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->dividePrecision($num, $precision);
+                return $this->divideScale($num, $scale);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -170,7 +170,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             default:
-                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['divide']}($num, $precision);
+                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['divide']}($num, $scale);
                 break;
         }
     }
@@ -179,7 +179,7 @@ trait ArithmeticSelectionTrait
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->powPrecision($num);
+                return $this->powScale($num);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -192,11 +192,11 @@ trait ArithmeticSelectionTrait
         }
     }
 
-    protected function sqrtSelector(int $precision)
+    protected function sqrtSelector(int $scale)
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->sqrtPrecision($precision);
+                return $this->sqrtScale($scale);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -204,7 +204,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             default:
-                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['sqrt']}($precision);
+                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['sqrt']}($scale);
                 break;
         }
     }

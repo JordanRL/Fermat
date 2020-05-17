@@ -16,7 +16,7 @@ use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
 use Samsara\Fermat\Types\Traits\Decimal\InverseTrigonometryTrait;
 use Samsara\Fermat\Types\Traits\Decimal\LogTrait;
-use Samsara\Fermat\Types\Traits\Decimal\PrecisionTrait;
+use Samsara\Fermat\Types\Traits\Decimal\ScaleTrait;
 use Samsara\Fermat\Types\Traits\Decimal\TrigonometryTrait;
 
 abstract class Decimal extends Number implements DecimalInterface, BaseConversionInterface
@@ -30,9 +30,9 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     use TrigonometryTrait;
     use InverseTrigonometryTrait;
     use LogTrait;
-    use PrecisionTrait;
+    use ScaleTrait;
 
-    public function __construct($value, $precision = null, $base = 10, bool $baseTenInput = false)
+    public function __construct($value, $scale = null, $base = 10, bool $baseTenInput = false)
     {
 
         $this->base = $base;
@@ -52,24 +52,24 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
         $this->value = $this->translateValue($value);
 
-        if (!is_null($precision)) {
-            if ($precision > 2147483646) {
+        if (!is_null($scale)) {
+            if ($scale > 2147483646) {
                 throw new IntegrityConstraint(
-                    'Precision cannot be larger than 2147483646',
-                    'Use a precision of 2147483646 or less',
-                    'Precision of any number cannot be calculated beyond 2147483646 digits'
+                    'Scale cannot be larger than 2147483646',
+                    'Use a scale of 2147483646 or less',
+                    'Scale of any number cannot be calculated beyond 2147483646 digits'
                 );
             }
 
-            $this->precision = ($precision > strlen($this->getDecimalPart())) ? $precision : strlen($this->getDecimalPart());
+            $this->scale = ($scale > strlen($this->getDecimalPart())) ? $scale : strlen($this->getDecimalPart());
         } else {
             $checkVal = $this->getDecimalPart();
             $checkVal = trim($checkVal,'0');
 
             if (strlen($checkVal) > 0) {
-                $this->precision = (strlen($this->getDecimalPart()) > 10) ? strlen($this->getDecimalPart()) : 10;
+                $this->scale = (strlen($this->getDecimalPart()) > 10) ? strlen($this->getDecimalPart()) : 10;
             } else {
-                $this->precision = (strlen($this->getWholePart()) > 10) ? strlen($this->getWholePart()) : 10;
+                $this->scale = (strlen($this->getWholePart()) > 10) ? strlen($this->getWholePart()) : 10;
             }
         }
 
@@ -79,7 +79,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
     public function modulo($mod): DecimalInterface
     {
-        return $this->setValue(bcmod($this->getAsBaseTenRealNumber(), $mod), $this->getPrecision(), $this->getBase());
+        return $this->setValue(bcmod($this->getAsBaseTenRealNumber(), $mod), $this->getScale(), $this->getBase());
     }
 
     protected function translateValue(string $value)
@@ -146,7 +146,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     {
         $converter = new BaseConverter($oldBase, $newBase);
 
-        $converter->setPrecision($this->getPrecision());
+        $converter->setScale($this->getScale());
 
         return $converter->convert($value);
     }
@@ -199,18 +199,18 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
      */
     public function compare($value): int
     {
-        $value = Numbers::makeOrDont($this, $value, $this->getPrecision());
+        $value = Numbers::makeOrDont($this, $value, $this->getScale());
 
         // TODO: Handle comparison of imaginary numbers
         if ($value instanceof FractionInterface) {
-            $value = $value->asDecimal($this->getPrecision());
+            $value = $value->asDecimal($this->getScale());
         }
         $thisValue = $this->getAsBaseTenRealNumber();
         $thatValue = $value->getAsBaseTenRealNumber();
 
-        $precision = ($this->getPrecision() < $value->getPrecision()) ? $this->getPrecision() : $value->getPrecision();
+        $scale = ($this->getScale() < $value->getScale()) ? $this->getScale() : $value->getScale();
 
-        return ArithmeticProvider::compare($thisValue, $thatValue, $precision);
+        return ArithmeticProvider::compare($thisValue, $thatValue, $scale);
     }
 
     /**
@@ -284,12 +284,12 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
     /**
      * @param string $value
-     * @param int $precision
+     * @param int $scale
      * @param int $base
      *
      * @return DecimalInterface
      */
-    abstract protected function setValue(string $value, int $precision = null, int $base = 10); // TODO: Check usages for base correctness & preservation
+    abstract protected function setValue(string $value, int $scale = null, int $base = 10); // TODO: Check usages for base correctness & preservation
 
     abstract public function continuousModulo($mod): DecimalInterface;
 

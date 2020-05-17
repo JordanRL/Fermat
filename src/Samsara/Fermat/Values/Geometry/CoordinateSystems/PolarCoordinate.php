@@ -20,7 +20,7 @@ class PolarCoordinate extends Coordinate implements TwoDCoordinateInterface
         $theta = $theta->continuousModulo(Numbers::TAU);
 
         if ($theta->isNegative()) {
-            $theta = Numbers::makeTau($theta->getPrecision())->add($theta);
+            $theta = Numbers::makeTau($theta->getScale())->add($theta);
         }
 
         $data = [

@@ -11,7 +11,7 @@ The exceptions used in Fermat are all provided by the `samsara/common` package v
 
 - `SystemError\LogicalError\IncompatibleObjectState`: This exception is thrown when the object is in a state that is incompatible with the requested operation. For example, calling `factorial()` on a `DecimalInterface` instance that has a decimal value.
 - `UsageError\IntegrityConstraint`: This exception is thrown when a data integrity violation is found within a function. Most often this is due to poorly formatted or out of range arguments provided to a function.
-- `UsageError\OptionalExit`: This exception is thrown when an error is encountered that may be solved by re-calling the same function with different arguments, for instance by providing a different precision setting.
+- `UsageError\OptionalExit`: This exception is thrown when an error is encountered that may be solved by re-calling the same function with different arguments, for instance by providing a different scale setting.
 
 # Handling Exceptions From This Library
 

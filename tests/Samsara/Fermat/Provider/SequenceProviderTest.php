@@ -108,7 +108,7 @@ class SequenceProviderTest extends TestCase
 
         $two = SequenceProvider::nthBernoulliNumber(2);
 
-        $this->assertEquals('0.16666', $two->truncateToPrecision(5)->getValue());
+        $this->assertEquals('0.16666', $two->truncateToScale(5)->getValue());
 
     }
     /**

@@ -37,9 +37,9 @@ $ten = Numbers::make(Numbers::IMMUTABLE, '10');
 echo $five->add($ten); // Prints: "15"
 ```
 
-Note that the `make()` method allows you to provide both an int and a string as the value. In fact, it also allows you to provide a float. The first argument is the specific class that will be used for the value, the second argument is the value itself. The third and fourth arguments are optional and represent the precision (in number of decimal places) and the base of the number respectively. The precision and base arguments will only accept integer values.
+Note that the `make()` method allows you to provide both an int and a string as the value. In fact, it also allows you to provide a float. The first argument is the specific class that will be used for the value, the second argument is the value itself. The third and fourth arguments are optional and represent the scale (in number of decimal places) and the base of the number respectively. The scale and base arguments will only accept integer values.
 
-If you do not specify a precision value, and you are using the default values, it automatically has a precision of either 10, or the string length of the input value, whichever is greater.
+If you do not specify a scale value, and you are using the default values, it automatically has a scale of either 10, or the string length of the input value, whichever is greater.
 
 Here is an example of using the factory method to make a value that is in a base other than base10:
 

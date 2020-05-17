@@ -23,21 +23,21 @@ class ImmutableDecimalTest extends TestCase
         $five = new ImmutableDecimal(5);
 
         $this->assertEquals('5', $five->getValue());
-        $this->assertEquals(10, $five->getPrecision());
+        $this->assertEquals(10, $five->getScale());
         $this->assertEquals(10, $five->getBase());
 
         /** @var ImmutableDecimal $five */
         $five = $five->convertToBase(16);
 
         $this->assertEquals('5', $five->getValue());
-        $this->assertEquals(10, $five->getPrecision());
+        $this->assertEquals(10, $five->getScale());
         $this->assertEquals(16, $five->getBase());
 
         /** @var ImmutableDecimal $five */
         $five = $five->convertToBase(5);
 
         $this->assertEquals('10', $five->getValue());
-        $this->assertEquals(10, $five->getPrecision());
+        $this->assertEquals(10, $five->getScale());
         $this->assertEquals(5, $five->getBase());
 
     }
@@ -70,11 +70,11 @@ class ImmutableDecimalTest extends TestCase
 
         $this->assertEquals('0.3', $oneTenth->add($twoTenths)->getValue());
 
-        $tenPrecision = new ImmutableDecimal('0.0000000001');
-        $elevenPrecision = new ImmutableDecimal('0.00000000001');
+        $tenScale = new ImmutableDecimal('0.0000000001');
+        $elevenScale = new ImmutableDecimal('0.00000000001');
 
-        $this->assertEquals('0.1000000001', $oneTenth->add($tenPrecision)->getValue());
-        $this->assertEquals('0.10000000001', $oneTenth->add($elevenPrecision)->getValue());
+        $this->assertEquals('0.1000000001', $oneTenth->add($tenScale)->getValue());
+        $this->assertEquals('0.10000000001', $oneTenth->add($elevenScale)->getValue());
 
     }
     /**
@@ -106,11 +106,11 @@ class ImmutableDecimalTest extends TestCase
 
         $this->assertEquals('0.1', $twoTenths->subtract($oneTenth)->getValue());
 
-        $tenPrecision = new ImmutableDecimal('0.0000000001');
-        $elevenPrecision = new ImmutableDecimal('0.00000000001');
+        $tenScale = new ImmutableDecimal('0.0000000001');
+        $elevenScale = new ImmutableDecimal('0.00000000001');
 
-        $this->assertEquals('0.0999999999', $oneTenth->subtract($tenPrecision)->getValue());
-        $this->assertEquals('0.09999999999', $oneTenth->subtract($elevenPrecision)->getValue());
+        $this->assertEquals('0.0999999999', $oneTenth->subtract($tenScale)->getValue());
+        $this->assertEquals('0.09999999999', $oneTenth->subtract($elevenScale)->getValue());
 
     }
     /**
@@ -828,13 +828,13 @@ class ImmutableDecimalTest extends TestCase
     /**
      * @medium
      */
-    public function testPrecisionLimit()
+    public function testScaleLimit()
     {
 
         $this->expectException(IntegrityConstraint::class);
-        $this->expectExceptionMessage('Precision of any number cannot be calculated beyond 2147483646 digits');
+        $this->expectExceptionMessage('Scale of any number cannot be calculated beyond 2147483646 digits');
 
-        $precisionLimit = new ImmutableDecimal(1, 2147483647);
+        $scaleLimit = new ImmutableDecimal(1, 2147483647);
 
     }
     /**

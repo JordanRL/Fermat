@@ -49,7 +49,7 @@ trait IntegerMathTrait
             throw new IncompatibleObjectState('Can only perform a double factorial on a whole number');
         }
 
-        $num = Numbers::make(Numbers::MUTABLE, $this->getValue(), $this->getPrecision(), $this->getBase());
+        $num = Numbers::make(Numbers::MUTABLE, $this->getValue(), $this->getScale(), $this->getBase());
 
         $newVal = Numbers::makeOne();
 

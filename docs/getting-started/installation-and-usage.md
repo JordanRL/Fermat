@@ -25,7 +25,7 @@ A basic usage of the Fermat library is straightforward and simple to use quickly
 
 use Samsara\Fermat\Values\ImmutableDecimal;
 
-// __construct($value, $precision = 10, $base = 10);
+// __construct($value, $scale = 10, $base = 10);
 $five = new ImmutableDecimal(5, 20);
 
 echo $five->pow('1.2')->sin()->getValue();
@@ -34,7 +34,7 @@ echo $five->getValue();
 // Prints: 5
 ```
 
-Once you have your number objects created, you can continue using them with your desired precision.
+Once you have your number objects created, you can continue using them with your desired scale.
 
 !!! note "Fluency"
     Both immutable and mutable instances can be used with a [fluent interface](https://designpatternsphp.readthedocs.io/en/latest/Structural/FluentInterface/README.html).

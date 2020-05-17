@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - Distributions:
     - Base: Distribution abstract class
   - ArithmeticProvider:
-    - Added a precision argument to all methods that were missing it.
+    - Added a scale argument to all methods that were missing it.
   - PolyfillProvider
   - SequenceProvider:
     - `nthFibonacciNumber` function
@@ -41,7 +41,7 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - IntegerMathTrait
     - InverseTrigonometryTrait
     - LogTrait
-    - PrecisionTrait
+    - ScaleTrait
     - TrigonometryTrait:
       - Added implementation of hyperbolic trig functions
   - ComplexNumber
@@ -100,8 +100,8 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Interfaces:
       - ALL: Changed namespace from `Samsara\Fermat\Types\Base` to `Samsara\Fermat\Types\Base\Interfaces`
       - DecimalInterface:
-        - Changed signature of `log10()` and `ln()` to `$precision = null` instead of `$precision = 10`
-        - Changed type of `$precision` parameter in `log10()` and `ln()` from `int` to `int|null`
+        - Changed signature of `log10()` and `ln()` to `$scale = null` instead of `$scale = 10`
+        - Changed type of `$scale` parameter in `log10()` and `ln()` from `int` to `int|null`
       - NumberInterface:
         - Moved the `convertToBase()` method to the new `BaseConversionInterface`
     - Traits:
@@ -110,8 +110,8 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
     - Number:
       - Changed namespace from `Samsara\Fermat\Types` to `Samsara\Fermat\Types\Base`
       - Moved many methods into traits
-      - Now passes the precision setting to ALL calls to `ArithmeticProvider` allowing precision up to 2147483646 digits.
-      - Trig functions are now arbitrary precision
+      - Now passes the scale setting to ALL calls to `ArithmeticProvider` allowing scale up to 2147483646 digits.
+      - Trig functions are now arbitrary scale
       - numberOfLeadingZeros() now returns `int` type, as was originally intended
   - Fraction:
     - Moved many methods into traits
@@ -128,13 +128,13 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 - Types:
   - Traits:
     - LogTrait:
-      - Fixed `$precision` to work the way it does in other functions for `log10()` and `ln()`
+      - Fixed `$scale` to work the way it does in other functions for `log10()` and `ln()`
   - Tuple:
     - Changed the constructor so that it properly works with either parameter collection or a single array
   - ImmutableNumber:
-    - Fixed the problem with precision in continuousModulo()
+    - Fixed the problem with scale in continuousModulo()
   - MutableNumber:
-    - Fixed the problem with precision in continuousModulo()
+    - Fixed the problem with scale in continuousModulo()
 
 ## [1.0.2] - 2017-01-16
 ### Fixed

@@ -32,13 +32,13 @@ Additional information is provided throughout this documentation using color cod
 
 # What This Library Is For
 
-### Consistent arbitrary precision math
+### Consistent arbitrary scale math
 
-Provides a consistent way to perform **arbitrary precision math** without making it easy to accidentally use PHP features (such as arithmetic operators or built in functions) that will reduce precision by casting to native `int` or `float` types.
+Provides a consistent way to perform **arbitrary scale math** without making it easy to accidentally use PHP features (such as arithmetic operators or built in functions) that will reduce scale by casting to native `int` or `float` types.
 
 ### Complex math functions
 
-Enables the use of common complex math tasks, such as working with basic statistics functions, while still preserving arbitrary precision.
+Enables the use of common complex math tasks, such as working with basic statistics functions, while still preserving arbitrary scale.
 
 ### Non-Integer & non-float number types
 
@@ -52,9 +52,9 @@ Provides a consistent abstraction for nearly any math concept that is likely to 
 
 ### Extreme Performance
 
-While Fermat has different modes that allow you to control performance to a degree, the abstraction and comprehensive nature of the library means that for certain uses, such as working with complex numbers, a large number of object instances may be created temporarily during a calculation, leading to significantly more overhead than using operands directly when doing basic math within common precision limitations.
+While Fermat has different modes that allow you to control performance to a degree, the abstraction and comprehensive nature of the library means that for certain uses, such as working with complex numbers, a large number of object instances may be created temporarily during a calculation, leading to significantly more overhead than using operands directly when doing basic math within common scale limitations.
 
-Despite the fact that performance is not a primary goal of this library, it does use built in functions wherever possible (where doing so does not affect precision), and it will utilize the GMP functions and PHP-DS types if those extensions are present in your installation of PHP. Installing these extensions should slightly increase performance in most use-cases.
+Despite the fact that performance is not a primary goal of this library, it does use built in functions wherever possible (where doing so does not affect scale), and it will utilize the GMP functions and PHP-DS types if those extensions are present in your installation of PHP. Installing these extensions should slightly increase performance in most use-cases.
 
 !!! tip "Tip"
     A good way to increase performance is to avoid using imaginary and complex numbers if possible. The actual math involved in calculating simple operations involving these values is algorithmically complex, and leads to much longer execution times.
@@ -76,9 +76,9 @@ That said, this library does offer ways for you to integrate. The state of all o
 
 Developers using this library should be aware of the following limitations which may lead to unexpected results.
 
-### Extreme Precision
+### Extreme Scale
 
-While this library can theoretically handle precisions on all operations up to 2^63 digits, in practice there are many operations in this library that have practical limits because of execution time. 
+While this library can theoretically handle scales on all operations up to 2^63 digits, in practice there are many operations in this library that have practical limits because of execution time. 
 
 For instance, while the library would faithfully collect the first 10,000 digits of `sin(1)`, doing so may take prohibitively long, and depending on configuration and environment, the process may be killed before completion as a 'hung' process.
 
@@ -89,7 +89,7 @@ There are also several features in this library that by the nature of the math b
     
     In general, you should try to use consumers of the `SeriesProvider` first, such as the various distributions, or the `StatsProvider`.
 
-For this reason, you should limit your requested precision to the smallest value which will still work for your intended application.
+For this reason, you should limit your requested scale to the smallest value which will still work for your intended application.
 
 ### Some Types of Math Require Assumptions
 
@@ -124,7 +124,7 @@ This is related to PHP's internal structure of hashtables and zvals, and how the
 
 ### This Library Can't Be Reliably Used With Math Operators
 
-Because PHP doesn't allow operator overloading, using the native math operators on Fermat objects directly can very easily result in loss of precision, overflows and underflows, PHP fatal errors (f.e. when the object is in a non-base-10 format), and incorrect calculation (f.e. with complex and imaginary numbers).
+Because PHP doesn't allow operator overloading, using the native math operators on Fermat objects directly can very easily result in loss of scale, overflows and underflows, PHP fatal errors (f.e. when the object is in a non-base-10 format), and incorrect calculation (f.e. with complex and imaginary numbers).
 
 !!! warning "Non-Base-10 Values With Native Operators"
     Using a value that is in a base larger than base-10 with math operators can result in PHP fatal errors. For instance, the value `15` in base `16` will output the string `F`. When used with the operator `/` as the value on the right of the operator, this would result in a "Division by Zero" PHP fatal error. 

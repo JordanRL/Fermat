@@ -31,7 +31,7 @@ abstract class Number implements Hashable, NumberInterface
     /**
      * Allows you to set a mode on a number to select the calculation methods.
      *
-     * MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the precision setting.
+     * MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting.
      * MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
      *
      * @param int $mode

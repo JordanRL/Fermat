@@ -22,7 +22,7 @@ abstract class Fraction extends Number implements FractionInterface
     /** @var bool */
     protected $sign;
     /** @var int */
-    protected $precision;
+    protected $scale;
 
     use ArithmeticSimpleTrait;
     use ComparisonTrait;
@@ -49,10 +49,10 @@ abstract class Fraction extends Number implements FractionInterface
             );
         }
 
-        $this->precision = $numerator->getPrecision() >= $denominator->getPrecision() ? $numerator->getPrecision() : $denominator->getPrecision();
+        $this->scale = $numerator->getScale() >= $denominator->getScale() ? $numerator->getScale() : $denominator->getScale();
 
-        $numerator = $numerator->truncateToPrecision($this->precision);
-        $denominator = $denominator->truncateToPrecision($this->precision);
+        $numerator = $numerator->truncateToScale($this->scale);
+        $denominator = $denominator->truncateToScale($this->scale);
 
         if ($numerator->isImaginary() xor $denominator->isImaginary()) {
             $this->imaginary = true;
@@ -80,9 +80,9 @@ abstract class Fraction extends Number implements FractionInterface
         return $this->getNumerator()->getValue().'/'.$this->getDenominator()->getValue();
     }
 
-    public function getPrecision(): ?int
+    public function getScale(): ?int
     {
-        return $this->precision;
+        return $this->scale;
     }
 
     public function getBase()
@@ -152,11 +152,11 @@ abstract class Fraction extends Number implements FractionInterface
         }
     }
 
-    public function asDecimal($precision = 10): ImmutableDecimal
+    public function asDecimal($scale = 10): ImmutableDecimal
     {
 
         /** @var ImmutableDecimal $decimal */
-        $decimal = $this->getNumerator()->divide($this->getDenominator(), $precision);
+        $decimal = $this->getNumerator()->divide($this->getDenominator(), $scale);
 
         return $decimal;
 

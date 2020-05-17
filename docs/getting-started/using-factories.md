@@ -161,7 +161,7 @@ The value of $`i^i`$ pre-computed to 100 decimal places.
 
 The following factory methods are available on the `Numbers` class.
 
-###### Numbers::make(string $type, mixed $value, ?int $precision = null, int $base = 10)
+###### Numbers::make(string $type, mixed $value, ?int $scale = null, int $base = 10)
 
 This factory method returns an instance of `DecimalInterface` or `FractionInterface`, depending on the `$type` given and the `$value` provided.
 
@@ -171,11 +171,11 @@ This factory method returns an instance of `DecimalInterface` or `FractionInterf
 !!! warning "Type Must Be A Supported FQCN or Class"
     If `$type` is the fully qualified class name or instance of an object other than `ImmutableDecimal`, `MutableDecimal`, `ImmutableFraction`, or `MutableFraction`, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
-###### Numbers::makeFromBase10(string $type, mixed $value, ?int $precision = null, int $base = 10)
+###### Numbers::makeFromBase10(string $type, mixed $value, ?int $scale = null, int $base = 10)
 
 This factory method will created a base-10 instance of `$type` using the provided `$value`, then convert that value in the `$base` provided. This allows you to provide a `$value` in base-10, but get an instance in a different base.
 
-###### Numbers::makeOrDont(string $type, mixed $value, ?int $precision = null, int $base = 10)
+###### Numbers::makeOrDont(string $type, mixed $value, ?int $scale = null, int $base = 10)
 
 This factory method will coerce the given `$value` into the requested `$type`. Unlike using [direct instantiation](direct-instantiation.md), this factory will perform all the correct conversions on the various possible values necessary to ensure a valid instance is constructed.
 
@@ -214,55 +214,55 @@ This factory method will take a string as its input and provide an instance of e
 !!! warning "Value Must Contain at Most One Fraction Bar '/'"
     If `$value` contains more than one fraction bar, which is assumed to be represented by the character `/`, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
-###### Numbers::makePi(?int $precision = null)
+###### Numbers::makePi(?int $scale = null)
 
-This factory method will return the number pi (π) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::PI` constant. If a precision of greater than 100 is requested, then a call is made to `ConstantProvider::makePi()` which computes digits of pi using the most efficient computational method currently available.
+This factory method will return the number pi (π) as an instance of `ImmutableNumber` to the requested `$scale`. If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::PI` constant. If a scale of greater than 100 is requested, then a call is made to `ConstantProvider::makePi()` which computes digits of pi using the most efficient computational method currently available.
 
-!!! warning "Precision Must Be Positive"
-    If a precision of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
+!!! warning "Scale Must Be Positive"
+    If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
-###### Numbers::makeTau(?int $precision = null)
+###### Numbers::makeTau(?int $scale = null)
 
-This factory method will return the number tau (τ) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::TAU` constant. If a precision of greater than 100 is requested, then a call is made to `Numbers::makePi()` which uses the methods described above, after which the result is multiplied by 2.
+This factory method will return the number tau (τ) as an instance of `ImmutableNumber` to the requested `$scale`. If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::TAU` constant. If a scale of greater than 100 is requested, then a call is made to `Numbers::makePi()` which uses the methods described above, after which the result is multiplied by 2.
 
-!!! warning "Precision Must Be Positive"
-    If a precision of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
+!!! warning "Scale Must Be Positive"
+    If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
-###### Numbers::make2Pi(?int $precision = null)
+###### Numbers::make2Pi(?int $scale = null)
 
 This factory method is an alias for `Numbers::makeTau()`.
 
-!!! warning "Precision Must Be Positive"
-    If a precision of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
+!!! warning "Scale Must Be Positive"
+    If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
-###### Numbers::makeE(?int $precision = null)
+###### Numbers::makeE(?int $scale = null)
 
-This factory method will return Euler's number (e) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::E` constant. If a precision of greater than 100 is requested, then a call is made to `ConstantProvider::makeE()` which uses a fast converging series to calculate digits of e.
+This factory method will return Euler's number (e) as an instance of `ImmutableNumber` to the requested `$scale`. If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::E` constant. If a scale of greater than 100 is requested, then a call is made to `ConstantProvider::makeE()` which uses a fast converging series to calculate digits of e.
 
-!!! warning "Precision Must Be Positive"
-    If a precision of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
+!!! warning "Scale Must Be Positive"
+    If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
-###### Numbers::makeGoldenRatio(?int $precision = null)
+###### Numbers::makeGoldenRatio(?int $scale = null)
 
-This factory method will return the golden ratio (φ) as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::GOLDEN_RATION` constant.
+This factory method will return the golden ratio (φ) as an instance of `ImmutableNumber` to the requested `$scale`. If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::GOLDEN_RATION` constant.
 
-!!! warning "Precision Must Be 1-100"
-    If a precision of less than 1 or greater than 100 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
+!!! warning "Scale Must Be 1-100"
+    If a scale of less than 1 or greater than 100 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
-###### Numbers::makeNaturalLog10(?int $precision = null)
+###### Numbers::makeNaturalLog10(?int $scale = null)
 
-This factory method will return the natural log of 10 as an instance of `ImmutableNumber` to the requested `$precision`. If no `$precision` is given, then the value is returned with a precision of 100. If a precision of 100 or less is requested, then the instance is constructed from the `Numbers::LN_10` constant. If a precision of greater than 100 is requested, then an exception is thrown.
+This factory method will return the natural log of 10 as an instance of `ImmutableNumber` to the requested `$scale`. If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::LN_10` constant. If a scale of greater than 100 is requested, then an exception is thrown.
 
-!!! warning "Precision Must Be 1-100"
-    If a precision of less than 1 or greater than 100 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
+!!! warning "Scale Must Be 1-100"
+    If a scale of less than 1 or greater than 100 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
-###### Numbers::makeOne(?int $precision = null)
+###### Numbers::makeOne(?int $scale = null)
 
-This factory method will return the natural log of 10 as an instance of `ImmutableNumber` with a value of `1` and a precision setting of `$precision`. If `$precision` is null, then the instance returned will have a precision of 100.
+This factory method will return the natural log of 10 as an instance of `ImmutableNumber` with a value of `1` and a scale setting of `$scale`. If `$scale` is null, then the instance returned will have a scale of 100.
 
-###### Numbers::makeZero(?int $precision = null)
+###### Numbers::makeZero(?int $scale = null)
 
-This factory method will return the natural log of 10 as an instance of `ImmutableNumber` with a value of `0` and a precision setting of `$precision`. If `$precision` is null, then the instance returned will have a precision of 100.
+This factory method will return the natural log of 10 as an instance of `ImmutableNumber` with a value of `0` and a scale setting of `$scale`. If `$scale` is null, then the instance returned will have a scale of 100.
 
 ### Static Methods
 
@@ -270,7 +270,7 @@ The `Numbers` factory class also has two static methods that work as a global va
 
 ###### Numbers::getDefaultCalcMode()
 
-This static method returns the current value of the protected parameter `Numbers::$defaultCalcMode`. By default, this value is set to `Selectable::CALC_MODE_PRECISION`, resulting in the arbitrary precision implementations being used for all math functions.
+This static method returns the current value of the protected parameter `Numbers::$defaultCalcMode`. By default, this value is set to `Selectable::CALC_MODE_PRECISION`, resulting in the arbitrary scale implementations being used for all math functions.
 
 !!! caution "For Internal Use"
     This function is meant to be called within the constructors of values that implement the `NumberInterface` and which use the provided arithmetic traits. It is likely to have limited utility outside of these situations.

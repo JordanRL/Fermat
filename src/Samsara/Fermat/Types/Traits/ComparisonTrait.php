@@ -34,7 +34,7 @@ trait ComparisonTrait
         $check = $this->checkComparisonTraitAndInterface();
 
         if ($check == 1) {
-            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
+            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if (($this->isImaginary() xor $value->isImaginary()) && $this->getAsBaseTenRealNumber() != '0') {
                 return false;
@@ -67,7 +67,7 @@ trait ComparisonTrait
         $check = $this->checkComparisonTraitAndInterface();
 
         if ($check == 1) {
-            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
+            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if ($this->compare($value) === 1) {
                 return true;
@@ -95,7 +95,7 @@ trait ComparisonTrait
         $check = $this->checkComparisonTraitAndInterface();
 
         if ($check == 1) {
-            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
+            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if ($this->compare($value) === -1) {
                 return true;
@@ -123,7 +123,7 @@ trait ComparisonTrait
         $check = $this->checkComparisonTraitAndInterface();
 
         if ($check == 1) {
-            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
+            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if ($this->compare($value) > -1) {
                 return true;
@@ -151,7 +151,7 @@ trait ComparisonTrait
         $check = $this->checkComparisonTraitAndInterface();
 
         if ($check == 1) {
-            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getPrecision());
+            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if ($this->compare($value) < 1) {
                 return true;

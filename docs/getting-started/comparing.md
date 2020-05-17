@@ -28,8 +28,8 @@ Equality of representation is accomplished with the `equals()` method, and only 
 
 Any `$value` which is a valid input for `Numbers::makeOrDont()` can be provided here. Returns `true` if the values are the same, `false` otherwise.
 
-!!! note "Precision Only Affects the Result for Significant Figures"
-    Two objects with different precision settings will only return `false` if one of them has significant figures beyond the precision limit of the other.
+!!! note "Scale Only Affects the Result for Significant Figures"
+    Two objects with different scale settings will only return `false` if one of them has significant figures beyond the scale limit of the other.
     
     For instance, `Numbers::makeOne(5)` and `Numbers::makeOne(10)` will return true when compared using this method, even though internally they would be represented by `1.00000` and `1.0000000000`.
 
@@ -50,7 +50,7 @@ These methods are only available on numbers that implement the `SimpleNumberInte
 
 ###### isLessThanOrEqualTo(mixed $value)
 
-Any `$value` which is a valid input for `Numbers::makeOrDont()` can be provided to these methods. They are analogous to the corresponding comparison operators in PHP, but are safe to use with the arbitrary precision values found in this library.
+Any `$value` which is a valid input for `Numbers::makeOrDont()` can be provided to these methods. They are analogous to the corresponding comparison operators in PHP, but are safe to use with the arbitrary scale values found in this library.
 
 # Sorting Comparison <=>
 

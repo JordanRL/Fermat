@@ -61,11 +61,11 @@ echo $oneQuarter->multiply($five); // Prints: "5/4"
 // Calls getValue() on $five and instantiates a new ImmutableFraction
 ```
 
-###### divide(int|float|numeric|NumberInterface $num, int $precision = null): self
+###### divide(int|float|numeric|NumberInterface $num, int $scale = null): self
 
 This divides the argument from the Value using the `ArithmeticProvider` (which uses the BCMath library internally) and returns the newly calculated Value.
 
-The $precision argument tells the Value how many decimals of accuracy you want in your division (if that is relevant to the division), and defaults to the precision of the *calling* object if null. The default precision of a Value, if you do not set it during instantiation, is 10.
+The $scale argument tells the Value how many decimals of accuracy you want in your division (if that is relevant to the division), and defaults to the scale of the *calling* object if null. The default scale of a Value, if you do not set it during instantiation, is 10.
 
 When an object that implements `DecimalInterface` and another that implements `FractionInterface` are divided, the one that is provided as an argument is coerced into the type of original object. For example:
 
@@ -102,7 +102,7 @@ $oneQuarter = new ImmutableFraction(1, 4);
 
 echo $five->pow($oneQuarter); // Prints: "1.4953487812" 
 // The asDecimal() method is called on $oneQuarter
-// Because $precision was not supplied to the constructor, $precision is 10
+// Because $scale was not supplied to the constructor, $scale is 10
 
 echo $oneQuarter->pow($five); // Prints: "1/1024" 
 // Calls getValue() on $five and instantiates a new ImmutableFraction
@@ -122,7 +122,7 @@ $five = new ImmutableNumber(5);
 $oneQuarter = new ImmutableFraction(1, 4);
 
 echo $five->sqrt(); // Prints: "2.2360679775" 
-// Because $precision was not supplied to the constructor, $precision is 10
+// Because $scale was not supplied to the constructor, $scale is 10
 
 echo $oneQuarter->sqrt(); // Prints: "1/2" 
 ```
@@ -162,11 +162,11 @@ $five = new ImmutableNumber(5);
 echo $five->doubleFactorial(); // Prints: "15"
 ```
 
-### ln(int $precision = 10, $round = true): self
+### ln(int $scale = 10, $round = true): self
 
-This takes the natural log of the current Value, accurate to $precision decimal places.
+This takes the natural log of the current Value, accurate to $scale decimal places.
 
-If the $round argument is `true` the last digit will be rounded; if the $round argument is `false` the last digit will be truncated. It is important to note that the last digit (prior to rounding) is guaranteed to be accurate, so rounding will actually reduce the precision, in effect, by one. However, it will capture some of the behavior *after* the precision limit.
+If the $round argument is `true` the last digit will be rounded; if the $round argument is `false` the last digit will be truncated. It is important to note that the last digit (prior to rounding) is guaranteed to be accurate, so rounding will actually reduce the scale, in effect, by one. However, it will capture some of the behavior *after* the scale limit.
 
 ```php
 <?php
@@ -178,11 +178,11 @@ $five = new ImmutableNumber(5);
 echo $five->ln(11); // Prints: "1.60943791243"
 ```
 
-### log10(int $precision = 10, $round = true): self
+### log10(int $scale = 10, $round = true): self
 
-This takes the log base10 of the current Value, accurate to $precision decimal places.
+This takes the log base10 of the current Value, accurate to $scale decimal places.
 
-If the $round argument is `true` the last digit will be rounded; if the $round argument is `false` the last digit will be truncated. It is important to note that the last digit (prior to rounding) is guaranteed to be accurate, so rounding will actually reduce the precision, in effect, by one. However, it will capture some of the behavior *after* the precision limit.
+If the $round argument is `true` the last digit will be rounded; if the $round argument is `false` the last digit will be truncated. It is important to note that the last digit (prior to rounding) is guaranteed to be accurate, so rounding will actually reduce the scale, in effect, by one. However, it will capture some of the behavior *after* the scale limit.
 
 ```php
 <?php
@@ -214,17 +214,17 @@ Calls `bcsub($left, $right)` with a scale setting of 100.
 
 Calls `bcmul($number1, $number2)` with a scale setting of 100.
 
-### divide(string $numerator, string $denominator, int $precision = 100): string
+### divide(string $numerator, string $denominator, int $scale = 100): string
 
-Calls `bcdiv($numerator, $denominator, $precision)`.
+Calls `bcdiv($numerator, $denominator, $scale)`.
 
 ### pow(string $base, string $exponent): string
 
 Calls `bcpow($base, $exponent)` with a scale of 100. **Note:** Unlike the `pow()` method on `NumberInterface` objects, the exponent **must** be a whole number.
 
-### squareRoot(string $number, int $precision = 100): string
+### squareRoot(string $number, int $scale = 100): string
 
-Calls `bcsqrt($number, $precision)`.
+Calls `bcsqrt($number, $scale)`.
 
 ### modulo(string $number, string $modulo): string
 

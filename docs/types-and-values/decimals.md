@@ -1,4 +1,4 @@
-Decimals represent numbers which have a decimal representation. They can be equivalent to either a `float` or an `integer`, and their `$precision` setting determines how many places after the decimal are calculated for operations which would affect them.
+Decimals represent numbers which have a decimal representation. They can be equivalent to either a `float` or an `integer`, and their `$scale` setting determines how many places after the decimal are calculated for operations which would affect them.
 
 # Abstract Class: Decimal
 
@@ -57,15 +57,15 @@ The `InverseTrigonometryTrait` provides the implementations for all inverse trig
 
 The `LogTrait` provides the implementations for the `log`, `ln`, and `exp` functions.
 
-###### PrecisionTrait
+###### ScaleTrait
 
-The `PrecisionTrait` provides the implementations for all rounding and truncating functions for classes which implement `DecimalInterface`.
+The `ScaleTrait` provides the implementations for all rounding and truncating functions for classes which implement `DecimalInterface`.
 
 ## Abstract Methods
 
 The following abstract methods must be implemented on classes which extend `Decimal`
 
-###### abstract protected function setValue(string $value, int $precision = null, int $base = 10)
+###### abstract protected function setValue(string $value, int $scale = null, int $base = 10)
 
 This method controls the behavior of setting the `$value` property, and its different implementations represent the main difference between mutable and immutable versions.
 
@@ -79,8 +79,8 @@ The following implementations of `Decimal` are included with Fermat. These class
 
 ## ImmutableDecimal
 
-A number which can be represented as a decimal and has a maximum precision of $`2^{63}`$ digits. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.
+A number which can be represented as a decimal and has a maximum scale of $`2^{63}`$ digits. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.
 
 ## MutableDecimal
 
-A number which can be represented as a decimal and has a maximum precision of $`2^{63}`$ digits. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.
+A number which can be represented as a decimal and has a maximum scale of $`2^{63}`$ digits. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.

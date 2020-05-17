@@ -148,11 +148,11 @@ This can be seen if you look at the different implementations of the `setValue()
         ```php
         <?php
         class ImmutableDecimal {
-          protected function setValue($value, $precision = null, $base = 10)
+          protected function setValue($value, $scale = null, $base = 10)
           {
             /* omitted transformations and sanity checks */
             
-            return new ImmutableDecimal($value, $precision, $base);
+            return new ImmutableDecimal($value, $scale, $base);
           }
         }
         ```
@@ -161,7 +161,7 @@ This can be seen if you look at the different implementations of the `setValue()
         ```php
         <?php
         class MutableDecimal {
-          protected function setValue($value, $precision = null, $base = 10)
+          protected function setValue($value, $scale = null, $base = 10)
           {
             /* omitted transformations and sanity checks */
         

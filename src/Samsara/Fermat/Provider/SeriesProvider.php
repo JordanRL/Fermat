@@ -25,7 +25,7 @@ class SeriesProvider
      * $exponent, and $denominator are callables that take the term number (as an int) as their only input, and give the
      * value of that section at that term number; and where $input is the x value being considered for the series.
      *
-     * The function continues adding terms until a term has MORE leading zeros than the $precision setting. (That is,
+     * The function continues adding terms until a term has MORE leading zeros than the $scale setting. (That is,
      * until it adds zero to the total when considering significant digits.)
      *
      * @param SimpleNumberInterface $input
@@ -33,7 +33,7 @@ class SeriesProvider
      * @param callable $exponent
      * @param callable $denominator
      * @param int $startTermAt
-     * @param int $precision
+     * @param int $scale
      * @param int $consecutiveDivergeLimit
      * @param int $totalDivergeLimit
      *
@@ -48,28 +48,28 @@ class SeriesProvider
         callable $exponent, // a function determining the exponent of x at the nth term
         callable $denominator, // a function determining the denominator at the nth term
         int $startTermAt = 0,
-        int $precision = 10,
+        int $scale = 10,
         int $consecutiveDivergeLimit = 5,
         int $totalDivergeLimit = 10): ImmutableDecimal
     {
 
-        ++$precision;
+        ++$scale;
 
-        $sum = Numbers::makeZero($precision);
-        $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue(), $precision);
+        $sum = Numbers::makeZero($scale);
+        $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue(), $scale);
 
         $continue = true;
         $termNumber = $startTermAt;
 
         $adjustmentOfZero = 0;
-        $prevDiff = Numbers::makeZero($precision);
+        $prevDiff = Numbers::makeZero($scale);
         $prevSum = $sum;
         $divergeCount = -1;
         $persistentDivergeCount = -1;
-        $currentPrecision = 0;
+        $currentScale = 0;
 
         while ($continue) {
-            $term = Numbers::makeOne($precision);
+            $term = Numbers::makeOne($scale);
 
             try {
                 $exTerm = $value->pow($exponent($termNumber));
@@ -77,15 +77,15 @@ class SeriesProvider
                 $term = $term->divide($denominator($termNumber));
                 $term = $term->multiply($numerator($termNumber));
             } catch (IntegrityConstraint $constraint) {
-                return $sum->truncateToPrecision($currentPrecision+1);
+                return $sum->truncateToScale($currentScale+1);
             }
 
             /** @var ImmutableDecimal $term */
-            if ($term->numberOfLeadingZeros() >= $precision && !$term->isWhole()) {
+            if ($term->numberOfLeadingZeros() >= $scale && !$term->isWhole()) {
                 $continue = false;
             }
 
-            $currentPrecision = $term->numberOfLeadingZeros();
+            $currentScale = $term->numberOfLeadingZeros();
 
             if ($term->isEqual(0)) {
                 $adjustmentOfZero++;
@@ -121,7 +121,7 @@ class SeriesProvider
             $termNumber++;
         }
 
-        return $sum->roundToPrecision($precision);
+        return $sum->roundToScale($scale);
 
     }
     

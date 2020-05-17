@@ -1,4 +1,4 @@
-Fractions represent numbers which have a rational representation. They can be equivalent to either a `float` or an `integer`, and their `$precision` setting is determined by the precision setting of the `Decimal` instances that make up their numerator and denominator.
+Fractions represent numbers which have a rational representation. They can be equivalent to either a `float` or an `integer`, and their `$scale` setting is determined by the scale setting of the `Decimal` instances that make up their numerator and denominator.
 
 # Abstract Class: Fraction
 

@@ -20,21 +20,21 @@ These classes extend the `Decimal` abstract class, which comes with the followin
 
 - `ArithmeticSimpleTrait`
     - `ArithmeticSelectionTrait`
-    - `ArithmeticPrecisionTrait`
+    - `ArithmeticScaleTrait`
     - `ArithmeticNativeTrait`
 - `ComparisonTrait`
 - `IntegerMathTrait`
 - `TrigonometryTrait`
 - `InverseTrigonometryTrait`
 - `LogTrait`
-- `PrecisionTrait`
+- `ScaleTrait`
 
-###### __construct(int|float|numeric $value, $precision = 10, $base = 10)
+###### __construct(int|float|numeric $value, $scale = 10, $base = 10)
 
-The constructor will take an `integer`, a `float`, or any `numeric string` as its input value. The precision and base must be given as integers, and can be omitted where they will take their default values of 10. This means that by default instances of `Decimal` will be in base-10 and calculate 10 digits of precision for all operations.
+The constructor will take an `integer`, a `float`, or any `numeric string` as its input value. The scale and base must be given as integers, and can be omitted where they will take their default values of 10. This means that by default instances of `Decimal` will be in base-10 and calculate 10 digits of scale for all operations.
 
 !!! potential-bugs "You Might Not Expect"
-    If an instance of `Decimal` is provided, it will be treated as a string and will construct correctly. However, it will not inherit the `$precision` or `$base` settings for the instance provided as a `$value`. 
+    If an instance of `Decimal` is provided, it will be treated as a string and will construct correctly. However, it will not inherit the `$scale` or `$base` settings for the instance provided as a `$value`. 
     
 !!! warning "Warning"
     If the instance provided is in a base other than 10, the `$base` provided to the constructor should match that value, or you will eventually get exceptions and potentially PHP fatals.
@@ -44,11 +44,11 @@ The constructor will take an `integer`, a `float`, or any `numeric string` as it
 
 ## ImmutableNumber
 
-A number which can be represented as a decimal and has a maximum precision of $`2^{63}`$ digits. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.
+A number which can be represented as a decimal and has a maximum scale of $`2^{63}`$ digits. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.
 
 ## MutableNumber
 
-A number which can be represented as a decimal and has a maximum precision of $`2^{63}`$ digits. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.
+A number which can be represented as a decimal and has a maximum scale of $`2^{63}`$ digits. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.
 
 # Values of Fraction
 
@@ -69,7 +69,7 @@ These classes extend the `Fraction` abstract class, which comes with the followi
 
 - `ArithmeticSimpleTrait`
     - `ArithmeticSelectionTrait`
-    - `ArithmeticPrecisionTrait`
+    - `ArithmeticScaleTrait`
     - `ArithmeticNativeTrait`
 - `ComparisonTrait`
 
