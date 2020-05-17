@@ -29,6 +29,9 @@ In this mode, the native PHP math operators are used for calculation. The result
 !!! tip "Better Performance In Low Precision Situations"
     As a trade-off for accepting more ambiguous precision in the result, using this mode will decrease the computation required for basic math operations, in some cases quite significantly. If you are absolutely certain that your math will not result in an overflow or underflow, and your application is not sensitive to loss of precision in `float` values, using this mode will reduce the cost of each mathematical operation.
     
+!!! tip "Expanding Native Types"
+    With the mode set to native, this library functions as simply an extension to integer and float types that enables representations of imaginary numbers, complex numbers, matrices, coordinates, and statistics. In this way, the library may be useful even if arbitrary precision is not necessary for your application.
+    
 # Controlling the Mode of Objects
 
 There are two main ways of controlling the mode used by your Fermat objects. The first is through the use of the default mode, and the second is with the use of the `setMode()` method.
