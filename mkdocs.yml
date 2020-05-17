@@ -69,5 +69,5 @@ markdown_extensions:
   - markdown_katex:
       no_inline_svg: true
       insert_fonts_css: true
-  - pymdown.tabbed
-  - pymdown.superfences
+  - pymdownx.tabbed
+  - pymdownx.superfences
