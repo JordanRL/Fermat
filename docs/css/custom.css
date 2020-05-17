@@ -136,6 +136,11 @@ div.highlight pre span.lineno {
     color: #00bfa5;
 }
 
+.note .tabbed-set input:nth-child(n+1):checked + label {
+    color: #00bfa5;
+    border-bottom: 3px solid #00bfa5;
+}
+
 .rst-content .caution {
     border-color: #ffa733;
 }
@@ -147,6 +152,11 @@ div.highlight pre span.lineno {
 .rst-content .caution .admonition-title::before {
     content: "";
     color: #ffa733;
+}
+
+.caution .tabbed-set input:nth-child(n+1):checked + label {
+    color: #ffa733;
+    border-bottom: 3px solid #ffa733;
 }
 
 .rst-content .tip {
@@ -162,6 +172,11 @@ div.highlight pre span.lineno {
     color: #00c853;
 }
 
+.tip .tabbed-set input:nth-child(n+1):checked + label {
+    color: #00c853;
+    border-bottom: 3px solid #00c853;
+}
+
 .rst-content .example {
     border-color: #8b33ff;
 }
@@ -173,6 +188,11 @@ div.highlight pre span.lineno {
 .rst-content .example .admonition-title::before {
     content: "";
     color: #8b33ff;
+}
+
+.example .tabbed-set input:nth-child(n+1):checked + label {
+    color: #8b33ff;
+    border-bottom: 3px solid #8b33ff;
 }
 
 .rst-content .warning {
@@ -188,6 +208,11 @@ div.highlight pre span.lineno {
     color: #ffa733;
 }
 
+.warning .tabbed-set input:nth-child(n+1):checked + label {
+    color: #ffa733;
+    border-bottom: 3px solid #ffa733;
+}
+
 .rst-content .danger {
     border-color: #ff3344;
 }
@@ -199,6 +224,11 @@ div.highlight pre span.lineno {
 .rst-content .danger .admonition-title::before {
     content: "";
     color: #ff3344;
+}
+
+.danger .tabbed-set input:nth-child(n+1):checked + label {
+    color: #ff3344;
+    border-bottom: 3px solid #ff3344;
 }
 
 .rst-content .see-also {
@@ -214,6 +244,11 @@ div.highlight pre span.lineno {
     color: #338fff;
 }
 
+.see-also .tabbed-set input:nth-child(n+1):checked + label {
+    color: #338fff;
+    border-bottom: 3px solid #338fff;
+}
+
 .rst-content .potential-bugs {
     border-color: #ff33b1;
 }
@@ -225,6 +260,11 @@ div.highlight pre span.lineno {
 .rst-content .potential-bugs .admonition-title::before {
     content: "";
     color: #ff33b1;
+}
+
+.potential-bugs .tabbed-set input:nth-child(n+1):checked + label {
+    color: #ff33b1;
+    border-bottom: 3px solid #ff33b1;
 }
 
 .tabbed-set {
@@ -259,8 +299,8 @@ div.highlight pre span.lineno {
 }
 
 .tabbed-set input:nth-child(n+1):checked + label {
-    color: #8b33ff;
-    border-bottom: 3px solid #8b33ff;
+    color: #00bfa5;
+    border-bottom: 3px solid #00bfa5;
 }
 
 .tabbed-set input:nth-child(n+1):checked + label + .tabbed-content {
