@@ -72,3 +72,4 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.highlight:
       linenums: true
+      linenums_style: inline
