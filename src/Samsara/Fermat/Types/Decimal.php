@@ -146,7 +146,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     {
         $converter = new BaseConverter($oldBase, $newBase);
 
-        $converter->setScale($this->getScale());
+        $converter->setPrecision($this->getScale());
 
         return $converter->convert($value);
     }

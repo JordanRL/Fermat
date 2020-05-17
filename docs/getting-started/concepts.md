@@ -62,3 +62,22 @@ The current list of values is:
 
 !!! see-also "See Also"
     The Values included in Fermat are documented in more detail under "Types & Values".
+    
+## Scale
+
+The basis of this library is being able to provide answers at any requested scale. Scale, as used in this library, is the number of digits after the decimal point which are returned. This is in contrast to *significant figures* or *precision*, which represent the numbers of digits returned after the decimal point after trimming all the leading zeros.
+
+There are two main reasons for providing scale as the main way of controlling how precise the answer is:
+
+1. It ensures that the string size of values with the same scale are comparable.
+2. It is far easier to implement some of the converging series calculations within this library, such as those for trigonometry functions, if scale is used instead of precision.
+
+In actual fact, significant figures have much less meaning in the context of a Taylor series or MacLauren series. If precision was used, the library would have to make more assumptions about the intent of calling code, and those assumptions would be less transparent.
+
+!!! caution "Scale Does Not Increase With New Operations"
+    Unlike significant figures, the scale returned does not change as the number of decimal digits are multiplied or divided.
+    
+    This means that multiplying two numbers that each have 10 digits after the decimal will also return a number with 10 digits after the decimal. This can be fixed by setting the scale of the argument value to the sum of the two scales.
+    
+!!! caution "Scale Is Only Applied To The Base-10 Form"
+    Scale is tracked and managed in base-10. This means that if a number has a base smaller than 10, it will return more digits than the scale would suggest after base conversion, while a number with a base larger than 10 will return fewer digits after the base conversion.
