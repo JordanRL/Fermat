@@ -62,7 +62,8 @@ theme:
   hljs_languages:
     - php
 markdown_extensions:
-  - codehilite
+  - codehilite:
+      linenums: true
   - toc:
       toc_depth: 2
   - admonition
