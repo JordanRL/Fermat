@@ -118,6 +118,9 @@ This is related to PHP's internal structure of hashtables and zvals, and how the
     The PHP Documentation contains examples on the specifics of how objects are passed between scopes. While it isn't exactly the same as passing by reference, it behaves in a very similar way in most situations.
     
     See the [php.net page](https://www.php.net/manual/en/language.oop5.references.php) for more information.
+    
+!!! see-also "See Also"
+    More information about mutable and immutable objects, as well as how they are implemented and used with this library, is available on the [Mutable vs. Immutable](getting-started/mutability.md) documentation page.
 
 ### This Library Can't Be Reliably Used With Math Operators
 
