@@ -1,0 +1,1 @@
+The `ComparisonTrait` provides the implementations of all comparison methods for any class which implements the `SimpleNumberInterface`.

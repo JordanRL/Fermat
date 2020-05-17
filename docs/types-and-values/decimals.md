@@ -8,28 +8,19 @@ The following interfaces and traits are available on classes which extend `Decim
 
 ###### Hashable
 
-The `Hashable` interface is part of `ext-ds`, and implementing it enables a class to be used as an array key in the various types provided by `ext-ds`.
+--8<-- "has-interface/hashable.md"
 
 ###### BaseConversionInterface
 
-`BaseConversionInterface` enables two methods: `convertToBase()` and `getBase()`, which do exactly what someone would expect them to.
-
-!!! note "Base Conversion is Done Just-In-Time"
-    Internally, the values of objects which implement the `BaseConversionInterface` always store the number in base-10, since this is the only base that arithmetic can actually be performed in by any of the associated extensions.
-    
-    Base conversion happens when a call is made to `getValue()`. Even on objects which have a base other than base-10, this can be avoided by calls to `getAsBaseTenNumber()` and `getAsBaseTenRealNumber()`.
+--8<-- "has-interface/base-comparison.md"
 
 ###### NumberInterface
 
-`NumberInterface` contains the base arithmetic methods that are a component of all numbers in mathematics. This includes the basics of addition, subtraction, multiplication, and division, as well as pow and square root.
-
-It also provides the `isEqual()` method, to enable equality comparison, as well as `getPrecision()`. Some classes which implement the `NumberInterface` don't actually accept precision as an argument, but instead contain objects that do. `Fraction` is an example of such a class, as both its numerator and denominator are instances of `ImmutableDecimal`.
-
-In addition, the `is` and `as` methods for `Real`, `Imaginary`, and `Complex` are provided by this interface. 
+--8<-- "has-interface/number.md"
 
 ###### SimpleNumberInterface
 
-The `SimpleNumberInterface` extends `NumberInterface` and adds the methods that are common to all non-complex numbers. This includes things like being positive or negative, inequality comparison, and getting the value as a base-10 real number.
+--8<-- "has-interface/simple-number.md"
 
 ###### DecimalInterface
 
@@ -44,13 +35,11 @@ While some of these can be done on fractions in pure mathematics, such as trigon
 
 ###### ArithmeticSimpleTrait
 
---8<--
-uses-arithmeticsimpletrait.md
---8<--
+--8<-- "uses-trait/arithmeticsimple.md"
 
 ###### ComparisonTrait
 
-The `ComparisonTrait` provides the implementations of all comparison methods for any class which implements the `SimpleNumberInterface`.
+--8<-- "uses-trait/comparison.md"
 
 ###### IntegerMathTrait
 
