@@ -78,15 +78,11 @@ h6::before {
 
 div.highlight, .tabbed-set .highlight {
     border: 0;
-    background: #fcfcfc;
+    background: inherit;
 }
 
 .tabbed-set .highlight {
     margin-top: 12px;
-}
-
-.tabbed-set div:last-child {
-    margin-bottom: 0;
 }
 
 div.highlight pre {
@@ -102,7 +98,9 @@ div.highlight pre span.lineno {
     color: #999;
 }
 
-.tabbed-set .highlight pre:last-child {
+.tabbed-set .highlight pre:last-child,
+.rst-content .admonition .highlight:last-child,
+.tabbed-set div:last-child {
     margin-bottom: 0;
 }
 
