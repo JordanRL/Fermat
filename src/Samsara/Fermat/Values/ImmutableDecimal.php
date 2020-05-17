@@ -40,14 +40,6 @@ class ImmutableDecimal extends Decimal
     }
 
     /**
-     * @return bool
-     */
-    public function isComplex(): bool
-    {
-        return false;
-    }
-
-    /**
      * @param string $value
      * @param int|null $precision
      * @param int $base

@@ -54,12 +54,4 @@ class MutableDecimal extends Decimal
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isComplex(): bool
-    {
-        return false;
-    }
-
 }
