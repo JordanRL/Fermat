@@ -76,8 +76,12 @@ h6::before {
     color: #00c853;
 }
 
+div.highlight {
+    border: 0;
+    background: #fcfcfc;
+}
+
 div.highlight pre {
-    background: inherit;
     border: 0;
     border-left: 2px solid #333333;
     font-family: "Source Code Pro";
