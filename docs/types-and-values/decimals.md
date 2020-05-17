@@ -100,8 +100,8 @@ The following implementations of `Decimal` are included with Fermat. These class
 
 ## ImmutableDecimal
 
-A number which can be represented as a decimal and has a maximum precision of 2^63 digits. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.
+A number which can be represented as a decimal and has a maximum precision of $`2^63`$ digits. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.
 
 ## MutableDecimal
 
-A number which can be represented as a decimal and has a maximum precision of 2^63 digits. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.
+A number which can be represented as a decimal and has a maximum precision of $`2^63`$ digits. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.

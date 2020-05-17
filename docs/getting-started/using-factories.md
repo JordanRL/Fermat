@@ -155,7 +155,7 @@ The value of the natural logarithm of 10 pre-computed to 100 decimal places.
 
 ###### I_POW_I
 
-The value of i^i pre-computed to 100 decimal places.
+The value of $`i^i`$ pre-computed to 100 decimal places.
 
 ### Available Factory Methods
 
