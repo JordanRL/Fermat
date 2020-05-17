@@ -132,7 +132,7 @@ A set of coordinates where each value represents the position along a single pla
 
 ## CylindricalCoordinate
 
-A set of three-dimensional coordinates represented by `(r, θ, z)`, where `(r, θ)` are the polar coordinates of the *xy*-plane, and `(z)` is the normal *z*-coordinate in a Cartesian coordinate representation.
+A set of three-dimensional coordinates represented by `(r, $`\theta`$, z)`, where `(r, $`\theta`$)` are the polar coordinates of the *xy*-plane, and `(z)` is the normal *z*-coordinate in a Cartesian coordinate representation.
 
 ![Comparison of Cartesian and Cylindrical Coordinates](../images/cylindrical-coordinates.png)
 
@@ -140,11 +140,11 @@ A set of three-dimensional coordinates represented by `(r, θ, z)`, where `(r, �
 
 ## PolarCoordinate
 
-A set of two-dimensional coordinates represented by `(r, θ)`, where `(r)` is the distance to the origin, and `(θ)` is the angle in radians from the positive *x*-axis.
+A set of two-dimensional coordinates represented by `(r, $`\theta`$)`, where `(r)` is the distance to the origin, and `($`\theta`$)` is the angle in radians from the positive *x*-axis.
 
 ## SphericalCoordinate
 
-A set of three-dimensional coordinates represented by `(ρ, θ, φ)`, where `(ρ)` is the distance to the origin, `(θ)` is the angle in radians from the positive *x*-axis in the *xy*-plane, and `(φ)` is the angle in radians from the positive *z*-axis to the line formed by `(ρ)`.
+A set of three-dimensional coordinates represented by `($`\rho`$, $`\theta`$, $`\varphi`$)`, where `($`\rho`$)` is the distance to the origin, `($`\theta`$)` is the angle in radians from the positive *x*-axis in the *xy*-plane, and `($`\varphi`$)` is the angle in radians from the positive *z*-axis to the line formed by `($`\rho`$)`.
 
 ![Comparison of Cartesian and Spherical Coordinates](../images/sphecial-coordinates.png)
 
