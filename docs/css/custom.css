@@ -20,8 +20,8 @@ li code {
     padding: inherit;
 }
 
-ul.subnav {
-    margin-left: 1em;
+ul.subnav li span.caption-text {
+    padding-left: 2.618em;
 }
 
 ul.subnav ul.subnav ul {
