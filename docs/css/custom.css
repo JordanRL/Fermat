@@ -20,6 +20,14 @@ li code {
     padding: inherit;
 }
 
+ul.subnav {
+    margin-left: 1em;
+}
+
+ul.subnav ul.subnav ul {
+    margin-left: 1em;
+}
+
 h1 {
     background: #FFFFFF;
     border-left: 5px solid #000000;

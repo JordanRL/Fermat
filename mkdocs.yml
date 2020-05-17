@@ -7,11 +7,11 @@ nav:
   - 'Getting Started':
       - 'Concepts': 'getting-started/concepts.md'
       - 'Installation & Usage': 'getting-started/installation-and-usage.md'
+      - 'Mutable vs. Immutable': 'getting-started/mutability.md'
       - 'Using The Factories': 'getting-started/using-factories.md'
       - 'Direct Instantiation': 'getting-started/direct-instantiation.md'
       - 'Comparing Values': 'getting-started/comparing.md'
       - 'Calculation Modes': 'getting-started/calculation-modes.md'
-      - 'Mutable vs. Immutable': 'getting-started/mutability.md'
       - 'Handling Exceptions': 'getting-started/exceptions.md'
   - 'Types & Values':
       - 'Decimals': 'types-and-values/decimals.md'
