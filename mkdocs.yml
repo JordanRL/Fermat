@@ -74,4 +74,5 @@ markdown_extensions:
       linenums: true
       linenums_style: inline
   - pymdownx.snippets:
+      base_path: ./docs/snippets
       check_paths: true
