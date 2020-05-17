@@ -128,11 +128,11 @@ The specific interfaces, traits, and constructor for the different values of `Co
 
 ## CartesianCoordinate
 
-A set of coordinates where each value represents the position along a single plane. These are the coordinates that are most commonly used in algebra and geometry, typically presented in format `(x, y)` for two-dimensional coordinates, and `(x, y, z)` for three-dimensional coordinates.
+A set of coordinates where each value represents the position along a single plane. These are the coordinates that are most commonly used in algebra and geometry, typically presented in format (x, y) for two-dimensional coordinates, and (x, y, z) for three-dimensional coordinates.
 
 ## CylindricalCoordinate
 
-A set of three-dimensional coordinates represented by `(r, $`\theta`$, z)`, where `(r, $`\theta`$)` are the polar coordinates of the *xy*-plane, and `(z)` is the normal *z*-coordinate in a Cartesian coordinate representation.
+A set of three-dimensional coordinates represented by (r, $`\theta`$, z), where (r, $`\theta`$) are the polar coordinates of the *xy*-plane, and (z) is the normal *z*-coordinate in a Cartesian coordinate representation.
 
 ![Comparison of Cartesian and Cylindrical Coordinates](../images/cylindrical-coordinates.png)
 
@@ -140,11 +140,11 @@ A set of three-dimensional coordinates represented by `(r, $`\theta`$, z)`, wher
 
 ## PolarCoordinate
 
-A set of two-dimensional coordinates represented by `(r, $`\theta`$)`, where `(r)` is the distance to the origin, and `($`\theta`$)` is the angle in radians from the positive *x*-axis.
+A set of two-dimensional coordinates represented by (r, $`\theta`$), where (r) is the distance to the origin, and ($`\theta`$) is the angle in radians from the positive *x*-axis.
 
 ## SphericalCoordinate
 
-A set of three-dimensional coordinates represented by `($`\rho`$, $`\theta`$, $`\varphi`$)`, where `($`\rho`$)` is the distance to the origin, `($`\theta`$)` is the angle in radians from the positive *x*-axis in the *xy*-plane, and `($`\varphi`$)` is the angle in radians from the positive *z*-axis to the line formed by `($`\rho`$)`.
+A set of three-dimensional coordinates represented by ($`\rho`$, $`\theta`$, $`\varphi`$), where ($`\rho`$) is the distance to the origin, ($`\theta`$) is the angle in radians from the positive *x*-axis in the *xy*-plane, and ($`\varphi`$) is the angle in radians from the positive *z*-axis to the line formed by ($`\rho`$).
 
 ![Comparison of Cartesian and Spherical Coordinates](../images/sphecial-coordinates.png)
 
