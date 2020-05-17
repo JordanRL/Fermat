@@ -220,10 +220,6 @@ div.highlight pre {
     flex-wrap: wrap;
 }
 
-.tabbed-set .highlight {
-    background: #ddd;
-}
-
 .tabbed-set .tabbed-content {
     display: none;
     order: 99;
