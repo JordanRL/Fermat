@@ -45,7 +45,7 @@ While some of these can be done on fractions in pure mathematics, such as trigon
 ###### ArithmeticSimpleTrait
 
 --8<--
-snippets/uses-arithmeticsimpletrait.md
+docs/snippets/uses-arithmeticsimpletrait.md
 --8<--
 
 ###### ComparisonTrait
