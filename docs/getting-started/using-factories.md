@@ -135,19 +135,19 @@ The fully qualified class name of the `MutableFraction` class.
 
 ###### PI
 
-The value of the constant pi (π) pre-computed to 100 decimal places.
+The value of the constant pi ($`\pi`$) pre-computed to 100 decimal places.
 
 ###### TAU
 
-The value of the constant tau (τ) pre-computed to 100 decimal places. This is equivalent to 2π.
+The value of the constant tau ($`\tau`$) pre-computed to 100 decimal places. This is equivalent to 2π.
 
 ###### E
 
-The value of Euler's constant (e) pre-computed to 100 decimal places.
+The value of Euler's constant ($`e`$) pre-computed to 100 decimal places.
 
 ###### GOLDEN_RATIO
 
-The value of the Golden Ratio (φ) pre-computed to 100 decimal places.
+The value of the Golden Ratio ($`\varphi`$) pre-computed to 100 decimal places.
 
 ###### LN_10
 
