@@ -145,7 +145,7 @@ class ImmutableDecimal {
 
 ```php
 <?php
-class ImmutableDecimal {
+class MutableDecimal {
   protected function setValue($value, $precision = null, $base = 10)
   {
     /* omitted transformations and sanity checks */
