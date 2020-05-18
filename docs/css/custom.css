@@ -182,6 +182,7 @@ svg.fa-signature path {
     margin-left: 0;
     padding-left: 0;
     padding-right: 0;
+    margin-bottom: 6px;
 }
 
 .rst-content .signature .admonition-title::before {
