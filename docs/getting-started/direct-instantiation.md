@@ -29,9 +29,20 @@ These classes extend the `Decimal` abstract class, which comes with the followin
 - `LogTrait`
 - `ScaleTrait`
 
-###### __construct(int|float|numeric $value, $scale = 10, $base = 10)
+!!! signature "__construct(mixed $value, int $scale = 10, int $base = 10)"
+    $value
+    :   The value to create the instance with
+    
+    $scale
+    :   The maximum number of digits after the decimal that the instance can have
+    
+    $base
+    :   The base of the instance created
+    
+    return
+    :   An instance of **Decimal** created with the provided arguments as parameters
 
-The constructor will take an `integer`, a `float`, or any `numeric string` as its input value. The scale and base must be given as integers, and can be omitted where they will take their default values of 10. This means that by default instances of `Decimal` will be in base-10 and calculate 10 digits of scale for all operations.
+The constructor will take an `integer`, a `float`, or any `numeric string` (including imaginary values) as its input value. The scale and base must be given as integers, and can be omitted where they will take their default values of 10. This means that by default instances of `Decimal` will be in base-10 and calculate 10 digits of scale for all operations.
 
 !!! potential-bugs "You Might Not Expect"
     If an instance of `Decimal` is provided, it will be treated as a string and will construct correctly. However, it will not inherit the `$scale` or `$base` settings for the instance provided as a `$value`. 
@@ -73,7 +84,18 @@ These classes extend the `Fraction` abstract class, which comes with the followi
     - `ArithmeticNativeTrait`
 - `ComparisonTrait`
 
-###### __construct(int|float|numeric|DecimalInterface $numerator, int|float|numeric|DecimalInterface $denominator, $base = 10)
+!!! signature "__construct(mixed $numerator, mixed $denominator, $base = 10)"
+    $numerator
+    :   The value of the numerator, using the same restrictions as **Decimal**
+    
+    $denominator
+    :   The value of the denominator, using the same restrictions as **Decimal**
+    
+    $base
+    :   The base of the instance created
+    
+    return
+    :   An instance of **Fraction** created with the provided arguments as parameters
 
 The constructor will take an `integer`, a `float`, any `numeric string`, or an instance of `DecimalInterface` as its input value. The base must be given as an integer, and if omitted it will take the default value of 10. This means that by default instances of `Fraction` will be in base-10.
 
@@ -93,23 +115,68 @@ A number which can be represented as a fraction. This value is mutable, and all 
 
 # Values of ComplexNumber
 
+Used to represent complex number values. Either part can be an instance of `FractionInterface` or `DecimalInterface`, however while `Decimal` values can be provided as an `object`, a `string`, an `integer`, or a `float`, you must explicitly provide an instance of `Fraction` if you wish for one of the components to be in that format.
+
+!!! caution "Unexpected Class Inheritance Structure"
+    While the name of this class is `ComplexNumber`, it does not extend the abstract `Number` class like `Fraction` and `Decimal` do. Instead, it extends `PolarCoordinate`, since this is an advantageous representation of complex numbers in many situations.
+    
+    The arguments to the `ComplexNumber` class correspond directly with a set of `CartesianCoordinate`s. These are then transformed into an instance of `PolarCoordinate` which is a more useful form for doing operations like `pow()` and `sqrt()`.
+
 ### Interfaces
+
+--8<-- "has-interface/complex-number.md"
+
+--8<-- "has-interface/coordinate.md"
 
 ### Traits
 
-###### __construct()
+--8<-- "uses-trait/arithmeticcomplex.md"
+
+!!! signature "__construct(mixed $realPart, mixed $imaginaryPart, ?int $scale = null, int $base = 10)"
+    $realPart
+    :   The value of the real part; can be an instance of **FractionInterface**, and instance of **DecimalInterface**, or a scalar using the same restrictions as **Decimal**
+    
+    $imaginaryPart
+    :   The value of the imaginary part; can be an instance of **FractionInterface**, and instance of **DecimalInterface**, or a scalar using the same restrictions as **Decimal**
+    
+    $scale
+    :   The maximum number of digits after the decimal that the instance components can have
+    
+    $base
+    :   The base of the instance created
+    
+    return
+    :   An instance of **ComplexNumber** created with the provided arguments as parameters
 
 ## ImmutableComplexNumber
 
+A number which can be represented as a complex number. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.
+
 ## MutableComplexNumber
 
+A number which can be represented as a complex number. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.
+
 # Values of Matrix
+
+Used to represent mathematical matrices and perform matrix math.
 
 ### Interfaces
 
 ### Traits
 
-###### __construct()
+!!! signature "__construct(array $data, string $mode = Matrix::MODE_ROWS_INPUT)"
+    $data
+    :   An array of **NumberCollection**s, defining either the rows or the columns of the matrix; see below for more detailed information
+    
+    $mode
+    :   Accepts either the string 'rows' or 'columns', defining whether the number in **$data** are organized as an array of rows or an array of columns
+    
+    return
+    :   An instance of **Matrix** created with the provided arguments as parameters
+    
+The input array has several restrictions and assumptions. The most obvious, given that it is meant to represent matrix data, is that each `NumberCollection` in the provided array must contain the same number of elements.
+
+Further, while the data can represent *either* the array of rows or array of columns depending on the `$mode` provided, it will always fill the matrix starting from the upper left corner. This is also the same indexing used by `getRow()`, `getColumn()`, or any other function that references a row or column index.
 
 ## ImmutableMatrix
 

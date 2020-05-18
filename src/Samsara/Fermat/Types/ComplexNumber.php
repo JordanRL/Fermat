@@ -30,7 +30,7 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
 
         if (is_object($realPart) && $realPart instanceof Fraction) {
             $this->realPart = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $realPart, $scale, $base);
-        } elseif (!is_object($realPart) && !($realPart instanceof ImmutableDecimal)) {
+        } elseif (!is_object($realPart) || !($realPart instanceof ImmutableDecimal)) {
             $this->realPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $realPart, $scale, $base);
         } else {
             $this->realPart = $realPart;
