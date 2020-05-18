@@ -22,7 +22,7 @@ Additional information is provided throughout this documentation using color cod
     This type of box is used to provide a warning about common ways a programmer using this library might introduce a bug into their software through this library. It often details potentially unexpected type conversions, assumptions made that may not be obvious, or limitations that are inherent to this library or to PHP.
     
 !!! caution "Cautions"
-    This type of box is used to caution the developer about incorrect usage of the section being detailed. It is used when the incorrect usage will not result in exceptions on unexpected results, but instead might simply have undesirable side effects.
+    This type of box is used to caution the developer about incorrect usage of the section being detailed. It is used when the incorrect usage will not result in exceptions or unexpected results, but instead might simply have undesirable side effects.
     
 !!! warning "Warnings"
     This type of box is used to warn the developer about incorrect usage of the section being detailed. It is used when the incorrect usage will result in exceptions, but not unexpected results.
@@ -36,13 +36,15 @@ Additional information is provided throughout this documentation using color cod
 
 Provides a consistent way to perform **arbitrary scale math** without making it easy to accidentally use PHP features (such as arithmetic operators or built in functions) that will reduce scale by casting to native `int` or `float` types.
 
+This is accomplished by providing an arbitrary scale implementation of all math functions which might be performed on a variable with the `integer` or `float` types.
+
 ### Complex math functions
 
 Enables the use of common complex math tasks, such as working with basic statistics functions, while still preserving arbitrary scale.
 
 ### Non-Integer & non-float number types
 
-Provides a framework for working with non-integer and non-float math concepts such as fractions, coordinates, imaginary numbers, complex numbers, and shapes.
+Provides a framework for working with non-integer and non-float math concepts such as fractions, coordinates, imaginary numbers, and complex numbers.
 
 ### Abstraction of math concepts
 
@@ -78,9 +80,9 @@ Developers using this library should be aware of the following limitations which
 
 ### Extreme Scale
 
-While this library can theoretically handle scales on all operations up to 2^63 digits, in practice there are many operations in this library that have practical limits because of execution time. 
+While this library can theoretically handle scales on all operations up to $`2^{63}`$ digits, in practice there are many operations in this library that have practical limits because of execution time. 
 
-For instance, while the library would faithfully collect the first 10,000 digits of `sin(1)`, doing so may take prohibitively long, and depending on configuration and environment, the process may be killed before completion as a 'hung' process.
+For instance, while the library would faithfully collect the first 10,000 digits of $`\sin{1}`$, doing so may take prohibitively long, and depending on configuration and environment, the process may be killed before completion as a 'hung' process.
 
 There are also several features in this library that by the nature of the math behind them can lead to infinite loops with the wrong inputs. While some basic measures exist within the library to detect and exit these situations with a thrown exception, doing so comprehensively is an example of the halting problem. This should not occur without direct calls to these areas, such as `SeriesProvider::maclaurenSeries()`.
 
@@ -95,7 +97,7 @@ For this reason, you should limit your requested scale to the smallest value whi
 
 Some areas of math are ambiguously defined, depending on the exact axioms used. More generally, there are some types of calculations which give consistent behavior for a variety of axioms and mappings, or for which there is no consistent behavior defined within mathematics.
 
-This is most obvious in the arc functions, such as `arctan()`. However, other areas make assumptions that may not be entirely clear at first.
+This is most obvious in the arc functions, such as $`\arctan{x}`$. However, other areas make assumptions that may not be entirely clear at first.
 
 !!! example "For Example"
     Calling `isEqual()` on a ComplexNumber will return false unless it is being compared to another `ComplexNumber` that has the same values for its real and imaginary part. More surprisingly perhaps, `ComplexNumber` objects do not have any of the `GreaterThan` or `LessThan` functions, as inequality comparison is poorly defined even between two complex numbers.

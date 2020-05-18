@@ -7,7 +7,7 @@ Because of this, all comparisons, including equality comparisons which would nor
 !!! warning "Complex Number Limitations"
     The `ComplexNumber` abstract class, and all of its child classes, only implement the `isEqual()` method. This is because inequality is poorly defined for complex numbers. There is no sensible and consistent way to evaluate the statement `(2+2i) >= (1+1i)`, even though one might expect this to return true.
     
-    The issue is that the inequality methods must return a `boolean`, and even in the cases where it might be argued that either the `true` case or `false` is well-defined, the opposite case is always ambiguous under any definition of inequality for complex numbers.
+    The issue is that the inequality methods must return a `boolean`, and even in the cases where it might be argued that either the `true` case or `false` case is well-defined, the opposite case is always ambiguous under any definition of inequality for complex numbers.
     
     This makes the return values of such statements meaningless in the context of complex numbers.
     
@@ -35,7 +35,7 @@ Any `$value` which is a valid input for `Numbers::makeOrDont()` can be provided 
 
 ###### equals(object $value)
 
-Returns `false` if the `$value` is not an instance of the same class, or if the values are not the same. `True` otherwise.
+Returns `true` if the `$value` is an instance of the same class *and* it has the same value, `false` otherwise.
 
 !!! note "Implemented As Part of the Hashable Interface"
     As part of integration with the `ext-ds` extension, this method has been implemented to satisfy the `Hashable` interface. This is mainly so that objects which are instances of the `Number` abstract class can be used as array keys.
@@ -54,7 +54,7 @@ Any `$value` which is a valid input for `Numbers::makeOrDont()` can be provided 
 
 # Sorting Comparison <=>
 
-The spaceship operator `<=>`, which returns `1`, `0`, or `-1` to provide sorting order information, would result in many of the same issues described for the `isEqual()` method. This is handled internally by the `BCMath::compare()` function.
+The spaceship operator `<=>`, which returns `1`, `0`, or `-1` to provide sorting order information, would result in many of the same issues described for the `isEqual()` method. This is handled internally by the BCMath extension.
 
 ###### compare(mixed $value)
 
@@ -62,3 +62,5 @@ Any `$value` which is a valid input for `Numbers::makeOrDont()` can be provided 
 
 !!! note "Internally Referenced By Other Comparisons"
     All other comparison methods reference this method. This ensures that any return values of all possible comparison methods will remain consistent with each other no matter what implementation of `compare()` is used.
+    
+    The only exception is `ComplexNumber`, which implements `isEqual()` but not `compare()`.

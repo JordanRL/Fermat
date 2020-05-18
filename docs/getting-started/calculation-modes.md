@@ -6,7 +6,7 @@ All modes which are defined exist as constants on the `Selectable` class. There 
 
 ###### Selectable::CALC_MODE_PRECISION = 1
 
-In this mode, the best available string math implementation is used when a mathematical operation is performed. By default this is the functions provided by the BCMath library, however a future scope of this project is to provide integration with `ext-decimal`.
+In this mode, the best available string math implementation is used when a mathematical operation is performed. By default these are the functions provided by the BCMath library, however a future scope of this project is to provide integration with `ext-decimal`.
 
 !!! note "For Certain Operations, BCMath Is Ignored"
     If the `ext-gmp` extension is present, it is used when both the input and output of an operation are guaranteed to be integers. This helps improve performance of operations which do not have a scale component. A non-exhaustive list of these situations includes:

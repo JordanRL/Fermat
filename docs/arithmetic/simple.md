@@ -114,22 +114,22 @@ This function adds the current value with `$num` and returns the result.
 This function subtracts `$num` from the current value and returns the result.
 
 !!! example "Examples: Add"
-    === "Decimal + Decimal"
+    === "Decimal - Decimal"
         ```php
         <?php
         
         use Samsara\Fermat\Values\ImmutableDecimal;
         
         $balance = new ImmutableDecimal('100');
-        $deposit = new ImmutableDecimal('50');
+        $debit = new ImmutableDecimal('50');
         
-        $balance = $balance->subtract($deposit);
+        $balance = $balance->subtract($debit);
         
         echo "Balance: ".$balance;
         // Prints: 'Balance: 50'
         ```
     
-    === "Decimal + Fraction"
+    === "Decimal - Fraction"
         ```php
         <?php
         
@@ -145,7 +145,7 @@ This function subtracts `$num` from the current value and returns the result.
         // Prints: 'I have 2.625 pizzas'
         ```
     
-    === "Fraction + Decimal"
+    === "Fraction - Decimal"
         ```php
         <?php
         
@@ -161,7 +161,7 @@ This function subtracts `$num` from the current value and returns the result.
         // Prints: 'I have 9 slices (9/8 pizzas)'
         ```
     
-    === "Decimal + Complex"
+    === "Decimal - Complex"
         ```php
         <?php
         
