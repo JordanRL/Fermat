@@ -156,6 +156,7 @@ svg.fa-signature path {
     text-align: right;
     border-top: 0;
     border-right: 2px solid;
+    margin: 0 0 6px 0;
 }
 
 .rst-content .signature dl dd {
@@ -164,11 +165,7 @@ svg.fa-signature path {
     padding-left: 15px;
     padding-top: 6px;
     padding-bottom: 6px;
-    margin: 6px 0;
-}
-
-.rst-content .signature dl dd:first-child {
-    margin-top: 0;
+    margin: 0 0 6px 0;
 }
 
 .rst-content .signature .admonition-title {
