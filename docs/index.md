@@ -82,7 +82,7 @@ Developers using this library should be aware of the following limitations which
 
 While this library can theoretically handle scales on all operations up to $`2^{63}`$ digits, in practice there are many operations in this library that have practical limits because of execution time. 
 
-For instance, while the library would faithfully collect the first 10,000 digits of $`\sin{1}`$, doing so may take prohibitively long, and depending on configuration and environment, the process may be killed before completion as a 'hung' process.
+For instance, while the library would faithfully collect the first 10,000 digits of $`\sin(1)`$, doing so may take prohibitively long, and depending on configuration and environment, the process may be killed before completion as a 'hung' process.
 
 There are also several features in this library that by the nature of the math behind them can lead to infinite loops with the wrong inputs. While some basic measures exist within the library to detect and exit these situations with a thrown exception, doing so comprehensively is an example of the halting problem. This should not occur without direct calls to these areas, such as `SeriesProvider::maclaurenSeries()`.
 
@@ -97,7 +97,7 @@ For this reason, you should limit your requested scale to the smallest value whi
 
 Some areas of math are ambiguously defined, depending on the exact axioms used. More generally, there are some types of calculations which give consistent behavior for a variety of axioms and mappings, or for which there is no consistent behavior defined within mathematics.
 
-This is most obvious in the arc functions, such as $`\arctan{x}`$. However, other areas make assumptions that may not be entirely clear at first.
+This is most obvious in the arc functions, such as $`\arctan(x)`$. However, other areas make assumptions that may not be entirely clear at first.
 
 !!! example "For Example"
     Calling `isEqual()` on a ComplexNumber will return false unless it is being compared to another `ComplexNumber` that has the same values for its real and imaginary part. More surprisingly perhaps, `ComplexNumber` objects do not have any of the `GreaterThan` or `LessThan` functions, as inequality comparison is poorly defined even between two complex numbers.

@@ -113,7 +113,7 @@ This function adds the current value with `$num` and returns the result.
 
 This function subtracts `$num` from the current value and returns the result.
 
-!!! example "Examples: Add"
+!!! example "Examples: Subtract"
     === "Decimal - Decimal"
         ```php
         <?php
@@ -176,14 +176,177 @@ This function subtracts `$num` from the current value and returns the result.
         $oldCurrent = new ImmutableDecimal('20i');
         $circuitState = new ImmutableComplexNumber($oldVoltage, $oldCurrent);
         
-        $newCircuitState = $newVoltage->add($circuitState);
+        $newCircuitState = $newVoltage->subtract($circuitState);
         
         echo 'Circuit State: '.$newCircuitState;
         // Prints: 'Circuit State: -2-20i'
         
         // Subtraction is not commutative
-        $newCircuitState = $circuitState->add($newVoltage);
+        $newCircuitState = $circuitState->subtract($newVoltage);
         
         echo 'Circuit State: '.$newCircuitState;
         // Prints: 'Circuit State: 2+20i'
+        ```
+        
+###### multiply(mixed $num): NumberInterface
+
+This function multiplies `$num` with the current value and returns the result.
+
+!!! example "Examples: Multiply"
+    === "Decimal X Decimal"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        
+        $balance = new ImmutableDecimal('100');
+        $returnRate = new ImmutableDecimal('1.05');
+        
+        $balance = $balance->multiply($returnRate);
+        
+        echo "Balance: ".$balance;
+        // Prints: 'Balance: 105'
+        ```
+    
+    === "Decimal X Fraction"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableFraction;
+        
+        $friends = new ImmutableDecimal('3');
+        $slicesPerPerson = new ImmutableFraction('3', '8');
+        
+        $pizzas = $friends->multiply($slicesPerPerson);
+        
+        echo "I need ".$pizzas." pizzas";
+        // Prints: 'I have 3.125 pizzas'
+        ```
+    
+    === "Fraction X Decimal"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableFraction;
+        
+        $friends = new ImmutableDecimal('3');
+        $slicesPerPerson = new ImmutableFraction('3', '8');
+        
+        $pizzas = $friends->multiply($slicesPerPerson);
+        
+        echo "I need ".$pizzas->getNumerator()." slices (".$pizzas." pizzas)";
+        // Prints: 'I need 9 slices (9/8 pizzas)'
+        ```
+    
+    === "Decimal X Complex"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableComplexNumber;
+        
+        // Four circuits
+        $totalCircuits = new ImmutableDecimal('4');
+        // Six volts in each circuit
+        $oldVoltage = new ImmutableDecimal('6');
+        // Twenty amps in each circuit originally
+        $oldCurrent = new ImmutableDecimal('20i');
+        $circuitState = new ImmutableComplexNumber($oldVoltage, $oldCurrent);
+        
+        $newCircuitState = $totalCircuits->multiply($circuitState);
+        
+        echo 'Circuit State: '.$newCircuitState;
+        // Prints: 'Circuit State: 24+80i'
+        
+        // Multiplication is commutative
+        $newCircuitState = $circuitState->multiply($totalCircuits);
+        
+        echo 'Circuit State: '.$newCircuitState;
+        // Prints: 'Circuit State: 24+80i'
+        ```
+        
+###### divide(mixed $num, ?int $scale = null): NumberInterface
+
+This function multiplies `$num` with the current value and returns the result.
+
+!!! note "Automatic Scale"
+    If no scale setting is provided for this operation, the scale of both numbers is compared and the larger scale is used. The returned value has this programmatically determined scale, which can be greater than, but not less than, the scale of the calling object.
+
+!!! example "Examples: Divide"
+    === "Decimal / Decimal"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        
+        $assets = new ImmutableDecimal('100');
+        $shares = new ImmutableDecimal('50');
+        
+        $price = $assets->divide($shares);
+        
+        echo "Price: ".$price;
+        // Prints: 'Price: 2'
+        ```
+    
+    === "Decimal / Fraction"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableFraction;
+        
+        $pizzas = new ImmutableDecimal('4');
+        $slicesPerPerson = new ImmutableFraction('3', '8');
+        
+        $friends = $pizzas->divide($slicesPerPerson);
+        
+        echo "I have enough pizzas for ".$friends." friends";
+        // Prints: 'I have enough pizzas for 10.6666666666 friends'
+        ```
+    
+    === "Fraction / Decimal"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableFraction;
+        
+        $pizzaSlices = new ImmutableDecimal('3');
+        $slicesPerPerson = new ImmutableDecimal('3');
+        $friends = new ImmutableDecimal('6');
+        $pizzaGoal = new ImmutableFraction($slicesPerPerson, $friends);
+        
+        $pizzaGoal = $pizzaGoal->divide($pizzaSlices);
+        
+        echo "I have ".$pizzaGoal." of the pizza needed to feed everyone";
+        // Prints: 'I have 1/6 of the pizza needed to feed everyone'
+        ```
+    
+    === "Decimal / Complex"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableComplexNumber;
+        
+        // Four circuits
+        $totalCircuits = new ImmutableDecimal('4');
+        // Six volts in each circuit
+        $oldVoltage = new ImmutableDecimal('6');
+        // Twenty amps in each circuit originally
+        $oldCurrent = new ImmutableDecimal('20i');
+        $circuitState = new ImmutableComplexNumber($oldVoltage, $oldCurrent);
+        
+        $newCircuitState = $totalCircuits->divide($circuitState);
+        
+        echo 'Circuit State: '.$newCircuitState;
+        // Prints: 'Circuit State: 0.0550458715-0.1834862385i'
+        
+        // Multiplication is commutative
+        $newCircuitState = $circuitState->divide($totalCircuits);
+        
+        echo 'Circuit State: '.$newCircuitState;
+        // Prints: 'Circuit State: 1.5+5i'
         ```
