@@ -139,26 +139,22 @@ div.highlight pre span.lineno {
     margin-left: 10px;
 }
 
-.fa-signature {
+.fa-signature path {
     fill: #00c853;
 }
 
 .rst-content .signature dl {
-
+    display: flex;
+    flex-direction: column;
 }
 
-.rst-content .signature dt {
-    display: inline-block;
+.rst-content .signature dl dt {
+    align-items: flex-start;
     background: inherit;
 }
 
-.rst-content .signature dd {
-    display: inline-block;
-}
-
-.rst-content .signature dd:after {
-    content: '\A';
-    white-space: pre;
+.rst-content .signature dl dd {
+    align-items: flex-end;
 }
 
 .rst-content .signature .admonition-title {
@@ -170,6 +166,8 @@ div.highlight pre span.lineno {
     border-bottom: 1px solid #000;
     padding-bottom: 5px;
     margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .rst-content .signature .admonition-title::before {
