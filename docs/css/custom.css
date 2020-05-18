@@ -157,6 +157,7 @@ svg.fa-signature path {
     border-top: 0;
     border-right: 2px solid;
     margin: 0 0 6px 0;
+    line-height: 24px;
 }
 
 .rst-content .signature dl dd {
@@ -183,14 +184,15 @@ svg.fa-signature path {
 }
 
 .rst-content .signature .admonition-title::before {
-    content: "";
+    content: "";
     font-family: "FontAwesome";
     margin-right: 4px;
     margin-left: 10px;
     color: #00c853;
     width: 20px;
     position: relative;
-    top: 5px;
+    top: 4px;
+    font-size: 20px;
 }
 
 .rst-content .note {
