@@ -148,6 +148,7 @@ svg.fa-signature path {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    margin: 0;
 }
 
 .rst-content .signature dl dt {
@@ -186,12 +187,13 @@ svg.fa-signature path {
     font-weight: 500;
     font-size: 16px;
     line-height: 16px;
-    border-bottom: 1px solid #000;
+    border-bottom: 0;
     padding-bottom: 5px;
     padding-left: 0;
     padding-right: 0;
     margin-left: 0;
     margin-right: 0;
+    margin-top: 0;
     margin-bottom: 6px;
 }
 

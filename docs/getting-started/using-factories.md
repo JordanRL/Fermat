@@ -24,19 +24,30 @@ The following constants are available on the `ComplexNumbers` class.
     :   string
     
     value
-    :   The fully qualified class name of the `ImmutableComplexNumber` class.
-
-###### MUTABLE_COMPLEX
-
-The fully qualified class name of the `MutableComplexNumber` class.
+    :   The fully qualified class name of the **ImmutableComplexNumber** class.
+    
+!!! signature constant "ComplexNumbers::MUTABLE_COMPLEX"
+    type
+    :   string
+    
+    value
+    :   The fully qualified class name of the **MutableComplexNumber** class.
 
 ### Available Factory Methods
 
 The following factory methods are available on the `ComplexNumbers` class.
 
-###### ComplexNumbers::make(string $type, string|array|NumberCollectionInterface $value)
+!!! signature "ComplexNumbers::make(string $type, string|array|NumberCollectionInterface $value)"
+    $type
+    :   The type (mutable or immutable) of **ComplexNumber** to create
+    
+    $value
+    :   The initial value of the created instance; see notes below
+    
+    return
+    :   The instance created from the given inputs; the instance will extend **ComplexNumber** and implement the **ComplexNumberInterface**
 
-This factory method returns the requested type of complex number with the given value. If the value is a `string`, it is assumed to be in the format: `REAL+IMAGINARY` or `REAL-IMAGINARY`
+If the value is a `string`, it is assumed to be in the format: `REAL+IMAGINARY` or `REAL-IMAGINARY`
 
 !!! note "Note"
     In string format, the input for this factory method **MAY** have a minus sign in front of the real part, but **MUST** have either a plus or minus sign in front of the imaginary part.
@@ -56,21 +67,36 @@ The `Samsara\Fermat\Matrices` factory class provides access to several pre-built
 
 The following constants are available on the `Matrices` class.
 
-###### IMMUTABLE_MATRIX
- 
-The fully qualified class name of the `ImmutableMatrix` class.
-
-###### MUTABLE_MATRIX 
-
-The fully qualified class name of the `MutableMatrix` class.
+!!! signature constant "Matrices::IMMUTABLE_MATRIX"
+    type
+    :   string
+    
+    value
+    :   The fully qualified class name of the **ImmutableMatrix** class.
+    
+!!! signature constant "Matrices::MUTABLE_MATRIX"
+    type
+    :   string
+    
+    value
+    :   The fully qualified class name of the **MutableMatrix** class.
 
 ### Available Factory Methods
 
 The following factory methods are available on the `Matrices` class.
 
-###### Matrices::zeroMatrix(string $type, int $rows, int $columns)
-
-This factory method returns an instance of the specified matrix type with the given dimensions where all values in the matrix are the number zero.
+!!! signature "Matrices::zeroMatrix(string $type, int $rows, int $columns)"
+    $type
+    :   The type (mutable or immutable) of **Matrix** to create
+    
+    $rows
+    :   The number of rows the generated matrix should have
+    
+    $columns
+    :   The number of columns the generated matrix should have
+    
+    return
+    :   An instance of the specified matrix type with the given dimensions where all values in the matrix are the number zero
 
 !!! example "For Example"
     A zero matrix of two rows and three columns would look like:
@@ -80,9 +106,18 @@ This factory method returns an instance of the specified matrix type with the gi
     [0 0 0]
     ```
 
-###### Matrices::onesMatrix(string $type, int $rows, int $columns)
-
-This factory method returns an instance of the specified matrix type with the given dimensions where all values in the matrix are the number one.
+!!! signature "Matrices::onesMatrix(string $type, int $rows, int $columns)"
+    $type
+    :   The type (mutable or immutable) of **Matrix** to create
+    
+    $rows
+    :   The number of rows the generated matrix should have
+    
+    $columns
+    :   The number of columns the generated matrix should have
+    
+    return
+    :   An instance of the specified matrix type with the given dimensions where all values in the matrix are the number one
 
 !!! example "For Example"
     A ones matrix of two rows and three columns would look like:
@@ -92,9 +127,15 @@ This factory method returns an instance of the specified matrix type with the gi
     [1 1 1]
     ```
 
-###### Matrices::identityMatrix(string $type, int $size)
-
-This factory method returns a square matrix where the dimensions match the integer given in `$size`. This matrix is an identity matrix, which is often used in matrix math, where the diagonal consists of ones, and all other values are zero.
+!!! signature "Matrices::identityMatrix(string $type, int $size)"
+    $type
+    :   The type (mutable or immutable) of **Matrix** to create
+    
+    $size
+    :   The number of rows and columns the generated matrix should have
+    
+    return
+    :   A square matrix where the dimensions match the integer given in **$size**. This matrix is an identity matrix, which is often used in matrix math, where the diagonal consists of ones, and all other values are zero
 
 !!! example "For Example"
     An identity matrix of size three would look like:
@@ -105,9 +146,15 @@ This factory method returns a square matrix where the dimensions match the integ
     [0 0 1]
     ```
 
-###### Matrices::cofactorMatrix(string $type, int $size)
-
-This factory method returns a square matrix where the dimensions match the integer given in `$size`. The matrix is filled with alternating values of `1` and `-1` in a checkerboard pattern, starting with positive 1 in position [0, 0].
+!!! signature "Matrices::cofactorMatrix(string $type, int $size)"
+    $type
+    :   The type (mutable or immutable) of **Matrix** to create
+    
+    $size
+    :   The number of rows and columns the generated matrix should have
+    
+    return
+    :   A square matrix where the dimensions match the integer given in **$size**. The matrix is filled with alternating values of 1 and -1 in a checkerboard pattern, starting with positive 1 in position [0, 0].
 
 When multiplied by another matrix, this will swap the sign of every other value in the matrix.
 
@@ -128,45 +175,75 @@ The `Samsara\Fermat\Numbers` factory class provides a way to use the Value class
 
 The following constants are available on the `Numbers` class.
 
-###### IMMUTABLE
- 
-The fully qualified class name of the `ImmutableDecimal` class.
+!!! signature constant "Numbers::IMMUTABLE"
+    type
+    :   string
+    
+    value
+    :   The fully qualified class name of the **ImmutableDecimal** class.
 
-###### MUTABLE
- 
-The fully qualified class name of the `MutableDecimal` class.
+!!! signature constant "Numbers::MUTABLE"
+    type
+    :   string
+    
+    value
+    :   The fully qualified class name of the **MutableDecimal** class.
 
-###### IMMUTABLE_FRACTION
- 
-The fully qualified class name of the `ImmutableFraction` class.
+!!! signature constant "Numbers::IMMUTABLE_FRACTION"
+    type
+    :   string
+    
+    value
+    :   The fully qualified class name of the **ImmutableFraction** class.
 
-###### MUTABLE_FRACTION
- 
-The fully qualified class name of the `MutableFraction` class.
+!!! signature constant "Numbers::MUTABLE_FRACTION"
+    type
+    :   string
+    
+    value
+    :   The fully qualified class name of the **MutableFraction** class.
 
-###### PI
+!!! signature constant "Numbers::PI"
+    type
+    :   string
+    
+    value
+    :   The value of the constant pi ($`\pi`$) pre-computed to 100 decimal places.
 
-The value of the constant pi ($`\pi`$) pre-computed to 100 decimal places.
+!!! signature constant "Numbers::TAU"
+    type
+    :   string
+    
+    value
+    :   The value of the constant tau ($`\tau`$) pre-computed to 100 decimal places. This is equivalent to ($`2\pi`$).
 
-###### TAU
+!!! signature constant "Numbers::E"
+    type
+    :   string
+    
+    value
+    :   The value of Euler's constant ($`e`$) pre-computed to 100 decimal places.
 
-The value of the constant tau ($`\tau`$) pre-computed to 100 decimal places. This is equivalent to 2π.
+!!! signature constant "Numbers::GOLDEN_RATIO"
+    type
+    :   string
+    
+    value
+    :   The value of the Golden Ratio ($`\varphi`$) pre-computed to 100 decimal places.
 
-###### E
+!!! signature constant "Numbers::LN_10"
+    type
+    :   string
+    
+    value
+    :   The value of the natural logarithm of 10 pre-computed to 100 decimal places.
 
-The value of Euler's constant ($`e`$) pre-computed to 100 decimal places.
-
-###### GOLDEN_RATIO
-
-The value of the Golden Ratio ($`\varphi`$) pre-computed to 100 decimal places.
-
-###### LN_10
-
-The value of the natural logarithm of 10 pre-computed to 100 decimal places.
-
-###### I_POW_I
-
-The value of $`i^i`$ pre-computed to 100 decimal places.
+!!! signature constant "Numbers::IMMUTABLE"
+    type
+    :   string
+    
+    value
+    :   The value of $`i^i`$ pre-computed to 100 decimal places.
 
 ### Available Factory Methods
 
