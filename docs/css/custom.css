@@ -171,10 +171,6 @@ svg.fa-signature path {
     margin-top: 0;
 }
 
-.rst-content .signature dl dd:last-child {
-    margin-bottom: 0;
-}
-
 .rst-content .signature .admonition-title {
     background: inherit;
     font-family: 'Source Code Pro';
