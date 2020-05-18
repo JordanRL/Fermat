@@ -1,9 +1,6 @@
 !!! signature interface "BaseConversionInterface"
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Characteristics
-    
-    extends
-    :   None
 
 `BaseConversionInterface` enables two methods: `convertToBase()` and `getBase()`, which do exactly what someone would expect them to.
 

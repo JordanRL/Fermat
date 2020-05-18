@@ -1,9 +1,6 @@
 !!! signature interface "NumberInterface"
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Numbers
-    
-    extends
-    :   None
 
 `NumberInterface` contains the base arithmetic methods that are a component of all numbers in mathematics. This includes the basics of addition, subtraction, multiplication, and division, as well as pow and square root.
 
