@@ -70,20 +70,24 @@ The following factory methods are available on the `Matrices` class.
 This factory method returns an instance of the specified matrix type with the given dimensions where all values in the matrix are the number zero.
 
 !!! example "For Example"
-    A zero matrix two rows and three columns would look like:
+    A zero matrix of two rows and three columns would look like:
     
-    `[0 0 0]`  
-    `[0 0 0]`
+    ```
+    [0 0 0]  
+    [0 0 0]
+    ```
 
 ###### Matrices::onesMatrix(string $type, int $rows, int $columns)
 
 This factory method returns an instance of the specified matrix type with the given dimensions where all values in the matrix are the number one.
 
 !!! example "For Example"
-    A ones matrix two rows and three columns would look like:
+    A ones matrix of two rows and three columns would look like:
     
-    `[1 1 1]`  
-    `[1 1 1]`
+    ```
+    [1 1 1]  
+    [1 1 1]
+    ```
 
 ###### Matrices::identityMatrix(string $type, int $size)
 
@@ -92,9 +96,11 @@ This factory method returns a square matrix where the dimensions match the integ
 !!! example "For Example"
     An identity matrix of size three would look like:
     
-    `[1 0 0]`  
-    `[0 1 0]`  
-    `[0 0 1]`
+    ```
+    [1 0 0]  
+    [0 1 0]  
+    [0 0 1]
+    ```
 
 ###### Matrices::cofactorMatrix(string $type, int $size)
 
@@ -105,9 +111,11 @@ When multiplied by another matrix, this will swap the sign of every other value 
 !!! example "For Example"
     A cofactor matrix of size three would look like:
     
-    `[+ - +]`  
-    `[- + -]`  
-    `[+ - +]`
+    ```
+    [+ - +]  
+    [- + -]  
+    [+ - +]
+    ```
 
 # The Numbers Factory Class
 
