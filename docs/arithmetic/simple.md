@@ -30,7 +30,12 @@ The following methods are available for classes that implement `SimpleNumberInte
     
     If the provided `$value` matches none of these, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
-###### add(mixed $num): NumberInterface
+!!! signature "add(mixed $num): NumberInterface"
+    $num
+    :   Accepts a mixed value that is limited to the formats detailed in the [Available Methods](#available-methods) section.
+    
+    returns
+    :   Returns an object of the same class as the calling class if the resulting value can be represented with a `SimpleNumberInterface`. Returns an object of the `ImmutableComplexNumber` class if the resulting value has both a real and imaginary component.
 
 This function adds the current value with `$num` and returns the result.
 
@@ -108,8 +113,13 @@ This function adds the current value with `$num` and returns the result.
         echo 'Circuit State: '.$newCircuitState;
         // Prints: 'Circuit State: 10+20i'
         ```
+
+!!! signature "subtract(mixed $num): NumberInterface"
+    $num
+    :   Accepts a mixed value that is limited to the formats detailed in the [Available Methods](#available-methods) section.
     
-###### subtract(mixed $num): NumberInterface
+    returns
+    :   Returns an object of the same class as the calling class if the resulting value can be represented with a `SimpleNumberInterface`. Returns an object of the `ImmutableComplexNumber` class if the resulting value has both a real and imaginary component.
 
 This function subtracts `$num` from the current value and returns the result.
 
@@ -187,8 +197,13 @@ This function subtracts `$num` from the current value and returns the result.
         echo 'Circuit State: '.$newCircuitState;
         // Prints: 'Circuit State: 2+20i'
         ```
-        
-###### multiply(mixed $num): NumberInterface
+
+!!! signature "multiply(mixed $num): NumberInterface"
+    $num
+    :   Accepts a mixed value that is limited to the formats detailed in the [Available Methods](#available-methods) section.
+    
+    returns
+    :   Returns an object of the same class as the calling class if the resulting value can be represented with a `SimpleNumberInterface`. Returns an object of the `ImmutableComplexNumber` class if the resulting value has both a real and imaginary component.
 
 This function multiplies `$num` with the current value and returns the result.
 
@@ -266,8 +281,13 @@ This function multiplies `$num` with the current value and returns the result.
         echo 'Circuit State: '.$newCircuitState;
         // Prints: 'Circuit State: 24+80i'
         ```
-        
-###### divide(mixed $num, ?int $scale = null): NumberInterface
+
+!!! signature "divide(mixed $num, ?int $scale = null): NumberInterface"
+    $num
+    :   Accepts a mixed value that is limited to the formats detailed in the [Available Methods](#available-methods) section.
+    
+    returns
+    :   Returns an object of the same class as the calling class if the resulting value can be represented with a `SimpleNumberInterface`. Returns an object of the `ImmutableComplexNumber` class if the resulting value has both a real and imaginary component.
 
 This function divides `$num` with the current value and returns the result.
 
@@ -350,8 +370,13 @@ This function divides `$num` with the current value and returns the result.
         echo 'Circuit State: '.$newCircuitState;
         // Prints: 'Circuit State: 1.5+5i'
         ```
-        
-###### pow(mixed $num): NumberInterface
+
+!!! signature "pow(mixed $num): NumberInterface"
+    $num
+    :   Accepts a mixed value that is limited to the formats detailed in the [Available Methods](#available-methods) section.
+    
+    returns
+    :   Returns an object of the same class as the calling class if the resulting value can be represented with a `SimpleNumberInterface`. Returns an object of the `ImmutableComplexNumber` class if the resulting value has both a real and imaginary component.
 
 This function raises the current value to the power of `$num` and returns the result.
 
