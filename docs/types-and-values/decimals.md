@@ -6,70 +6,57 @@ The following interfaces and traits are available on classes which extend `Decim
 
 ## Interfaces
 
-###### Hashable
-
 --8<-- "has-interface/hashable.md"
-
-###### BaseConversionInterface
 
 --8<-- "has-interface/base-conversion.md"
 
-###### NumberInterface
-
 --8<-- "has-interface/number.md"
-
-###### SimpleNumberInterface
 
 --8<-- "has-interface/simple-number.md"
 
-###### DecimalInterface
-
-The `DecimalInterface` extends `SimpleNumberInterface` and adds the methods that are common to all decimal values. This includes trigonometric operations, integer operations such as `factorial()` or `isPrime()`, integer and float comparisons and conversions, rounding and truncating functions, and log functions.
-
-While some of these can be done on fractions in pure mathematics, such as trigonometry functions, in practice computers are not well-equipped to handle the algorithms for them without actually performing the division implied by the fraction. Thus, to use these types of functions an explicit call to `asDecimal()` must first be made on classes that implement `Fraction`.
-
-!!! see-also "See Also"
-    The page for [Types & Values > Fractions](fractions.md) contains more information on the limitations of fraction representations within Fermat.
+--8<-- "has-interface/decimal.md"
 
 ## Traits
 
-###### ArithmeticSimpleTrait
-
 --8<-- "uses-trait/arithmeticsimple.md"
-
-###### ComparisonTrait
 
 --8<-- "uses-trait/comparison.md"
 
-###### IntegerMathTrait
+--8<-- "uses-trait/integer-math.md"
 
-The `IntegerMathTrait` provides the implementations of all integer math methods for any class which implements the `DecimalInterface`. This includes methods such as `factorial()` and `isPrime()`.
+--8<-- "uses-trait/trigonometry.md"
 
-###### TrigonometryTrait
+--8<-- "uses-trait/inverse-trigonometry.md"
 
-The `TrigonometryTrait` provides the implementations for all basic trigonometry and hyperbolic trigonometry functions.
+--8<-- "uses-trait/log.md"
 
-###### InverseTrigonometryTrait
-
-The `InverseTrigonometryTrait` provides the implementations for all inverse trigonometric functions, sometimes referred to as "arc functions". These are sometimes abbreviated in programming languages as `a`, such as `atan` which is equivalent to `arctan` which is equivalent to `inverseTangent`.
-
-###### LogTrait
-
-The `LogTrait` provides the implementations for the `log`, `ln`, and `exp` functions.
-
-###### ScaleTrait
-
-The `ScaleTrait` provides the implementations for all rounding and truncating functions for classes which implement `DecimalInterface`.
+--8<-- "uses-trait/scale.md"
 
 ## Abstract Methods
 
 The following abstract methods must be implemented on classes which extend `Decimal`
 
-###### abstract protected function setValue(string $value, int $scale = null, int $base = 10)
+!!! signature "abstract protected function setValue(string $value, int $scale = null, int $base = 10)"
+    $value
+    :   The new value that will be set in the same format as the output of **getValue(10)**
+    
+    $scale
+    :   The maximum number of digits after the decimal that the value can contain
+    
+    $base
+    :   The base of the value in the final instance
+    
+    return
+    :   An instance of the current class with the given arguments set as properties
 
 This method controls the behavior of setting the `$value` property, and its different implementations represent the main difference between mutable and immutable versions.
 
-###### abstract public function continuousModulo($mod): DecimalInterface
+!!! signature "abstract public function continuousModulo($mod): DecimalInterface"
+    $mod
+    :   The modulus that will be taken; the base which will be used to calculate the remainder; can be a decimal value
+    
+    return
+    :   The remainder of dividing the current value by the **$mod**
 
 This method comes from `DecimalInterface` and must be implemented by the extending class. This is because it might be undesirable for this method to be mutable, even for a mutable class. It takes a decimal value as its input, and returns the remainder of a division operation, even if the number provided is not an integer.
 

@@ -1,8 +1,14 @@
-Imports
-
-- `ArithmeticSelectionTrait`
-- `ArithmeticScaleTrait`
-- `ArithmeticNativeTrait`
+!!! signature trait "ArithmeticSimpleTrait"
+    namespace
+    :   Samsara\Fermat\Types\Traits
+    
+    uses
+    :   - **ArithmeticScaleTrait**
+        - **ArithmeticNativeTrait**
+        - **ArithmeticSelectionTrat**
+    
+    satisfies
+    :   **SimpleNumberInterface** (partially)
 
 The `ArithmeticSimpleTrait` provides the implementations for all arithmetic functions that exist on values that implement the `SimpleNumberInterface`. The additional imported traits within this trait provide the various calculation modes that are used internally depending on the mode of object executing the method call.
 
