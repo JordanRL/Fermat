@@ -179,8 +179,9 @@ svg.fa-signature path {
 }
 
 .rst-content .signature .admonition-title::before {
-    content: var(--icon-signature);
+    content: "";
     margin-right: 4px;
+    margin-left: 10px;
     color: #00c853;
     width: 20px;
     position: relative;
