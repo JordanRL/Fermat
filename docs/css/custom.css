@@ -159,6 +159,7 @@ svg.fa-signature path {
     margin: 0 0 6px 0;
     line-height: 24px;
     color: #999999;
+    font-size: 14px;
 }
 
 .rst-content .signature dl dd {
@@ -168,6 +169,7 @@ svg.fa-signature path {
     padding-top: 6px;
     padding-bottom: 6px;
     margin: 0 0 6px 0;
+    font-size: 14px;
 }
 
 .rst-content .signature .admonition-title {
