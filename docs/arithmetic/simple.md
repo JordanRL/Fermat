@@ -269,7 +269,7 @@ This function multiplies `$num` with the current value and returns the result.
         
 ###### divide(mixed $num, ?int $scale = null): NumberInterface
 
-This function multiplies `$num` with the current value and returns the result.
+This function divides `$num` with the current value and returns the result.
 
 !!! note "Automatic Scale"
     If no scale setting is provided for this operation, the scale of both numbers is compared and the larger scale is used. The returned value has this programmatically determined scale, which can be greater than, but not less than, the scale of the calling object.
@@ -325,6 +325,87 @@ This function multiplies `$num` with the current value and returns the result.
         ```
     
     === "Decimal / Complex"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableComplexNumber;
+        
+        // Four circuits
+        $totalCircuits = new ImmutableDecimal('4');
+        // Six volts in each circuit
+        $oldVoltage = new ImmutableDecimal('6');
+        // Twenty amps in each circuit originally
+        $oldCurrent = new ImmutableDecimal('20i');
+        $circuitState = new ImmutableComplexNumber($oldVoltage, $oldCurrent);
+        
+        $newCircuitState = $totalCircuits->divide($circuitState);
+        
+        echo 'Circuit State: '.$newCircuitState;
+        // Prints: 'Circuit State: 0.0550458715-0.1834862385i'
+        
+        // Multiplication is commutative
+        $newCircuitState = $circuitState->divide($totalCircuits);
+        
+        echo 'Circuit State: '.$newCircuitState;
+        // Prints: 'Circuit State: 1.5+5i'
+        ```
+        
+###### pow(mixed $num): NumberInterface
+
+This function raises the current value to the power of `$num` and returns the result.
+
+!!! example "Examples: Divide"
+    === "Decimal ^ Decimal"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        
+        $assets = new ImmutableDecimal('100');
+        $growthRate = new ImmutableDecimal('1.05');
+        
+        $value = $assets->pow($growthRate);
+        
+        echo "Value: ".$value;
+        // Prints: 'Value: 125.8925411794'
+        ```
+    
+    === "Decimal ^ Fraction"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableFraction;
+        
+        $pizzas = new ImmutableDecimal('4');
+        $slicesPerPerson = new ImmutableFraction('3', '8');
+        
+        $friends = $pizzas->divide($slicesPerPerson);
+        
+        echo "I have enough pizzas for ".$friends." friends";
+        // Prints: 'I have enough pizzas for 10.6666666666 friends'
+        ```
+    
+    === "Fraction ^ Decimal"
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableFraction;
+        
+        $pizzaSlices = new ImmutableDecimal('3');
+        $slicesPerPerson = new ImmutableDecimal('3');
+        $friends = new ImmutableDecimal('6');
+        $pizzaGoal = new ImmutableFraction($slicesPerPerson, $friends);
+        
+        $pizzaGoal = $pizzaGoal->divide($pizzaSlices);
+        
+        echo "I have ".$pizzaGoal." of the pizza needed to feed everyone";
+        // Prints: 'I have 1/6 of the pizza needed to feed everyone'
+        ```
+    
+    === "Decimal ^ Complex"
         ```php
         <?php
         
