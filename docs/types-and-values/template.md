@@ -6,3 +6,10 @@ test test test
     
     $num
     :   This is a description of the `$num` argument
+    
+!!! signature constant "ComplexNumbers::IMMUTABLE_COMPLEX"
+    type
+    :   string
+    
+    value
+    :   The fully qualified class name of the `ImmutableComplexNumber` class.

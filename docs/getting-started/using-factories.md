@@ -19,9 +19,12 @@ The `Samsara\Fermat\ComplexNumbers` factory class allows you to create instances
 
 The following constants are available on the `ComplexNumbers` class.
 
-###### IMMUTABLE_COMPLEX
-
-The fully qualified class name of the `ImmutableComplexNumber` class.
+!!! signature constant "ComplexNumbers::IMMUTABLE_COMPLEX"
+    type
+    :   string
+    
+    value
+    :   The fully qualified class name of the `ImmutableComplexNumber` class.
 
 ###### MUTABLE_COMPLEX
 
