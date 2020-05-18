@@ -199,13 +199,14 @@ svg.fa-signature path {
 
 .rst-content .signature.constant .admonition-title::before {
     content: "";
-    font-family: "FontAwesome";
-    margin-right: 4px;
-    margin-left: 10px;
-    color: #00c853;
-    position: relative;
-    top: 2px;
-    font-size: 20px;
+}
+
+.rst-content .signature.interface .admonition-title::before {
+    content: "";
+}
+
+.rst-content .signature.trait .admonition-title::before {
+    content: "";
 }
 
 .rst-content .note {
