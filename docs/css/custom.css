@@ -133,6 +133,7 @@ div.highlight pre span.lineno {
     box-sizing: border-box;
     border: 0;
     box-shadow: none;
+    background: inherit;
 }
 
 .rst-content .signature p {
@@ -170,6 +171,19 @@ svg.fa-signature path {
     padding-bottom: 6px;
     margin: 0 0 6px 0;
     font-size: 14px;
+    background: inherit;
+}
+
+.rst-content .signature dl dd ul {
+    flex-basis: 80%;
+    flex-grow: 0;
+    padding-left: 15px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin: 0 0 6px 0;
+    font-size: 14px;
+    background: inherit;
+    margin-bottom: 0 !important;
 }
 
 .rst-content .signature .admonition-title {
@@ -195,6 +209,7 @@ svg.fa-signature path {
     position: relative;
     top: 2px;
     font-size: 20px;
+    width: 20px;
 }
 
 .rst-content .signature.constant .admonition-title::before {
