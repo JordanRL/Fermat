@@ -188,9 +188,10 @@ svg.fa-signature path {
     line-height: 16px;
     border-bottom: 1px solid #000;
     padding-bottom: 5px;
-    margin-left: 0;
     padding-left: 0;
     padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
     margin-bottom: 6px;
 }
 

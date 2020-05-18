@@ -6,41 +6,19 @@ The following interfaces and traits are available on classes which extend `Fract
 
 ## Interfaces
 
-###### Hashable
-
 --8<-- "has-interface/hashable.md"
-
-###### BaseConversionInterface
 
 --8<-- "has-interface/base-conversion.md"
 
-###### NumberInterface
-
 --8<-- "has-interface/number.md"
-
-###### SimpleNumberInterface
 
 --8<-- "has-interface/simple-number.md"
 
-###### FractionInterface
-
-The `FractionInterface` extends `SimpleNumberInterface` and adds the methods that are common to all fraction values. This includes `simplify()`, accessors for the numerator and denominator, and the `asDecimal()` method that returns the `Fraction` as an instance of `DecimalInterface`.
-
-!!! note "ImmutableDecimals Are Returned From asDecimal()"
-    While the interface only defines the `DecimalInterface` as a return value, the concrete classes returned by all included implementations are instances of `ImmutableDecimal`.
-
-While some other functions can be done on fractions in pure mathematics, such as trigonometry functions, in practice computers are not well-equipped to handle the algorithms for them without actually performing the division implied by the fraction. Thus, to use these types of functions an explicit call to `asDecimal()` must first be made on classes that implement `Fraction`.
-
-!!! see-also "See Also"
-    The page for [Types & Values > Decimals](decimals.md) contains more information on the usage of `Decimal` values.
+--8<-- "has-interface/fraction.md"
 
 ## Traits
 
-###### ArithmeticSimpleTrait
-
 --8<-- "uses-trait/arithmeticsimple.md"
-
-###### ComparisonTrait
 
 --8<-- "uses-trait/comparison.md"
 
@@ -48,7 +26,15 @@ While some other functions can be done on fractions in pure mathematics, such as
 
 The following abstract methods must be implemented on classes which extend `Fraction`
 
-###### abstract protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator)
+!!! signature "abstract protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator)"
+    $numerator
+    :   The new numerator value, given as an instance of **ImmutableDecimal**
+    
+    $denominator
+    :   The new denominator value, given as an instance of **ImmutableDecimal**
+    
+    return
+    :   An instance of the current class with the given arguments set as properties
 
 This method controls the behavior of setting the `$value` property, and its different implementations represent the main difference between mutable and immutable versions. For classes that extend `Fraction`, the arguments are limited to the concrete class `ImmutableDecimal`.
 
