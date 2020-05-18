@@ -139,22 +139,30 @@ div.highlight pre span.lineno {
     margin-left: 10px;
 }
 
-.fa-signature path {
+svg.fa-signature path {
     fill: #00c853;
 }
 
 .rst-content .signature dl {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .rst-content .signature dl dt {
-    align-items: flex-start;
     background: inherit;
+    flex-basis: 20%;
+    flex-grow: 0;
+    text-align: right;
+    border-top: 0;
+    border-right: 2px solid;
 }
 
 .rst-content .signature dl dd {
-    align-items: flex-end;
+    flex-basis: 80%;
+    flex-grow: 0;
+    padding-left: 15px;
+    margin: 0;
 }
 
 .rst-content .signature .admonition-title {
