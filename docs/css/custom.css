@@ -162,7 +162,17 @@ svg.fa-signature path {
     flex-basis: 80%;
     flex-grow: 0;
     padding-left: 15px;
-    margin: 0;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin: 6px 0;
+}
+
+.rst-content .signature dl dd:first-child {
+    margin-top: 0;
+}
+
+.rst-content .signature dl dd:last-child {
+    margin-bottom: 0;
 }
 
 .rst-content .signature .admonition-title {
@@ -180,6 +190,7 @@ svg.fa-signature path {
 
 .rst-content .signature .admonition-title::before {
     content: "";
+    font-family: "FontAwesome";
     margin-right: 4px;
     margin-left: 10px;
     color: #00c853;
