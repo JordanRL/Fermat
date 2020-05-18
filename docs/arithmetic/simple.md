@@ -20,77 +20,77 @@ This function adds the current value with `$num` and returns the result.
 
 !!! example "Examples: Add"
     === "Decimal + Decimal"
-    ```php
-    <?php
-    
-    use Samsara\Fermat\Values\ImmutableDecimal;
-    
-    $balance = new ImmutableDecimal('100');
-    $deposit = new ImmutableDecimal('50');
-    
-    $balance = $balance->add($deposit);
-    
-    echo "Balance: ".$balance;
-    // Prints: 'Balance: 150'
-    ```
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        
+        $balance = new ImmutableDecimal('100');
+        $deposit = new ImmutableDecimal('50');
+        
+        $balance = $balance->add($deposit);
+        
+        echo "Balance: ".$balance;
+        // Prints: 'Balance: 150'
+        ```
     
     === "Decimal + Fraction"
-    ```php
-    <?php
-    
-    use Samsara\Fermat\Values\ImmutableDecimal;
-    use Samsara\Fermat\Values\ImmutableFraction;
-    
-    $pizzas = new ImmutableDecimal('3');
-    $extraSlices = new ImmutableFraction('3', '8');
-    
-    $pizzas = $pizzas->add($extraSlices);
-    
-    echo "I have ".$pizzas." pizzas";
-    // Prints: 'I have 3.375 pizzas'
-    ```
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableFraction;
+        
+        $pizzas = new ImmutableDecimal('3');
+        $extraSlices = new ImmutableFraction('3', '8');
+        
+        $pizzas = $pizzas->add($extraSlices);
+        
+        echo "I have ".$pizzas." pizzas";
+        // Prints: 'I have 3.375 pizzas'
+        ```
     
     === "Fraction + Decimal"
-    ```php
-    <?php
-    
-    use Samsara\Fermat\Values\ImmutableDecimal;
-    use Samsara\Fermat\Values\ImmutableFraction;
-    
-    $leftOvers = new ImmutableFraction('3', '8');
-    $newOrder = new ImmutableDecimal('3');
-    
-    $pizzas = $leftOvers->add($newOrder);
-    
-    echo "I have ".$pizzas->getNumerator()." slices (".$pizzas." pizzas)";
-    // Prints: 'I have 27 slices (27/8 pizzas)'
-    ```
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableFraction;
+        
+        $leftOvers = new ImmutableFraction('3', '8');
+        $newOrder = new ImmutableDecimal('3');
+        
+        $pizzas = $leftOvers->add($newOrder);
+        
+        echo "I have ".$pizzas->getNumerator()." slices (".$pizzas." pizzas)";
+        // Prints: 'I have 27 slices (27/8 pizzas)'
+        ```
     
     === "Decimal + Complex"
-    ```php
-    <?php
-    
-    use Samsara\Fermat\Values\ImmutableDecimal;
-    use Samsara\Fermat\Values\ImmutableComplexNumber;
-    
-    // Four volts being added to the circuit
-    $newVoltage = new ImmutableDecimal('4');
-    // Six volts in the circuit originally
-    $oldVoltage = new ImmutableDecimal('6');
-    // Twenty amps int he circuit originally
-    $oldCurrent = new ImmutableDecimal('20i');
-    $circuitState = new ImmutableComplexNumber($oldVoltage, $oldCurrent);
-    
-    $newCircuitState = $newVoltage->add($circuitState);
-    
-    echo 'Circuit State: '.$newCircuitState;
-    // Prints: 'Circuit State: 10+20i'
-    
-    // Addition is commutative even for complex numbers
-    $newCircuitState = $circuitState->add($newVoltage);
-    
-    echo 'Circuit State: '.$newCircuitState;
-    // Prints: 'Circuit State: 10+20i'
-    ```
+        ```php
+        <?php
+        
+        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Values\ImmutableComplexNumber;
+        
+        // Four volts being added to the circuit
+        $newVoltage = new ImmutableDecimal('4');
+        // Six volts in the circuit originally
+        $oldVoltage = new ImmutableDecimal('6');
+        // Twenty amps int he circuit originally
+        $oldCurrent = new ImmutableDecimal('20i');
+        $circuitState = new ImmutableComplexNumber($oldVoltage, $oldCurrent);
+        
+        $newCircuitState = $newVoltage->add($circuitState);
+        
+        echo 'Circuit State: '.$newCircuitState;
+        // Prints: 'Circuit State: 10+20i'
+        
+        // Addition is commutative even for complex numbers
+        $newCircuitState = $circuitState->add($newVoltage);
+        
+        echo 'Circuit State: '.$newCircuitState;
+        // Prints: 'Circuit State: 10+20i'
+        ```
     
 ###### subtract(mixed $num): NumberInterface
