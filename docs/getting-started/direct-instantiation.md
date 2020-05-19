@@ -11,23 +11,33 @@ These classes extend the `Decimal` abstract class, which comes with the followin
 
 ### Interfaces
 
-- `NumberInterface`
-- `BaseConversionInterface`
-- `SimpleNumberInterface`
-- `DecimalInterface`
+--8<-- "has-interface/hashable.md"
+
+--8<-- "has-interface/base-conversion.md"
+
+--8<-- "has-interface/number.md"
+
+--8<-- "has-interface/simple-number.md"
+
+--8<-- "has-interface/decimal.md"
 
 ### Traits
 
-- `ArithmeticSimpleTrait`
-    - `ArithmeticSelectionTrait`
-    - `ArithmeticScaleTrait`
-    - `ArithmeticNativeTrait`
-- `ComparisonTrait`
-- `IntegerMathTrait`
-- `TrigonometryTrait`
-- `InverseTrigonometryTrait`
-- `LogTrait`
-- `ScaleTrait`
+--8<-- "uses-trait/arithmeticsimple.md"
+
+--8<-- "uses-trait/comparison.md"
+
+--8<-- "uses-trait/integer-math.md"
+
+--8<-- "uses-trait/trigonometry.md"
+
+--8<-- "uses-trait/inverse-trigonometry.md"
+
+--8<-- "uses-trait/log.md"
+
+--8<-- "uses-trait/scale.md"
+
+### Constructor
 
 !!! signature "__construct(mixed $value, int $scale = 10, int $base = 10)"
     $value
@@ -71,18 +81,23 @@ These classes extend the `Fraction` abstract class, which comes with the followi
 
 ### Interfaces
 
-- `NumberInterface`
-- `BaseConversionInterface`
-- `SimpleNumberInterface`
-- `FractionInterface`
+--8<-- "has-interface/hashable.md"
+
+--8<-- "has-interface/base-conversion.md"
+
+--8<-- "has-interface/number.md"
+
+--8<-- "has-interface/simple-number.md"
+
+--8<-- "has-interface/fraction.md"
 
 ### Traits
 
-- `ArithmeticSimpleTrait`
-    - `ArithmeticSelectionTrait`
-    - `ArithmeticScaleTrait`
-    - `ArithmeticNativeTrait`
-- `ComparisonTrait`
+--8<-- "uses-trait/arithmeticsimple.md"
+
+--8<-- "uses-trait/comparison.md"
+
+### Constructor
 
 !!! signature "__construct(mixed $numerator, mixed $denominator, $base = 10)"
     $numerator
@@ -132,6 +147,8 @@ Used to represent complex number values. Either part can be an instance of `Frac
 
 --8<-- "uses-trait/arithmeticcomplex.md"
 
+### Constructor
+
 !!! signature "__construct(mixed $realPart, mixed $imaginaryPart, ?int $scale = null, int $base = 10)"
     $realPart
     :   The value of the real part; can be an instance of **FractionInterface**, and instance of **DecimalInterface**, or a scalar using the same restrictions as **Decimal**
@@ -163,6 +180,8 @@ Used to represent mathematical matrices and perform matrix math.
 ### Interfaces
 
 ### Traits
+
+### Constructor
 
 !!! signature "__construct(array $data, string $mode = Matrix::MODE_ROWS_INPUT)"
     $data
