@@ -40,11 +40,11 @@ interface NumberInterface
 
     /**
      * @param $num
-     * @param int|null $precision
+     * @param int|null $scale
      *
      * @return NumberInterface|DecimalInterface|FractionInterface
      */
-    public function divide($num, ?int $precision = null);
+    public function divide($num, ?int $scale = null);
 
     /**
      * @param $num
@@ -54,11 +54,11 @@ interface NumberInterface
     public function pow($num);
 
     /**
-     * @param int? $precision
+     * @param int? $scale
      *
      * @return NumberInterface|DecimalInterface|FractionInterface
      */
-    public function sqrt(?int $precision = null);
+    public function sqrt(?int $scale = null);
 
     /**
      * @param int|string|NumberInterface $value
@@ -70,7 +70,7 @@ interface NumberInterface
     /**
      * @return int|null
      */
-    public function getPrecision(): ?int;
+    public function getScale(): ?int;
 
     public function isImaginary(): bool;
 

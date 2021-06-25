@@ -4,6 +4,9 @@ require_once './vendor/autoload.php';
 
 use Samsara\Fermat\Values\ImmutableDecimal;
 
-$num = new ImmutableDecimal('0.5');
+$num = new ImmutableDecimal('5', 20);
 
-echo $num->arcsin(12)->getValue().PHP_EOL;
+echo $num->pow('1.2')->sin()->getValue().PHP_EOL;
+
+
+/// some stuff and new feature

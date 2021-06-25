@@ -10,18 +10,18 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 trait TrigonometryTrait
 {
 
-    public function sin($precision = null, $round = true): DecimalInterface
+    public function sin($scale = null, $round = true): DecimalInterface
     {
         if ($this->isEqual(0)) {
             return $this;
         }
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
         $twoPi = Numbers::make2Pi();
         $pi = Numbers::makePi();
 
-        if ($pi->truncate($precision)->isEqual($this) || $twoPi->truncate($precision)->isEqual($this)) {
+        if ($pi->truncate($scale)->isEqual($this) || $twoPi->truncate($scale)->isEqual($this)) {
             return $this->setValue(0);
         }
 
@@ -41,32 +41,32 @@ trait TrigonometryTrait
                 return SequenceProvider::nthOddNumber($n)->factorial();
             },
             0,
-            $precision+1
+            $scale+1
         );
 
         if ($round) {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToPrecision($precision);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToScale($scale);
         } else {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToPrecision($precision);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToScale($scale);
         }
     }
 
-    public function cos($precision = null, $round = true): DecimalInterface
+    public function cos($scale = null, $round = true): DecimalInterface
     {
         if ($this->isEqual(0)) {
             return $this->setValue('1');
         }
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
         $twoPi = Numbers::make2Pi();
         $pi = Numbers::makePi();
 
-        if ($twoPi->truncate($precision)->isEqual($this)) {
+        if ($twoPi->truncate($scale)->isEqual($this)) {
             return $this->setValue('1');
         }
 
-        if ($pi->truncate($precision)->isEqual($this)) {
+        if ($pi->truncate($scale)->isEqual($this)) {
             return $this->setValue('-1');
         }
 
@@ -84,19 +84,19 @@ trait TrigonometryTrait
                 return SequenceProvider::nthEvenNumber($n)->factorial();
             },
             0,
-            $precision+1
+            $scale+1
         );
 
         if ($round) {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToPrecision($precision);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToScale($scale);
         } else {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToPrecision($precision);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToScale($scale);
         }
     }
 
-    public function tan($precision = null, $round = true): DecimalInterface
+    public function tan($scale = null, $round = true): DecimalInterface
     {
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
         $pi = Numbers::makePi();
         $piDivTwo = Numbers::makePi()->divide(2);
@@ -154,7 +154,7 @@ trait TrigonometryTrait
 
         if ($modulo->abs()->isGreaterThan($piDivEight)) {
             /** @var ImmutableNumber $halfModTan */
-            $halfModTan = $modulo->divide(2)->tan($precision+1, false);
+            $halfModTan = $modulo->divide(2)->tan($scale+1, false);
             $answer = $two->multiply($halfModTan)->divide($one->subtract($halfModTan->pow(2)));
         } else {
             $answer = SeriesProvider::maclaurinSeries(
@@ -172,7 +172,7 @@ trait TrigonometryTrait
                     return SequenceProvider::nthOddNumber($n)->factorial();
                 },
                 0,
-                $precision + 1
+                $scale + 1
             );
         }
 
@@ -181,14 +181,14 @@ trait TrigonometryTrait
         }
 
         if ($round) {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToPrecision($precision);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToScale($scale);
         } else {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToPrecision($precision);
+            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToScale($scale);
         }
 
     }
 
-    public function cot($precision = null, $round = true): DecimalInterface
+    public function cot($scale = null, $round = true): DecimalInterface
     {
 
         $pi = Numbers::makePi();
@@ -196,12 +196,12 @@ trait TrigonometryTrait
         $one = Numbers::makeOne();
         $piDivTwo = $pi->divide(2);
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+1);
 
-        $modPi = $num->continuousModulo($pi)->truncate($precision);
-        $mod2Pi = $num->continuousModulo($twoPi)->truncate($precision);
+        $modPi = $num->continuousModulo($pi)->truncate($scale);
+        $mod2Pi = $num->continuousModulo($twoPi)->truncate($scale);
 
         if ($mod2Pi->isEqual(0)) {
             return $this->setValue(static::INFINITY);
@@ -209,198 +209,198 @@ trait TrigonometryTrait
             return $this->setValue(static::NEG_INFINITY);
         }
 
-        $modPiDiv2 = $num->continuousModulo($piDivTwo)->truncate($precision);
+        $modPiDiv2 = $num->continuousModulo($piDivTwo)->truncate($scale);
 
         if ($modPiDiv2->isEqual(0)) {
             return $this->setValue(0, $this->getBase());
         }
 
-        $tan = $num->tan($precision+2, $round);
+        $tan = $num->tan($scale+2, $round);
 
-        $answer = $one->divide($tan, $precision+2);
+        $answer = $one->divide($tan, $scale+2);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer, $this->getBase());
 
     }
 
-    public function sec($precision = null, $round = true): DecimalInterface
+    public function sec($scale = null, $round = true): DecimalInterface
     {
 
         $one = Numbers::makeOne();
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+1);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+1);
 
-        $cos = $num->cos($precision+2, $round);
+        $cos = $num->cos($scale+2, $round);
 
         if ($cos->isEqual(0)) {
             return $this->setValue(static::INFINITY);
         }
 
-        $answer = $one->divide($cos, $precision+2);
+        $answer = $one->divide($cos, $scale+2);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer, $this->getBase());
 
     }
 
-    public function csc($precision = null, $round = true): DecimalInterface
+    public function csc($scale = null, $round = true): DecimalInterface
     {
 
         $one = Numbers::makeOne();
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $sin = $num->sin($precision+2, $round);
+        $sin = $num->sin($scale+2, $round);
 
         if ($sin->isEqual(0)) {
             return $this->setValue(static::INFINITY);
         }
 
-        $answer = $one->divide($sin, $precision+2);
+        $answer = $one->divide($sin, $scale+2);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer, $this->getBase());
 
     }
 
-    public function sinh($precision = null, $round = true): DecimalInterface
+    public function sinh($scale = null, $round = true): DecimalInterface
     {
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
-        $this->precision = $precision;
+        $this->scale = $scale;
 
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
         $answer = $num->multiply(2)->exp()->subtract(1)->divide($two->multiply($num->exp()));
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer, $this->getBase());
 
     }
 
-    public function cosh($precision = null, $round = true): DecimalInterface
+    public function cosh($scale = null, $round = true): DecimalInterface
     {
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
-        $this->precision = $precision;
+        $this->scale = $scale;
 
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
         $answer = $num->multiply(2)->exp()->add(1)->divide($two->multiply($num->exp()));
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer, $this->getBase());
 
     }
 
-    public function tanh($precision = null, $round = true): DecimalInterface
+    public function tanh($scale = null, $round = true): DecimalInterface
     {
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $answer = $num->sinh($precision+1, false)->divide($num->cosh($precision+1, false));
+        $answer = $num->sinh($scale+1, false)->divide($num->cosh($scale+1, false));
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer, $this->getBase());
 
     }
 
-    public function coth($precision = null, $round = true): DecimalInterface
+    public function coth($scale = null, $round = true): DecimalInterface
     {
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $answer = $num->cosh($precision+1, false)->divide($num->sinh($precision+1, false));
+        $answer = $num->cosh($scale+1, false)->divide($num->sinh($scale+1, false));
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer, $this->getBase());
 
     }
 
-    public function sech($precision = null, $round = true): DecimalInterface
+    public function sech($scale = null, $round = true): DecimalInterface
     {
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
         $one = Numbers::makeOne();
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $answer = $one->divide($num->cosh($precision+1, false));
+        $answer = $one->divide($num->cosh($scale+1, false));
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer, $this->getBase());
 
     }
 
-    public function csch($precision = null, $round = true): DecimalInterface
+    public function csch($scale = null, $round = true): DecimalInterface
     {
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
         $one = Numbers::makeOne();
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $answer = $one->divide($num->sinh($precision+1, false));
+        $answer = $one->divide($num->sinh($scale+1, false));
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer, $this->getBase());

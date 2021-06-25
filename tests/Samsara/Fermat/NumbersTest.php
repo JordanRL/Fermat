@@ -119,7 +119,7 @@ class NumbersTest extends TestCase
         $pi1 = Numbers::makePi();
 
         $this->assertEquals(Numbers::PI, $pi1->getValue());
-        $this->assertEquals(100, $pi1->getPrecision());
+        $this->assertEquals(100, $pi1->getScale());
 
         $pi2 = Numbers::makePi(5);
 
@@ -146,7 +146,7 @@ class NumbersTest extends TestCase
         $tau1 = Numbers::makeTau();
 
         $this->assertEquals(Numbers::TAU, $tau1->getValue());
-        $this->assertEquals(100, $tau1->getPrecision());
+        $this->assertEquals(100, $tau1->getScale());
 
         $tau2 = Numbers::make2Pi(5);
 
@@ -173,7 +173,7 @@ class NumbersTest extends TestCase
         $e1 = Numbers::makeE();
 
         $this->assertEquals(Numbers::E, $e1->getValue());
-        $this->assertEquals(100, $e1->getPrecision());
+        $this->assertEquals(100, $e1->getScale());
 
         $e2 = Numbers::makeE(5);
 
@@ -187,7 +187,7 @@ class NumbersTest extends TestCase
         );
 
         $this->expectException(IntegrityConstraint::class);
-        $this->expectExceptionMessage('The E constant cannot have a precision less than 1');
+        $this->expectExceptionMessage('The E constant cannot have a scale less than 1');
 
         Numbers::makeE(-1);
 
@@ -201,7 +201,7 @@ class NumbersTest extends TestCase
         $gr1 = Numbers::makeGoldenRatio();
 
         $this->assertEquals(Numbers::GOLDEN_RATIO, $gr1->getValue());
-        $this->assertEquals(100, $gr1->getPrecision());
+        $this->assertEquals(100, $gr1->getScale());
 
         $gr2 = Numbers::makeGoldenRatio(5);
 
@@ -221,7 +221,7 @@ class NumbersTest extends TestCase
         $ln10_1 = Numbers::makeNaturalLog10();
 
         $this->assertEquals(Numbers::LN_10, $ln10_1->getValue());
-        $this->assertEquals(100, $ln10_1->getPrecision());
+        $this->assertEquals(100, $ln10_1->getScale());
 
         $ln10_2 = Numbers::makeNaturalLog10(5);
 

@@ -12,14 +12,14 @@ class MutableDecimal extends Decimal
     public function continuousModulo($mod): DecimalInterface
     {
 
-        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, $this->precision+1);
-        $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(), $this->precision+1);
+        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, $this->scale+1);
+        $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(), $this->scale+1);
 
         $multiple = $oldNum->divide($mod)->floor();
 
         $remainder = $oldNum->subtract($mod->multiply($multiple));
 
-        return Numbers::make(Numbers::MUTABLE, $remainder->truncate($this->precision)->getValue());
+        return Numbers::make(Numbers::MUTABLE, $remainder->truncate($this->scale)->getValue());
 
     }
 
@@ -28,7 +28,7 @@ class MutableDecimal extends Decimal
      *
      * @return MutableDecimal
      */
-    protected function setValue(string $value, int $precision = null, int $base = 10)
+    protected function setValue(string $value, int $scale = null, int $base = 10)
     {
         $imaginary = false;
 
@@ -45,21 +45,13 @@ class MutableDecimal extends Decimal
             $value .= 'i';
         }
 
-        if (is_null($precision)) {
-            $this->precision = $this->getPrecision();
+        if (is_null($scale)) {
+            $this->scale = $this->getScale();
         }
 
         $this->value = $this->translateValue($value);
 
         return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isComplex(): bool
-    {
-        return false;
     }
 
 }

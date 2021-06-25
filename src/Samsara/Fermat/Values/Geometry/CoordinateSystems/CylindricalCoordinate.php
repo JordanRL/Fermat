@@ -62,7 +62,7 @@ class CylindricalCoordinate extends Coordinate implements ThreeDCoordinateInterf
     public function asSpherical(): SphericalCoordinate
     {
         if (is_null($this->cachedSpherical)) {
-            $rho = $this->getAxis('rho')->pow(2)->add($this->getAxis('z')->pow(2))->sqrt($this->getAxis('z')->getPrecision());
+            $rho = $this->getAxis('rho')->pow(2)->add($this->getAxis('z')->pow(2))->sqrt($this->getAxis('z')->getScale());
             $theta = $this->getAxis('theta');
             $phi = $this->getAxis('z')->divide($rho);
 

@@ -8,14 +8,14 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
-trait PrecisionTrait
+trait ScaleTrait
 {
 
-    protected $precision;
+    protected $scale;
 
-    public function getPrecision(): ?int
+    public function getScale(): ?int
     {
-        return $this->precision;
+        return $this->scale;
     }
 
     public function round($decimals = 0): DecimalInterface
@@ -96,21 +96,21 @@ trait PrecisionTrait
         return $this->setValue($result);
     }
 
-    public function roundToPrecision($precision): DecimalInterface
+    public function roundToScale($scale): DecimalInterface
     {
 
-        $this->precision = $precision;
+        $this->scale = $scale;
 
-        return $this->round($precision);
+        return $this->round($scale);
 
     }
 
-    public function truncateToPrecision($precision): DecimalInterface
+    public function truncateToScale($scale): DecimalInterface
     {
 
-        $this->precision = $precision;
+        $this->scale = $scale;
 
-        return $this->truncate($precision);
+        return $this->truncate($scale);
 
     }
 
@@ -120,7 +120,7 @@ trait PrecisionTrait
         $whole = $this->getWholePart();
 
         if ($fractional > 0) {
-            $whole = ArithmeticProvider::add($whole, 1, $this->getPrecision());
+            $whole = ArithmeticProvider::add($whole, 1, $this->getScale());
         }
 
         return $this->setValue($whole);

@@ -21,29 +21,29 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
     /** @var ImmutableDecimal|ImmutableFraction */
     protected $imaginaryPart;
     /** @var int */
-    protected $precision;
+    protected $scale;
 
     use ArithmeticComplexTrait;
 
-    public function __construct($realPart, $imaginaryPart, $precision = null, $base = 10)
+    public function __construct($realPart, $imaginaryPart, $scale = null, $base = 10)
     {
 
         if (is_object($realPart) && $realPart instanceof Fraction) {
-            $this->realPart = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $realPart, $precision, $base);
-        } elseif (!is_object($realPart) && !($realPart instanceof ImmutableDecimal)) {
-            $this->realPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $realPart, $precision, $base);
+            $this->realPart = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $realPart, $scale, $base);
+        } elseif (!is_object($realPart) || !($realPart instanceof ImmutableDecimal)) {
+            $this->realPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $realPart, $scale, $base);
         } else {
             $this->realPart = $realPart;
         }
         if (is_object($imaginaryPart) && $imaginaryPart instanceof Fraction) {
-            $this->imaginaryPart = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $imaginaryPart, $precision, $base);
+            $this->imaginaryPart = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $imaginaryPart, $scale, $base);
         } elseif (!is_object($imaginaryPart) || !($imaginaryPart instanceof ImmutableDecimal)) {
-            $this->imaginaryPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $imaginaryPart, $precision, $base);
+            $this->imaginaryPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $imaginaryPart, $scale, $base);
         } else {
             $this->imaginaryPart = $imaginaryPart;
         }
 
-        $this->precision = ($this->realPart->getPrecision() > $this->imaginaryPart->getPrecision()) ? $this->realPart->getPrecision() : $this->imaginaryPart->getPrecision();
+        $this->scale = ($this->realPart->getScale() > $this->imaginaryPart->getScale()) ? $this->realPart->getScale() : $this->imaginaryPart->getScale();
 
         $cartesian = new CartesianCoordinate($this->realPart, Numbers::make(Numbers::IMMUTABLE, $this->imaginaryPart->getAsBaseTenRealNumber()));
         $this->cachedCartesian = $cartesian;
@@ -64,9 +64,9 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
         return $this->imaginaryPart;
     }
 
-    public function getPrecision(): int
+    public function getScale(): int
     {
-        return $this->precision;
+        return $this->scale;
     }
 
     public function isComplex(): bool
@@ -126,7 +126,7 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
 
     abstract protected function setValue(SimpleNumberInterface $realPart, SimpleNumberInterface $imaginaryPart);
 
-    public static function makeFromArray(array $number, $precision = null, $base = 10): ComplexNumber
+    public static function makeFromArray(array $number, $scale = null, $base = 10): ComplexNumber
     {
 
         if (count($number) != 2) {
@@ -153,11 +153,11 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
         $realPart = $part1->isReal() ? $part1 : $part2;
         $imaginaryPart = $part2->isImaginary() ? $part2 : $part1;
 
-        return new static($realPart, $imaginaryPart, $precision, $base);
+        return new static($realPart, $imaginaryPart, $scale, $base);
 
     }
 
-    public static function makeFromString(string $expression, $precision = null, $base = 10): ComplexNumber
+    public static function makeFromString(string $expression, $scale = null, $base = 10): ComplexNumber
     {
         if (strpos($expression, '+') !== false) {
             list($part1, $part2) = explode('+', $expression);
@@ -171,7 +171,7 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
             );
         }
 
-        return static::makeFromArray([$part1, $part2], $precision, $base);
+        return static::makeFromArray([$part1, $part2], $scale, $base);
     }
 
     public function abs(): ImmutableDecimal

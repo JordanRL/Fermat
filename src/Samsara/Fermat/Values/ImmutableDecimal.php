@@ -12,53 +12,45 @@ class ImmutableDecimal extends Decimal
     public function continuousModulo($mod): DecimalInterface
     {
 
-        if (is_object($mod) && method_exists($mod, 'getPrecision')) {
-            $precision = ($this->getPrecision() < $mod->getPrecision()) ? $mod->getPrecision() : $this->getPrecision();
+        if (is_object($mod) && method_exists($mod, 'getScale')) {
+            $scale = ($this->getScale() < $mod->getScale()) ? $mod->getScale() : $this->getScale();
         } else {
-            $precision = $this->getPrecision();
+            $scale = $this->getScale();
         }
 
-        $oldPrecision = $this->precision;
-        $newPrecision = $precision+1;
+        $oldScale = $this->scale;
+        $newScale = $scale+1;
 
-        $this->precision = $newPrecision;
+        $this->scale = $newScale;
 
-        if (is_object($mod) && method_exists($mod, 'truncateToPrecision')) {
-            $mod = $mod->truncateToPrecision($newPrecision);
+        if (is_object($mod) && method_exists($mod, 'truncateToScale')) {
+            $mod = $mod->truncateToScale($newScale);
         } else {
-            $mod = Numbers::make(Numbers::IMMUTABLE, $mod, $newPrecision);
+            $mod = Numbers::make(Numbers::IMMUTABLE, $mod, $newScale);
         }
 
         $multiple = $this->divide($mod)->floor();
 
         $remainder = $this->subtract($mod->multiply($multiple));
 
-        $this->precision = $oldPrecision;
+        $this->scale = $oldScale;
 
-        return $remainder->truncateToPrecision($oldPrecision);
+        return $remainder->truncateToScale($oldScale);
 
-    }
-
-    /**
-     * @return bool
-     */
-    public function isComplex(): bool
-    {
-        return false;
     }
 
     /**
      * @param string $value
-     * @param int|null $precision
+     * @param int|null $scale
      * @param int $base
      *
      * @return ImmutableDecimal
      */
-    protected function setValue(string $value, int $precision = null, int $base = 10)
+    protected function setValue(string $value, int $scale = null, int $base = 10)
     {
         $imaginary = false;
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
         if (strpos($value, 'i') !== false) {
             $value = str_replace('i', '', $value);
@@ -74,7 +66,7 @@ class ImmutableDecimal extends Decimal
             $value .= 'i';
         }
 
-        return new ImmutableDecimal($value, $precision, $base);
+        return new ImmutableDecimal($value, $scale, $base);
     }
 
 }

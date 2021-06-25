@@ -43,13 +43,13 @@ class Numbers
     /**
      * @param $type
      * @param $value
-     * @param int|null $precision
+     * @param int|null $scale
      * @param int $base
      *
      * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
      * @throws IntegrityConstraint
      */
-    public static function make($type, $value, $precision = null, $base = 10)
+    public static function make($type, $value, $scale = null, $base = 10)
     {
 
         if (is_object($type)) {
@@ -57,11 +57,11 @@ class Numbers
         }
 
         if ($type === static::IMMUTABLE) {
-            return new ImmutableDecimal(trim($value), $precision, $base);
+            return new ImmutableDecimal(trim($value), $scale, $base);
         }
 
         if ($type === static::MUTABLE) {
-            return new MutableDecimal(trim($value), $precision, $base);
+            return new MutableDecimal(trim($value), $scale, $base);
         }
 
         if ($type === static::IMMUTABLE_FRACTION) {
@@ -90,18 +90,18 @@ class Numbers
     /**
      * @param $type
      * @param $value
-     * @param int|null $precision
+     * @param int|null $scale
      * @param int $base
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
      */
-    public static function makeFromBase10($type, $value, $precision = null, $base = 10): NumberInterface
+    public static function makeFromBase10($type, $value, $scale = null, $base = 10): NumberInterface
     {
         /**
          * @var ImmutableDecimal|MutableDecimal
          */
-        $number = self::make($type, $value, $precision, 10);
+        $number = self::make($type, $value, $scale, 10);
 
         return $number->convertToBase($base);
     }
@@ -109,13 +109,13 @@ class Numbers
     /**
      * @param string|object $type
      * @param int|float|string|array|NumberInterface|DecimalInterface|FractionInterface $value
-     * @param int|null $precision
+     * @param int|null $scale
      * @param int $base
      *
      * @return ImmutableDecimal|MutableDecimal|NumberInterface|ImmutableDecimal[]|MutableDecimal[]|NumberInterface[]
      * @throws IntegrityConstraint
      */
-    public static function makeOrDont($type, $value, $precision = null, $base = 10)
+    public static function makeOrDont($type, $value, $scale = null, $base = 10)
     {
 
         if (is_object($value)) {
@@ -124,13 +124,13 @@ class Numbers
             }
 
             if ($value instanceof NumberInterface) {
-                return static::make($type, $value->getValue(), $precision, $base);
+                return static::make($type, $value->getValue(), $scale, $base);
             }
         } elseif (is_array($value)) {
             $newInput = [];
 
             foreach ($value as $key => $item) {
-                $newInput[$key] = static::makeOrDont($type, $item, $precision, $base);
+                $newInput[$key] = static::makeOrDont($type, $item, $scale, $base);
             }
 
             return $newInput;
@@ -138,7 +138,7 @@ class Numbers
             $isImaginary = strpos($value, 'i') !== false;
 
             if (is_numeric($value) || $isImaginary) {
-                return static::make($type, $value, $precision, $base);
+                return static::make($type, $value, $scale, $base);
             }
         }
 
@@ -191,28 +191,28 @@ class Numbers
     }
 
     /**
-     * @param int|null $precision
+     * @param int|null $scale
      *
      * @return DecimalInterface
      * @throws IntegrityConstraint
      */
-    public static function makePi(int $precision = null)
+    public static function makePi(int $scale = null)
     {
 
-        if (!is_null($precision)) {
-            if ($precision < 1) {
+        if (!is_null($scale)) {
+            if ($scale < 1) {
                 throw new IntegrityConstraint(
-                    '$precision must be at least 1',
-                    'Provide a precision within range',
-                    'The pi constant cannot have a precision less than 1'
+                    '$scale must be at least 1',
+                    'Provide a scale within range',
+                    'The pi constant cannot have a scale less than 1'
                 );
             }
 
-            if ($precision > 100) {
-                return self::make(self::IMMUTABLE, ConstantProvider::makePi($precision), $precision);
+            if ($scale > 100) {
+                return self::make(self::IMMUTABLE, ConstantProvider::makePi($scale), $scale);
             }
 
-            return self::make(self::IMMUTABLE, self::PI, $precision)->truncateToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::PI, $scale)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::PI, 100);
@@ -220,67 +220,67 @@ class Numbers
     }
 
     /**
-     * @param int|null $precision
+     * @param int|null $scale
      *
      * @return DecimalInterface
      * @throws IntegrityConstraint
      */
-    public static function makeTau($precision = null)
+    public static function makeTau($scale = null)
     {
-        if (!is_null($precision)) {
-            if ($precision < 1) {
+        if (!is_null($scale)) {
+            if ($scale < 1) {
                 throw new IntegrityConstraint(
-                    '$precision must be at least 1',
-                    'Provide a precision within range',
-                    'The E constant cannot have a precision less than 1'
+                    '$scale must be at least 1',
+                    'Provide a scale within range',
+                    'The E constant cannot have a scale less than 1'
                 );
             }
 
-            if ($precision > 100) {
-                $pi = self::make(self::IMMUTABLE, ConstantProvider::makePi($precision), $precision + 2);
-                return $pi->multiply(2)->truncateToPrecision($precision);
+            if ($scale > 100) {
+                $pi = self::make(self::IMMUTABLE, ConstantProvider::makePi($scale), $scale + 2);
+                return $pi->multiply(2)->truncateToScale($scale);
             }
 
-            return self::make(self::IMMUTABLE, self::TAU, $precision)->truncateToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::TAU, $scale)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::TAU, 100);
     }
 
     /**
-     * @param int|null $precision
+     * @param int|null $scale
      *
      * @return DecimalInterface
      * @throws IntegrityConstraint
      */
-    public static function make2Pi($precision = null)
+    public static function make2Pi($scale = null)
     {
-        return self::makeTau($precision);
+        return self::makeTau($scale);
     }
 
     /**
-     * @param int|null $precision
+     * @param int|null $scale
      *
      * @return DecimalInterface
      * @throws IntegrityConstraint
      */
-    public static function makeE(int $precision = null)
+    public static function makeE(int $scale = null)
     {
 
-        if (!is_null($precision)) {
-            if ($precision < 1) {
+        if (!is_null($scale)) {
+            if ($scale < 1) {
                 throw new IntegrityConstraint(
-                    '$precision must be at least 1',
-                    'Provide a precision within range',
-                    'The E constant cannot have a precision less than 1'
+                    '$scale must be at least 1',
+                    'Provide a scale within range',
+                    'The E constant cannot have a scale less than 1'
                 );
             }
 
-            if ($precision > 100) {
-                return self::make(self::IMMUTABLE, ConstantProvider::makeE($precision), $precision);
+            if ($scale > 100) {
+                return self::make(self::IMMUTABLE, ConstantProvider::makeE($scale), $scale);
             }
 
-            return self::make(self::IMMUTABLE, self::E, $precision)->truncateToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::E, $scale)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::E, 100);
@@ -288,24 +288,24 @@ class Numbers
     }
 
     /**
-     * @param int|null $precision
+     * @param int|null $scale
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
      */
-    public static function makeGoldenRatio($precision = null)
+    public static function makeGoldenRatio($scale = null)
     {
 
-        if (!is_null($precision)) {
-            if ($precision > 100 || $precision < 1) {
+        if (!is_null($scale)) {
+            if ($scale > 100 || $scale < 1) {
                 throw new IntegrityConstraint(
-                    '$precision must be between 1 and 100 inclusive',
-                    'Provide a precision within range',
-                    'The Golden Ratio constant cannot have a precision higher than the constant stored (100)'
+                    '$scale must be between 1 and 100 inclusive',
+                    'Provide a scale within range',
+                    'The Golden Ratio constant cannot have a scale higher than the constant stored (100)'
                 );
             }
 
-            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $precision)->truncateToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $scale)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, 100);
@@ -313,24 +313,24 @@ class Numbers
     }
 
     /**
-     * @param int|null $precision
+     * @param int|null $scale
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
      */
-    public static function makeNaturalLog10($precision = null)
+    public static function makeNaturalLog10($scale = null)
     {
 
-        if (!is_null($precision)) {
-            if ($precision > 100 || $precision < 1) {
+        if (!is_null($scale)) {
+            if ($scale > 100 || $scale < 1) {
                 throw new IntegrityConstraint(
-                    '$precision must be between 1 and 100 inclusive',
-                    'Provide a precision within range',
-                    'The natural log of 10 constant cannot have a precision higher than the constant stored (100)'
+                    '$scale must be between 1 and 100 inclusive',
+                    'Provide a scale within range',
+                    'The natural log of 10 constant cannot have a scale higher than the constant stored (100)'
                 );
             }
 
-            return self::make(self::IMMUTABLE, self::LN_10, $precision)->truncateToPrecision($precision);
+            return self::make(self::IMMUTABLE, self::LN_10, $scale)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::LN_10, 100);
@@ -338,25 +338,25 @@ class Numbers
     }
 
     /**
-     * @param int|null $precision
+     * @param int|null $scale
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function makeOne($precision = null)
+    public static function makeOne($scale = null)
     {
-        return self::make(self::IMMUTABLE, 1, $precision);
+        return self::make(self::IMMUTABLE, 1, $scale);
     }
 
     /**
-     * @param int|null $precision
+     * @param int|null $scale
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function makeZero($precision = null)
+    public static function makeZero($scale = null)
     {
-        return self::make(self::IMMUTABLE, 0, $precision);
+        return self::make(self::IMMUTABLE, 0, $scale);
     }
 
     public static function getDefaultCalcMode(): int

@@ -33,12 +33,12 @@ class StatsProvider
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        $precision = $x->getPrecision();
-        $internalPrecision = $precision+2;
+        $scale = $x->getScale();
+        $internalScale = $scale+2;
 
-        $pi = Numbers::makePi($internalPrecision);
-        $e = Numbers::makeE($internalPrecision);
-        $one = Numbers::makeOne($internalPrecision);
+        $pi = Numbers::makePi($internalScale);
+        $e = Numbers::makeE($internalScale);
+        $one = Numbers::makeOne($internalScale);
 
         $eExponent = Numbers::make(Numbers::IMMUTABLE, $x->getValue());
         $eExponent = $eExponent->pow(2)->divide(2)->multiply(-1);
@@ -59,11 +59,11 @@ class StatsProvider
                         return SequenceProvider::nthOddNumber($n)->doubleFactorial();
                     },
                     0,
-                    $internalPrecision
+                    $internalScale
                 ))
         );
 
-        return $answer->truncateToPrecision($precision);
+        return $answer->truncateToScale($scale);
 
     }
 
@@ -94,11 +94,11 @@ class StatsProvider
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        $precision = $x->getPrecision();
-        $internalPrecision = $precision + 2;
+        $scale = $x->getScale();
+        $internalScale = $scale + 2;
 
-        $answer = Numbers::makeOne($internalPrecision);
-        $pi = Numbers::makePi($internalPrecision);
+        $answer = Numbers::makeOne($internalScale);
+        $pi = Numbers::makePi($internalScale);
 
         $answer = $answer->multiply(2)->divide($pi->sqrt());
 
@@ -119,33 +119,33 @@ class StatsProvider
                     return $n->factorial()->multiply(SequenceProvider::nthOddNumber($n->asInt()));
                 },
                 0,
-                $internalPrecision
+                $internalScale
             )
         );
 
-        return $answer->truncateToPrecision($precision);
+        return $answer->truncateToScale($scale);
 
     }
 
     /**
      * @param     $p
-     * @param int $precision
+     * @param int $scale
      *
      * @return DecimalInterface|NumberInterface|ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
      */
-    public static function inverseNormalCDF($p, int $precision = 10): ImmutableDecimal
+    public static function inverseNormalCDF($p, int $scale = 10): ImmutableDecimal
     {
         $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
 
-        $precision = $precision ?? $p->getPrecision();
-        $internalPrecision = $precision + 2;
+        $scale = $scale ?? $p->getScale();
+        $internalScale = $scale + 2;
 
-        $two = Numbers::make(Numbers::IMMUTABLE, 2, $internalPrecision);
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, $internalScale);
         $invErfArg = $two->multiply($p)->subtract(1);
 
-        return StatsProvider::inverseGaussErrorFunction($invErfArg, $internalPrecision)->multiply($two->sqrt($internalPrecision))->roundToPrecision($precision);
+        return StatsProvider::inverseGaussErrorFunction($invErfArg, $internalScale)->multiply($two->sqrt($internalScale))->roundToScale($scale);
     }
 
     /**
@@ -221,22 +221,22 @@ class StatsProvider
 
     /**
      * @param $z
-     * @param int $precision
+     * @param int $scale
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
      * @throws ReflectionException
      */
-    public static function inverseGaussErrorFunction($z, int $precision = 10): ImmutableDecimal
+    public static function inverseGaussErrorFunction($z, int $scale = 10): ImmutableDecimal
     {
 
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
 
-        $precision = $precision ?? $z->getPrecision();
-        $internalPrecision = $precision + 1;
+        $scale = $scale ?? $z->getScale();
+        $internalScale = $scale + 1;
 
-        $pi = Numbers::makePi($internalPrecision);
+        $pi = Numbers::makePi($internalScale);
 
         $answer = SeriesProvider::maclaurinSeries(
             $z,
@@ -260,12 +260,12 @@ class StatsProvider
                 return SequenceProvider::nthOddNumber($n)->multiply($extra);
             },
             0,
-            $internalPrecision
+            $internalScale
         );
 
-        $answer = $answer->multiply($pi->sqrt($internalPrecision)->divide(2, $internalPrecision));
+        $answer = $answer->multiply($pi->sqrt($internalScale)->divide(2, $internalScale));
 
-        return $answer->roundToPrecision($precision);
+        return $answer->roundToScale($scale);
 
     }
 

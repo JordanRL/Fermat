@@ -7,7 +7,7 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticNativeTrait;
-use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticPrecisionTrait;
+use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticScaleTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
 use Samsara\Fermat\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Values\Geometry\CoordinateSystems\PolarCoordinate;
@@ -18,7 +18,7 @@ trait ArithmeticComplexTrait
 {
 
     use ArithmeticSelectionTrait;
-    use ArithmeticPrecisionTrait;
+    use ArithmeticScaleTrait;
     use ArithmeticNativeTrait;
 
     public function add($num)
@@ -121,10 +121,10 @@ trait ArithmeticComplexTrait
 
     }
 
-    public function divide($num, int $precision = null)
+    public function divide($num, int $scale = null)
     {
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
         [
             $thatRealPart,
@@ -135,7 +135,7 @@ trait ArithmeticComplexTrait
         ] = $this->translateToParts($this, $num, 1);
 
         if ($num->isComplex()) {
-            $newRho = $this->getDistanceFromOrigin()->divide($num->getDistanceFromOrigin(), $precision);
+            $newRho = $this->getDistanceFromOrigin()->divide($num->getDistanceFromOrigin(), $scale);
             $newTheta = $this->getPolarAngle()->subtract($num->getPolarAngle());
 
             $polar = new PolarCoordinate($newRho, $newTheta);
@@ -144,8 +144,8 @@ trait ArithmeticComplexTrait
             $newRealPart = $cartesian->getAxis('x');
             $newImaginaryPart = $cartesian->getAxis('y');
         } else {
-            $newRealPart = $thisRealPart->divide($num, $precision);
-            $newImaginaryPart = $thisImaginaryPart->divide($num, $precision);
+            $newRealPart = $thisRealPart->divide($num, $scale);
+            $newImaginaryPart = $thisImaginaryPart->divide($num, $scale);
         }
 
         return $this->setValue($newRealPart, $newImaginaryPart);
@@ -163,8 +163,8 @@ trait ArithmeticComplexTrait
             $num
         ] = $this->translateToParts($this, $num, 1);
 
-        $internalPrecision = ($this->getPrecision() > $num->getPrecision()) ? $this->getPrecision() : $num->getPrecision();
-        $internalPrecision += 5;
+        $internalScale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
+        $internalScale += 5;
 
         /** @var ImmutableDecimal $thisRho */
         $thisRho = $this->getDistanceFromOrigin();
@@ -178,8 +178,8 @@ trait ArithmeticComplexTrait
         /** @var ImmutableDecimal $trigArg */
         $trigArg = $thatImaginaryPart->multiply($thisRho->ln())->add($thatRealPart->multiply($thisTheta));
 
-        $newRealPart = $trigArg->cos($internalPrecision)->multiply($coef);
-        $newImaginaryPart = $trigArg->sin($internalPrecision)->multiply($coef)->multiply('i');
+        $newRealPart = $trigArg->cos($internalScale)->multiply($coef);
+        $newImaginaryPart = $trigArg->sin($internalScale)->multiply($coef)->multiply('i');
 
         if ($newRealPart->absValue() === '0' xor $newImaginaryPart->absValue() === '0') {
             return $newRealPart->absValue() === '0' ? $newRealPart : $newImaginaryPart;
@@ -193,16 +193,16 @@ trait ArithmeticComplexTrait
 
     }
 
-    public function sqrt(int $precision = null)
+    public function sqrt(int $scale = null)
     {
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
         $rho = $this->getDistanceFromOrigin();
         $theta = $this->getPolarAngle();
 
         if (!$rho->isEqual(0)) {
-            $rho = ArithmeticProvider::squareRoot($rho->getAsBaseTenRealNumber(), $precision);
+            $rho = ArithmeticProvider::squareRoot($rho->getAsBaseTenRealNumber(), $scale);
         }
 
         $theta = $theta->divide(2);
@@ -219,7 +219,7 @@ trait ArithmeticComplexTrait
 
         $newValue = $newRealPart->isEqual(0) ? $newImaginaryPart : $newRealPart;
 
-        return new ImmutableDecimal($newValue->getValue(), $precision);
+        return new ImmutableDecimal($newValue->getValue(), $scale);
 
     }
 

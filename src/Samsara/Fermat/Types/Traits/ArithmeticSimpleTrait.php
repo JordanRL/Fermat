@@ -10,7 +10,7 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
-use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticPrecisionTrait;
+use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticScaleTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticNativeTrait;
 use Samsara\Fermat\Values\ImmutableComplexNumber;
@@ -21,7 +21,7 @@ trait ArithmeticSimpleTrait
 {
 
     use ArithmeticSelectionTrait;
-    use ArithmeticPrecisionTrait;
+    use ArithmeticScaleTrait;
     use ArithmeticNativeTrait;
 
     public function add($num)
@@ -180,7 +180,7 @@ trait ArithmeticSimpleTrait
 
             $value = $this->asDecimal()->multiply($num);
 
-            return new ImmutableDecimal($value, $this->getPrecision());
+            return new ImmutableDecimal($value, $this->getScale());
         }
 
         $value = $this->multiplySelector($num);
@@ -194,9 +194,9 @@ trait ArithmeticSimpleTrait
         return $this->setValue($value);
     }
 
-    public function divide($num, ?int $precision = null)
+    public function divide($num, ?int $scale = null)
     {
-        $precision = is_null($precision) ? $this->getPrecision() : $precision;
+        $scale = is_null($scale) ? $this->getScale() : $scale;
 
         [
             $thatRealPart,
@@ -229,12 +229,12 @@ trait ArithmeticSimpleTrait
                 );
             }
 
-            $value = $this->asDecimal($precision)->divide($num);
+            $value = $this->asDecimal($scale)->divide($num);
 
-            return new ImmutableDecimal($value, $precision);
+            return new ImmutableDecimal($value, $scale);
         }
 
-        $value = $this->divideSelector($num, $precision);
+        $value = $this->divideSelector($num, $scale);
 
         if ($this->isImaginary()) {
             $value .= 'i';
@@ -282,13 +282,13 @@ trait ArithmeticSimpleTrait
         return $this->setValue($value);
     }
 
-    public function sqrt(?int $precision = null)
+    public function sqrt(?int $scale = null)
     {
-        $precision = is_null($precision) ? $this->getPrecision() : $precision;
+        $scale = is_null($scale) ? $this->getScale() : $scale;
 
         if ($this instanceof FractionInterface) {
-            $numerator = $this->getNumerator()->sqrt($precision);
-            $denominator = $this->getDenominator()->sqrt($precision);
+            $numerator = $this->getNumerator()->sqrt($scale);
+            $denominator = $this->getDenominator()->sqrt($scale);
 
             if ($numerator->isWhole() && $denominator->isWhole()) {
                 return $this->setValue($numerator, $denominator);
@@ -296,14 +296,14 @@ trait ArithmeticSimpleTrait
 
             $value = $numerator->divide($denominator);
         } else {
-            $value = $this->sqrtSelector($precision);
+            $value = $this->sqrtSelector($scale);
         }
 
         if ($this->isImaginary()) {
             $value .= 'i';
         }
 
-        return ($this instanceof DecimalInterface) ? $this->setValue($value) : new ImmutableDecimal($value, $precision);
+        return ($this instanceof DecimalInterface) ? $this->setValue($value) : new ImmutableDecimal($value, $scale);
     }
 
 }

@@ -52,7 +52,6 @@ trait ArithmeticSelectionTrait
                 $right = !($right instanceof NumberInterface) ? Numbers::makeOrDont(Numbers::IMMUTABLE, $right) : $right;
                 break;
         }
-        /** @var DecimalInterface|ComplexNumberInterface|FractionInterface $right */
 
         [$thatRealPart, $thatImaginaryPart, $right] = self::rightSelector($left, $right, $identity);
 
@@ -73,7 +72,7 @@ trait ArithmeticSelectionTrait
         if (strpos($input, '/') !== false) {
             $input = Numbers::makeFractionFromString(Numbers::IMMUTABLE_FRACTION, $input);
         } elseif (strrpos($input, '+') || strrpos($input, '-')) {
-            $input = ComplexNumbers::make(ComplexNumbers::IMMUTABLE, $input);
+            $input = ComplexNumbers::make(ComplexNumbers::IMMUTABLE_COMPLEX, $input);
         } else {
             $input = Numbers::make(Numbers::IMMUTABLE, $input);
         }
@@ -133,7 +132,7 @@ trait ArithmeticSelectionTrait
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->addPrecision($num);
+                return $this->addScale($num);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -150,7 +149,7 @@ trait ArithmeticSelectionTrait
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->subtractPrecision($num);
+                return $this->subtractScale($num);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -167,7 +166,7 @@ trait ArithmeticSelectionTrait
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->multiplyPrecision($num);
+                return $this->multiplyScale($num);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -180,11 +179,11 @@ trait ArithmeticSelectionTrait
         }
     }
 
-    protected function divideSelector(DecimalInterface $num, int $precision)
+    protected function divideSelector(DecimalInterface $num, int $scale)
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->dividePrecision($num, $precision);
+                return $this->divideScale($num, $scale);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -192,7 +191,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             default:
-                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['divide']}($num, $precision);
+                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['divide']}($num, $scale);
                 break;
         }
     }
@@ -201,7 +200,7 @@ trait ArithmeticSelectionTrait
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->powPrecision($num);
+                return $this->powScale($num);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -214,11 +213,11 @@ trait ArithmeticSelectionTrait
         }
     }
 
-    protected function sqrtSelector(int $precision)
+    protected function sqrtSelector(int $scale)
     {
         switch ($this->calcMode) {
             case Selectable::CALC_MODE_PRECISION:
-                return $this->sqrtPrecision($precision);
+                return $this->sqrtScale($scale);
                 break;
 
             case Selectable::CALC_MODE_NATIVE:
@@ -226,7 +225,7 @@ trait ArithmeticSelectionTrait
                 break;
 
             default:
-                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['sqrt']}($precision);
+                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['sqrt']}($scale);
                 break;
         }
     }

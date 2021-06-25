@@ -11,13 +11,13 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 trait InverseTrigonometryTrait
 {
 
-    public function arcsin($precision = null, $round = true): DecimalInterface
+    public function arcsin($scale = null, $round = true): DecimalInterface
     {
 
-        $precision = $precision ?? $this->getPrecision();
-        $precision += 2;
+        $scale = $scale ?? $this->getScale();
+        $scale += 2;
         $pi = Numbers::makePi();
-        $piDivTwo = $pi->divide(2, $precision+2);
+        $piDivTwo = $pi->divide(2, $scale+2);
 
         if ($this->isEqual(1) || $this->isEqual(-1)) {
             $answer = $piDivTwo;
@@ -27,8 +27,8 @@ trait InverseTrigonometryTrait
         } elseif ($this->isEqual(0)) {
             $answer = Numbers::makeZero();
         } else {
-            $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision + 2);
-            $one = Numbers::makeOne($precision+2);
+            $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale + 2);
+            $one = Numbers::makeOne($scale+2);
 
             if ($z->abs()->isGreaterThan(1)) {
                 throw new IntegrityConstraint(
@@ -44,41 +44,41 @@ trait InverseTrigonometryTrait
 
             do {
                 $answer = $answer->subtract(
-                    $answer->sin($precision)->subtract($z)->divide($answer->cos($precision), $precision)
+                    $answer->sin($scale)->subtract($z)->divide($answer->cos($scale), $scale)
                 );
                 $diff = $answer->subtract($prevAnswer)->abs();
                 $prevAnswer = $answer;
                 $count++;
-            } while ($diff->numberOfLeadingZeros() <= $precision && $count < 15);
+            } while ($diff->numberOfLeadingZeros() <= $scale && $count < 15);
 
 
         }
         if ($round) {
-            $answer = $answer->roundToPrecision($precision-2);
+            $answer = $answer->roundToScale($scale-2);
         } else {
-            $answer = $answer->truncateToPrecision($precision-2);
+            $answer = $answer->truncateToScale($scale-2);
         }
 
         return $this->setValue($answer);
 
     }
 
-    public function arccos($precision = null, $round = true): DecimalInterface
+    public function arccos($scale = null, $round = true): DecimalInterface
     {
 
-        $precision = $precision ?? $this->getPrecision();
-        $pi = Numbers::makePi($precision+2);
-        $piDivTwo = $pi->divide(2, $precision+2);
+        $scale = $scale ?? $this->getScale();
+        $pi = Numbers::makePi($scale+2);
+        $piDivTwo = $pi->divide(2, $scale+2);
 
         if ($this->isEqual(-1)) {
-            $answer = Numbers::makePi($precision+1);
+            $answer = Numbers::makePi($scale+1);
         } elseif ($this->isEqual(0)) {
             $answer = $piDivTwo;
         } elseif ($this->isEqual(1)) {
             $answer = Numbers::makeZero();
         } else {
-            $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision + 2);
-            $one = Numbers::makeOne($precision + 2);
+            $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale + 2);
+            $one = Numbers::makeOne($scale + 2);
 
             if ($z->abs()->isGreaterThan(1)) {
                 throw new IntegrityConstraint(
@@ -88,71 +88,71 @@ trait InverseTrigonometryTrait
                 );
             }
 
-            $answer = $piDivTwo->subtract($z->arcsin($precision+2));
+            $answer = $piDivTwo->subtract($z->arcsin($scale+2));
         }
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer);
 
     }
 
-    public function arctan($precision = null, $round = true): DecimalInterface
+    public function arctan($scale = null, $round = true): DecimalInterface
     {
 
-        $precision = $precision ?? $this->getPrecision();
-        $precision += 5;
+        $scale = $scale ?? $this->getScale();
+        $scale += 5;
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
         $one = Numbers::makeOne();
 
-        $answer = $z->divide($one->add($z->pow(2))->sqrt($precision), $precision)->arcsin($precision);
+        $answer = $z->divide($one->add($z->pow(2))->sqrt($scale), $scale)->arcsin($scale);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision-5);
+            $answer = $answer->roundToScale($scale-5);
         } else {
-            $answer = $answer->truncateToPrecision($precision-5);
+            $answer = $answer->truncateToScale($scale-5);
         }
 
         return $this->setValue($answer);
 
     }
 
-    public function arccot($precision = null, $round = true): DecimalInterface
+    public function arccot($scale = null, $round = true): DecimalInterface
     {
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
-        $piDivTwo = Numbers::makePi($precision + 2)->divide(2, $precision + 2);
+        $piDivTwo = Numbers::makePi($scale + 2)->divide(2, $scale + 2);
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision + 2);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale + 2);
 
-        $arctan = $z->arctan($precision+2, false);
+        $arctan = $z->arctan($scale+2, false);
 
         $answer = $piDivTwo->subtract($arctan);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer);
 
     }
 
-    public function arcsec($precision = null, $round = true): DecimalInterface
+    public function arcsec($scale = null, $round = true): DecimalInterface
     {
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
-        $one = Numbers::makeOne($precision + 2);
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+2);
+        $one = Numbers::makeOne($scale + 2);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
 
         if ($z->abs()->isLessThan(1)) {
             throw new IntegrityConstraint(
@@ -162,25 +162,25 @@ trait InverseTrigonometryTrait
             );
         }
 
-        $answer = $one->divide($z, $precision + 2)->arccos($precision + 2);
+        $answer = $one->divide($z, $scale + 2)->arccos($scale + 2);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer);
 
     }
 
-    public function arccsc($precision = null, $round = true): DecimalInterface
+    public function arccsc($scale = null, $round = true): DecimalInterface
     {
 
-        $precision = $precision ?? $this->getPrecision();
+        $scale = $scale ?? $this->getScale();
 
-        $one = Numbers::makeOne($precision + 2);
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $precision+2);
+        $one = Numbers::makeOne($scale + 2);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
 
         if ($z->abs()->isLessThan(1)) {
             throw new IntegrityConstraint(
@@ -190,22 +190,22 @@ trait InverseTrigonometryTrait
             );
         }
 
-        $answer = $one->divide($z, $precision + 2)->arcsin($precision + 2);
+        $answer = $one->divide($z, $scale + 2)->arcsin($scale + 2);
 
         if ($round) {
-            $answer = $answer->roundToPrecision($precision);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToPrecision($precision);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer);
 
     }
 
-    abstract public function roundToPrecision($precision): DecimalInterface;
+    abstract public function roundToScale($scale): DecimalInterface;
 
-    abstract public function truncateToPrecision($precision): DecimalInterface;
+    abstract public function truncateToScale($scale): DecimalInterface;
 
-    abstract public function getPrecision(): ?int;
+    abstract public function getScale(): ?int;
 
 }
