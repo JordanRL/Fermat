@@ -79,7 +79,9 @@ class Normal extends Distribution
         $e = Numbers::makeE();
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
+        // $left = 1 / ( sqrt(2pi * SD^2) )
         $left = $one->divide($twoPi->multiply($this->getSD()->pow(2))->sqrt());
+        // $right = e^( -1*((x - SD)^2)/(2*SD^2) )
         $right = $e->pow($x->subtract($this->getMean())->pow(2)->divide($this->getSD()->pow(2)->multiply(2))->multiply(-1));
 
         /** @var ImmutableDecimal $value */

@@ -9,8 +9,7 @@
     "riimu/kit-baseconversion": "^1",
     "samsara/common": "^1",
     "php-ds/php-ds": "^1.1",
-    "php": ">=7.3.0",
-    "ext-bcmath": "*"
+    "php": ">=7.3.0"
   },
   "require-dev": {
     "phpunit/phpunit": "9.*"
