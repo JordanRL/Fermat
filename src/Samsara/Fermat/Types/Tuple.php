@@ -12,12 +12,12 @@ class Tuple
     /**
      * @var int
      */
-    private $size;
+    private int $size;
 
     /**
      * @var ImmutableDecimal[]
      */
-    private $data;
+    private array $data;
 
 
     public function __construct(...$data)
@@ -30,7 +30,7 @@ class Tuple
     }
 
     /**
-     * @param $index
+     * @param int $index
      *
      * @return ImmutableDecimal
      *@throws IncompatibleObjectState
@@ -49,9 +49,9 @@ class Tuple
      * @param ImmutableDecimal $value
      *
      * @return $this
-     *@throws IncompatibleObjectState
+     * @throws IncompatibleObjectState
      */
-    public function set(int $index, ImmutableDecimal $value)
+    public function set(int $index, ImmutableDecimal $value): self
     {
         if ($this->hasIndex($index)) {
             $this->data[$index] = $value;

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Comparing Values - Fermat - PHP Math Library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  <link href="../css/custom.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Comparing Values";
+    var mkdocs_page_input_path = "getting-started/comparing.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/php.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="icon icon-home"> Fermat - PHP Math Library</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Getting Started</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="concepts.html">Concepts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="installation-and-usage.html">Installation & Usage</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="mutability.html">Mutable vs. Immutable</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="using-factories.html">Using The Factories</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="direct-instantiation.html">Direct Instantiation</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="comparing.html">Comparing Values</a>
+    <ul class="current">
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="calculation-modes.html">Calculation Modes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="exceptions.html">Handling Exceptions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Types & Values</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../types-and-values/decimals.html">Decimals</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../types-and-values/fractions.html">Fractions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../types-and-values/complex.html">Complex Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../types-and-values/coordinates.html">Coordinates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../types-and-values/matrices.html">Matrices</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../types-and-values/collections.html">Collections</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../types-and-values/expressions.html">Expressions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Arithmetic</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../arithmetic/traits.html">Built In Traits</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../arithmetic/simple.html">Simple Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../arithmetic/complex.html">Complex Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../arithmetic/matrices.html">Matrices</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Trigonometry</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../trigonometry/traits.html">Built In Traits</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../trigonometry/basic.html">Basic Trig Functions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../trigonometry/inverse.html">Inverse Trig Functions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../trigonometry/hyperbolic.html">Hyperbolic Trig Functions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Statistics</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../statistics/included.html">Built In Distributions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../statistics/distributions.html">Using Distributions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../statistics/static-methods.html">Using Static Methods</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Extending</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="../extending/abstracts.md">Abstract Classes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">REFERENCE</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Interfaces</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/interfaces/numbers.html">Numbers</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/interfaces/groups.html">Groups</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/interfaces/coordinates.html">Coordinates</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/interfaces/evaluateables.html">Evaluateables</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reference/interfaces/characteristics.html">Characteristics</a>
+                </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Providers</a>
+    <ul>
+                <li class="toctree-l2"><a class="" href="../reference/providers/arithmetic.md">Arithmetic</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../reference/providers/constant.md">Constant</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../reference/providers/polyfill.md">Polyfill</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../reference/providers/sequence.md">Sequence</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../reference/providers/series.md">Series</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../reference/providers/stats.md">Stats</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../reference/providers/trigonometry.md">Trigonometry</a>
+                </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Distributions</a>
+    <ul>
+                <li class="toctree-l2"><a class="" href="../reference/distributions/normal.md">Normal</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../reference/distributions/poisson.md">Poisson</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../reference/distributions/exponential.md">Exponential</a>
+                </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Fermat - PHP Math Library</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Getting Started &raquo;</li>
+        
+      
+    
+    <li>Comparing Values</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/JordanRL/Fermat/edit/master/docs/getting-started/comparing.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="limitations-of-native-inequality-operators">Limitations of Native Inequality Operators</h1>
+<p>For values that cannot be represented as an <code>integer</code> or <code>float</code> accurately, using the native inequality operators will result in erroneous results. In some cases, this might also result in underflow and overflow of the native types.</p>
+<p>Because of this, all comparisons, including equality comparisons which would normally be <code>==</code> or <code>===</code> in PHP, should be performed using the comparison methods provided on all objects which extend the <code>Number</code> abstract class.</p>
+<div class="admonition warning">
+<p class="admonition-title">Complex Number Limitations</p>
+<p>The <code>ComplexNumber</code> abstract class, and all of its child classes, only implement the <code>isEqual()</code> method. This is because inequality is poorly defined for complex numbers. There is no sensible and consistent way to evaluate the statement <code>(2+2i) &gt;= (1+1i)</code>, even though one might expect this to return true.</p>
+<p>The issue is that the inequality methods must return a <code>boolean</code>, and even in the cases where it might be argued that either the <code>true</code> case or <code>false</code> case is well-defined, the opposite case is always ambiguous under any definition of inequality for complex numbers.</p>
+<p>This makes the return values of such statements meaningless in the context of complex numbers.</p>
+</div>
+<div class="admonition potential-bugs">
+<p class="admonition-title">You Might Not Expect</p>
+<p>The <code>isEqual()</code> method on the <code>ComplexNumber</code> class and all of its children checks first whether or not the compared value is also a complex number. This means that the following comparison will return <code>false</code>, even though one might expect it to return <code>true</code>:</p>
+<p><code>2+0i == 2</code></p>
+<p>This ambiguity is unlikely to occur in normal usage of the Fermat library, since all math operations which can lead to a zero value for either the real part or the imaginary part will return an instance of <code>ImmutableDecimal</code> instead. The only way to see this behavior is to manually instantiate a complex number with a zero value for one of its parts.</p>
+</div>
+<h1 id="equality">Equality</h1>
+<p>There are two types of equality that can be compared using this library: equality of value, and equality of representation. In virtually all cases equality of value is what is intended, and this is accomplished with the <code>isEqual()</code> method.</p>
+<p>Equality of representation is accomplished with the <code>equals()</code> method, and only returns true if the value being compared has the same value <em>and</em> is an instance of the same class.</p>
+<h6 id="isequalmixed-value">isEqual(mixed $value)</h6>
+<p>Any <code>$value</code> which is a valid input for <code>Numbers::makeOrDont()</code> can be provided here. Returns <code>true</code> if the values are the same, <code>false</code> otherwise.</p>
+<div class="admonition note">
+<p class="admonition-title">Scale Only Affects the Result for Significant Figures</p>
+<p>Two objects with different scale settings will only return <code>false</code> if one of them has significant figures beyond the scale limit of the other.</p>
+<p>For instance, <code>Numbers::makeOne(5)</code> and <code>Numbers::makeOne(10)</code> will return true when compared using this method, even though internally they would be represented by <code>1.00000</code> and <code>1.0000000000</code>.</p>
+</div>
+<h6 id="equalsobject-value">equals(object $value)</h6>
+<p>Returns <code>true</code> if the <code>$value</code> is an instance of the same class <em>and</em> it has the same value, <code>false</code> otherwise.</p>
+<div class="admonition note">
+<p class="admonition-title">Implemented As Part of the Hashable Interface</p>
+<p>As part of integration with the <code>ext-ds</code> extension, this method has been implemented to satisfy the <code>Hashable</code> interface. This is mainly so that objects which are instances of the <code>Number</code> abstract class can be used as array keys.</p>
+</div>
+<h1 id="inequality">Inequality</h1>
+<p>These methods are only available on numbers that implement the <code>SimpleNumberInterface</code>. They are safe to use between different types of classes that implement the <code>SimpleNumberInterface</code>, and will perform the necessary conversions to return an answer.</p>
+<h6 id="isgreaterthanmixed-value-islessthanmixed-value">isGreaterThan(mixed $value); isLessThan(mixed $value)</h6>
+<h6 id="isgreaterthanorequaltomixed-value">isGreaterThanOrEqualTo(mixed $value)</h6>
+<h6 id="islessthanorequaltomixed-value">isLessThanOrEqualTo(mixed $value)</h6>
+<p>Any <code>$value</code> which is a valid input for <code>Numbers::makeOrDont()</code> can be provided to these methods. They are analogous to the corresponding comparison operators in PHP, but are safe to use with the arbitrary scale values found in this library.</p>
+<h1 id="sorting-comparison">Sorting Comparison &lt;=&gt;</h1>
+<p>The spaceship operator <code>&lt;=&gt;</code>, which returns <code>1</code>, <code>0</code>, or <code>-1</code> to provide sorting order information, would result in many of the same issues described for the <code>isEqual()</code> method. This is handled internally by the BCMath extension.</p>
+<h6 id="comparemixed-value">compare(mixed $value)</h6>
+<p>Any <code>$value</code> which is a valid input for <code>Numbers::makeOrDont()</code> can be provided to this method. Returns <code>1</code> if the current object is greater than <code>$value</code>, <code>0</code> if they are equal, and <code>-1</code> if the current object is less than <code>$value</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Internally Referenced By Other Comparisons</p>
+<p>All other comparison methods reference this method. This ensures that any return values of all possible comparison methods will remain consistent with each other no matter what implementation of <code>compare()</code> is used.</p>
+<p>The only exception is <code>ComplexNumber</code>, which implements <code>isEqual()</code> but not <code>compare()</code>.</p>
+</div>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="calculation-modes.html" class="btn btn-neutral float-right" title="Calculation Modes">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="direct-instantiation.html" class="btn btn-neutral" title="Direct Instantiation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/JordanRL/Fermat/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="direct-instantiation.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="calculation-modes.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

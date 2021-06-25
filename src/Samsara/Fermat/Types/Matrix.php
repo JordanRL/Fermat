@@ -118,6 +118,9 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
+     * This function takes an input scalar value and multiplies an identity matrix by that scalar, then does matrix
+     * addition with the resulting matrix.
+     *
      * @param NumberInterface $value
      * @return MatrixInterface
      * @throws IntegrityConstraint
@@ -139,6 +142,8 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
+     * This function takes a scalar input value and adds that value to each position in the matrix directly.
+     *
      * @param NumberInterface $value
      * @return MatrixInterface
      * @throws IntegrityConstraint
@@ -290,6 +295,9 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
+     * This function returns a subset of the current matrix as a new matrix with one row and one column removed
+     * from the dataset.
+     *
      * @param int $excludeRow
      * @param int $excludeColumn
      * @param bool $forceNewMatrix
@@ -314,6 +322,9 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
+     * This function takes an input of rows or columns and returns the dataset formatted in the opposite type
+     * of input.
+     *
      * @param NumberCollection[] $data
      *
      * @return NumberCollection[]
@@ -322,7 +333,7 @@ abstract class Matrix implements MatrixInterface
     {
         $swappedArray = [];
 
-        foreach ($data as $key => $value) {
+        foreach ($data as $value) {
             foreach ($value->toArray() as $subKey => $subValue) {
                 if (!isset($swappedArray[$subKey])) {
                     $swappedArray[$subKey] = new NumberCollection();

@@ -8,12 +8,11 @@
     "ircmaxell/random-lib": "^1.1",
     "riimu/kit-baseconversion": "^1",
     "samsara/common": "^1",
-    "php-ds/php-ds": "^1.1",
-    "php": ">=7.3.0",
-    "ext-bcmath": "*"
+    "php": ">=8.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "9.*"
+    "phpunit/phpunit": "9.*",
+    "php-ds/php-ds": "^1.1"
   },
   "suggest": {
     "ext-gmp": "*",
