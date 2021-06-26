@@ -15,13 +15,13 @@ abstract class Number implements Hashable, NumberInterface
     public const NEG_INFINITY = '-INF';
 
     /** @var array */
-    protected $value;
+    protected array $value;
     /** @var bool  */
     protected $extensions = true;
     /** @var bool  */
     protected $imaginary;
     /** @var bool */
-    protected $sign;
+    protected bool $sign;
 
     public function __construct()
     {

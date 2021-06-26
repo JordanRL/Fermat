@@ -3,6 +3,25 @@
   "type": "library",
   "description": "A library providing math and statistics operations for numbers of arbitrary size.",
   "keywords": ["math", "bigint", "large numbers", "numbers", "stats", "statistics", "gaussian", "poisson"],
+  "homepage": "https://jordanrl.github.io/Fermat/",
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/JordanRL"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/JordanRL/Fermat/issues",
+    "docs": "https://jordanrl.github.io/Fermat/",
+    "source": "https://github.com/JordanRL/Fermat"
+  },
+  "authors": [
+    {
+      "name": "Jordan LeDoux",
+      "homepage": "https://github.com/JordanRL",
+      "role": "Developer"
+    }
+  ],
   "license": "GPL-2.0-or-later",
   "require": {
     "ircmaxell/random-lib": "^1.1",
