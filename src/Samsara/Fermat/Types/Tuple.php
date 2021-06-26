@@ -12,12 +12,12 @@ class Tuple
     /**
      * @var int
      */
-    private $size;
+    private int $size;
 
     /**
      * @var ImmutableDecimal[]
      */
-    private $data;
+    private array $data;
 
 
     public function __construct(...$data)
@@ -30,7 +30,7 @@ class Tuple
     }
 
     /**
-     * @param $index
+     * @param int $index
      *
      * @return ImmutableDecimal
      *@throws IncompatibleObjectState
@@ -41,7 +41,11 @@ class Tuple
             return $this->data[$index];
         }
 
-        throw new IncompatibleObjectState('Requested index '.$index.' is unset in tuple');
+        throw new IncompatibleObjectState(
+            'An index must be set on a tuple before it can be retrieved.',
+            'Only request indexes that exist on the tuple you are using.',
+            'Requested index '.$index.' is unset in tuple.'
+        );
     }
 
     /**
@@ -49,9 +53,9 @@ class Tuple
      * @param ImmutableDecimal $value
      *
      * @return $this
-     *@throws IncompatibleObjectState
+     * @throws IncompatibleObjectState
      */
-    public function set(int $index, ImmutableDecimal $value)
+    public function set(int $index, ImmutableDecimal $value): self
     {
         if ($this->hasIndex($index)) {
             $this->data[$index] = $value;
@@ -59,7 +63,11 @@ class Tuple
             return $this;
         }
 
-        throw new IncompatibleObjectState('Cannot set value for index '.$index.' that does not exist in tuple');
+        throw new IncompatibleObjectState(
+            'Tuples cannot create new indexes after construction.',
+            'Only set values for indexes that already exist. To add an index, create a new tuple.',
+            'Cannot set value for index '.$index.' that does not exist in tuple.'
+        );
     }
 
     public function all(): array

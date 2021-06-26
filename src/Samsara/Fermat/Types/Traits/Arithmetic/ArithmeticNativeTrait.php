@@ -8,20 +8,6 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 trait ArithmeticNativeTrait
 {
 
-    protected function arithmeticNativeMap()
-    {
-
-        return [
-            'add' => 'addNative',
-            'subtract' => 'subtractNative',
-            'divide' => 'divideNative',
-            'multiply' => 'multiplyNative',
-            'pow' => 'powNative',
-            'sqrt' => 'sqrtNative',
-        ];
-
-    }
-
     /**
      * @param DecimalInterface $num
      * @return float|int
@@ -37,9 +23,7 @@ trait ArithmeticNativeTrait
         $right = self::translateToNative($num);
 
         $value = $left + $right;
-        $value = (string)$value;
-
-        return $value;
+        return (string)$value;
     }
 
     protected function subtractNative(DecimalInterface $num)
@@ -48,9 +32,7 @@ trait ArithmeticNativeTrait
         $right = self::translateToNative($num);
 
         $value = $left - $right;
-        $value = (string)$value;
-
-        return $value;
+        return (string)$value;
     }
 
     protected function multiplyNative(DecimalInterface $num)
@@ -59,9 +41,7 @@ trait ArithmeticNativeTrait
         $right = self::translateToNative($num);
 
         $value = $left * $right;
-        $value = (string)$value;
-
-        return $value;
+        return (string)$value;
     }
 
     protected function divideNative(DecimalInterface $num)
@@ -70,9 +50,7 @@ trait ArithmeticNativeTrait
         $right = self::translateToNative($num);
 
         $value = $left / $right;
-        $value = (string)$value;
-
-        return $value;
+        return (string)$value;
     }
 
     protected function powNative(DecimalInterface $num)
@@ -81,17 +59,13 @@ trait ArithmeticNativeTrait
         $right = self::translateToNative($num);
 
         $value = pow($left, $right);
-        $value = (string)$value;
-
-        return $value;
+        return (string)$value;
     }
 
     protected function sqrtNative()
     {
         $value = sqrt($this->asFloat());
-        $value = (string)$value;
-
-        return $value;
+        return (string)$value;
     }
 
 }

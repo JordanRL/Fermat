@@ -2,6 +2,8 @@
 
 namespace Samsara\Fermat\Types;
 
+use Composer\InstalledVersions;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
@@ -21,7 +23,7 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
     /**
      * @var Vector
      */
-    private $collection;
+    private Vector $collection;
 
     /**
      * NumberCollection constructor.
@@ -308,10 +310,18 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
 
     /**
      * @return Normal
-     * @throws IntegrityConstraint
+     * @throws IntegrityConstraint|MissingPackage
      */
     public function makeNormalDistribution(): Normal
     {
+        if (!(InstalledVersions::isInstalled("samsara/fermat-stats"))) {
+            throw new MissingPackage(
+                'Creating distributions is unsupported in Fermat without modules.',
+                'Install the samsara/fermat-stats package using composer.',
+                'An attempt was made to create a Distribution instance without having the Stats module. Please install the samsara/fermat-stats package using composer.'
+            );
+        }
+
         /** @var ImmutableDecimal $mean */
         $mean = $this->mean();
 
@@ -333,10 +343,18 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
 
     /**
      * @return Poisson
-     * @throws IntegrityConstraint
+     * @throws IntegrityConstraint|MissingPackage
      */
     public function makePoissonDistribution(): Poisson
     {
+        if (!(InstalledVersions::isInstalled("samsara/fermat-stats"))) {
+            throw new MissingPackage(
+                'Creating distributions is unsupported in Fermat without modules.',
+                'Install the samsara/fermat-stats package using composer.',
+                'An attempt was made to create a Distribution instance without having the Stats module. Please install the samsara/fermat-stats package using composer.'
+            );
+        }
+
         $sum = $this->sum();
 
         $events = Numbers::make(Numbers::IMMUTABLE, $this->getCollection()->count());
@@ -348,10 +366,18 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
 
     /**
      * @return Exponential
-     * @throws IntegrityConstraint
+     * @throws IntegrityConstraint|MissingPackage
      */
     public function makeExponentialDistribution(): Exponential
     {
+        if (!(InstalledVersions::isInstalled("samsara/fermat-stats"))) {
+            throw new MissingPackage(
+                'Creating distributions is unsupported in Fermat without modules.',
+                'Install the samsara/fermat-stats package using composer.',
+                'An attempt was made to create a Distribution instance without having the Stats module. Please install the samsara/fermat-stats package using composer.'
+            );
+        }
+
         $average = $this->mean();
 
         $one = Numbers::makeOne();
@@ -367,6 +393,14 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
      */
     public function makePolynomialFunction(): PolynomialFunction
     {
+        if (!(InstalledVersions::isInstalled("samsara/fermat-algebra-expressions"))) {
+            throw new MissingPackage(
+                'Creating expressions is unsupported in Fermat without modules.',
+                'Install the samsara/fermat-algebra-expressions package using composer.',
+                'An attempt was made to create an Expression instance without having the Algebra Expressions module. Please install the samsara/fermat-algebra-expressions package using composer.'
+            );
+        }
+
 
         $coefs = $this->collection->toArray();
 

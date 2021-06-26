@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Types;
 
 use PHPUnit\Framework\TestCase;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Values\ImmutableDecimal;
@@ -126,11 +127,16 @@ class NumberCollectionTest extends TestCase
 
         $collection = new NumberCollection([1, 2, 3, 4]);
 
-        $normal = $collection->makeNormalDistribution();
-        $poisson = $collection->makePoissonDistribution();
-        $exponential = $collection->makeExponentialDistribution();
+        $this->expectException(MissingPackage::class);
+        $collection->makeNormalDistribution();
 
-        $this->assertEquals('0.6726', $normal->percentAboveX(2)->truncate(4)->getValue());
+        $this->expectException(MissingPackage::class);
+        $collection->makePoissonDistribution();
+
+        $this->expectException(MissingPackage::class);
+        $collection->makeExponentialDistribution();
+
+        //$this->assertEquals('0.6726', $normal->percentAboveX(2)->truncate(4)->getValue());
 
     }
 

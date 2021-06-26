@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Values;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\NumberCollection;
@@ -183,7 +184,7 @@ class ImmutableDecimalTest extends TestCase
         $negativeOne = new ImmutableDecimal(-1);
 
         $this->expectException(IncompatibleObjectState::class);
-        $this->expectExceptionMessage('Cannot make a factorial with a number less than 1 (other than zero)');
+        $this->expectExceptionMessage('Can only perform a factorial on a non-negative number.');
 
         $negativeOne->factorial();
 
@@ -944,25 +945,11 @@ class ImmutableDecimalTest extends TestCase
     public function testImaginaryAdd()
     {
 
-        $zero = Numbers::makeZero(5);
         $one = new ImmutableDecimal(1);
         $oneI = new ImmutableDecimal('1i');
-        $two = new ImmutableDecimal(2);
-        $twoI = new ImmutableDecimal('2i');
 
-        $this->assertEquals('1+1i', $one->add($oneI)->getValue());
-        $this->assertEquals('2+2i', $twoI->add($two)->getValue());
-
-        $onePointFive = new ImmutableDecimal('1.5');
-        $onePointFiveI = new ImmutableDecimal('1.5i');
-
-        $this->assertEquals('1.5+1.5i', $onePointFive->add($onePointFiveI)->getValue());
-        $this->assertEquals('1.5', $onePointFiveI->getAsBaseTenRealNumber());
-
-        $this->assertEquals('3i', $twoI->add($oneI)->getValue());
-
-        $this->assertEquals('1.5i', $onePointFiveI->add($zero)->getValue());
-        $this->assertEquals('1.5i', $zero->add($onePointFiveI)->getValue());
+        $this->expectException(MissingPackage::class);
+        $one->add($oneI);
 
     }
 
@@ -974,29 +961,11 @@ class ImmutableDecimalTest extends TestCase
     public function testImaginarySubtract()
     {
 
-        $zero = Numbers::makeZero(5);
         $one = new ImmutableDecimal(1);
         $oneI = new ImmutableDecimal('1i');
-        $two = new ImmutableDecimal(2);
-        $twoI = new ImmutableDecimal('2i');
 
-        $this->assertEquals('1-1i', $one->subtract($oneI)->getValue());
-        $this->assertEquals('-2+2i', $twoI->subtract($two)->getValue());
-
-        $onePointFive = new ImmutableDecimal('1.5');
-        $onePointFiveI = new ImmutableDecimal('1.5i');
-
-        $this->assertEquals('1.5-1.5i', $onePointFive->subtract($onePointFiveI)->getValue());
-        $this->assertEquals('1.5', $onePointFiveI->getAsBaseTenRealNumber());
-
-        $answer = $twoI->subtract($oneI);
-
-        $this->assertTrue($answer->isImaginary());
-
-        $this->assertEquals('1i', $answer->getValue());
-
-        $this->assertEquals('1.5i', $onePointFiveI->subtract($zero)->getValue());
-        $this->assertEquals('-1.5i', $zero->subtract($onePointFiveI)->getValue());
+        $this->expectException(MissingPackage::class);
+        $one->subtract($oneI);
 
     }
 

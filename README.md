@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/JordanRL/Fermat.svg?branch=master)](https://travis-ci.org/JordanRL/Fermat) [![Code Coverage](https://scrutinizer-ci.com/g/JordanRL/Fermat/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/JordanRL/Fermat/?branch=master) [![Latest Stable Version](https://poser.pugx.org/samsara/fermat/v/stable)](https://packagist.org/packages/samsara/fermat) [![Total Downloads](https://poser.pugx.org/samsara/fermat/downloads)](https://packagist.org/packages/samsara/fermat) [![Latest Unstable Version](https://poser.pugx.org/samsara/fermat/v/unstable)](https://packagist.org/packages/samsara/fermat) [![License](https://poser.pugx.org/samsara/fermat/license)](https://packagist.org/packages/samsara/fermat)
 
-**This project is unit tested against 7.2+, and merges are not accepted unless the tests pass.**
+**This project is unit tested against 8.0, and merges are not accepted unless the tests pass.**
 
 ## Installation
 
@@ -21,6 +21,16 @@ Or include it in your `composer.json` file:
 ```
 
 The project namespace is `Samsara\Fermat\*`. You can view the project on [Packagist](https://packagist.org/packages/samsara/fermat).
+
+### Modules
+
+Modules for Fermat provide additional functionality, as many of these features would be unused by most people. **NOTE:** Prior to v2.0, much of this functionality was included in this package:
+
+- [Algebra Expressions](https://github.com/SamsaraLabs/FermatAlgebraExpressions): Provides support for algebraic expressions such as polynomials and functions.
+- [Complex Numbers](https://github.com/SamsaraLabs/FermatComplexNumbers): Provides complex numbers and enables additional features in Decimal instances.
+- [Coordinate Systems](https://github.com/SamsaraLabs/FermatCoordinateSystems): Provides coordinate systems for cartesian, spherical, polar, and cylindrical coordinates.
+- [Matrices & Vectors](https://github.com/SamsaraLabs/FermatMatricesAndVectors): Provides support for matrix math and vector math.
+- [Statistics](https://github.com/SamsaraLabs/FermatStats): Provides support for statistical operations and distributions.
 
 ## Documentation
 
@@ -73,7 +83,7 @@ echo $oneQuarter->add($five); // Prints: "21/4"
 // Calls getValue() on $five and instantiates a new ImmutableFraction
 ```
 
-You can read the full documentation for Fermat [here](https://github.com/JordanRL/Fermat/wiki/01.-Introduction).
+You can read the full documentation for Fermat [here](https://jordanrl.github.io/Fermat/).
 
 ## Contributing
 

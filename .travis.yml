@@ -1,7 +1,6 @@
 language: php
 php:
-  - 7.3
-  - 7.4
+  - 8.0
 
 install:
   - composer update
@@ -14,5 +13,4 @@ script:
   - php vendor/bin/phpunit
 
 after_success:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover build/logs/coverage.clover
+  - php vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/coverage.clover

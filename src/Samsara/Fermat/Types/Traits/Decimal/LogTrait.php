@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Types\Traits\Decimal;
 
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
@@ -40,12 +41,14 @@ trait LogTrait
     }
 
     /**
-     * @param int|null $scale The number of digits which should be accurate
+     * @param null $scale The number of digits which should be accurate
      * @param bool $round Whether or not to round to the $scale value. If true, will round. If false, will truncate.
      *
-     * @return DecimalInterface|NumberInterface
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
      */
-    public function ln($scale = null, $round = true): DecimalInterface
+    public function ln($scale = null, bool $round = true): DecimalInterface
     {
         /*
         if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX) && $scale <= 10) {
@@ -114,7 +117,7 @@ trait LogTrait
      * @param null $scale
      * @param bool $round
      * @return mixed
-     * @throws IntegrityConstraint
+     * @throws IntegrityConstraint|MissingPackage
      */
     public function log10($scale = null, $round = true): DecimalInterface
     {

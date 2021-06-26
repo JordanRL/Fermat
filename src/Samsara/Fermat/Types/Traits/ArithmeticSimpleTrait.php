@@ -3,8 +3,10 @@
 
 namespace Samsara\Fermat\Types\Traits;
 
+use Composer\InstalledVersions;
 use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Fermat\ComplexNumbers;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
@@ -43,6 +45,14 @@ trait ArithmeticSimpleTrait
         }
 
         if ($this->isReal() xor $num->isReal()) {
+            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers"))) {
+                throw new MissingPackage(
+                    'Creating complex numbers is unsupported in Fermat without modules.',
+                    'Install the samsara/fermat-complex-numbers package using composer.',
+                    'An attempt was made to create a ComplexNumber instance without having the Complex Numbers module. Please install the samsara/fermat-complex-numbers package using composer.'
+                );
+            }
+
             $newRealPart = $thisRealPart->add($thatRealPart);
             $newImaginaryPart = $thisImaginaryPart->add($thatImaginaryPart);
 
@@ -104,6 +114,14 @@ trait ArithmeticSimpleTrait
         }
 
         if ($this->isReal() xor $num->isReal()) {
+            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers"))) {
+                throw new MissingPackage(
+                    'Creating complex numbers is unsupported in Fermat without modules.',
+                    'Install the samsara/fermat-complex-numbers package using composer.',
+                    'An attempt was made to create a ComplexNumber instance without having the Complex Numbers module. Please install the samsara/fermat-complex-numbers package using composer.'
+                );
+            }
+
             $newRealPart = $thisRealPart->subtract($thatRealPart);
             $newImaginaryPart = $thisImaginaryPart->subtract($thatImaginaryPart);
 
@@ -254,6 +272,14 @@ trait ArithmeticSimpleTrait
         ] = $this->translateToParts($this, $num, 1);
 
         if ($num->isComplex() || ($this->isReal() xor $num->isReal())) {
+            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers"))) {
+                throw new MissingPackage(
+                    'Creating complex numbers is unsupported in Fermat without modules.',
+                    'Install the samsara/fermat-complex-numbers package using composer.',
+                    'An attempt was made to create a ComplexNumber instance without having the Complex Numbers module. Please install the samsara/fermat-complex-numbers package using composer.'
+                );
+            }
+
             $newRealPart = $thisRealPart->pow($thatRealPart);
             $newImaginaryPart = $thisImaginaryPart->pow($thatImaginaryPart);
 

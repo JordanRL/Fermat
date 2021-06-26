@@ -7,7 +7,7 @@ use Samsara\Fermat\Types\Fraction;
 class MutableFraction extends Fraction
 {
 
-    protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator)
+    protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator): self
     {
 
         if ($numerator->isImaginary() xor $denominator->isImaginary()) {
