@@ -3,23 +3,12 @@ build:
         php:
             version: 8.0
     nodes:
-        checkout-fermat:
-            commands:
-                - checkout-code ~/code
-                - cd ./code
-                - mkdir build
-                - mkdir build/logs
-                - composer update
-                - store-in-cache execution codebase ~/code
         standalone-tests:
-            requires:
-                - node: checkout-fermat
             tests:
                 before:
                     - restore-from-cache execution codebase ~/code
                     - cd ./code
                 override:
-                    - php-scrutinizer-run
                     - command: php vendor/bin/phpunit
                       coverage:
                           file: build/logs/coverage.clover
@@ -29,8 +18,6 @@ build:
                 - node: standalone-tests
             tests:
                 before:
-                    - restore-from-cache execution codebase ~/code
-                    - cd ./code
                     - composer require samsara/fermat-coordinate-systems *
                     - composer require samsara/fermat-complex-numbers *
                     - composer require samsara/fermat-matrices-and-vectors *
