@@ -19,11 +19,19 @@ trait IntegerMathTrait
             if ($this->isEqual(0)) {
                 return $this->setValue(1);
             }
-            throw new IncompatibleObjectState('Cannot make a factorial with a number less than 1 (other than zero)');
+            throw new IncompatibleObjectState(
+                'Can only perform a factorial on a non-negative number.',
+                'Ensure that the number is not negative before calling factorial().',
+                'The factorial() method was called on a value that was negative.'
+            );
         }
 
         if ($this->getDecimalPart() != 0) {
-            throw new IncompatibleObjectState('Can only perform a factorial on a whole number');
+            throw new IncompatibleObjectState(
+                'Can only perform a factorial on a whole number.',
+                'Ensure that the number does not have any fractional value before calling factorial().',
+                'The factorial() method was called on a value that was not a whole number.'
+            );
         }
 
         if (function_exists('gmp_fact') && function_exists('gmp_strval') && $this->extensions) {
@@ -46,7 +54,11 @@ trait IntegerMathTrait
         if ($this->isWhole() && $this->isLessThanOrEqualTo(1)) {
             return $this->setValue('1');
         } elseif (!$this->isWhole()) {
-            throw new IncompatibleObjectState('Can only perform a double factorial on a whole number');
+            throw new IncompatibleObjectState(
+                'Can only perform a double factorial on a whole number.',
+                'Ensure that the number does not have any fractional value before calling doubleFactorial().',
+                'The doubleFactorial() method was called on a value that was not a whole number.'
+            );
         }
 
         $num = Numbers::make(Numbers::MUTABLE, $this->getValue(), $this->getScale(), $this->getBase());

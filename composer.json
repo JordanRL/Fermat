@@ -31,7 +31,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "9.*",
-    "php-ds/php-ds": "^1.1"
+    "php-ds/php-ds": "^1.1",
+    "scrutinizer/ocular": "*"
   },
   "suggest": {
     "ext-gmp": "*",

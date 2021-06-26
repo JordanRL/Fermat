@@ -111,7 +111,8 @@ class SeriesProvider
             if ($divergeCount === $consecutiveDivergeLimit || $persistentDivergeCount === $totalDivergeLimit) {
                 throw new OptionalExit(
                     'Series appear to be diverging. Current diverge count: '.$divergeCount.' | Persistent diverge count: '.$persistentDivergeCount,
-                    'A call was made to SeriesProvider::maclaurinSeries() that seems to be diverging. Exiting the loop.'
+                    'A call was made to SeriesProvider::maclaurinSeries() that seems to be diverging. Exiting the loop.',
+                    'The series being calculated appears to be diverging, and the process has been stopped in an attempt to avoid an infinite loop.'
                 );
             }
 

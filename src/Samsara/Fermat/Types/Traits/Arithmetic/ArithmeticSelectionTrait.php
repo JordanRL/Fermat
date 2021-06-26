@@ -106,13 +106,13 @@ trait ArithmeticSelectionTrait
                     $otherPart = new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
                 } else {
                     $rightPart = $right->asDecimal();
-                    $otherPart = Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+                    $otherPart = Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
 
                     $right = $right->asDecimal();
                 }
             } else {
                 $rightPart = $right;
-                $otherPart = Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
+                $otherPart = Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
             }
 
             $thatRealPart = $right->isReal() ? $rightPart : $otherPart;
@@ -130,8 +130,8 @@ trait ArithmeticSelectionTrait
             $thisRealPart = $left->getRealPart();
             $thisImaginaryPart = $left->getImaginaryPart();
         } else {
-            $thisRealPart = $left->isReal() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getPrecision());
-            $thisImaginaryPart = $left->isImaginary() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getPrecision());
+            $thisRealPart = $left->isReal() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
+            $thisImaginaryPart = $left->isImaginary() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getScale());
         }
 
         return [$thisRealPart, $thisImaginaryPart];
