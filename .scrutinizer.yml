@@ -13,7 +13,7 @@ build:
                 - store-in-cache execution codebase ~/code
         standalone-tests:
             requires:
-                - node: fermat-setup
+                - node: checkout-fermat
             tests:
                 before:
                     - restore-from-cache execution codebase ~/code
