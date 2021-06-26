@@ -13,5 +13,4 @@ script:
   - php vendor/bin/phpunit
 
 after_success:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover build/logs/coverage.clover
+  - php vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/coverage.clover
