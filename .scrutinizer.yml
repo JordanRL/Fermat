@@ -1,5 +1,7 @@
 build:
     environment:
+        variables:
+            COMPOSER_ROOT_VERSION: 2.0
         php:
             version: 8.0
             ini:
