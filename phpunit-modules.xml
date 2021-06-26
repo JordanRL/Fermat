@@ -24,12 +24,6 @@
         </report>
     </coverage>
     <testsuites>
-        <testsuite name="Providers">
-            <directory suffix=".php">./tests-with-modules/Samsara/Fermat/Provider</directory>
-        </testsuite>
-        <testsuite name="Types">
-            <directory suffix=".php">./tests-with-modules/Samsara/Fermat/Types</directory>
-        </testsuite>
         <testsuite name="Values">
             <directory suffix=".php">./tests-with-modules/Samsara/Fermat/Values</directory>
         </testsuite>
