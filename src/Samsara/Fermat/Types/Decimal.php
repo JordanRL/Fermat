@@ -196,6 +196,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
      *
      * @param NumberInterface|int|float|string $value
      * @return int
+     * @throws IntegrityConstraint
      */
     public function compare($value): int
     {

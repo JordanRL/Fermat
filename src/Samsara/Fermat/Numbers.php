@@ -2,16 +2,12 @@
 
 namespace Samsara\Fermat;
 
-use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Provider\ConstantProvider;
-use Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Selectable;
-use Samsara\Fermat\Types\Fraction;
-use Samsara\Fermat\Values\Geometry\CoordinateSystems\CartesianCoordinate;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableDecimal;
 use Samsara\Fermat\Values\MutableFraction;
@@ -24,7 +20,6 @@ class Numbers
     public const IMMUTABLE = ImmutableDecimal::class;
     public const MUTABLE_FRACTION = MutableFraction::class;
     public const IMMUTABLE_FRACTION = ImmutableFraction::class;
-    public const CARTESIAN_COORDINATE = CartesianCoordinate::class;
     /* 105 digits after decimal, which is going to be overkill in almost all places */
     public const PI = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679';
     /* Tau (2pi) to 100 digits */
@@ -46,7 +41,7 @@ class Numbers
      * @param int|null $scale
      * @param int $base
      *
-     * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|CartesianCoordinate|NumberInterface|FractionInterface|CoordinateInterface
+     * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|NumberInterface|FractionInterface
      * @throws IntegrityConstraint
      */
     public static function make($type, $value, $scale = null, $base = 10)
@@ -70,14 +65,6 @@ class Numbers
 
         if ($type === static::MUTABLE_FRACTION) {
             return self::makeFractionFromString($type, $value, $base);
-        }
-
-        if ($type === static::CARTESIAN_COORDINATE && is_array($value)) {
-            $x = $value[0];
-            $y = $value[1] ?? null;
-            $z = $value[2] ?? null;
-
-            return new CartesianCoordinate($x, $y, $z);
         }
 
         throw new IntegrityConstraint(

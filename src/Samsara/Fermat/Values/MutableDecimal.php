@@ -2,6 +2,8 @@
 
 namespace Samsara\Fermat\Values;
 
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
@@ -9,6 +11,10 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 class MutableDecimal extends Decimal
 {
 
+    /**
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function continuousModulo($mod): DecimalInterface
     {
 
@@ -28,11 +34,11 @@ class MutableDecimal extends Decimal
      *
      * @return MutableDecimal
      */
-    protected function setValue(string $value, int $scale = null, int $base = 10)
+    protected function setValue(string $value, int $scale = null, int $base = 10): self
     {
         $imaginary = false;
 
-        if (strpos($value, 'i') !== false) {
+        if (str_contains($value, 'i')) {
             $value = str_replace('i', '', $value);
             $imaginary = true;
         }

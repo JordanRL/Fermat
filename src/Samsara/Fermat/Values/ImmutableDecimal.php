@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Values;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
@@ -45,6 +46,7 @@ class ImmutableDecimal extends Decimal
      * @param int $base
      *
      * @return ImmutableDecimal
+     * @throws IntegrityConstraint
      */
     protected function setValue(string $value, int $scale = null, int $base = 10)
     {
@@ -52,7 +54,7 @@ class ImmutableDecimal extends Decimal
 
         $scale = $scale ?? $this->getScale();
 
-        if (strpos($value, 'i') !== false) {
+        if (str_contains($value, 'i')) {
             $value = str_replace('i', '', $value);
             $imaginary = true;
         }

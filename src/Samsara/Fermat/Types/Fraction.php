@@ -16,13 +16,13 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 abstract class Fraction extends Number implements FractionInterface
 {
 
-    protected $base;
+    protected int $base;
     /** @var ImmutableDecimal[] */
-    protected $value;
+    protected array $value;
     /** @var bool */
-    protected $sign;
+    protected bool $sign;
     /** @var int */
-    protected $scale;
+    protected ?int $scale;
 
     use ArithmeticSimpleTrait;
     use ComparisonTrait;
@@ -35,7 +35,7 @@ abstract class Fraction extends Number implements FractionInterface
      *
      * @throws IntegrityConstraint
      */
-    public function __construct($numerator, $denominator, $base = 10)
+    public function __construct($numerator, $denominator, int $base = 10)
     {
 
         $numerator = Numbers::makeOrDont(Numbers::IMMUTABLE, $numerator, null, $base)->round();

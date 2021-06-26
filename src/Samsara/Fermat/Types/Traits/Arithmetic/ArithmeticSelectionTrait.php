@@ -4,6 +4,8 @@
 namespace Samsara\Fermat\Types\Traits\Arithmetic;
 
 
+use Composer\InstalledVersions;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\ComplexNumbers;
 use Samsara\Fermat\Numbers;
@@ -72,6 +74,14 @@ trait ArithmeticSelectionTrait
         if (strpos($input, '/') !== false) {
             $input = Numbers::makeFractionFromString(Numbers::IMMUTABLE_FRACTION, $input);
         } elseif (strrpos($input, '+') || strrpos($input, '-')) {
+            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers"))) {
+                throw new MissingPackage(
+                    'Creating complex numbers is unsupported in Fermat without modules.',
+                    'Install the samsara/fermat-complex-numbers package using composer.',
+                    'An attempt was made to create a ComplexNumber instance without having the Complex Numbers module. Please install the samsara/fermat-complex-numbers package using composer.'
+                );
+            }
+
             $input = ComplexNumbers::make(ComplexNumbers::IMMUTABLE_COMPLEX, $input);
         } else {
             $input = Numbers::make(Numbers::IMMUTABLE, $input);
@@ -130,104 +140,56 @@ trait ArithmeticSelectionTrait
 
     protected function addSelector(DecimalInterface $num)
     {
-        switch ($this->calcMode) {
-            case Selectable::CALC_MODE_PRECISION:
-                return $this->addScale($num);
-                break;
-
-            case Selectable::CALC_MODE_NATIVE:
-                return $this->addNative($num);
-                break;
-
-            default:
-                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['add']}($num);
-                break;
-        }
+        return match ($this->calcMode) {
+            Selectable::CALC_MODE_PRECISION => $this->addScale($num),
+            Selectable::CALC_MODE_NATIVE => $this->addNative($num),
+            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['add']}($num),
+        };
     }
 
     protected function subtractSelector(DecimalInterface $num)
     {
-        switch ($this->calcMode) {
-            case Selectable::CALC_MODE_PRECISION:
-                return $this->subtractScale($num);
-                break;
-
-            case Selectable::CALC_MODE_NATIVE:
-                return $this->subtractNative($num);
-                break;
-
-            default:
-                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['subtract']}($num);
-                break;
-        }
+        return match ($this->calcMode) {
+            Selectable::CALC_MODE_PRECISION => $this->subtractScale($num),
+            Selectable::CALC_MODE_NATIVE => $this->subtractNative($num),
+            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['subtract']}($num),
+        };
     }
 
     protected function multiplySelector(DecimalInterface $num)
     {
-        switch ($this->calcMode) {
-            case Selectable::CALC_MODE_PRECISION:
-                return $this->multiplyScale($num);
-                break;
-
-            case Selectable::CALC_MODE_NATIVE:
-                return $this->multiplyNative($num);
-                break;
-
-            default:
-                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['multiply']}($num);
-                break;
-        }
+        return match ($this->calcMode) {
+            Selectable::CALC_MODE_PRECISION => $this->multiplyScale($num),
+            Selectable::CALC_MODE_NATIVE => $this->multiplyNative($num),
+            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['multiply']}($num),
+        };
     }
 
     protected function divideSelector(DecimalInterface $num, int $scale)
     {
-        switch ($this->calcMode) {
-            case Selectable::CALC_MODE_PRECISION:
-                return $this->divideScale($num, $scale);
-                break;
-
-            case Selectable::CALC_MODE_NATIVE:
-                return $this->divideNative($num);
-                break;
-
-            default:
-                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['divide']}($num, $scale);
-                break;
-        }
+        return match ($this->calcMode) {
+            Selectable::CALC_MODE_PRECISION => $this->divideScale($num, $scale),
+            Selectable::CALC_MODE_NATIVE => $this->divideNative($num),
+            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['divide']}($num, $scale),
+        };
     }
 
     protected function powSelector(DecimalInterface $num)
     {
-        switch ($this->calcMode) {
-            case Selectable::CALC_MODE_PRECISION:
-                return $this->powScale($num);
-                break;
-
-            case Selectable::CALC_MODE_NATIVE:
-                return $this->powNative($num);
-                break;
-
-            default:
-                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['pow']}($num);
-                break;
-        }
+        return match ($this->calcMode) {
+            Selectable::CALC_MODE_PRECISION => $this->powScale($num),
+            Selectable::CALC_MODE_NATIVE => $this->powNative($num),
+            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['pow']}($num),
+        };
     }
 
     protected function sqrtSelector(int $scale)
     {
-        switch ($this->calcMode) {
-            case Selectable::CALC_MODE_PRECISION:
-                return $this->sqrtScale($scale);
-                break;
-
-            case Selectable::CALC_MODE_NATIVE:
-                return $this->sqrtNative();
-                break;
-
-            default:
-                return $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['sqrt']}($scale);
-                break;
-        }
+        return match ($this->calcMode) {
+            Selectable::CALC_MODE_PRECISION => $this->sqrtScale($scale),
+            Selectable::CALC_MODE_NATIVE => $this->sqrtNative(),
+            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['sqrt']}($scale),
+        };
     }
 
 }

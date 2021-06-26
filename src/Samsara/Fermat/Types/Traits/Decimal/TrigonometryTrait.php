@@ -6,6 +6,7 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 trait TrigonometryTrait
 {
@@ -153,7 +154,7 @@ trait TrigonometryTrait
         }
 
         if ($modulo->abs()->isGreaterThan($piDivEight)) {
-            /** @var ImmutableNumber $halfModTan */
+            /** @var ImmutableDecimal $halfModTan */
             $halfModTan = $modulo->divide(2)->tan($scale+1, false);
             $answer = $two->multiply($halfModTan)->divide($one->subtract($halfModTan->pow(2)));
         } else {
