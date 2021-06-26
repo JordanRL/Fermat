@@ -8,8 +8,8 @@ build:
         standalone-tests:
             tests:
                 before:
-                    - restore-from-cache execution codebase ~/code
-                    - cd ./code
+                    - mkdir build
+                    - mkdir build/logs
                 override:
                     - command: php vendor/bin/phpunit
                       coverage:
@@ -20,6 +20,8 @@ build:
                 - node: standalone-tests
             tests:
                 before:
+                    - mkdir build
+                    - mkdir build/logs
                     - composer require samsara/fermat-coordinate-systems *
                     - composer require samsara/fermat-complex-numbers *
                     - composer require samsara/fermat-matrices-and-vectors *
