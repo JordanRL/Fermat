@@ -22,11 +22,11 @@ build:
                 before:
                     - mkdir build
                     - mkdir build/logs
-                    - composer require "samsara/fermat-coordinate-systems:*"
-                    - composer require "samsara/fermat-complex-numbers:*"
-                    - composer require "samsara/fermat-matrices-and-vectors:*"
-                    - composer require "samsara/fermat-stats:*"
-                    - composer require "samsara/fermat-algebra-expressions:*"
+                    - composer require "samsara/fermat-coordinate-systems:dev-master"
+                    - composer require "samsara/fermat-complex-numbers:dev-master"
+                    - composer require "samsara/fermat-matrices-and-vectors:dev-master"
+                    - composer require "samsara/fermat-stats:dev-master"
+                    - composer require "samsara/fermat-algebra-expressions:dev-master"
                 override:
                     - command: php vendor/bin/phpunit -c phpunit-modules.xml
                       coverage:
