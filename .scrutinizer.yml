@@ -2,6 +2,8 @@ build:
     environment:
         php:
             version: 8.0
+            ini:
+                xdebug.mode: coverage
     nodes:
         standalone-tests:
             tests:
