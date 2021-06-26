@@ -8,14 +8,14 @@
 
 To install, simply require the package using composer:
 
-    composer require samsara/fermat "1.*"
+    composer require samsara/fermat "^2.0"
     
 Or include it in your `composer.json` file:
 
 ```json
 {
     "require": {
-        "samsara/fermat": "1.*"
+        "samsara/fermat": "^2.0"
     }
 }
 ```
@@ -31,6 +31,20 @@ Modules for Fermat provide additional functionality, as many of these features w
 - [Coordinate Systems](https://github.com/SamsaraLabs/FermatCoordinateSystems): Provides coordinate systems for cartesian, spherical, polar, and cylindrical coordinates.
 - [Matrices & Vectors](https://github.com/SamsaraLabs/FermatMatricesAndVectors): Provides support for matrix math and vector math.
 - [Statistics](https://github.com/SamsaraLabs/FermatStats): Provides support for statistical operations and distributions.
+
+To require the entire library, including all available modules, use:
+
+    composer require samsara/fermat-all "^2.0"
+
+Or in your `composer.json` file:
+
+```json
+{
+    "require": {
+        "samsara/fermat-all": "^2.0"
+    }
+}
+```
 
 ## Documentation
 
