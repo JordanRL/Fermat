@@ -2,7 +2,7 @@
   "name": "samsara/fermat",
   "type": "library",
   "description": "A library providing math and statistics operations for numbers of arbitrary size.",
-  "keywords": ["math", "bigint", "large numbers", "numbers", "stats", "statistics", "gaussian", "poisson"],
+  "keywords": ["math", "bigint", "large numbers", "numbers", "trigonometry", "arbitrary precision"],
   "homepage": "https://jordanrl.github.io/Fermat/",
   "funding": [
     {
@@ -27,11 +27,11 @@
     "ircmaxell/random-lib": "^1.1",
     "riimu/kit-baseconversion": "^1",
     "samsara/common": "^1",
+    "php-ds/php-ds": "^1.1",
     "php": ">=8.0"
   },
   "require-dev": {
     "phpunit/phpunit": "9.*",
-    "php-ds/php-ds": "^1.1",
     "scrutinizer/ocular": "*"
   },
   "suggest": {
