@@ -1,15 +1,48 @@
 build:
+    environment:
+        php:
+            version: 8.0
     nodes:
-        analysis:
-            project_setup:
-                override: true
+        checkout-fermat:
+            commands:
+                - checkout-code ~/code
+                - cd ./code
+                - mkdir build
+                - mkdir build/logs
+                - composer update
+                - store-in-cache execution codebase ~/code
+        standalone-tests:
+            requires:
+                - node: fermat-setup
             tests:
-                override: [php-scrutinizer-run]
+                before:
+                    - restore-from-cache execution codebase ~/code
+                    - cd ./code
+                override:
+                    - php-scrutinizer-run
+                    - command: php vendor/bin/phpunit
+                      coverage:
+                          file: build/logs/coverage.clover
+                          format: clover
+        with-modules-tests:
+            requires:
+                - node: standalone-tests
+            tests:
+                before:
+                    - restore-from-cache execution codebase ~/code
+                    - cd ./code
+                    - composer require samsara/fermat-coordinate-systems *
+                    - composer require samsara/fermat-complex-numbers *
+                    - composer require samsara/fermat-matrices-and-vectors *
+                    - composer require samsara/fermat-stats *
+                    - composer require samsara/fermat-algebra-expressions *
+                override:
+                    - command: php vendor/bin/phpunit
+                      coverage:
+                          file: build/logs/coverage.clover
+                          format: clover
 build_failure_conditions:
     - 'elements.rating(<= D).new.exists'
     - 'project.metric_change("scrutinizer.test_coverage", < -0.05)'
     - 'project.metric("scrutinizer.test_coverage", < 0.70)'
     - 'project.metric("scrutinizer.quality", < 8)'
-tools:
-    external_code_coverage:
-        timeout: 600
