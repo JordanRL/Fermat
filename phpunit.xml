@@ -25,7 +25,6 @@
             <directory suffix=".php">./tests/Samsara/Fermat/Values</directory>
         </testsuite>
         <testsuite name="Factories">
-            <file>tests/Samsara/Fermat/MatricesTest.php</file>
             <file>tests/Samsara/Fermat/NumbersTest.php</file>
         </testsuite>
     </testsuites>
