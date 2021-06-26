@@ -22,13 +22,13 @@ build:
                 before:
                     - mkdir build
                     - mkdir build/logs
-                    - composer require samsara/fermat-coordinate-systems *
-                    - composer require samsara/fermat-complex-numbers *
-                    - composer require samsara/fermat-matrices-and-vectors *
-                    - composer require samsara/fermat-stats *
-                    - composer require samsara/fermat-algebra-expressions *
+                    - composer require "samsara/fermat-coordinate-systems:*"
+                    - composer require "samsara/fermat-complex-numbers:*"
+                    - composer require "samsara/fermat-matrices-and-vectors:*"
+                    - composer require "samsara/fermat-stats:*"
+                    - composer require "samsara/fermat-algebra-expressions:*"
                 override:
-                    - command: php vendor/bin/phpunit
+                    - command: php vendor/bin/phpunit -c phpunit-modules.xml
                       coverage:
                           file: build/logs/coverage.clover
                           format: clover
