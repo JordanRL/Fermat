@@ -122,7 +122,7 @@ class NumberCollectionTest extends TestCase
 
     }
 
-    public function testDistributions()
+    public function testDistributions1()
     {
 
         $collection = new NumberCollection([1, 2, 3, 4]);
@@ -130,13 +130,42 @@ class NumberCollectionTest extends TestCase
         $this->expectException(MissingPackage::class);
         $collection->makeNormalDistribution();
 
+    }
+
+    public function testDistributions2()
+    {
+
+        $collection = new NumberCollection([1, 2, 3, 4]);
+
         $this->expectException(MissingPackage::class);
         $collection->makePoissonDistribution();
+
+        //$this->assertEquals('0.6726', $normal->percentAboveX(2)->truncate(4)->getValue());
+
+    }
+
+    public function testDistributions3()
+    {
+
+        $collection = new NumberCollection([1, 2, 3, 4]);
 
         $this->expectException(MissingPackage::class);
         $collection->makeExponentialDistribution();
 
         //$this->assertEquals('0.6726', $normal->percentAboveX(2)->truncate(4)->getValue());
+
+    }
+
+    public function testSelectScale()
+    {
+
+        $collection = new NumberCollection([
+            '0.4444444444444',
+            new ImmutableDecimal(1, 15),
+            '1'
+        ]);
+
+        $this->assertEquals(15, $collection->selectScale());
 
     }
 
