@@ -84,6 +84,19 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
         return $this->collection->toArray();
     }
 
+    public function selectScale(): int
+    {
+        $scale = 0;
+
+        foreach ($this->collection as $value) {
+            if ($value->getScale() > $scale) {
+                $scale = $value->getScale();
+            }
+        }
+
+        return $scale;
+    }
+
     /**
      * @param NumberInterface $number
      *
