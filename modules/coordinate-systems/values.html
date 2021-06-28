@@ -276,12 +276,10 @@
 <p>The specific interfaces, traits, and constructor for the different values of <code>Coordinate</code> depend on the value class used.</p>
 <div class="admonition potential-bugs">
 <p class="admonition-title">Coordinates Are Mutable</p>
-</div>
 <p>Unlike many other values, all implementations of <code>Coordinate</code> are designed as mutable classes. This design decision was made mainly because of how coordinates are usually used in math.</p>
-<div class="highlight"><pre><span></span><span class="lineno">1 </span>Typically, when an operation of some kind is performed on a coordinate, the resulting coordinate is treated as the only existant value, and previous coordinate is removed from the data set. Mutable implementations mirror this behavior.
-<span class="lineno">2 </span>
-<span class="lineno">3 </span>However, the underlying `Decimal` values that represent that coordinate components are instances of `ImmutableDecimal`. This means that while the coordinate instances will be mutable, and decimal instances used as input for the coordinates will remain unaffected.
-</pre></div>
+<p>Typically, when an operation of some kind is performed on a coordinate, the resulting coordinate is treated as the only existant value, and previous coordinate is removed from the data set. Mutable implementations mirror this behavior.</p>
+<p>However, the underlying <code>Decimal</code> values that represent that coordinate components are instances of <code>ImmutableDecimal</code>. This means that while the coordinate instances will be mutable, and decimal instances used as input for the coordinates will remain unaffected.</p>
+</div>
 <h2 id="cartesiancoordinate">CartesianCoordinate</h2>
 <p>A set of coordinates where each value represents the position along a single plane. These are the coordinates that are most commonly used in algebra and geometry, typically presented in format (x, y) for two-dimensional coordinates, and (x, y, z) for three-dimensional coordinates.</p>
 <h2 id="cylindricalcoordinate">CylindricalCoordinate</h2>

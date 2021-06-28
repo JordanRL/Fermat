@@ -257,10 +257,9 @@
 <p>Used to represent complex number values. Either part can be an instance of <code>FractionInterface</code> or <code>DecimalInterface</code>, however while <code>Decimal</code> values can be provided as an <code>object</code>, a <code>string</code>, an <code>integer</code>, or a <code>float</code>, you must explicitly provide an instance of <code>Fraction</code> if you wish for one of the components to be in that format.</p>
 <div class="admonition caution">
 <p class="admonition-title">Unexpected Class Inheritance Structure</p>
-</div>
 <p>While the name of this class is <code>ComplexNumber</code>, it does not extend the abstract <code>Number</code> class like <code>Fraction</code> and <code>Decimal</code> do. Instead, it extends <code>PolarCoordinate</code>, since this is an advantageous representation of complex numbers in many situations.</p>
-<div class="highlight"><pre><span></span><span class="lineno">1 </span>The arguments to the `ComplexNumber` class correspond directly with a set of `CartesianCoordinate`s. These are then transformed into an instance of `PolarCoordinate` which is a more useful form for doing operations like `pow()` and `sqrt()`.
-</pre></div>
+<p>The arguments to the <code>ComplexNumber</code> class correspond directly with a set of <code>CartesianCoordinate</code>s. These are then transformed into an instance of <code>PolarCoordinate</code> which is a more useful form for doing operations like <code>pow()</code> and <code>sqrt()</code>.</p>
+</div>
 <h3 id="interfaces">Interfaces</h3>
 <div class="admonition signature interface">
 <p class="admonition-title">ComplexNumberInterface</p>
@@ -311,12 +310,9 @@
 </div>
 <div class="admonition signature">
 <p class="admonition-title">__construct(mixed $realPart, mixed $imaginaryPart, ?int $scale = null, int $base = 10)</p>
-</div>
 <dl>
 <dt>$realPart</dt>
-<dd>
-<p>The value of the real part; can be an instance of <strong>FractionInterface</strong>, and instance of <strong>DecimalInterface</strong>, or a scalar using the same restrictions as <strong>Decimal</strong></p>
-<dl>
+<dd>The value of the real part; can be an instance of <strong>FractionInterface</strong>, and instance of <strong>DecimalInterface</strong>, or a scalar using the same restrictions as <strong>Decimal</strong></dd>
 <dt>$imaginaryPart</dt>
 <dd>The value of the imaginary part; can be an instance of <strong>FractionInterface</strong>, and instance of <strong>DecimalInterface</strong>, or a scalar using the same restrictions as <strong>Decimal</strong></dd>
 <dt>$scale</dt>
@@ -326,8 +322,7 @@
 <dt>return</dt>
 <dd>An instance of <strong>ComplexNumber</strong> created with the provided arguments as parameters</dd>
 </dl>
-</dd>
-</dl>
+</div>
 <h2 id="immutablecomplexnumber">ImmutableComplexNumber</h2>
 <p>A number which can be represented as a complex number. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.</p>
 <h2 id="mutablecomplexnumber">MutableComplexNumber</h2>

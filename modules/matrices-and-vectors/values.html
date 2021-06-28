@@ -259,19 +259,15 @@
 <h3 id="traits">Traits</h3>
 <div class="admonition signature">
 <p class="admonition-title">__construct(array $data, string $mode = Matrix::MODE_ROWS_INPUT)</p>
-</div>
 <dl>
 <dt>$data</dt>
-<dd>
-<p>An array of <strong>NumberCollection</strong>s, defining either the rows or the columns of the matrix; see below for more detailed information</p>
-<dl>
+<dd>An array of <strong>NumberCollection</strong>s, defining either the rows or the columns of the matrix; see below for more detailed information</dd>
 <dt>$mode</dt>
 <dd>Accepts either the string 'rows' or 'columns', defining whether the number in <strong>$data</strong> are organized as an array of rows or an array of columns</dd>
 <dt>return</dt>
 <dd>An instance of <strong>Matrix</strong> created with the provided arguments as parameters</dd>
 </dl>
-</dd>
-</dl>
+</div>
 <p>The input array has several restrictions and assumptions. The most obvious, given that it is meant to represent matrix data, is that each <code>NumberCollection</code> in the provided array must contain the same number of elements.</p>
 <p>Further, while the data can represent <em>either</em> the array of rows or array of columns depending on the <code>$mode</code> provided, it will always fill the matrix starting from the upper left corner. This is also the same indexing used by <code>getRow()</code>, <code>getColumn()</code>, or any other function that references a row or column index.</p>
 <h2 id="immutablematrix">ImmutableMatrix</h2>
