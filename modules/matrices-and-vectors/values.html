@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Base conversion - Fermat - PHP Math Library</title>
+  <title>Values - Fermat - PHP Math Library</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -19,8 +19,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Base conversion";
-    var mkdocs_page_input_path = "snippets/has-interface/base-conversion.md";
+    var mkdocs_page_name = "Values";
+    var mkdocs_page_input_path = "modules/matrices-and-vectors/values.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -101,54 +101,60 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Modules</span></p>
-                <ul>
+                <ul class="current">
                     <li class="toctree-l1"><a class="reference internal" href="#">Algebra Expressions</a>
     <ul>
-                <li class="toctree-l2"><a class="" href="../../modules/algebra-expressions/providers.md">Providers</a>
+                <li class="toctree-l2"><a class="" href="../algebra-expressions/providers.md">Providers</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/algebra-expressions/types.md">Types</a>
+                <li class="toctree-l2"><a class="" href="../algebra-expressions/types.md">Types</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/algebra-expressions/values.md">Values</a>
+                <li class="toctree-l2"><a class="" href="../algebra-expressions/values.md">Values</a>
                 </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="#">Complex Numbers</a>
     <ul>
-                <li class="toctree-l2"><a class="" href="../../modules/complex-numbers/providers.md">Providers</a>
+                <li class="toctree-l2"><a class="" href="../complex-numbers/providers.md">Providers</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../modules/complex-numbers/types.html">Types</a>
+                <li class="toctree-l2"><a class="reference internal" href="../complex-numbers/types.html">Types</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../modules/complex-numbers/values.html">Values</a>
+                <li class="toctree-l2"><a class="reference internal" href="../complex-numbers/values.html">Values</a>
                 </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="#">Coordinate Systems</a>
     <ul>
-                <li class="toctree-l2"><a class="" href="../../modules/coordinate-systems/providers.md">Providers</a>
+                <li class="toctree-l2"><a class="" href="../coordinate-systems/providers.md">Providers</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/coordinate-systems/types.md">Types</a>
+                <li class="toctree-l2"><a class="" href="../coordinate-systems/types.md">Types</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../modules/coordinate-systems/values.html">Values</a>
+                <li class="toctree-l2"><a class="reference internal" href="../coordinate-systems/values.html">Values</a>
                 </li>
     </ul>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="#">Matrices and Vectors</a>
-    <ul>
-                <li class="toctree-l2"><a class="" href="../../modules/matrices-and-vectors/providers.md">Providers</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="#">Matrices and Vectors</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="" href="providers.md">Providers</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/matrices-and-vectors/types.md">Types</a>
+                <li class="toctree-l2"><a class="" href="types.md">Types</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../modules/matrices-and-vectors/values.html">Values</a>
+                <li class="toctree-l2 current"><a class="reference internal current" href="values.html">Values</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#immutablematrix">ImmutableMatrix</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#mutablematrix">MutableMatrix</a>
+    </li>
+    </ul>
                 </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="#">Stats</a>
     <ul>
-                <li class="toctree-l2"><a class="" href="../../modules/stats/providers.md">Providers</a>
+                <li class="toctree-l2"><a class="" href="../stats/providers.md">Providers</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/stats/types.md">Types</a>
+                <li class="toctree-l2"><a class="" href="../stats/types.md">Types</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/stats/values.md">Values</a>
+                <li class="toctree-l2"><a class="" href="../stats/values.md">Values</a>
                 </li>
     </ul>
                     </li>
@@ -223,11 +229,19 @@
     <li><a href="../../index.html">Docs</a> &raquo;</li>
     
       
+        
+          <li>Matrices and Vectors &raquo;</li>
+        
+      
+        
+          <li>Modules &raquo;</li>
+        
+      
     
-    <li>Base conversion</li>
+    <li>Values</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/JordanRL/Fermat/edit/master/docs/snippets/has-interface/base-conversion.md"
+        <a href="https://github.com/JordanRL/Fermat/edit/master/docs/modules/matrices-and-vectors/values.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -239,23 +253,42 @@
           <div role="main">
             <div class="section">
               
-                <div class="admonition signature interface">
-<p class="admonition-title">BaseConversionInterface</p>
+                <h1 id="values-of-matrix">Values of Matrix</h1>
+<p>Used to represent mathematical matrices and perform matrix math.</p>
+<h3 id="interfaces">Interfaces</h3>
+<h3 id="traits">Traits</h3>
+<div class="admonition signature">
+<p class="admonition-title">__construct(array $data, string $mode = Matrix::MODE_ROWS_INPUT)</p>
+</div>
 <dl>
-<dt>namespace</dt>
-<dd>Samsara\Fermat\Types\Base\Interfaces\Characteristics</dd>
+<dt>$data</dt>
+<dd>
+<p>An array of <strong>NumberCollection</strong>s, defining either the rows or the columns of the matrix; see below for more detailed information</p>
+<dl>
+<dt>$mode</dt>
+<dd>Accepts either the string 'rows' or 'columns', defining whether the number in <strong>$data</strong> are organized as an array of rows or an array of columns</dd>
+<dt>return</dt>
+<dd>An instance of <strong>Matrix</strong> created with the provided arguments as parameters</dd>
 </dl>
-</div>
-<p><code>BaseConversionInterface</code> enables two methods: <code>convertToBase()</code> and <code>getBase()</code>, which do exactly what someone would expect them to.</p>
-<div class="admonition note">
-<p class="admonition-title">Base Conversion is Done Just-In-Time</p>
-<p>Internally, the values of objects which implement the <code>BaseConversionInterface</code> always store the number in base-10, since this is the only base that arithmetic can actually be performed in by any of the associated extensions.</p>
-<p>Base conversion happens when a call is made to <code>getValue()</code>. Even on objects which have a base other than base-10, this can be avoided by calls to <code>getAsBaseTenNumber()</code> and <code>getAsBaseTenRealNumber()</code>.</p>
-</div>
+</dd>
+</dl>
+<p>The input array has several restrictions and assumptions. The most obvious, given that it is meant to represent matrix data, is that each <code>NumberCollection</code> in the provided array must contain the same number of elements.</p>
+<p>Further, while the data can represent <em>either</em> the array of rows or array of columns depending on the <code>$mode</code> provided, it will always fill the matrix starting from the upper left corner. This is also the same indexing used by <code>getRow()</code>, <code>getColumn()</code>, or any other function that references a row or column index.</p>
+<h2 id="immutablematrix">ImmutableMatrix</h2>
+<h2 id="mutablematrix">MutableMatrix</h2>
               
             </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../reference/interfaces/numbers.html" class="btn btn-neutral float-right" title="Numbers">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../coordinate-systems/values.html" class="btn btn-neutral" title="Values"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -283,6 +316,10 @@
         </span>
     
     
+      <span><a href="../coordinate-systems/values.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../reference/interfaces/numbers.html" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

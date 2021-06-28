@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Base conversion - Fermat - PHP Math Library</title>
+  <title>Values - Fermat - PHP Math Library</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -19,8 +19,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Base conversion";
-    var mkdocs_page_input_path = "snippets/has-interface/base-conversion.md";
+    var mkdocs_page_name = "Values";
+    var mkdocs_page_input_path = "modules/complex-numbers/values.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -101,54 +101,60 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Modules</span></p>
-                <ul>
+                <ul class="current">
                     <li class="toctree-l1"><a class="reference internal" href="#">Algebra Expressions</a>
     <ul>
-                <li class="toctree-l2"><a class="" href="../../modules/algebra-expressions/providers.md">Providers</a>
+                <li class="toctree-l2"><a class="" href="../algebra-expressions/providers.md">Providers</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/algebra-expressions/types.md">Types</a>
+                <li class="toctree-l2"><a class="" href="../algebra-expressions/types.md">Types</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/algebra-expressions/values.md">Values</a>
+                <li class="toctree-l2"><a class="" href="../algebra-expressions/values.md">Values</a>
                 </li>
     </ul>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="#">Complex Numbers</a>
-    <ul>
-                <li class="toctree-l2"><a class="" href="../../modules/complex-numbers/providers.md">Providers</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="#">Complex Numbers</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="" href="providers.md">Providers</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../modules/complex-numbers/types.html">Types</a>
+                <li class="toctree-l2"><a class="reference internal" href="types.html">Types</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../modules/complex-numbers/values.html">Values</a>
+                <li class="toctree-l2 current"><a class="reference internal current" href="values.html">Values</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#immutablecomplexnumber">ImmutableComplexNumber</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#mutablecomplexnumber">MutableComplexNumber</a>
+    </li>
+    </ul>
                 </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="#">Coordinate Systems</a>
     <ul>
-                <li class="toctree-l2"><a class="" href="../../modules/coordinate-systems/providers.md">Providers</a>
+                <li class="toctree-l2"><a class="" href="../coordinate-systems/providers.md">Providers</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/coordinate-systems/types.md">Types</a>
+                <li class="toctree-l2"><a class="" href="../coordinate-systems/types.md">Types</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../modules/coordinate-systems/values.html">Values</a>
+                <li class="toctree-l2"><a class="reference internal" href="../coordinate-systems/values.html">Values</a>
                 </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="#">Matrices and Vectors</a>
     <ul>
-                <li class="toctree-l2"><a class="" href="../../modules/matrices-and-vectors/providers.md">Providers</a>
+                <li class="toctree-l2"><a class="" href="../matrices-and-vectors/providers.md">Providers</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/matrices-and-vectors/types.md">Types</a>
+                <li class="toctree-l2"><a class="" href="../matrices-and-vectors/types.md">Types</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../modules/matrices-and-vectors/values.html">Values</a>
+                <li class="toctree-l2"><a class="reference internal" href="../matrices-and-vectors/values.html">Values</a>
                 </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="#">Stats</a>
     <ul>
-                <li class="toctree-l2"><a class="" href="../../modules/stats/providers.md">Providers</a>
+                <li class="toctree-l2"><a class="" href="../stats/providers.md">Providers</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/stats/types.md">Types</a>
+                <li class="toctree-l2"><a class="" href="../stats/types.md">Types</a>
                 </li>
-                <li class="toctree-l2"><a class="" href="../../modules/stats/values.md">Values</a>
+                <li class="toctree-l2"><a class="" href="../stats/values.md">Values</a>
                 </li>
     </ul>
                     </li>
@@ -223,11 +229,19 @@
     <li><a href="../../index.html">Docs</a> &raquo;</li>
     
       
+        
+          <li>Complex Numbers &raquo;</li>
+        
+      
+        
+          <li>Modules &raquo;</li>
+        
+      
     
-    <li>Base conversion</li>
+    <li>Values</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/JordanRL/Fermat/edit/master/docs/snippets/has-interface/base-conversion.md"
+        <a href="https://github.com/JordanRL/Fermat/edit/master/docs/modules/complex-numbers/values.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -239,23 +253,98 @@
           <div role="main">
             <div class="section">
               
-                <div class="admonition signature interface">
-<p class="admonition-title">BaseConversionInterface</p>
+                <h1 id="values-of-complexnumber">Values of ComplexNumber</h1>
+<p>Used to represent complex number values. Either part can be an instance of <code>FractionInterface</code> or <code>DecimalInterface</code>, however while <code>Decimal</code> values can be provided as an <code>object</code>, a <code>string</code>, an <code>integer</code>, or a <code>float</code>, you must explicitly provide an instance of <code>Fraction</code> if you wish for one of the components to be in that format.</p>
+<div class="admonition caution">
+<p class="admonition-title">Unexpected Class Inheritance Structure</p>
+</div>
+<p>While the name of this class is <code>ComplexNumber</code>, it does not extend the abstract <code>Number</code> class like <code>Fraction</code> and <code>Decimal</code> do. Instead, it extends <code>PolarCoordinate</code>, since this is an advantageous representation of complex numbers in many situations.</p>
+<div class="highlight"><pre><span></span><span class="lineno">1 </span>The arguments to the `ComplexNumber` class correspond directly with a set of `CartesianCoordinate`s. These are then transformed into an instance of `PolarCoordinate` which is a more useful form for doing operations like `pow()` and `sqrt()`.
+</pre></div>
+<h3 id="interfaces">Interfaces</h3>
+<div class="admonition signature interface">
+<p class="admonition-title">ComplexNumberInterface</p>
 <dl>
 <dt>namespace</dt>
-<dd>Samsara\Fermat\Types\Base\Interfaces\Characteristics</dd>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers</dd>
+<dt>extends</dt>
+<dd><strong>NumberInterface</strong></dd>
 </dl>
 </div>
-<p><code>BaseConversionInterface</code> enables two methods: <code>convertToBase()</code> and <code>getBase()</code>, which do exactly what someone would expect them to.</p>
-<div class="admonition note">
-<p class="admonition-title">Base Conversion is Done Just-In-Time</p>
-<p>Internally, the values of objects which implement the <code>BaseConversionInterface</code> always store the number in base-10, since this is the only base that arithmetic can actually be performed in by any of the associated extensions.</p>
-<p>Base conversion happens when a call is made to <code>getValue()</code>. Even on objects which have a base other than base-10, this can be avoided by calls to <code>getAsBaseTenNumber()</code> and <code>getAsBaseTenRealNumber()</code>.</p>
+<p>This interface is meant to be implemented by an object which extends <code>PolarCoordinate</code>, since all complex numbers can be represented in that way and there are advantages to doing so.</p>
+<div class="admonition signature interface">
+<p class="admonition-title">CoordinateInterface</p>
+<dl>
+<dt>namespace</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Coordinates</dd>
+<dt>extends</dt>
+<dd><strong>TwoDCoordinateInterface</strong></dd>
+</dl>
 </div>
+<p>This interface provides the base methods available to all coordinate systems. This includes the <code>asCartesian()</code> method, since any type of coordinate system in a Euclidean space can be represented by cartesian coordinates. Non-Euclidean spaces are unsupported in Fermat.</p>
+<h3 id="traits">Traits</h3>
+<div class="admonition signature trait">
+<p class="admonition-title">ArithmeticComplexTrait</p>
+<dl>
+<dt>namespace</dt>
+<dd>Samsara\Fermat\Types\Traits</dd>
+<dt>uses</dt>
+<dd>
+<ul>
+<li><strong>ArithmeticScaleTrait</strong></li>
+<li><strong>ArithmeticNativeTrait</strong></li>
+<li><strong>ArithmeticSelectionTrat</strong></li>
+</ul>
+</dd>
+<dt>satisfies</dt>
+<dd><strong>ComplexNumberInterface</strong> (partially)</dd>
+</dl>
+</div>
+<p>The <code>ArithmeticComplexTrait</code> provides the implementations for all arithmetic functions that exist on values that implement the <code>ComplexNumberInterface</code>. The additional imported traits within this trait provide the various calculation modes that are used internally depending on the mode of object executing the method call.</p>
+<div class="admonition note">
+<p class="admonition-title">Accepts Simple Numbers as Arguments</p>
+<p>While the <code>ArithmeticComplexTrait</code> can accept implementations of <code>SimpleNumberInterface</code> as arguments, it cannot be used in implementations of <code>SimpleNumberInterface</code>.</p>
+</div>
+<div class="admonition see-also">
+<p class="admonition-title">See Also</p>
+<p>More detailed information on this trait is available on the <a href="../arithmetic/complex.md">Arithmetic &gt; Complex Numbers</a> page.</p>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">__construct(mixed $realPart, mixed $imaginaryPart, ?int $scale = null, int $base = 10)</p>
+</div>
+<dl>
+<dt>$realPart</dt>
+<dd>
+<p>The value of the real part; can be an instance of <strong>FractionInterface</strong>, and instance of <strong>DecimalInterface</strong>, or a scalar using the same restrictions as <strong>Decimal</strong></p>
+<dl>
+<dt>$imaginaryPart</dt>
+<dd>The value of the imaginary part; can be an instance of <strong>FractionInterface</strong>, and instance of <strong>DecimalInterface</strong>, or a scalar using the same restrictions as <strong>Decimal</strong></dd>
+<dt>$scale</dt>
+<dd>The maximum number of digits after the decimal that the instance components can have</dd>
+<dt>$base</dt>
+<dd>The base of the instance created</dd>
+<dt>return</dt>
+<dd>An instance of <strong>ComplexNumber</strong> created with the provided arguments as parameters</dd>
+</dl>
+</dd>
+</dl>
+<h2 id="immutablecomplexnumber">ImmutableComplexNumber</h2>
+<p>A number which can be represented as a complex number. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.</p>
+<h2 id="mutablecomplexnumber">MutableComplexNumber</h2>
+<p>A number which can be represented as a complex number. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.</p>
               
             </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../coordinate-systems/values.html" class="btn btn-neutral float-right" title="Values">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="types.html" class="btn btn-neutral" title="Types"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -283,6 +372,10 @@
         </span>
     
     
+      <span><a href="types.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../coordinate-systems/values.html" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
