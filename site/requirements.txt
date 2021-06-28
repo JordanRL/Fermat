@@ -1,2 +1,0 @@
-markdown-katex
-pymdown-extensions
