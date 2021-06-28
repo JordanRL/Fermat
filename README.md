@@ -34,14 +34,14 @@ Modules for Fermat provide additional functionality, as many of these features w
 
 To require the entire library, including all available modules, use:
 
-    composer require samsara/fermat-all "^2.0"
+    composer require samsara/fermat-all "^1.0"
 
 Or in your `composer.json` file:
 
 ```json
 {
     "require": {
-        "samsara/fermat-all": "^2.0"
+        "samsara/fermat-all": "^1.0"
     }
 }
 ```
