@@ -10,7 +10,7 @@ use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\Distribution\Exponential;
 use Samsara\Fermat\Provider\Distribution\Normal;
 use Samsara\Fermat\Provider\Distribution\Poisson;
-use Samsara\Fermat\Provider\PolyfillProvider;
+use Samsara\Fermat\Provider\RandomProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Ds\Vector;
@@ -294,7 +294,7 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
     {
         $maxKey = $this->getCollection()->count() - 1;
 
-        $key = PolyfillProvider::randomInt(0, $maxKey);
+        $key = RandomProvider::randomInt(0, $maxKey, RandomProvider::MODE_SPEED)->asInt();
 
         return $this->get($key);
     }
