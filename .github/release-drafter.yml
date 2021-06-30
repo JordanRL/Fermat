@@ -32,10 +32,6 @@ version-resolver:
     labels:
       - 'PR: patch'
   default: patch
-template: |
-  ## Included In This Release
-
-  $CHANGES
 autolabeler:
   - label: 'PR: Skip Changelog'
     files:
@@ -58,3 +54,7 @@ autolabeler:
     branch:
       - '/bug-/i'
       - '/b-/i'
+template: |
+  ## Included In This Release
+
+  $CHANGES
