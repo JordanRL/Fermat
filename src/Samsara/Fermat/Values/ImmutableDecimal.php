@@ -48,7 +48,7 @@ class ImmutableDecimal extends Decimal
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    protected function setValue(string $value, int $scale = null, int $base = 10)
+    protected function setValue(string $value, int $scale = null, int $base = null)
     {
         $imaginary = false;
 
@@ -59,10 +59,12 @@ class ImmutableDecimal extends Decimal
             $imaginary = true;
         }
 
-        if ($base !== 10 || $this->getBase() !== 10) {
-            $base = $base === 10 ? $this->getBase() : $base;
+        if (!is_null($base) || $this->getBase() !== 10) {
+            $base = is_null($base) ? $this->getBase() : $base;
             $value = $this->convertValue($value, 10, $base);
         }
+
+        $base = $base ?? 10;
 
         if ($imaginary) {
             $value .= 'i';
