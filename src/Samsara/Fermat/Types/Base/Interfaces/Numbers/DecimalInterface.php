@@ -84,6 +84,11 @@ interface DecimalInterface extends SimpleNumberInterface
     /**
      * @return DecimalInterface
      */
+    public function subFactorial(): DecimalInterface;
+
+    /**
+     * @return DecimalInterface
+     */
     public function doubleFactorial(): DecimalInterface;
 
     /**
