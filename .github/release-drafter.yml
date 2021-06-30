@@ -27,10 +27,10 @@ version-resolver:
       - 'PR: Major'
   minor:
     labels:
-      - 'PR: minor'
+      - 'PR: Minor'
   patch:
     labels:
-      - 'PR: patch'
+      - 'PR: Patch'
   default: patch
 autolabeler:
   - label: 'PR: Skip Changelog'
