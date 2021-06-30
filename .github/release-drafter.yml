@@ -1,0 +1,60 @@
+name-template: 'v$RESOLVED_VERSION 🌈'
+tag-template: 'v$RESOLVED_VERSION'
+category-template: '### $TITLE'
+categories:
+  - title: 'Features'
+    labels:
+      - 'Feature Request'
+      - 'Feature: Provider'
+      - 'Feature: Type'
+      - 'Feature: Value'
+      - 'Feature: Operation'
+  - title: 'Bug Fixes'
+    labels:
+      - 'Bug'
+  - title: 'Maintenance'
+    label:
+      - 'Code Quality'
+      - 'Performance'
+      - 'UX Improvement'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+exclude-labels:
+  - 'PR: Skip Changelog'
+version-resolver:
+  major:
+    labels:
+      - 'PR: Major'
+  minor:
+    labels:
+      - 'PR: minor'
+  patch:
+    labels:
+      - 'PR: patch'
+  default: patch
+template: |
+  ## Included In This Release
+
+  $CHANGES
+autolabeler:
+  - label: 'PR: Skip Changelog'
+    files:
+      - '*.md'
+      - '*.yml'
+  - label: 'PR: Major'
+    title:
+      - '/changed/i'
+  - label: 'PR: Minor'
+    title:
+      - '/added/i'
+      - '/updated/i'
+  - label: 'PR: Patch'
+    branch:
+      - '/bug-/i'
+      - '/b-/i'
+  - label: 'Bug'
+    title:
+      - '/fix/i'
+    branch:
+      - '/bug-/i'
+      - '/b-/i'
