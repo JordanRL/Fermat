@@ -49,6 +49,41 @@ trait IntegerMathTrait
 
     }
 
+    /**
+     * @return DecimalInterface
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public function subFactorial(): DecimalInterface
+    {
+        if ($this->isLessThan(1)) {
+            if ($this->isEqual(0)) {
+                return $this->setValue(1);
+            }
+            throw new IncompatibleObjectState(
+                'Can only perform a sub-factorial on a non-negative number.',
+                'Ensure that the number is not negative before calling subFactorial().',
+                'The subFactorial() method was called on a value that was negative.'
+            );
+        }
+
+        if (!$this->isInt()) {
+            throw new IncompatibleObjectState(
+                'Can only perform a sub-factorial on a whole number.',
+                'Ensure that the number does not have any fractional value before calling subFactorial().',
+                'The subFactorial() method was called on a value that was not a whole number.'
+            );
+        }
+
+        $e = Numbers::makeE($this->getScale());
+        $num = new ImmutableDecimal($this->getValue(10));
+
+        $num = $num->factorial();
+        $num = $num->divide($e, 3)->add('0.5');
+
+        return $num->floor();
+    }
+
     public function doubleFactorial(): DecimalInterface
     {
         if ($this->isWhole() && $this->isLessThanOrEqualTo(1)) {

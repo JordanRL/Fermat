@@ -181,22 +181,78 @@ class ImmutableDecimalTest extends TestCase
 
         $this->assertEquals('6', $three->factorial()->getValue());
         $this->assertEquals('120', $five->factorial()->getValue());
+    }
 
+    /**
+     * @small
+     */
+    public function testFactorialExceptionsOne()
+    {
         $negativeOne = new ImmutableDecimal(-1);
 
         $this->expectException(IncompatibleObjectState::class);
         $this->expectExceptionMessage('Can only perform a factorial on a non-negative number.');
 
         $negativeOne->factorial();
+    }
 
+    /**
+     * @small
+     */
+    public function testFactorialExceptionsTwo()
+    {
         $oneTenth = new ImmutableDecimal('1.1');
 
         $this->expectException(IncompatibleObjectState::class);
         $this->expectExceptionMessage('Can only perform a factorial on a whole number');
 
         $oneTenth->factorial();
-
     }
+
+    /**
+     * @medium
+     */
+    public function testSubFactorial()
+    {
+        $num = new ImmutableDecimal('4');
+
+        $this->assertEquals('9', $num->subFactorial()->getValue());
+
+        $num2 = new ImmutableDecimal('7');
+
+        $this->assertEquals('1854', $num2->subFactorial()->getValue());
+
+        $num3 = new ImmutableDecimal(0);
+
+        $this->assertEquals('1', $num3->subFactorial()->getValue());
+    }
+
+    /**
+     * @small
+     */
+    public function testSubFactorialExceptionsOne()
+    {
+        $negativeOne = new ImmutableDecimal(-1);
+
+        $this->expectException(IncompatibleObjectState::class);
+        $this->expectExceptionMessage('Can only perform a sub-factorial on a non-negative number.');
+
+        $negativeOne->subFactorial();
+    }
+
+    /**
+     * @small
+     */
+    public function testSubFactorialExceptionsTwo()
+    {
+        $oneTenth = new ImmutableDecimal('1.1');
+
+        $this->expectException(IncompatibleObjectState::class);
+        $this->expectExceptionMessage('Can only perform a sub-factorial on a whole number');
+
+        $oneTenth->subFactorial();
+    }
+
     /**
      * @medium
      */
