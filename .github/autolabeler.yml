@@ -1,0 +1,11 @@
+'Feature: Type': '/src/Samsara/Fermat/Types'
+'Feature: Value': '/src/Samsara/Fermat/Values'
+'Feature: Provider': '/src/Samsara/Fermat/Provider'
+'Documentation': '/docs'
+'Code Quality': ['/tests', '/tests-with-modules']
+'Core: Traits': '*Trait.php'
+'Core: Interfaces': '*Interface.php'
+'Core: Immutables': 'Immutable*'
+'Core: Mutables': 'Mutable*'
+'PR: Major': '*Interfaces.php'
+'PR: Minor': '/src/Samsara/Fermat/Provider'
