@@ -293,9 +293,9 @@ trait TrigonometryTrait
 
         $this->scale = $scale;
 
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
 
-        $answer = $num->multiply(2)->exp()->subtract(1)->divide($two->multiply($num->exp()));
+        $answer = $num->multiply(2)->exp($scale+2)->subtract(1)->divide($two->multiply($num->exp($scale+2)), $scale+2);
 
         if ($round) {
             $answer = $answer->roundToScale($scale);
@@ -354,9 +354,9 @@ trait TrigonometryTrait
 
         $scale = $scale ?? $this->getScale();
 
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
 
-        $answer = $num->cosh($scale+1, false)->divide($num->sinh($scale+1, false));
+        $answer = $num->cosh($scale+1, false)->divide($num->sinh($scale+1, false), $scale+2);
 
         if ($round) {
             $answer = $answer->roundToScale($scale);
@@ -376,7 +376,7 @@ trait TrigonometryTrait
         $one = Numbers::makeOne();
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $answer = $one->divide($num->cosh($scale+1, false));
+        $answer = $one->divide($num->cosh($scale+2, false), $scale+2);
 
         if ($round) {
             $answer = $answer->roundToScale($scale);

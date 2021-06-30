@@ -94,7 +94,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
             $this->sign = false;
         }
 
-        if (strpos($value, '.') !== false) {
+        if (str_contains($value, '.')) {
             if (strpos($value, 'E')) {
                 [$baseNum, $exp] = explode('E', $value);
                 [$left, $right] = explode('.', $baseNum);
@@ -182,7 +182,11 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
     public function getValue($base = null): string // TODO: Check usages to see if it should be replaced with rawString()
     {
-        $value = $this->convertObject();
+        if (is_null($base)) {
+            $value = $this->convertObject();
+        } else {
+            $value = $this->convertValue($this->getAsBaseTenRealNumber(), 10, $base);
+        }
 
         if ($this->isImaginary()) {
             $value .= 'i';
@@ -222,7 +226,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
      */
     public function convertToBase($base)
     {
-        return $this->setValue($this->getValue($base), null, $base);
+        return $this->setValue($this->getValue(10), null, $base);
     }
 
     /**

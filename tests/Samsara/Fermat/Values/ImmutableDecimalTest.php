@@ -7,6 +7,7 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Types\NumberCollection;
 
 /**
@@ -623,6 +624,95 @@ class ImmutableDecimalTest extends TestCase
         $oneHalf->arccsc();
 
     }
+
+    public function testSinh()
+    {
+
+        $one = Numbers::makeOne();
+
+        $this->assertEquals('1.1752011936', $one->sinh(10)->getValue());
+        $this->assertEquals('1.1752012', $one->sinh(7)->getValue());
+        $this->assertEquals('1.1752011', $one->sinh(7, false)->getValue());
+
+        $one = $one->truncateToScale(5);
+
+        $this->assertEquals('1.1752', $one->sinh()->getValue());
+
+    }
+
+    public function testCosh()
+    {
+
+        $one = Numbers::makeOne();
+
+        $this->assertEquals('1.5430806348', $one->cosh(10)->getValue());
+        $this->assertEquals('1.543081', $one->cosh(6)->getValue());
+        $this->assertEquals('1.54308', $one->cosh(6, false)->getValue());
+
+        $one = $one->truncateToScale(5);
+
+        $this->assertEquals('1.54308', $one->cosh()->getValue());
+
+    }
+
+    public function testTanh()
+    {
+
+        $one = Numbers::makeOne();
+
+        $this->assertEquals('0.761594156', $one->tanh(10)->getValue());
+        $this->assertEquals('0.7615941559', $one->tanh(10, false)->getValue());
+
+        $one = $one->truncateToScale(5);
+
+        $this->assertEquals('0.76159', $one->tanh()->getValue());
+
+    }
+
+    public function testSech()
+    {
+
+        $one = Numbers::makeOne();
+
+        $this->assertEquals('0.6480542737', $one->sech(10)->getValue());
+        $this->assertEquals('0.6480542736', $one->sech(10, false)->getValue());
+
+        $one = $one->truncateToScale(5);
+
+        $this->assertEquals('0.64805', $one->sech()->getValue());
+
+    }
+
+    public function testCsch()
+    {
+
+        $one = Numbers::makeOne();
+
+        $this->assertEquals('0.8509181282', $one->csch(10)->getValue());
+        $this->assertEquals('0.85091812', $one->csch(8, false)->getValue());
+        $this->assertEquals('0.85091813', $one->csch(8)->getValue());
+
+        $one = $one->truncateToScale(5);
+
+        $this->assertEquals('0.85092', $one->csch()->getValue());
+
+    }
+
+    public function testCoth()
+    {
+
+        $one = Numbers::makeOne();
+
+        $this->assertEquals('1.3130352855', $one->coth(10)->getValue());
+        $this->assertEquals('1.3130352', $one->coth(7, false)->getValue());
+        $this->assertEquals('1.3130353', $one->coth(7)->getValue());
+
+        $one = $one->truncateToScale(5);
+
+        $this->assertEquals('1.31303', $one->coth()->getValue());
+
+    }
+
     /**
      * @medium
      */
@@ -678,6 +768,30 @@ class ImmutableDecimalTest extends TestCase
 
         $this->assertEquals('14', $five->add($four)->getValue());
         $this->assertEquals('20', $five->add($five)->getValue());
+
+        $five = new ImmutableDecimal(10, null, 5);
+
+        $this->assertEquals('10', $five->getValue());
+        $this->assertEquals('5', $five->getValue(10));
+        $this->assertEquals('5', $five->convertToBase(10)->getValue());
+
+        $five = new ImmutableDecimal(5, null, 5, true);
+
+        $this->assertEquals('10', $five->getValue());
+        $this->assertEquals('5', $five->getValue(10));
+        $this->assertEquals('5', $five->convertToBase(10)->getValue());
+
+        $negFive = new ImmutableDecimal(-10, null, 5);
+
+        $this->assertEquals('-10', $negFive->getValue());
+        $this->assertEquals('-5', $negFive->getValue(10));
+        $this->assertEquals('-5', $negFive->convertToBase(10)->getValue());
+
+        $negFive = new ImmutableDecimal(-5, null, 5, true);
+
+        $this->assertEquals('-10', $negFive->getValue());
+        $this->assertEquals('-5', $negFive->getValue(10));
+        $this->assertEquals('-5', $negFive->convertToBase(10)->getValue());
 
     }
     /**
