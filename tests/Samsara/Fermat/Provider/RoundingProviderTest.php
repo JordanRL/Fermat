@@ -13,7 +13,19 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 class RoundingProviderTest extends TestCase
 {
 
-    public function testRandomDefault()
+    protected static int $roundingMode;
+
+    public static function setUpBeforeClass(): void
+    {
+        static::$roundingMode = RoundingProvider::getRoundingMode();
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        RoundingProvider::setRoundingMode(static::$roundingMode);
+    }
+
+    public function testRoundDefault()
     {
 
         $num1 = new ImmutableDecimal('1.111111');
