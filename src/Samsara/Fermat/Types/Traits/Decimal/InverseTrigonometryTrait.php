@@ -11,7 +11,7 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 trait InverseTrigonometryTrait
 {
 
-    public function arcsin($scale = null, $round = true): DecimalInterface
+    public function arcsin(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -63,7 +63,7 @@ trait InverseTrigonometryTrait
 
     }
 
-    public function arccos($scale = null, $round = true): DecimalInterface
+    public function arccos(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -101,7 +101,7 @@ trait InverseTrigonometryTrait
 
     }
 
-    public function arctan($scale = null, $round = true): DecimalInterface
+    public function arctan(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -123,7 +123,7 @@ trait InverseTrigonometryTrait
 
     }
 
-    public function arccot($scale = null, $round = true): DecimalInterface
+    public function arccot(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -146,7 +146,7 @@ trait InverseTrigonometryTrait
 
     }
 
-    public function arcsec($scale = null, $round = true): DecimalInterface
+    public function arcsec(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -174,7 +174,7 @@ trait InverseTrigonometryTrait
 
     }
 
-    public function arccsc($scale = null, $round = true): DecimalInterface
+    public function arccsc(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -202,9 +202,9 @@ trait InverseTrigonometryTrait
 
     }
 
-    abstract public function roundToScale($scale): DecimalInterface;
+    abstract public function roundToScale(int $scale, ?int $mode = null): DecimalInterface;
 
-    abstract public function truncateToScale($scale): DecimalInterface;
+    abstract public function truncateToScale(int $scale): DecimalInterface;
 
     abstract public function getScale(): ?int;
 

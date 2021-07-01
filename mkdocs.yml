@@ -48,6 +48,7 @@ nav:
           - 'Arithmetic': 'reference/providers/arithmetic.md'
           - 'Constant': 'reference/providers/constant.md'
           - 'Polyfill': 'reference/providers/polyfill.md'
+          - 'Rounding': 'reference/providers/rounding.md'
           - 'Sequence': 'reference/providers/sequence.md'
           - 'Series': 'reference/providers/series.md'
           - 'Stats': 'reference/providers/stats.md'

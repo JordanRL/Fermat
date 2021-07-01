@@ -14,7 +14,7 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 trait LogTrait
 {
 
-    public function exp($scale = null): DecimalInterface
+    public function exp(int $scale = null, bool $round = true): DecimalInterface
     {
         $scale = $scale ?? $this->getScale();
 
@@ -41,14 +41,13 @@ trait LogTrait
     }
 
     /**
-     * @param null $scale The number of digits which should be accurate
-     * @param bool $round Whether or not to round to the $scale value. If true, will round. If false, will truncate.
+     * @param int|null $scale The number of digits which should be accurate
      *
      * @return DecimalInterface
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function ln($scale = null, bool $round = true): DecimalInterface
+    public function ln(int $scale = null, bool $round = true): DecimalInterface
     {
         /*
         if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX) && $scale <= 10) {
@@ -114,12 +113,11 @@ trait LogTrait
     }
 
     /**
-     * @param null $scale
-     * @param bool $round
+     * @param int|null $scale
      * @return mixed
      * @throws IntegrityConstraint|MissingPackage
      */
-    public function log10($scale = null, $round = true): DecimalInterface
+    public function log10(int $scale = null, bool $round = true): DecimalInterface
     {
         $log10 = Numbers::makeNaturalLog10();
 

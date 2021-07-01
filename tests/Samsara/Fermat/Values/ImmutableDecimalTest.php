@@ -860,11 +860,13 @@ class ImmutableDecimalTest extends TestCase
 
         $this->assertEquals('5', $negFive->abs()->getValue());
         $this->assertEquals('5', $negFive->absValue());
+        $this->assertEquals('-5', $negFive->getValue());
 
         $five = new ImmutableDecimal(5);
 
         $this->assertEquals('5', $five->abs()->getValue());
         $this->assertEquals('5', $five->absValue());
+        $this->assertEquals('5', $five->getValue());
 
     }
     /**
@@ -953,7 +955,7 @@ class ImmutableDecimalTest extends TestCase
 
         $pointFive = new ImmutableDecimal('0.5');
 
-        $this->assertEquals('1', $pointFive->round()->getValue());
+        $this->assertEquals('0', $pointFive->round()->getValue());
 
         $pointOneFive = new ImmutableDecimal('0.15');
 

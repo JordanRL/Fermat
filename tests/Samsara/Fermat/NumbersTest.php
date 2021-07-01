@@ -56,13 +56,26 @@ class NumbersTest extends TestCase
 
         $this->assertEquals('1.1', $one->getValue());
 
-        $one = Numbers::make(Numbers::IMMUTABLE_FRACTION, 1.1);
+    }
+    /**
+     * @medium
+     */
+    public function testMakeFromFloatExceptions1()
+    {
 
-        $this->assertEquals('1/1', $one->getValue());
+        $this->expectException(IntegrityConstraint::class);
 
-        $one = Numbers::make(Numbers::MUTABLE_FRACTION, 1.1);
+        Numbers::make(Numbers::MUTABLE_FRACTION, 1.1);
 
-        $this->assertEquals('1/1', $one->getValue());
+    }/**
+ * @medium
+ */
+    public function testMakeFromFloatExceptions2()
+    {
+
+        $this->expectException(IntegrityConstraint::class);
+
+        Numbers::make(Numbers::IMMUTABLE_FRACTION, 1.1);
 
     }
     /**
@@ -79,13 +92,26 @@ class NumbersTest extends TestCase
 
         $this->assertEquals('1.3', $one->getValue());
 
-        $one = Numbers::make(Numbers::IMMUTABLE_FRACTION, '1.3');
+    }
+    /**
+     * @medium
+     */
+    public function testMakeFromStringExceptions1()
+    {
 
-        $this->assertEquals('1/1', $one->getValue());
+        $this->expectException(IntegrityConstraint::class);
 
-        $one = Numbers::make(Numbers::MUTABLE_FRACTION, '1.3');
+        Numbers::make(Numbers::MUTABLE_FRACTION, '1.1');
 
-        $this->assertEquals('1/1', $one->getValue());
+    }/**
+ * @medium
+ */
+    public function testMakeFromStringExceptions2()
+    {
+
+        $this->expectException(IntegrityConstraint::class);
+
+        Numbers::make(Numbers::IMMUTABLE_FRACTION, '1.1');
 
     }
     /**

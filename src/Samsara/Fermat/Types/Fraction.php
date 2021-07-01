@@ -38,14 +38,22 @@ abstract class Fraction extends Number implements FractionInterface
     public function __construct($numerator, $denominator, int $base = 10)
     {
 
-        $numerator = Numbers::makeOrDont(Numbers::IMMUTABLE, $numerator, null, $base)->round();
-        $denominator = Numbers::makeOrDont(Numbers::IMMUTABLE, $denominator, null, $base)->round();
+        $numerator = Numbers::makeOrDont(Numbers::IMMUTABLE, $numerator, null, $base);
+        $denominator = Numbers::makeOrDont(Numbers::IMMUTABLE, $denominator, null, $base);
 
         if ($denominator->isEqual(0)) {
             throw new IntegrityConstraint(
                 'The denominator of a fraction cannot be zero.',
                 'Provide a denominator other than zero.',
                 'Cannot create new instance of Fraction with denominator of zero.'
+            );
+        }
+
+        if (!$numerator->isInt() || !$denominator->isInt()) {
+            throw new IntegrityConstraint(
+                'The numerator and denominator of a fraction must be whole numbers.',
+                'Only provide whole numbers to constructors of Fraction.',
+                'An attempt was made to create a fraction with non-integer components.'
             );
         }
 
