@@ -58,6 +58,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../installation-and-usage/">Installation & Usage</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../modules/">Modules</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../mutability/">Mutable vs. Immutable</a>
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Using The Factories</a>
@@ -236,165 +238,14 @@
 <p>Fermat provides factory classes to make it easier to get instances of the various Value classes. The available factories are:</p>
 <ul>
 <li><code>Samsara\Fermat\Collections</code></li>
-<li><code>Samsara\Fermat\ComplexNumbers</code></li>
-<li><code>Samsara\Fermat\Matrices</code></li>
 <li><code>Samsara\Fermat\Numbers</code></li>
 </ul>
 <p>All factories are classes that have only static methods and constants. </p>
 <h1 id="the-collections-factory-class">The Collections Factory Class</h1>
 <p>The <code>Samsara\Fermat\Collections</code> factory class currently has no methods or constants, and exists as a placeholder.</p>
-<h1 id="the-complexnumbers-factory-class">The ComplexNumbers Factory Class</h1>
-<p>The <code>Samsara\Fermat\ComplexNumbers</code> factory class allows you to create instances of the Value classes which implement the <code>ComplexNumberInterface</code>.</p>
-<h3 id="available-constants">Available Constants</h3>
-<p>The following constants are available on the <code>ComplexNumbers</code> class.</p>
-<div class="admonition signature constant">
-<p class="admonition-title">ComplexNumbers::IMMUTABLE_COMPLEX</p>
-<dl>
-<dt>type</dt>
-<dd>string</dd>
-<dt>value</dt>
-<dd>The fully qualified class name of the <strong>ImmutableComplexNumber</strong> class.</dd>
-</dl>
-</div>
-<div class="admonition signature constant">
-<p class="admonition-title">ComplexNumbers::MUTABLE_COMPLEX</p>
-<dl>
-<dt>type</dt>
-<dd>string</dd>
-<dt>value</dt>
-<dd>The fully qualified class name of the <strong>MutableComplexNumber</strong> class.</dd>
-</dl>
-</div>
-<h3 id="available-factory-methods">Available Factory Methods</h3>
-<p>The following factory methods are available on the <code>ComplexNumbers</code> class.</p>
-<div class="admonition signature">
-<p class="admonition-title">ComplexNumbers::make(string $type, string|array|NumberCollectionInterface $value)</p>
-<dl>
-<dt>$type</dt>
-<dd>The type (mutable or immutable) of <strong>ComplexNumber</strong> to create</dd>
-<dt>$value</dt>
-<dd>The initial value of the created instance; see notes below</dd>
-<dt>return</dt>
-<dd>The instance created from the given inputs; the instance will extend <strong>ComplexNumber</strong> and implement the <strong>ComplexNumberInterface</strong></dd>
-</dl>
-</div>
-<p>If the value is a <code>string</code>, it is assumed to be in the format: <code>REAL+IMAGINARY</code> or <code>REAL-IMAGINARY</code></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In string format, the input for this factory method <strong>MAY</strong> have a minus sign in front of the real part, but <strong>MUST</strong> have either a plus or minus sign in front of the imaginary part.</p>
-<p>The sign is applied to the number that follows and is stored in the <code>ImmutableDecimal</code> for that number.</p>
-</div>
-<p>You may also provide either an <code>array</code> or a <code>NumberCollection</code> that have exactly two values which implement the <code>SimpleNumberInterface</code>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The real part must have a key of <code>0</code>, and the imaginary part must have a key of <code>1</code> in the given <code>array</code> or <code>NumberCollection</code>.</p>
-</div>
-<h1 id="the-matrices-factory-class">The Matrices Factory Class</h1>
-<p>The <code>Samsara\Fermat\Matrices</code> factory class provides access to several pre-built matrices that may be useful in common situations.</p>
-<h3 id="available-constants_1">Available Constants</h3>
-<p>The following constants are available on the <code>Matrices</code> class.</p>
-<div class="admonition signature constant">
-<p class="admonition-title">Matrices::IMMUTABLE_MATRIX</p>
-<dl>
-<dt>type</dt>
-<dd>string</dd>
-<dt>value</dt>
-<dd>The fully qualified class name of the <strong>ImmutableMatrix</strong> class.</dd>
-</dl>
-</div>
-<div class="admonition signature constant">
-<p class="admonition-title">Matrices::MUTABLE_MATRIX</p>
-<dl>
-<dt>type</dt>
-<dd>string</dd>
-<dt>value</dt>
-<dd>The fully qualified class name of the <strong>MutableMatrix</strong> class.</dd>
-</dl>
-</div>
-<h3 id="available-factory-methods_1">Available Factory Methods</h3>
-<p>The following factory methods are available on the <code>Matrices</code> class.</p>
-<div class="admonition signature">
-<p class="admonition-title">Matrices::zeroMatrix(string $type, int $rows, int $columns)</p>
-<dl>
-<dt>$type</dt>
-<dd>The type (mutable or immutable) of <strong>Matrix</strong> to create</dd>
-<dt>$rows</dt>
-<dd>The number of rows the generated matrix should have</dd>
-<dt>$columns</dt>
-<dd>The number of columns the generated matrix should have</dd>
-<dt>return</dt>
-<dd>An instance of the specified matrix type with the given dimensions where all values in the matrix are the number zero</dd>
-</dl>
-</div>
-<div class="admonition example">
-<p class="admonition-title">For Example</p>
-<p>A zero matrix of two rows and three columns would look like:</p>
-<div class="highlight"><pre><span></span><span class="lineno">1 </span>[0 0 0]  
-<span class="lineno">2 </span>[0 0 0]
-</pre></div>
-</div>
-<div class="admonition signature">
-<p class="admonition-title">Matrices::onesMatrix(string $type, int $rows, int $columns)</p>
-<dl>
-<dt>$type</dt>
-<dd>The type (mutable or immutable) of <strong>Matrix</strong> to create</dd>
-<dt>$rows</dt>
-<dd>The number of rows the generated matrix should have</dd>
-<dt>$columns</dt>
-<dd>The number of columns the generated matrix should have</dd>
-<dt>return</dt>
-<dd>An instance of the specified matrix type with the given dimensions where all values in the matrix are the number one</dd>
-</dl>
-</div>
-<div class="admonition example">
-<p class="admonition-title">For Example</p>
-<p>A ones matrix of two rows and three columns would look like:</p>
-<div class="highlight"><pre><span></span><span class="lineno">1 </span>[1 1 1]  
-<span class="lineno">2 </span>[1 1 1]
-</pre></div>
-</div>
-<div class="admonition signature">
-<p class="admonition-title">Matrices::identityMatrix(string $type, int $size)</p>
-<dl>
-<dt>$type</dt>
-<dd>The type (mutable or immutable) of <strong>Matrix</strong> to create</dd>
-<dt>$size</dt>
-<dd>The number of rows and columns the generated matrix should have</dd>
-<dt>return</dt>
-<dd>A square matrix where the dimensions match the integer given in <strong>$size</strong>. This matrix is an identity matrix, which is often used in matrix math, where the diagonal consists of ones, and all other values are zero</dd>
-</dl>
-</div>
-<div class="admonition example">
-<p class="admonition-title">For Example</p>
-<p>An identity matrix of size three would look like:</p>
-<div class="highlight"><pre><span></span><span class="lineno">1 </span>[1 0 0]  
-<span class="lineno">2 </span>[0 1 0]  
-<span class="lineno">3 </span>[0 0 1]
-</pre></div>
-</div>
-<div class="admonition signature">
-<p class="admonition-title">Matrices::cofactorMatrix(string $type, int $size)</p>
-<dl>
-<dt>$type</dt>
-<dd>The type (mutable or immutable) of <strong>Matrix</strong> to create</dd>
-<dt>$size</dt>
-<dd>The number of rows and columns the generated matrix should have</dd>
-<dt>return</dt>
-<dd>A square matrix where the dimensions match the integer given in <strong>$size</strong>. The matrix is filled with alternating values of 1 and -1 in a checkerboard pattern, starting with positive 1 in position [0, 0].</dd>
-</dl>
-</div>
-<p>When multiplied by another matrix, this will swap the sign of every other value in the matrix.</p>
-<div class="admonition example">
-<p class="admonition-title">For Example</p>
-<p>A cofactor matrix of size three would look like:</p>
-<div class="highlight"><pre><span></span><span class="lineno">1 </span>[+ - +]  
-<span class="lineno">2 </span>[- + -]  
-<span class="lineno">3 </span>[+ - +]
-</pre></div>
-</div>
 <h1 id="the-numbers-factory-class">The Numbers Factory Class</h1>
 <p>The <code>Samsara\Fermat\Numbers</code> factory class provides a way to use the Value classes which implement the <code>SimpleNumberInterface</code> in Fermat without being as specific as those classes may require. Consider the following code:</p>
-<h3 id="available-constants_2">Available Constants</h3>
+<h3 id="available-constants">Available Constants</h3>
 <p>The following constants are available on the <code>Numbers</code> class.</p>
 <div class="admonition signature constant">
 <p class="admonition-title">Numbers::IMMUTABLE</p>
@@ -486,7 +337,7 @@
 <dd>The value of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>i</mi><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">i^i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.824664em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.824664em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span></span></span></span> pre-computed to 100 decimal places.</dd>
 </dl>
 </div>
-<h3 id="available-factory-methods_2">Available Factory Methods</h3>
+<h3 id="available-factory-methods">Available Factory Methods</h3>
 <p>The following factory methods are available on the <code>Numbers</code> class.</p>
 <div class="admonition signature">
 <p class="admonition-title">Numbers::make(string $type, mixed $value, ?int $scale = null, int $base = 10)</p>

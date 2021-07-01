@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://jordanrl.github.io/Fermat/modules/linear-algebra/matrix-factory/">
+  <link rel="shortcut icon" href="../../../img/favicon.ico">
+  <title>The Matrices Factory Class - Fermat - PHP Math Library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../../css/theme.css" />
+  <link rel="stylesheet" href="../../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  <link href="../../../css/custom.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "The Matrices Factory Class";
+    var mkdocs_page_input_path = "modules/linear-algebra/matrix-factory.md";
+    var mkdocs_page_url = "/Fermat/modules/linear-algebra/matrix-factory/";
+  </script>
+  
+  <script src="../../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/php.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../../.." class="icon icon-home"> Fermat - PHP Math Library</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../..">Introduction</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Getting Started</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../getting-started/concepts/">Concepts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../getting-started/installation-and-usage/">Installation & Usage</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../getting-started/modules/">Modules</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../getting-started/mutability/">Mutable vs. Immutable</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../getting-started/using-factories/">Using The Factories</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../getting-started/direct-instantiation/">Direct Instantiation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../getting-started/comparing/">Comparing Values</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../getting-started/exceptions/">Handling Exceptions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Configuration</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../configuration/calculation-modes/">Calculation Modes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../configuration/rounding-modes/">Rounding Modes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Types & Values</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../types-and-values/decimals/">Decimals</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../types-and-values/fractions/">Fractions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../types-and-values/complex/">Complex Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../types-and-values/coordinates/">Coordinates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../types-and-values/matrices/">Matrices</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../types-and-values/collections/">Collections</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../types-and-values/expressions/">Expressions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Arithmetic</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../arithmetic/traits/">Built In Traits</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../arithmetic/simple/">Simple Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../arithmetic/complex/">Complex Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../arithmetic/matrices/">Matrices</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Trigonometry</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../trigonometry/traits/">Built In Traits</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../trigonometry/basic/">Basic Trig Functions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../trigonometry/inverse/">Inverse Trig Functions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../trigonometry/hyperbolic/">Hyperbolic Trig Functions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Statistics</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../statistics/included/">Built In Distributions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../statistics/distributions/">Using Distributions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../statistics/static-methods/">Using Static Methods</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Extending</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="../../../extending/abstracts.md">Abstract Classes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">REFERENCE</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Interfaces</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../reference/interfaces/numbers/">Numbers</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../reference/interfaces/groups/">Groups</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../reference/interfaces/coordinates/">Coordinates</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../reference/interfaces/evaluateables/">Evaluateables</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../reference/interfaces/characteristics/">Characteristics</a>
+                </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Providers</a>
+    <ul>
+                <li class="toctree-l2"><a class="" href="../../../reference/providers/arithmetic.md">Arithmetic</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../../../reference/providers/constant.md">Constant</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../../../reference/providers/polyfill.md">Polyfill</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../reference/providers/rounding/">Rounding</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../../../reference/providers/sequence.md">Sequence</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../../../reference/providers/series.md">Series</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../../../reference/providers/stats.md">Stats</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../../../reference/providers/trigonometry.md">Trigonometry</a>
+                </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Distributions</a>
+    <ul>
+                <li class="toctree-l2"><a class="" href="../../../reference/distributions/normal.md">Normal</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../../../reference/distributions/poisson.md">Poisson</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../../../reference/distributions/exponential.md">Exponential</a>
+                </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../..">Fermat - PHP Math Library</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>The Matrices Factory Class</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/JordanRL/Fermat/edit/master/docs/modules/linear-algebra/matrix-factory.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="the-matrices-factory-class">The Matrices Factory Class</h1>
+<p>The <code>Samsara\Fermat\Matrices</code> factory class provides access to several pre-built matrices that may be useful in common situations.</p>
+<h3 id="available-constants">Available Constants</h3>
+<p>The following constants are available on the <code>Matrices</code> class.</p>
+<div class="admonition signature constant">
+<p class="admonition-title">Matrices::IMMUTABLE_MATRIX</p>
+</div>
+<dl>
+<dt>type</dt>
+<dd>
+<p>string</p>
+<dl>
+<dt>value</dt>
+<dd>The fully qualified class name of the <strong>ImmutableMatrix</strong> class.</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition signature constant">
+<p class="admonition-title">Matrices::MUTABLE_MATRIX</p>
+</div>
+<dl>
+<dt>type</dt>
+<dd>
+<p>string</p>
+<dl>
+<dt>value</dt>
+<dd>The fully qualified class name of the <strong>MutableMatrix</strong> class.</dd>
+</dl>
+</dd>
+</dl>
+<h3 id="available-factory-methods">Available Factory Methods</h3>
+<p>The following factory methods are available on the <code>Matrices</code> class.</p>
+<div class="admonition signature">
+<p class="admonition-title">Matrices::zeroMatrix(string $type, int $rows, int $columns)</p>
+</div>
+<dl>
+<dt>$type</dt>
+<dd>
+<p>The type (mutable or immutable) of <strong>Matrix</strong> to create</p>
+<dl>
+<dt>$rows</dt>
+<dd>The number of rows the generated matrix should have</dd>
+<dt>$columns</dt>
+<dd>The number of columns the generated matrix should have</dd>
+<dt>return</dt>
+<dd>An instance of the specified matrix type with the given dimensions where all values in the matrix are the number zero</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition example">
+<p class="admonition-title">For Example</p>
+</div>
+<p>A zero matrix of two rows and three columns would look like:</p>
+<div class="highlight"><pre><span></span><span class="lineno">1 </span>```
+<span class="lineno">2 </span>[0 0 0]  
+<span class="lineno">3 </span>[0 0 0]
+<span class="lineno">4 </span>```
+</pre></div>
+<div class="admonition signature">
+<p class="admonition-title">Matrices::onesMatrix(string $type, int $rows, int $columns)</p>
+</div>
+<dl>
+<dt>$type</dt>
+<dd>
+<p>The type (mutable or immutable) of <strong>Matrix</strong> to create</p>
+<dl>
+<dt>$rows</dt>
+<dd>The number of rows the generated matrix should have</dd>
+<dt>$columns</dt>
+<dd>The number of columns the generated matrix should have</dd>
+<dt>return</dt>
+<dd>An instance of the specified matrix type with the given dimensions where all values in the matrix are the number one</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition example">
+<p class="admonition-title">For Example</p>
+</div>
+<p>A ones matrix of two rows and three columns would look like:</p>
+<div class="highlight"><pre><span></span><span class="lineno">1 </span>```
+<span class="lineno">2 </span>[1 1 1]  
+<span class="lineno">3 </span>[1 1 1]
+<span class="lineno">4 </span>```
+</pre></div>
+<div class="admonition signature">
+<p class="admonition-title">Matrices::identityMatrix(string $type, int $size)</p>
+</div>
+<dl>
+<dt>$type</dt>
+<dd>
+<p>The type (mutable or immutable) of <strong>Matrix</strong> to create</p>
+<dl>
+<dt>$size</dt>
+<dd>The number of rows and columns the generated matrix should have</dd>
+<dt>return</dt>
+<dd>A square matrix where the dimensions match the integer given in <strong>$size</strong>. This matrix is an identity matrix, which is often used in matrix math, where the diagonal consists of ones, and all other values are zero</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition example">
+<p class="admonition-title">For Example</p>
+</div>
+<p>An identity matrix of size three would look like:</p>
+<div class="highlight"><pre><span></span><span class="lineno">1 </span>```
+<span class="lineno">2 </span>[1 0 0]  
+<span class="lineno">3 </span>[0 1 0]  
+<span class="lineno">4 </span>[0 0 1]
+<span class="lineno">5 </span>```
+</pre></div>
+<div class="admonition signature">
+<p class="admonition-title">Matrices::cofactorMatrix(string $type, int $size)</p>
+</div>
+<dl>
+<dt>$type</dt>
+<dd>
+<p>The type (mutable or immutable) of <strong>Matrix</strong> to create</p>
+<dl>
+<dt>$size</dt>
+<dd>The number of rows and columns the generated matrix should have</dd>
+<dt>return</dt>
+<dd>A square matrix where the dimensions match the integer given in <strong>$size</strong>. The matrix is filled with alternating values of 1 and -1 in a checkerboard pattern, starting with positive 1 in position [0, 0].</dd>
+</dl>
+</dd>
+</dl>
+<p>When multiplied by another matrix, this will swap the sign of every other value in the matrix.</p>
+<div class="admonition example">
+<p class="admonition-title">For Example</p>
+</div>
+<p>A cofactor matrix of size three would look like:</p>
+<div class="highlight"><pre><span></span><span class="lineno">1 </span>```
+<span class="lineno">2 </span>[+ - +]  
+<span class="lineno">3 </span>[- + -]  
+<span class="lineno">4 </span>[+ - +]
+<span class="lineno">5 </span>```
+</pre></div>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/JordanRL/Fermat/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '../../..';</script>
+    <script src="../../../js/theme_extra.js" defer></script>
+    <script src="../../../js/theme.js" defer></script>
+      <script src="../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
