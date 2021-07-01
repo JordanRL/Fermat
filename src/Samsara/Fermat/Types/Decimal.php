@@ -180,7 +180,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         return $string;
     }
 
-    public function getValue($base = null): string // TODO: Check usages to see if it should be replaced with rawString()
+    public function getValue($base = null): string
     {
         if (is_null($base)) {
             $value = $this->convertObject();

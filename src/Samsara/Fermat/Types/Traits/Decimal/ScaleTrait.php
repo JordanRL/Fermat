@@ -6,6 +6,7 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
+use Samsara\Fermat\Provider\RoundingProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 trait ScaleTrait
@@ -18,53 +19,21 @@ trait ScaleTrait
         return $this->scale;
     }
 
-    public function round($decimals = 0): DecimalInterface
+    public function round(int $decimals = 0, ?int $mode = null): DecimalInterface
     {
-        $fractional = $this->getDecimalPart();
-        $whole = $this->getWholePart();
+        if ($mode) {
+            $defaultMode = RoundingProvider::getRoundingMode();
+            RoundingProvider::setRoundingMode($mode);
+            $return = $this->setValue(RoundingProvider::round($this, $decimals));
+            RoundingProvider::setRoundingMode($defaultMode);
 
-        $iPart = '';
-
-        if ($this->isImaginary()) {
-            $iPart = 'i';
+            return $return;
         }
 
-        if ($this->sign == true) {
-            $whole = '-'.$whole;
-        }
-
-        $fractionalArr = str_split($fractional);
-
-        if (!isset($fractionalArr[$decimals])) {
-            return $this;
-        } else {
-            if ($decimals == 0) {
-                if ($fractionalArr[$decimals] >= 5) {
-                    return $this->setValue($whole.$iPart)->add(1);
-                } else {
-                    return $this->setValue($whole.$iPart);
-                }
-            } else {
-                if ($fractionalArr[$decimals] >= 5) {
-                    $fractionalArr = $this->reduceDecimals($fractionalArr, $decimals-1, 1);
-                }
-
-                if (is_null($fractionalArr)) {
-                    return $this->setValue($whole.$iPart)->add(1);
-                }
-
-                $rounded = $whole.'.';
-
-                for ($i = 0;$i < $decimals;$i++) {
-                    $rounded .= $fractionalArr[$i];
-                }
-
-                return $this->setValue($rounded.$iPart);
-            }
-        }
+        return $this->setValue(RoundingProvider::round($this, $decimals));
     }
 
-    public function truncate($decimals = 0): DecimalInterface
+    public function truncate(int $decimals = 0): DecimalInterface
     {
         $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
@@ -96,12 +65,12 @@ trait ScaleTrait
         return $this->setValue($result);
     }
 
-    public function roundToScale($scale): DecimalInterface
+    public function roundToScale(int $scale, ?int $mode = null): DecimalInterface
     {
 
         $this->scale = $scale;
 
-        return $this->round($scale);
+        return $this->round($scale, $mode);
 
     }
 
@@ -116,19 +85,12 @@ trait ScaleTrait
 
     public function ceil(): DecimalInterface
     {
-        $fractional = $this->getDecimalPart();
-        $whole = $this->getWholePart();
-
-        if ($fractional > 0) {
-            $whole = ArithmeticProvider::add($whole, 1, $this->getScale());
-        }
-
-        return $this->setValue($whole);
+        return $this->round(0, RoundingProvider::MODE_CEIL);
     }
 
     public function floor(): DecimalInterface
     {
-        return $this->setValue($this->getWholePart());
+        return $this->round(0, RoundingProvider::MODE_FLOOR);
     }
 
     /**

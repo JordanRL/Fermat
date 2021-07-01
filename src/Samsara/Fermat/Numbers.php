@@ -158,9 +158,9 @@ class Numbers
         }
 
         /** @var ImmutableDecimal $numerator */
-        $numerator = self::make(self::IMMUTABLE, trim(ltrim($parts[0])))->round();
+        $numerator = self::make(self::IMMUTABLE, trim(ltrim($parts[0])));
         /** @var ImmutableDecimal $denominator */
-        $denominator = isset($parts[1]) ? self::make(self::IMMUTABLE, trim(ltrim($parts[1])))->round() : self::makeOne();
+        $denominator = isset($parts[1]) ? self::make(self::IMMUTABLE, trim(ltrim($parts[1]))) : self::makeOne();
 
         if ($type === self::IMMUTABLE_FRACTION) {
             return new ImmutableFraction($numerator, $denominator, $base);

@@ -11,7 +11,7 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 trait TrigonometryTrait
 {
 
-    public function sin($scale = null, $round = true): DecimalInterface
+    public function sin(int $scale = null, bool $round = true): DecimalInterface
     {
         if ($this->isEqual(0)) {
             return $this;
@@ -52,7 +52,7 @@ trait TrigonometryTrait
         }
     }
 
-    public function cos($scale = null, $round = true): DecimalInterface
+    public function cos(int $scale = null, bool $round = true): DecimalInterface
     {
         if ($this->isEqual(0)) {
             return $this->setValue('1');
@@ -95,7 +95,7 @@ trait TrigonometryTrait
         }
     }
 
-    public function tan($scale = null, $round = true): DecimalInterface
+    public function tan(int $scale = null, bool $round = true): DecimalInterface
     {
         $scale = $scale ?? $this->getScale();
 
@@ -189,7 +189,7 @@ trait TrigonometryTrait
 
     }
 
-    public function cot($scale = null, $round = true): DecimalInterface
+    public function cot(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $pi = Numbers::makePi();
@@ -230,7 +230,7 @@ trait TrigonometryTrait
 
     }
 
-    public function sec($scale = null, $round = true): DecimalInterface
+    public function sec(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $one = Numbers::makeOne();
@@ -257,7 +257,7 @@ trait TrigonometryTrait
 
     }
 
-    public function csc($scale = null, $round = true): DecimalInterface
+    public function csc(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $one = Numbers::makeOne();
@@ -284,7 +284,7 @@ trait TrigonometryTrait
 
     }
 
-    public function sinh($scale = null, $round = true): DecimalInterface
+    public function sinh(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
@@ -307,7 +307,7 @@ trait TrigonometryTrait
 
     }
 
-    public function cosh($scale = null, $round = true): DecimalInterface
+    public function cosh(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
@@ -330,7 +330,7 @@ trait TrigonometryTrait
 
     }
 
-    public function tanh($scale = null, $round = true): DecimalInterface
+    public function tanh(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -349,7 +349,7 @@ trait TrigonometryTrait
 
     }
 
-    public function coth($scale = null, $round = true): DecimalInterface
+    public function coth(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -368,7 +368,7 @@ trait TrigonometryTrait
 
     }
 
-    public function sech($scale = null, $round = true): DecimalInterface
+    public function sech(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -388,7 +388,7 @@ trait TrigonometryTrait
 
     }
 
-    public function csch($scale = null, $round = true): DecimalInterface
+    public function csch(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();

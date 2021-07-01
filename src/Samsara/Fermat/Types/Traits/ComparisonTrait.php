@@ -220,7 +220,7 @@ trait ComparisonTrait
 
         if ($check === 1) {
             $checkVal = $this->getDecimalPart();
-            $checkVal = trim($checkVal,'0');
+            $checkVal = str_replace('0', '', $checkVal);
 
             return !($checkVal !== '');
         }
