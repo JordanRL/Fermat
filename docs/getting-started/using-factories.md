@@ -472,6 +472,6 @@ Using other values for `$mode` may be possible in the event you are extending th
 This behavior could be changed by overriding the methods defined in the `ArithmeticSelectionTrait`.
 
 !!! see-also "See Also"
-    For more information on the calculation modes available in Fermat, see the page on [Calculation Modes](calculation-modes.md). 
+    For more information on the calculation modes available in Fermat, see the page on [Calculation Modes](../configuration/calculation-modes.md). 
     
     For more information on extending these values, please see the documentation in the "Extending" section.

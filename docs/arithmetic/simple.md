@@ -8,7 +8,7 @@ The `ArithmeticSimpleTrait` supports the modes:
 - `Selectable::CALC_MODE_NATIVE`
 
 !!! see-also "See Also"
-    For more detail on calculation modes, see the [Getting Started > Calculation Modes](../getting-started/calculation-modes.md) page.
+    For more detail on calculation modes, see the [Getting Started > Calculation Modes](../configuration/calculation-modes.md) page.
     
 # Available Methods
 

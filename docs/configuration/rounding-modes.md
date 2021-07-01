@@ -28,6 +28,11 @@ The default mode is `RandomProvider::MODE_HALF_EVEN`. This is also the fallback 
 !!! caution "Rounding Is Base-10 Referenced"
     As noted in other places, anything related to scale in this library is specific to base-10. While you can still round in other bases, the operations will be performed on the base-10 representation of the number instead of the base the `Decimal` object is in.
 
+!!! note "Examples Assume Rounding to the Closest Integer"
+    In all of the examples given below, they are showing what the expected outputs would be if `RoundingProvider::round($decimal, $places)` was called with the example value for `$decimal` and 0 for `$places`. If a number with more digits were provided and a different value for `$places` was used, these rounding modes would all round towards a different target digit.
+
+    The examples describe the behavior if the `$places` argument is omitted, since its default value is 0. But you could just as easily use any mode to round to the nearest tenth by passing 1 for the `$places` argument.
+
 ### Half Up
 
 This rounding mode rounds the number towards positive infinity when halfway between two values.

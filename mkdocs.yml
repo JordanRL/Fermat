@@ -2,6 +2,7 @@ site_name: Fermat - PHP Math Library
 extra_css:
   - css/custom.css
 repo_url: https://github.com/JordanRL/Fermat/
+site_url: https://jordanrl.github.io/Fermat/
 nav:
   - 'Introduction': 'index.md'
   - 'Getting Started':
@@ -11,8 +12,10 @@ nav:
       - 'Using The Factories': 'getting-started/using-factories.md'
       - 'Direct Instantiation': 'getting-started/direct-instantiation.md'
       - 'Comparing Values': 'getting-started/comparing.md'
-      - 'Calculation Modes': 'getting-started/calculation-modes.md'
       - 'Handling Exceptions': 'getting-started/exceptions.md'
+  - 'Configuration':
+      - 'Calculation Modes': 'configuration/calculation-modes.md'
+      - 'Rounding Modes': 'configuration/rounding-modes.md'
   - 'Types & Values':
       - 'Decimals': 'types-and-values/decimals.md'
       - 'Fractions': 'types-and-values/fractions.md'

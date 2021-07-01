@@ -46,7 +46,7 @@ All objects that extend the `Number` abstract class set their current mode to th
     If immutable objects are being used, the default mode should never be changed in the middle of application execution. Instead, set it to the desired value at the beginning of the application, or use the `setMode()` method after a new object is instantiated.
     
 !!! see-also "See Also"
-    Further information on how to use default modes is available in the [Numbers Factory Class](using-factories.md#the-numbers-factory-class) documentation.
+    Further information on how to use default modes is available in the [Numbers Factory Class](../getting-started/using-factories.md#the-numbers-factory-class) documentation.
     
 ## Set Mode
 
