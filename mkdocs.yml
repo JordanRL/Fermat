@@ -8,6 +8,7 @@ nav:
   - 'Getting Started':
       - 'Concepts': 'getting-started/concepts.md'
       - 'Installation & Usage': 'getting-started/installation-and-usage.md'
+      - 'Modules': 'getting-started/modules.md'
       - 'Mutable vs. Immutable': 'getting-started/mutability.md'
       - 'Using The Factories': 'getting-started/using-factories.md'
       - 'Direct Instantiation': 'getting-started/direct-instantiation.md'
