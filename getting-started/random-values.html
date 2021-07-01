@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Handling Exceptions - Fermat - PHP Math Library</title>
+  <title>Random values - Fermat - PHP Math Library</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -19,8 +19,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Handling Exceptions";
-    var mkdocs_page_input_path = "getting-started/exceptions.md";
+    var mkdocs_page_name = "Random values";
+    var mkdocs_page_input_path = "getting-started/random-values.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -53,7 +53,7 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Getting Started</span></p>
-                <ul class="current">
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="concepts.html">Concepts</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="installation-and-usage.html">Installation & Usage</a>
@@ -68,9 +68,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="calculation-modes.html">Calculation Modes</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="exceptions.html">Handling Exceptions</a>
-    <ul class="current">
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="exceptions.html">Handling Exceptions</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Types & Values</span></p>
@@ -193,15 +191,11 @@
     <li><a href="../index.html">Docs</a> &raquo;</li>
     
       
-        
-          <li>Getting Started &raquo;</li>
-        
-      
     
-    <li>Handling Exceptions</li>
+    <li>Random values</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/JordanRL/Fermat/edit/master/docs/getting-started/exceptions.md"
+        <a href="https://github.com/JordanRL/Fermat/edit/master/docs/getting-started/random-values.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -213,38 +207,11 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="exceptions-used-in-this-library">Exceptions Used In This Library</h1>
-<p>The exceptions used in Fermat are all provided by the <code>samsara/common</code> package via composer. This is listed as a dependency in the composer.json. All these exceptions are in the namespace <code>Samsara\Exceptions</code>.</p>
-<h3 id="base-exceptions">Base Exceptions</h3>
-<ul>
-<li><code>Base\SystemError</code>: Extends <code>\Exception</code>. Used for errors that occur because of errors within the library.</li>
-<li><code>Base\UsageError</code>: Extends <code>\Exception</code>. Used for errors that occur because of incorrect usage of the library.</li>
-</ul>
-<h3 id="thrown-exceptions">Thrown Exceptions</h3>
-<ul>
-<li><code>SystemError\LogicalError\IncompatibleObjectState</code>: This exception is thrown when the object is in a state that is incompatible with the requested operation. For example, calling <code>factorial()</code> on a <code>DecimalInterface</code> instance that has a decimal value.</li>
-<li><code>UsageError\IntegrityConstraint</code>: This exception is thrown when a data integrity violation is found within a function. Most often this is due to poorly formatted or out of range arguments provided to a function.</li>
-<li><code>UsageError\OptionalExit</code>: This exception is thrown when an error is encountered that may be solved by re-calling the same function with different arguments, for instance by providing a different scale setting.</li>
-</ul>
-<h1 id="handling-exceptions-from-this-library">Handling Exceptions From This Library</h1>
-<p>Objects provided in this library are always in a valid state, and any exception thrown results in the object keeping its state from before the function call. Because of this, it may be possible in most situations to use a <code>try/catch</code> block to intelligently handle these exceptions based on the purpose of the numbers and data being provided to the Fermat objects.</p>
-<div class="admonition note">
-<p class="admonition-title">State Is Preserved Even For Mutable Objects</p>
-<p>In the event that an exception is thrown, even mutable objects will retain their state from before the method call.</p>
-</div>
+                
               
             </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../types-and-values/decimals.html" class="btn btn-neutral float-right" title="Decimals">Next <span class="icon icon-circle-arrow-right"></span></a>
-      
-      
-        <a href="calculation-modes.html" class="btn btn-neutral" title="Calculation Modes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
@@ -272,10 +239,6 @@
         </span>
     
     
-      <span><a href="calculation-modes.html" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../types-and-values/decimals.html" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
