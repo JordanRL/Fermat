@@ -13,7 +13,7 @@ class RandomProviderTest extends TestCase
 {
 
     /**
-     * @medium
+     * @large
      */
     public function testRandomIntLargeNumbers()
     {
