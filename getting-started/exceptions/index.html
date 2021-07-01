@@ -230,6 +230,7 @@
 <h3 id="thrown-exceptions">Thrown Exceptions</h3>
 <ul>
 <li><code>SystemError\LogicalError\IncompatibleObjectState</code>: This exception is thrown when the object is in a state that is incompatible with the requested operation. For example, calling <code>factorial()</code> on a <code>DecimalInterface</code> instance that has a decimal value.</li>
+<li><code>SystemError\PlatformError\MissingPackage</code>: This exception is thrown when an operation is performed that cannot be completed unless a missing <a href="../modules/">Fermat Module</a> is installed.</li>
 <li><code>UsageError\IntegrityConstraint</code>: This exception is thrown when a data integrity violation is found within a function. Most often this is due to poorly formatted or out of range arguments provided to a function.</li>
 <li><code>UsageError\OptionalExit</code>: This exception is thrown when an error is encountered that may be solved by re-calling the same function with different arguments, for instance by providing a different scale setting.</li>
 </ul>
