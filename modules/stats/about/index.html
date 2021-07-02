@@ -9,7 +9,7 @@
   
   <link rel="canonical" href="https://jordanrl.github.io/Fermat/modules/stats/about/">
   <link rel="shortcut icon" href="../../../img/favicon.ico">
-  <title>About - Fermat - PHP Math Library</title>
+  <title>About This Module - Fermat - PHP Math Library</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../../css/theme.css" />
@@ -19,7 +19,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "About";
+    var mkdocs_page_name = "About This Module";
     var mkdocs_page_input_path = "modules/stats/about.md";
     var mkdocs_page_url = "/Fermat/modules/stats/about/";
   </script>
@@ -121,13 +121,44 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../../trigonometry/hyperbolic/">Hyperbolic Trig Functions</a>
                     </li>
                 </ul>
-                <p class="caption"><span class="caption-text">Statistics</span></p>
+                <p class="caption"><span class="caption-text">Stable Modules</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="#">Coordinate Systems</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../coordinate-systems/about/">About This Module</a>
+                </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="#">Stats</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">About This Module</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#key-concepts">Key Concepts</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Unstable Modules</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../../statistics/included/">Built In Distributions</a>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Algebra Expressions</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../algebra-expressions/about/">About This Module</a>
+                </li>
+    </ul>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../../statistics/distributions/">Using Distributions</a>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Complex Numbers</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../complex-numbers/about/">About This Module</a>
+                </li>
+    </ul>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../../statistics/static-methods/">Using Static Methods</a>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Linear Algebra</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../linear-algebra/about/">About This Module</a>
+                </li>
+    </ul>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Extending</span></p>
@@ -202,8 +233,16 @@
     <li><a href="../../..">Docs</a> &raquo;</li>
     
       
+        
+          <li>Stats &raquo;</li>
+        
+      
+        
+          <li>Stable Modules &raquo;</li>
+        
+      
     
-    <li>About</li>
+    <li>About This Module</li>
     <li class="wy-breadcrumbs-aside">
       
         <a href="https://github.com/JordanRL/Fermat/edit/master/docs/modules/stats/about.md"
@@ -218,11 +257,47 @@
           <div role="main">
             <div class="section">
               
-                
+                <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css"
+  integrity="sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc"
+  crossorigin="anonymous" />
+
+<style type="text/css">
+    .katex img {
+      object-fit: fill;
+      padding: unset;
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: inherit;
+    }
+</style>
+<h1 id="the-fermat-stats-module">The Fermat Stats Module</h1>
+<p>This module provides various mathematical objects and functions to help a program perform complex statistical calculations, most often useful in scientific, data processing, and simulation based programs. Using Poisson Distributions, it is relatively easy to create an application that simulates sports matches. Using Normal Distributions, it becomes easy to generate data points that have properties weighted according to parameters that depend on the overall population of points.</p>
+<p>While many programs don't see a benefit from utilizing statistical operations and functions, the ones that do benefit from it immensely.</p>
+<h2 id="key-concepts">Key Concepts</h2>
+<p>This section details the key concepts of the library to understand how to create your program using it. This does <em>not</em> cover the key mathematical concepts within statistics that this program implements.</p>
+<h3 id="distributions">Distributions</h3>
+<p>Within Fermat Stats, a Distribution is an object which extends the <code>Distribution</code> Type and implements the <code>DistributionInterface</code>.</p>
+<p>While the parameters of a concrete distribution varies depending on what mathematical concept it represents, all distributions generally have a parameter that describes the 'most likely outcome', and a parameter that describes the 'likelihood of being a different outcome'. Generally, the likelihood decreases the further you are from the 'most likely outcome'. For most types of mathematical distributions, the 'most likely outcome' is related to the mean or average of the distribution, and the 'likelihood of being a different outcome' is related to the variance or standard deviation.</p>
+<p>In Normal Distributions, the Mean and Standard Deviation <em>are</em> the two parameters, which are then combined with the Gauss Error Function and a variety of other mathematical functions to give us the properties of a normal distribution.</p>
+<p>Poisson and Exponential distributions however are based on a different concept, time to recurrence. These are more useful in situations where you might be figuring out the chance of seeing a '100 year flood' within the next 10 years, for instance.</p>
+<p>Because of their different constructions and different purposes, the Distributions within Fermat Stats share a less common interface than, for instance, the <code>Number</code> and <code>ComplexNumber</code> classes.</p>
+<h3 id="statsprovider">StatsProvider</h3>
+<p>The <code>StatsProvider</code> contains several statistics static functions that allow the direct arbitrary precision calculation of some of the most complex formulas in statistics. Of note, there is an implementation within the <code>StatsProvider</code> of the Inverse Gauss Error Function, usually written as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>r</mi><msup><mi>f</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo stretchy="false">(</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">erf^{-1}()</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mclose">)</span></span></span></span>. This function in particular is horrendously complicated to formulate in a way that preserves arbitrary precision and is still conformal to the needs of a computer programming language. It may be the situation in some cases that this single function implementation is worth installing the entire library and module.</p>
               
             </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../algebra-expressions/about/" class="btn btn-neutral float-right" title="About This Module">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../coordinate-systems/about/" class="btn btn-neutral" title="About This Module"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -250,6 +325,10 @@
         </span>
     
     
+      <span><a href="../../coordinate-systems/about/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../algebra-expressions/about/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

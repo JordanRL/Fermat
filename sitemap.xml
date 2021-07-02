@@ -2,322 +2,327 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://jordanrl.github.io/Fermat/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/fermat-vs-alternatives/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/arithmetic/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/arithmetic/complex/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/arithmetic/matrices/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/arithmetic/simple/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/arithmetic/traits/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/configuration/calculation-modes/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/configuration/rounding-modes/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/expressions/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/comparing/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/concepts/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/direct-instantiation/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/exceptions/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/installation-and-usage/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/modules/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/mutability/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/random-values/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/using-factories/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/algebra-expressions/about/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/complex-numbers/about/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/complex-numbers/factory-class/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/coordinate-systems/about/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/modules/linear-algebra/about/</loc>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/linear-algebra/matrix-factory/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/stats/about/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/reference/distributions/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/reference/interfaces/characteristics/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/reference/interfaces/coordinates/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/reference/interfaces/evaluateables/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/reference/interfaces/groups/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/reference/interfaces/numbers/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/reference/providers/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/reference/providers/rounding/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/has-interface/base-conversion/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/has-interface/complex-number/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/has-interface/coordinate/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/has-interface/decimal/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/has-interface/fraction/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/has-interface/hashable/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/has-interface/number/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/has-interface/simple-number/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/uses-trait/arithmeticcomplex/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/uses-trait/arithmeticsimple/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/uses-trait/comparison/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/uses-trait/integer-math/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/uses-trait/inverse-trigonometry/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/uses-trait/log/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/uses-trait/scale/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/snippets/uses-trait/trigonometry/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/statistics/distributions/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/statistics/included/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/statistics/static-methods/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/trigonometry/basic/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/trigonometry/hyperbolic/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/trigonometry/inverse/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/trigonometry/traits/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/types-and-values/collections/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/types-and-values/complex/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/types-and-values/coordinates/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/types-and-values/decimals/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/types-and-values/expressions/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/types-and-values/fractions/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/types-and-values/matrices/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/types-and-values/template/</loc>
-         <lastmod>2021-07-01</lastmod>
+         <lastmod>2021-07-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
