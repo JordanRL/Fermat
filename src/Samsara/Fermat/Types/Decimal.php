@@ -14,10 +14,10 @@ use Samsara\Fermat\Types\Base\Number;
 use Samsara\Fermat\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
-use Samsara\Fermat\Types\Traits\Decimal\InverseTrigonometryTrait;
+use Samsara\Fermat\Types\Traits\Decimal\InverseTrigonometryScaleTrait;
 use Samsara\Fermat\Types\Traits\Decimal\LogTrait;
 use Samsara\Fermat\Types\Traits\Decimal\ScaleTrait;
-use Samsara\Fermat\Types\Traits\Decimal\TrigonometryTrait;
+use Samsara\Fermat\Types\Traits\Decimal\TrigonometryScaleTrait;
 
 abstract class Decimal extends Number implements DecimalInterface, BaseConversionInterface
 {
@@ -27,8 +27,8 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     use ArithmeticSimpleTrait;
     use ComparisonTrait;
     use IntegerMathTrait;
-    use TrigonometryTrait;
-    use InverseTrigonometryTrait;
+    use TrigonometryScaleTrait;
+    use InverseTrigonometryScaleTrait;
     use LogTrait;
     use ScaleTrait;
 
@@ -239,6 +239,15 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         $newValue = $this->absValue();
 
         return $this->setValue($newValue, $this->getBase());
+    }
+
+    /**
+     * @param DecimalInterface $num
+     * @return float|int
+     */
+    protected static function translateToNative(DecimalInterface $num): float|int
+    {
+        return ($num->isInt() ? $num->asInt() : $num->asFloat());
     }
 
     /**

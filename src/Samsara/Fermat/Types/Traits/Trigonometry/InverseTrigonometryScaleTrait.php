@@ -8,7 +8,7 @@ use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
-trait InverseTrigonometryTrait
+trait InverseTrigonometryScaleTrait
 {
 
     public function arcsin(int $scale = null, bool $round = true): DecimalInterface

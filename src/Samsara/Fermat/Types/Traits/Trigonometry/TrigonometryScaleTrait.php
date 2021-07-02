@@ -8,7 +8,7 @@ use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
-trait TrigonometryTrait
+trait TrigonometryScaleTrait
 {
 
     public function sin(int $scale = null, bool $round = true): DecimalInterface

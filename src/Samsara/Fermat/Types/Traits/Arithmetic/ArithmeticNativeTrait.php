@@ -8,19 +8,12 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 trait ArithmeticNativeTrait
 {
 
-    /**
-     * @param DecimalInterface $num
-     * @return float|int
-     */
-    protected static function translateToNative(DecimalInterface $num)
-    {
-        return ($num->isInt() ? $num->asInt() : $num->asFloat());
-    }
+    abstract protected static function translateToNative(DecimalInterface $num): float|int;
 
     protected function addNative(DecimalInterface $num)
     {
-        $left = self::translateToNative($this);
-        $right = self::translateToNative($num);
+        $left = static::translateToNative($this);
+        $right = static::translateToNative($num);
 
         $value = $left + $right;
         return (string)$value;
@@ -28,8 +21,8 @@ trait ArithmeticNativeTrait
 
     protected function subtractNative(DecimalInterface $num)
     {
-        $left = self::translateToNative($this);
-        $right = self::translateToNative($num);
+        $left = static::translateToNative($this);
+        $right = static::translateToNative($num);
 
         $value = $left - $right;
         return (string)$value;
@@ -37,8 +30,8 @@ trait ArithmeticNativeTrait
 
     protected function multiplyNative(DecimalInterface $num)
     {
-        $left = self::translateToNative($this);
-        $right = self::translateToNative($num);
+        $left = static::translateToNative($this);
+        $right = static::translateToNative($num);
 
         $value = $left * $right;
         return (string)$value;
@@ -46,8 +39,8 @@ trait ArithmeticNativeTrait
 
     protected function divideNative(DecimalInterface $num)
     {
-        $left = self::translateToNative($this);
-        $right = self::translateToNative($num);
+        $left = static::translateToNative($this);
+        $right = static::translateToNative($num);
 
         $value = $left / $right;
         return (string)$value;
@@ -55,8 +48,8 @@ trait ArithmeticNativeTrait
 
     protected function powNative(DecimalInterface $num)
     {
-        $left = self::translateToNative($this);
-        $right = self::translateToNative($num);
+        $left = static::translateToNative($this);
+        $right = static::translateToNative($num);
 
         $value = pow($left, $right);
         return (string)$value;
