@@ -5,6 +5,7 @@ repo_url: https://github.com/JordanRL/Fermat/
 site_url: https://jordanrl.github.io/Fermat/
 nav:
   - 'Introduction': 'index.md'
+  - 'Fermat vs. Alternatives': 'fermat-vs-alternatives.md'
   - 'Getting Started':
       - 'Concepts': 'getting-started/concepts.md'
       - 'Installation & Usage': 'getting-started/installation-and-usage.md'
@@ -35,10 +36,18 @@ nav:
       - 'Basic Trig Functions': 'trigonometry/basic.md'
       - 'Inverse Trig Functions': 'trigonometry/inverse.md'
       - 'Hyperbolic Trig Functions': 'trigonometry/hyperbolic.md'
-  - 'Statistics':
-      - 'Built In Distributions': 'statistics/included.md'
-      - 'Using Distributions': 'statistics/distributions.md'
-      - 'Using Static Methods': 'statistics/static-methods.md'
+  - 'Stable Modules':
+      - 'Coordinate Systems':
+          - 'About This Module': 'modules/coordinate-systems/about.md'
+      - 'Stats':
+          - 'About This Module': 'modules/stats/about.md'
+  - 'Unstable Modules':
+      - 'Algebra Expressions':
+          - 'About This Module': 'modules/algebra-expressions/about.md'
+      - 'Complex Numbers':
+          - 'About This Module': 'modules/complex-numbers/about.md'
+      - 'Linear Algebra':
+          - 'About This Module': 'modules/linear-algebra/about.md'
   - 'Extending':
       - 'Abstract Classes': 'extending/abstracts.md'
   - 'REFERENCE':

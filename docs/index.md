@@ -2,6 +2,9 @@
 
 A best effort is made to keep this documentation current, and the entire documentation is reviewed before every tagged release, however the documentation under v:latest may at times be out of date or incomplete.
 
+!!! note "Why Use Fermat?"
+    To understand why this library might be useful in comparison to alternatives, please see the [Fermat vs. Alternatives](fermat-vs-alternatives.md) page.
+
 ### Info Boxes
 
 Additional information is provided throughout this documentation using color coded information boxes. These are the styles used and what they are used for.
