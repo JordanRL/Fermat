@@ -16,7 +16,7 @@
     
     
       
-        <title>Direct Instantiation - Fermat - PHP Math Library</title>
+        <title>Direct instantiation - Fermat - PHP Math Library</title>
       
     
     
@@ -68,11 +68,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#values-of-decimal" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -99,7 +94,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Direct Instantiation
+              Direct instantiation
             
           </span>
         </div>
@@ -201,15 +196,13 @@
         
   
   
-    
-  
 
 
   
   
   
     <li class="md-tabs__item">
-      <a href="../concepts/" class="md-tabs__link md-tabs__link--active">
+      <a href="../concepts/" class="md-tabs__link">
         Getting Started
       </a>
     </li>
@@ -336,14 +329,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
       <label class="md-nav__link" for="__nav_2">
         Getting Started
@@ -400,79 +391,6 @@
       <a href="../using-factories/" class="md-nav__link">
         Using The Factories
       </a>
-    </li>
-  
-
-          
-            
-  
-  
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Direct Instantiation
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        Direct Instantiation
-      </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#interfaces" class="md-nav__link">
-    Interfaces
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#traits" class="md-nav__link">
-    Traits
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#immutablenumber" class="md-nav__link">
-    ImmutableNumber
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mutablenumber" class="md-nav__link">
-    MutableNumber
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1569,59 +1487,6 @@
               </div>
             
             
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#interfaces" class="md-nav__link">
-    Interfaces
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#traits" class="md-nav__link">
-    Traits
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#immutablenumber" class="md-nav__link">
-    ImmutableNumber
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mutablenumber" class="md-nav__link">
-    MutableNumber
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
@@ -1632,241 +1497,14 @@
                   </a>
                 
                 
-                <link rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css"
-  integrity="sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc"
-  crossorigin="anonymous" />
-
-<style type="text/css">
-    .katex img {
-      object-fit: fill;
-      padding: unset;
-      display: block;
-      position: absolute;
-      width: 100%;
-      height: inherit;
-    }
-</style>
-<p>You can also directly instantiate the Value classes if you wish, and sometimes it is desirable to do so.</p>
+                  <h1>Direct instantiation</h1>
+                
+                <p>You can also directly instantiate the Value classes if you wish, and sometimes it is desirable to do so.</p>
 <div class="admonition see-also">
 <p class="admonition-title">Mutable vs. Immutable</p>
 <p>This section details the concrete implementations that are available for the various values in Fermat. Many of these implementations have a <code>Mutable</code> and an <code>Immutable</code> version.</p>
 <p>For more detailed information about the differences between these, and the situations that each might be useful in, please see the page on <a href="../mutability/">mutability</a>.</p>
 </div>
-<h1 id="values-of-decimal">Values of Decimal</h1>
-<p>These classes extend the <code>Decimal</code> abstract class, which comes with the following interfaces, traits, and constructor.</p>
-<h3 id="interfaces">Interfaces</h3>
-<ul>
-<li><code>NumberInterface</code></li>
-<li><code>BaseConversionInterface</code></li>
-<li><code>SimpleNumberInterface</code></li>
-<li><code>DecimalInterface</code></li>
-</ul>
-<h3 id="traits">Traits</h3>
-<ul>
-<li><code>ArithmeticSimpleTrait</code><ul>
-<li><code>ArithmeticSelectionTrait</code></li>
-<li><code>ArithmeticScaleTrait</code></li>
-<li><code>ArithmeticNativeTrait</code></li>
-</ul>
-</li>
-<li><code>ComparisonTrait</code></li>
-<li><code>IntegerMathTrait</code></li>
-<li><code>TrigonometryTrait</code></li>
-<li><code>InverseTrigonometryTrait</code></li>
-<li><code>LogTrait</code></li>
-<li><code>ScaleTrait</code></li>
-</ul>
-<div class="admonition signature">
-<p class="admonition-title">__construct(mixed $value, int $scale = 10, int $base = 10)</p>
-<dl>
-<dt>$value</dt>
-<dd>The value to create the instance with</dd>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>$base</dt>
-<dd>The base of the instance created</dd>
-<dt>return</dt>
-<dd>An instance of <strong>Decimal</strong> created with the provided arguments as parameters</dd>
-</dl>
-</div>
-<p>The constructor will take an <code>integer</code>, a <code>float</code>, or any <code>numeric string</code> (including imaginary values) as its input value. The scale and base must be given as integers, and can be omitted where they will take their default values of 10. This means that by default instances of <code>Decimal</code> will be in base-10 and calculate 10 digits of scale for all operations.</p>
-<div class="admonition bug">
-<p class="admonition-title">You Might Not Expect</p>
-<p>If an instance of <code>Decimal</code> is provided, it will be treated as a string and will construct correctly. However, it will not inherit the <code>$scale</code> or <code>$base</code> settings for the instance provided as a <code>$value</code>. </p>
-</div>
-<div class="admonition fail">
-<p class="admonition-title">Warning</p>
-<p>If the instance provided is in a base other than 10, the <code>$base</code> provided to the constructor should match that value, or you will eventually get exceptions and potentially PHP fatals.</p>
-</div>
-<div class="admonition danger">
-<p class="admonition-title">Danger</p>
-<p>Providing an instance of <code>Fraction</code> or <code>ComplexNumber</code> will appear to build the new instance correctly, but will result in a PHP fatal error on calls to any methods on the new instance.</p>
-</div>
-<h2 id="immutablenumber">ImmutableNumber</h2>
-<p>A number which can be represented as a decimal and has a maximum scale of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>63</mn></msup></mrow><annotation encoding="application/x-tex">2^{63}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">63</span></span></span></span></span></span></span></span></span></span></span></span> digits. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.</p>
-<h2 id="mutablenumber">MutableNumber</h2>
-<p>A number which can be represented as a decimal and has a maximum scale of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>63</mn></msup></mrow><annotation encoding="application/x-tex">2^{63}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">63</span></span></span></span></span></span></span></span></span></span></span></span> digits. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.</p>
-<h1 id="values-of-fraction">Values of Fraction</h1>
-<p>Used to represent numbers in a fraction format. The <code>/</code> character is used in string representations to denote the fraction bar, and is used to create instances from strings. In these cases, it is assumed that the numerator is to the left of the fraction bar, and the denominator is the right.</p>
-<p>The numerator and denominator must also be whole numbers. If a mathematical operation results in non-whole values for either the numerator or denominator, the <code>Fraction</code> is converted to a <code>Decimal</code> using the <code>asDecimal()</code> method on the <code>FractionInterface</code>.</p>
-<p>These classes extend the <code>Fraction</code> abstract class, which comes with the following interfaces, traits, and constructor.</p>
-<h3 id="interfaces_1">Interfaces</h3>
-<ul>
-<li><code>NumberInterface</code></li>
-<li><code>BaseConversionInterface</code></li>
-<li><code>SimpleNumberInterface</code></li>
-<li><code>FractionInterface</code></li>
-</ul>
-<h3 id="traits_1">Traits</h3>
-<ul>
-<li><code>ArithmeticSimpleTrait</code><ul>
-<li><code>ArithmeticSelectionTrait</code></li>
-<li><code>ArithmeticScaleTrait</code></li>
-<li><code>ArithmeticNativeTrait</code></li>
-</ul>
-</li>
-<li><code>ComparisonTrait</code></li>
-</ul>
-<div class="admonition signature">
-<p class="admonition-title">__construct(mixed $numerator, mixed $denominator, $base = 10)</p>
-<dl>
-<dt>$numerator</dt>
-<dd>The value of the numerator, using the same restrictions as <strong>Decimal</strong></dd>
-<dt>$denominator</dt>
-<dd>The value of the denominator, using the same restrictions as <strong>Decimal</strong></dd>
-<dt>$base</dt>
-<dd>The base of the instance created</dd>
-<dt>return</dt>
-<dd>An instance of <strong>Fraction</strong> created with the provided arguments as parameters</dd>
-</dl>
-</div>
-<p>The constructor will take an <code>integer</code>, a <code>float</code>, any <code>numeric string</code>, or an instance of <code>DecimalInterface</code> as its input value. The base must be given as an integer, and if omitted it will take the default value of 10. This means that by default instances of <code>Fraction</code> will be in base-10.</p>
-<div class="admonition bug">
-<p class="admonition-title">Rounding</p>
-<p>In the constructor, non-integer values for the numerator or denominator are automatically rounded to the nearest integer using the "half up" method.</p>
-</div>
-<div class="admonition bug">
-<p class="admonition-title">Type Coercion</p>
-<p>If an instance implementing <code>DecimalInterface</code> is provided, it will be coerced into an <code>ImmutableDecimal</code>. This will leave the original instance unaffected by operations performed on the <code>Fraction</code>, even if an instance of <code>MutableDecimal</code> was originally provided.</p>
-</div>
-<h2 id="immutablefraction">ImmutableFraction</h2>
-<p>A number which can be represented as a fraction. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.</p>
-<h2 id="mutablefraction">MutableFraction</h2>
-<p>A number which can be represented as a fraction. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.</p>
-<h1 id="values-of-complexnumber">Values of ComplexNumber</h1>
-<p>Used to represent complex number values. Either part can be an instance of <code>FractionInterface</code> or <code>DecimalInterface</code>, however while <code>Decimal</code> values can be provided as an <code>object</code>, a <code>string</code>, an <code>integer</code>, or a <code>float</code>, you must explicitly provide an instance of <code>Fraction</code> if you wish for one of the components to be in that format.</p>
-<div class="admonition caution">
-<p class="admonition-title">Unexpected Class Inheritance Structure</p>
-<p>While the name of this class is <code>ComplexNumber</code>, it does not extend the abstract <code>Number</code> class like <code>Fraction</code> and <code>Decimal</code> do. Instead, it extends <code>PolarCoordinate</code>, since this is an advantageous representation of complex numbers in many situations.</p>
-<p>The arguments to the <code>ComplexNumber</code> class correspond directly with a set of <code>CartesianCoordinate</code>s. These are then transformed into an instance of <code>PolarCoordinate</code> which is a more useful form for doing operations like <code>pow()</code> and <code>sqrt()</code>.</p>
-</div>
-<h3 id="interfaces_2">Interfaces</h3>
-<div class="admonition signature interface">
-<p class="admonition-title">ComplexNumberInterface</p>
-<dl>
-<dt>namespace</dt>
-<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers</dd>
-<dt>extends</dt>
-<dd><strong>NumberInterface</strong></dd>
-</dl>
-</div>
-<p>This interface is meant to be implemented by an object which extends <code>PolarCoordinate</code>, since all complex numbers can be represented in that way and there are advantages to doing so.</p>
-<div class="admonition signature interface">
-<p class="admonition-title">CoordinateInterface</p>
-<dl>
-<dt>namespace</dt>
-<dd>Samsara\Fermat\Types\Base\Interfaces\Coordinates</dd>
-<dt>extends</dt>
-<dd><strong>TwoDCoordinateInterface</strong></dd>
-</dl>
-</div>
-<p>This interface provides the base methods available to all coordinate systems. This includes the <code>asCartesian()</code> method, since any type of coordinate system in a Euclidean space can be represented by cartesian coordinates. Non-Euclidean spaces are unsupported in Fermat.</p>
-<h3 id="traits_2">Traits</h3>
-<div class="admonition signature trait">
-<p class="admonition-title">ArithmeticComplexTrait</p>
-<dl>
-<dt>namespace</dt>
-<dd>Samsara\Fermat\Types\Traits</dd>
-<dt>uses</dt>
-<dd>
-<ul>
-<li><strong>ArithmeticScaleTrait</strong></li>
-<li><strong>ArithmeticNativeTrait</strong></li>
-<li><strong>ArithmeticSelectionTrat</strong></li>
-</ul>
-</dd>
-<dt>satisfies</dt>
-<dd><strong>ComplexNumberInterface</strong> (partially)</dd>
-</dl>
-</div>
-<p>The <code>ArithmeticComplexTrait</code> provides the implementations for all arithmetic functions that exist on values that implement the <code>ComplexNumberInterface</code>. The additional imported traits within this trait provide the various calculation modes that are used internally depending on the mode of object executing the method call.</p>
-<div class="admonition note">
-<p class="admonition-title">Accepts Simple Numbers as Arguments</p>
-<p>While the <code>ArithmeticComplexTrait</code> can accept implementations of <code>SimpleNumberInterface</code> as arguments, it cannot be used in implementations of <code>SimpleNumberInterface</code>.</p>
-</div>
-<div class="admonition see-also">
-<p class="admonition-title">See Also</p>
-<p>More detailed information on this trait is available on the <a href="../../arithmetic/complex/">Arithmetic &gt; Complex Numbers</a> page.</p>
-</div>
-<div class="admonition signature">
-<p class="admonition-title">__construct(mixed $realPart, mixed $imaginaryPart, ?int $scale = null, int $base = 10)</p>
-<dl>
-<dt>$realPart</dt>
-<dd>The value of the real part; can be an instance of <strong>FractionInterface</strong>, and instance of <strong>DecimalInterface</strong>, or a scalar using the same restrictions as <strong>Decimal</strong></dd>
-<dt>$imaginaryPart</dt>
-<dd>The value of the imaginary part; can be an instance of <strong>FractionInterface</strong>, and instance of <strong>DecimalInterface</strong>, or a scalar using the same restrictions as <strong>Decimal</strong></dd>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance components can have</dd>
-<dt>$base</dt>
-<dd>The base of the instance created</dd>
-<dt>return</dt>
-<dd>An instance of <strong>ComplexNumber</strong> created with the provided arguments as parameters</dd>
-</dl>
-</div>
-<h2 id="immutablecomplexnumber">ImmutableComplexNumber</h2>
-<p>A number which can be represented as a complex number. This value is immutable, and all methods called on instances of the class will return a new instance of the same class while leaving the existing instance at its original value.</p>
-<h2 id="mutablecomplexnumber">MutableComplexNumber</h2>
-<p>A number which can be represented as a complex number. This value is mutable, and all methods called on instances of the class will return the same instance after modification, while the previous value will be lost.</p>
-<h1 id="values-of-matrix">Values of Matrix</h1>
-<p>Used to represent mathematical matrices and perform matrix math.</p>
-<h3 id="interfaces_3">Interfaces</h3>
-<h3 id="traits_3">Traits</h3>
-<div class="admonition signature">
-<p class="admonition-title">__construct(array $data, string $mode = Matrix::MODE_ROWS_INPUT)</p>
-<dl>
-<dt>$data</dt>
-<dd>An array of <strong>NumberCollection</strong>s, defining either the rows or the columns of the matrix; see below for more detailed information</dd>
-<dt>$mode</dt>
-<dd>Accepts either the string 'rows' or 'columns', defining whether the number in <strong>$data</strong> are organized as an array of rows or an array of columns</dd>
-<dt>return</dt>
-<dd>An instance of <strong>Matrix</strong> created with the provided arguments as parameters</dd>
-</dl>
-</div>
-<p>The input array has several restrictions and assumptions. The most obvious, given that it is meant to represent matrix data, is that each <code>NumberCollection</code> in the provided array must contain the same number of elements.</p>
-<p>Further, while the data can represent <em>either</em> the array of rows or array of columns depending on the <code>$mode</code> provided, it will always fill the matrix starting from the upper left corner. This is also the same indexing used by <code>getRow()</code>, <code>getColumn()</code>, or any other function that references a row or column index.</p>
-<h2 id="immutablematrix">ImmutableMatrix</h2>
-<h2 id="mutablematrix">MutableMatrix</h2>
-<h1 id="values-of-coordinate">Values of Coordinate</h1>
-<p>The specific interfaces, traits, and constructor for the different values of <code>Coordinate</code> depend on the value class used. This information is detailed in the <a href="../../types-and-values/coordinates/">Types &amp; Values &gt; Coordinates</a> documenation.</p>
-<div class="admonition bug">
-<p class="admonition-title">Coordinates Are Mutable</p>
-<p>Unlike many other values, all implementations of <code>Coordinate</code> are designed as mutable classes. This design decision was made mainly because of how coordinates are usually used in math. </p>
-<p>Typically, when an operation of some kind is performed on a coordinate, the resulting coordinate is treated as the only existant value, and previous coordinate is removed from the data set. Mutable implementations mirror this behavior.</p>
-<p>However, the underlying <code>Decimal</code> values that represent that coordinate components are instances of <code>ImmutableDecimal</code>. This means that while the coordinate instances will be mutable, and decimal instances used as input for the coordinates will remain unaffected.</p>
-</div>
-<h2 id="cartesiancoordinate">CartesianCoordinate</h2>
-<p>A set of coordinates where each value represents the position along a single plane. These are the coordinates that are most commonly used in algebra and geometry, typically presented in format (x, y) for two-dimensional coordinates, and (x, y, z) for three-dimensional coordinates.</p>
-<h2 id="cylindricalcoordinate">CylindricalCoordinate</h2>
-<p>A set of three-dimensional coordinates represented by (r, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>, z), where (r, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>) are the polar coordinates of the <em>xy</em>-plane, and (z) is the normal <em>z</em>-coordinate in a Cartesian coordinate representation.</p>
-<p><img alt="Comparison of Cartesian and Cylindrical Coordinates" src="../../images/cylindrical-coordinates.png" /></p>
-<p><em>This image is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA-4.0</a> and was created by Gilbert Strang &amp; Edwin “Jed” Herman</em></p>
-<h2 id="polarcoordinate">PolarCoordinate</h2>
-<p>A set of two-dimensional coordinates represented by (r, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>), where (r) is the distance to the origin, and (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>) is the angle in radians from the positive <em>x</em>-axis.</p>
-<h2 id="sphericalcoordinate">SphericalCoordinate</h2>
-<p>A set of three-dimensional coordinates represented by (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">ρ</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">φ</span></span></span></span>), where (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">ρ</span></span></span></span>) is the distance to the origin, (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>) is the angle in radians from the positive <em>x</em>-axis in the <em>xy</em>-plane, and (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">φ</span></span></span></span>) is the angle in radians from the positive <em>z</em>-axis to the line formed by (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">ρ</span></span></span></span>).</p>
-<p><img alt="Comparison of Cartesian and Spherical Coordinates" src="../../images/sphecial-coordinates.png" /></p>
-<p><em>This image is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA-4.0</a> and was created by Gilbert Strang &amp; Edwin “Jed” Herman</em></p>
                 
               
               
@@ -1886,41 +1524,6 @@
       
         
 <footer class="md-footer">
-  
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
-      
-        
-        <a href="../using-factories/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Using The Factories" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              Using The Factories
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../comparing/" class="md-footer__link md-footer__link--next" aria-label="Next: Comparing Values" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Comparing Values
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
