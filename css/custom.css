@@ -1,26 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap');
 
-.md-tabs__link {
-    background-color: var(--md-default-fg-color);
-    color: var(--md-default-bg-color);
-    border: 5px solid var(--md-default-fg-color);
-    padding: 20px 5px;
-    margin-top: 0;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-
-.md-tabs__link--active {
-    background-color: var(--md-default-bg-color);
-    color: var(--md-default-fg-color);
-    border: 5px solid var(--md-default-bg-color);
-    font-weight: bold;
-}
-
-.md-tabs__link--active:hover {
-    color: var(--md-default-fg-color--light);
-}
-
 .md-content .signature {
     padding: 0;
     margin-bottom: 12px;
