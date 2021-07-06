@@ -69,22 +69,11 @@
     border-bottom: 0;
     border-left: 0;
     padding-bottom: 5px;
-    padding-left: 0;
     padding-right: 0;
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 6px;
-}
-
-.md-content .signature .admonition-title::before {
-    margin-right: 25px;
-    margin-left: 0;
-    color: #00c853;
-    position: relative;
-    top: 6px;
-    font-size: 24px;
-    width: 24px;
 }
 
 .md-typeset .signature > .admonition-title::before,
