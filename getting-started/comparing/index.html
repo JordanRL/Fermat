@@ -1554,7 +1554,7 @@
 <p>The issue is that the inequality methods must return a <code>boolean</code>, and even in the cases where it might be argued that either the <code>true</code> case or <code>false</code> case is well-defined, the opposite case is always ambiguous under any definition of inequality for complex numbers.</p>
 <p>This makes the return values of such statements meaningless in the context of complex numbers.</p>
 </div>
-<div class="admonition potential-bugs">
+<div class="admonition bug">
 <p class="admonition-title">You Might Not Expect</p>
 <p>The <code>isEqual()</code> method on the <code>ComplexNumber</code> class and all of its children checks first whether or not the compared value is also a complex number. This means that the following comparison will return <code>false</code>, even though one might expect it to return <code>true</code>:</p>
 <p><code>2+0i == 2</code></p>

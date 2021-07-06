@@ -1555,7 +1555,7 @@
                 
                 <h1 id="working-with-numberinterface">Working With <code>NumberInterface</code></h1>
 <p>Arithmetic can be performed on any class that implements the <code>NumberInterface</code>, and the rules for using arithmetic methods are consistent and straight-forward: you can put any value that is valid for an <code>ImmutableNumber</code> constructor in, or you can put in any instance of an object that implements <code>NumberInterface</code> itself.</p>
-<div class="admonition potential-bugs">
+<div class="admonition bug">
 <p class="admonition-title">You Might Not Expect</p>
 <p>If two objects which have different calculation modes are used in an arithmetic operation, the calculation mode of the object which makes the function call is used, and the calculation mode of the object supplied as an argument is ignored.</p>
 <p>Additionally, the object returned will be of the same class as the object making the function call if that is possible. This means that fractions will be converted to decimals when they are the argument for a decimal function call, or visa versa.</p>

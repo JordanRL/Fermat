@@ -1638,7 +1638,7 @@
 <p>There are two main ways of controlling the mode used by your Fermat objects. The first is through the use of the default mode, and the second is with the use of the <code>setMode()</code> method.</p>
 <h2 id="default-mode">Default Mode</h2>
 <p>All objects that extend the <code>Number</code> abstract class set their current mode to the default calculation mode returned by <code>Numbers::getDefaultCalcMode()</code>. This check is only done during instantiation, meaning that changing the default calculation mode using <code>Numbers::setDefaultCalcMode()</code> will only affect objects instantiated after this change is made.</p>
-<div class="admonition potential-bugs">
+<div class="admonition bug">
 <p class="admonition-title">Interaction With Immutable Objects</p>
 <p>Because immutable objects create new instances for every mathematical operation performed, changing the default calculation mode in the middle of application execution will result in all previously created immutables utilizing the original mode for their first mathematical operation, and the new mode for every subsequent operation.</p>
 <p>If immutable objects are being used, the default mode should never be changed in the middle of application execution. Instead, set it to the desired value at the beginning of the application, or use the <code>setMode()</code> method after a new object is instantiated.</p>
@@ -1654,7 +1654,7 @@
 <p class="admonition-title">Use Only Defined Modes</p>
 <p>While <code>setMode()</code> will accept any integer, you should only ever use inputs that are defined as constants on the <code>Selectable</code> class to avoid unexpected behaviors.</p>
 </div>
-<div class="admonition potential-bugs">
+<div class="admonition bug">
 <p class="admonition-title">This Method Is Mutable For All Objects</p>
 <p>Because of the nature of what this method does, it is mutable for all objects, including any implementations of immutable objects.</p>
 </div>
