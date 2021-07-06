@@ -14,6 +14,7 @@
     --md-admonition-icon--custom-caution: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 15h2v2h-2v-2m0-8h2v6h-2V7m1-5C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8z"/></svg>');
     --md-admonition-icon--custom-warning: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.2 16.06 3.88 12 2.2 7.94l4.06-1.68L7.94 2.2 12 3.88l4.06-1.68 1.68 4.06 4.06 1.68L20.12 12l1.68 4.06-4.06 1.68-1.68 4.06L12 20.12 7.94 21.8l-1.68-4.06-4.06-1.68M13 17v-2h-2v2h2m0-4V7h-2v6h2z"/></svg>');
     --md-admonition-icon--custom-danger: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 15H6l7-14v8h5l-7 14v-8z"/></svg>');
+    --md-admonition-icon--footer-link: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5V9M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2h9m3-4v-2H6v2h12z"/></svg>');
 }
 
 .md-content .signature {
@@ -119,6 +120,12 @@
     background-color: #00c853;
     -webkit-mask-image: var(--md-admonition-icon--signature-trait);
     mask-image: var(--md-admonition-icon--signature-trait);
+}
+
+.md-typeset .footer-link > .admonition-title::before,
+.md-typeset .footer-link > summary::before {
+    -webkit-mask-image: var(--md-admonition-icon--custom-danger);
+    mask-image: var(--md-admonition-icon--custom-danger);
 }
 
 /* Styles for normal admonitions */
