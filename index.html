@@ -1871,7 +1871,7 @@
 <p class="admonition-title">Cautions</p>
 <p>This type of box is used to caution the developer about incorrect usage of the section being detailed. It is used when the incorrect usage will not result in exceptions or unexpected results, but instead might simply have undesirable side effects.</p>
 </div>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Warnings</p>
 <p>This type of box is used to warn the developer about incorrect usage of the section being detailed. It is used when the incorrect usage will result in exceptions, but not unexpected results.</p>
 </div>
@@ -1943,7 +1943,7 @@
 </div>
 <h3 id="this-library-cant-be-reliably-used-with-math-operators">This Library Can't Be Reliably Used With Math Operators</h3>
 <p>Because PHP doesn't allow operator overloading, using the native math operators on Fermat objects directly can very easily result in loss of scale, overflows and underflows, PHP fatal errors (f.e. when the object is in a non-base-10 format), and incorrect calculation (f.e. with complex and imaginary numbers).</p>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Non-Base-10 Values With Native Operators</p>
 <p>Using a value that is in a base larger than base-10 with math operators can result in PHP fatal errors. For instance, the value <code>15</code> in base <code>16</code> will output the string <code>F</code>. When used with the operator <code>/</code> as the value on the right of the operator, this would result in a "Division by Zero" PHP fatal error. </p>
 <p>This occurs because PHP will attempt to cast the string <code>F</code> to an <code>integer</code>, which will result in the value <code>0</code>.</p>

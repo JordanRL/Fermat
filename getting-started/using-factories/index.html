@@ -1612,7 +1612,7 @@
 <p>The sign is applied to the number that follows and is stored in the <code>ImmutableDecimal</code> for that number.</p>
 </div>
 <p>You may also provide either an <code>array</code> or a <code>NumberCollection</code> that have exactly two values which implement the <code>SimpleNumberInterface</code>.</p>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Warning</p>
 <p>The real part must have a key of <code>0</code>, and the imaginary part must have a key of <code>1</code> in the given <code>array</code> or <code>NumberCollection</code>.</p>
 </div>
@@ -1835,7 +1835,7 @@
 <p class="admonition-title">Type Can Be An Instance</p>
 <p>Instead of providing a fully qualified class name for <code>$type</code>, you can provide an instance of a supported object. The <code>make()</code> function will attempt to force the <code>$value</code> into that type.</p>
 </div>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Type Must Be A Supported FQCN or Class</p>
 <p>If <code>$type</code> is the fully qualified class name or instance of an object other than <code>ImmutableDecimal</code>, <code>MutableDecimal</code>, <code>ImmutableFraction</code>, or <code>MutableFraction</code>, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown. </p>
 </div>
@@ -1883,7 +1883,7 @@
 <p>In general, it is written to build the requested <code>$type</code> in the most efficient way possible given the provided inputs.</p>
 <p>This makes calls to this factory method very low cost from both a memory and computation perspective if you need the value to be a guaranteed instance of a particular class.</p>
 </div>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Mixed Argument Limitations</p>
 <p>The <code>$values</code> argument is listed in this documentation as <code>mixed</code>. In fact, the valid input types are:</p>
 <ul>
@@ -1909,11 +1909,11 @@
 </dl>
 </div>
 <p>This factory method will take a string as its input and provide an instance of either <code>ImmutableFraction</code> or <code>MutableFraction</code> depending on the value given for <code>$type</code>.</p>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Type Must Be A Supported FQCN</p>
 <p>If <code>$type</code> is the fully qualified class name of an object other than <code>ImmutableFraction</code> or <code>MutableFraction</code>, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown. </p>
 </div>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Value Must Contain at Most One Fraction Bar '/'</p>
 <p>If <code>$value</code> contains more than one fraction bar, which is assumed to be represented by the character <code>/</code>, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown. </p>
 </div>
@@ -1927,7 +1927,7 @@
 </dl>
 </div>
 <p>If no <code>$scale</code> is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the <code>Numbers::PI</code> constant. If a scale of greater than 100 is requested, then a call is made to <code>ConstantProvider::makePi()</code> which computes digits of pi using the most efficient computational method currently available.</p>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Scale Must Be Positive</p>
 <p>If a scale of less than 1 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown. </p>
 </div>
@@ -1941,7 +1941,7 @@
 </dl>
 </div>
 <p>If no <code>$scale</code> is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the <code>Numbers::TAU</code> constant. If a scale of greater than 100 is requested, then a call is made to <code>Numbers::makePi()</code> which uses the methods described above, after which the result is multiplied by 2.</p>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Scale Must Be Positive</p>
 <p>If a scale of less than 1 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown.</p>
 </div>
@@ -1955,7 +1955,7 @@
 </dl>
 </div>
 <p>This factory method is an alias for <code>Numbers::makeTau()</code>.</p>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Scale Must Be Positive</p>
 <p>If a scale of less than 1 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown.</p>
 </div>
@@ -1969,7 +1969,7 @@
 </dl>
 </div>
 <p>If no <code>$scale</code> is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the <code>Numbers::E</code> constant. If a scale of greater than 100 is requested, then a call is made to <code>ConstantProvider::makeE()</code> which uses a fast converging series to calculate digits of e.</p>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Scale Must Be Positive</p>
 <p>If a scale of less than 1 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown.</p>
 </div>
@@ -1983,7 +1983,7 @@
 </dl>
 </div>
 <p>If no <code>$scale</code> is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the <code>Numbers::GOLDEN_RATION</code> constant.</p>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Scale Must Be 1-100</p>
 <p>If a scale of less than 1 or greater than 100 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown.</p>
 </div>
@@ -1997,7 +1997,7 @@
 </dl>
 </div>
 <p>If no <code>$scale</code> is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the <code>Numbers::LN_10</code> constant. If a scale of greater than 100 is requested, then an exception is thrown.</p>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Scale Must Be 1-100</p>
 <p>If a scale of less than 1 or greater than 100 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown.</p>
 </div>

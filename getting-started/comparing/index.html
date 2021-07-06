@@ -1548,7 +1548,7 @@
                 <h1 id="limitations-of-native-inequality-operators">Limitations of Native Inequality Operators</h1>
 <p>For values that cannot be represented as an <code>integer</code> or <code>float</code> accurately, using the native inequality operators will result in erroneous results. In some cases, this might also result in underflow and overflow of the native types.</p>
 <p>Because of this, all comparisons, including equality comparisons which would normally be <code>==</code> or <code>===</code> in PHP, should be performed using the comparison methods provided on all objects which extend the <code>Number</code> abstract class.</p>
-<div class="admonition warning">
+<div class="admonition fail">
 <p class="admonition-title">Complex Number Limitations</p>
 <p>The <code>ComplexNumber</code> abstract class, and all of its child classes, only implement the <code>isEqual()</code> method. This is because inequality is poorly defined for complex numbers. There is no sensible and consistent way to evaluate the statement <code>(2+2i) &gt;= (1+1i)</code>, even though one might expect this to return true.</p>
 <p>The issue is that the inequality methods must return a <code>boolean</code>, and even in the cases where it might be argued that either the <code>true</code> case or <code>false</code> case is well-defined, the opposite case is always ambiguous under any definition of inequality for complex numbers.</p>
