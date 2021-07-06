@@ -1,5 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap');
 
+[data-md-color-scheme="slate"] > .md-tabs__link {
+    border: 5px solid var(--md-default-fg-color);
+}
+
+[data-md-color-scheme="slate"] > .md-tabs__link--active {
+    background-color: var(--md-default-bg-color);
+    color: var(--md-default-fg-color);
+    border: 5px solid var(--md-default-bg-color);
+}
+
+[data-md-color-scheme="slate"] > .md-tabs__link--active:hover {
+    color: var(--md-default-fg-color--light);
+}
+
 .md-tabs__link {
     padding: 20px 5px;
     margin-top: 0;
