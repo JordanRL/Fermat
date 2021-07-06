@@ -3,16 +3,16 @@
 .md-tabs__link {
     padding: 20px 5px;
     margin-top: 0;
-    border: 5px solid var(--md-accent-fg-color);
+    border: 5px solid var(--md-primary-fg-color);
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
 
 .md-tabs__link--active {
     font-weight: bold;
-    background-color: var(--md-default-bg-color);
-    color: var(--md-accent-fg-color);
-    border: 5px solid var(--md-default-bg-color);
+    background-color: var(--md-primary-bg-color);
+    color: var(--md-primary-fg-color);
+    border: 5px solid var(--md-primary-bg-color);
 }
 
 :root {
