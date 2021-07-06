@@ -1,5 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap');
 
+.md-tabs__link {
+    background-color: var(--md-default-fg-color);
+    color: var(--md-default-bg-color);
+    border: 5px solid var(--md-default-fg-color);
+    padding: 20px 5px;
+    margin-top: 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.md-tabs__link--active {
+    background-color: var(--md-default-bg-color);
+    color: var(--md-default-fg-color);
+    border: 5px solid var(--md-default-bg-color);
+    font-weight: bold;
+}
+
+.md-tabs__link--active:hover {
+    color: var(--md-default-fg-color--light);
+}
+
 :root {
     --icon-signature: url('data:image/svg+xml;charset=UTF-8,<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="signature" class="svg-inline--fa fa-signature fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M623.2 192c-51.8 3.5-125.7 54.7-163.1 71.5-29.1 13.1-54.2 24.4-76.1 24.4-22.6 0-26-16.2-21.3-51.9 1.1-8 11.7-79.2-42.7-76.1-25.1 1.5-64.3 24.8-169.5 126L192 182.2c30.4-75.9-53.2-151.5-129.7-102.8L7.4 116.3C0 121-2.2 130.9 2.5 138.4l17.2 27c4.7 7.5 14.6 9.7 22.1 4.9l58-38.9c18.4-11.7 40.7 7.2 32.7 27.1L34.3 404.1C27.5 421 37 448 64 448c8.3 0 16.5-3.2 22.6-9.4 42.2-42.2 154.7-150.7 211.2-195.8-2.2 28.5-2.1 58.9 20.6 83.8 15.3 16.8 37.3 25.3 65.5 25.3 35.6 0 68-14.6 102.3-30 33-14.8 99-62.6 138.4-65.8 8.5-.7 15.2-7.3 15.2-15.8v-32.1c.2-9.1-7.5-16.8-16.6-16.2z"></path></svg>');
 }
@@ -47,7 +68,7 @@ h2 {
     border-left: 5px solid #000000;
     border-radius: 3px;
     color: #333333;
-    padding: 0 12px;
+    padding: 1em 12px 0;
     box-shadow: 0 0 .5rem rgba(0,0,0,.15),0 0 .05rem rgba(0,0,0,.25);
 }
 
@@ -103,12 +124,12 @@ div.highlight pre span.lineno {
 }
 
 .tabbed-set .highlight pre:last-child,
-.rst-content .admonition .highlight:last-child,
+.md-content .admonition .highlight:last-child,
 .tabbed-set div:last-child {
     margin-bottom: 0;
 }
 
-.rst-content .admonition {
+.md-content .admonition {
     padding: 12px;
     line-height: 24px;
     margin-bottom: 24px;
@@ -119,50 +140,24 @@ div.highlight pre span.lineno {
     color: #000000;
 }
 
-.rst-content .admonition p:last-child {
+.md-content .admonition p:last-child {
     margin-bottom: 0;
 }
 
-.rst-content .admonition-title {
+.md-content .admonition-title {
+    margin-top: -12px;
     color: #333333;
 }
 
-.rst-content .footer-link {
+.md-content .signature {
     padding: 0;
     margin-bottom: 12px;
     box-sizing: border-box;
-    border: 0;
-    box-shadow: none;
+    border-left-color: #cceeff;
     background: inherit;
 }
 
-.rst-content .footer-link .admonition-title {
-    background: inherit;
-    font-family: 'sans-serif';
-    font-style: italic;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 12px;
-    border-bottom: 0;
-    padding-bottom: 5px;
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 6px;
-}
-
-.rst-content .signature {
-    padding: 0;
-    margin-bottom: 12px;
-    box-sizing: border-box;
-    border: 0;
-    box-shadow: none;
-    background: inherit;
-}
-
-.rst-content .signature p {
+.md-content .signature p {
     margin-left: 10px;
 }
 
@@ -170,14 +165,14 @@ svg.fa-signature path {
     fill: #00c853;
 }
 
-.rst-content .signature dl {
+.md-content .signature dl {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     margin: 0;
 }
 
-.rst-content .signature dl dt {
+.md-content .signature dl dt {
     background: inherit;
     flex-basis: 20%;
     flex-grow: 0;
@@ -188,10 +183,12 @@ svg.fa-signature path {
     line-height: 24px;
     color: #999999;
     font-size: 14px;
+    padding-right: 5px;
+    padding-top: 7px;
     font-family: "Source Code Pro";
 }
 
-.rst-content .signature dl dd {
+.md-content .signature dl dd {
     flex-basis: 80%;
     flex-grow: 0;
     padding-left: 15px;
@@ -200,20 +197,22 @@ svg.fa-signature path {
     margin: 0 0 6px 0;
     font-size: 14px;
     background: inherit;
+    word-wrap: anywhere;
     font-family: "Source Code Pro";
 }
 
-.rst-content .signature dl dd ul {
+.md-content .signature dl dd ul {
     margin-bottom: 0 !important;
 }
 
-.rst-content .signature .admonition-title {
+.md-content .signature .admonition-title {
     background: inherit;
     font-family: 'Source Code Pro';
     font-weight: 500;
     font-size: 16px;
-    line-height: 16px;
+    line-height: 20px;
     border-bottom: 0;
+    border-left: 0;
     padding-bottom: 5px;
     padding-left: 0;
     padding-right: 0;
@@ -223,43 +222,47 @@ svg.fa-signature path {
     margin-bottom: 6px;
 }
 
-.rst-content .signature .admonition-title::before {
+.md-content .signature .admonition-title::before {
     content: "";
     font-family: "FontAwesome";
-    margin-right: 4px;
-    margin-left: 10px;
+    margin-right: 25px;
+    margin-left: 0;
     color: #00c853;
     position: relative;
-    top: 2px;
+    top: 6px;
     font-size: 20px;
     width: 20px;
 }
 
-.rst-content .signature.constant .admonition-title::before {
+.md-content .signature.constant .admonition-title::before {
     content: "";
+    color: #00c853;
 }
 
-.rst-content .signature.property .admonition-title::before {
+.md-content .signature.property .admonition-title::before {
     content: "";
+    color: #00c853;
 }
 
-.rst-content .signature.interface .admonition-title::before {
+.md-content .signature.interface .admonition-title::before {
     content: "";
+    color: #00c853;
 }
 
-.rst-content .signature.trait .admonition-title::before {
+.md-content .signature.trait .admonition-title::before {
     content: "";
+    color: #00c853;
 }
 
-.rst-content .note {
+.md-content .note {
     border-color: #00bfa5;
 }
 
-.rst-content .note .admonition-title {
-    background: #ddFFEE;
+.md-content .note .admonition-title {
+    background: #ccf3f6;
 }
 
-.rst-content .note .admonition-title::before {
+.md-content .note .admonition-title::before {
     content: "";
     color: #00bfa5;
 }
@@ -269,15 +272,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #00bfa5;
 }
 
-.rst-content .caution {
+.md-content .caution {
     border-color: #ffa733;
 }
 
-.rst-content .caution .admonition-title {
+.md-content .caution .admonition-title {
     background: #ffeed9;
 }
 
-.rst-content .caution .admonition-title::before {
+.md-content .caution .admonition-title::before {
     content: "";
     color: #ffa733;
 }
@@ -287,15 +290,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #ffa733;
 }
 
-.rst-content .tip {
+.md-content .tip {
     border-color: #00c853;
 }
 
-.rst-content .tip .admonition-title {
+.md-content .tip .admonition-title {
     background: #CCFFDD;
 }
 
-.rst-content .tip .admonition-title::before {
+.md-content .tip .admonition-title::before {
     content: "";
     color: #00c853;
 }
@@ -305,15 +308,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #00c853;
 }
 
-.rst-content .example {
+.md-content .example {
     border-color: #8b33ff;
 }
 
-.rst-content .example .admonition-title {
+.md-content .example .admonition-title {
     background: #e9d9ff;
 }
 
-.rst-content .example .admonition-title::before {
+.md-content .example .admonition-title::before {
     content: "";
     color: #8b33ff;
 }
@@ -323,15 +326,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #8b33ff;
 }
 
-.rst-content .warning {
+.md-content .warning {
     border-color: #ffa733;
 }
 
-.rst-content .warning .admonition-title {
+.md-content .warning .admonition-title {
     background: #ffeed9;
 }
 
-.rst-content .warning .admonition-title::before {
+.md-content .warning .admonition-title::before {
     content: "";
     color: #ffa733;
 }
@@ -341,15 +344,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #ffa733;
 }
 
-.rst-content .danger {
+.md-content .danger {
     border-color: #ff3344;
 }
 
-.rst-content .danger .admonition-title {
+.md-content .danger .admonition-title {
     background: #ffe6e8;
 }
 
-.rst-content .danger .admonition-title::before {
+.md-content .danger .admonition-title::before {
     content: "";
     color: #ff3344;
 }
@@ -359,15 +362,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #ff3344;
 }
 
-.rst-content .see-also {
+.md-content .see-also {
     border-color: #338fff;
 }
 
-.rst-content .see-also .admonition-title {
+.md-content .see-also .admonition-title {
     background: #d9ebff;
 }
 
-.rst-content .see-also .admonition-title::before {
+.md-content .see-also .admonition-title::before {
     content: "";
     color: #338fff;
 }
@@ -377,15 +380,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #338fff;
 }
 
-.rst-content .potential-bugs {
+.md-content .potential-bugs {
     border-color: #ff33b1;
 }
 
-.rst-content .potential-bugs .admonition-title {
+.md-content .potential-bugs .admonition-title {
     background: #ffe6f6;
 }
 
-.rst-content .potential-bugs .admonition-title::before {
+.md-content .potential-bugs .admonition-title::before {
     content: "";
     color: #ff33b1;
 }
