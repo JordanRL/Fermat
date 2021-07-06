@@ -213,6 +213,10 @@ svg.fa-signature path {
     content: "";
 }
 
+.rst-content .signature.property .admonition-title::before {
+    content: "";
+}
+
 .rst-content .signature.interface .admonition-title::before {
     content: "";
 }

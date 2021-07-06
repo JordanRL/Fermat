@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Provider/SequenceProvider/">
+  <link rel="shortcut icon" href="../../../../../../img/favicon.ico">
+  <title>SequenceProvider - Fermat - PHP Math Library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../../../../../css/theme.css" />
+  <link rel="stylesheet" href="../../../../../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  <link href="../../../../../../css/custom.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "SequenceProvider";
+    var mkdocs_page_input_path = "roster/latest/Samsara/Fermat/Provider/SequenceProvider.md";
+    var mkdocs_page_url = "/Fermat/roster/latest/Samsara/Fermat/Provider/SequenceProvider/";
+  </script>
+  
+  <script src="../../../../../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../../../../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/php.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../.." class="icon icon-home"> Fermat - PHP Math Library</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../..">Introduction</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Getting Started</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/concepts/">Concepts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/installation-and-usage/">Installation & Usage</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/mutability/">Mutable vs. Immutable</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/using-factories/">Using The Factories</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/direct-instantiation/">Direct Instantiation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/comparing/">Comparing Values</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/exceptions/">Handling Exceptions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Configuration</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../configuration/calculation-modes/">Calculation Modes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../configuration/rounding-modes/">Rounding Modes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Types & Values</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/decimals/">Decimals</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/fractions/">Fractions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/complex/">Complex Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/coordinates/">Coordinates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/matrices/">Matrices</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/collections/">Collections</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/expressions/">Expressions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Arithmetic</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../arithmetic/traits/">Built In Traits</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../arithmetic/simple/">Simple Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../arithmetic/complex/">Complex Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../arithmetic/matrices/">Matrices</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Trigonometry</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../trigonometry/traits/">Built In Traits</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../trigonometry/basic/">Basic Trig Functions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../trigonometry/inverse/">Inverse Trig Functions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../trigonometry/hyperbolic/">Hyperbolic Trig Functions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Statistics</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../statistics/included/">Built In Distributions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../statistics/distributions/">Using Distributions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../statistics/static-methods/">Using Static Methods</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Extending</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="../../../../../../extending/abstracts.md">Abstract Classes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Source Reference</span></p>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="#">Fermat</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../Numbers/">Numbers</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../Collections/">Collections</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">Renderer</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="#">Components</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="#">Operations</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">Symbols</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">Interfaces</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Renderer/KatexRenderer/">KatexRenderer</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">Values</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../Values/MutableDecimal/">MutableDecimal</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Values/ImmutableDecimal/">ImmutableDecimal</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Values/ImmutableFraction/">ImmutableFraction</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Values/MutableFraction/">MutableFraction</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">Types</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../Types/Fraction/">Fraction</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Types/NumberCollection/">NumberCollection</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Types/Decimal/">Decimal</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Types/Tuple/">Tuple</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="#">Base</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../Types/Base/Selectable/">Selectable</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../Types/Base/Number/">Number</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">Interfaces</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="#">Traits</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../Types/Traits/ComparisonTrait/">ComparisonTrait</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../Types/Traits/ArithmeticSimpleTrait/">ArithmeticSimpleTrait</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../Types/Traits/IntegerMathTrait/">IntegerMathTrait</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">Arithmetic</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">Decimal</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Provider</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../TrigonometryProvider/">TrigonometryProvider</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../SeriesProvider/">SeriesProvider</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../RoundingProvider/">RoundingProvider</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../ConstantProvider/">ConstantProvider</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="./">SequenceProvider</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#variables-data">Variables &amp; Data</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#methods">Methods</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../ArithmeticProvider/">ArithmeticProvider</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../RandomProvider/">RandomProvider</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../..">Fermat - PHP Math Library</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Provider &raquo;</li>
+        
+      
+        
+          <li>Fermat &raquo;</li>
+        
+      
+        
+          <li>Source Reference &raquo;</li>
+        
+      
+    
+    <li>SequenceProvider</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/JordanRL/Fermat/edit/master/docs/roster/latest/Samsara/Fermat/Provider/SequenceProvider.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="samsarafermatprovider-sequenceprovider">Samsara\Fermat\Provider &gt; SequenceProvider</h1>
+<p><em>No description available</em></p>
+<h2 id="variables-data">Variables &amp; Data</h2>
+<h3 id="class-constants">Class Constants</h3>
+<div class="admonition signature constant">
+<p class="admonition-title">SequenceProvider::EULER_ZIGZAG</p>
+<dl>
+<dt>value</dt>
+<dd>array (0 =&gt; '1',1 =&gt; '1',2 =&gt; '1',3 =&gt; '2',4 =&gt; '5',5 =&gt; '16',6 =&gt; '61',7 =&gt; '272',8 =&gt; '1385',9 =&gt; '7936',10 =&gt; '50521',11 =&gt; '353792',12 =&gt; '2702765',13 =&gt; '22368256',14 =&gt; '199360981',15 =&gt; '1903757312',16 =&gt; '19391512145',17 =&gt; '209865342976',18 =&gt; '2404879675441',19 =&gt; '29088885112832',20 =&gt; '370371188237525',21 =&gt; '4951498053124096',22 =&gt; '69348874393137901',23 =&gt; '1015423886506852352',24 =&gt; '15514534163557086905',25 =&gt; '246921480190207983616',26 =&gt; '4087072509293123892361',27 =&gt; '70251601603943959887872',28 =&gt; '1252259641403629865468285',29 =&gt; '23119184187809597841473536',30 =&gt; '441543893249023104553682821',31 =&gt; '8713962757125169296170811392',32 =&gt; '177519391579539289436664789665',33 =&gt; '3729407703720529571097509625856',34 =&gt; '80723299235887898062168247453281',35 =&gt; '1798651693450888780071750349094912',36 =&gt; '41222060339517702122347079671259045',37 =&gt; '970982810785059112379399707952152576',38 =&gt; '23489580527043108252017828576198947741',39 =&gt; '583203324917310043943191641625494290432',40 =&gt; '14851150718114980017877156781405826684425',41 =&gt; '387635983772083031828014624002175135645696',42 =&gt; '10364622733519612119397957304745185976310201',43 =&gt; '283727921907431909304183316295787837183229952',44 =&gt; '7947579422597592703608040510088070619519273805',45 =&gt; '227681379129930886488600284336316164603920777216',46 =&gt; '6667537516685544977435028474773748197524107684661',47 =&gt; '199500252157859031027160499643195658166340757225472',48 =&gt; '6096278645568542158691685742876843153976539044435185',49 =&gt; '190169564657928428175235445073924928592047775873499136',50 =&gt; '6053285248188621896314383785111649088103498225146815121',)</dd>
+</dl>
+</div>
+<h2 id="methods">Methods</h2>
+<h3 id="static-methods">Static Methods</h3>
+<div class="admonition signature">
+<p class="admonition-title">public SequenceProvider::nthOddNumber(int $n, bool $asCollection, int $collectionSize)</p>
+<p><strong>$n</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$asCollection</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$collectionSize</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>DecimalInterface|NumberInterface|NumberCollection</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>OEIS: A005408</p>
+<div class="admonition signature">
+<p class="admonition-title">public SequenceProvider::nthEvenNumber(int $n, bool $asCollection, int $collectionSize)</p>
+<p><strong>$n</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$asCollection</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$collectionSize</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>DecimalInterface|NumberInterface|NumberCollection</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>OEIS: A005843</p>
+<div class="admonition signature">
+<p class="admonition-title">public SequenceProvider::nthPowerNegativeOne(int $n, bool $asCollection, int $collectionSize)</p>
+<p><strong>$n</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$asCollection</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$collectionSize</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>DecimalInterface|NumberInterface|NumberCollection</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>OEIS: A033999</p>
+<div class="admonition signature">
+<p class="admonition-title">public SequenceProvider::nthEulerZigzag(int $n, bool $asCollection, int $collectionSize)</p>
+<p><strong>$n</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$asCollection</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$collectionSize</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>DecimalInterface|NumberInterface|NumberCollection</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>OEIS: A000111</p>
+<div class="admonition signature">
+<p class="admonition-title">public SequenceProvider::nthBernoulliNumber($n)</p>
+<p><strong>$n</strong></p>
+<dl>
+<dt>description</dt>
+<dd></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>DecimalInterface|NumberInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>WARNING: This function is VERY unoptimized. Be careful of large m values.</p>
+<div class="admonition signature">
+<p class="admonition-title">public SequenceProvider::nthFibonacciNumber(int $n, bool $asCollection, int $collectionSize)</p>
+<p><strong>$n</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$asCollection</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$collectionSize</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>ImmutableDecimal|NumberCollection</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>OEIS: A000045</p>
+<p>This uses an implementation of the fast-doubling Karatsuba multiplication algorithm as described by 'Nayuki':</p>
+<p>https://www.nayuki.io/page/fast-fibonacci-algorithms</p>
+<hr />
+<div class="admonition footer-link">
+<p class="admonition-title">This documentation was generated with <a href="https://jordanrl.github.io/Roster/">Roster</a>.</p>
+</div>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../ArithmeticProvider/" class="btn btn-neutral float-right" title="ArithmeticProvider">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../ConstantProvider/" class="btn btn-neutral" title="ConstantProvider"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/JordanRL/Fermat/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../ConstantProvider/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ArithmeticProvider/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../../../../../..';</script>
+    <script src="../../../../../../js/theme_extra.js" defer></script>
+    <script src="../../../../../../js/theme.js" defer></script>
+      <script src="../../../../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

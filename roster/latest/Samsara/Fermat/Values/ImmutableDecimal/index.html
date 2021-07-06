@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Values/ImmutableDecimal/">
+  <link rel="shortcut icon" href="../../../../../../img/favicon.ico">
+  <title>ImmutableDecimal - Fermat - PHP Math Library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../../../../../css/theme.css" />
+  <link rel="stylesheet" href="../../../../../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  <link href="../../../../../../css/custom.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "ImmutableDecimal";
+    var mkdocs_page_input_path = "roster/latest/Samsara/Fermat/Values/ImmutableDecimal.md";
+    var mkdocs_page_url = "/Fermat/roster/latest/Samsara/Fermat/Values/ImmutableDecimal/";
+  </script>
+  
+  <script src="../../../../../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../../../../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/php.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../.." class="icon icon-home"> Fermat - PHP Math Library</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../..">Introduction</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Getting Started</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/concepts/">Concepts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/installation-and-usage/">Installation & Usage</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/mutability/">Mutable vs. Immutable</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/using-factories/">Using The Factories</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/direct-instantiation/">Direct Instantiation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/comparing/">Comparing Values</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../getting-started/exceptions/">Handling Exceptions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Configuration</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../configuration/calculation-modes/">Calculation Modes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../configuration/rounding-modes/">Rounding Modes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Types & Values</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/decimals/">Decimals</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/fractions/">Fractions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/complex/">Complex Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/coordinates/">Coordinates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/matrices/">Matrices</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/collections/">Collections</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../types-and-values/expressions/">Expressions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Arithmetic</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../arithmetic/traits/">Built In Traits</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../arithmetic/simple/">Simple Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../arithmetic/complex/">Complex Numbers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../arithmetic/matrices/">Matrices</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Trigonometry</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../trigonometry/traits/">Built In Traits</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../trigonometry/basic/">Basic Trig Functions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../trigonometry/inverse/">Inverse Trig Functions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../trigonometry/hyperbolic/">Hyperbolic Trig Functions</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Statistics</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../statistics/included/">Built In Distributions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../statistics/distributions/">Using Distributions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../../../../statistics/static-methods/">Using Static Methods</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Extending</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="" href="../../../../../../extending/abstracts.md">Abstract Classes</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Source Reference</span></p>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="#">Fermat</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../Numbers/">Numbers</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../Collections/">Collections</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">Renderer</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="#">Components</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="#">Operations</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">Symbols</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">Interfaces</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Renderer/KatexRenderer/">KatexRenderer</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Values</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../MutableDecimal/">MutableDecimal</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="./">ImmutableDecimal</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#inheritance">Inheritance</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#variables-data">Variables &amp; Data</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#methods">Methods</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../ImmutableFraction/">ImmutableFraction</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../MutableFraction/">MutableFraction</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">Types</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../Types/Fraction/">Fraction</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Types/NumberCollection/">NumberCollection</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Types/Decimal/">Decimal</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Types/Tuple/">Tuple</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="#">Base</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../Types/Base/Selectable/">Selectable</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../Types/Base/Number/">Number</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">Interfaces</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="#">Traits</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../Types/Traits/ComparisonTrait/">ComparisonTrait</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../Types/Traits/ArithmeticSimpleTrait/">ArithmeticSimpleTrait</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../Types/Traits/IntegerMathTrait/">IntegerMathTrait</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">Arithmetic</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">Decimal</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">Provider</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../Provider/TrigonometryProvider/">TrigonometryProvider</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Provider/SeriesProvider/">SeriesProvider</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Provider/RoundingProvider/">RoundingProvider</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Provider/ConstantProvider/">ConstantProvider</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Provider/SequenceProvider/">SequenceProvider</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Provider/ArithmeticProvider/">ArithmeticProvider</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../Provider/RandomProvider/">RandomProvider</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../..">Fermat - PHP Math Library</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Values &raquo;</li>
+        
+      
+        
+          <li>Fermat &raquo;</li>
+        
+      
+        
+          <li>Source Reference &raquo;</li>
+        
+      
+    
+    <li>ImmutableDecimal</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/JordanRL/Fermat/edit/master/docs/roster/latest/Samsara/Fermat/Values/ImmutableDecimal.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="samsarafermatvalues-immutabledecimal">Samsara\Fermat\Values &gt; ImmutableDecimal</h1>
+<p><em>No description available</em></p>
+<h2 id="inheritance">Inheritance</h2>
+<h3 id="extends">Extends</h3>
+<ul>
+<li>Samsara\Fermat\Types\Decimal</li>
+</ul>
+<h3 id="implements">Implements</h3>
+<div class="admonition signature trait">
+<p class="admonition-title">SimpleNumberInterface</p>
+<dl>
+<dt>namespace</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature trait">
+<p class="admonition-title">BaseConversionInterface</p>
+<dl>
+<dt>namespace</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Characteristics</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature trait">
+<p class="admonition-title">DecimalInterface</p>
+<dl>
+<dt>namespace</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature trait">
+<p class="admonition-title">Stringable</p>
+<dl>
+<dt>namespace</dt>
+<dd></dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature trait">
+<p class="admonition-title">NumberInterface</p>
+<dl>
+<dt>namespace</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature trait">
+<p class="admonition-title">Hashable</p>
+<dl>
+<dt>namespace</dt>
+<dd>Ds</dd>
+<dt>description</dt>
+<dd>Hashable is an interface which allows objects to be used as keys.</dd>
+</dl>
+</div>
+<p>It’s an alternative to spl_object_hash(), which determines an object’s hash based on its handle: this means that two objects that are considered equal by an implicit definition would not treated as equal because they are not the same instance.</p>
+<h2 id="variables-data">Variables &amp; Data</h2>
+<h3 id="class-constants">Class Constants</h3>
+<div class="admonition signature constant">
+<p class="admonition-title">ImmutableDecimal::INFINITY</p>
+<dl>
+<dt>value</dt>
+<dd>'INF'</dd>
+</dl>
+</div>
+<div class="admonition signature constant">
+<p class="admonition-title">ImmutableDecimal::NEG_INFINITY</p>
+<dl>
+<dt>value</dt>
+<dd>'-INF'</dd>
+</dl>
+</div>
+<h3 id="inherited-properties">Inherited Properties</h3>
+<div class="admonition signature property">
+<p class="admonition-title">protected Decimal-&gt;base</p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>value</dt>
+<dd>null</dd>
+</dl>
+</div>
+<div class="admonition signature property">
+<p class="admonition-title">protected Number-&gt;value</p>
+<dl>
+<dt>type</dt>
+<dd>array</dd>
+<dt>value</dt>
+<dd><em>uninitialized</em></dd>
+</dl>
+</div>
+<div class="admonition signature property">
+<p class="admonition-title">protected Number-&gt;extensions</p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>value</dt>
+<dd>true</dd>
+</dl>
+</div>
+<div class="admonition signature property">
+<p class="admonition-title">protected Number-&gt;imaginary</p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>value</dt>
+<dd>null</dd>
+</dl>
+</div>
+<div class="admonition signature property">
+<p class="admonition-title">protected Number-&gt;sign</p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>value</dt>
+<dd><em>uninitialized</em></dd>
+</dl>
+</div>
+<div class="admonition signature property">
+<p class="admonition-title">protected Decimal-&gt;calcMode</p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>value</dt>
+<dd>null</dd>
+</dl>
+</div>
+<div class="admonition signature property">
+<p class="admonition-title">protected Decimal-&gt;modeRegister</p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>value</dt>
+<dd>null</dd>
+</dl>
+</div>
+<div class="admonition signature property">
+<p class="admonition-title">protected Decimal-&gt;scale</p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>value</dt>
+<dd>null</dd>
+</dl>
+</div>
+<h2 id="methods">Methods</h2>
+<h3 id="constructor">Constructor</h3>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;__construct($value, $scale, $base, bool $baseTenInput)</p>
+<p><strong>$value</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$base</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$baseTenInput</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<h3 id="instanced-methods">Instanced Methods</h3>
+<div class="admonition signature">
+<p class="admonition-title">public ImmutableDecimal-&gt;continuousModulo($mod)</p>
+<p><strong>$mod</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected ImmutableDecimal-&gt;setValue(string $value, int|null $scale, int $base)</p>
+<p><strong>$value</strong></p>
+<dl>
+<dt>type</dt>
+<dd>string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int|null</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$base</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>ImmutableDecimal</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<h3 id="inherited-static-methods">Inherited Static Methods</h3>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal::stringSelector(string $input)</p>
+<p><strong>$input</strong></p>
+<dl>
+<dt>type</dt>
+<dd>string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>CoordinateInterface|FractionInterface|NumberInterface|ComplexNumber|CartesianCoordinate|ImmutableDecimal|ImmutableFraction|MutableDecimal|MutableFraction</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal::rightSelector($left, $right, $identity)</p>
+<p><strong>$left</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$right</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$identity</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal::leftSelector($left, $identity)</p>
+<p><strong>$left</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$identity</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal::translateToNative(DecimalInterface $num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>float|int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<h3 id="inherited-methods">Inherited Methods</h3>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;modulo($mod)</p>
+<p><strong>$mod</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;getBase()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>Returns the current base that the value is in.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;getAsBaseTenRealNumber()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;getValue($base)</p>
+<p><strong>$base</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;compare(NumberInterface|int|float|string $value)</p>
+<p><strong>$value</strong></p>
+<dl>
+<dt>type</dt>
+<dd>NumberInterface|int|float|string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>Returns the sort compare integer (-1, 0, 1) for the two numbers.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;convertToBase($base)</p>
+<p><strong>$base</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>NumberInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>Converts the object to a different base.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;abs()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>DecimalInterface|NumberInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>Returns the current object as the absolute value of itself.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;absValue()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>Returns the string of the absolute value of the current object.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isComplex()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;__toString()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Number-&gt;setMode(int $mode)</p>
+<p><strong>$mode</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>self</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>Allows you to set a mode on a number to select the calculation methods.</p>
+<p>MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting.
+ MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Number-&gt;setExtensions(bool $flag)</p>
+<p><strong>$flag</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>self</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>Allows the object to ignore PHP extensions (such a GMP) and use only the Fermat implementations. NOTE: This does
+ not ignore ext-bcmath or ext-decimal, as those are necessary for the string math itself.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Number-&gt;hash()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>Implemented to satisfy Hashable implementation</p>
+<div class="admonition signature">
+<p class="admonition-title">public Number-&gt;equals(mixed $object)</p>
+<p><strong>$object</strong></p>
+<dl>
+<dt>type</dt>
+<dd>mixed</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>Implemented to satisfy Hashable implementation</p>
+<div class="admonition signature">
+<p class="admonition-title">public Number-&gt;isImaginary()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>This function returns true if the number is imaginary, and false in the number is real or complex</p>
+<div class="admonition signature">
+<p class="admonition-title">public Number-&gt;isReal()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>This function returns true if the number is real, and false if the number is imaginary or complex</p>
+<div class="admonition signature">
+<p class="admonition-title">public Number-&gt;asReal()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Number-&gt;asComplex()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\ComplexNumber</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;add($num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;subtract($num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;multiply($num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;divide($num, ?int $scale)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;pow($num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;sqrt(?int $scale)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isEqual($value)</p>
+<p><strong>$value</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;getScale()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isGreaterThan($value)</p>
+<p><strong>$value</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isLessThan($value)</p>
+<p><strong>$value</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isGreaterThanOrEqualTo($value)</p>
+<p><strong>$value</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isLessThanOrEqualTo($value)</p>
+<p><strong>$value</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isNegative()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isPositive()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isNatural()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isWhole()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isInt()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;factorial()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;subFactorial()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;doubleFactorial()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;semiFactorial()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;getLeastCommonMultiple($num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;getGreatestCommonDivisor($num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isPrime()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>This function is a PHP implementation of the function described at: http://stackoverflow.com/a/1801446</p>
+<p>It is relatively simple to understand, which is why it was chosen as the implementation. However in the future, an implementation that is based on ECPP (such as the Goldwasser implementation) may be employed to improve speed.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;asPrimeFactors()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\NumberCollection</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;sin(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;cos(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;tan(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;cot(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;sec(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;csc(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;sinh(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;cosh(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;tanh(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;coth(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;sech(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;csch(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;arcsin(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;arccos(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;arctan(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;arccot(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;arcsec(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;arccsc(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;roundToScale(int $scale, ?int $mode)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$mode</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;truncateToScale($scale)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;exp(?int $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;ln(int|null $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int|null</dd>
+<dt>description</dt>
+<dd>The number of digits which should be accurate</dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;log10(int|null $scale, bool $round)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int|null</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$round</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;round(int $decimals, ?int $mode)</p>
+<p><strong>$decimals</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$mode</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;truncate(int $decimals)</p>
+<p><strong>$decimals</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;ceil()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;floor()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;numberOfLeadingZeros()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>The number of digits between the radix and the for non-zero digit in the decimal part.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;numberOfTotalDigits()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>The number of digits (excludes the radix).</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;numberOfIntDigits()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>The number of digits in the integer part.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;numberOfDecimalDigits()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>The number of digits in the decimal part.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;numberOfSigDecimalDigits()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>The number of digits in the decimal part, excluding leading zeros.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;asInt()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<p>Returns the current value as an integer if it is within the max a min int values on the current system. Uses the intval() function to convert the string to an integer type.</p>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;isFloat()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>bool</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">public Decimal-&gt;asFloat()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>float</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;translateValue(string $value)</p>
+<p><strong>$value</strong></p>
+<dl>
+<dt>type</dt>
+<dd>string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;convertObject()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;convertValue(string $value, int $oldBase, int $newBase)</p>
+<p><strong>$value</strong></p>
+<dl>
+<dt>type</dt>
+<dd>string</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$oldBase</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$newBase</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;translateToParts($left, $right, int $identity)</p>
+<p><strong>$left</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$right</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$identity</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd>array</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;addSelector(Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface $num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;subtractSelector(Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface $num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;multiplySelector(Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface $num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;divideSelector(Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface $num, int $scale)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;powSelector(Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface $num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;sqrtSelector(int $scale)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;addScale($num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;subtractScale($num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;multiplyScale($num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;divideScale($num, ?int $scale)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;powScale($num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;sqrtScale(?int $scale)</p>
+<p><strong>$scale</strong></p>
+<dl>
+<dt>type</dt>
+<dd>?int</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;addNative(Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface $num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;subtractNative(Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface $num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;multiplyNative(Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface $num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;divideNative(Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface $num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;powNative(Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface $num)</p>
+<p><strong>$num</strong></p>
+<dl>
+<dt>type</dt>
+<dd>Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;sqrtNative()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;checkComparisonTraitAndInterface()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;reduceDecimals(array $decimalArray, $pos, $add)</p>
+<p><strong>$decimalArray</strong></p>
+<dl>
+<dt>type</dt>
+<dd>array</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$pos</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>$add</strong></p>
+<dl>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;getDecimalPart()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<div class="admonition signature">
+<p class="admonition-title">protected Decimal-&gt;getWholePart()</p>
+<p><strong>return</strong></p>
+<dl>
+<dt>type</dt>
+<dd><em>mixed</em> (assumed)</dd>
+<dt>description</dt>
+<dd><em>No description available</em></dd>
+</dl>
+</div>
+<hr />
+<div class="admonition footer-link">
+<p class="admonition-title">This documentation was generated with <a href="https://jordanrl.github.io/Roster/">Roster</a>.</p>
+</div>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../ImmutableFraction/" class="btn btn-neutral float-right" title="ImmutableFraction">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../MutableDecimal/" class="btn btn-neutral" title="MutableDecimal"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/JordanRL/Fermat/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../MutableDecimal/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ImmutableFraction/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../../../../../..';</script>
+    <script src="../../../../../../js/theme_extra.js" defer></script>
+    <script src="../../../../../../js/theme.js" defer></script>
+      <script src="../../../../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
