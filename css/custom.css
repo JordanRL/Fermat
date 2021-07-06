@@ -170,3 +170,9 @@
     -webkit-mask-image: var(--md-admonition-icon--custom-danger);
     mask-image: var(--md-admonition-icon--custom-danger);
 }
+
+/* Code Formatting */
+
+.md-typeset code > .linenos {
+    padding-right: 5px;
+}
