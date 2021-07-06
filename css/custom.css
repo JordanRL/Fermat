@@ -131,8 +131,7 @@ div.highlight pre span.lineno {
     padding: 0;
     margin-bottom: 12px;
     box-sizing: border-box;
-    border: 0;
-    box-shadow: none;
+    border-left-color: #cceeff;
     background: inherit;
 }
 
@@ -188,6 +187,7 @@ svg.fa-signature path {
     font-size: 16px;
     line-height: 16px;
     border-bottom: 0;
+    border-left: 0;
     padding-bottom: 5px;
     padding-left: 0;
     padding-right: 0;
@@ -200,11 +200,11 @@ svg.fa-signature path {
 .md-content .signature .admonition-title::before {
     content: "";
     font-family: "FontAwesome";
-    margin-right: 4px;
-    margin-left: 10px;
+    margin-right: 15px;
+    margin-left: 0;
     color: #00c853;
     position: relative;
-    top: 2px;
+    top: 6px;
     font-size: 20px;
     width: 20px;
 }
