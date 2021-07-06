@@ -6,6 +6,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://jordanrl.github.io/Fermat/fermat-vs-alternatives/</loc>
+         <lastmod>2021-07-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://jordanrl.github.io/Fermat/configuration/calculation-modes/</loc>
          <lastmod>2021-07-06</lastmod>
          <changefreq>daily</changefreq>
@@ -41,12 +46,57 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://jordanrl.github.io/Fermat/getting-started/modules/</loc>
+         <lastmod>2021-07-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/mutability/</loc>
          <lastmod>2021-07-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://jordanrl.github.io/Fermat/getting-started/random-values/</loc>
+         <lastmod>2021-07-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/using-factories/</loc>
+         <lastmod>2021-07-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/modules/algebra-expressions/about/</loc>
+         <lastmod>2021-07-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/modules/complex-numbers/about/</loc>
+         <lastmod>2021-07-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/modules/complex-numbers/factory-class/</loc>
+         <lastmod>2021-07-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/modules/coordinate-systems/about/</loc>
+         <lastmod>2021-07-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/modules/linear-algebra/about/</loc>
+         <lastmod>2021-07-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/modules/linear-algebra/matrix-factory/</loc>
+         <lastmod>2021-07-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/modules/stats/about/</loc>
          <lastmod>2021-07-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
