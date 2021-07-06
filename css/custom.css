@@ -162,6 +162,8 @@ svg.fa-signature path {
     line-height: 24px;
     color: #999999;
     font-size: 14px;
+    padding-right: 5px;
+    padding-top: 7px;
     font-family: "Source Code Pro";
 }
 
@@ -174,6 +176,7 @@ svg.fa-signature path {
     margin: 0 0 6px 0;
     font-size: 14px;
     background: inherit;
+    word-wrap: anywhere;
     font-family: "Source Code Pro";
 }
 
@@ -186,7 +189,7 @@ svg.fa-signature path {
     font-family: 'Source Code Pro';
     font-weight: 500;
     font-size: 16px;
-    line-height: 16px;
+    line-height: 20px;
     border-bottom: 0;
     border-left: 0;
     padding-bottom: 5px;
@@ -201,7 +204,7 @@ svg.fa-signature path {
 .md-content .signature .admonition-title::before {
     content: "";
     font-family: "FontAwesome";
-    margin-right: 15px;
+    margin-right: 25px;
     margin-left: 0;
     color: #00c853;
     position: relative;
