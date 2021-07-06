@@ -1,36 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap');
 
-[data-md-color-scheme="slate"] > .md-tabs__link {
-    border: 5px solid var(--md-default-fg-color);
-}
-
-[data-md-color-scheme="slate"] > .md-tabs__link--active {
-    background-color: var(--md-default-bg-color);
-    color: var(--md-default-fg-color);
-    border: 5px solid var(--md-default-bg-color);
-}
-
-[data-md-color-scheme="slate"] > .md-tabs__link--active:hover {
-    color: var(--md-default-fg-color--light);
-}
-
 .md-tabs__link {
+    background-color: var(--md-default-fg-color);
+    color: var(--md-default-bg-color);
+    border: 5px solid var(--md-default-fg-color);
     padding: 20px 5px;
     margin-top: 0;
-    border: 5px solid var(--md-primary-fg-color);
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
 
 .md-tabs__link--active {
+    background-color: var(--md-default-bg-color);
+    color: var(--md-default-fg-color);
+    border: 5px solid var(--md-default-bg-color);
     font-weight: bold;
-    background-color: var(--md-primary-bg-color);
-    color: var(--md-primary-fg-color);
-    border: 5px solid var(--md-primary-bg-color);
 }
 
 .md-tabs__link--active:hover {
-    color: var(--md-accent-fg-color);
+    color: var(--md-default-fg-color--light);
 }
 
 :root {
