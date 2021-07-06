@@ -47,7 +47,7 @@ h2 {
     border-left: 5px solid #000000;
     border-radius: 3px;
     color: #333333;
-    padding: 0 12px;
+    padding: 1em 12px 0;
     box-shadow: 0 0 .5rem rgba(0,0,0,.15),0 0 .05rem rgba(0,0,0,.25);
 }
 
@@ -124,6 +124,7 @@ div.highlight pre span.lineno {
 }
 
 .md-content .admonition-title {
+    margin-top: -12px;
     color: #333333;
 }
 
@@ -211,18 +212,22 @@ svg.fa-signature path {
 
 .md-content .signature.constant .admonition-title::before {
     content: "";
+    color: #00c853;
 }
 
 .md-content .signature.property .admonition-title::before {
     content: "";
+    color: #00c853;
 }
 
 .md-content .signature.interface .admonition-title::before {
     content: "";
+    color: #00c853;
 }
 
 .md-content .signature.trait .admonition-title::before {
     content: "";
+    color: #00c853;
 }
 
 .md-content .note {
@@ -230,7 +235,7 @@ svg.fa-signature path {
 }
 
 .md-content .note .admonition-title {
-    background: #ddFFEE;
+    background: #a3fcea;
 }
 
 .md-content .note .admonition-title::before {
