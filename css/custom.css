@@ -103,12 +103,12 @@ div.highlight pre span.lineno {
 }
 
 .tabbed-set .highlight pre:last-child,
-.rst-content .admonition .highlight:last-child,
+.md-content .admonition .highlight:last-child,
 .tabbed-set div:last-child {
     margin-bottom: 0;
 }
 
-.rst-content .admonition {
+.md-content .admonition {
     padding: 12px;
     line-height: 24px;
     margin-bottom: 24px;
@@ -119,15 +119,15 @@ div.highlight pre span.lineno {
     color: #000000;
 }
 
-.rst-content .admonition p:last-child {
+.md-content .admonition p:last-child {
     margin-bottom: 0;
 }
 
-.rst-content .admonition-title {
+.md-content .admonition-title {
     color: #333333;
 }
 
-.rst-content .signature {
+.md-content .signature {
     padding: 0;
     margin-bottom: 12px;
     box-sizing: border-box;
@@ -136,7 +136,7 @@ div.highlight pre span.lineno {
     background: inherit;
 }
 
-.rst-content .signature p {
+.md-content .signature p {
     margin-left: 10px;
 }
 
@@ -144,14 +144,14 @@ svg.fa-signature path {
     fill: #00c853;
 }
 
-.rst-content .signature dl {
+.md-content .signature dl {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     margin: 0;
 }
 
-.rst-content .signature dl dt {
+.md-content .signature dl dt {
     background: inherit;
     flex-basis: 20%;
     flex-grow: 0;
@@ -165,7 +165,7 @@ svg.fa-signature path {
     font-family: "Source Code Pro";
 }
 
-.rst-content .signature dl dd {
+.md-content .signature dl dd {
     flex-basis: 80%;
     flex-grow: 0;
     padding-left: 15px;
@@ -177,11 +177,11 @@ svg.fa-signature path {
     font-family: "Source Code Pro";
 }
 
-.rst-content .signature dl dd ul {
+.md-content .signature dl dd ul {
     margin-bottom: 0 !important;
 }
 
-.rst-content .signature .admonition-title {
+.md-content .signature .admonition-title {
     background: inherit;
     font-family: 'Source Code Pro';
     font-weight: 500;
@@ -197,7 +197,7 @@ svg.fa-signature path {
     margin-bottom: 6px;
 }
 
-.rst-content .signature .admonition-title::before {
+.md-content .signature .admonition-title::before {
     content: "";
     font-family: "FontAwesome";
     margin-right: 4px;
@@ -209,31 +209,31 @@ svg.fa-signature path {
     width: 20px;
 }
 
-.rst-content .signature.constant .admonition-title::before {
+.md-content .signature.constant .admonition-title::before {
     content: "";
 }
 
-.rst-content .signature.property .admonition-title::before {
+.md-content .signature.property .admonition-title::before {
     content: "";
 }
 
-.rst-content .signature.interface .admonition-title::before {
+.md-content .signature.interface .admonition-title::before {
     content: "";
 }
 
-.rst-content .signature.trait .admonition-title::before {
+.md-content .signature.trait .admonition-title::before {
     content: "";
 }
 
-.rst-content .note {
+.md-content .note {
     border-color: #00bfa5;
 }
 
-.rst-content .note .admonition-title {
+.md-content .note .admonition-title {
     background: #ddFFEE;
 }
 
-.rst-content .note .admonition-title::before {
+.md-content .note .admonition-title::before {
     content: "";
     color: #00bfa5;
 }
@@ -243,15 +243,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #00bfa5;
 }
 
-.rst-content .caution {
+.md-content .caution {
     border-color: #ffa733;
 }
 
-.rst-content .caution .admonition-title {
+.md-content .caution .admonition-title {
     background: #ffeed9;
 }
 
-.rst-content .caution .admonition-title::before {
+.md-content .caution .admonition-title::before {
     content: "";
     color: #ffa733;
 }
@@ -261,15 +261,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #ffa733;
 }
 
-.rst-content .tip {
+.md-content .tip {
     border-color: #00c853;
 }
 
-.rst-content .tip .admonition-title {
+.md-content .tip .admonition-title {
     background: #CCFFDD;
 }
 
-.rst-content .tip .admonition-title::before {
+.md-content .tip .admonition-title::before {
     content: "";
     color: #00c853;
 }
@@ -279,15 +279,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #00c853;
 }
 
-.rst-content .example {
+.md-content .example {
     border-color: #8b33ff;
 }
 
-.rst-content .example .admonition-title {
+.md-content .example .admonition-title {
     background: #e9d9ff;
 }
 
-.rst-content .example .admonition-title::before {
+.md-content .example .admonition-title::before {
     content: "";
     color: #8b33ff;
 }
@@ -297,15 +297,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #8b33ff;
 }
 
-.rst-content .warning {
+.md-content .warning {
     border-color: #ffa733;
 }
 
-.rst-content .warning .admonition-title {
+.md-content .warning .admonition-title {
     background: #ffeed9;
 }
 
-.rst-content .warning .admonition-title::before {
+.md-content .warning .admonition-title::before {
     content: "";
     color: #ffa733;
 }
@@ -315,15 +315,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #ffa733;
 }
 
-.rst-content .danger {
+.md-content .danger {
     border-color: #ff3344;
 }
 
-.rst-content .danger .admonition-title {
+.md-content .danger .admonition-title {
     background: #ffe6e8;
 }
 
-.rst-content .danger .admonition-title::before {
+.md-content .danger .admonition-title::before {
     content: "";
     color: #ff3344;
 }
@@ -333,15 +333,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #ff3344;
 }
 
-.rst-content .see-also {
+.md-content .see-also {
     border-color: #338fff;
 }
 
-.rst-content .see-also .admonition-title {
+.md-content .see-also .admonition-title {
     background: #d9ebff;
 }
 
-.rst-content .see-also .admonition-title::before {
+.md-content .see-also .admonition-title::before {
     content: "";
     color: #338fff;
 }
@@ -351,15 +351,15 @@ svg.fa-signature path {
     border-bottom: 3px solid #338fff;
 }
 
-.rst-content .potential-bugs {
+.md-content .potential-bugs {
     border-color: #ff33b1;
 }
 
-.rst-content .potential-bugs .admonition-title {
+.md-content .potential-bugs .admonition-title {
     background: #ffe6f6;
 }
 
-.rst-content .potential-bugs .admonition-title::before {
+.md-content .potential-bugs .admonition-title::before {
     content: "";
     color: #ff33b1;
 }
