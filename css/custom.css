@@ -124,8 +124,8 @@
 
 .md-typeset .footer-link > .admonition-title::before,
 .md-typeset .footer-link > summary::before {
-    -webkit-mask-image: var(--md-admonition-icon--custom-danger);
-    mask-image: var(--md-admonition-icon--custom-danger);
+    -webkit-mask-image: var(--md-admonition-icon--footer-link);
+    mask-image: var(--md-admonition-icon--footer-link);
 }
 
 /* Styles for normal admonitions */
