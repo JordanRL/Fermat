@@ -2519,7 +2519,7 @@
 </code></pre></div>
 </div>
 <p>Creating a new object on the fly to perform a calculation is in fact exactly how the implementation of immutables in Fermat is accomplished. Internally, any time a calculation has been performed, the new string with the resulting answer is stored in a newly created instance, instead of the instance that initiated the calculation.</p>
-<p>This can be seen if you look at the different implementations of the <code>setValue()</code> abstract method in the <a href="../roster/latest/Samsara/Fermat/Values/ImmutableDecimal.md">ImmutableDecimal</a> and <a href="../roster/latest/Samsara/Fermat/Values/MutableDecimal.md">MutableDecimal</a> classes.</p>
+<p>This can be seen if you look at the different implementations of the <code>setValue()</code> abstract method in the <a href="../../roster/latest/Fermat%20Core/Values/ImmutableDecimal/">ImmutableDecimal</a> and <a href="../../roster/latest/Fermat%20Core/Values/MutableDecimal/">MutableDecimal</a> classes.</p>
 <div class="admonition example">
 <p class="admonition-title">Implementations Of setValue()</p>
 <div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">ImmutableDecimal</label><div class="tabbed-content">
@@ -2550,7 +2550,7 @@
 </div>
 </div>
 </div>
-<p>The <a href="../roster/latest/Samsara/Fermat/Values/ImmutableDecimal.md">ImmutableDecimal</a> implementation returns a new instance, while the <a href="../roster/latest/Samsara/Fermat/Values/MutableDecimal.md">MutableDecimal</a> implementation sets the internal <code>$value</code> property directly and returns the current instance. This is the only meaningful difference between the two classes.</p>
+<p>The <a href="../../roster/latest/Fermat%20Core/Values/ImmutableDecimal/">ImmutableDecimal</a> implementation returns a new instance, while the <a href="../../roster/latest/Fermat%20Core/Values/MutableDecimal/">MutableDecimal</a> implementation sets the internal <code>$value</code> property directly and returns the current instance. This is the only meaningful difference between the two classes.</p>
 <div class="admonition note">
 <p class="admonition-title">setValue() As A Protected Method</p>
 <p>For both mutable and immutable values, the <code>setValue()</code> method has a visibility of <code>protected</code>, preventing the calling scope from using it. This is intentional, as the values in these objects are meant to represent something closer to a memory address than a normal variable.</p>
@@ -2558,7 +2558,7 @@
 <p>Each instance can instead be seen as a <a href="https://en.wikipedia.org/wiki/Finite-state_machine">Finite-State Machine</a> that evolves according to the state transitions defined on the object, i.e. the mathematical methods that are available on that class.</p>
 <p>This correctly reflects how math itself works, and helps prevent the developer from accidentally "breaking" math by inadvertantly inserting erroneous data in the middle of a series of calculations.</p>
 </div>
-<p>In this way, the immutable values act as time saving measures and sanity preserving measures in the case that you want to ensure side effects don't occur. Instead of manually creating new instances for every calculation and running the risk of forgetting on one line in a large program, you can simply request an instance of <a href="../roster/latest/Samsara/Fermat/Values/ImmutableDecimal.md">ImmutableDecimal</a> and it will do so automatically.</p>
+<p>In this way, the immutable values act as time saving measures and sanity preserving measures in the case that you want to ensure side effects don't occur. Instead of manually creating new instances for every calculation and running the risk of forgetting on one line in a large program, you can simply request an instance of <a href="../../roster/latest/Fermat%20Core/Values/ImmutableDecimal/">ImmutableDecimal</a> and it will do so automatically.</p>
 <p>The downside to this is that the newly created object is not referenced anywhere except in the return value. Without a reference, the object becomes inaccessible if you do not assign the returned result to a variable in the calling scope.</p>
 <h3 id="guidelines-on-when-to-use-each">Guidelines On When To Use Each</h3>
 <p>Again, the exact usage of either is up to the developer, and it is <em>possible</em> to accomplish the same end result with either if the right design patterns are used. However, below is a brief rundown of when each is <em>generally</em> preferable.</p>

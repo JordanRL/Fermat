@@ -2363,31 +2363,31 @@
 <p>A provider in Fermat is a static class which provides a specific functionality to the entire library. It makes this interface available using static methods and wherever possible is permissive about the values it accepts as arguments. What is meant by that is you can, in most cases, pass an implementation of NumberInterface, a numeric string, an int, or a float. Please note that there are exceptions to this general principle and consult the method documentation.</p>
 <p>The current list of providers, documented in more detail in the section for Providers, is:</p>
 <ul>
-<li><a href="../roster/latest/Samsara/Fermat/Provider/ArithmeticProvider.md">ArithmeticProvider</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Provider/ConstantProvider.md">ConstantProvider</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Provider/RandomProvider.md">RandomProvider</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Provider/RoundingProvider.md">RoundingProvider</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Provider/SequenceProvider.md">SequenceProvider</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Provider/SeriesProvider.md">SeriesProvider</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Provider/TrigonometryProvider.md">TrigonometryProvider</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Provider/ArithmeticProvider/">ArithmeticProvider</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Provider/ConstantProvider/">ConstantProvider</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Provider/RandomProvider/">RandomProvider</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Provider/RoundingProvider/">RoundingProvider</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Provider/SequenceProvider/">SequenceProvider</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Provider/SeriesProvider/">SeriesProvider</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Provider/TrigonometryProvider/">TrigonometryProvider</a></li>
 </ul>
 <h2 id="types">Types</h2>
 <p>A type in Fermat is an implementation of a class of number or math concept. These are (with the exception of <code>Tuple</code> and <code>NumberCollection</code>) abstract classes that are meant to be extended into classes which can be instantiated. This is mostly to provide both mutable and immutable versions of each type. A <code>Tuple</code> is meant to be inherently immutable, while a <code>NumberCollection</code> is mean to inherently mutable.</p>
 <p>The current list of types is:</p>
 <ul>
-<li><a href="../roster/latest/Samsara/Fermat/Types/Decimal.md">Decimal</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Types/Fraction.md">Fraction</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Types/NumberCollection.md">NumberCollection</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Types/Tuple.md">Tuple</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Types/Decimal/">Decimal</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Types/Fraction/">Fraction</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Types/NumberCollection/">NumberCollection</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Types/Tuple/">Tuple</a></li>
 </ul>
 <h2 id="values">Values</h2>
 <p>A value in Fermat is a usable implementation that can be directly worked with to perform math operations of some kind. These represent concrete concepts or types of values that have specific intended behavior and usage.</p>
 <p>The current list of values is:</p>
 <ul>
-<li><a href="../roster/latest/Samsara/Fermat/Values/ImmutableDecimal.md">ImmutableDecimal</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Values/ImmutableFraction.md">ImmutableFraction</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Values/MutableDecimal.md">MutableDecimal</a></li>
-<li><a href="../roster/latest/Samsara/Fermat/Values/MutableFraction.md">MutableFraction</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Values/ImmutableDecimal/">ImmutableDecimal</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Values/ImmutableFraction/">ImmutableFraction</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Values/MutableDecimal/">MutableDecimal</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Values/MutableFraction/">MutableFraction</a></li>
 </ul>
 <h2 id="scale">Scale</h2>
 <p>The basis of this library is being able to provide answers at any requested scale. Scale, as used in this library, is the number of digits after the decimal point which are returned. This is in contrast to <em>significant figures</em> or <em>precision</em>, which represent the numbers of digits returned after the decimal point after trimming all the leading zeros.</p>

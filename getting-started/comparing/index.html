@@ -2272,7 +2272,7 @@
                 
                 <h1 id="limitations-of-native-inequality-operators">Limitations of Native Inequality Operators</h1>
 <p>For values that cannot be represented as an <code>integer</code> or <code>float</code> accurately, using the native inequality operators will result in erroneous results. In some cases, this might also result in underflow and overflow of the native types.</p>
-<p>Because of this, all comparisons, including equality comparisons which would normally be <code>==</code> or <code>===</code> in PHP, should be performed using the comparison methods provided on all objects which extend the <a href="../roster/latest/Samsara/Fermat/Types/Base/Number.md">Number</a> abstract class.</p>
+<p>Because of this, all comparisons, including equality comparisons which would normally be <code>==</code> or <code>===</code> in PHP, should be performed using the comparison methods provided on all objects which extend the <a href="../../roster/latest/Fermat%20Core/Types/Base/Number/">Number</a> abstract class.</p>
 <h1 id="equality">Equality</h1>
 <p>There are two types of equality that can be compared using this library: equality of value, and equality of representation. In virtually all cases equality of value is what is intended, and this is accomplished with the <code>isEqual()</code> method.</p>
 <p>Equality of representation is accomplished with the <code>equals()</code> method, and only returns true if the value being compared has the same value <em>and</em> is an instance of the same class.</p>
@@ -2287,10 +2287,10 @@
 <p>Returns <code>true</code> if the <code>$value</code> is an instance of the same class <em>and</em> it has the same value, <code>false</code> otherwise.</p>
 <div class="admonition note">
 <p class="admonition-title">Implemented As Part of the Hashable Interface</p>
-<p>As part of integration with the <code>ext-ds</code> extension, this method has been implemented to satisfy the <code>Hashable</code> interface. This is mainly so that objects which are instances of the <a href="../roster/latest/Samsara/Fermat/Types/Base/Number.md">Number</a> abstract class can be used as array keys.</p>
+<p>As part of integration with the <code>ext-ds</code> extension, this method has been implemented to satisfy the <code>Hashable</code> interface. This is mainly so that objects which are instances of the <a href="../../roster/latest/Fermat%20Core/Types/Base/Number/">Number</a> abstract class can be used as array keys.</p>
 </div>
 <h1 id="inequality">Inequality</h1>
-<p>These methods are only available on numbers that implement the <a href="../roster/latest/Samsara/Fermat/Types/Base/Interfaces/Numbers/SimpleNumberInterface.md">SimpleNumberInterface</a>. They are safe to use between different types of classes that implement the <a href="../roster/latest/Samsara/Fermat/Types/Base/Interfaces/Numbers/SimpleNumberInterface.md">SimpleNumberInterface</a>, and will perform the necessary conversions to return an answer.</p>
+<p>These methods are only available on numbers that implement the <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface/">SimpleNumberInterface</a>. They are safe to use between different types of classes that implement the <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface/">SimpleNumberInterface</a>, and will perform the necessary conversions to return an answer.</p>
 <div class="admonition signature">
 <p class="admonition-title">isGreaterThan(mixed $value)</p>
 </div>
