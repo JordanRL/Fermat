@@ -21,7 +21,7 @@ The default mode is `RandomProvider::MODE_HALF_EVEN`. This is also the fallback 
     If you want to manually round an object once using a different mode, pass the mode as an argument to the `round()` method on your `Decimal` object instead of setting a new default more in the `RoundingProvider`. When done in this way, the provided mode will only be used for that one operation without affecting the default more for any other operations.
 
 !!! see-also "See Also"
-    The exact signatures associated with the `RandomProvider` can be found in the [Rounding Provider Reference Page](../reference/providers/rounding.md)
+    The exact signatures associated with the `RandomProvider` can be found in the [Rounding Provider Reference Page](../roster/latest/Fermat Core/Provider/RoundingProvider.md)
 
 ## Available Modes
 
@@ -241,7 +241,7 @@ This rounding mode rounds the number in a direction that is randomly chosen when
     === "1.5"
         Using the "Random" mode:
 
-        `1.5 -> 1` 50% of the time
+        `1.5 -> 1` 50% of the time  
         `1.5 -> 2` 50% of the time
 
     === "1.7"
@@ -257,7 +257,7 @@ This rounding mode rounds the number in a direction that is randomly chosen when
     === "-2.5"
         Using the "Random" mode:
 
-        `-2.5 -> -2` 50% of the time
+        `-2.5 -> -2` 50% of the time  
         `-2.5 -> -3` 50% of the time
 
 ### Alternating
@@ -268,7 +268,7 @@ This rounding mode rounds the number in a direction that alternates as more call
     === "1.5"
         Using the "Alternating" mode:
 
-        `1.5 -> 2` on the first call
+        `1.5 -> 2` on the first call  
         `1.5 -> 1` on the second call
 
     === "1.7"
@@ -284,7 +284,7 @@ This rounding mode rounds the number in a direction that alternates as more call
     === "-2.5"
         Using the "Alternating" mode:
 
-        `-2.5 -> -3` on the first call
+        `-2.5 -> -3` on the first call  
         `-2.5 -> -2` on the second call
 
 ### Stochastic
@@ -295,23 +295,23 @@ This rounding mode rounds the number in both directions in proportion to how clo
     === "1.5"
         Using the "Stochastic" mode:
 
-        `1.5 -> 2` 50% of the time
+        `1.5 -> 2` 50% of the time  
         `1.5 -> 1` 50% of the time
 
     === "1.7"
         Using the "Stochastic" mode:
 
-        `1.7 -> 2` 70% of the time
+        `1.7 -> 2` 70% of the time  
         `1.7 -> 1` 30% of the time
 
     === "2.2"
         Using the "Stochastic" mode:
 
-        `2.2 -> 3` 20% of the time
+        `2.2 -> 3` 20% of the time  
         `2.2 -> 2` 80% of the time
 
     === "-2.5"
         Using the "Stochastic" mode:
 
-        `-2.5 -> -3` 50% of the time
+        `-2.5 -> -3` 50% of the time  
         `-2.5 -> -2` 50% of the time

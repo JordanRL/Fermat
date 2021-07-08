@@ -2,12 +2,21 @@
 
 The Fermat library is available on [Packagist](https://packagist.org/packages/samsara/fermat), and can be installed with composer:
 
-###### composer require samsara/fermat ^2.0
+`composer require "samsara/fermat:^2.0"`
+
+Or by including it in your composer.json file:
+
+```json
+{
+  "require": {
+    "samsara/fermat": "^2.0"
+  }
+}
+```
 
 !!! note "Dependencies"
     Fermat requires the following packages:
     
-    - `ircmaxell/random-lib`: Provides cross-platform random number generation
     - `riimu/kit-baseconversion`: Provides the base conversion library used internally
     - `samsara/common`: Provides the exception model used in Fermat
     
@@ -20,7 +29,7 @@ The Fermat library is available on [Packagist](https://packagist.org/packages/sa
 
 A basic usage of the Fermat library is straightforward and simple to use quickly.
 
-```php
+``` php
 <?php
 
 use Samsara\Fermat\Values\ImmutableDecimal;
@@ -44,4 +53,4 @@ Once you have your number objects created, you can continue using them with your
     This means that each method call on an immutable object which returns an object represents a new instance being created and returned, a new zval being created by PHP, and a new set of memory being allocated.
 
 !!! see-also "See Also"
-    The "Types & Values" section contains extensive detail about the exact ways that the value objects can be used.
+    The "Source Reference" navigation tab contains detailed information about all the objects in Fermat.

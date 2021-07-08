@@ -1,0 +1,49 @@
+{
+  "prefer-source": false,
+  "with-version": "latest",
+  "templates": "doc-templates/roster-templates-mkdocs",
+  "mkdocs": {
+    "site-name": "Fermat - PHP Math Library",
+    "site-url": "https://jordanrl.github.io/Fermat/",
+    "repo-url": "https://github.com/JordanRL/Fermat/",
+    "theme": "md",
+    "auto-deploy": false,
+    "merge-nav": true,
+    "merge-nav-mode": "replace-nav-key",
+    "nav-key": "Source Reference"
+  },
+  "sources": [
+    {
+      "path": "./src",
+      "visibility": "public",
+      "aliases": [
+        {
+          "namespace": "Samsara\\Fermat\\",
+          "alias": "Fermat Core\\"
+        }
+      ]
+    },
+    {
+      "path": "../FermatStats/src",
+      "visibility": "public",
+      "autoloader": "../FermatStats/vendor/autoload.php",
+      "aliases": [
+        {
+          "namespace": "Samsara\\Fermat\\",
+          "alias": "Fermat Stats\\"
+        }
+      ]
+    },
+    {
+      "path": "../FermatCoordinateSystems/src",
+      "visibility": "public",
+      "autoloader": "../FermatCoordinateSystems/vendor/autoload.php",
+      "aliases": [
+        {
+          "namespace": "Samsara\\Fermat\\",
+          "alias": "Fermat Coordinate Systems\\"
+        }
+      ]
+    }
+  ]
+}

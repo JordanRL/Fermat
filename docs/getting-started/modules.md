@@ -23,7 +23,7 @@ These are the modules that are currently available on [Packagist.org](https://pa
 !!! note "Stable"
     The Fermat Stats module has a released stable version and is available to use in production environments. To do so, require v1.0 like so:
 
-    `composer require samsara/fermat-stats:^1.0`
+    `composer require "samsara/fermat-stats:^1.0"`
 
 The Fermat Stats modules provides various statistics functions and operations. This module has no other dependencies and can be required as a stand-alone addition to Fermat.
 
@@ -62,7 +62,7 @@ This is unlikely to happen accidentally however, unless your application deals w
 !!! note "See Also"
     The [Complex Numbers](../modules/complex-numbers/about.md) section of this documentation contains more detailed information about this module and its behavior.
 
-### Fermat Algebra Expressions
+### Fermat Linear Algebra
 
 !!! caution "Unstable"
     The Fermat Algebra Expressions module does **not** have a released stable version and should not be used in a production environment.

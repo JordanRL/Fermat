@@ -1,91 +1,17 @@
 Fermat provides factory classes to make it easier to get instances of the various Value classes. The available factories are:
 
-- `Samsara\Fermat\Collections`
-- `Samsara\Fermat\Numbers`
+- [Collections](../roster/latest/Fermat Core/Collections.md)
+- [Numbers](../roster/latest/Fermat Core/Numbers.md)
 
 All factories are classes that have only static methods and constants. 
 
 # The Collections Factory Class
 
-The `Samsara\Fermat\Collections` factory class currently has no methods or constants, and exists as a placeholder.
+The [Collections](../roster/latest/Fermat Core/Collections.md) factory class currently has no methods or constants, and exists as a placeholder.
 
 # The Numbers Factory Class
 
-The `Samsara\Fermat\Numbers` factory class provides a way to use the Value classes which implement the `SimpleNumberInterface` in Fermat without being as specific as those classes may require. Consider the following code:
-
-### Available Constants
-
-The following constants are available on the `Numbers` class.
-
-!!! signature constant "Numbers::IMMUTABLE"
-    type
-    :   string
-    
-    value
-    :   The fully qualified class name of the **ImmutableDecimal** class.
-
-!!! signature constant "Numbers::MUTABLE"
-    type
-    :   string
-    
-    value
-    :   The fully qualified class name of the **MutableDecimal** class.
-
-!!! signature constant "Numbers::IMMUTABLE_FRACTION"
-    type
-    :   string
-    
-    value
-    :   The fully qualified class name of the **ImmutableFraction** class.
-
-!!! signature constant "Numbers::MUTABLE_FRACTION"
-    type
-    :   string
-    
-    value
-    :   The fully qualified class name of the **MutableFraction** class.
-
-!!! signature constant "Numbers::PI"
-    type
-    :   string
-    
-    value
-    :   The value of the constant pi ($`\pi`$) pre-computed to 100 decimal places.
-
-!!! signature constant "Numbers::TAU"
-    type
-    :   string
-    
-    value
-    :   The value of the constant tau ($`\tau`$) pre-computed to 100 decimal places. This is equivalent to ($`2\pi`$).
-
-!!! signature constant "Numbers::E"
-    type
-    :   string
-    
-    value
-    :   The value of Euler's constant ($`e`$) pre-computed to 100 decimal places.
-
-!!! signature constant "Numbers::GOLDEN_RATIO"
-    type
-    :   string
-    
-    value
-    :   The value of the Golden Ratio ($`\varphi`$) pre-computed to 100 decimal places.
-
-!!! signature constant "Numbers::LN_10"
-    type
-    :   string
-    
-    value
-    :   The value of the natural logarithm of 10 pre-computed to 100 decimal places.
-
-!!! signature constant "Numbers::IMMUTABLE"
-    type
-    :   string
-    
-    value
-    :   The value of $`i^i`$ pre-computed to 100 decimal places.
+The [Numbers](../roster/latest/Fermat Core/Numbers.md) factory class provides a way to use the Value classes which implement the [SimpleNumberInterface](../roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface.md) in Fermat without being as specific as those classes may require. Consider the following code:
 
 ### Available Factory Methods
 
@@ -112,7 +38,7 @@ This factory method returns an instance of `DecimalInterface` or `FractionInterf
 !!! tip "Type Can Be An Instance"
     Instead of providing a fully qualified class name for `$type`, you can provide an instance of a supported object. The `make()` function will attempt to force the `$value` into that type.
 
-!!! warning "Type Must Be A Supported FQCN or Class"
+!!! fail "Type Must Be A Supported FQCN or Class"
     If `$type` is the fully qualified class name or instance of an object other than `ImmutableDecimal`, `MutableDecimal`, `ImmutableFraction`, or `MutableFraction`, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
 !!! signature "Numbers::makeFromBase10(string $type, mixed $value, ?int $scale = null, int $base = 10)"
@@ -165,7 +91,7 @@ This is how the math operations such as `add($num)` are able to accept virtually
     
     This makes calls to this factory method very low cost from both a memory and computation perspective if you need the value to be a guaranteed instance of a particular class.
     
-!!! warning "Mixed Argument Limitations"
+!!! fail "Mixed Argument Limitations"
     The `$values` argument is listed in this documentation as `mixed`. In fact, the valid input types are:
     
     - An `integer`
@@ -191,10 +117,10 @@ This is how the math operations such as `add($num)` are able to accept virtually
 
 This factory method will take a string as its input and provide an instance of either `ImmutableFraction` or `MutableFraction` depending on the value given for `$type`.
 
-!!! warning "Type Must Be A Supported FQCN"
+!!! fail "Type Must Be A Supported FQCN"
     If `$type` is the fully qualified class name of an object other than `ImmutableFraction` or `MutableFraction`, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
     
-!!! warning "Value Must Contain at Most One Fraction Bar '/'"
+!!! fail "Value Must Contain at Most One Fraction Bar '/'"
     If `$value` contains more than one fraction bar, which is assumed to be represented by the character `/`, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
 !!! signature "Numbers::makePi(?int $scale = null)"
@@ -206,7 +132,7 @@ This factory method will take a string as its input and provide an instance of e
 
 If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::PI` constant. If a scale of greater than 100 is requested, then a call is made to `ConstantProvider::makePi()` which computes digits of pi using the most efficient computational method currently available.
 
-!!! warning "Scale Must Be Positive"
+!!! fail "Scale Must Be Positive"
     If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
 !!! signature "Numbers::makeTau(?int $scale = null)"
@@ -218,7 +144,7 @@ If no `$scale` is given, then the value is returned with a scale of 100. If a sc
 
 If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::TAU` constant. If a scale of greater than 100 is requested, then a call is made to `Numbers::makePi()` which uses the methods described above, after which the result is multiplied by 2.
 
-!!! warning "Scale Must Be Positive"
+!!! fail "Scale Must Be Positive"
     If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
 !!! signature "Numbers::make2Pi(?int $scale = null)"
@@ -230,7 +156,7 @@ If no `$scale` is given, then the value is returned with a scale of 100. If a sc
 
 This factory method is an alias for `Numbers::makeTau()`.
 
-!!! warning "Scale Must Be Positive"
+!!! fail "Scale Must Be Positive"
     If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
 !!! signature "Numbers::makeE(?int $scale = null)"
@@ -242,7 +168,7 @@ This factory method is an alias for `Numbers::makeTau()`.
 
 If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::E` constant. If a scale of greater than 100 is requested, then a call is made to `ConstantProvider::makeE()` which uses a fast converging series to calculate digits of e.
 
-!!! warning "Scale Must Be Positive"
+!!! fail "Scale Must Be Positive"
     If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
 !!! signature "Numbers::makeGoldenRatio(?int $scale = null)"
@@ -254,7 +180,7 @@ If no `$scale` is given, then the value is returned with a scale of 100. If a sc
 
 If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::GOLDEN_RATION` constant.
 
-!!! warning "Scale Must Be 1-100"
+!!! fail "Scale Must Be 1-100"
     If a scale of less than 1 or greater than 100 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
 !!! signature "Numbers::makeNaturalLog10(?int $scale = null)"
@@ -266,7 +192,7 @@ If no `$scale` is given, then the value is returned with a scale of 100. If a sc
 
 If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::LN_10` constant. If a scale of greater than 100 is requested, then an exception is thrown.
 
-!!! warning "Scale Must Be 1-100"
+!!! fail "Scale Must Be 1-100"
     If a scale of less than 1 or greater than 100 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
 !!! signature "Numbers::makeOne(?int $scale = null)"

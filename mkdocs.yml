@@ -1,93 +1,277 @@
-site_name: Fermat - PHP Math Library
+site_name: 'Fermat - PHP Math Library'
 extra_css:
-  - css/custom.css
-repo_url: https://github.com/JordanRL/Fermat/
-site_url: https://jordanrl.github.io/Fermat/
+    - css/custom.css
+repo_url: 'https://github.com/JordanRL/Fermat/'
+site_url: 'https://jordanrl.github.io/Fermat/'
 nav:
-  - 'Introduction': 'index.md'
-  - 'Fermat vs. Alternatives': 'fermat-vs-alternatives.md'
-  - 'Getting Started':
-      - 'Concepts': 'getting-started/concepts.md'
-      - 'Installation & Usage': 'getting-started/installation-and-usage.md'
-      - 'Modules': 'getting-started/modules.md'
-      - 'Mutable vs. Immutable': 'getting-started/mutability.md'
-      - 'Using The Factories': 'getting-started/using-factories.md'
-      - 'Direct Instantiation': 'getting-started/direct-instantiation.md'
-      - 'Comparing Values': 'getting-started/comparing.md'
-      - 'Handling Exceptions': 'getting-started/exceptions.md'
-  - 'Configuration':
-      - 'Calculation Modes': 'configuration/calculation-modes.md'
-      - 'Rounding Modes': 'configuration/rounding-modes.md'
-  - 'Types & Values':
-      - 'Decimals': 'types-and-values/decimals.md'
-      - 'Fractions': 'types-and-values/fractions.md'
-      - 'Complex Numbers': 'types-and-values/complex.md'
-      - 'Coordinates': 'types-and-values/coordinates.md'
-      - 'Matrices': 'types-and-values/matrices.md'
-      - 'Collections': 'types-and-values/collections.md'
-      - 'Expressions': 'types-and-values/expressions.md'
-  - 'Arithmetic':
-      - 'Built In Traits': 'arithmetic/traits.md'
-      - 'Simple Numbers': 'arithmetic/simple.md'
-      - 'Complex Numbers': 'arithmetic/complex.md'
-      - 'Matrices': 'arithmetic/matrices.md'
-  - 'Trigonometry':
-      - 'Built In Traits': 'trigonometry/traits.md'
-      - 'Basic Trig Functions': 'trigonometry/basic.md'
-      - 'Inverse Trig Functions': 'trigonometry/inverse.md'
-      - 'Hyperbolic Trig Functions': 'trigonometry/hyperbolic.md'
-  - 'Stable Modules':
-      - 'Coordinate Systems':
-          - 'About This Module': 'modules/coordinate-systems/about.md'
-      - 'Stats':
-          - 'About This Module': 'modules/stats/about.md'
-  - 'Unstable Modules':
-      - 'Algebra Expressions':
-          - 'About This Module': 'modules/algebra-expressions/about.md'
-      - 'Complex Numbers':
-          - 'About This Module': 'modules/complex-numbers/about.md'
-      - 'Linear Algebra':
-          - 'About This Module': 'modules/linear-algebra/about.md'
-  - 'Extending':
-      - 'Abstract Classes': 'extending/abstracts.md'
-  - 'REFERENCE':
-      - 'Interfaces':
-          - 'Numbers': 'reference/interfaces/numbers.md'
-          - 'Groups': 'reference/interfaces/groups.md'
-          - 'Coordinates': 'reference/interfaces/coordinates.md'
-          - 'Evaluateables': 'reference/interfaces/evaluateables.md'
-          - 'Characteristics': 'reference/interfaces/characteristics.md'
-      - 'Providers':
-          - 'Arithmetic': 'reference/providers/arithmetic.md'
-          - 'Constant': 'reference/providers/constant.md'
-          - 'Polyfill': 'reference/providers/polyfill.md'
-          - 'Rounding': 'reference/providers/rounding.md'
-          - 'Sequence': 'reference/providers/sequence.md'
-          - 'Series': 'reference/providers/series.md'
-          - 'Stats': 'reference/providers/stats.md'
-          - 'Trigonometry': 'reference/providers/trigonometry.md'
-      - 'Distributions':
-          - 'Normal': 'reference/distributions/normal.md'
-          - 'Poisson': 'reference/distributions/poisson.md'
-          - 'Exponential': 'reference/distributions/exponential.md'
+    -
+        Introduction:
+            -
+                'About Fermat': index.md
+            -
+                'Fermat vs. Alternatives': fermat-vs-alternatives.md
+    -
+        'Getting Started':
+            -
+                Concepts: getting-started/concepts.md
+            -
+                'Installation & Usage': getting-started/installation-and-usage.md
+            -
+                'Mutable vs. Immutable': getting-started/mutability.md
+            -
+                'Using The Factories': getting-started/using-factories.md
+            -
+                'Comparing Values': getting-started/comparing.md
+            -
+                'Handling Exceptions': getting-started/exceptions.md
+            -
+                Modules: getting-started/modules.md
+    -
+        Configuration:
+            -
+                'Calculation Modes': configuration/calculation-modes.md
+            -
+                'Rounding Modes': configuration/rounding-modes.md
+    -
+        Modules:
+            -
+                'Stable Modules':
+                    -
+                        'Coordinate Systems': modules/coordinate-systems/about.md
+                    -
+                        Stats: modules/stats/about.md
+            -
+                'Unstable Modules':
+                    -
+                        'Algebra Expressions': modules/algebra-expressions/about.md
+                    -
+                        'Complex Numbers': modules/complex-numbers/about.md
+                    -
+                        'Linear Algebra': modules/linear-algebra/about.md
+    -
+        Extending:
+            -
+                'Abstract Classes': extending/abstracts.md
+    -
+        'Source Reference':
+            -
+                'Fermat Core':
+                    -
+                        Numbers: 'roster/latest/Fermat Core/Numbers.md'
+                    -
+                        Collections: 'roster/latest/Fermat Core/Collections.md'
+                    -
+                        Renderer:
+                            -
+                                Components:
+                                    -
+                                        Operations:
+                                            -
+                                                PowOperation: 'roster/latest/Fermat Core/Renderer/Components/Operations/PowOperation.md'
+                                    -
+                                        Symbols:
+                                            -
+                                                ThetaSymbol: 'roster/latest/Fermat Core/Renderer/Components/Symbols/ThetaSymbol.md'
+                                    -
+                                        Interfaces:
+                                            -
+                                                ComponentInterface: 'roster/latest/Fermat Core/Renderer/Components/Interfaces/ComponentInterface.md'
+                            -
+                                KatexRenderer: 'roster/latest/Fermat Core/Renderer/KatexRenderer.md'
+                    -
+                        Values:
+                            -
+                                MutableDecimal: 'roster/latest/Fermat Core/Values/MutableDecimal.md'
+                            -
+                                ImmutableDecimal: 'roster/latest/Fermat Core/Values/ImmutableDecimal.md'
+                            -
+                                ImmutableFraction: 'roster/latest/Fermat Core/Values/ImmutableFraction.md'
+                            -
+                                MutableFraction: 'roster/latest/Fermat Core/Values/MutableFraction.md'
+                    -
+                        Types:
+                            -
+                                Fraction: 'roster/latest/Fermat Core/Types/Fraction.md'
+                            -
+                                NumberCollection: 'roster/latest/Fermat Core/Types/NumberCollection.md'
+                            -
+                                Decimal: 'roster/latest/Fermat Core/Types/Decimal.md'
+                            -
+                                Tuple: 'roster/latest/Fermat Core/Types/Tuple.md'
+                            -
+                                Base:
+                                    -
+                                        Selectable: 'roster/latest/Fermat Core/Types/Base/Selectable.md'
+                                    -
+                                        Number: 'roster/latest/Fermat Core/Types/Base/Number.md'
+                                    -
+                                        Interfaces:
+                                            -
+                                                Numbers:
+                                                    -
+                                                        NumberInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/NumberInterface.md'
+                                                    -
+                                                        DecimalInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/DecimalInterface.md'
+                                                    -
+                                                        FractionInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/FractionInterface.md'
+                                                    -
+                                                        SimpleNumberInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface.md'
+                                            -
+                                                Characteristics:
+                                                    -
+                                                        BaseConversionInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Characteristics/BaseConversionInterface.md'
+                                            -
+                                                Groups:
+                                                    -
+                                                        NumberCollectionInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Groups/NumberCollectionInterface.md'
+                            -
+                                Traits:
+                                    -
+                                        ComparisonTrait: 'roster/latest/Fermat Core/Types/Traits/ComparisonTrait.md'
+                                    -
+                                        ArithmeticSimpleTrait: 'roster/latest/Fermat Core/Types/Traits/ArithmeticSimpleTrait.md'
+                                    -
+                                        IntegerMathTrait: 'roster/latest/Fermat Core/Types/Traits/IntegerMathTrait.md'
+                                    -
+                                        Arithmetic:
+                                            -
+                                                ArithmeticSelectionTrait: 'roster/latest/Fermat Core/Types/Traits/Arithmetic/ArithmeticSelectionTrait.md'
+                                            -
+                                                ArithmeticScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Arithmetic/ArithmeticScaleTrait.md'
+                                            -
+                                                ArithmeticNativeTrait: 'roster/latest/Fermat Core/Types/Traits/Arithmetic/ArithmeticNativeTrait.md'
+                                    -
+                                        Decimal:
+                                            -
+                                                ScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/ScaleTrait.md'
+                                            -
+                                                InverseTrigonometryTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/InverseTrigonometryTrait.md'
+                                            -
+                                                TrigonometryTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/TrigonometryTrait.md'
+                                            -
+                                                LogTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/LogTrait.md'
+                    -
+                        Provider:
+                            -
+                                TrigonometryProvider: 'roster/latest/Fermat Core/Provider/TrigonometryProvider.md'
+                            -
+                                SeriesProvider: 'roster/latest/Fermat Core/Provider/SeriesProvider.md'
+                            -
+                                RoundingProvider: 'roster/latest/Fermat Core/Provider/RoundingProvider.md'
+                            -
+                                ConstantProvider: 'roster/latest/Fermat Core/Provider/ConstantProvider.md'
+                            -
+                                SequenceProvider: 'roster/latest/Fermat Core/Provider/SequenceProvider.md'
+                            -
+                                ArithmeticProvider: 'roster/latest/Fermat Core/Provider/ArithmeticProvider.md'
+                            -
+                                RandomProvider: 'roster/latest/Fermat Core/Provider/RandomProvider.md'
+            -
+                'Fermat Stats':
+                    -
+                        Values:
+                            -
+                                Distribution:
+                                    -
+                                        Normal: 'roster/latest/Fermat Stats/Values/Distribution/Normal.md'
+                                    -
+                                        Exponential: 'roster/latest/Fermat Stats/Values/Distribution/Exponential.md'
+                                    -
+                                        Poisson: 'roster/latest/Fermat Stats/Values/Distribution/Poisson.md'
+                    -
+                        Types:
+                            -
+                                Distribution: 'roster/latest/Fermat Stats/Types/Distribution.md'
+                    -
+                        Provider:
+                            -
+                                StatsProvider: 'roster/latest/Fermat Stats/Provider/StatsProvider.md'
+            -
+                'Fermat Coordinate Systems':
+                    -
+                        Values:
+                            -
+                                Geometry:
+                                    -
+                                        CoordinateSystems:
+                                            -
+                                                PolarCoordinate: 'roster/latest/Fermat Coordinate Systems/Values/Geometry/CoordinateSystems/PolarCoordinate.md'
+                                            -
+                                                CylindricalCoordinate: 'roster/latest/Fermat Coordinate Systems/Values/Geometry/CoordinateSystems/CylindricalCoordinate.md'
+                                            -
+                                                SphericalCoordinate: 'roster/latest/Fermat Coordinate Systems/Values/Geometry/CoordinateSystems/SphericalCoordinate.md'
+                                            -
+                                                CartesianCoordinate: 'roster/latest/Fermat Coordinate Systems/Values/Geometry/CoordinateSystems/CartesianCoordinate.md'
+                    -
+                        Types:
+                            -
+                                Coordinate: 'roster/latest/Fermat Coordinate Systems/Types/Coordinate.md'
+                            -
+                                Base:
+                                    -
+                                        Interfaces:
+                                            -
+                                                Coordinates:
+                                                    -
+                                                        ThreeDCoordinateInterface: 'roster/latest/Fermat Coordinate Systems/Types/Base/Interfaces/Coordinates/ThreeDCoordinateInterface.md'
+                                                    -
+                                                        TwoDCoordinateInterface: 'roster/latest/Fermat Coordinate Systems/Types/Base/Interfaces/Coordinates/TwoDCoordinateInterface.md'
+                                                    -
+                                                        CoordinateInterface: 'roster/latest/Fermat Coordinate Systems/Types/Base/Interfaces/Coordinates/CoordinateInterface.md'
 theme:
-  name: readthedocs
-  highlightjs: true
-  hljs_languages:
-    - php
+    palette:
+        -
+            media: '(prefers-color-scheme: light)'
+            scheme: default
+            toggle:
+                icon: material/toggle-switch-off-outline
+                name: 'Switch to dark mode'
+        -
+            media: '(prefers-color-scheme: dark)'
+            scheme: slate
+            toggle:
+                icon: material/toggle-switch
+                name: 'Switch to light mode'
+    icon:
+        admonition:
+            note: octicons/tag-16
+            abstract: octicons/checklist-16
+            info: octicons/info-16
+            tip: octicons/squirrel-16
+            success: octicons/check-16
+            question: octicons/question-16
+            warning: octicons/alert-16
+            failure: octicons/x-circle-16
+            danger: octicons/zap-16
+            bug: octicons/bug-16
+            example: octicons/beaker-16
+            quote: octicons/quote-16
+            signature: octicons/terminal-16
+    name: material
+    features:
+        - navigation.sections
+        - navigation.top
+        - navigation.tabs
+    highlightjs: true
+    hljs_languages:
+        - php
 markdown_extensions:
-  - toc:
-      toc_depth: 2
-  - admonition
-  - markdown_katex:
-      no_inline_svg: true
-      insert_fonts_css: true
-  - pymdownx.tabbed
-  - pymdownx.superfences
-  - pymdownx.highlight:
-      linenums: true
-      linenums_style: inline
-  - pymdownx.snippets:
-      base_path: ./docs/snippets
-      check_paths: true
-  - pymdownx.extra
+    -
+        toc:
+            toc_depth: 3
+    - admonition
+    -
+        markdown_katex:
+            no_inline_svg: true
+            insert_fonts_css: true
+    - pymdownx.tabbed
+    - pymdownx.superfences
+    -
+        pymdownx.highlight:
+            linenums: true
+            linenums_style: inline
+    -
+        pymdownx.snippets:
+            base_path: ./docs/snippets
+            check_paths: true
+    - pymdownx.extra

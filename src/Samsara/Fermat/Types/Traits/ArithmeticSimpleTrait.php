@@ -4,20 +4,19 @@
 namespace Samsara\Fermat\Types\Traits;
 
 use Composer\InstalledVersions;
-use ReflectionException;
-use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
+/** @psalm-suppress UndefinedClass */
 use Samsara\Fermat\ComplexNumbers;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
-use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticScaleTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticNativeTrait;
+/** @psalm-suppress UndefinedClass */
 use Samsara\Fermat\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Values\ImmutableDecimal;
-use Samsara\Fermat\Values\ImmutableFraction;
+use Samsara\Fermat\Values\MutableDecimal;
 
 trait ArithmeticSimpleTrait
 {
@@ -34,7 +33,7 @@ trait ArithmeticSimpleTrait
             $thisRealPart,
             $thisImaginaryPart,
             $num
-        ] = $this->translateToParts($this, $num, 0);
+        ] = $this->translateToParts($this, $num);
 
         if ($num->isComplex()) {
             return $num->add($this);
@@ -45,7 +44,7 @@ trait ArithmeticSimpleTrait
         }
 
         if ($this->isReal() xor $num->isReal()) {
-            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers"))) {
+            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers")) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
                 throw new MissingPackage(
                     'Creating complex numbers is unsupported in Fermat without modules.',
                     'Install the samsara/fermat-complex-numbers package using composer.',
@@ -64,6 +63,7 @@ trait ArithmeticSimpleTrait
                 return $this->setValue($newImaginaryPart->getValue());
             }
 
+            /** @psalm-suppress UndefinedClass */
             return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
         }
 
@@ -85,6 +85,7 @@ trait ArithmeticSimpleTrait
                 $finalDenominator
             );
         }
+        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
 
         $value = $this->addSelector($num);
 
@@ -114,7 +115,7 @@ trait ArithmeticSimpleTrait
         }
 
         if ($this->isReal() xor $num->isReal()) {
-            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers"))) {
+            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers")) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
                 throw new MissingPackage(
                     'Creating complex numbers is unsupported in Fermat without modules.',
                     'Install the samsara/fermat-complex-numbers package using composer.',
@@ -133,6 +134,7 @@ trait ArithmeticSimpleTrait
                 return $this->setValue($newImaginaryPart->getValue());
             }
 
+            /** @psalm-suppress UndefinedClass */
             return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
         }
 
@@ -153,6 +155,7 @@ trait ArithmeticSimpleTrait
                 $finalDenominator
             );
         }
+        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
 
         $value = $this->subtractSelector($num);
 
@@ -165,14 +168,6 @@ trait ArithmeticSimpleTrait
 
     public function multiply($num)
     {
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart,
-            $num
-        ] = $this->translateToParts($this, $num, 1);
-
         if ($num->isComplex()) {
             return $num->multiply($this);
         }
@@ -200,6 +195,7 @@ trait ArithmeticSimpleTrait
 
             return new ImmutableDecimal($value, $this->getScale());
         }
+        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
 
         $value = $this->multiplySelector($num);
 
@@ -216,16 +212,8 @@ trait ArithmeticSimpleTrait
     {
         $scale = is_null($scale) ? $this->getScale() : $scale;
 
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart,
-            $num
-        ] = $this->translateToParts($this, $num, 1);
-
         if ($num->isComplex()) {
-            //return $num->divide($this);
+            return $num->divide($this);
         }
 
         if ($num->isEqual(1)) {
@@ -252,6 +240,8 @@ trait ArithmeticSimpleTrait
             return new ImmutableDecimal($value, $scale);
         }
 
+        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
+
         $value = $this->divideSelector($num, $scale);
 
         if ($this->isImaginary()) {
@@ -272,7 +262,7 @@ trait ArithmeticSimpleTrait
         ] = $this->translateToParts($this, $num, 1);
 
         if ($num->isComplex() || ($this->isReal() xor $num->isReal())) {
-            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers"))) {
+            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers")) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
                 throw new MissingPackage(
                     'Creating complex numbers is unsupported in Fermat without modules.',
                     'Install the samsara/fermat-complex-numbers package using composer.',
@@ -283,6 +273,7 @@ trait ArithmeticSimpleTrait
             $newRealPart = $thisRealPart->pow($thatRealPart);
             $newImaginaryPart = $thisImaginaryPart->pow($thatImaginaryPart);
 
+            /** @psalm-suppress UndefinedClass */
             return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
         }
 
@@ -298,6 +289,8 @@ trait ArithmeticSimpleTrait
 
             return $powNumerator->divide($powDenominator);
         }
+
+        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
 
         $value = $this->powSelector($num);
 

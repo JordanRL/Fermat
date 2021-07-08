@@ -1,5 +1,0 @@
-# Evaluateable Interfaces
-
-## ExpressionInterface
-
-## FunctionInterface
