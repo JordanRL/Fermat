@@ -2,292 +2,357 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://jordanrl.github.io/Fermat/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/fermat-vs-alternatives/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/configuration/calculation-modes/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/configuration/rounding-modes/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/comparing/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/concepts/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/direct-instantiation/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/exceptions/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/installation-and-usage/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/modules/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/mutability/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/using-factories/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/algebra-expressions/about/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/complex-numbers/about/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/complex-numbers/factory-class/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/coordinate-systems/about/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/linear-algebra/about/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/linear-algebra/matrix-factory/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/stats/about/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Collections/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Coordinate%20Systems/Types/Coordinate/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Numbers/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/CoordinateInterface/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Provider/ArithmeticProvider/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/ThreeDCoordinateInterface/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Provider/ConstantProvider/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/TwoDCoordinateInterface/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Provider/RandomProvider/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/CartesianCoordinate/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Provider/RoundingProvider/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/CylindricalCoordinate/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Provider/SequenceProvider/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/PolarCoordinate/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Provider/SeriesProvider/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/SphericalCoordinate/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Provider/TrigonometryProvider/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Collections/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Renderer/KatexRenderer/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Numbers/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Renderer/Components/Interfaces/ComponentInterface/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Provider/ArithmeticProvider/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Renderer/Components/Operations/PowOperation/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Provider/ConstantProvider/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Renderer/Components/Symbols/ThetaSymbol/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Provider/RandomProvider/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Decimal/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Provider/RoundingProvider/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Fraction/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Provider/SequenceProvider/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/NumberCollection/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Provider/SeriesProvider/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Tuple/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Provider/TrigonometryProvider/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Base/Number/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Renderer/KatexRenderer/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Base/Selectable/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Renderer/Components/Interfaces/ComponentInterface/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Base/Interfaces/Characteristics/BaseConversionInterface/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Renderer/Components/Operations/PowOperation/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Base/Interfaces/Groups/NumberCollectionInterface/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Renderer/Components/Symbols/ThetaSymbol/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Base/Interfaces/Numbers/DecimalInterface/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Decimal/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Base/Interfaces/Numbers/FractionInterface/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Fraction/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Base/Interfaces/Numbers/NumberInterface/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/NumberCollection/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Base/Interfaces/Numbers/SimpleNumberInterface/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Tuple/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Traits/ArithmeticSimpleTrait/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Base/Number/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Traits/ComparisonTrait/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Base/Selectable/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Traits/IntegerMathTrait/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Base/Interfaces/Characteristics/BaseConversionInterface/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Traits/Arithmetic/ArithmeticNativeTrait/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Base/Interfaces/Groups/NumberCollectionInterface/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Traits/Arithmetic/ArithmeticScaleTrait/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/DecimalInterface/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Traits/Arithmetic/ArithmeticSelectionTrait/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/FractionInterface/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Traits/Decimal/InverseTrigonometryTrait/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/NumberInterface/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Traits/Decimal/LogTrait/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Traits/Decimal/ScaleTrait/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Traits/ArithmeticSimpleTrait/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Types/Traits/Decimal/TrigonometryTrait/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Traits/ComparisonTrait/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Values/ImmutableDecimal/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Traits/IntegerMathTrait/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Values/ImmutableFraction/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticNativeTrait/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Values/MutableDecimal/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticScaleTrait/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/roster/latest/Samsara/Fermat/Values/MutableFraction/</loc>
-         <lastmod>2021-07-06</lastmod>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticSelectionTrait/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Traits/Decimal/InverseTrigonometryTrait/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Traits/Decimal/LogTrait/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Traits/Decimal/ScaleTrait/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Types/Traits/Decimal/TrigonometryTrait/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Values/ImmutableDecimal/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Values/ImmutableFraction/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Values/MutableDecimal/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Values/MutableFraction/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Stats/Provider/StatsProvider/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Stats/Types/Distribution/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Stats/Values/Distribution/Exponential/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Stats/Values/Distribution/Normal/</loc>
+         <lastmod>2021-07-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Stats/Values/Distribution/Poisson/</loc>
+         <lastmod>2021-07-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
