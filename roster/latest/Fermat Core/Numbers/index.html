@@ -38,6 +38,8 @@
     
     
     
+      <link rel="stylesheet" href="../../../../css/md-theme.css">
+    
       <link rel="stylesheet" href="../../../../css/custom.css">
     
     
@@ -2384,7 +2386,9 @@
                 
                 
                 <h1 id="samsarafermat-numbers">Samsara\Fermat &gt; Numbers</h1>
-<p><em>No description available</em></p>
+<p>This class contains useful factory methods to create various numbers, verify the
+ class of a given number, and generally handle all of the formatting necessary to
+ satisfy the various constructors of valid value objects.</p>
 <h2 id="variables-data">Variables &amp; Data</h2>
 <h3 id="class-constants">Class Constants</h3>
 <div class="admonition signature constant">
@@ -2460,30 +2464,34 @@
 <h2 id="methods">Methods</h2>
 <h3 id="static-methods">Static Methods</h3>
 <div class="admonition signature">
-<p class="admonition-title">public Numbers::make($type, $value, int|null $scale, int $base)</p>
+<p class="admonition-title">public Numbers::make(mixed $type, mixed $value, int|null $scale, int $base)</p>
 <p><strong>$type</strong></p>
 <dl>
+<dt>type</dt>
+<dd>mixed</dd>
 <dt>description</dt>
-<dd><em>No description available</em></dd>
+<dd>An instance of FQCN for any Fermat value class.</dd>
 </dl>
 <p><strong>$value</strong></p>
 <dl>
+<dt>type</dt>
+<dd>mixed</dd>
 <dt>description</dt>
-<dd><em>No description available</em></dd>
+<dd>Any value which is valid for the constructor which will be called.</dd>
 </dl>
 <p><strong>$scale</strong></p>
 <dl>
 <dt>type</dt>
 <dd>int|null</dd>
 <dt>description</dt>
-<dd><em>No description available</em></dd>
+<dd>The scale setting the created instance should have.</dd>
 </dl>
 <p><strong>$base</strong></p>
 <dl>
 <dt>type</dt>
 <dd>int</dd>
 <dt>description</dt>
-<dd></dd>
+<dd>The base to create the number in. Note, this is not the same as the base of $value, which is always base-10</dd>
 </dl>
 <p><strong>return</strong></p>
 <dl>
@@ -2492,7 +2500,11 @@
 <dt>description</dt>
 <dd><em>No description available</em></dd>
 </dl>
+<p><strong>Numbers::make Description</strong></p>
+<p>This class will make and return an instance of a concrete value.</p>
+<p>The main reason for this class is that you can pass an unknown value instance as the</p>
 </div>
+<p>type parameter and it will behave as if you passed the FQCN.</p>
 <hr />
 <div class="admonition signature">
 <p class="admonition-title">public Numbers::makeFromBase10($type, $value, int|null $scale, int $base)</p>
@@ -2835,6 +2847,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2015-2021 Jordan LeDoux
+          </div>
         
         Made with
         <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
