@@ -178,6 +178,11 @@
     mask-image: var(--md-admonition-icon--custom-danger);
 }
 
+.md-typeset .signature h6 {
+    padding-left: 20px;
+    font-size: 14px;
+}
+
 /* Code Formatting */
 
 .md-typeset code > .linenos {
