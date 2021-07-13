@@ -12,6 +12,7 @@
 ### Instanced Methods
 
 !!! signature "public FractionInterface->simplify()"
+    ##### simplify
     **return**
 
     type
@@ -19,10 +20,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public FractionInterface->getNumerator()"
+    ##### getNumerator
     **return**
 
     type
@@ -30,10 +32,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public FractionInterface->getDenominator()"
+    ##### getDenominator
     **return**
 
     type
@@ -41,10 +44,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public FractionInterface->getSmallestCommonDenominator(FractionInterface $fraction)"
+    ##### getSmallestCommonDenominator
     **$fraction**
 
     type
@@ -62,10 +66,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public FractionInterface->asDecimal()"
+    ##### asDecimal
     **return**
 
     type
@@ -73,7 +78,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -81,6 +86,7 @@
 ### Inherited Methods
 
 !!! signature "public SimpleNumberInterface->compare($value)"
+    ##### compare
     **$value**
 
     description
@@ -95,10 +101,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public SimpleNumberInterface->isNegative()"
+    ##### isNegative
     **return**
 
     type
@@ -106,10 +113,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public SimpleNumberInterface->isPositive()"
+    ##### isPositive
     **return**
 
     type
@@ -117,10 +125,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public SimpleNumberInterface->getAsBaseTenRealNumber()"
+    ##### getAsBaseTenRealNumber
     **return**
 
     type
@@ -128,10 +137,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public SimpleNumberInterface->getValue()"
+    ##### getValue
     **return**
 
     type
@@ -139,10 +149,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public SimpleNumberInterface->isGreaterThan(int|string|NumberInterface $value)"
+    ##### isGreaterThan
     **$value**
 
     type
@@ -160,10 +171,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public SimpleNumberInterface->isLessThan(int|string|NumberInterface $value)"
+    ##### isLessThan
     **$value**
 
     type
@@ -181,10 +193,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public SimpleNumberInterface->isGreaterThanOrEqualTo(int|string|NumberInterface $value)"
+    ##### isGreaterThanOrEqualTo
     **$value**
 
     type
@@ -202,10 +215,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public SimpleNumberInterface->isLessThanOrEqualTo(int|string|NumberInterface $value)"
+    ##### isLessThanOrEqualTo
     **$value**
 
     type
@@ -223,10 +237,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->abs()"
+    ##### abs
     **return**
 
     type
@@ -234,10 +249,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->absValue()"
+    ##### absValue
     **return**
 
     type
@@ -245,10 +261,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->add($num)"
+    ##### add
     **$num**
 
     description
@@ -263,10 +280,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->subtract($num)"
+    ##### subtract
     **$num**
 
     description
@@ -281,10 +299,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->multiply($num)"
+    ##### multiply
     **$num**
 
     description
@@ -299,10 +318,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->divide($num, int|null $scale)"
+    ##### divide
     **$num**
 
     description
@@ -325,10 +345,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->pow($num)"
+    ##### pow
     **$num**
 
     description
@@ -343,10 +364,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->sqrt(int? $scale)"
+    ##### sqrt
     **$scale**
 
     type
@@ -364,10 +386,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->isEqual(int|string|NumberInterface $value)"
+    ##### isEqual
     **$value**
 
     type
@@ -385,10 +408,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->getScale()"
+    ##### getScale
     **return**
 
     type
@@ -396,10 +420,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->isImaginary()"
+    ##### isImaginary
     **return**
 
     type
@@ -407,10 +432,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->isReal()"
+    ##### isReal
     **return**
 
     type
@@ -418,10 +444,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->asReal()"
+    ##### asReal
     **return**
 
     type
@@ -429,10 +456,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->isComplex()"
+    ##### isComplex
     **return**
 
     type
@@ -440,10 +468,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->asComplex()"
+    ##### asComplex
     **return**
 
     type
@@ -451,7 +480,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

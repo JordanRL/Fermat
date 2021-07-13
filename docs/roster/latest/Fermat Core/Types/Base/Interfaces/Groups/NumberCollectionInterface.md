@@ -9,6 +9,7 @@
 ### Instanced Methods
 
 !!! signature "public NumberCollectionInterface->collect(array $numbers)"
+    ##### collect
     **$numbers**
 
     type
@@ -26,10 +27,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->count()"
+    ##### count
     **return**
 
     type
@@ -37,10 +39,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->toArray()"
+    ##### toArray
     **return**
 
     type
@@ -48,10 +51,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->push(NumberInterface $number)"
+    ##### push
     **$number**
 
     type
@@ -69,10 +73,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->pop()"
+    ##### pop
     **return**
 
     type
@@ -80,10 +85,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->unshift(NumberInterface $number)"
+    ##### unshift
     **$number**
 
     type
@@ -101,10 +107,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->shift()"
+    ##### shift
     **return**
 
     type
@@ -112,10 +119,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->sort()"
+    ##### sort
     **return**
 
     type
@@ -123,10 +131,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->reverse()"
+    ##### reverse
     **return**
 
     type
@@ -134,10 +143,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->multiply($number)"
+    ##### multiply
     **$number**
 
     description
@@ -152,10 +162,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->divide($number)"
+    ##### divide
     **$number**
 
     description
@@ -170,10 +181,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->add($number)"
+    ##### add
     **$number**
 
     description
@@ -188,10 +200,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->subtract($number)"
+    ##### subtract
     **$number**
 
     description
@@ -206,10 +219,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->pow($number)"
+    ##### pow
     **$number**
 
     description
@@ -224,10 +238,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->exp($number)"
+    ##### exp
     **$number**
 
     description
@@ -242,10 +257,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->get(int $key)"
+    ##### get
     **$key**
 
     type
@@ -263,10 +279,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->getRandom()"
+    ##### getRandom
     **return**
 
     type
@@ -274,10 +291,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->sum()"
+    ##### sum
     **return**
 
     type
@@ -285,10 +303,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->mean()"
+    ##### mean
     **return**
 
     type
@@ -296,10 +315,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->makeNormalDistribution()"
+    ##### makeNormalDistribution
     **return**
 
     type
@@ -307,10 +327,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->makePoissonDistribution()"
+    ##### makePoissonDistribution
     **return**
 
     type
@@ -318,10 +339,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->makeExponentialDistribution()"
+    ##### makeExponentialDistribution
     **return**
 
     type
@@ -329,10 +351,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollectionInterface->makePolynomialFunction()"
+    ##### makePolynomialFunction
     **return**
 
     type
@@ -340,7 +363,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

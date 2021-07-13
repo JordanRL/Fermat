@@ -14,18 +14,24 @@
 ### Implements
 
 !!! signature interface "CoordinateInterface"
+    ##### CoordinateInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Coordinates
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "ThreeDCoordinateInterface"
+    ##### ThreeDCoordinateInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Coordinates
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 
 
@@ -35,6 +41,7 @@
 ### Constructor
 
 !!! signature "public CylindricalCoordinate->__construct($r, $theta, $z)"
+    ##### __construct
     **$r**
 
     description
@@ -57,7 +64,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -65,6 +72,7 @@
 ### Instanced Methods
 
 !!! signature "public CylindricalCoordinate->getDistanceFromOrigin()"
+    ##### getDistanceFromOrigin
     **return**
 
     type
@@ -72,10 +80,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CylindricalCoordinate->distanceTo(Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface $coordinate)"
+    ##### distanceTo
     **$coordinate**
 
     type
@@ -91,10 +100,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CylindricalCoordinate->getPolarAngle()"
+    ##### getPolarAngle
     **return**
 
     type
@@ -102,10 +112,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CylindricalCoordinate->getPlanarAngle()"
+    ##### getPlanarAngle
     **return**
 
     type
@@ -113,10 +124,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CylindricalCoordinate->asCartesian()"
+    ##### asCartesian
     **return**
 
     type
@@ -124,10 +136,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CylindricalCoordinate->asSpherical()"
+    ##### asSpherical
     **return**
 
     type
@@ -135,10 +148,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CylindricalCoordinate->asCylindrical()"
+    ##### asCylindrical
     **return**
 
     type
@@ -146,7 +160,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -154,6 +168,7 @@
 ### Inherited Methods
 
 !!! signature "public Coordinate->getAxis($axis)"
+    ##### getAxis
     **$axis**
 
     description
@@ -166,10 +181,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Coordinate->numberOfDimensions()"
+    ##### numberOfDimensions
     **return**
 
     type
@@ -177,10 +193,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Coordinate->axesValues()"
+    ##### axesValues
     **return**
 
     type
@@ -188,7 +205,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

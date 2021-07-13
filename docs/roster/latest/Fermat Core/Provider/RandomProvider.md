@@ -9,10 +9,12 @@
 ### Class Constants
 
 !!! signature constant "RandomProvider::MODE_ENTROPY"
+    ##### MODE_ENTROPY
     value
     :   1
 
 !!! signature constant "RandomProvider::MODE_SPEED"
+    ##### MODE_SPEED
     value
     :   2
 
@@ -24,6 +26,7 @@
 ### Static Methods
 
 !!! signature "public RandomProvider::randomInt(int|string|DecimalInterface $min, int|string|DecimalInterface $max, int $mode)"
+    ##### randomInt
     **$min**
 
     type
@@ -59,6 +62,7 @@
 ---
 
 !!! signature "public RandomProvider::randomDecimal(int $scale, int $mode)"
+    ##### randomDecimal
     **$scale**
 
     type
@@ -86,6 +90,7 @@
 ---
 
 !!! signature "public RandomProvider::randomReal(int|string|DecimalInterface $min, int|string|DecimalInterface $max, int $scale, int $mode)"
+    ##### randomReal
     **$min**
 
     type

@@ -9,6 +9,7 @@
 ### Instanced Methods
 
 !!! signature "public ComparisonTrait->isEqual($value)"
+    ##### isEqual
     **$value**
 
     description
@@ -21,10 +22,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ComparisonTrait->isGreaterThan($value)"
+    ##### isGreaterThan
     **$value**
 
     description
@@ -37,10 +39,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ComparisonTrait->isLessThan($value)"
+    ##### isLessThan
     **$value**
 
     description
@@ -53,10 +56,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ComparisonTrait->isGreaterThanOrEqualTo($value)"
+    ##### isGreaterThanOrEqualTo
     **$value**
 
     description
@@ -69,10 +73,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ComparisonTrait->isLessThanOrEqualTo($value)"
+    ##### isLessThanOrEqualTo
     **$value**
 
     description
@@ -85,10 +90,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ComparisonTrait->isNegative()"
+    ##### isNegative
     **return**
 
     type
@@ -96,10 +102,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ComparisonTrait->isPositive()"
+    ##### isPositive
     **return**
 
     type
@@ -107,10 +114,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ComparisonTrait->isNatural()"
+    ##### isNatural
     **return**
 
     type
@@ -118,10 +126,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ComparisonTrait->isWhole()"
+    ##### isWhole
     **return**
 
     type
@@ -129,10 +138,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ComparisonTrait->isInt()"
+    ##### isInt
     **return**
 
     type
@@ -140,7 +150,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

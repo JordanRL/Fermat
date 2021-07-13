@@ -9,32 +9,44 @@
 ### Implements
 
 !!! signature interface "NumberCollectionInterface"
+    ##### NumberCollectionInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Groups
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "ArrayAccess"
+    ##### ArrayAccess
     namespace
     :   
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "IteratorAggregate"
+    ##### IteratorAggregate
     namespace
     :   
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "Traversable"
+    ##### Traversable
     namespace
     :   
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 
 
@@ -44,6 +56,7 @@
 ### Constructor
 
 !!! signature "public NumberCollection->__construct(array $numbers)"
+    ##### __construct
     **$numbers**
 
     type
@@ -60,10 +73,10 @@
     description
     :   *No description available*
 
-    **NumberCollection->__construct Description**
+    ###### __construct() Description:
 
     NumberCollection constructor.
-
+    
 ---
 
 
@@ -71,6 +84,7 @@
 ### Instanced Methods
 
 !!! signature "public NumberCollection->collect(array $numbers)"
+    ##### collect
     **$numbers**
 
     type
@@ -88,10 +102,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->count()"
+    ##### count
     **return**
 
     type
@@ -99,10 +114,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->toArray()"
+    ##### toArray
     **return**
 
     type
@@ -110,10 +126,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->selectScale()"
+    ##### selectScale
     **return**
 
     type
@@ -121,10 +138,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->push(NumberInterface $number)"
+    ##### push
     **$number**
 
     type
@@ -142,10 +160,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->pop()"
+    ##### pop
     **return**
 
     type
@@ -153,10 +172,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->unshift(NumberInterface $number)"
+    ##### unshift
     **$number**
 
     type
@@ -174,10 +194,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->shift()"
+    ##### shift
     **return**
 
     type
@@ -185,10 +206,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->filterByKeys(array $filters)"
+    ##### filterByKeys
     **$filters**
 
     type
@@ -204,10 +226,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->sort()"
+    ##### sort
     **return**
 
     type
@@ -215,10 +238,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->reverse()"
+    ##### reverse
     **return**
 
     type
@@ -226,10 +250,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->add($number)"
+    ##### add
     **$number**
 
     description
@@ -244,10 +269,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->subtract($number)"
+    ##### subtract
     **$number**
 
     description
@@ -262,10 +288,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->multiply($number)"
+    ##### multiply
     **$number**
 
     description
@@ -280,10 +307,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->divide($number)"
+    ##### divide
     **$number**
 
     description
@@ -298,10 +326,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->pow($number)"
+    ##### pow
     **$number**
 
     description
@@ -317,13 +346,14 @@
     description
     :   *No description available*
 
-    **NumberCollection->pow Description**
+    ###### pow() Description:
 
     Raises each element in the collection to the exponent $number
-
+    
 ---
 
 !!! signature "public NumberCollection->exp($base)"
+    ##### exp
     **$base**
 
     description
@@ -339,13 +369,14 @@
     description
     :   *No description available*
 
-    **NumberCollection->exp Description**
+    ###### exp() Description:
 
     Replaces each element in the collection with $base to the power of that value. If no base is given, Euler's number is assumed to be the base (as is assumed in most cases where an exp() function is encountered in math)
-
+    
 ---
 
 !!! signature "public NumberCollection->get(int $key)"
+    ##### get
     **$key**
 
     type
@@ -363,10 +394,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->getRandom()"
+    ##### getRandom
     **return**
 
     type
@@ -374,10 +406,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->sum()"
+    ##### sum
     **return**
 
     type
@@ -385,10 +418,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->mean()"
+    ##### mean
     **return**
 
     type
@@ -396,10 +430,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->average()"
+    ##### average
     **return**
 
     type
@@ -407,10 +442,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->makeNormalDistribution()"
+    ##### makeNormalDistribution
     **return**
 
     type
@@ -418,10 +454,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->makePoissonDistribution()"
+    ##### makePoissonDistribution
     **return**
 
     type
@@ -429,10 +466,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->makeExponentialDistribution()"
+    ##### makeExponentialDistribution
     **return**
 
     type
@@ -440,10 +478,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->makePolynomialFunction()"
+    ##### makePolynomialFunction
     **return**
 
     type
@@ -451,10 +490,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->offsetExists($offset)"
+    ##### offsetExists
     **$offset**
 
     description
@@ -467,10 +507,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->offsetGet($offset)"
+    ##### offsetGet
     **$offset**
 
     description
@@ -483,10 +524,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->offsetSet($offset, $value)"
+    ##### offsetSet
     **$offset**
 
     description
@@ -504,10 +546,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->offsetUnset($offset)"
+    ##### offsetUnset
     **$offset**
 
     description
@@ -520,10 +563,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberCollection->getIterator()"
+    ##### getIterator
     **return**
 
     type
@@ -531,7 +575,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

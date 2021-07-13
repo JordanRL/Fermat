@@ -9,6 +9,7 @@
 ### Static Methods
 
 !!! signature "public StatsProvider::normalCDF($x)"
+    ##### normalCDF
     **$x**
 
     description
@@ -27,6 +28,7 @@
 ---
 
 !!! signature "public StatsProvider::complementNormalCDF($x)"
+    ##### complementNormalCDF
     **$x**
 
     description
@@ -45,6 +47,7 @@
 ---
 
 !!! signature "public StatsProvider::gaussErrorFunction($x)"
+    ##### gaussErrorFunction
     **$x**
 
     description
@@ -63,6 +66,7 @@
 ---
 
 !!! signature "public StatsProvider::inverseNormalCDF($p, int $scale)"
+    ##### inverseNormalCDF
     **$p**
 
     description
@@ -89,6 +93,7 @@
 ---
 
 !!! signature "public StatsProvider::binomialCoefficient($n, $k)"
+    ##### binomialCoefficient
     **$n**
 
     description
@@ -112,6 +117,7 @@
 ---
 
 !!! signature "public StatsProvider::inverseErrorCoefficients(int $termIndex)"
+    ##### inverseErrorCoefficients
     **$termIndex**
 
     type
@@ -131,6 +137,7 @@
 ---
 
 !!! signature "public StatsProvider::inverseGaussErrorFunction($z, int $scale)"
+    ##### inverseGaussErrorFunction
     **$z**
 
     description

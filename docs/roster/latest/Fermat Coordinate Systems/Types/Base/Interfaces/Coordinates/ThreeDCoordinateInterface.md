@@ -12,6 +12,7 @@
 ### Instanced Methods
 
 !!! signature "public ThreeDCoordinateInterface->getPlanarAngle()"
+    ##### getPlanarAngle
     **return**
 
     type
@@ -19,10 +20,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ThreeDCoordinateInterface->asSpherical()"
+    ##### asSpherical
     **return**
 
     type
@@ -30,10 +32,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ThreeDCoordinateInterface->asCylindrical()"
+    ##### asCylindrical
     **return**
 
     type
@@ -41,7 +44,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -49,6 +52,7 @@
 ### Inherited Methods
 
 !!! signature "public CoordinateInterface->getAxis($axis)"
+    ##### getAxis
     **$axis**
 
     description
@@ -61,10 +65,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CoordinateInterface->axesValues()"
+    ##### axesValues
     **return**
 
     type
@@ -72,10 +77,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CoordinateInterface->getDistanceFromOrigin()"
+    ##### getDistanceFromOrigin
     **return**
 
     type
@@ -83,10 +89,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CoordinateInterface->numberOfDimensions()"
+    ##### numberOfDimensions
     **return**
 
     type
@@ -94,10 +101,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CoordinateInterface->distanceTo(Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface $coordinate)"
+    ##### distanceTo
     **$coordinate**
 
     type
@@ -113,10 +121,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CoordinateInterface->asCartesian()"
+    ##### asCartesian
     **return**
 
     type
@@ -124,10 +133,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CoordinateInterface->getPolarAngle()"
+    ##### getPolarAngle
     **return**
 
     type
@@ -135,7 +145,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

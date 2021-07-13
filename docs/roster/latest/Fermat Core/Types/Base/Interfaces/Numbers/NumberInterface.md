@@ -9,6 +9,7 @@
 ### Instanced Methods
 
 !!! signature "public NumberInterface->abs()"
+    ##### abs
     **return**
 
     type
@@ -16,10 +17,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->absValue()"
+    ##### absValue
     **return**
 
     type
@@ -27,10 +29,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->add($num)"
+    ##### add
     **$num**
 
     description
@@ -45,10 +48,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->subtract($num)"
+    ##### subtract
     **$num**
 
     description
@@ -63,10 +67,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->multiply($num)"
+    ##### multiply
     **$num**
 
     description
@@ -81,10 +86,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->divide($num, int|null $scale)"
+    ##### divide
     **$num**
 
     description
@@ -107,10 +113,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->pow($num)"
+    ##### pow
     **$num**
 
     description
@@ -125,10 +132,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->sqrt(int? $scale)"
+    ##### sqrt
     **$scale**
 
     type
@@ -146,10 +154,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->isEqual(int|string|NumberInterface $value)"
+    ##### isEqual
     **$value**
 
     type
@@ -167,10 +176,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->getScale()"
+    ##### getScale
     **return**
 
     type
@@ -178,10 +188,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->isImaginary()"
+    ##### isImaginary
     **return**
 
     type
@@ -189,10 +200,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->isReal()"
+    ##### isReal
     **return**
 
     type
@@ -200,10 +212,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->asReal()"
+    ##### asReal
     **return**
 
     type
@@ -211,10 +224,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->isComplex()"
+    ##### isComplex
     **return**
 
     type
@@ -222,10 +236,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->asComplex()"
+    ##### asComplex
     **return**
 
     type
@@ -233,7 +248,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

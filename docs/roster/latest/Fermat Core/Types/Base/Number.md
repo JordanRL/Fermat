@@ -9,27 +9,36 @@
 ### Implements
 
 !!! signature interface "Hashable"
+    ##### Hashable
     namespace
     :   Ds
 
     description
-    :   Hashable is an interface which allows objects to be used as keys.
+    :   
+
+    Hashable is an interface which allows objects to be used as keys.
     
      It’s an alternative to spl_object_hash(), which determines an object’s hash based on its handle: this means that two objects that are considered equal by an implicit definition would not treated as equal because they are not the same instance.
 
 !!! signature interface "NumberInterface"
+    ##### NumberInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Numbers
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "Stringable"
+    ##### Stringable
     namespace
     :   
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 
 
@@ -39,10 +48,12 @@
 ### Class Constants
 
 !!! signature constant "Number::INFINITY"
+    ##### INFINITY
     value
     :   'INF'
 
 !!! signature constant "Number::NEG_INFINITY"
+    ##### NEG_INFINITY
     value
     :   '-INF'
 
@@ -54,6 +65,7 @@
 ### Constructor
 
 !!! signature "public Number->__construct()"
+    ##### __construct
     **return**
 
     type
@@ -61,7 +73,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -69,6 +81,7 @@
 ### Instanced Methods
 
 !!! signature "public Number->setMode(int $mode)"
+    ##### setMode
     **$mode**
 
     type
@@ -85,15 +98,16 @@
     description
     :   *No description available*
 
-    **Number->setMode Description**
+    ###### setMode() Description:
 
     Allows you to set a mode on a number to select the calculation methods.
     
      MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting. MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
-
+    
 ---
 
 !!! signature "public Number->getValue()"
+    ##### getValue
     **return**
 
     type
@@ -102,13 +116,14 @@
     description
     :   *No description available*
 
-    **Number->getValue Description**
+    ###### getValue() Description:
 
     Returns the current value as a string.
-
+    
 ---
 
 !!! signature "public Number->setExtensions(bool $flag)"
+    ##### setExtensions
     **$flag**
 
     type
@@ -125,13 +140,14 @@
     description
     :   *No description available*
 
-    **Number->setExtensions Description**
+    ###### setExtensions() Description:
 
     Allows the object to ignore PHP extensions (such a GMP) and use only the Fermat implementations. NOTE: This does not ignore ext-bcmath or ext-decimal, as those are necessary for the string math itself.
-
+    
 ---
 
 !!! signature "public Number->__toString()"
+    ##### __toString
     **return**
 
     type
@@ -139,10 +155,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Number->hash()"
+    ##### hash
     **return**
 
     type
@@ -151,13 +168,14 @@
     description
     :   *No description available*
 
-    **Number->hash Description**
+    ###### hash() Description:
 
     Implemented to satisfy Hashable implementation
-
+    
 ---
 
 !!! signature "public Number->equals(mixed $object)"
+    ##### equals
     **$object**
 
     type
@@ -174,13 +192,14 @@
     description
     :   *No description available*
 
-    **Number->equals Description**
+    ###### equals() Description:
 
     Implemented to satisfy Hashable implementation
-
+    
 ---
 
 !!! signature "public Number->isImaginary()"
+    ##### isImaginary
     **return**
 
     type
@@ -189,13 +208,14 @@
     description
     :   *No description available*
 
-    **Number->isImaginary Description**
+    ###### isImaginary() Description:
 
     This function returns true if the number is imaginary, and false in the number is real or complex
-
+    
 ---
 
 !!! signature "public Number->isReal()"
+    ##### isReal
     **return**
 
     type
@@ -204,13 +224,14 @@
     description
     :   *No description available*
 
-    **Number->isReal Description**
+    ###### isReal() Description:
 
     This function returns true if the number is real, and false if the number is imaginary or complex
-
+    
 ---
 
 !!! signature "public Number->asReal()"
+    ##### asReal
     **return**
 
     type
@@ -218,10 +239,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Number->getAsBaseTenRealNumber()"
+    ##### getAsBaseTenRealNumber
     **return**
 
     type
@@ -229,10 +251,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Number->isComplex()"
+    ##### isComplex
     **return**
 
     type
@@ -240,10 +263,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Number->asComplex()"
+    ##### asComplex
     **return**
 
     type
@@ -251,7 +275,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -259,6 +283,7 @@
 ### Inherited Methods
 
 !!! signature "public NumberInterface->abs()"
+    ##### abs
     **return**
 
     type
@@ -266,10 +291,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->absValue()"
+    ##### absValue
     **return**
 
     type
@@ -277,10 +303,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->add($num)"
+    ##### add
     **$num**
 
     description
@@ -295,10 +322,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->subtract($num)"
+    ##### subtract
     **$num**
 
     description
@@ -313,10 +341,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->multiply($num)"
+    ##### multiply
     **$num**
 
     description
@@ -331,10 +360,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->divide($num, int|null $scale)"
+    ##### divide
     **$num**
 
     description
@@ -357,10 +387,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->pow($num)"
+    ##### pow
     **$num**
 
     description
@@ -375,10 +406,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->sqrt(int? $scale)"
+    ##### sqrt
     **$scale**
 
     type
@@ -396,10 +428,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->isEqual(int|string|NumberInterface $value)"
+    ##### isEqual
     **$value**
 
     type
@@ -417,10 +450,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public NumberInterface->getScale()"
+    ##### getScale
     **return**
 
     type
@@ -428,7 +462,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

@@ -9,6 +9,7 @@
 ### Instanced Methods
 
 !!! signature "public TrigonometryTrait->sin(?int $scale, bool $round)"
+    ##### sin
     **$scale**
 
     type
@@ -32,10 +33,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->cos(?int $scale, bool $round)"
+    ##### cos
     **$scale**
 
     type
@@ -59,10 +61,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->tan(?int $scale, bool $round)"
+    ##### tan
     **$scale**
 
     type
@@ -86,10 +89,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->cot(?int $scale, bool $round)"
+    ##### cot
     **$scale**
 
     type
@@ -113,10 +117,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->sec(?int $scale, bool $round)"
+    ##### sec
     **$scale**
 
     type
@@ -140,10 +145,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->csc(?int $scale, bool $round)"
+    ##### csc
     **$scale**
 
     type
@@ -167,10 +173,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->sinh(?int $scale, bool $round)"
+    ##### sinh
     **$scale**
 
     type
@@ -194,10 +201,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->cosh(?int $scale, bool $round)"
+    ##### cosh
     **$scale**
 
     type
@@ -221,10 +229,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->tanh(?int $scale, bool $round)"
+    ##### tanh
     **$scale**
 
     type
@@ -248,10 +257,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->coth(?int $scale, bool $round)"
+    ##### coth
     **$scale**
 
     type
@@ -275,10 +285,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->sech(?int $scale, bool $round)"
+    ##### sech
     **$scale**
 
     type
@@ -302,10 +313,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public TrigonometryTrait->csch(?int $scale, bool $round)"
+    ##### csch
     **$scale**
 
     type
@@ -329,7 +341,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

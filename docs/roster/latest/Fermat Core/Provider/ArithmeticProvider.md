@@ -9,6 +9,7 @@
 ### Static Methods
 
 !!! signature "public ArithmeticProvider::add(string $number1, string $number2, $scale)"
+    ##### add
     **$number1**
 
     type
@@ -41,6 +42,7 @@
 ---
 
 !!! signature "public ArithmeticProvider::subtract(string $left, string $right, $scale)"
+    ##### subtract
     **$left**
 
     type
@@ -73,6 +75,7 @@
 ---
 
 !!! signature "public ArithmeticProvider::multiply(string $number1, string $number2, $scale)"
+    ##### multiply
     **$number1**
 
     type
@@ -105,6 +108,7 @@
 ---
 
 !!! signature "public ArithmeticProvider::divide(string $numerator, string $denominator, $scale)"
+    ##### divide
     **$numerator**
 
     type
@@ -137,6 +141,7 @@
 ---
 
 !!! signature "public ArithmeticProvider::pow(string $base, string $exponent, $scale)"
+    ##### pow
     **$base**
 
     type
@@ -169,6 +174,7 @@
 ---
 
 !!! signature "public ArithmeticProvider::squareRoot(string $number, $scale)"
+    ##### squareRoot
     **$number**
 
     type
@@ -193,6 +199,7 @@
 ---
 
 !!! signature "public ArithmeticProvider::modulo(string $number, $modulo)"
+    ##### modulo
     **$number**
 
     type
@@ -217,6 +224,7 @@
 ---
 
 !!! signature "public ArithmeticProvider::compare(string $left, string $right, $scale)"
+    ##### compare
     **$left**
 
     type
@@ -249,6 +257,7 @@
 ---
 
 !!! signature "public ArithmeticProvider::powmod(string $left, string $right, string $modulus, $scale)"
+    ##### powmod
     **$left**
 
     type
@@ -289,6 +298,7 @@
 ---
 
 !!! signature "public ArithmeticProvider::factorial(string $number, int $scale)"
+    ##### factorial
     **$number**
 
     type

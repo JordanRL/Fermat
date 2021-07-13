@@ -14,18 +14,24 @@
 ### Implements
 
 !!! signature interface "CoordinateInterface"
+    ##### CoordinateInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Coordinates
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "TwoDCoordinateInterface"
+    ##### TwoDCoordinateInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Coordinates
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 
 
@@ -35,6 +41,7 @@
 ### Constructor
 
 !!! signature "public PolarCoordinate->__construct($rho, $theta)"
+    ##### __construct
     **$rho**
 
     description
@@ -52,7 +59,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -60,6 +67,7 @@
 ### Instanced Methods
 
 !!! signature "public PolarCoordinate->getDistanceFromOrigin()"
+    ##### getDistanceFromOrigin
     **return**
 
     type
@@ -67,10 +75,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public PolarCoordinate->distanceTo(Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface $coordinate)"
+    ##### distanceTo
     **$coordinate**
 
     type
@@ -86,10 +95,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public PolarCoordinate->asCartesian()"
+    ##### asCartesian
     **return**
 
     type
@@ -97,10 +107,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public PolarCoordinate->getPolarAngle()"
+    ##### getPolarAngle
     **return**
 
     type
@@ -108,10 +119,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public PolarCoordinate->asPolar()"
+    ##### asPolar
     **return**
 
     type
@@ -119,7 +131,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -127,6 +139,7 @@
 ### Inherited Methods
 
 !!! signature "public Coordinate->getAxis($axis)"
+    ##### getAxis
     **$axis**
 
     description
@@ -139,10 +152,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Coordinate->numberOfDimensions()"
+    ##### numberOfDimensions
     **return**
 
     type
@@ -150,10 +164,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Coordinate->axesValues()"
+    ##### axesValues
     **return**
 
     type
@@ -161,7 +176,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

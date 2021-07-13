@@ -9,6 +9,7 @@
 ### Static Methods
 
 !!! signature "public SeriesProvider::maclaurinSeries(SimpleNumberInterface $input, callable $numerator, callable $exponent, callable $denominator, int $startTermAt, int $scale, int $consecutiveDivergeLimit, int $totalDivergeLimit)"
+    ##### maclaurinSeries
     **$input**
 
     type
@@ -83,7 +84,7 @@
     description
     :   *No description available*
 
-    **SeriesProvider::maclaurinSeries Description**
+    ###### maclaurinSeries() Description:
 
     Creates a series that evaluates the following:
     

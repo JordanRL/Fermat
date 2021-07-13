@@ -7,7 +7,7 @@
     "site-url": "https://jordanrl.github.io/Fermat/",
     "repo-url": "https://github.com/JordanRL/Fermat/",
     "theme": "md",
-    "auto-deploy": false,
+    "auto-deploy": true,
     "merge-nav": true,
     "merge-nav-mode": "replace-nav-key",
     "nav-key": "Source Reference"

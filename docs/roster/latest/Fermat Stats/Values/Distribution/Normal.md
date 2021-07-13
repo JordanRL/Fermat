@@ -17,6 +17,7 @@
 ### Constructor
 
 !!! signature "public Normal->__construct(int|float|DecimalInterface $mean, int|float|DecimalInterface $sd)"
+    ##### __construct
     **$mean**
 
     type
@@ -43,10 +44,10 @@
     description
     :   *No description available*
 
-    **Normal->__construct Description**
+    ###### __construct() Description:
 
     Normal constructor.
-
+    
 ---
 
 
@@ -54,6 +55,7 @@
 ### Static Methods
 
 !!! signature "public Normal::makeFromMean(int|float|DecimalInterface $p, int|float|DecimalInterface $x, int|float|DecimalInterface $mean)"
+    ##### makeFromMean
     **$p**
 
     type
@@ -91,6 +93,7 @@
 ---
 
 !!! signature "public Normal::makeFromSd(int|float|DecimalInterface $p, int|float|DecimalInterface $x, int|float|DecimalInterface $sd)"
+    ##### makeFromSd
     **$p**
 
     type
@@ -132,6 +135,7 @@
 ### Instanced Methods
 
 !!! signature "public Normal->getSD()"
+    ##### getSD
     **return**
 
     type
@@ -139,10 +143,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->getMean()"
+    ##### getMean
     **return**
 
     type
@@ -150,10 +155,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->evaluateAt($x, int $scale)"
+    ##### evaluateAt
     **$x**
 
     description
@@ -176,10 +182,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->cdf(int|float|DecimalInterface $x)"
+    ##### cdf
     **$x**
 
     type
@@ -197,10 +204,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->pdf(int|float|DecimalInterface $x1, null|int|float|DecimalInterface $x2)"
+    ##### pdf
     **$x1**
 
     type
@@ -226,10 +234,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->cdfProduct(FunctionInterface $function, $x)"
+    ##### cdfProduct
     **$function**
 
     type
@@ -250,10 +259,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->pdfProduct(FunctionInterface $function, $x1, $x2)"
+    ##### pdfProduct
     **$function**
 
     type
@@ -281,10 +291,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->percentBelowX(int|float|DecimalInterface $x)"
+    ##### percentBelowX
     **$x**
 
     type
@@ -302,10 +313,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->percentAboveX(int|float|DecimalInterface $x)"
+    ##### percentAboveX
     **$x**
 
     type
@@ -323,10 +335,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->zScoreOfX(int|float|DecimalInterface $x)"
+    ##### zScoreOfX
     **$x**
 
     type
@@ -344,10 +357,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->xFromZScore(int|float|DecimalInterface $z)"
+    ##### xFromZScore
     **$z**
 
     type
@@ -365,10 +379,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->random()"
+    ##### random
     **return**
 
     type
@@ -376,10 +391,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Normal->rangeRandom(int|float|NumberInterface $min, int|float|NumberInterface $max, int $maxIterations)"
+    ##### rangeRandom
     **$min**
 
     type
@@ -413,7 +429,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -421,6 +437,7 @@
 ### Inherited Methods
 
 !!! signature "public Distribution->randomSample(int $sampleSize)"
+    ##### randomSample
     **$sampleSize**
 
     type
@@ -436,7 +453,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

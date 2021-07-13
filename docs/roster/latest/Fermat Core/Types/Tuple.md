@@ -9,6 +9,7 @@
 ### Constructor
 
 !!! signature "public Tuple->__construct($data)"
+    ##### __construct
     **$data**
 
     description
@@ -21,7 +22,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -29,6 +30,7 @@
 ### Instanced Methods
 
 !!! signature "public Tuple->get(int $index)"
+    ##### get
     **$index**
 
     type
@@ -46,10 +48,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Tuple->set(int $index, ImmutableDecimal $value)"
+    ##### set
     **$index**
 
     type
@@ -75,10 +78,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Tuple->all()"
+    ##### all
     **return**
 
     type
@@ -86,10 +90,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Tuple->size()"
+    ##### size
     **return**
 
     type
@@ -97,10 +102,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Tuple->hasIndex(int $index)"
+    ##### hasIndex
     **$index**
 
     type
@@ -116,7 +122,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

@@ -32,9 +32,9 @@
     "ext-bcmath": "*"
   },
   "require-dev": {
-    "vimeo/psalm": "^4",
     "phpunit/phpunit": "9.*",
-    "samsara/roster": "^v0.1"
+    "samsara/roster": "^0.1",
+    "phpbench/phpbench": "^1"
   },
   "suggest": {
     "ext-gmp": "*",

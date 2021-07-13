@@ -9,6 +9,7 @@
 ### Instanced Methods
 
 !!! signature "public Distribution->random()"
+    ##### random
     **return**
 
     type
@@ -16,10 +17,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Distribution->randomSample(int $sampleSize)"
+    ##### randomSample
     **$sampleSize**
 
     type
@@ -35,10 +37,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Distribution->rangeRandom($min, $max, int $maxIterations)"
+    ##### rangeRandom
     **$min**
 
     description
@@ -64,7 +67,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

@@ -9,14 +9,17 @@
 ### Class Constants
 
 !!! signature constant "Selectable::CALC_MODE_FALLBACK"
+    ##### CALC_MODE_FALLBACK
     value
     :   0
 
 !!! signature constant "Selectable::CALC_MODE_PRECISION"
+    ##### CALC_MODE_PRECISION
     value
     :   1
 
 !!! signature constant "Selectable::CALC_MODE_NATIVE"
+    ##### CALC_MODE_NATIVE
     value
     :   2
 

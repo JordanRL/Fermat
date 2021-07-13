@@ -9,6 +9,7 @@
 ### Instanced Methods
 
 !!! signature "public IntegerMathTrait->factorial()"
+    ##### factorial
     **return**
 
     type
@@ -16,10 +17,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public IntegerMathTrait->subFactorial()"
+    ##### subFactorial
     **return**
 
     type
@@ -27,10 +29,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public IntegerMathTrait->doubleFactorial()"
+    ##### doubleFactorial
     **return**
 
     type
@@ -38,10 +41,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public IntegerMathTrait->semiFactorial()"
+    ##### semiFactorial
     **return**
 
     type
@@ -49,10 +53,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public IntegerMathTrait->getLeastCommonMultiple($num)"
+    ##### getLeastCommonMultiple
     **$num**
 
     description
@@ -65,10 +70,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public IntegerMathTrait->getGreatestCommonDivisor($num)"
+    ##### getGreatestCommonDivisor
     **$num**
 
     description
@@ -81,10 +87,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public IntegerMathTrait->isPrime()"
+    ##### isPrime
     **return**
 
     type
@@ -93,15 +100,16 @@
     description
     :   *No description available*
 
-    **IntegerMathTrait->isPrime Description**
+    ###### isPrime() Description:
 
     This function is a PHP implementation of the function described at: http://stackoverflow.com/a/1801446
     
      It is relatively simple to understand, which is why it was chosen as the implementation. However in the future, an implementation that is based on ECPP (such as the Goldwasser implementation) may be employed to improve speed.
-
+    
 ---
 
 !!! signature "public IntegerMathTrait->asPrimeFactors()"
+    ##### asPrimeFactors
     **return**
 
     type
@@ -109,7 +117,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

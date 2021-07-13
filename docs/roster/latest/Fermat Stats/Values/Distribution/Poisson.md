@@ -17,6 +17,7 @@
 ### Constructor
 
 !!! signature "public Poisson->__construct(int|float|DecimalInterface $lambda)"
+    ##### __construct
     **$lambda**
 
     type
@@ -35,10 +36,10 @@
     description
     :   *No description available*
 
-    **Poisson->__construct Description**
+    ###### __construct() Description:
 
     Poisson constructor.
-
+    
 ---
 
 
@@ -46,6 +47,7 @@
 ### Instanced Methods
 
 !!! signature "public Poisson->probabilityOfKEvents(int|float|DecimalInterface $k, int $scale)"
+    ##### probabilityOfKEvents
     **$k**
 
     type
@@ -71,10 +73,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Poisson->cdf(int|float|DecimalInterface $x, int $scale)"
+    ##### cdf
     **$x**
 
     type
@@ -100,10 +103,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Poisson->pmf(float|int|DecimalInterface $x, int $scale)"
+    ##### pmf
     **$x**
 
     type
@@ -129,10 +133,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Poisson->rangePmf(int|float|DecimalInterface $x1, int|float|DecimalInterface $x2)"
+    ##### rangePmf
     **$x1**
 
     type
@@ -158,10 +163,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Poisson->random()"
+    ##### random
     **return**
 
     type
@@ -169,10 +175,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Poisson->rangeRandom(int|float|NumberInterface $min, int|float|NumberInterface $max, int $maxIterations)"
+    ##### rangeRandom
     **$min**
 
     type
@@ -207,10 +214,10 @@
     description
     :   *No description available*
 
-    **Poisson->rangeRandom Description**
+    ###### rangeRandom() Description:
 
     WARNING: This function is of very limited use with Poisson distributions, and may represent a SIGNIFICANT performance hit for certain values of $min, $max, $lambda, and $maxIterations
-
+    
 ---
 
 
@@ -218,6 +225,7 @@
 ### Inherited Methods
 
 !!! signature "public Distribution->randomSample(int $sampleSize)"
+    ##### randomSample
     **$sampleSize**
 
     type
@@ -233,7 +241,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

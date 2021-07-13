@@ -14,25 +14,34 @@
 ### Implements
 
 !!! signature interface "CoordinateInterface"
+    ##### CoordinateInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Coordinates
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "TwoDCoordinateInterface"
+    ##### TwoDCoordinateInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Coordinates
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "ThreeDCoordinateInterface"
+    ##### ThreeDCoordinateInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Coordinates
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 
 
@@ -42,6 +51,7 @@
 ### Constructor
 
 !!! signature "public CartesianCoordinate->__construct($x, null $y, null $z)"
+    ##### __construct
     **$x**
 
     description
@@ -71,10 +81,10 @@
     description
     :   *No description available*
 
-    **CartesianCoordinate->__construct Description**
+    ###### __construct() Description:
 
     CartesianCoordinate constructor.
-
+    
 ---
 
 
@@ -82,6 +92,7 @@
 ### Instanced Methods
 
 !!! signature "public CartesianCoordinate->getAxis($axis)"
+    ##### getAxis
     **$axis**
 
     description
@@ -96,10 +107,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CartesianCoordinate->getDistanceFromOrigin()"
+    ##### getDistanceFromOrigin
     **return**
 
     type
@@ -107,10 +119,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CartesianCoordinate->distanceTo(CoordinateInterface $coordinate)"
+    ##### distanceTo
     **$coordinate**
 
     type
@@ -128,10 +141,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CartesianCoordinate->asCartesian()"
+    ##### asCartesian
     **return**
 
     type
@@ -139,10 +153,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CartesianCoordinate->getPolarAngle()"
+    ##### getPolarAngle
     **return**
 
     type
@@ -150,10 +165,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CartesianCoordinate->getPlanarAngle()"
+    ##### getPlanarAngle
     **return**
 
     type
@@ -161,10 +177,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CartesianCoordinate->asSpherical()"
+    ##### asSpherical
     **return**
 
     type
@@ -172,10 +189,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CartesianCoordinate->asCylindrical()"
+    ##### asCylindrical
     **return**
 
     type
@@ -183,10 +201,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public CartesianCoordinate->asPolar()"
+    ##### asPolar
     **return**
 
     type
@@ -194,7 +213,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -202,6 +221,7 @@
 ### Inherited Methods
 
 !!! signature "public Coordinate->numberOfDimensions()"
+    ##### numberOfDimensions
     **return**
 
     type
@@ -209,10 +229,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Coordinate->axesValues()"
+    ##### axesValues
     **return**
 
     type
@@ -220,7 +241,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

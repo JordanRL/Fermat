@@ -9,6 +9,7 @@
 ### Static Methods
 
 !!! signature "public TrigonometryProvider::radiansToDegrees($radians)"
+    ##### radiansToDegrees
     **$radians**
 
     description
@@ -27,6 +28,7 @@
 ---
 
 !!! signature "public TrigonometryProvider::degreesToRadians($degrees)"
+    ##### degreesToRadians
     **$degrees**
 
     description

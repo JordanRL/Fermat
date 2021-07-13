@@ -9,6 +9,7 @@
 ### Instanced Methods
 
 !!! signature "public LogTrait->exp(?int $scale, bool $round)"
+    ##### exp
     **$scale**
 
     type
@@ -32,10 +33,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public LogTrait->ln(int|null $scale, bool $round)"
+    ##### ln
     **$scale**
 
     type
@@ -61,10 +63,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public LogTrait->log10(int|null $scale, bool $round)"
+    ##### log10
     **$scale**
 
     type
@@ -88,7 +91,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

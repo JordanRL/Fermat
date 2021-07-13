@@ -9,6 +9,7 @@
 ### Instanced Methods
 
 !!! signature "public ComponentInterface->getOutput()"
+    ##### getOutput
     **return**
 
     type
@@ -16,7 +17,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

@@ -9,6 +9,7 @@
 ### Static Methods
 
 !!! signature "public ConstantProvider::makePi(int $digits)"
+    ##### makePi
     **$digits**
 
     type
@@ -28,6 +29,7 @@
 ---
 
 !!! signature "public ConstantProvider::makeE(int $digits)"
+    ##### makeE
     **$digits**
 
     type
@@ -44,7 +46,7 @@
     description
     :   *No description available*
 
-    **ConstantProvider::makeE Description**
+    ###### makeE() Description:
 
     Consider also: sum [0 -> INF] { (2n + 2) / (2n + 1)! }
     

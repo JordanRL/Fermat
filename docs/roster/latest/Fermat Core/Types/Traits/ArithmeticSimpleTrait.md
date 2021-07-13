@@ -9,25 +9,34 @@
 ### Has Traits
 
 !!! signature trait "ArithmeticSelectionTrait"
+    ##### ArithmeticSelectionTrait
     namespace
     :   Samsara\Fermat\Types\Traits\Arithmetic
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature trait "ArithmeticScaleTrait"
+    ##### ArithmeticScaleTrait
     namespace
     :   Samsara\Fermat\Types\Traits\Arithmetic
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature trait "ArithmeticNativeTrait"
+    ##### ArithmeticNativeTrait
     namespace
     :   Samsara\Fermat\Types\Traits\Arithmetic
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 
 
@@ -37,6 +46,7 @@
 ### Instanced Methods
 
 !!! signature "public ArithmeticSimpleTrait->add($num)"
+    ##### add
     **$num**
 
     description
@@ -49,10 +59,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ArithmeticSimpleTrait->subtract($num)"
+    ##### subtract
     **$num**
 
     description
@@ -65,10 +76,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ArithmeticSimpleTrait->multiply($num)"
+    ##### multiply
     **$num**
 
     description
@@ -81,10 +93,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ArithmeticSimpleTrait->divide($num, ?int $scale)"
+    ##### divide
     **$num**
 
     description
@@ -105,10 +118,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ArithmeticSimpleTrait->pow($num)"
+    ##### pow
     **$num**
 
     description
@@ -121,10 +135,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ArithmeticSimpleTrait->sqrt(?int $scale)"
+    ##### sqrt
     **$scale**
 
     type
@@ -140,7 +155,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

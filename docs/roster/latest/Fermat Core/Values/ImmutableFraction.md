@@ -14,39 +14,54 @@
 ### Implements
 
 !!! signature interface "SimpleNumberInterface"
+    ##### SimpleNumberInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Numbers
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "FractionInterface"
+    ##### FractionInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Numbers
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "Stringable"
+    ##### Stringable
     namespace
     :   
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "NumberInterface"
+    ##### NumberInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Numbers
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 !!! signature interface "Hashable"
+    ##### Hashable
     namespace
     :   Ds
 
     description
-    :   Hashable is an interface which allows objects to be used as keys.
+    :   
+
+    Hashable is an interface which allows objects to be used as keys.
     
      It’s an alternative to spl_object_hash(), which determines an object’s hash based on its handle: this means that two objects that are considered equal by an implicit definition would not treated as equal because they are not the same instance.
 
@@ -58,10 +73,12 @@
 ### Class Constants
 
 !!! signature constant "ImmutableFraction::INFINITY"
+    ##### INFINITY
     value
     :   'INF'
 
 !!! signature constant "ImmutableFraction::NEG_INFINITY"
+    ##### NEG_INFINITY
     value
     :   '-INF'
 
@@ -73,6 +90,7 @@
 ### Constructor
 
 !!! signature "public Fraction->__construct($numerator, $denominator, int $base)"
+    ##### __construct
     **$numerator**
 
     description
@@ -101,10 +119,10 @@
     description
     :   *No description available*
 
-    **Fraction->__construct Description**
+    ###### __construct() Description:
 
     Fraction constructor.
-
+    
 ---
 
 
@@ -112,6 +130,7 @@
 ### Inherited Methods
 
 !!! signature "public Fraction->getValue()"
+    ##### getValue
     **return**
 
     type
@@ -119,10 +138,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->getScale()"
+    ##### getScale
     **return**
 
     type
@@ -130,10 +150,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->getBase()"
+    ##### getBase
     **return**
 
     type
@@ -141,10 +162,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->getNumerator()"
+    ##### getNumerator
     **return**
 
     type
@@ -152,10 +174,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->getDenominator()"
+    ##### getDenominator
     **return**
 
     type
@@ -163,10 +186,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isComplex()"
+    ##### isComplex
     **return**
 
     type
@@ -174,10 +198,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->simplify()"
+    ##### simplify
     **return**
 
     type
@@ -185,10 +210,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->abs()"
+    ##### abs
     **return**
 
     type
@@ -196,10 +222,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->absValue()"
+    ##### absValue
     **return**
 
     type
@@ -207,10 +234,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->compare($number)"
+    ##### compare
     **$number**
 
     description
@@ -223,10 +251,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->asDecimal($scale)"
+    ##### asDecimal
     **$scale**
 
     description
@@ -239,10 +268,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->getGreatestCommonDivisor()"
+    ##### getGreatestCommonDivisor
     **return**
 
     type
@@ -250,10 +280,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->getSmallestCommonDenominator(Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface $fraction)"
+    ##### getSmallestCommonDenominator
     **$fraction**
 
     type
@@ -269,10 +300,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->getAsBaseTenRealNumber()"
+    ##### getAsBaseTenRealNumber
     **return**
 
     type
@@ -280,10 +312,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Number->setMode(int $mode)"
+    ##### setMode
     **$mode**
 
     type
@@ -300,15 +333,16 @@
     description
     :   *No description available*
 
-    **Number->setMode Description**
+    ###### setMode() Description:
 
     Allows you to set a mode on a number to select the calculation methods.
     
      MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting. MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
-
+    
 ---
 
 !!! signature "public Number->setExtensions(bool $flag)"
+    ##### setExtensions
     **$flag**
 
     type
@@ -325,13 +359,14 @@
     description
     :   *No description available*
 
-    **Number->setExtensions Description**
+    ###### setExtensions() Description:
 
     Allows the object to ignore PHP extensions (such a GMP) and use only the Fermat implementations. NOTE: This does not ignore ext-bcmath or ext-decimal, as those are necessary for the string math itself.
-
+    
 ---
 
 !!! signature "public Number->__toString()"
+    ##### __toString
     **return**
 
     type
@@ -339,10 +374,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Number->hash()"
+    ##### hash
     **return**
 
     type
@@ -351,13 +387,14 @@
     description
     :   *No description available*
 
-    **Number->hash Description**
+    ###### hash() Description:
 
     Implemented to satisfy Hashable implementation
-
+    
 ---
 
 !!! signature "public Number->equals(mixed $object)"
+    ##### equals
     **$object**
 
     type
@@ -374,13 +411,14 @@
     description
     :   *No description available*
 
-    **Number->equals Description**
+    ###### equals() Description:
 
     Implemented to satisfy Hashable implementation
-
+    
 ---
 
 !!! signature "public Number->isImaginary()"
+    ##### isImaginary
     **return**
 
     type
@@ -389,13 +427,14 @@
     description
     :   *No description available*
 
-    **Number->isImaginary Description**
+    ###### isImaginary() Description:
 
     This function returns true if the number is imaginary, and false in the number is real or complex
-
+    
 ---
 
 !!! signature "public Number->isReal()"
+    ##### isReal
     **return**
 
     type
@@ -404,13 +443,14 @@
     description
     :   *No description available*
 
-    **Number->isReal Description**
+    ###### isReal() Description:
 
     This function returns true if the number is real, and false if the number is imaginary or complex
-
+    
 ---
 
 !!! signature "public Number->asReal()"
+    ##### asReal
     **return**
 
     type
@@ -418,10 +458,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Number->asComplex()"
+    ##### asComplex
     **return**
 
     type
@@ -429,10 +470,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->add($num)"
+    ##### add
     **$num**
 
     description
@@ -445,10 +487,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->subtract($num)"
+    ##### subtract
     **$num**
 
     description
@@ -461,10 +504,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->multiply($num)"
+    ##### multiply
     **$num**
 
     description
@@ -477,10 +521,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->divide($num, ?int $scale)"
+    ##### divide
     **$num**
 
     description
@@ -501,10 +546,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->pow($num)"
+    ##### pow
     **$num**
 
     description
@@ -517,10 +563,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->sqrt(?int $scale)"
+    ##### sqrt
     **$scale**
 
     type
@@ -536,10 +583,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isEqual($value)"
+    ##### isEqual
     **$value**
 
     description
@@ -552,10 +600,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isGreaterThan($value)"
+    ##### isGreaterThan
     **$value**
 
     description
@@ -568,10 +617,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isLessThan($value)"
+    ##### isLessThan
     **$value**
 
     description
@@ -584,10 +634,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isGreaterThanOrEqualTo($value)"
+    ##### isGreaterThanOrEqualTo
     **$value**
 
     description
@@ -600,10 +651,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isLessThanOrEqualTo($value)"
+    ##### isLessThanOrEqualTo
     **$value**
 
     description
@@ -616,10 +668,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isNegative()"
+    ##### isNegative
     **return**
 
     type
@@ -627,10 +680,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isPositive()"
+    ##### isPositive
     **return**
 
     type
@@ -638,10 +692,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isNatural()"
+    ##### isNatural
     **return**
 
     type
@@ -649,10 +704,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isWhole()"
+    ##### isWhole
     **return**
 
     type
@@ -660,10 +716,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Fraction->isInt()"
+    ##### isInt
     **return**
 
     type
@@ -671,7 +728,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

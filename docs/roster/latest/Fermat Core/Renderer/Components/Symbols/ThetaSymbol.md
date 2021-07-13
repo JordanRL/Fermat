@@ -9,11 +9,14 @@
 ### Implements
 
 !!! signature interface "ComponentInterface"
+    ##### ComponentInterface
     namespace
     :   Samsara\Fermat\Renderer\Components\Interfaces
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 
 
@@ -23,6 +26,7 @@
 ### Instanced Methods
 
 !!! signature "public ThetaSymbol->getOutput()"
+    ##### getOutput
     **return**
 
     type
@@ -30,7 +34,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

@@ -9,11 +9,14 @@
 ### Implements
 
 !!! signature interface "ComponentInterface"
+    ##### ComponentInterface
     namespace
     :   Samsara\Fermat\Renderer\Components\Interfaces
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 
 
@@ -23,6 +26,7 @@
 ### Constructor
 
 !!! signature "public PowOperation->__construct(Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface|Samsara\Fermat\Renderer\Components\Interfaces\ComponentInterface $left, Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface|Samsara\Fermat\Renderer\Components\Interfaces\ComponentInterface $right)"
+    ##### __construct
     **$left**
 
     type
@@ -46,7 +50,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -54,6 +58,7 @@
 ### Instanced Methods
 
 !!! signature "public PowOperation->getOutput()"
+    ##### getOutput
     **return**
 
     type
@@ -61,7 +66,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

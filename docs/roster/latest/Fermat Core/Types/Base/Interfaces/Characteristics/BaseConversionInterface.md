@@ -9,6 +9,7 @@
 ### Instanced Methods
 
 !!! signature "public BaseConversionInterface->convertToBase(int $base)"
+    ##### convertToBase
     **$base**
 
     type
@@ -26,10 +27,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public BaseConversionInterface->getBase()"
+    ##### getBase
     **return**
 
     type
@@ -37,7 +39,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

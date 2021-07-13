@@ -9,11 +9,14 @@
 ### Implements
 
 !!! signature interface "CoordinateInterface"
+    ##### CoordinateInterface
     namespace
     :   Samsara\Fermat\Types\Base\Interfaces\Coordinates
 
     description
-    :   *No description available*
+    :   
+
+    *No description available*
 
 
 
@@ -23,6 +26,7 @@
 ### Constructor
 
 !!! signature "public Coordinate->__construct(array $data)"
+    ##### __construct
     **$data**
 
     type
@@ -38,7 +42,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -46,6 +50,7 @@
 ### Instanced Methods
 
 !!! signature "public Coordinate->getAxis($axis)"
+    ##### getAxis
     **$axis**
 
     description
@@ -58,10 +63,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Coordinate->numberOfDimensions()"
+    ##### numberOfDimensions
     **return**
 
     type
@@ -69,10 +75,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Coordinate->axesValues()"
+    ##### axesValues
     **return**
 
     type
@@ -80,10 +87,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Coordinate->getDistanceFromOrigin()"
+    ##### getDistanceFromOrigin
     **return**
 
     type
@@ -91,10 +99,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Coordinate->distanceTo(Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface $coordinate)"
+    ##### distanceTo
     **$coordinate**
 
     type
@@ -110,10 +119,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public Coordinate->asCartesian()"
+    ##### asCartesian
     **return**
 
     type
@@ -121,7 +131,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
@@ -129,6 +139,7 @@
 ### Inherited Methods
 
 !!! signature "public CoordinateInterface->getPolarAngle()"
+    ##### getPolarAngle
     **return**
 
     type
@@ -136,7 +147,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 

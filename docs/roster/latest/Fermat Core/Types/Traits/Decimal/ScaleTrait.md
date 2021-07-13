@@ -9,6 +9,7 @@
 ### Instanced Methods
 
 !!! signature "public ScaleTrait->getScale()"
+    ##### getScale
     **return**
 
     type
@@ -16,10 +17,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ScaleTrait->round(int $decimals, ?int $mode)"
+    ##### round
     **$decimals**
 
     type
@@ -43,10 +45,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ScaleTrait->truncate(int $decimals)"
+    ##### truncate
     **$decimals**
 
     type
@@ -62,10 +65,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ScaleTrait->roundToScale(int $scale, ?int $mode)"
+    ##### roundToScale
     **$scale**
 
     type
@@ -89,10 +93,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ScaleTrait->truncateToScale($scale)"
+    ##### truncateToScale
     **$scale**
 
     description
@@ -105,10 +110,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ScaleTrait->ceil()"
+    ##### ceil
     **return**
 
     type
@@ -116,10 +122,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ScaleTrait->floor()"
+    ##### floor
     **return**
 
     type
@@ -127,10 +134,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ScaleTrait->numberOfLeadingZeros()"
+    ##### numberOfLeadingZeros
     **return**
 
     type
@@ -139,13 +147,14 @@
     description
     :   *No description available*
 
-    **ScaleTrait->numberOfLeadingZeros Description**
+    ###### numberOfLeadingZeros() Description:
 
     The number of digits between the radix and the for non-zero digit in the decimal part.
-
+    
 ---
 
 !!! signature "public ScaleTrait->numberOfTotalDigits()"
+    ##### numberOfTotalDigits
     **return**
 
     type
@@ -154,13 +163,14 @@
     description
     :   *No description available*
 
-    **ScaleTrait->numberOfTotalDigits Description**
+    ###### numberOfTotalDigits() Description:
 
     The number of digits (excludes the radix).
-
+    
 ---
 
 !!! signature "public ScaleTrait->numberOfIntDigits()"
+    ##### numberOfIntDigits
     **return**
 
     type
@@ -169,13 +179,14 @@
     description
     :   *No description available*
 
-    **ScaleTrait->numberOfIntDigits Description**
+    ###### numberOfIntDigits() Description:
 
     The number of digits in the integer part.
-
+    
 ---
 
 !!! signature "public ScaleTrait->numberOfDecimalDigits()"
+    ##### numberOfDecimalDigits
     **return**
 
     type
@@ -184,13 +195,14 @@
     description
     :   *No description available*
 
-    **ScaleTrait->numberOfDecimalDigits Description**
+    ###### numberOfDecimalDigits() Description:
 
     The number of digits in the decimal part.
-
+    
 ---
 
 !!! signature "public ScaleTrait->numberOfSigDecimalDigits()"
+    ##### numberOfSigDecimalDigits
     **return**
 
     type
@@ -199,13 +211,14 @@
     description
     :   *No description available*
 
-    **ScaleTrait->numberOfSigDecimalDigits Description**
+    ###### numberOfSigDecimalDigits() Description:
 
     The number of digits in the decimal part, excluding leading zeros.
-
+    
 ---
 
 !!! signature "public ScaleTrait->asInt()"
+    ##### asInt
     **return**
 
     type
@@ -214,13 +227,14 @@
     description
     :   *No description available*
 
-    **ScaleTrait->asInt Description**
+    ###### asInt() Description:
 
     Returns the current value as an integer if it is within the max a min int values on the current system. Uses the intval() function to convert the string to an integer type.
-
+    
 ---
 
 !!! signature "public ScaleTrait->isFloat()"
+    ##### isFloat
     **return**
 
     type
@@ -228,10 +242,11 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 !!! signature "public ScaleTrait->asFloat()"
+    ##### asFloat
     **return**
 
     type
@@ -239,7 +254,7 @@
 
     description
     :   *No description available*
-
+    
 ---
 
 
