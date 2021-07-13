@@ -13,6 +13,13 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 use Samsara\Fermat\Values\MutableFraction;
 use Samsara\Fermat\Values\MutableDecimal;
 
+/**
+ * This class contains useful factory methods to create various numbers, verify the
+ * class of a given number, and generally handle all of the formatting necessary to
+ * satisfy the various constructors of valid value objects.
+ *
+ * @package Samsara\Fermat
+ */
 class Numbers
 {
 
@@ -30,21 +37,28 @@ class Numbers
     public const GOLDEN_RATIO = '1.618033988749894848204586834365638117720309179805762862135448622705260462818902449707207204189391137';
     /* Natural log of 10 to 100 digits */
     public const LN_10 = '2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298';
+    /* Natural log of 2 to 100 digits */
+    public const LN_2 = '0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687';
     /* The value of i^i */
     public const I_POW_I = '0.2078795763507619085469556198349787700338778416317696080751358830554198772854821397886002778654260353';
 
     protected static $defaultCalcMode = Selectable::CALC_MODE_PRECISION;
 
     /**
-     * @param $type
-     * @param $value
-     * @param int|null $scale
-     * @param int $base
+     * This class will make and return an instance of a concrete value.
+     *
+     * The main reason for this class is that you can pass an unknown value instance as the
+     * $type parameter and it will behave as if you passed the FQCN.
+     *
+     * @param mixed     $type   An instance of FQCN for any Fermat value class.
+     * @param mixed     $value  Any value which is valid for the constructor which will be called.
+     * @param int|null  $scale  The scale setting the created instance should have.
+     * @param int       $base   The base to create the number in. Note, this is not the same as the base of $value, which is always base-10
      *
      * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|NumberInterface|FractionInterface
      * @throws IntegrityConstraint
      */
-    public static function make($type, $value, $scale = null, $base = 10)
+    public static function make(mixed $type, mixed $value, ?int $scale = null, int $base = 10)
     {
 
         if (is_object($type)) {
@@ -88,7 +102,7 @@ class Numbers
         /**
          * @var ImmutableDecimal|MutableDecimal
          */
-        $number = self::make($type, $value, $scale, 10);
+        $number = self::make($type, $value, $scale);
 
         return $number->convertToBase($base);
     }

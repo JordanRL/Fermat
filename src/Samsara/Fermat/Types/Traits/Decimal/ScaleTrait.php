@@ -175,17 +175,7 @@ trait ScaleTrait
      */
     public function asInt(): int
     {
-
-        if ($this->isGreaterThan(PHP_INT_MAX) || $this->isLessThan(PHP_INT_MIN)) {
-            throw new IncompatibleObjectState(
-                'Cannot export number as integer because it is out of range.',
-                'Only evaluate numbers this large using Fermat, or instead attempt to cast to a float.',
-                'An attempt was made to cast number larger than the maximum integer value of PHP into a native integer.'
-            );
-        }
-
         return intval($this->getValue());
-
     }
 
     public function isFloat(): bool
@@ -197,17 +187,7 @@ trait ScaleTrait
 
     public function asFloat(): float
     {
-
-        if ($this->isGreaterThan(PHP_FLOAT_MAX) || $this->isLessThan(PHP_FLOAT_MIN)) {
-            throw new IncompatibleObjectState(
-                'Cannot export number as float because it is out of range.',
-                'Only evaluate numbers this large using Fermat.',
-                'An attempt was made to cast number larger than the maximum float value of PHP into a native float.'
-            );
-        }
-
         return (float)$this->asReal();
-
     }
 
     protected function reduceDecimals(array $decimalArray, $pos, $add)

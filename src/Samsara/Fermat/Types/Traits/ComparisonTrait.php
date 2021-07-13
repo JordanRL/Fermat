@@ -40,7 +40,7 @@ trait ComparisonTrait
                 return false;
             }
 
-            if ($this->compare($value->getAsBaseTenRealNumber()) === 0) {
+            if ($this->compare($value) === 0) {
                 return true;
             } else {
                 return false;
@@ -220,7 +220,8 @@ trait ComparisonTrait
 
         if ($check === 1) {
             $checkVal = $this->getDecimalPart();
-            $checkVal = str_replace('0', '', $checkVal);
+            //$checkVal = str_replace('0', '', $checkVal);
+            $checkVal = trim($checkVal, '0');
 
             return !($checkVal !== '');
         }

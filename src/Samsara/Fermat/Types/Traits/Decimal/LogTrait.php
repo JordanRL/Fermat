@@ -5,10 +5,7 @@ namespace Samsara\Fermat\Types\Traits\Decimal;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Provider\SequenceProvider;
-use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
-use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 trait LogTrait
@@ -18,24 +15,28 @@ trait LogTrait
     {
         $scale = $scale ?? $this->getScale();
 
-        $value = SeriesProvider::maclaurinSeries(
-            Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale),
-            function() use ($scale) {
-                return Numbers::makeOne($scale);
-            },
-            function($n) use ($scale) {
-                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, $scale);
+        if ($scale <= 98 && $this->isInt()) {
+            $e = Numbers::makeE($scale+1);
+            $value = $e->pow($this);
+        } else {
+            $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
+            $x = $this instanceof ImmutableDecimal ? $this : new ImmutableDecimal($this->getValue());
+            $x2 = $x->pow(2);
+            $intScale = $scale + $abs->asInt();
 
-                return $n;
-            },
-            function($n) use ($scale) {
-                $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, $scale);
+            $one = new ImmutableDecimal(1);
+            $two = new ImmutableDecimal(2);
+            $six = new ImmutableDecimal(6);
+            $prevDenom = new ImmutableDecimal(0);
 
-                return $n->factorial();
-            },
-            0,
-            $scale
-        );
+            for ($i = $intScale; $i >= 0; $i--) {
+                $thisDenom = $six->add(4 * $i)->add($prevDenom);
+                $prevDenom = $x2->divide($thisDenom, $intScale);
+            }
+            $value = $one->add($x->multiply(2)->divide($two->subtract($x)->add($prevDenom), $intScale));
+        }
+
+        $value = ($round ? $value->roundToScale($scale) : $value->truncateToScale($scale));
 
         return $this->setValue($value->getAsBaseTenRealNumber(), $scale, $this->getBase());
     }

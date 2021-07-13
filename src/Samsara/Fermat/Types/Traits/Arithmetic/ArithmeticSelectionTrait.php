@@ -103,20 +103,22 @@ trait ArithmeticSelectionTrait
             if ($right instanceof FractionInterface) {
                 if ($left instanceof FractionInterface) {
                     $rightPart = $right;
-                    $otherPart = new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
+
+                    $thatRealPart = $right->isReal() ? $rightPart : new ImmutableFraction(new ImmutableDecimal($identity), new ImmutableDecimal(0));
+                    $thatImaginaryPart = $right->isImaginary() ? $rightPart : new ImmutableFraction(new ImmutableDecimal($identity.'i'), new ImmutableDecimal(0));
                 } else {
                     $rightPart = $right->asDecimal();
-                    $otherPart = Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
-
                     $right = $right->asDecimal();
+
+                    $thatRealPart = $right->isReal() ? $rightPart : new ImmutableDecimal($identity, $left->getScale());
+                    $thatImaginaryPart = $right->isImaginary() ? $rightPart : new ImmutableDecimal($identity.'i', $left->getScale());
                 }
             } else {
                 $rightPart = $right;
-                $otherPart = Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
-            }
 
-            $thatRealPart = $right->isReal() ? $rightPart : $otherPart;
-            $thatImaginaryPart = $right->isImaginary() ? $rightPart : $otherPart->multiply('i');
+                $thatRealPart = $right->isReal() ? $rightPart : new ImmutableDecimal($identity, $left->getScale());
+                $thatImaginaryPart = $right->isImaginary() ? $rightPart : new ImmutableDecimal($identity.'i', $left->getScale());
+            }
         }
 
         return [$thatRealPart, $thatImaginaryPart, $right];
@@ -130,8 +132,8 @@ trait ArithmeticSelectionTrait
             $thisRealPart = $left->getRealPart();
             $thisImaginaryPart = $left->getImaginaryPart();
         } else {
-            $thisRealPart = $left->isReal() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
-            $thisImaginaryPart = $left->isImaginary() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getScale());
+            $thisRealPart = $left->isReal() ? $left : new ImmutableDecimal($identity, $left->getScale());
+            $thisImaginaryPart = $left->isImaginary() ? $left : new ImmutableDecimal($identity.'i', $left->getScale());
         }
 
         return [$thisRealPart, $thisImaginaryPart];
