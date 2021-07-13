@@ -214,6 +214,14 @@ trait ArithmeticSimpleTrait
 
     public function divide($num, ?int $scale = null)
     {
+        [
+            $thatRealPart,
+            $thatImaginaryPart,
+            $thisRealPart,
+            $thisImaginaryPart,
+            $num
+        ] = $this->translateToParts($this, $num, 1);
+
         $scale = is_null($scale) ? $this->getScale() : $scale;
 
         [
