@@ -46,10 +46,9 @@ class RoundingProvider
         static::$mode = $mode;
     }
 
-    #[Pure]
     public static function getRoundingMode(): int
     {
-        return static::$mode;
+        return self::$mode;
     }
 
     public static function round(DecimalInterface $decimal, int $places = 0): string

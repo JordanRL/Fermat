@@ -8,16 +8,13 @@ A provider in Fermat is a static class which provides a specific functionality t
 
 The current list of providers, documented in more detail in the section for Providers, is:
 
-- `ArithmeticProvider`
-- `ConstantProvider`
-- `PolyfillProvider`
-- `SequenceProvider`
-- `SeriesProvider`
-- `StatsProvider`
-- `TrigonometryProvider`
-
-!!! see-also "See Also"
-    The Providers included in Fermat are documented in more detail under "Reference".
+- [ArithmeticProvider](../roster/latest/Fermat Core/Provider/ArithmeticProvider.md)
+- [ConstantProvider](../roster/latest/Fermat Core/Provider/ConstantProvider.md)
+- [RandomProvider](../roster/latest/Fermat Core/Provider/RandomProvider.md)
+- [RoundingProvider](../roster/latest/Fermat Core/Provider/RoundingProvider.md)
+- [SequenceProvider](../roster/latest/Fermat Core/Provider/SequenceProvider.md)
+- [SeriesProvider](../roster/latest/Fermat Core/Provider/SeriesProvider.md)
+- [TrigonometryProvider](../roster/latest/Fermat Core/Provider/TrigonometryProvider.md)
 
 ## Types
 
@@ -25,17 +22,10 @@ A type in Fermat is an implementation of a class of number or math concept. Thes
 
 The current list of types is:
 
-- `ComplexNumber`
-- `Coordinate`
-- `Decimal`
-- `Expression`
-- `Fraction`
-- `Matrix`
-- `NumberCollection`
-- `Tuple`
-
-!!! see-also "See Also"
-    The Types included in Fermat are documented in more detail under "Types & Values".
+- [Decimal](../roster/latest/Fermat Core/Types/Decimal.md)
+- [Fraction](../roster/latest/Fermat Core/Types/Fraction.md)
+- [NumberCollection](../roster/latest/Fermat Core/Types/NumberCollection.md)
+- [Tuple](../roster/latest/Fermat Core/Types/Tuple.md)
 
 ## Values
 
@@ -43,25 +33,10 @@ A value in Fermat is a usable implementation that can be directly worked with to
 
 The current list of values is:
 
-- `Algebra`
-    - `PolynomialFunction`
-- `Geometry`
-    - `CoordinateSystems`
-        - `CartesianCoordinate`
-        - `CylindricalCoordinate`
-        - `PolarCoordinate`
-        - `SphericalCoordinate`
-- `ImmutableComplexNumber`
-- `ImmutableDecimal`
-- `ImmutableFraction`
-- `ImmutableMatrix`
-- `MutableComplexNumber`
-- `MutableDecimal`
-- `MutableFraction`
-- `MutableMatrix`
-
-!!! see-also "See Also"
-    The Values included in Fermat are documented in more detail under "Types & Values".
+- [ImmutableDecimal](../roster/latest/Fermat Core/Values/ImmutableDecimal.md)
+- [ImmutableFraction](../roster/latest/Fermat Core/Values/ImmutableFraction.md)
+- [MutableDecimal](../roster/latest/Fermat Core/Values/MutableDecimal.md)
+- [MutableFraction](../roster/latest/Fermat Core/Values/MutableFraction.md)
     
 ## Scale
 

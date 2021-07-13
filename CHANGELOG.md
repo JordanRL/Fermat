@@ -2,7 +2,39 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/). At least so much as we feel like it.
 
-## [Unreleased]
+## [Unreleased] 
+## Included In This Release
+
+### Features
+
+- Added `RoundingProvider` and New Rounding Modes @JordanRL (#115)
+- Added `subFactorial()` method @JordanRL (#114)
+
+### Maintenance
+
+- Added `RoundingProvider` and New Rounding Modes @JordanRL (#115)
+- Added `subFactorial()` method @JordanRL (#114)
+
+
+## [2.1.1] - 2021-06-29
+### Added
+- **RandomProvider**: A provider to supply random numbers.
+  - *randomInt()*: Supplies a random integer.
+  - *randomDecimal()*: Supplies a random decimal between 0 and 1 (inclusive)
+  - *randomReal()*: Supplies a random real number.
+
+### Changed
+- **Composer**: Removed dependency on ircmaxell/random-lib, as it was outdated and is now replaced with Fermat's RandomProvider.
+
+## [2.1.0] - 2021-06-27
+### Added
+- NumberCollection: Added the method `selectScale()` to return the int value of the largest scale among all collection members.
+
+## [2.0.1] - 2021-06-26
+### Fixed
+- Composer: Fixed an issue with dependencies that created errors for libraries which include this as a dependency.
+
+## [2.0.0] - 2021-06-26
 ### Added
 
 - Providers:
@@ -198,6 +230,10 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
   - StatsProvider
   - TrigonometryProvider
 
-[Unreleased]: https://github.com/JordanRL/Fermat/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/JordanRL/Fermat/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/JordanRL/Fermat/compare/v2.1.0...v2.1.1
+[2.1.0]: https://github.com/JordanRL/Fermat/compare/v2.0.1...v2.1.0
+[2.0.1]: https://github.com/JordanRL/Fermat/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/JordanRL/Fermat/compare/v1.0.2...v2.0.0
 [1.0.2]: https://github.com/JordanRL/Fermat/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/JordanRL/Fermat/compare/v1.0.0...v1.0.1

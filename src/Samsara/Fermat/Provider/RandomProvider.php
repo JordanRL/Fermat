@@ -4,7 +4,6 @@ namespace Samsara\Fermat\Provider;
 
 use Exception;
 use JetBrains\PhpStorm\ExpectedValues;
-use JetBrains\PhpStorm\Pure;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\OptionalExit;
@@ -28,7 +27,6 @@ class RandomProvider
      * @throws OptionalExit
      * @throws IncompatibleObjectState
      */
-    #[Pure]
     public static function randomInt(
         int|string|DecimalInterface $min,
         int|string|DecimalInterface $max,
@@ -208,7 +206,6 @@ class RandomProvider
      * @throws OptionalExit
      * @throws IncompatibleObjectState
      */
-    #[Pure]
     public static function randomDecimal(
         int $scale = 10,
         #[ExpectedValues([self::MODE_ENTROPY, self::MODE_SPEED])]
@@ -252,7 +249,6 @@ class RandomProvider
      * @throws OptionalExit
      * @throws IncompatibleObjectState
      */
-    #[Pure]
     public static function randomReal(
         int|string|DecimalInterface $min,
         int|string|DecimalInterface $max,

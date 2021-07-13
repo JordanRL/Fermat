@@ -1,4 +1,4 @@
-# Mutability In PHP
+## Mutability In PHP
 
 Mutability is a property of instances of objects in object oriented languages. It refers to whether or not a method on the object changes the data referenced by that object's pointer (or in the case of PHP, its zval). If the method changes the data referenced by the object's zval, it is considered to be mutable. If the method does not change the data referenced, it is considered immutable.
 
@@ -18,7 +18,7 @@ In PHP, mutability comes with the additional issue of scoping. For most purposes
     
 This is not an issue for some applications, mainly those where all operations are treated as atomic. However, this is not the case for many mathematical operations.
 
-# Mutability In Fermat
+## Mutability In Fermat
 
 Because of these factors, mutability in Fermat is generally left up to the developer using the library. Both mutable and immutable implementations are provided for most values, and the developer using Fermat is asked to choose which type they want at the time it is created.
 
@@ -33,7 +33,7 @@ The exceptions to this rule are usually noted within this documentation, and nea
 
 In other cases, such as with implementations of the `Coordinate` abstract class, the reasons for making all the value classes one way or the other are related to the underlying math concepts they are meant to represent having some of the same properties as database results: that they should always point to the same dataset and that there should only ever be one representation of a given dataset.
 
-# Choosing Between The Two
+## Choosing Between The Two
 
 Which format you use is entirely up to you, but there are some situations that lend themselves more to one instead of the other.
 
@@ -41,7 +41,7 @@ First, lets look at the differences in your code that using one or the other mig
 
 !!! example "Example 1: Basic Usage Of Both"
     === "Immutable"
-        ```php
+        ``` php
         <?php
         
         use Samsara\Fermat\Values\ImmutableDecimal;
@@ -55,7 +55,7 @@ First, lets look at the differences in your code that using one or the other mig
         ```
     
     === "Mutable"
-        ```php
+        ``` php
         <?php
         
         use Samsara\Fermat\Values\MutableDecimal;
@@ -76,7 +76,7 @@ So then, why ever use immutable objects? It seems like using immutables will use
 
 !!! example "Example 2: Side Effects"
     === "Immutable"
-        ```php
+        ``` php
         <?php
         
         use Samsara\Fermat\Values\ImmutableDecimal;
@@ -96,7 +96,7 @@ So then, why ever use immutable objects? It seems like using immutables will use
         ```
     
     === "Mutable"
-        ```php
+        ``` php
         <?php
         
         use Samsara\Fermat\Values\MutableDecimal;
@@ -120,7 +120,7 @@ So then, why ever use immutable objects? It seems like using immutables will use
 As we can see from the second set of examples, *assigning a value from a mutable function call can have side effects beyond the variable assignment*. In fact, preserving the value of the original object requires a lot of attention to detail in the calling code. To achieve the same result as the immutable example with the mutable example, we would need to make a whole new object just for the calculation, which would look something like this:
 
 !!! example "Example 3: Mutables Used Without Side Effects"
-    ```php
+    ``` php
     <?php 
     use Samsara\Fermat\Values\MutableDecimal;
     
@@ -141,11 +141,11 @@ As we can see from the second set of examples, *assigning a value from a mutable
 
 Creating a new object on the fly to perform a calculation is in fact exactly how the implementation of immutables in Fermat is accomplished. Internally, any time a calculation has been performed, the new string with the resulting answer is stored in a newly created instance, instead of the instance that initiated the calculation.
 
-This can be seen if you look at the different implementations of the `setValue()` abstract method in the `ImmutableDecimal` and `MutableDecimal` classes.
+This can be seen if you look at the different implementations of the `setValue()` abstract method in the [ImmutableDecimal](../roster/latest/Fermat Core/Values/ImmutableDecimal.md) and [MutableDecimal](../roster/latest/Fermat Core/Values/MutableDecimal.md) classes.
 
 !!! example "Implementations Of setValue()"
     === "ImmutableDecimal"
-        ```php
+        ``` php
         <?php
         class ImmutableDecimal {
           protected function setValue($value, $scale = null, $base = 10)
@@ -158,7 +158,7 @@ This can be seen if you look at the different implementations of the `setValue()
         ```
     
     === "MutableDecimal"
-        ```php
+        ``` php
         <?php
         class MutableDecimal {
           protected function setValue($value, $scale = null, $base = 10)
@@ -172,7 +172,7 @@ This can be seen if you look at the different implementations of the `setValue()
         }
         ```
 
-The `ImmutableDecimal` implementation returns a new instance, while the `MutableDecimal` implementation sets the internal `$value` property directly and returns the current instance. This is the only meaningful difference between the two classes.
+The [ImmutableDecimal](../roster/latest/Fermat Core/Values/ImmutableDecimal.md) implementation returns a new instance, while the [MutableDecimal](../roster/latest/Fermat Core/Values/MutableDecimal.md) implementation sets the internal `$value` property directly and returns the current instance. This is the only meaningful difference between the two classes.
 
 !!! note "setValue() As A Protected Method"
     For both mutable and immutable values, the `setValue()` method has a visibility of `protected`, preventing the calling scope from using it. This is intentional, as the values in these objects are meant to represent something closer to a memory address than a normal variable.
@@ -183,7 +183,7 @@ The `ImmutableDecimal` implementation returns a new instance, while the `Mutable
     
     This correctly reflects how math itself works, and helps prevent the developer from accidentally "breaking" math by inadvertantly inserting erroneous data in the middle of a series of calculations.
 
-In this way, the immutable values act as time saving measures and sanity preserving measures in the case that you want to ensure side effects don't occur. Instead of manually creating new instances for every calculation and running the risk of forgetting on one line in a large program, you can simply request an instance of `ImmutableDecimal` and it will do so automatically.
+In this way, the immutable values act as time saving measures and sanity preserving measures in the case that you want to ensure side effects don't occur. Instead of manually creating new instances for every calculation and running the risk of forgetting on one line in a large program, you can simply request an instance of [ImmutableDecimal](../roster/latest/Fermat Core/Values/ImmutableDecimal.md) and it will do so automatically.
 
 The downside to this is that the newly created object is not referenced anywhere except in the return value. Without a reference, the object becomes inaccessible if you do not assign the returned result to a variable in the calling scope.
 
