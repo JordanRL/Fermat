@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Samsara\Fermat\Types\Traits\Arithmetic;
 
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Provider\ArithmeticProvider;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 trait ArithmeticScaleTrait
 {
 
-    protected function addScale($num)
+    /**
+     * @param DecimalInterface $num
+     * @return string
+     */
+    protected function addScale(DecimalInterface $num): string
     {
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
@@ -18,7 +25,11 @@ trait ArithmeticScaleTrait
 
     }
 
-    protected function subtractScale($num)
+    /**
+     * @param DecimalInterface $num
+     * @return string
+     */
+    protected function subtractScale(DecimalInterface $num): string
     {
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
@@ -27,7 +38,11 @@ trait ArithmeticScaleTrait
 
     }
 
-    protected function multiplyScale($num)
+    /**
+     * @param DecimalInterface $num
+     * @return string
+     */
+    protected function multiplyScale(DecimalInterface $num): string
     {
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
@@ -36,7 +51,12 @@ trait ArithmeticScaleTrait
 
     }
 
-    protected function divideScale($num, ?int $scale)
+    /**
+     * @param DecimalInterface $num
+     * @param int|null $scale
+     * @return string
+     */
+    protected function divideScale(DecimalInterface $num, ?int $scale): string
     {
 
         if (is_null($scale)) {
@@ -47,7 +67,13 @@ trait ArithmeticScaleTrait
 
     }
 
-    protected function powScale($num)
+    /**
+     * @param DecimalInterface $num
+     * @return string
+     * @throws MissingPackage
+     * @throws IntegrityConstraint
+     */
+    protected function powScale(DecimalInterface $num): string
     {
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
@@ -62,7 +88,11 @@ trait ArithmeticScaleTrait
 
     }
 
-    protected function sqrtScale(?int $scale)
+    /**
+     * @param int|null $scale
+     * @return string
+     */
+    protected function sqrtScale(?int $scale): string
     {
 
         $scale = $scale ?? $this->getScale();

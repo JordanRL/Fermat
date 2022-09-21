@@ -12,6 +12,7 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticGMPTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticScaleTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticNativeTrait;
@@ -25,6 +26,7 @@ trait ArithmeticSimpleTrait
     use ArithmeticSelectionTrait;
     use ArithmeticScaleTrait;
     use ArithmeticNativeTrait;
+    use ArithmeticGMPTrait;
 
     public function add($num)
     {
@@ -214,13 +216,6 @@ trait ArithmeticSimpleTrait
 
     public function divide($num, ?int $scale = null)
     {
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart,
-            $num
-        ] = $this->translateToParts($this, $num, 1);
 
         $scale = is_null($scale) ? $this->getScale() : $scale;
 
@@ -233,7 +228,7 @@ trait ArithmeticSimpleTrait
         ] = $this->translateToParts($this, $num, 1);
 
         if ($num->isComplex()) {
-            //return $num->divide($this);
+            return $num->divide($this);
         }
 
         if ($num->isEqual(1)) {
@@ -304,7 +299,7 @@ trait ArithmeticSimpleTrait
                 return $this->setValue($powNumerator, $powDenominator);
             }
 
-            return $powNumerator->divide($powDenominator);
+            return $powNumerator->divide($powDenominator)->truncateToScale(10);
         }
 
         $value = $this->powSelector($num);
@@ -313,7 +308,7 @@ trait ArithmeticSimpleTrait
             $value .= 'i';
         }
 
-        return $this->setValue($value);
+        return $this->setValue($value)->truncateToScale($this->getScale());
     }
 
     public function sqrt(?int $scale = null)
@@ -337,7 +332,7 @@ trait ArithmeticSimpleTrait
             $value .= 'i';
         }
 
-        return ($this instanceof DecimalInterface) ? $this->setValue($value) : new ImmutableDecimal($value, $scale);
+        return ($this instanceof DecimalInterface) ? $this->setValue($value)->truncateToScale($scale) : (new ImmutableDecimal($value, $scale))->truncateToScale($scale);
     }
 
 }

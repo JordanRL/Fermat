@@ -10,14 +10,18 @@ trait ArithmeticNativeTrait
 
     /**
      * @param DecimalInterface $num
-     * @return float|int
+     * @return int|float
      */
-    protected static function translateToNative(DecimalInterface $num)
+    protected static function translateToNative(DecimalInterface $num): int|float
     {
         return ($num->isInt() ? $num->asInt() : $num->asFloat());
     }
 
-    protected function addNative(DecimalInterface $num)
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected function addNative(DecimalInterface $num): int|float
     {
         $left = self::translateToNative($this);
         $right = self::translateToNative($num);
@@ -26,7 +30,11 @@ trait ArithmeticNativeTrait
         return (string)$value;
     }
 
-    protected function subtractNative(DecimalInterface $num)
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected function subtractNative(DecimalInterface $num): int|float
     {
         $left = self::translateToNative($this);
         $right = self::translateToNative($num);
@@ -35,7 +43,11 @@ trait ArithmeticNativeTrait
         return (string)$value;
     }
 
-    protected function multiplyNative(DecimalInterface $num)
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected function multiplyNative(DecimalInterface $num): int|float
     {
         $left = self::translateToNative($this);
         $right = self::translateToNative($num);
@@ -44,7 +56,11 @@ trait ArithmeticNativeTrait
         return (string)$value;
     }
 
-    protected function divideNative(DecimalInterface $num)
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected function divideNative(DecimalInterface $num): int|float
     {
         $left = self::translateToNative($this);
         $right = self::translateToNative($num);
@@ -53,7 +69,11 @@ trait ArithmeticNativeTrait
         return (string)$value;
     }
 
-    protected function powNative(DecimalInterface $num)
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected function powNative(DecimalInterface $num): int|float
     {
         $left = self::translateToNative($this);
         $right = self::translateToNative($num);
@@ -62,7 +82,10 @@ trait ArithmeticNativeTrait
         return (string)$value;
     }
 
-    protected function sqrtNative()
+    /**
+     * @return int|float
+     */
+    protected function sqrtNative(): int|float
     {
         $value = sqrt($this->asFloat());
         return (string)$value;

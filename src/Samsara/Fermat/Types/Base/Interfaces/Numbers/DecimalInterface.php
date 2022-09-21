@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Types\Base\Interfaces\Numbers;
 
+use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Types\NumberCollection;
 
 interface DecimalInterface extends SimpleNumberInterface
@@ -260,10 +261,10 @@ interface DecimalInterface extends SimpleNumberInterface
 
     /**
      * @param int $decimals
-     * @param int|null $mode
+     * @param RoundingMode|null $mode
      * @return DecimalInterface
      */
-    public function round(int $decimals = 0, ?int $mode = null): DecimalInterface;
+    public function round(int $decimals = 0, ?RoundingMode $mode = null): DecimalInterface;
 
     /**
      * @param int $decimals
@@ -274,10 +275,10 @@ interface DecimalInterface extends SimpleNumberInterface
 
     /**
      * @param int $scale
-     * @param int|null $mode
+     * @param RoundingMode|null $mode
      * @return DecimalInterface
      */
-    public function roundToScale(int $scale, ?int $mode = null): DecimalInterface;
+    public function roundToScale(int $scale, ?RoundingMode $mode = null): DecimalInterface;
 
     /**
      * @param $scale

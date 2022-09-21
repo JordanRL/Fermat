@@ -5,6 +5,8 @@ namespace Samsara\Fermat\Types\Traits\Decimal;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\SeriesProvider;
+use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
@@ -16,24 +18,60 @@ trait LogTrait
         $scale = $scale ?? $this->getScale();
 
         if ($scale <= 98 && $this->isInt()) {
-            $e = Numbers::makeE($scale+1);
+            $e = Numbers::makeE($scale+$this->asInt());
             $value = $e->pow($this);
         } else {
-            $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
             $x = $this instanceof ImmutableDecimal ? $this : new ImmutableDecimal($this->getValue());
             $x2 = $x->pow(2);
+            $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
             $intScale = $scale + $abs->asInt();
-
-            $one = new ImmutableDecimal(1);
-            $two = new ImmutableDecimal(2);
             $six = new ImmutableDecimal(6);
-            $prevDenom = new ImmutableDecimal(0);
 
-            for ($i = $intScale; $i >= 0; $i--) {
-                $thisDenom = $six->add(4 * $i)->add($prevDenom);
-                $prevDenom = $x2->divide($thisDenom, $intScale);
-            }
-            $value = $one->add($x->multiply(2)->divide($two->subtract($x)->add($prevDenom), $intScale));
+            $aPart = new class($x2, $x) implements ContinuedFractionTermInterface{
+                private ImmutableDecimal $x2;
+                private ImmutableDecimal $x;
+
+                public function __construct(ImmutableDecimal $x2, ImmutableDecimal $x)
+                {
+                    $this->x2 = $x2;
+                    $this->x = $x;
+                }
+
+                public function __invoke(int $n): ImmutableDecimal
+                {
+                    if ($n == 1) {
+                        return $this->x->multiply(2);
+                    }
+
+                    return $this->x2;
+                }
+            };
+
+            $bPart = new class($x, $six) implements ContinuedFractionTermInterface{
+                private ImmutableDecimal $x;
+                private ImmutableDecimal $six;
+
+                public function __construct(ImmutableDecimal $x, ImmutableDecimal $six)
+                {
+                    $this->x = $x;
+                    $this->six = $six;
+                }
+
+                public function __invoke(int $n): ImmutableDecimal
+                {
+                    if ($n == 0) {
+                        return new ImmutableDecimal(1);
+                    } elseif ($n == 1) {
+                        return (new ImmutableDecimal(2))->subtract($this->x);
+                    } elseif ($n == 2) {
+                        return $this->six;
+                    }
+
+                    return $this->six->add(4*($n-2));
+                }
+            };
+
+            $value = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $intScale, $intScale);
         }
 
         $value = ($round ? $value->roundToScale($scale) : $value->truncateToScale($scale));

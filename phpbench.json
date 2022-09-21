@@ -1,6 +1,6 @@
 {
   "runner.bootstrap": "vendor/autoload.php",
-  "runner.path": "tests-bench/src",
+  "runner.path": "tests-bench/test",
   "runner.output_mode": "throughput",
   "runner.time_unit": "seconds",
   "runner.revs": 100,

@@ -13,7 +13,7 @@ categories:
     labels:
       - 'Bug'
   - title: 'Maintenance'
-    label:
+    labels:
       - 'Code Quality'
       - 'Performance'
       - 'UX Improvement'

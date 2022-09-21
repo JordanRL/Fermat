@@ -7,7 +7,6 @@ use Samsara\Fermat\Provider\ConstantProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
-use Samsara\Fermat\Types\Base\Selectable;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\ImmutableDecimal;
 use Samsara\Fermat\Values\MutableFraction;
@@ -41,8 +40,6 @@ class Numbers
     public const LN_2 = '0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687';
     /* The value of i^i */
     public const I_POW_I = '0.2078795763507619085469556198349787700338778416317696080751358830554198772854821397886002778654260353';
-
-    protected static $defaultCalcMode = Selectable::CALC_MODE_PRECISION;
 
     /**
      * This class will make and return an instance of a concrete value.
@@ -97,7 +94,7 @@ class Numbers
      * @return NumberInterface
      * @throws IntegrityConstraint
      */
-    public static function makeFromBase10($type, $value, $scale = null, $base = 10): NumberInterface
+    public static function makeFromBase10($type, $value, ?int $scale = null, int $base = 10): NumberInterface
     {
         /**
          * @var ImmutableDecimal|MutableDecimal
@@ -358,16 +355,6 @@ class Numbers
     public static function makeZero($scale = null)
     {
         return self::make(self::IMMUTABLE, 0, $scale);
-    }
-
-    public static function getDefaultCalcMode(): int
-    {
-        return self::$defaultCalcMode;
-    }
-
-    public static function setDefaultCalcMode(int $mode): void
-    {
-        self::$defaultCalcMode = $mode;
     }
 
 }

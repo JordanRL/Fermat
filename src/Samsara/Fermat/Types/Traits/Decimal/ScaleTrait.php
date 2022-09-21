@@ -4,22 +4,24 @@ namespace Samsara\Fermat\Types\Traits\Decimal;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\RoundingProvider;
+use Samsara\Fermat\Provider\TrigonometryProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 trait ScaleTrait
 {
 
-    protected $scale;
+    protected int $scale;
 
-    public function getScale(): ?int
+    public function getScale(): int
     {
         return $this->scale;
     }
 
-    public function round(int $decimals = 0, ?int $mode = null): DecimalInterface
+    public function round(int $decimals = 0, ?RoundingMode $mode = null): DecimalInterface
     {
         if ($mode) {
             $defaultMode = RoundingProvider::getRoundingMode();
@@ -38,7 +40,7 @@ trait ScaleTrait
         $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
 
-        if ($this->sign == true) {
+        if ($this->sign) {
             $whole = '-'.$whole;
         }
 
@@ -65,7 +67,7 @@ trait ScaleTrait
         return $this->setValue($result);
     }
 
-    public function roundToScale(int $scale, ?int $mode = null): DecimalInterface
+    public function roundToScale(int $scale, ?RoundingMode $mode = null): DecimalInterface
     {
 
         $this->scale = $scale;
@@ -85,12 +87,12 @@ trait ScaleTrait
 
     public function ceil(): DecimalInterface
     {
-        return $this->round(0, RoundingProvider::MODE_CEIL);
+        return $this->round(0, RoundingMode::Ceil);
     }
 
     public function floor(): DecimalInterface
     {
-        return $this->round(0, RoundingProvider::MODE_FLOOR);
+        return $this->round(0, RoundingMode::Floor);
     }
 
     /**
@@ -175,7 +177,15 @@ trait ScaleTrait
      */
     public function asInt(): int
     {
-        return intval($this->getValue());
+        if ($this->isGreaterThan(PHP_INT_MAX) || $this->isLessThan(PHP_INT_MIN)) {
+            throw new IncompatibleObjectState(
+                'Cannot cast to integer when outside of integer range',
+                'Continue using string values for very large magnitude numbers',
+                'An attempt was made to cast to an integer when outside of the PHP integer range'
+            );
+        }
+
+        return intval($this->asReal());
     }
 
     public function isFloat(): bool
@@ -188,27 +198,6 @@ trait ScaleTrait
     public function asFloat(): float
     {
         return (float)$this->asReal();
-    }
-
-    protected function reduceDecimals(array $decimalArray, $pos, $add)
-    {
-
-        if ($add == 1) {
-            if ($decimalArray[$pos] == 9) {
-                $decimalArray[$pos] = 0;
-
-                if ($pos == 0) {
-                    return null;
-                } else {
-                    return $this->reduceDecimals($decimalArray, $pos-1, $add);
-                }
-            } else {
-                $decimalArray[$pos] += 1;
-            }
-        }
-
-        return $decimalArray;
-
     }
 
     protected function getDecimalPart()
