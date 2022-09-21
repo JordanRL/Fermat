@@ -2,30 +2,29 @@
 
 namespace Samsara\Fermat\Provider;
 
-use JetBrains\PhpStorm\ExpectedValues;
+use Samsara\Fermat\Enums\CalcMode;
 
 class CalculationModeProvider
 {
 
-    const MODE_PRECISION = 1;
-    const MODE_NATIVE = 2;
+    public const PHP_INT_MAX_HALF = PHP_INT_MAX/2;
 
-    private static int $mode;
+    private static CalcMode $currentMode = CalcMode::Auto;
 
-    public static function setCalculationMode(
-        #[ExpectedValues([
-            self::MODE_PRECISION,
-            self::MODE_NATIVE
-        ])]
-        int $mode
-    ): void
+    /**
+     * @return CalcMode
+     */
+    public static function getCurrentMode(): CalcMode
     {
-        self::$mode = $mode;
+        return self::$currentMode;
     }
 
-    public static function getCalculationMode(): int
+    /**
+     * @param CalcMode $currentMode
+     */
+    public static function setCurrentMode(CalcMode $currentMode): void
     {
-        return self::$mode;
+        self::$currentMode = $currentMode;
     }
 
 }

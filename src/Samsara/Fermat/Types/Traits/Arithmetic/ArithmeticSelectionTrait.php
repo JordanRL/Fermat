@@ -8,13 +8,15 @@ use Composer\InstalledVersions;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\ComplexNumbers;
+use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\CalculationModeProvider;
+use Samsara\Fermat\Provider\RoundingProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\ComplexNumberInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
-use Samsara\Fermat\Types\Base\Selectable;
 use Samsara\Fermat\Types\ComplexNumber;
 use Samsara\Fermat\Values\Geometry\CoordinateSystems\CartesianCoordinate;
 use Samsara\Fermat\Values\ImmutableDecimal;
@@ -25,11 +27,6 @@ use Samsara\Fermat\Values\MutableFraction;
 trait ArithmeticSelectionTrait
 {
 
-    /** @var int */
-    protected $calcMode;
-    /** @var array */
-    protected $modeRegister;
-
     /**
      * @param $left
      * @param $right
@@ -38,7 +35,7 @@ trait ArithmeticSelectionTrait
      * @return array
      * @throws IntegrityConstraint
      */
-    protected function translateToParts($left, $right, $identity = 0): array
+    protected function translateToParts($left, $right, int $identity = 0): array
     {
         switch (gettype($right)) {
             case 'integer':
@@ -65,7 +62,7 @@ trait ArithmeticSelectionTrait
     /**
      * @param string $input
      * @return CoordinateInterface|FractionInterface|NumberInterface|ComplexNumber|CartesianCoordinate|ImmutableDecimal|ImmutableFraction|MutableDecimal|MutableFraction
-     * @throws IntegrityConstraint
+     * @throws IntegrityConstraint|MissingPackage
      */
     protected static function stringSelector(string $input)
     {
@@ -91,7 +88,7 @@ trait ArithmeticSelectionTrait
 
     }
 
-    protected static function rightSelector($left, $right, $identity)
+    protected static function rightSelector($left, $right, $identity): array
     {
 
         if ($right instanceof ComplexNumberInterface) {
@@ -103,92 +100,192 @@ trait ArithmeticSelectionTrait
             if ($right instanceof FractionInterface) {
                 if ($left instanceof FractionInterface) {
                     $rightPart = $right;
-                    $otherPart = new ImmutableFraction(Numbers::makeZero(), Numbers::makeOne());
+
+                    $thatRealPart = $right->isReal() ? $rightPart : new ImmutableFraction(new ImmutableDecimal($identity), new ImmutableDecimal(1));
+                    $thatImaginaryPart = $right->isImaginary() ? $rightPart : new ImmutableFraction(new ImmutableDecimal($identity.'i'), new ImmutableDecimal(1));
                 } else {
                     $rightPart = $right->asDecimal();
-                    $otherPart = Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
-
                     $right = $right->asDecimal();
+
+                    $thatRealPart = $right->isReal() ? $rightPart : new ImmutableDecimal($identity, $left->getScale());
+                    $thatImaginaryPart = $right->isImaginary() ? $rightPart : new ImmutableDecimal($identity.'i', $left->getScale());
                 }
             } else {
                 $rightPart = $right;
-                $otherPart = Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
-            }
 
-            $thatRealPart = $right->isReal() ? $rightPart : $otherPart;
-            $thatImaginaryPart = $right->isImaginary() ? $rightPart : $otherPart->multiply('i');
+                $thatRealPart = $right->isReal() ? $rightPart : new ImmutableDecimal($identity, $left->getScale());
+                $thatImaginaryPart = $right->isImaginary() ? $rightPart : new ImmutableDecimal($identity.'i', $left->getScale());
+            }
         }
 
         return [$thatRealPart, $thatImaginaryPart, $right];
 
     }
 
-    protected static function leftSelector($left, $identity)
+    protected static function leftSelector($left, $identity): array
     {
 
         if ($left instanceof ComplexNumberInterface) {
             $thisRealPart = $left->getRealPart();
             $thisImaginaryPart = $left->getImaginaryPart();
         } else {
-            $thisRealPart = $left->isReal() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity, $left->getScale());
-            $thisImaginaryPart = $left->isImaginary() ? $left : Numbers::make(Numbers::IMMUTABLE, $identity.'i', $left->getScale());
+            $thisRealPart = $left->isReal() ? $left : new ImmutableDecimal($identity, $left->getScale());
+            $thisImaginaryPart = $left->isImaginary() ? $left : new ImmutableDecimal($identity.'i', $left->getScale());
         }
 
         return [$thisRealPart, $thisImaginaryPart];
 
     }
 
-    protected function addSelector(DecimalInterface $num)
+    protected function modeSelectorForArithmetic(DecimalInterface $num): CalcMode
     {
-        return match ($this->calcMode) {
-            Selectable::CALC_MODE_PRECISION => $this->addScale($num),
-            Selectable::CALC_MODE_NATIVE => $this->addNative($num),
-            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['add']}($num),
+        /*
+         * Floats have variable density depending on where the exponent is. However, the exponent is also
+         * base-2, while our scale is base-10. Thus, in order to determine if the requested scale is within
+         * the range of float to be accurate, we would ideally need to look at the log2() value of the result.
+         *
+         * In practice however this is a very expensive operation to perform twice for every calculation, and we
+         * might have overflows or underflows that are difficult to determine.
+         *
+         * So, to compromise we are going to set the maximum scale for native within 'auto' to 10, and then cap
+         * result at the maximum value of 10,000, which is one order of magnitude below the maximum rounding error
+         * of a double precision float as implemented in PHP.
+         */
+        $nativeScale = $this->getScale() <= 10 && $num->getScale() <= 10;
+        $nativeValues = $this->isLessThan(10000) && $num->isLessThan(10000) && ($this->isFloat() || $num->isFloat());
+
+        /*
+         * We still need to check for integers, since it's possible the GMP extension won't be installed.
+         */
+        $nativeInt = $this->isInt() && $num->isInt();
+        $nativeInt = $nativeInt && $this->abs()->isLessThan(CalculationModeProvider::PHP_INT_MAX_HALF);
+        $nativeInt = $nativeInt && $num->abs()->isLessThan(CalculationModeProvider::PHP_INT_MAX_HALF);
+
+        if ($nativeInt || ($nativeScale && $nativeValues)) {
+            return CalcMode::Native;
+        } else {
+            return CalcMode::Precision;
+        }
+    }
+
+    protected function addSelector(DecimalInterface $num): string
+    {
+        $calcMode = $this->getMode();
+        if ($calcMode == CalcMode::Auto) {
+            $value = $this->addGMP($num);
+
+            if ($value !== false) {
+                return $value;
+            }
+
+            $calcMode = $this->modeSelectorForArithmetic($num);
+        }
+
+        return match ($calcMode) {
+            CalcMode::Native => $this->addNative($num),
+            default => $this->addScale($num),
         };
     }
 
-    protected function subtractSelector(DecimalInterface $num)
+    protected function subtractSelector(DecimalInterface $num): string
     {
-        return match ($this->calcMode) {
-            Selectable::CALC_MODE_PRECISION => $this->subtractScale($num),
-            Selectable::CALC_MODE_NATIVE => $this->subtractNative($num),
-            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['subtract']}($num),
+        $calcMode = $this->getMode();
+        if ($calcMode == CalcMode::Auto) {
+            $value = $this->subtractGMP($num);
+
+            if ($value !== false) {
+                return $value;
+            }
+
+            $calcMode = $this->modeSelectorForArithmetic($num);
+        }
+
+        return match ($calcMode) {
+            CalcMode::Native => $this->subtractNative($num),
+            default => $this->subtractScale($num),
         };
     }
 
-    protected function multiplySelector(DecimalInterface $num)
+    protected function multiplySelector(DecimalInterface $num): string
     {
-        return match ($this->calcMode) {
-            Selectable::CALC_MODE_PRECISION => $this->multiplyScale($num),
-            Selectable::CALC_MODE_NATIVE => $this->multiplyNative($num),
-            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['multiply']}($num),
+        $calcMode = $this->getMode();
+        if ($calcMode == CalcMode::Auto) {
+            $value = $this->multiplyGMP($num);
+
+            if ($value !== false) {
+                return $value;
+            }
+
+            $calcMode = $this->modeSelectorForArithmetic($num);
+        }
+
+        return match ($calcMode) {
+            CalcMode::Native => $this->multiplyNative($num),
+            default => $this->multiplyScale($num),
         };
     }
 
-    protected function divideSelector(DecimalInterface $num, int $scale)
+    protected function divideSelector(DecimalInterface $num, ?int $scale): string
     {
-        return match ($this->calcMode) {
-            Selectable::CALC_MODE_PRECISION => $this->divideScale($num, $scale),
-            Selectable::CALC_MODE_NATIVE => $this->divideNative($num),
-            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['divide']}($num, $scale),
+        $calcMode = $this->getMode();
+        if ($calcMode == CalcMode::Auto) {
+            $value = $this->divideGMP($num);
+
+            if ($value !== false) {
+                return $value;
+            }
+
+            $calcMode = $this->modeSelectorForArithmetic($num);
+        }
+
+        return match ($calcMode) {
+            CalcMode::Native => $this->divideNative($num),
+            default => $this->divideScale($num, $scale),
         };
     }
 
-    protected function powSelector(DecimalInterface $num)
+    protected function powSelector(DecimalInterface $num): string
     {
-        return match ($this->calcMode) {
-            Selectable::CALC_MODE_PRECISION => $this->powScale($num),
-            Selectable::CALC_MODE_NATIVE => $this->powNative($num),
-            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['pow']}($num),
+        $calcMode = $this->getMode();
+        if ($calcMode == CalcMode::Auto) {
+            $value = $this->powGMP($num);
+
+            if ($value !== false) {
+                return $value;
+            }
+
+            $calcMode = $this->modeSelectorForArithmetic($num);
+        }
+
+        return match ($calcMode) {
+            CalcMode::Native => $this->powNative($num),
+            default => $this->powScale($num),
         };
     }
 
-    protected function sqrtSelector(int $scale)
+    protected function sqrtSelector(?int $scale): string
     {
-        return match ($this->calcMode) {
-            Selectable::CALC_MODE_PRECISION => $this->sqrtScale($scale),
-            Selectable::CALC_MODE_NATIVE => $this->sqrtNative(),
-            default => $this->{$this->modeRegister[Selectable::CALC_MODE_FALLBACK]['sqrt']}($scale),
+        $calcMode = $this->getMode();
+        if ($calcMode == CalcMode::Auto) {
+            $value = $this->sqrtGMP();
+
+
+            if ($value !== false) {
+                return $value;
+            }
+
+            $scale = $scale ?? $this->getScale();
+
+            if ($scale > 10 || $this->isGreaterThan(10000) || $this->isLessThan(0)) {
+                $calcMode = CalcMode::Precision;
+            } else {
+                $calcMode = CalcMode::Native;
+            }
+        }
+
+        return match ($calcMode) {
+            CalcMode::Native => $this->sqrtNative(),
+            default => $this->sqrtScale($scale),
         };
     }
 

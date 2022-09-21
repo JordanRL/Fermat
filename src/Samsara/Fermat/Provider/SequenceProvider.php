@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
@@ -89,9 +90,13 @@ class SequenceProvider
             return $sequence;
         }
 
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
+        if ($n >= (PHP_INT_MAX/2)) {
+            $n = new ImmutableDecimal($n, 100);
 
-        return $n->multiply(2)->add(1);
+            return $n->multiply(2)->add(1);
+        } else {
+            return new ImmutableDecimal(($n*2)+1, 100);
+        }
 
     }
 
@@ -117,10 +122,13 @@ class SequenceProvider
 
             return $sequence;
         }
+        if ($n > (PHP_INT_MAX/2)) {
+            $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
 
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
-
-        return $n->multiply(2);
+            return $n->multiply(2);
+        } else {
+            return new ImmutableDecimal(($n*2), 100);
+        }
 
     }
 
@@ -147,14 +155,7 @@ class SequenceProvider
             return $sequence;
         }
 
-        $negOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1, 100);
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
-
-        if ($n->modulo(2)->isEqual(0)) {
-            return Numbers::makeOne();
-        }
-
-        return $negOne;
+        return ($n % 2 ? new ImmutableDecimal(-1) : new ImmutableDecimal(1));
 
     }
 
@@ -194,6 +195,7 @@ class SequenceProvider
     }
 
     /**
+     *
      * WARNING: This function is VERY unoptimized. Be careful of large m values.
      *
      * @param $n
@@ -204,29 +206,35 @@ class SequenceProvider
     public static function nthBernoulliNumber($n)
     {
 
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
+        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100)->setMode(CalcMode::Precision);
 
         if ($n->isEqual(0)) {
             return Numbers::makeOne();
         }
 
         if ($n->isEqual(1)) {
-            return Numbers::make(Numbers::IMMUTABLE, '0.5', 100);
+            return Numbers::make(Numbers::IMMUTABLE, '-0.5', 100);
         }
 
-        if ($n->isGreaterThan(1) && $n->modulo(2)->isEqual(1)) {
-            return Numbers::makeZero();
+        $sum = Numbers::makeZero(100);
+        $sum->setMode(CalcMode::Precision);
+
+        // TODO: Figure out why the fuck this doesn't work?
+        for ($k = 0;$k <= $n->asInt();$k++) {
+            $kNum = Numbers::make(Numbers::IMMUTABLE, $k, 100)->setMode(CalcMode::Precision);
+            for ($v = 0;$v <= $k;$v++) {
+                $vNum = Numbers::make(Numbers::IMMUTABLE, $v, 100)->setMode(CalcMode::Precision);
+                $sum = $sum->add(
+                    SequenceProvider::nthPowerNegativeOne($v)->multiply(
+                        $kNum->factorial()->divide(
+                                $vNum->factorial()->multiply($kNum->subtract($vNum)->factorial()), 100
+                            )
+                    )->multiply($vNum->pow($n))->divide($kNum->add(1), 100)
+                );
+            }
         }
 
-        $b = Numbers::make(Numbers::IMMUTABLE, -1, 100);
-        $two = Numbers::make(Numbers::IMMUTABLE, 2, 100);
-        $four = Numbers::make(Numbers::IMMUTABLE, 4, 100);
-
-        $b = $b->pow($n->divide(2)->floor())
-            ->multiply($n->divide($two->pow($n)->subtract($four->pow($n))))
-            ->multiply(static::nthEulerZigzag($n->asInt()));
-
-        return $b;
+        return $sum->round(99);
 
     }
 

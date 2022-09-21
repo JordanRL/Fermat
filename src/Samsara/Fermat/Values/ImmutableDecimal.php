@@ -43,12 +43,12 @@ class ImmutableDecimal extends Decimal
     /**
      * @param string $value
      * @param int|null $scale
-     * @param int $base
+     * @param int|null $base
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    protected function setValue(string $value, int $scale = null, int $base = null)
+    protected function setValue(string $value, ?int $scale = null, ?int $base = null): ImmutableDecimal
     {
         $imaginary = false;
 
@@ -70,7 +70,13 @@ class ImmutableDecimal extends Decimal
             $value .= 'i';
         }
 
-        return new ImmutableDecimal($value, $scale, $base);
+        $return = new ImmutableDecimal($value, $scale, $base);
+
+        if (isset($this->calcMode)) {
+            $return->setMode($this->calcMode);
+        }
+
+        return $return;
     }
 
 }

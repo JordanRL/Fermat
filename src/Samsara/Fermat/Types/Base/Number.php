@@ -4,7 +4,9 @@ namespace Samsara\Fermat\Types\Base;
 
 use Ds\Hashable;
 use ReflectionException;
+use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\CalculationModeProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\ComplexNumber;
 use Samsara\Fermat\Values\ImmutableComplexNumber;
@@ -17,15 +19,17 @@ abstract class Number implements Hashable, NumberInterface
     /** @var array */
     protected array $value;
     /** @var bool  */
-    protected $extensions = true;
+    protected bool $extensions = true;
     /** @var bool  */
-    protected $imaginary;
+    protected bool $imaginary;
     /** @var bool */
     protected bool $sign;
+    /** @var CalcMode|null */
+    protected ?CalcMode $calcMode = null;
 
     public function __construct()
     {
-        $this->setMode(Numbers::getDefaultCalcMode());
+
     }
 
     /**
@@ -34,14 +38,21 @@ abstract class Number implements Hashable, NumberInterface
      * MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting.
      * MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
      *
-     * @param int $mode
+     * @param CalcMode $mode
      * @return $this
      */
-    public function setMode(int $mode): self
+    public function setMode(CalcMode $mode): self
     {
         $this->calcMode = $mode;
 
         return $this;
+    }
+
+    public function getMode(): CalcMode
+    {
+
+        return $this->calcMode ?? CalculationModeProvider::getCurrentMode();
+
     }
 
     /**

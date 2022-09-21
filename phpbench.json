@@ -1,0 +1,33 @@
+{
+  "runner.bootstrap": "vendor/autoload.php",
+  "runner.path": "tests-bench/test",
+  "runner.output_mode": "throughput",
+  "runner.time_unit": "seconds",
+  "runner.revs": 100,
+  "runner.iterations": 50,
+  "runner.retry_threshold": 5,
+  "runner.warmup": 2,
+  "report.generators": {
+    "my-report": {
+      "generator": "expression",
+      "break": [
+        "benchmark"
+      ],
+      "aggregate": [
+        "benchmark_class",
+        "subject_name"
+      ],
+      "expressions": {
+        "equivalent": "format(\"%2.4f\", mode(result_time_avg)/first(env_sampler_hash)) ~ \" md5() hashes\""
+      },
+      "cols": [
+        "benchmark",
+        "subject",
+        "mean",
+        "mode",
+        "rstdev",
+        "equivalent"
+      ]
+    }
+  }
+}

@@ -3,10 +3,13 @@
 namespace Samsara\Fermat\Types\Traits\Decimal;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
+use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 trait InverseTrigonometryScaleTrait
 {
@@ -15,22 +18,24 @@ trait InverseTrigonometryScaleTrait
     {
 
         $scale = $scale ?? $this->getScale();
-        $scale += 2;
-        $pi = Numbers::makePi();
-        $piDivTwo = $pi->divide(2, $scale+2);
 
         if ($this->isEqual(1) || $this->isEqual(-1)) {
-            $answer = $piDivTwo;
+            $pi = Numbers::makePi();
+            $answer = $pi->divide(2, $scale+2);
             if ($this->isNegative()) {
                 $answer = $answer->multiply(-1);
             }
         } elseif ($this->isEqual(0)) {
             $answer = Numbers::makeZero();
         } else {
-            $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale + 2);
-            $one = Numbers::makeOne($scale+2);
+            $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
+            $addScale = $abs->asInt() > $abs->getScale() ? $abs->asInt() : $abs->getScale();
+            $intScale = $scale + $addScale;
+            $x = new ImmutableDecimal($this->getValue(), $intScale);
+            $x2 = $x->pow(2);
+            $one = new ImmutableDecimal(1, $intScale);
 
-            if ($z->abs()->isGreaterThan(1)) {
+            if ($abs->isGreaterThan(1)) {
                 throw new IntegrityConstraint(
                     'The input for arcsin must have an absolute value of 1 or smaller',
                     'Only calculate arcsin for values of 1 or smaller',
@@ -38,25 +43,41 @@ trait InverseTrigonometryScaleTrait
                 );
             }
 
-            $prevAnswer = $z;
-            $answer = $z;
-            $count = 0;
+            $aPart = new class($x2, $intScale) implements ContinuedFractionTermInterface{
+                private ImmutableDecimal $x2;
 
-            do {
-                $answer = $answer->subtract(
-                    $answer->sin($scale)->subtract($z)->divide($answer->cos($scale), $scale)
-                );
-                $diff = $answer->subtract($prevAnswer)->abs();
-                $prevAnswer = $answer;
-                $count++;
-            } while ($diff->numberOfLeadingZeros() <= $scale && $count < 15);
+                public function __construct(ImmutableDecimal $x2, int $intScale)
+                {
+                    $this->x2 = $x2;
+                    $this->negTwo = new ImmutableDecimal(-2, $intScale);
+                }
 
+                public function __invoke(int $n): ImmutableDecimal
+                {
+                    $subterm = floor(($n+1)/2);
+
+                    return $this->negTwo->multiply(
+                        2*$subterm-1
+                    )->multiply($subterm)->multiply($this->x2);
+                }
+            };
+
+            $bPart = new class() implements ContinuedFractionTermInterface{
+                public function __invoke(int $n): ImmutableDecimal
+                {
+                    return SequenceProvider::nthOddNumber($n);
+                }
+            };
+
+            $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $intScale, $intScale, SeriesProvider::SUM_MODE_ADD);
+
+            $answer = $x->multiply($one->subtract($x2)->sqrt($intScale))->divide($answer, $intScale);
 
         }
         if ($round) {
-            $answer = $answer->roundToScale($scale-2);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToScale($scale-2);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer);
@@ -105,18 +126,19 @@ trait InverseTrigonometryScaleTrait
     {
 
         $scale = $scale ?? $this->getScale();
-        $scale += 5;
+        $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
+        $mulScale = $abs->asInt() > $abs->getScale() ? $abs->asInt() : $abs->getScale();
+        $intScale = $scale * $mulScale;
+        $x = new ImmutableDecimal($this->getValue(), $intScale);
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
+        $one = Numbers::makeOne($intScale);
 
-        $one = Numbers::makeOne();
-
-        $answer = $z->divide($one->add($z->pow(2))->sqrt($scale), $scale)->arcsin($scale);
+        $answer = $x->divide($one->add($x->pow(2))->sqrt($intScale), $intScale)->arcsin($intScale);
 
         if ($round) {
-            $answer = $answer->roundToScale($scale-5);
+            $answer = $answer->roundToScale($scale);
         } else {
-            $answer = $answer->truncateToScale($scale-5);
+            $answer = $answer->truncateToScale($scale);
         }
 
         return $this->setValue($answer);
@@ -202,7 +224,7 @@ trait InverseTrigonometryScaleTrait
 
     }
 
-    abstract public function roundToScale(int $scale, ?int $mode = null): DecimalInterface;
+    abstract public function roundToScale(int $scale, ?RoundingMode $mode = null): DecimalInterface;
 
     abstract public function truncateToScale(int $scale): DecimalInterface;
 

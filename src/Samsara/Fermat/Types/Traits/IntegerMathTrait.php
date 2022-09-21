@@ -134,6 +134,12 @@ trait IntegerMathTrait
             );
         }
 
+        if (extension_loaded('gmp')) {
+            $value = gmp_lcm($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
+
+            return $this->setValue(gmp_strval($value), $this->getScale(), $this->getBase());
+        }
+
         return $this->multiply($num)->abs()->divide($this->getGreatestCommonDivisor($num));
 
     }
@@ -153,31 +159,31 @@ trait IntegerMathTrait
             );
         }
 
-        if (function_exists('gmp_gcd') && function_exists('gmp_strval') && $this->extensions) {
+        if (extension_loaded('gmp')) {
             $val = gmp_strval(gmp_gcd($thisNum->getValue(), $num->getValue()));
 
             return Numbers::make(Numbers::IMMUTABLE, $val);
-        } else {
-
-            if ($thisNum->isLessThan($num)) {
-                $greater = $num;
-                $lesser = $thisNum;
-            } else {
-                $greater = $thisNum;
-                $lesser = $num;
-            }
-
-            /** @var NumberInterface $remainder */
-            $remainder = $greater->modulo($lesser);
-
-            while ($remainder->isGreaterThan(0)) {
-                $greater = $lesser;
-                $lesser = $remainder;
-                $remainder = $greater->modulo($lesser);
-            }
-
-            return $lesser;
         }
+
+        if ($thisNum->isLessThan($num)) {
+            $greater = $num;
+            $lesser = $thisNum;
+        } else {
+            $greater = $thisNum;
+            $lesser = $num;
+        }
+
+        /** @var NumberInterface $remainder */
+        $remainder = $greater->modulo($lesser);
+
+        while ($remainder->isGreaterThan(0)) {
+            $greater = $lesser;
+            $lesser = $remainder;
+            $remainder = $greater->modulo($lesser);
+        }
+
+        return $lesser;
+
     }
 
     /**

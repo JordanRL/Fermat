@@ -8,54 +8,84 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 trait ArithmeticNativeTrait
 {
 
-    abstract protected static function translateToNative(DecimalInterface $num): float|int;
-
-    protected function addNative(DecimalInterface $num)
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected static function translateToNative(DecimalInterface $num): int|float
     {
-        $left = static::translateToNative($this);
-        $right = static::translateToNative($num);
+        return ($num->isInt() ? $num->asInt() : $num->asFloat());
+    }
+
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected function addNative(DecimalInterface $num): int|float
+    {
+        $left = self::translateToNative($this);
+        $right = self::translateToNative($num);
 
         $value = $left + $right;
         return (string)$value;
     }
 
-    protected function subtractNative(DecimalInterface $num)
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected function subtractNative(DecimalInterface $num): int|float
     {
-        $left = static::translateToNative($this);
-        $right = static::translateToNative($num);
+        $left = self::translateToNative($this);
+        $right = self::translateToNative($num);
 
         $value = $left - $right;
         return (string)$value;
     }
 
-    protected function multiplyNative(DecimalInterface $num)
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected function multiplyNative(DecimalInterface $num): int|float
     {
-        $left = static::translateToNative($this);
-        $right = static::translateToNative($num);
+        $left = self::translateToNative($this);
+        $right = self::translateToNative($num);
 
         $value = $left * $right;
         return (string)$value;
     }
 
-    protected function divideNative(DecimalInterface $num)
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected function divideNative(DecimalInterface $num): int|float
     {
-        $left = static::translateToNative($this);
-        $right = static::translateToNative($num);
+        $left = self::translateToNative($this);
+        $right = self::translateToNative($num);
 
         $value = $left / $right;
         return (string)$value;
     }
 
-    protected function powNative(DecimalInterface $num)
+    /**
+     * @param DecimalInterface $num
+     * @return int|float
+     */
+    protected function powNative(DecimalInterface $num): int|float
     {
-        $left = static::translateToNative($this);
-        $right = static::translateToNative($num);
+        $left = self::translateToNative($this);
+        $right = self::translateToNative($num);
 
         $value = pow($left, $right);
         return (string)$value;
     }
 
-    protected function sqrtNative()
+    /**
+     * @return int|float
+     */
+    protected function sqrtNative(): int|float
     {
         $value = sqrt($this->asFloat());
         return (string)$value;

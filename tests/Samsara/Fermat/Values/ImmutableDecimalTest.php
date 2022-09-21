@@ -1055,7 +1055,7 @@ class ImmutableDecimalTest extends TestCase
         $this->assertEquals(15, $num2->add('0.2')->asInt());
 
         $this->expectException(IncompatibleObjectState::class);
-        $this->expectExceptionMessage('Cannot export number as integer because it is out of range');
+        $this->expectExceptionMessage('Cannot cast to integer when outside of integer range');
 
         $num = new ImmutableDecimal('1000000000000000000000000000000000000000000000000000000');
         $num->asInt();

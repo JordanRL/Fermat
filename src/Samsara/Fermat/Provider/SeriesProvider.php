@@ -3,14 +3,23 @@
 namespace Samsara\Fermat\Provider;
 
 use ReflectionException;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 class SeriesProvider
 {
+
+    public const SUM_MODE_ADD = 1;
+    public const SUM_MODE_SUB = 2;
+    public const SUM_MODE_ALT_ADD = 3;
+    public const SUM_MODE_ALT_SUB = 4;
+    public const SUM_MODE_ALT_FIRST_ADD = 5;
+    public const SUM_MODE_ALT_FIRST_SUB = 6;
 
     /**
      * Creates a series that evaluates the following:
@@ -123,6 +132,54 @@ class SeriesProvider
         }
 
         return $sum->roundToScale($scale);
+
+    }
+
+    /**
+     * This function processes a generalized continued fraction. In order to use this you must provide
+     * two callable classes that implement the ContinuedFractionTermInterface. This interface defines the
+     * expected inputs and outputs of the callable used by this function.
+     *
+     * This function evaluates continued fractions in the form:
+     *
+     * b0 + (a1 / (b1 + (a2 / (b2 + (a3 / b3 + ...)))))
+     *
+     * This is a continued fraction in the form used in complex analysis, referred to as a generalized continued fraction.
+     *
+     * For more information about this, please read the wikipedia article on the subject:
+     *
+     * [https://en.wikipedia.org/wiki/Generalized_continued_fraction](https://en.wikipedia.org/wiki/Generalized_continued_fraction)
+     *
+     * @param ContinuedFractionTermInterface $aPart
+     * @param ContinuedFractionTermInterface $bPart
+     * @param int $terms
+     * @param int $scale
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
+    public static function generalizedContinuedFraction(
+        ContinuedFractionTermInterface $aPart,
+        ContinuedFractionTermInterface $bPart,
+        int $terms,
+        int $scale,
+        int $sumMode = self::SUM_MODE_ADD
+    ): ImmutableDecimal
+    {
+
+        $start = $bPart(0);
+        $prevDenominator = new ImmutableDecimal(0, $scale);
+
+        for ($i = $terms;$i > 0;$i--) {
+            if ($sumMode == self::SUM_MODE_ADD) {
+                $prevDenominator = $bPart($i)->add($prevDenominator);
+            } else {
+                $prevDenominator = $bPart($i)->subtract($prevDenominator);
+            }
+            $prevDenominator = $aPart($i)->divide($prevDenominator, $scale);
+        }
+
+        return $start->add($prevDenominator);
 
     }
     

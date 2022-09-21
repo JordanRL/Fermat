@@ -4,52 +4,28 @@ namespace Samsara\Fermat\Provider;
 
 use JetBrains\PhpStorm\ExpectedValues;
 use JetBrains\PhpStorm\Pure;
+use Samsara\Fermat\Enums\RandomMode;
+use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 class RoundingProvider
 {
 
-    const MODE_HALF_UP = 1;
-    const MODE_HALF_DOWN = 2;
-    const MODE_HALF_EVEN = 3;
-    const MODE_HALF_ODD = 4;
-    const MODE_HALF_ZERO = 5;
-    const MODE_HALF_INF = 6;
-    const MODE_CEIL = 7;
-    const MODE_FLOOR = 8;
-    const MODE_RANDOM = 9;
-    const MODE_ALTERNATING = 10;
-    const MODE_STOCHASTIC = 11;
-
-    private static int $mode = self::MODE_HALF_EVEN;
+    private static RoundingMode $mode = RoundingMode::HalfEven;
     private static ?DecimalInterface $decimal;
     private static int $alt = 1;
     private static ?string $remainder;
 
     public static function setRoundingMode(
-        #[ExpectedValues([
-            self::MODE_HALF_UP,
-            self::MODE_HALF_DOWN,
-            self::MODE_HALF_EVEN,
-            self::MODE_HALF_ODD,
-            self::MODE_HALF_ZERO,
-            self::MODE_HALF_INF,
-            self::MODE_CEIL,
-            self::MODE_FLOOR,
-            self::MODE_RANDOM,
-            self::MODE_ALTERNATING,
-            self::MODE_STOCHASTIC
-        ])]
-        int $mode
+        RoundingMode $mode
     ): void
     {
         static::$mode = $mode;
     }
 
-    #[Pure]
-    public static function getRoundingMode(): int
+    public static function getRoundingMode(): RoundingMode
     {
-        return static::$mode;
+        return self::$mode;
     }
 
     public static function round(DecimalInterface $decimal, int $places = 0): string
@@ -113,16 +89,16 @@ class RoundingProvider
 
             if ($carry == 0) {
                 $carry = match (self::getRoundingMode()) {
-                    self::MODE_HALF_UP => self::roundHalfUp($digit),
-                    self::MODE_HALF_DOWN => self::roundHalfDown($digit),
-                    self::MODE_HALF_ODD => self::roundHalfOdd($digit, $nextDigit),
-                    self::MODE_HALF_ZERO => self::roundHalfZero($digit),
-                    self::MODE_HALF_INF => self::roundHalfInf($digit),
-                    self::MODE_CEIL => self::roundCeil($digit),
-                    self::MODE_FLOOR => self::roundFloor(),
-                    self::MODE_RANDOM => self::roundRandom($digit),
-                    self::MODE_ALTERNATING => self::roundAlternating($digit),
-                    self::MODE_STOCHASTIC => self::roundStochastic($digit),
+                    RoundingMode::HalfUp => self::roundHalfUp($digit),
+                    RoundingMode::HalfDown => self::roundHalfDown($digit),
+                    RoundingMode::HalfOdd => self::roundHalfOdd($digit, $nextDigit),
+                    RoundingMode::HalfZero => self::roundHalfZero($digit),
+                    RoundingMode::HalfInf => self::roundHalfInf($digit),
+                    RoundingMode::Ceil => self::roundCeil($digit),
+                    RoundingMode::Floor => self::roundFloor(),
+                    RoundingMode::HalfRandom => self::roundRandom($digit),
+                    RoundingMode::HalfAlternating => self::roundAlternating($digit),
+                    RoundingMode::Stochastic => self::roundStochastic($digit),
                     default => self::roundHalfEven($digit, $nextDigit)
                 };
             } else {
@@ -288,7 +264,7 @@ class RoundingProvider
         $remainder = self::remainderCheck();
 
         if ($early == 0 && !$remainder) {
-            return RandomProvider::randomInt(0, 1, RandomProvider::MODE_SPEED)->asInt();
+            return RandomProvider::randomInt(0, 1, RandomMode::Speed)->asInt();
         } else {
             return (($early == 1 || $remainder) ? 1 : 0);
         }
@@ -324,7 +300,7 @@ class RoundingProvider
             $rangeMax = (int)str_repeat('9', strlen($remainder) + 1);
         }
 
-        $random = RandomProvider::randomInt($rangeMin, $rangeMax, RandomProvider::MODE_SPEED)->asInt();
+        $random = RandomProvider::randomInt($rangeMin, $rangeMax, RandomMode::Speed)->asInt();
 
         if ($random < $target) {
             return 1;

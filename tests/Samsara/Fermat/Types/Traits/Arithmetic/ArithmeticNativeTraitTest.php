@@ -3,7 +3,7 @@
 namespace Samsara\Fermat\Types\Traits\Arithmetic;
 
 use PHPUnit\Framework\TestCase;
-use Samsara\Fermat\Types\Base\Selectable;
+use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 class ArithmeticNativeTraitTest extends TestCase
@@ -14,8 +14,8 @@ class ArithmeticNativeTraitTest extends TestCase
 
         $one = new ImmutableDecimal('1');
         $three = new ImmutableDecimal('3');
-        $one->setMode(Selectable::CALC_MODE_NATIVE);
-        $three->setMode(Selectable::CALC_MODE_NATIVE);
+        $one->setMode(CalcMode::Native);
+        $three->setMode(CalcMode::Native);
 
         $this->assertEquals('4', $one->add(3)->getValue());
 
@@ -26,8 +26,8 @@ class ArithmeticNativeTraitTest extends TestCase
 
         $one = new ImmutableDecimal('1');
         $three = new ImmutableDecimal('3');
-        $one->setMode(Selectable::CALC_MODE_NATIVE);
-        $three->setMode(Selectable::CALC_MODE_NATIVE);
+        $one->setMode(CalcMode::Native);
+        $three->setMode(CalcMode::Native);
 
         $this->assertEquals('-2', $one->subtract(3)->getValue());
 
@@ -38,8 +38,8 @@ class ArithmeticNativeTraitTest extends TestCase
 
         $one = new ImmutableDecimal('1');
         $three = new ImmutableDecimal('3');
-        $one->setMode(Selectable::CALC_MODE_NATIVE);
-        $three->setMode(Selectable::CALC_MODE_NATIVE);
+        $one->setMode(CalcMode::Native);
+        $three->setMode(CalcMode::Native);
 
         $this->assertEquals('9', $three->multiply(3)->getValue());
 
@@ -50,8 +50,8 @@ class ArithmeticNativeTraitTest extends TestCase
 
         $one = new ImmutableDecimal('1');
         $three = new ImmutableDecimal('3');
-        $one->setMode(Selectable::CALC_MODE_NATIVE);
-        $three->setMode(Selectable::CALC_MODE_NATIVE);
+        $one->setMode(CalcMode::Native);
+        $three->setMode(CalcMode::Native);
 
         $this->assertEquals('0.33333333333333', $one->divide(3)->getValue());
 
@@ -62,8 +62,8 @@ class ArithmeticNativeTraitTest extends TestCase
 
         $one = new ImmutableDecimal('1');
         $three = new ImmutableDecimal('3');
-        $one->setMode(Selectable::CALC_MODE_NATIVE);
-        $three->setMode(Selectable::CALC_MODE_NATIVE);
+        $one->setMode(CalcMode::Native);
+        $three->setMode(CalcMode::Native);
 
         $this->assertEquals('27', $three->pow(3)->getValue());
 
@@ -72,12 +72,10 @@ class ArithmeticNativeTraitTest extends TestCase
     public function testSqrt()
     {
 
-        $one = new ImmutableDecimal('1');
         $three = new ImmutableDecimal('3');
-        $one->setMode(Selectable::CALC_MODE_NATIVE);
-        $three->setMode(Selectable::CALC_MODE_NATIVE);
+        $three->setMode(CalcMode::Native);
 
-        $this->assertEquals('1.7320508075689', $three->sqrt()->getValue());
+        $this->assertEquals('1.7320508075', $three->sqrt()->getValue());
 
     }
 
