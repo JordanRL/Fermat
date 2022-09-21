@@ -34,7 +34,7 @@ class MutableDecimal extends Decimal
      *
      * @return MutableDecimal
      */
-    protected function setValue(string $value, int $scale = null, int $base = 10): self
+    protected function setValue(string $value, ?int $scale = null, ?int $base = 10): self
     {
         $imaginary = false;
 

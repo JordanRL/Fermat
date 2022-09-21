@@ -89,7 +89,7 @@ class SequenceProviderTest extends TestCase
         SequenceProvider::nthEulerZigzag(51);
     }
     /**
-     * @medium
+     *
      */
     public function testNthBernoulliNumber()
     {
@@ -100,15 +100,19 @@ class SequenceProviderTest extends TestCase
 
         $one = SequenceProvider::nthBernoulliNumber(1);
 
-        $this->assertEquals('0.5', $one->getValue());
+        $this->assertEquals('-0.5', $one->getValue());
+
+        $two = SequenceProvider::nthBernoulliNumber(2);
+
+        $this->assertEquals('0.16666', $two->truncateToScale(5)->getValue());
 
         $three = SequenceProvider::nthBernoulliNumber(3);
 
         $this->assertEquals('0', $three->getValue());
 
-        $two = SequenceProvider::nthBernoulliNumber(2);
+        $four = SequenceProvider::nthBernoulliNumber(4);
 
-        $this->assertEquals('0.16666', $two->truncateToScale(5)->getValue());
+        $this->assertEquals('−0.03333', $four->truncateToScale(5)->getValue());
 
     }
     /**

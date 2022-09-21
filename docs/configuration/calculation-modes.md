@@ -1,27 +1,41 @@
-# Available Modes
+# Calculation Modes
 
-All modes which are defined exist as constants on the `Selectable` class. There are two modes currently available in Fermat.
+Calculation modes control how exactly a given calculation is performed. The following methods of calculation are used for mathematical operations, and the calculation mode allows you to control which methods are considered.
 
-## Scale Mode
+- The `BCMath` extension, which operates on real numbers of arbitrary precision.
+- The `GMP` extension, which operates on integers.
+- The `PHP engine` math functions and operations, which work with both integers and floats, and provide a variable amount of precision up to about 12 decimal places.
 
-###### Selectable::CALC_MODE_PRECISION = 1
+The default calculation mode is `CalcMode::Auto`, which attempts to intelligently select the most computationally efficient mode given the precision needed.
 
-In this mode, the best available string math implementation is used when a mathematical operation is performed. By default these are the functions provided by the BCMath library, however a future scope of this project is to provide integration with `ext-decimal`.
+## Available Modes
 
-!!! note "For Certain Operations, BCMath Is Ignored"
-    If the `ext-gmp` extension is present, it is used when both the input and output of an operation are guaranteed to be integers. This helps improve performance of operations which do not have a scale component. A non-exhaustive list of these situations includes:
+The mode for a given operation is determined from two sources. First, the calculation mode on the value object calling the method is checked. If the calculation mode on the value object is `null`, (which is the default value), then the global calculation mode currently set on the `CalculationModeProvider` is checked.
+
+The default calculation mode is `CalcMode::Auto`, which will contextually use all calculation methods based on the runtime values of the objects in question.
+
+!!! caution "Value-Specific Calculation Modes Persist"
+    If a calculation mode is set for a value object using the `setMode()` method, all objects resulting from that calculation will inherit the same mode instead of have the default `null` value.
+
+    In general this is prefferable and reduces unexpected bugs, however this means that once a value-specific calculation mode is set, all values derived from it will no longer be affected by the global calculation mode.
+
+### Auto
+
+The `CalcMode::Auto` mode will utilize all available calculation tools in an attempt to provide the most speed possible without compromising the requested scale.
+
+Each mathematical operation may have its own criteria for deciding which calculation method to use, however the general logic of this mode is as follows:
+
+- If all the inputs and outputs of a given calculation can be expected to be integers, the `GMP` functions are used.
+- If `GMP` cannot be used, the inputs are then checked against the requested scale for the density of native float values. If it can be expected that native floats have enough density to provide the requested scale, then the native `PHP engine` math operations are used.
+- If neither `GMP` nor the `PHP engine` can be used, then the fastest arbitrary precision operation available in your installation is used. For most PHP installations, this will be the `BCMath` extension.
+
+### Precision Mode
+
+In this mode, the best available string math implementation is used when a mathematical operation is performed. By default, these are the functions provided by the `BCMath` extension, however a future scope of this project is to provide integration with `ext-decimal`.
     
-    - Using the `factorial()` method.
-    - Using the `add()` method on two integers.
-    - Using the `multiply()` method on two integers.
-    
-    Note that `ext-gmp` is never used for divide, as optimistic use of the extension would result in a large performance cost for non-exact division at a very small performance gain in the case of exact division.
-    
-## Native Mode
+### Native Mode
 
-###### Selectable::CALC_MODE_NATIVE = 2
-
-In this mode, the native PHP math operators are used for calculation. The result is then converted to a string and stored according to the normal behavior of the class in question.
+In this mode, the native `PHP engine` math operators are used for calculation. The result is then converted to a string and stored according to the normal behavior of the class in question.
 
 !!! note "Loss Of Scale"
     The scale defined in the object is ignored when this mode is used. This will result in values which behave as math operations in PHP would natively, including issues such as overflow and underflow.
@@ -32,30 +46,22 @@ In this mode, the native PHP math operators are used for calculation. The result
 !!! tip "Expanding Native Types"
     With the mode set to native, this library functions as simply an extension to integer and float types that enables representations of imaginary numbers, complex numbers, matrices, coordinates, and statistics. In this way, the library may be useful even if arbitrary scale is not necessary for your application.
     
-# Controlling the Mode of Objects
+## Controlling the Mode of Objects
 
 There are two main ways of controlling the mode used by your Fermat objects. The first is through the use of the default mode, and the second is with the use of the `setMode()` method.
 
-## Default Mode
+### Default Mode
 
-All objects that extend the `Number` abstract class set their current mode to the default calculation mode returned by `Numbers::getDefaultCalcMode()`. This check is only done during instantiation, meaning that changing the default calculation mode using `Numbers::setDefaultCalcMode()` will only affect objects instantiated after this change is made.
-
-!!! bug "Interaction With Immutable Objects"
-    Because immutable objects create new instances for every mathematical operation performed, changing the default calculation mode in the middle of application execution will result in all previously created immutables utilizing the original mode for their first mathematical operation, and the new mode for every subsequent operation.
+The mode currently returned by `CalculationModeProvider` is used by default for all classes that extend the `Number` abstract class. This mode at application start is `CalcMode::Auto`, but can be changed at any time using `CalculationModeProvider::setCurrentMode()`.
     
-    If immutable objects are being used, the default mode should never be changed in the middle of application execution. Instead, set it to the desired value at the beginning of the application, or use the `setMode()` method after a new object is instantiated.
-    
-!!! see-also "See Also"
-    Further information on how to use default modes is available in the [Numbers Factory Class](../getting-started/using-factories.md#the-numbers-factory-class) documentation.
-    
-## Set Mode
+### Set Mode
 
-###### setMode(int $mode)
+The `setMode()` method is available on all classes that extend the `Number` abstract class. It sets the mode of the object it is called on to the mode provided. 
 
-This method is available on all classes that extend the `Number` abstract class. It sets the mode of the object it is called on to the mode provided. 
+This setting will `null` by default, allowing the object to use the default mode described above. If this is used to set a specific mode on an object, the default mode will be ignored, and the specific mode set will cascade to any objects that object creates through calculations.
 
 !!! caution "Use Only Defined Modes"
-    While `setMode()` will accept any integer, you should only ever use inputs that are defined as constants on the `Selectable` class to avoid unexpected behaviors.
+    While `setMode()` will accept any integer, you should only ever use inputs that are defined on the `CalcMode` enum to avoid unexpected behaviors.
     
-!!! bug "This Method Is Mutable For All Objects"
+!!! potential-bugs "This Method Is Mutable For All Objects"
     Because of the nature of what this method does, it is mutable for all objects, including any implementations of immutable objects.

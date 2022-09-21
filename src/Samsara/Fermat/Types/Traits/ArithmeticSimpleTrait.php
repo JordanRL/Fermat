@@ -4,18 +4,23 @@
 namespace Samsara\Fermat\Types\Traits;
 
 use Composer\InstalledVersions;
+use ReflectionException;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 /** @psalm-suppress UndefinedClass */
 use Samsara\Fermat\ComplexNumbers;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticGMPTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticScaleTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticNativeTrait;
 /** @psalm-suppress UndefinedClass */
 use Samsara\Fermat\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Values\ImmutableDecimal;
+use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\MutableDecimal;
 
 trait ArithmeticSimpleTrait
@@ -24,6 +29,7 @@ trait ArithmeticSimpleTrait
     use ArithmeticSelectionTrait;
     use ArithmeticScaleTrait;
     use ArithmeticNativeTrait;
+    use ArithmeticGMPTrait;
 
     public function add($num)
     {
@@ -33,7 +39,7 @@ trait ArithmeticSimpleTrait
             $thisRealPart,
             $thisImaginaryPart,
             $num
-        ] = $this->translateToParts($this, $num);
+        ] = $this->translateToParts($this, $num, 0);
 
         if ($num->isComplex()) {
             return $num->add($this);
@@ -168,6 +174,14 @@ trait ArithmeticSimpleTrait
 
     public function multiply($num)
     {
+        [
+            $thatRealPart,
+            $thatImaginaryPart,
+            $thisRealPart,
+            $thisImaginaryPart,
+            $num
+        ] = $this->translateToParts($this, $num, 1);
+
         if ($num->isComplex()) {
             return $num->multiply($this);
         }
@@ -210,7 +224,16 @@ trait ArithmeticSimpleTrait
 
     public function divide($num, ?int $scale = null)
     {
+
         $scale = is_null($scale) ? $this->getScale() : $scale;
+
+        [
+            $thatRealPart,
+            $thatImaginaryPart,
+            $thisRealPart,
+            $thisImaginaryPart,
+            $num
+        ] = $this->translateToParts($this, $num, 1);
 
         if ($num->isComplex()) {
             return $num->divide($this);
@@ -287,7 +310,7 @@ trait ArithmeticSimpleTrait
                 return $this->setValue($powNumerator, $powDenominator);
             }
 
-            return $powNumerator->divide($powDenominator);
+            return $powNumerator->divide($powDenominator)->truncateToScale(10);
         }
 
         /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
@@ -298,7 +321,7 @@ trait ArithmeticSimpleTrait
             $value .= 'i';
         }
 
-        return $this->setValue($value);
+        return $this->setValue($value)->truncateToScale($this->getScale());
     }
 
     public function sqrt(?int $scale = null)
@@ -322,7 +345,7 @@ trait ArithmeticSimpleTrait
             $value .= 'i';
         }
 
-        return ($this instanceof DecimalInterface) ? $this->setValue($value) : new ImmutableDecimal($value, $scale);
+        return ($this instanceof DecimalInterface) ? $this->setValue($value)->truncateToScale($scale) : (new ImmutableDecimal($value, $scale))->truncateToScale($scale);
     }
 
 }

@@ -7,6 +7,7 @@ use JetBrains\PhpStorm\ExpectedValues;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\OptionalExit;
+use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
@@ -14,14 +15,11 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 class RandomProvider
 {
 
-    const MODE_ENTROPY = 1;
-    const MODE_SPEED = 2;
-
     /** @noinspection PhpDocMissingThrowsInspection */
     /**
      * @param int|string|DecimalInterface $min
      * @param int|string|DecimalInterface $max
-     * @param int $mode
+     * @param RandomMode $mode
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
@@ -30,8 +28,7 @@ class RandomProvider
     public static function randomInt(
         int|string|DecimalInterface $min,
         int|string|DecimalInterface $max,
-        #[ExpectedValues([self::MODE_ENTROPY, self::MODE_SPEED])]
-        int $mode = self::MODE_ENTROPY
+        RandomMode $mode = RandomMode::Entropy
     ): ImmutableDecimal
     {
         $minDecimal = Numbers::makeOrDont(Numbers::IMMUTABLE, $min);
@@ -89,7 +86,7 @@ class RandomProvider
         }
 
         if (is_int($min) && is_int($max)) {
-            if ($mode == self::MODE_ENTROPY || $max > getrandmax() || $max < 0 || $min < 0) {
+            if ($mode == RandomMode::Entropy || $max > getrandmax() || $max < 0 || $min < 0) {
                 /**
                  * The random_int() function is cryptographically secure, and takes somewhere on the order
                  * of 15 times as long to execute as rand(). However, rand() also has a smaller range than
@@ -109,10 +106,10 @@ class RandomProvider
                         'A call to random_bytes() threw a system level exception. Most often this is due to a problem with entropy sources in your configuration. Original exception message: ' . $e->getMessage()
                     );
                 }
-            } elseif ($mode == self::MODE_SPEED) {
+            } elseif ($mode == RandomMode::Speed) {
                 /**
                  * If it is possible to do so with the range given and the program has indicated that it
-                 * would prefer speed over true randomness in the result, then we will use the deterministic
+                 * would prefer speed to true randomness in the result, then we will use the deterministic
                  * pseudo-random function rand() as it is faster to reach completion.
                  */
                 $num = rand($min, $max);
@@ -200,7 +197,7 @@ class RandomProvider
 
     /**
      * @param int $scale
-     * @param int $mode
+     * @param RandomMode $mode
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
@@ -208,8 +205,7 @@ class RandomProvider
      */
     public static function randomDecimal(
         int $scale = 10,
-        #[ExpectedValues([self::MODE_ENTROPY, self::MODE_SPEED])]
-        int $mode = self::MODE_ENTROPY
+        RandomMode $mode = RandomMode::Entropy
     ): ImmutableDecimal
     {
         /**
@@ -243,7 +239,7 @@ class RandomProvider
      * @param int|string|DecimalInterface $min
      * @param int|string|DecimalInterface $max
      * @param int $scale
-     * @param int $mode
+     * @param RandomMode $mode
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
@@ -253,8 +249,7 @@ class RandomProvider
         int|string|DecimalInterface $min,
         int|string|DecimalInterface $max,
         int $scale,
-        #[ExpectedValues([self::MODE_ENTROPY, self::MODE_SPEED])]
-        int $mode = self::MODE_ENTROPY
+        RandomMode $mode = RandomMode::Entropy
     ): ImmutableDecimal
     {
         $min = new ImmutableDecimal($min);

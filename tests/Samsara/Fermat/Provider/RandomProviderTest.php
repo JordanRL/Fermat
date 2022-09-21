@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Provider;
 
 use PHPUnit\Framework\TestCase;
+use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 /**
@@ -57,7 +58,7 @@ class RandomProviderTest extends TestCase
         $num2 = new ImmutableDecimal('100');
 
         for ($i=0;$i<20;$i++) {
-            $rand = RandomProvider::randomInt($num1, $num2, RandomProvider::MODE_SPEED);
+            $rand = RandomProvider::randomInt($num1, $num2, RandomMode::Speed);
             $this->assertTrue($num1->isLessThanOrEqualTo($rand));
             $this->assertTrue($num2->isGreaterThanOrEqualTo($rand));
         }
@@ -120,7 +121,7 @@ class RandomProviderTest extends TestCase
         $num2 = new ImmutableDecimal('1');
 
         for ($i=0;$i<20;$i++) {
-            $rand = RandomProvider::randomDecimal(3, RandomProvider::MODE_SPEED);
+            $rand = RandomProvider::randomDecimal(3, RandomMode::Speed);
             $this->assertTrue($num1->isLessThanOrEqualTo($rand));
             $this->assertTrue($num2->isGreaterThanOrEqualTo($rand));
         }

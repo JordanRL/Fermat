@@ -5,8 +5,8 @@ namespace Samsara\Fermat\Provider;
 
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Types\Base\Selectable;
 
 class ConstantProvider
 {
@@ -16,21 +16,21 @@ class ConstantProvider
 
         $internalScale = $digits + 10;
 
-        $C = Numbers::make(Numbers::IMMUTABLE, '10005', $internalScale)->sqrt($internalScale)->multiply(426880);
-        $M = Numbers::make(Numbers::IMMUTABLE, '1', $internalScale);
-        $L = Numbers::make(Numbers::IMMUTABLE, '13591409', $internalScale);
-        $K = Numbers::make(Numbers::IMMUTABLE, '6', $internalScale);
-        $X = Numbers::make(Numbers::IMMUTABLE, '1');
-        $sum = Numbers::make(Numbers::MUTABLE,'0', $internalScale + 2);
+        $C = Numbers::make(Numbers::IMMUTABLE, '10005', $internalScale)->setMode(CalcMode::Precision)->sqrt($internalScale)->multiply(426880);
+        $M = Numbers::make(Numbers::IMMUTABLE, '1', $internalScale)->setMode(CalcMode::Precision);
+        $L = Numbers::make(Numbers::IMMUTABLE, '13591409', $internalScale)->setMode(CalcMode::Precision);
+        $K = Numbers::make(Numbers::IMMUTABLE, '6', $internalScale)->setMode(CalcMode::Precision);
+        $X = Numbers::make(Numbers::IMMUTABLE, '1')->setMode(CalcMode::Precision);
+        $sum = Numbers::make(Numbers::MUTABLE,'0', $internalScale + 2)->setMode(CalcMode::Precision);
         $termNum = 0;
-        $one = Numbers::makeOne($internalScale);
+        $one = Numbers::makeOne($internalScale)->setMode(CalcMode::Precision);
 
         $continue = true;
 
         while ($continue) {
             $term = $M->multiply($L)->divide($X);
 
-            if ($term->numberOfLeadingZeros() > $internalScale || $term->isEqual(0)) {
+            if ($termNum > $internalScale) {
                 $continue = false;
             }
 
@@ -69,10 +69,10 @@ class ConstantProvider
 
         $internalScale = $digits + 3;
 
-        $one = Numbers::makeOne($internalScale+5)->setMode(Selectable::CALC_MODE_PRECISION);
-        $denominator = Numbers::make(Numbers::MUTABLE, '1', $internalScale)->setMode(Selectable::CALC_MODE_PRECISION);
-        $e = Numbers::make(NUmbers::MUTABLE, '2', $internalScale)->setMode(Selectable::CALC_MODE_PRECISION);
-        $n = Numbers::make(Numbers::MUTABLE, '2', $internalScale)->setMode(Selectable::CALC_MODE_PRECISION);
+        $one = Numbers::makeOne($internalScale+5)->setMode(CalcMode::Precision);
+        $denominator = Numbers::make(Numbers::MUTABLE, '1', $internalScale)->setMode(CalcMode::Precision);
+        $e = Numbers::make(NUmbers::MUTABLE, '2', $internalScale)->setMode(CalcMode::Precision);
+        $n = Numbers::make(Numbers::MUTABLE, '2', $internalScale)->setMode(CalcMode::Precision);
 
         $continue = true;
 

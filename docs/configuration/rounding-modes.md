@@ -9,9 +9,13 @@ Rounding in Fermat is accomplished by making calls to the `RoundingProvider`. Th
 
     For this reason it is designed to be as lightweight as possible while still accomplishing its task.
 
-The random provider has a private static property where it stores the mode to use while rounding. This property can be read and set using public static methods, but as it is a static property it affects all rounding operations after a mode is changed, even those you don't directly call. This is useful in most cases, since it allows you to set the rounding mode once at the beginning of your program and then utilize that rounding mode in every call that is made to the library.
+The available modes are contained with the `Samsara/Fermat/Enums/RoundingMode` enum, and the relevant places in Fermat that allow you to specify a rounding mode are typed as such.
 
-The default mode is `RandomProvider::MODE_HALF_EVEN`. This is also the fallback mode if you ask for a non-existent rounding mode.
+The default mode is `RoundingMode::HalfEven`. This is also the fallback mode if you ask for a non-existent rounding mode.
+
+## Setting the Rounding Mode
+
+The rounding provider has a private static property where it stores the mode to use while rounding. This property can be read and set using public static methods, but as it is a static property it affects all rounding operations after a mode is changed, even those you don't directly call. This is useful in most cases, since it allows you to set the rounding mode once at the beginning of your program and then utilize that rounding mode in every call that is made to the library.
 
 !!! caution "Rounding Mode Affects Many Operations Internally"
     Rounding occurs frequently in Fermat, since many operations produce more digits than the scale setting of your objects. The trigonometry functions, logarithmic function, and exponential functions all make a call to the `RoundingProvider` before returning a result. This means that selecting a rounding mode will affect the results you get from functions such as `tan()`, `sin()`, `exp()`, and `ln()`.
@@ -21,7 +25,7 @@ The default mode is `RandomProvider::MODE_HALF_EVEN`. This is also the fallback 
     If you want to manually round an object once using a different mode, pass the mode as an argument to the `round()` method on your `Decimal` object instead of setting a new default more in the `RoundingProvider`. When done in this way, the provided mode will only be used for that one operation without affecting the default more for any other operations.
 
 !!! see-also "See Also"
-    The exact signatures associated with the `RandomProvider` can be found in the [Rounding Provider Reference Page](../roster/latest/Fermat Core/Provider/RoundingProvider.md)
+    The exact signatures associated with the `RoundingProvider` can be found in the [Rounding Provider Reference Page](../reference/providers/rounding.md)
 
 ## Available Modes
 
@@ -241,7 +245,7 @@ This rounding mode rounds the number in a direction that is randomly chosen when
     === "1.5"
         Using the "Random" mode:
 
-        `1.5 -> 1` 50% of the time  
+        `1.5 -> 1` 50% of the time
         `1.5 -> 2` 50% of the time
 
     === "1.7"
@@ -257,7 +261,7 @@ This rounding mode rounds the number in a direction that is randomly chosen when
     === "-2.5"
         Using the "Random" mode:
 
-        `-2.5 -> -2` 50% of the time  
+        `-2.5 -> -2` 50% of the time
         `-2.5 -> -3` 50% of the time
 
 ### Alternating
@@ -268,7 +272,7 @@ This rounding mode rounds the number in a direction that alternates as more call
     === "1.5"
         Using the "Alternating" mode:
 
-        `1.5 -> 2` on the first call  
+        `1.5 -> 2` on the first call
         `1.5 -> 1` on the second call
 
     === "1.7"
@@ -284,7 +288,7 @@ This rounding mode rounds the number in a direction that alternates as more call
     === "-2.5"
         Using the "Alternating" mode:
 
-        `-2.5 -> -3` on the first call  
+        `-2.5 -> -3` on the first call
         `-2.5 -> -2` on the second call
 
 ### Stochastic
@@ -295,23 +299,23 @@ This rounding mode rounds the number in both directions in proportion to how clo
     === "1.5"
         Using the "Stochastic" mode:
 
-        `1.5 -> 2` 50% of the time  
+        `1.5 -> 2` 50% of the time
         `1.5 -> 1` 50% of the time
 
     === "1.7"
         Using the "Stochastic" mode:
 
-        `1.7 -> 2` 70% of the time  
+        `1.7 -> 2` 70% of the time
         `1.7 -> 1` 30% of the time
 
     === "2.2"
         Using the "Stochastic" mode:
 
-        `2.2 -> 3` 20% of the time  
+        `2.2 -> 3` 20% of the time
         `2.2 -> 2` 80% of the time
 
     === "-2.5"
         Using the "Stochastic" mode:
 
-        `-2.5 -> -3` 50% of the time  
+        `-2.5 -> -3` 50% of the time
         `-2.5 -> -2` 50% of the time

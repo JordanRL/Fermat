@@ -22,7 +22,7 @@ use Samsara\Fermat\Types\Traits\Decimal\TrigonometryTrait;
 abstract class Decimal extends Number implements DecimalInterface, BaseConversionInterface
 {
 
-    protected $base;
+    protected int $base;
 
     use ArithmeticSimpleTrait;
     use ComparisonTrait;
@@ -32,14 +32,14 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     use LogTrait;
     use ScaleTrait;
 
-    public function __construct($value, $scale = null, $base = 10, bool $baseTenInput = false)
+    public function __construct($value, int $scale = null, int $base = 10, bool $baseTenInput = false)
     {
 
         $this->base = $base;
 
         $value = (string)$value;
 
-        if (strpos($value, 'i') !== false) {
+        if (str_contains($value, 'i')) {
             $this->imaginary = true;
             $value = str_replace('i', '', $value);
         } else {
@@ -82,7 +82,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         return $this->setValue(bcmod($this->getAsBaseTenRealNumber(), $mod), $this->getScale(), $this->getBase());
     }
 
-    protected function translateValue(string $value)
+    protected function translateValue(string $value): array
     {
         $value = trim($value);
         $valueArr = str_split($value);
@@ -133,7 +133,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         return $resultValue;
     }
 
-    protected function convertObject()
+    protected function convertObject(): false|string
     {
         if ($this->getBase() === 10) {
             return $this->getAsBaseTenRealNumber();
@@ -142,11 +142,13 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         return $this->convertValue($this->getAsBaseTenRealNumber(), 10, $this->getBase());
     }
 
-    protected function convertValue(string $value, int $oldBase, int $newBase)
+    protected function convertValue(string $value, int $oldBase, int $newBase): false|string
     {
         $converter = new BaseConverter($oldBase, $newBase);
 
-        $converter->setPrecision($this->getScale());
+        $scale = $this->scale ?? 10;
+
+        $converter->setPrecision($scale);
 
         return $converter->convert($value);
     }
@@ -215,6 +217,10 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
         $scale = ($this->getScale() < $value->getScale()) ? $this->getScale() : $value->getScale();
 
+        //if ($this->isInt() && $value->isInt() && extension_loaded('gmp')) {
+        //    return gmp_cmp($thisValue, $thatValue);
+        //}
+
         return ArithmeticProvider::compare($thisValue, $thatValue, $scale);
     }
 
@@ -222,9 +228,9 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
      * Converts the object to a different base.
      *
      * @param $base
-     * @return NumberInterface
+     * @return DecimalInterface|NumberInterface
      */
-    public function convertToBase($base)
+    public function convertToBase($base): DecimalInterface|NumberInterface
     {
         return $this->setValue($this->getValue(10), null, $base);
     }
@@ -234,7 +240,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
      *
      * @return DecimalInterface|NumberInterface
      */
-    public function abs()
+    public function abs(): DecimalInterface|NumberInterface
     {
         $newValue = $this->absValue();
 
@@ -289,12 +295,12 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
     /**
      * @param string $value
-     * @param int $scale
+     * @param int|null $scale
      * @param int $base
      *
      * @return DecimalInterface
      */
-    abstract protected function setValue(string $value, int $scale = null, int $base = 10); // TODO: Check usages for base correctness & preservation
+    abstract protected function setValue(string $value, ?int $scale = null, ?int $base = 10): DecimalInterface; // TODO: Check usages for base correctness & preservation
 
     abstract public function continuousModulo($mod): DecimalInterface;
 
