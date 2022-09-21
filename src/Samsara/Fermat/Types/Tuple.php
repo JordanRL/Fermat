@@ -33,7 +33,7 @@ class Tuple
      * @param int $index
      *
      * @return ImmutableDecimal
-     *@throws IncompatibleObjectState
+     * @throws IncompatibleObjectState
      */
     public function get(int $index): ImmutableDecimal
     {

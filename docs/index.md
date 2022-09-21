@@ -1,6 +1,9 @@
-# Using This Documentation
+## Using This Documentation
 
 A best effort is made to keep this documentation current, and the entire documentation is reviewed before every tagged release, however the documentation under v:latest may at times be out of date or incomplete.
+
+!!! note "Why Use Fermat?"
+    To understand why this library might be useful in comparison to alternatives, please see the [Fermat vs. Alternatives](fermat-vs-alternatives.md) page.
 
 ### Info Boxes
 
@@ -18,19 +21,19 @@ Additional information is provided throughout this documentation using color cod
 !!! see-also "See Also"
     This type of box is used to point you towards other parts of this documentation, or documentation elsewhere on the internet, which might provide more information on the section being described.
     
-!!! potential-bugs "Potential Bugs"
+!!! bug "Potential Bugs"
     This type of box is used to provide a warning about common ways a programmer using this library might introduce a bug into their software through this library. It often details potentially unexpected type conversions, assumptions made that may not be obvious, or limitations that are inherent to this library or to PHP.
     
 !!! caution "Cautions"
     This type of box is used to caution the developer about incorrect usage of the section being detailed. It is used when the incorrect usage will not result in exceptions or unexpected results, but instead might simply have undesirable side effects.
     
-!!! warning "Warnings"
+!!! fail "Warnings"
     This type of box is used to warn the developer about incorrect usage of the section being detailed. It is used when the incorrect usage will result in exceptions, but not unexpected results.
     
 !!! danger "Danger"
     This type of box is used to alert the developer about potentially hard to find bugs that will result from an incorrect usage of the section being detailed. It is used when the incorrect usage will result in unexpected result without any exceptions or errors.
 
-# What This Library Is For
+## What This Library Is For
 
 ### Consistent arbitrary scale math
 
@@ -50,7 +53,7 @@ Provides a framework for working with non-integer and non-float math concepts su
 
 Provides a consistent abstraction for nearly any math concept that is likely to be relevant to a computer program, including many scientific programs.
 
-# What This Library Is NOT For
+## What This Library Is NOT For
 
 ### Extreme Performance
 
@@ -74,7 +77,7 @@ Everything is self-contained within this library, and if you need to use another
 
 That said, this library does offer ways for you to integrate. The state of all objects is available for reading at all times enabling you to put data into other libraries or functions, and the classes are all left open for extension. The references within the library are almost all to a base abstract class or interface, making it easier for a developer to extend a class with their own code.
 
-# Limitations 
+## Limitations 
 
 Developers using this library should be aware of the following limitations which may lead to unexpected results.
 
@@ -128,7 +131,7 @@ This is related to PHP's internal structure of hashtables and zvals, and how the
 
 Because PHP doesn't allow operator overloading, using the native math operators on Fermat objects directly can very easily result in loss of scale, overflows and underflows, PHP fatal errors (f.e. when the object is in a non-base-10 format), and incorrect calculation (f.e. with complex and imaginary numbers).
 
-!!! warning "Non-Base-10 Values With Native Operators"
+!!! fail "Non-Base-10 Values With Native Operators"
     Using a value that is in a base larger than base-10 with math operators can result in PHP fatal errors. For instance, the value `15` in base `16` will output the string `F`. When used with the operator `/` as the value on the right of the operator, this would result in a "Division by Zero" PHP fatal error. 
     
     This occurs because PHP will attempt to cast the string `F` to an `integer`, which will result in the value `0`.
@@ -136,7 +139,7 @@ Because PHP doesn't allow operator overloading, using the native math operators 
 !!! danger "Complex Numbers With Native Operators"
     Using a `ComplexNumber` instance with native operators will throw only a notice and discard the imaginary component, making it very difficult to pin down the source of the incorrect result if notices are not turned on with the `E_NOTICE` or `E_ALL` levels in `php.ini`.
     
-    ```php
+    ``` php
     <?php
     
     use Samsara\Fermat\Values\ImmutableComplexNumber;

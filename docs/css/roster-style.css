@@ -1,0 +1,436 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap');
+
+:root {
+    --icon-signature: url('data:image/svg+xml;charset=UTF-8,<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="signature" class="svg-inline--fa fa-signature fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M623.2 192c-51.8 3.5-125.7 54.7-163.1 71.5-29.1 13.1-54.2 24.4-76.1 24.4-22.6 0-26-16.2-21.3-51.9 1.1-8 11.7-79.2-42.7-76.1-25.1 1.5-64.3 24.8-169.5 126L192 182.2c30.4-75.9-53.2-151.5-129.7-102.8L7.4 116.3C0 121-2.2 130.9 2.5 138.4l17.2 27c4.7 7.5 14.6 9.7 22.1 4.9l58-38.9c18.4-11.7 40.7 7.2 32.7 27.1L34.3 404.1C27.5 421 37 448 64 448c8.3 0 16.5-3.2 22.6-9.4 42.2-42.2 154.7-150.7 211.2-195.8-2.2 28.5-2.1 58.9 20.6 83.8 15.3 16.8 37.3 25.3 65.5 25.3 35.6 0 68-14.6 102.3-30 33-14.8 99-62.6 138.4-65.8 8.5-.7 15.2-7.3 15.2-15.8v-32.1c.2-9.1-7.5-16.8-16.6-16.2z"></path></svg>');
+}
+
+.codehilite {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+code {
+    font-family: "Source Code Pro";
+    font-weight: 500;
+    background: #333;
+    color: #EEE;
+    font-size: 95%;
+}
+
+li code {
+    background: inherit;
+    color: inherit;
+    font-weight: 700;
+    border: none;
+    padding: inherit;
+}
+
+ul.subnav li span.caption-text {
+    padding-left: 2.618em;
+}
+
+ul.subnav ul.subnav ul {
+    margin-left: 1em;
+}
+
+h1 {
+    background: #FFFFFF;
+    border-left: 5px solid #000000;
+    border-bottom: 5px solid #000000;
+    border-radius: 3px;
+    color: #333333;
+    padding: 2px 12px;
+    box-shadow: 0 0 .5rem rgba(0,0,0,.15),0 0 .05rem rgba(0,0,0,.25);
+}
+
+h2 {
+    background: #FFFFFF;
+    border-left: 5px solid #000000;
+    border-radius: 3px;
+    color: #333333;
+    padding: 0 12px;
+    box-shadow: 0 0 .5rem rgba(0,0,0,.15),0 0 .05rem rgba(0,0,0,.25);
+}
+
+h3 {
+    border-bottom: 3px solid rgba(0, 0, 0, 0.45);
+}
+
+h4 {
+    font-variant-caps: all-small-caps;
+}
+
+h6 {
+    font-family: 'Source Code Pro';
+    font-weight: 500;
+    font-size: 16px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5px;
+}
+
+h6::before {
+    content: "";
+    font-family: "FontAwesome";
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-decoration: inherit;
+    font-size: 16px;
+    margin-right: 4px;
+    color: #00c853;
+}
+
+div.highlight, .tabbed-set .highlight {
+    border: 0;
+    background: inherit;
+}
+
+.tabbed-set .highlight {
+    margin-top: 12px;
+}
+
+div.highlight pre {
+    border: 0;
+    font-family: "Source Code Pro";
+}
+
+div.highlight pre span.lineno {
+    border-right: 1px solid #333;
+    margin-right: 5px;
+    display: inline-block;
+    width: 1.5em;
+    color: #999;
+}
+
+.tabbed-set .highlight pre:last-child,
+.rst-content .admonition .highlight:last-child,
+.tabbed-set div:last-child {
+    margin-bottom: 0;
+}
+
+.rst-content .admonition {
+    padding: 12px;
+    line-height: 24px;
+    margin-bottom: 24px;
+    background: #FFFFFF;
+    border-left: 5px solid #000000;
+    border-radius: 3px;
+    box-shadow: 0 0 .5rem rgba(0,0,0,.15),0 0 .05rem rgba(0,0,0,.25);
+    color: #000000;
+}
+
+.rst-content .admonition p:last-child {
+    margin-bottom: 0;
+}
+
+.rst-content .admonition-title {
+    color: #333333;
+}
+
+.rst-content .footer-link {
+    padding: 0;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    border: 0;
+    box-shadow: none;
+    background: inherit;
+}
+
+.rst-content .footer-link .admonition-title {
+    background: inherit;
+    font-family: 'sans-serif';
+    font-style: italic;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 12px;
+    border-bottom: 0;
+    padding-bottom: 5px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+.rst-content .signature {
+    padding: 0;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    border: 0;
+    box-shadow: none;
+    background: inherit;
+}
+
+.rst-content .signature p {
+    margin-left: 10px;
+}
+
+svg.fa-signature path {
+    fill: #00c853;
+}
+
+.rst-content .signature dl {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.rst-content .signature dl dt {
+    background: inherit;
+    flex-basis: 20%;
+    flex-grow: 0;
+    text-align: right;
+    border-top: 0;
+    border-right: 2px solid #999999;
+    margin: 0 0 6px 0;
+    line-height: 24px;
+    color: #999999;
+    font-size: 14px;
+    font-family: "Source Code Pro";
+}
+
+.rst-content .signature dl dd {
+    flex-basis: 80%;
+    flex-grow: 0;
+    padding-left: 15px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin: 0 0 6px 0;
+    font-size: 14px;
+    background: inherit;
+    font-family: "Source Code Pro";
+}
+
+.rst-content .signature dl dd ul {
+    margin-bottom: 0 !important;
+}
+
+.rst-content .signature .admonition-title {
+    background: inherit;
+    font-family: 'Source Code Pro';
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 16px;
+    border-bottom: 0;
+    padding-bottom: 5px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+.rst-content .signature .admonition-title::before {
+    content: "";
+    font-family: "FontAwesome";
+    margin-right: 4px;
+    margin-left: 10px;
+    color: #00c853;
+    position: relative;
+    top: 2px;
+    font-size: 20px;
+    width: 20px;
+}
+
+.rst-content .signature.constant .admonition-title::before {
+    content: "";
+}
+
+.rst-content .signature.property .admonition-title::before {
+    content: "";
+}
+
+.rst-content .signature.interface .admonition-title::before {
+    content: "";
+}
+
+.rst-content .signature.trait .admonition-title::before {
+    content: "";
+}
+
+.rst-content .note {
+    border-color: #00bfa5;
+}
+
+.rst-content .note .admonition-title {
+    background: #ddFFEE;
+}
+
+.rst-content .note .admonition-title::before {
+    content: "";
+    color: #00bfa5;
+}
+
+.note .tabbed-set input:nth-child(n+1):checked + label {
+    color: #00bfa5;
+    border-bottom: 3px solid #00bfa5;
+}
+
+.rst-content .caution {
+    border-color: #ffa733;
+}
+
+.rst-content .caution .admonition-title {
+    background: #ffeed9;
+}
+
+.rst-content .caution .admonition-title::before {
+    content: "";
+    color: #ffa733;
+}
+
+.caution .tabbed-set input:nth-child(n+1):checked + label {
+    color: #ffa733;
+    border-bottom: 3px solid #ffa733;
+}
+
+.rst-content .tip {
+    border-color: #00c853;
+}
+
+.rst-content .tip .admonition-title {
+    background: #CCFFDD;
+}
+
+.rst-content .tip .admonition-title::before {
+    content: "";
+    color: #00c853;
+}
+
+.tip .tabbed-set input:nth-child(n+1):checked + label {
+    color: #00c853;
+    border-bottom: 3px solid #00c853;
+}
+
+.rst-content .example {
+    border-color: #8b33ff;
+}
+
+.rst-content .example .admonition-title {
+    background: #e9d9ff;
+}
+
+.rst-content .example .admonition-title::before {
+    content: "";
+    color: #8b33ff;
+}
+
+.example .tabbed-set input:nth-child(n+1):checked + label {
+    color: #8b33ff;
+    border-bottom: 3px solid #8b33ff;
+}
+
+.rst-content .warning {
+    border-color: #ffa733;
+}
+
+.rst-content .warning .admonition-title {
+    background: #ffeed9;
+}
+
+.rst-content .warning .admonition-title::before {
+    content: "";
+    color: #ffa733;
+}
+
+.warning .tabbed-set input:nth-child(n+1):checked + label {
+    color: #ffa733;
+    border-bottom: 3px solid #ffa733;
+}
+
+.rst-content .danger {
+    border-color: #ff3344;
+}
+
+.rst-content .danger .admonition-title {
+    background: #ffe6e8;
+}
+
+.rst-content .danger .admonition-title::before {
+    content: "";
+    color: #ff3344;
+}
+
+.danger .tabbed-set input:nth-child(n+1):checked + label {
+    color: #ff3344;
+    border-bottom: 3px solid #ff3344;
+}
+
+.rst-content .see-also {
+    border-color: #338fff;
+}
+
+.rst-content .see-also .admonition-title {
+    background: #d9ebff;
+}
+
+.rst-content .see-also .admonition-title::before {
+    content: "";
+    color: #338fff;
+}
+
+.see-also .tabbed-set input:nth-child(n+1):checked + label {
+    color: #338fff;
+    border-bottom: 3px solid #338fff;
+}
+
+.rst-content .potential-bugs {
+    border-color: #ff33b1;
+}
+
+.rst-content .potential-bugs .admonition-title {
+    background: #ffe6f6;
+}
+
+.rst-content .potential-bugs .admonition-title::before {
+    content: "";
+    color: #ff33b1;
+}
+
+.potential-bugs .tabbed-set input:nth-child(n+1):checked + label {
+    color: #ff33b1;
+    border-bottom: 3px solid #ff33b1;
+}
+
+.tabbed-set {
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+.tabbed-set .tabbed-content {
+    display: none;
+    order: 99;
+    width: 100%;
+}
+
+.tabbed-set label {
+    width: auto;
+    margin: 0 0.5em;
+    padding: 0.25em;
+    font-size: 95%;
+    font-weight: bold;
+    font-variant: small-caps;
+    cursor: pointer;
+}
+
+.tabbed-set input {
+    position: absolute;
+    opacity: 0;
+}
+
+.tabbed-set input:nth-child(n+1) {
+    color: #333333;
+}
+
+.tabbed-set input:nth-child(n+1):checked + label {
+    color: #00bfa5;
+    border-bottom: 3px solid #00bfa5;
+}
+
+.tabbed-set input:nth-child(n+1):checked + label + .tabbed-content {
+    display: block;
+}

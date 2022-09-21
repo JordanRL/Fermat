@@ -1,6 +1,6 @@
 This program provides a set of number objects and ways of interacting
 with them to solve problems with very large numbers.
-Copyright (C) 2021  Jordan LeDoux
+Copyright (C) 2015-2021  Jordan LeDoux
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
