@@ -9,6 +9,7 @@ A provider in Fermat is a static class which provides a specific functionality t
 The current list of providers, documented in more detail in the section for Providers, is:
 
 - [ArithmeticProvider](../roster/latest/Fermat Core/Provider/ArithmeticProvider.md)
+- [CalculationModeProvider](../roster/latest/Fermat Core/Provider/CalculationModeProvider.md)
 - [ConstantProvider](../roster/latest/Fermat Core/Provider/ConstantProvider.md)
 - [RandomProvider](../roster/latest/Fermat Core/Provider/RandomProvider.md)
 - [RoundingProvider](../roster/latest/Fermat Core/Provider/RoundingProvider.md)

@@ -37,7 +37,7 @@ Many statistical functions are extremely complex, and so the scale setting on yo
 !!! note "Stable"
     The Fermat Coordinate Systems module has a released stable version and is available to use in production environments. To do so, require v1.0 like so:
 
-    `composer require samsara/fermat-coordinate-systems:^1.0`
+    `composer require "samsara/fermat-coordinate-systems:^1.0"`
 
 The Fermat Coordinate Systems module provides various coordinate objects that are aware of their geometric and algebraic relations to each other. This module has no other dependencies and can be required as a stand-alone addition to Fermat.
 
@@ -53,11 +53,11 @@ Coordinates and coordinate systems have defined concepts of dimensionality, and 
 
     To include this module anyway, require the current development state like so:
 
-    `composer require samsara/fermat-complex-numbers:dev-master`
+    `composer require "samsara/fermat-complex-numbers:dev-master"`
 
 The Fermat Complex Numbers module provides support for complex numbers and the mathematical operations that can be performed on them. This is the easiest module to accidentally result in a `MissingPackage` exception, as doing operations such as `add()` with two `Decimal` instances in Fermat can result in a complex number in certain situations.
 
-This is unlikely to happen accidentally however, unless your application deals with both imaginary and real numbers at different points.
+This is unlikely to happen in most applications however, unless your application deals with both imaginary and real numbers at different points.
 
 !!! note "See Also"
     The [Complex Numbers](../modules/complex-numbers/about.md) section of this documentation contains more detailed information about this module and its behavior.
@@ -69,7 +69,7 @@ This is unlikely to happen accidentally however, unless your application deals w
 
     To include this module anyway, require the current development state like so:
 
-    `composer require samsara/fermat-algebra-expressions:dev-master`
+    `composer require "samsara/fermat-algebra-expressions:dev-master"`
 
 The Fermat Algebra Expressions module provides support for objects which represent entire algebraic functions, instead of only specific values. This is particularly useful in situations where you want to know the derivatives or integrals of simple algebraic expressions, such a polynomials.
 

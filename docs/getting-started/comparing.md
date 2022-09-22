@@ -10,7 +10,7 @@ There are two types of equality that can be compared using this library: equalit
 
 Equality of representation is accomplished with the `equals()` method, and only returns true if the value being compared has the same value *and* is an instance of the same class.
 
-###### isEqual(mixed $value)
+!!! signature "isEqual(mixed $value)"
 
 Any `$value` which is a valid input for `Numbers::makeOrDont()` can be provided here. Returns `true` if the values are the same, `false` otherwise.
 
@@ -19,7 +19,7 @@ Any `$value` which is a valid input for `Numbers::makeOrDont()` can be provided 
     
     For instance, `Numbers::makeOne(5)` and `Numbers::makeOne(10)` will return true when compared using this method, even though internally they would be represented by `1.00000` and `1.0000000000`.
 
-###### equals(object $value)
+!!! signature "equals(object $value)"
 
 Returns `true` if the `$value` is an instance of the same class *and* it has the same value, `false` otherwise.
 
