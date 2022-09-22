@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Types\Traits\Decimal;
+namespace Samsara\Fermat\Types\Traits\Trigonometry;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\RoundingMode;

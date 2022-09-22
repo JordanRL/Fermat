@@ -158,17 +158,18 @@ trait LogTrait
      */
     public function log10(int $scale = null, bool $round = true): DecimalInterface
     {
-        $log10 = Numbers::makeNaturalLog10();
 
         $internalScale = $scale ?? $this->scale;
-        $internalScale += 1;
+        $internalScale += 2;
+
+        $log10 = Numbers::makeNaturalLog10($internalScale);
 
         $value = $this->ln($internalScale)->divide($log10);
 
         if ($round) {
-            $value = $value->roundToScale($internalScale-1);
+            $value = $value->roundToScale($internalScale-2);
         } else {
-            $value = $value->truncateToScale($internalScale-1);
+            $value = $value->truncateToScale($internalScale-2);
         }
 
         return $this->setValue($value->getAsBaseTenRealNumber(), $scale, $this->getBase());

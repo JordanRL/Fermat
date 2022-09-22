@@ -36,11 +36,9 @@ trait TrigonometryNativeTrait
      */
     protected function secNative(): float
     {
-        $thisNum = static::translateToNative($this);
-
         $sin = $this->sinNative();
 
-        if ($sin) {
+        if ($sin == 0) {
             throw new IntegrityConstraint(
                 'Value of out range, division by zero.',
                 'Do not do this.',
@@ -56,11 +54,9 @@ trait TrigonometryNativeTrait
      */
     protected function cscNative(): float
     {
-        $thisNum = static::translateToNative($this);
-
         $cos = $this->cosNative();
 
-        if ($cos) {
+        if ($cos == 0) {
             throw new IntegrityConstraint(
                 'Value of out range, division by zero.',
                 'Do not do this.',
@@ -76,11 +72,9 @@ trait TrigonometryNativeTrait
      */
     protected function cotNative(): float
     {
-        $thisNum = static::translateToNative($this);
-
         $tan = $this->tanNative();
 
-        if ($tan) {
+        if ($tan == 0) {
             throw new IntegrityConstraint(
                 'Value of out range, division by zero.',
                 'Do not do this.',
@@ -89,6 +83,64 @@ trait TrigonometryNativeTrait
         }
 
         return 1/$tan;
+    }
+
+    protected function sinhNative(): float
+    {
+        $thisNum = self::translateToNative($this);
+
+        return sinh($thisNum);
+    }
+
+    protected function coshNative(): float
+    {
+        $thisNum = self::translateToNative($this);
+
+        return cosh($thisNum);
+    }
+
+    protected function tanhNative(): float
+    {
+        $thisNum = self::translateToNative($this);
+
+        return tanh($thisNum);
+    }
+
+    protected function sechNative(): float
+    {
+        $thisNum = self::translateToNative($this);
+
+        if ($thisNum == 0) {
+            throw new IntegrityConstraint(
+                'Value of out range, division by zero.',
+                'Do not do this.',
+                'Cannot calculate the hyperbolic secant of a value that has a sinh() of 0.'
+            );
+        }
+
+        return 1/sinh($thisNum);
+    }
+
+    protected function cschNative(): float
+    {
+        $thisNum = self::translateToNative($this);
+
+        return 1/cosh($thisNum);
+    }
+
+    protected function cothNative(): float
+    {
+        $thisNum = self::translateToNative($this);
+
+        if ($thisNum == 0) {
+            throw new IntegrityConstraint(
+                'Value of out range, division by zero.',
+                'Do not do this.',
+                'Cannot calculate the hyperbolic cotangent of a value that has a tanh() of 0.'
+            );
+        }
+
+        return 1/tanh($thisNum);
     }
 
 }

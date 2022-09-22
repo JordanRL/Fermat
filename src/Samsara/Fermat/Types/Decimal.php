@@ -14,10 +14,10 @@ use Samsara\Fermat\Types\Base\Number;
 use Samsara\Fermat\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
-use Samsara\Fermat\Types\Traits\Decimal\InverseTrigonometryScaleTrait;
+use Samsara\Fermat\Types\Traits\Trigonometry\InverseTrigonometryScaleTrait;
 use Samsara\Fermat\Types\Traits\Decimal\LogTrait;
 use Samsara\Fermat\Types\Traits\Decimal\ScaleTrait;
-use Samsara\Fermat\Types\Traits\Decimal\TrigonometryScaleTrait;
+use Samsara\Fermat\Types\Traits\TrigonometrySimpleTrait;
 
 abstract class Decimal extends Number implements DecimalInterface, BaseConversionInterface
 {
@@ -27,7 +27,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     use ArithmeticSimpleTrait;
     use ComparisonTrait;
     use IntegerMathTrait;
-    use TrigonometryScaleTrait;
+    use TrigonometrySimpleTrait;
     use InverseTrigonometryScaleTrait;
     use LogTrait;
     use ScaleTrait;
@@ -45,6 +45,12 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         } else {
             $this->imaginary = false;
         }
+
+        //if (str_starts_with($value, '-')) {
+        //    $this->sign = true;
+        //} else {
+        //    $this->sign = false;
+        //}
 
         if ($base !== 10 && !$baseTenInput) {
             $value = $this->convertValue($value, $base, 10);
@@ -85,9 +91,8 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     protected function translateValue(string $value): array
     {
         $value = trim($value);
-        $valueArr = str_split($value);
 
-        if ($valueArr[0] === '-') {
+        if (str_starts_with($value, '-')) {
             $this->sign = true;
             $value = trim($value, '-');
         } else {
@@ -207,6 +212,24 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     public function compare($value): int
     {
         $value = Numbers::makeOrDont($this, $value, $this->getScale());
+
+        if ($this->getValue() == Number::INFINITY) {
+            return match ($value->getValue()) {
+                'INF' => 0,
+                default => 1
+            };
+        } elseif ($this->getValue() == Number::NEG_INFINITY) {
+            return match ($value->getValue()) {
+                '-INF' => 0,
+                default => -1
+            };
+        }
+
+        if ($value->getValue() == Number::INFINITY) {
+            return 1;
+        } elseif ($value->getValue() == Number::NEG_INFINITY) {
+            return -1;
+        }
 
         // TODO: Handle comparison of imaginary numbers
         if ($value instanceof FractionInterface) {

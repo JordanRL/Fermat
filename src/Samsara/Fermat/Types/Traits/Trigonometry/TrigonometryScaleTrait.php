@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Types\Traits\Decimal;
+namespace Samsara\Fermat\Types\Traits\Trigonometry;
 
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
@@ -11,7 +11,7 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 trait TrigonometryScaleTrait
 {
 
-    public function sin(int $scale = null, bool $round = true): DecimalInterface
+    public function sinScale(int $scale = null): string
     {
         if ($this->isEqual(0)) {
             return $this;
@@ -23,7 +23,7 @@ trait TrigonometryScaleTrait
         $pi = Numbers::makePi();
 
         if ($pi->truncate($scale)->isEqual($this) || $twoPi->truncate($scale)->isEqual($this)) {
-            return $this->setValue(0);
+            return '0';
         }
 
         $modulo = $this->continuousModulo($twoPi);
@@ -45,17 +45,13 @@ trait TrigonometryScaleTrait
             $scale+1
         );
 
-        if ($round) {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToScale($scale);
-        } else {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToScale($scale);
-        }
+        return $answer->getAsBaseTenRealNumber();
     }
 
-    public function cos(int $scale = null, bool $round = true): DecimalInterface
+    public function cosScale(int $scale = null): string
     {
         if ($this->isEqual(0)) {
-            return $this->setValue('1');
+            return '1';
         }
 
         $scale = $scale ?? $this->getScale();
@@ -64,11 +60,11 @@ trait TrigonometryScaleTrait
         $pi = Numbers::makePi();
 
         if ($twoPi->truncate($scale)->isEqual($this)) {
-            return $this->setValue('1');
+            return '1';
         }
 
         if ($pi->truncate($scale)->isEqual($this)) {
-            return $this->setValue('-1');
+            return '-1';
         }
 
         $modulo = $this->continuousModulo($twoPi);
@@ -88,14 +84,10 @@ trait TrigonometryScaleTrait
             $scale+1
         );
 
-        if ($round) {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToScale($scale);
-        } else {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToScale($scale);
-        }
+        return $answer->getAsBaseTenRealNumber();
     }
 
-    public function tan(int $scale = null, bool $round = true): DecimalInterface
+    public function tanScale(int $scale = null): string
     {
         $scale = $scale ?? $this->getScale();
 
@@ -111,7 +103,7 @@ trait TrigonometryScaleTrait
         $exitModulo = $this->continuousModulo($pi);
 
         if ($exitModulo->truncate(99)->isEqual(0)) {
-            return $this->setValue(0);
+            return '0';
         }
 
         $modulo = $this->continuousModulo($twoPi);
@@ -120,14 +112,14 @@ trait TrigonometryScaleTrait
             $modulo->truncate(99)->isEqual($piDivTwo->truncate(99)) ||
             ($this->isNegative() && $modulo->subtract($pi)->abs()->truncate(99)->isEqual($piDivTwo->truncate(99)))
         ) {
-            return $this->setValue(static::INFINITY);
+            return static::INFINITY;
         }
 
         if (
             $modulo->subtract($pi)->truncate(99)->isEqual($piDivTwo->truncate(99)) ||
             ($this->isNegative() && $modulo->truncate(99)->abs()->isEqual($piDivTwo->truncate(99)))
         ) {
-            return $this->setValue(static::NEG_INFINITY);
+            return static::NEG_INFINITY;
         }
 
         if ($modulo->abs()->isGreaterThan($piDivTwo)) {
@@ -155,7 +147,7 @@ trait TrigonometryScaleTrait
 
         if ($modulo->abs()->isGreaterThan($piDivEight)) {
             /** @var ImmutableDecimal $halfModTan */
-            $halfModTan = $modulo->divide(2)->tan($scale+1, false);
+            $halfModTan = Numbers::make(Numbers::IMMUTABLE, $modulo->divide(2)->tanScale($scale+1, false));
             $answer = $two->multiply($halfModTan)->divide($one->subtract($halfModTan->pow(2)));
         } else {
             $answer = SeriesProvider::maclaurinSeries(
@@ -181,15 +173,11 @@ trait TrigonometryScaleTrait
             $answer = $one->divide($answer);
         }
 
-        if ($round) {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->roundToScale($scale);
-        } else {
-            return $this->setValue($answer->getAsBaseTenRealNumber(), $this->getBase())->truncateToScale($scale);
-        }
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function cot(int $scale = null, bool $round = true): DecimalInterface
+    public function cotScale(int $scale = null): string
     {
 
         $pi = Numbers::makePi();
@@ -205,32 +193,26 @@ trait TrigonometryScaleTrait
         $mod2Pi = $num->continuousModulo($twoPi)->truncate($scale);
 
         if ($mod2Pi->isEqual(0)) {
-            return $this->setValue(static::INFINITY);
+            return static::INFINITY;
         } elseif($modPi->isEqual(0)) {
-            return $this->setValue(static::NEG_INFINITY);
+            return static::NEG_INFINITY;
         }
 
         $modPiDiv2 = $num->continuousModulo($piDivTwo)->truncate($scale);
 
         if ($modPiDiv2->isEqual(0)) {
-            return $this->setValue(0, $this->getBase());
+            return '0';
         }
 
-        $tan = $num->tan($scale+2, $round);
+        $tan = $num->tanScale($scale+2);
 
         $answer = $one->divide($tan, $scale+2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer, $this->getBase());
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function sec(int $scale = null, bool $round = true): DecimalInterface
+    public function secScale(int $scale = null): string
     {
 
         $one = Numbers::makeOne();
@@ -239,25 +221,19 @@ trait TrigonometryScaleTrait
 
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+1);
 
-        $cos = $num->cos($scale+2, $round);
+        $cos = $num->cosScale($scale+2);
 
-        if ($cos->isEqual(0)) {
-            return $this->setValue(static::INFINITY);
+        if ($cos == 0) {
+            return static::INFINITY;
         }
 
         $answer = $one->divide($cos, $scale+2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer, $this->getBase());
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function csc(int $scale = null, bool $round = true): DecimalInterface
+    public function cscScale(int $scale = null): string
     {
 
         $one = Numbers::makeOne();
@@ -266,109 +242,75 @@ trait TrigonometryScaleTrait
 
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $sin = $num->sin($scale+2, $round);
+        $sin = $num->sinScale($scale+2);
 
-        if ($sin->isEqual(0)) {
-            return $this->setValue(static::INFINITY);
+        if ($sin == "0") {
+            return static::INFINITY;
         }
 
         $answer = $one->divide($sin, $scale+2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer, $this->getBase());
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function sinh(int $scale = null, bool $round = true): DecimalInterface
+    public function sinhScale(int $scale = null): string
     {
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
 
         $scale = $scale ?? $this->getScale();
-
-        $this->scale = $scale;
 
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
 
         $answer = $num->multiply(2)->exp($scale+2)->subtract(1)->divide($two->multiply($num->exp($scale+2)), $scale+2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer, $this->getBase());
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function cosh(int $scale = null, bool $round = true): DecimalInterface
+    public function coshScale(int $scale = null): string
     {
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
 
         $scale = $scale ?? $this->getScale();
 
-        $this->scale = $scale;
-
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
         $answer = $num->multiply(2)->exp()->add(1)->divide($two->multiply($num->exp()));
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer, $this->getBase());
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function tanh(int $scale = null, bool $round = true): DecimalInterface
+    public function tanhScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
 
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $answer = $num->sinh($scale+1, false)->divide($num->cosh($scale+1, false));
+        $answer = Numbers::make(Numbers::IMMUTABLE, $num->sinhScale($scale+2))->divide($num->coshScale($scale+2), $scale+2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer, $this->getBase());
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function coth(int $scale = null, bool $round = true): DecimalInterface
+    public function cothScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
 
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
 
-        $answer = $num->cosh($scale+1, false)->divide($num->sinh($scale+1, false), $scale+2);
+        $answer = Numbers::make(Numbers::IMMUTABLE, $num->coshScale($scale+1))->divide($num->sinh($scale+1), $scale+2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer, $this->getBase());
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function sech(int $scale = null, bool $round = true): DecimalInterface
+    public function sechScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -376,19 +318,13 @@ trait TrigonometryScaleTrait
         $one = Numbers::makeOne();
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $answer = $one->divide($num->cosh($scale+2, false), $scale+2);
+        $answer = $one->divide($num->coshScale($scale+2), $scale+2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer, $this->getBase());
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function csch(int $scale = null, bool $round = true): DecimalInterface
+    public function cschScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -396,15 +332,9 @@ trait TrigonometryScaleTrait
         $one = Numbers::makeOne();
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $answer = $one->divide($num->sinh($scale+1, false));
+        $answer = $one->divide($num->sinhScale($scale+2), $scale+2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer, $this->getBase());
+        return $answer->getAsBaseTenRealNumber();
 
     }
 

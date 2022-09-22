@@ -34,12 +34,12 @@ class RoundingProvider
 
         $rawString = str_replace('-', '', $decimal->getAsBaseTenRealNumber());
 
-        if ($decimal->isInt() && $places >= 0) {
-            return $rawString;
-        }
-
         $sign = $decimal->isNegative() ? '-' : '';
         $imaginary = $decimal->isImaginary() ? 'i' : '';
+
+        if ($decimal->isInt() && $places >= 0) {
+            return $sign.$rawString.$imaginary;
+        }
 
         if (str_contains($rawString, '.')) {
             [$wholePart, $decimalPart] = explode('.', $rawString);

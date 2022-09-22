@@ -413,14 +413,17 @@ class ImmutableDecimalTest extends TestCase
 
     }
     /**
-     * @medium
+     *
      */
     public function testCos()
     {
         /** @var ImmutableDecimal $pi */
         $pi = Numbers::makePi();
-
         $this->assertEquals('-1', $pi->cos()->getValue());
+
+        /** @var ImmutableDecimal $tau */
+        $tau = Numbers::make2Pi();
+        $this->assertEquals('1', $tau->cos()->getValue());
 
         $four = new ImmutableDecimal(4);
 
@@ -462,7 +465,7 @@ class ImmutableDecimalTest extends TestCase
 
         $test = new ImmutableDecimal('-0.7853981633');
 
-        $this->assertEquals('1', $test->cot(2)->getValue());
+        $this->assertEquals('-1', $test->cot(2)->getValue());
 
     }
     /**
@@ -716,7 +719,7 @@ class ImmutableDecimalTest extends TestCase
 
         $one = Numbers::makeOne();
 
-        $this->assertEquals('0.761594156', $one->tanh(10)->getValue());
+        $this->assertEquals('0.761594156', $one->tanh(9)->getValue());
         $this->assertEquals('0.7615941559', $one->tanh(10, false)->getValue());
 
         $one = $one->truncateToScale(5);
@@ -765,7 +768,7 @@ class ImmutableDecimalTest extends TestCase
 
         $one = $one->truncateToScale(5);
 
-        $this->assertEquals('1.31303', $one->coth()->getValue());
+        $this->assertEquals('1.31304', $one->coth()->getValue());
 
     }
 
