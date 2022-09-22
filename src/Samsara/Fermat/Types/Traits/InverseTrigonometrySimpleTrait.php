@@ -4,10 +4,17 @@ namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Traits\Trigonometry\InverseTrigonometryNativeTrait;
+use Samsara\Fermat\Types\Traits\Trigonometry\InverseTrigonometryScaleTrait;
+use Samsara\Fermat\Types\Traits\Trigonometry\InverseTrigonometrySelectionTrait;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 trait InverseTrigonometrySimpleTrait
 {
+
+    use InverseTrigonometryNativeTrait;
+    use InverseTrigonometryScaleTrait;
+    use InverseTrigonometrySelectionTrait;
 
     public function arcsin(?int $scale = null, bool $round = true): DecimalInterface
     {

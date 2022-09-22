@@ -648,7 +648,7 @@ class ImmutableDecimalTest extends TestCase
         $oneHalf = new ImmutableDecimal('0.5');
 
         $this->expectException(IntegrityConstraint::class);
-        $this->expectExceptionMessage('The arcsec function only has real values for inputs which have an absolute value greater than 1');
+        $this->expectExceptionMessage('The arcsec function only has real values for inputs which have an absolute value greater than or equal to 1');
 
         $oneHalf->arcsec();
 
@@ -678,7 +678,7 @@ class ImmutableDecimalTest extends TestCase
         $oneHalf = new ImmutableDecimal('0.5');
 
         $this->expectException(IntegrityConstraint::class);
-        $this->expectExceptionMessage('The arccsc function only has real values for inputs which have an absolute value greater than 1');
+        $this->expectExceptionMessage('The arccsc function only has real values for inputs which have an absolute value greater than or equal to 1');
 
         $oneHalf->arccsc();
 

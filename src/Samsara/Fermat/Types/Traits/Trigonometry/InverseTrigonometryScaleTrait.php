@@ -14,7 +14,7 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 trait InverseTrigonometryScaleTrait
 {
 
-    protected function arcsinScale(int $scale = null, bool $round = true): DecimalInterface
+    protected function arcsinScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -66,17 +66,12 @@ trait InverseTrigonometryScaleTrait
             $answer = $x->multiply($one->subtract($x2)->sqrt($intScale))->divide($answer, $intScale);
 
         }
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
 
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    protected function arccosScale(int $scale = null, bool $round = true): DecimalInterface
+    protected function arccosScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -95,17 +90,11 @@ trait InverseTrigonometryScaleTrait
             $answer = $piDivTwo->subtract($z->arcsin($scale+2));
         }
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    protected function arctanScale(int $scale = null, bool $round = true): DecimalInterface
+    protected function arctanScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -118,17 +107,11 @@ trait InverseTrigonometryScaleTrait
 
         $answer = $x->divide($one->add($x->pow(2))->sqrt($intScale), $intScale)->arcsin($intScale);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    protected function arccotScale(int $scale = null, bool $round = true): DecimalInterface
+    protected function arccotScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -141,17 +124,11 @@ trait InverseTrigonometryScaleTrait
 
         $answer = $piDivTwo->subtract($arctan);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    protected function arcsecScale(int $scale = null, bool $round = true): DecimalInterface
+    protected function arcsecScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -161,17 +138,11 @@ trait InverseTrigonometryScaleTrait
 
         $answer = $one->divide($z, $scale + 2)->arccos($scale + 2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    protected function arccscScale(int $scale = null, bool $round = true): DecimalInterface
+    protected function arccscScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -179,23 +150,9 @@ trait InverseTrigonometryScaleTrait
         $one = Numbers::makeOne($scale + 2);
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
 
-        if ($z->abs()->isLessThan(1)) {
-            throw new IntegrityConstraint(
-                'The input for arccsc must have an absolute value greater than 1',
-                'Only calculate arccsc for values greater than 1',
-                'The arccsc function only has real values for inputs which have an absolute value greater than 1'
-            );
-        }
-
         $answer = $one->divide($z, $scale + 2)->arcsin($scale + 2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 

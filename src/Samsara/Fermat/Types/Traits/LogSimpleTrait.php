@@ -3,9 +3,15 @@
 namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Traits\Decimal\LogNativeTrait;
+use Samsara\Fermat\Types\Traits\Decimal\LogScaleTrait;
+use Samsara\Fermat\Types\Traits\Decimal\LogSelectionTrait;
 
 trait LogSimpleTrait
 {
+    use LogNativeTrait;
+    use LogScaleTrait;
+    use LogSelectionTrait;
 
     public function exp(?int $scale = null, bool $round = true): DecimalInterface
     {
