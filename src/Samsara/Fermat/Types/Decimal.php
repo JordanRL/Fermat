@@ -14,10 +14,10 @@ use Samsara\Fermat\Types\Base\Number;
 use Samsara\Fermat\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
-use Samsara\Fermat\Types\Traits\Decimal\InverseTrigonometryTrait;
-use Samsara\Fermat\Types\Traits\Decimal\LogTrait;
 use Samsara\Fermat\Types\Traits\Decimal\ScaleTrait;
-use Samsara\Fermat\Types\Traits\Decimal\TrigonometryTrait;
+use Samsara\Fermat\Types\Traits\InverseTrigonometrySimpleTrait;
+use Samsara\Fermat\Types\Traits\LogSimpleTrait;
+use Samsara\Fermat\Types\Traits\TrigonometrySimpleTrait;
 
 abstract class Decimal extends Number implements DecimalInterface, BaseConversionInterface
 {
@@ -27,9 +27,9 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     use ArithmeticSimpleTrait;
     use ComparisonTrait;
     use IntegerMathTrait;
-    use TrigonometryTrait;
-    use InverseTrigonometryTrait;
-    use LogTrait;
+    use TrigonometrySimpleTrait;
+    use InverseTrigonometrySimpleTrait;
+    use LogSimpleTrait;
     use ScaleTrait;
 
     public function __construct($value, int $scale = null, int $base = 10, bool $baseTenInput = false)
@@ -45,6 +45,12 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         } else {
             $this->imaginary = false;
         }
+
+        //if (str_starts_with($value, '-')) {
+        //    $this->sign = true;
+        //} else {
+        //    $this->sign = false;
+        //}
 
         if ($base !== 10 && !$baseTenInput) {
             $value = $this->convertValue($value, $base, 10);
@@ -85,9 +91,8 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     protected function translateValue(string $value): array
     {
         $value = trim($value);
-        $valueArr = str_split($value);
 
-        if ($valueArr[0] === '-') {
+        if (str_starts_with($value, '-')) {
             $this->sign = true;
             $value = trim($value, '-');
         } else {
@@ -208,6 +213,24 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     {
         $value = Numbers::makeOrDont($this, $value, $this->getScale());
 
+        if ($this->getValue() == Number::INFINITY) {
+            return match ($value->getValue()) {
+                'INF' => 0,
+                default => 1
+            };
+        } elseif ($this->getValue() == Number::NEG_INFINITY) {
+            return match ($value->getValue()) {
+                '-INF' => 0,
+                default => -1
+            };
+        }
+
+        if ($value->getValue() == Number::INFINITY) {
+            return 1;
+        } elseif ($value->getValue() == Number::NEG_INFINITY) {
+            return -1;
+        }
+
         // TODO: Handle comparison of imaginary numbers
         if ($value instanceof FractionInterface) {
             $value = $value->asDecimal($this->getScale());
@@ -245,6 +268,15 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         $newValue = $this->absValue();
 
         return $this->setValue($newValue, $this->getBase());
+    }
+
+    /**
+     * @param DecimalInterface $num
+     * @return float|int
+     */
+    protected static function translateToNative(DecimalInterface $num): float|int
+    {
+        return ($num->isInt() ? $num->asInt() : $num->asFloat());
     }
 
     /**

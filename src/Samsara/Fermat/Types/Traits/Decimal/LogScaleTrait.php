@@ -7,13 +7,12 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
-use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
-trait LogTrait
+trait LogScaleTrait
 {
 
-    public function exp(int $scale = null, bool $round = true): DecimalInterface
+    public function expScale(int $scale = null): string
     {
         $scale = $scale ?? $this->getScale();
 
@@ -74,26 +73,18 @@ trait LogTrait
             $value = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $intScale, $intScale);
         }
 
-        $value = ($round ? $value->roundToScale($scale) : $value->truncateToScale($scale));
-
-        return $this->setValue($value->getAsBaseTenRealNumber(), $scale, $this->getBase());
+        return $value->getAsBaseTenRealNumber();
     }
 
     /**
      * @param int|null $scale The number of digits which should be accurate
      *
-     * @return DecimalInterface
+     * @return string
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function ln(int $scale = null, bool $round = true): DecimalInterface
+    public function lnScale(int $scale = null): string
     {
-        /*
-        if ($this->isGreaterThanOrEqualTo(PHP_INT_MIN) && $this->isLessThanOrEqualTo(PHP_INT_MAX) && $scale <= 10) {
-            return $this->setValue(log($this->getValue()));
-        }
-        */
-
         $internalScale = $scale ?? $this->getScale();
         $internalScale += 5;
 
@@ -140,38 +131,27 @@ trait LogTrait
 
         $answer = $adjustedNum->add($eExp);
 
-        if ($round) {
-            $answer = $answer->roundToScale($internalScale-5);
-        } else {
-            $answer = $answer->truncateToScale($internalScale-5);
-        }
-
         $this->scale = $oldScale;
 
-        return $this->setValue($answer->getAsBaseTenRealNumber(), $scale, $this->getBase());
+        return $answer->getAsBaseTenRealNumber();
     }
 
     /**
      * @param int|null $scale
-     * @return mixed
+     * @return string
      * @throws IntegrityConstraint|MissingPackage
      */
-    public function log10(int $scale = null, bool $round = true): DecimalInterface
+    public function log10Scale(int $scale = null): string
     {
-        $log10 = Numbers::makeNaturalLog10();
 
         $internalScale = $scale ?? $this->scale;
-        $internalScale += 1;
+        $internalScale += 2;
+
+        $log10 = Numbers::makeNaturalLog10($internalScale);
 
         $value = $this->ln($internalScale)->divide($log10);
 
-        if ($round) {
-            $value = $value->roundToScale($internalScale-1);
-        } else {
-            $value = $value->truncateToScale($internalScale-1);
-        }
-
-        return $this->setValue($value->getAsBaseTenRealNumber(), $scale, $this->getBase());
+        return $value->getAsBaseTenRealNumber();
     }
 
 }

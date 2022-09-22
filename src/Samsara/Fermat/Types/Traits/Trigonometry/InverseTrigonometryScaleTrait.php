@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Types\Traits\Decimal;
+namespace Samsara\Fermat\Types\Traits\Trigonometry;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\RoundingMode;
@@ -11,10 +11,10 @@ use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterfac
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
-trait InverseTrigonometryTrait
+trait InverseTrigonometryScaleTrait
 {
 
-    public function arcsin(int $scale = null, bool $round = true): DecimalInterface
+    protected function arcsinScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -34,14 +34,6 @@ trait InverseTrigonometryTrait
             $x = new ImmutableDecimal($this->getValue(), $intScale);
             $x2 = $x->pow(2);
             $one = new ImmutableDecimal(1, $intScale);
-
-            if ($abs->isGreaterThan(1)) {
-                throw new IntegrityConstraint(
-                    'The input for arcsin must have an absolute value of 1 or smaller',
-                    'Only calculate arcsin for values of 1 or smaller',
-                    'The arcsin function only has real values for inputs which have an absolute value of 1 or smaller'
-                );
-            }
 
             $aPart = new class($x2, $intScale) implements ContinuedFractionTermInterface{
                 private ImmutableDecimal $x2;
@@ -74,17 +66,12 @@ trait InverseTrigonometryTrait
             $answer = $x->multiply($one->subtract($x2)->sqrt($intScale))->divide($answer, $intScale);
 
         }
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
 
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function arccos(int $scale = null, bool $round = true): DecimalInterface
+    protected function arccosScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -99,30 +86,15 @@ trait InverseTrigonometryTrait
             $answer = Numbers::makeZero();
         } else {
             $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale + 2);
-            $one = Numbers::makeOne($scale + 2);
-
-            if ($z->abs()->isGreaterThan(1)) {
-                throw new IntegrityConstraint(
-                    'The input for arccos must have an absolute value of 1 or smaller',
-                    'Only calculate arccos for values of 1 or smaller',
-                    'The arccos function only has real values for inputs which have an absolute value of 1 or smaller'
-                );
-            }
 
             $answer = $piDivTwo->subtract($z->arcsin($scale+2));
         }
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function arctan(int $scale = null, bool $round = true): DecimalInterface
+    protected function arctanScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -135,17 +107,11 @@ trait InverseTrigonometryTrait
 
         $answer = $x->divide($one->add($x->pow(2))->sqrt($intScale), $intScale)->arcsin($intScale);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function arccot(int $scale = null, bool $round = true): DecimalInterface
+    protected function arccotScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -158,45 +124,25 @@ trait InverseTrigonometryTrait
 
         $answer = $piDivTwo->subtract($arctan);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function arcsec(int $scale = null, bool $round = true): DecimalInterface
+    protected function arcsecScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
 
         $one = Numbers::makeOne($scale + 2);
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
-
-        if ($z->abs()->isLessThan(1)) {
-            throw new IntegrityConstraint(
-                'The input for arcsec must have an absolute value greater than 1',
-                'Only calculate arcsec for values greater than 1',
-                'The arcsec function only has real values for inputs which have an absolute value greater than 1'
-            );
-        }
 
         $answer = $one->divide($z, $scale + 2)->arccos($scale + 2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 
-    public function arccsc(int $scale = null, bool $round = true): DecimalInterface
+    protected function arccscScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -204,23 +150,9 @@ trait InverseTrigonometryTrait
         $one = Numbers::makeOne($scale + 2);
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
 
-        if ($z->abs()->isLessThan(1)) {
-            throw new IntegrityConstraint(
-                'The input for arccsc must have an absolute value greater than 1',
-                'Only calculate arccsc for values greater than 1',
-                'The arccsc function only has real values for inputs which have an absolute value greater than 1'
-            );
-        }
-
         $answer = $one->divide($z, $scale + 2)->arcsin($scale + 2);
 
-        if ($round) {
-            $answer = $answer->roundToScale($scale);
-        } else {
-            $answer = $answer->truncateToScale($scale);
-        }
-
-        return $this->setValue($answer);
+        return $answer->getAsBaseTenRealNumber();
 
     }
 

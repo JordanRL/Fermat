@@ -10,6 +10,7 @@ use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\RoundingProvider;
 use Samsara\Fermat\Provider\TrigonometryProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Types\Base\Number;
 
 trait ScaleTrait
 {
@@ -23,6 +24,10 @@ trait ScaleTrait
 
     public function round(int $decimals = 0, ?RoundingMode $mode = null): DecimalInterface
     {
+        if ($this->getValue() == Number::INFINITY || $this->getValue() == Number::NEG_INFINITY) {
+            return $this;
+        }
+
         if ($mode) {
             $defaultMode = RoundingProvider::getRoundingMode();
             RoundingProvider::setRoundingMode($mode);
@@ -37,6 +42,10 @@ trait ScaleTrait
 
     public function truncate(int $decimals = 0): DecimalInterface
     {
+        if ($this->getValue() == Number::INFINITY || $this->getValue() == Number::NEG_INFINITY) {
+            return $this;
+        }
+
         $fractional = $this->getDecimalPart();
         $whole = $this->getWholePart();
 
