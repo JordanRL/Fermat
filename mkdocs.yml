@@ -4,7 +4,7 @@ extra_css:
     - css/custom.css
 repo_url: 'https://github.com/JordanRL/Fermat/'
 site_url: 'https://jordanrl.github.io/Fermat/'
-copyright: 'Copyright &copy; 2015-2021 Jordan LeDoux'
+copyright: 'Copyright &copy; 2015-2022 Jordan LeDoux'
 nav:
     -
         Introduction:
@@ -33,6 +33,8 @@ nav:
             -
                 'Calculation Modes': configuration/calculation-modes.md
             -
+                'Random Modes': configuration/random-modes.md
+            -
                 'Rounding Modes': configuration/rounding-modes.md
     -
         Modules:
@@ -50,10 +52,6 @@ nav:
                         'Complex Numbers': modules/complex-numbers/about.md
                     -
                         'Linear Algebra': modules/linear-algebra/about.md
-    -
-        Extending:
-            -
-                'Abstract Classes': extending/abstracts.md
     -
         'Source Reference':
             -
