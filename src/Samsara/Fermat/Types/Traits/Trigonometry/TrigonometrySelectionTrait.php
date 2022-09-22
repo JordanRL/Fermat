@@ -7,7 +7,7 @@ use Samsara\Fermat\Enums\CalcMode;
 trait TrigonometrySelectionTrait
 {
 
-    protected function sinSelection(?int $scale = null): string
+    protected function sinSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -17,7 +17,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function cosSelection(?int $scale = null): string
+    protected function cosSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -27,7 +27,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function tanSelection(?int $scale = null): string
+    protected function tanSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -37,7 +37,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function secSelection(?int $scale = null): string
+    protected function secSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -47,7 +47,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function cscSelection(?int $scale = null): string
+    protected function cscSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -57,7 +57,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function cotSelection(?int $scale = null): string
+    protected function cotSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -67,7 +67,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function sinhSelection(?int $scale = null): string
+    protected function sinhSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -77,7 +77,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function coshSelection(?int $scale = null): string
+    protected function coshSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -87,7 +87,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function tanhSelection(?int $scale = null): string
+    protected function tanhSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -97,7 +97,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function sechSelection(?int $scale = null): string
+    protected function sechSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -107,7 +107,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function cschSelection(?int $scale = null): string
+    protected function cschSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 
@@ -117,7 +117,7 @@ trait TrigonometrySelectionTrait
         };
     }
 
-    protected function cothSelection(?int $scale = null): string
+    protected function cothSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
 

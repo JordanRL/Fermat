@@ -11,7 +11,7 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 trait TrigonometryScaleTrait
 {
 
-    public function sinScale(int $scale = null): string
+    protected function sinScale(int $scale = null): string
     {
         if ($this->isEqual(0)) {
             return $this;
@@ -48,7 +48,7 @@ trait TrigonometryScaleTrait
         return $answer->getAsBaseTenRealNumber();
     }
 
-    public function cosScale(int $scale = null): string
+    protected function cosScale(int $scale = null): string
     {
         if ($this->isEqual(0)) {
             return '1';
@@ -87,7 +87,7 @@ trait TrigonometryScaleTrait
         return $answer->getAsBaseTenRealNumber();
     }
 
-    public function tanScale(int $scale = null): string
+    protected function tanScale(int $scale = null): string
     {
         $scale = $scale ?? $this->getScale();
 
@@ -177,7 +177,7 @@ trait TrigonometryScaleTrait
 
     }
 
-    public function cotScale(int $scale = null): string
+    protected function cotScale(int $scale = null): string
     {
 
         $pi = Numbers::makePi();
@@ -212,7 +212,7 @@ trait TrigonometryScaleTrait
 
     }
 
-    public function secScale(int $scale = null): string
+    protected function secScale(int $scale = null): string
     {
 
         $one = Numbers::makeOne();
@@ -233,7 +233,7 @@ trait TrigonometryScaleTrait
 
     }
 
-    public function cscScale(int $scale = null): string
+    protected function cscScale(int $scale = null): string
     {
 
         $one = Numbers::makeOne();
@@ -254,7 +254,7 @@ trait TrigonometryScaleTrait
 
     }
 
-    public function sinhScale(int $scale = null): string
+    protected function sinhScale(int $scale = null): string
     {
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
@@ -269,7 +269,7 @@ trait TrigonometryScaleTrait
 
     }
 
-    public function coshScale(int $scale = null): string
+    protected function coshScale(int $scale = null): string
     {
 
         $two = Numbers::make(Numbers::IMMUTABLE, 2);
@@ -284,7 +284,7 @@ trait TrigonometryScaleTrait
 
     }
 
-    public function tanhScale(int $scale = null): string
+    protected function tanhScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -297,7 +297,7 @@ trait TrigonometryScaleTrait
 
     }
 
-    public function cothScale(int $scale = null): string
+    protected function cothScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -310,7 +310,7 @@ trait TrigonometryScaleTrait
 
     }
 
-    public function sechScale(int $scale = null): string
+    protected function sechScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();
@@ -324,7 +324,7 @@ trait TrigonometryScaleTrait
 
     }
 
-    public function cschScale(int $scale = null): string
+    protected function cschScale(int $scale = null): string
     {
 
         $scale = $scale ?? $this->getScale();

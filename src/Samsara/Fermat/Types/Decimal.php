@@ -14,9 +14,9 @@ use Samsara\Fermat\Types\Base\Number;
 use Samsara\Fermat\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
-use Samsara\Fermat\Types\Traits\Trigonometry\InverseTrigonometryScaleTrait;
-use Samsara\Fermat\Types\Traits\Decimal\LogTrait;
 use Samsara\Fermat\Types\Traits\Decimal\ScaleTrait;
+use Samsara\Fermat\Types\Traits\InverseTrigonometrySimpleTrait;
+use Samsara\Fermat\Types\Traits\LogSimpleTrait;
 use Samsara\Fermat\Types\Traits\TrigonometrySimpleTrait;
 
 abstract class Decimal extends Number implements DecimalInterface, BaseConversionInterface
@@ -28,8 +28,8 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     use ComparisonTrait;
     use IntegerMathTrait;
     use TrigonometrySimpleTrait;
-    use InverseTrigonometryScaleTrait;
-    use LogTrait;
+    use InverseTrigonometrySimpleTrait;
+    use LogSimpleTrait;
     use ScaleTrait;
 
     public function __construct($value, int $scale = null, int $base = 10, bool $baseTenInput = false)

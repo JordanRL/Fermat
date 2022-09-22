@@ -14,7 +14,7 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 trait InverseTrigonometryScaleTrait
 {
 
-    public function arcsin(int $scale = null, bool $round = true): DecimalInterface
+    protected function arcsinScale(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -34,14 +34,6 @@ trait InverseTrigonometryScaleTrait
             $x = new ImmutableDecimal($this->getValue(), $intScale);
             $x2 = $x->pow(2);
             $one = new ImmutableDecimal(1, $intScale);
-
-            if ($abs->isGreaterThan(1)) {
-                throw new IntegrityConstraint(
-                    'The input for arcsin must have an absolute value of 1 or smaller',
-                    'Only calculate arcsin for values of 1 or smaller',
-                    'The arcsin function only has real values for inputs which have an absolute value of 1 or smaller'
-                );
-            }
 
             $aPart = new class($x2, $intScale) implements ContinuedFractionTermInterface{
                 private ImmutableDecimal $x2;
@@ -84,7 +76,7 @@ trait InverseTrigonometryScaleTrait
 
     }
 
-    public function arccos(int $scale = null, bool $round = true): DecimalInterface
+    protected function arccosScale(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -99,15 +91,6 @@ trait InverseTrigonometryScaleTrait
             $answer = Numbers::makeZero();
         } else {
             $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale + 2);
-            $one = Numbers::makeOne($scale + 2);
-
-            if ($z->abs()->isGreaterThan(1)) {
-                throw new IntegrityConstraint(
-                    'The input for arccos must have an absolute value of 1 or smaller',
-                    'Only calculate arccos for values of 1 or smaller',
-                    'The arccos function only has real values for inputs which have an absolute value of 1 or smaller'
-                );
-            }
 
             $answer = $piDivTwo->subtract($z->arcsin($scale+2));
         }
@@ -122,7 +105,7 @@ trait InverseTrigonometryScaleTrait
 
     }
 
-    public function arctan(int $scale = null, bool $round = true): DecimalInterface
+    protected function arctanScale(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -145,7 +128,7 @@ trait InverseTrigonometryScaleTrait
 
     }
 
-    public function arccot(int $scale = null, bool $round = true): DecimalInterface
+    protected function arccotScale(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
@@ -168,21 +151,13 @@ trait InverseTrigonometryScaleTrait
 
     }
 
-    public function arcsec(int $scale = null, bool $round = true): DecimalInterface
+    protected function arcsecScale(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();
 
         $one = Numbers::makeOne($scale + 2);
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
-
-        if ($z->abs()->isLessThan(1)) {
-            throw new IntegrityConstraint(
-                'The input for arcsec must have an absolute value greater than 1',
-                'Only calculate arcsec for values greater than 1',
-                'The arcsec function only has real values for inputs which have an absolute value greater than 1'
-            );
-        }
 
         $answer = $one->divide($z, $scale + 2)->arccos($scale + 2);
 
@@ -196,7 +171,7 @@ trait InverseTrigonometryScaleTrait
 
     }
 
-    public function arccsc(int $scale = null, bool $round = true): DecimalInterface
+    protected function arccscScale(int $scale = null, bool $round = true): DecimalInterface
     {
 
         $scale = $scale ?? $this->getScale();

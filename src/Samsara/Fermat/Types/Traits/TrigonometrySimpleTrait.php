@@ -17,7 +17,7 @@ trait TrigonometrySimpleTrait
 
     public function sin(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->sinSelection($scale);
+        $answer = $this->sinSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -32,7 +32,7 @@ trait TrigonometrySimpleTrait
 
     public function cos(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->cosSelection($scale);
+        $answer = $this->cosSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -47,7 +47,7 @@ trait TrigonometrySimpleTrait
 
     public function tan(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->tanSelection($scale);
+        $answer = $this->tanSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -62,7 +62,7 @@ trait TrigonometrySimpleTrait
 
     public function sec(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->secSelection($scale);
+        $answer = $this->secSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -77,7 +77,7 @@ trait TrigonometrySimpleTrait
 
     public function csc(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->cscSelection($scale);
+        $answer = $this->cscSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -92,7 +92,7 @@ trait TrigonometrySimpleTrait
 
     public function cot(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->cotSelection($scale);
+        $answer = $this->cotSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -107,7 +107,7 @@ trait TrigonometrySimpleTrait
 
     public function sinh(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->sinhSelection($scale);
+        $answer = $this->sinhSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -122,7 +122,7 @@ trait TrigonometrySimpleTrait
 
     public function cosh(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->coshSelection($scale);
+        $answer = $this->coshSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -139,7 +139,7 @@ trait TrigonometrySimpleTrait
     {
         $finalScale = $scale ?? $this->getScale();
 
-        $answer = $this->tanhSelection($scale);
+        $answer = $this->tanhSelector($scale);
 
         if ($round) {
             $result = $this->setValue($answer)->roundToScale($finalScale);
@@ -152,7 +152,7 @@ trait TrigonometrySimpleTrait
 
     public function sech(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->sechSelection($scale);
+        $answer = $this->sechSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -167,7 +167,7 @@ trait TrigonometrySimpleTrait
 
     public function csch(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->cschSelection($scale);
+        $answer = $this->cschSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -182,7 +182,7 @@ trait TrigonometrySimpleTrait
 
     public function coth(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->cothSelection($scale);
+        $answer = $this->cothSelector($scale);
 
         $finalScale = $scale ?? $this->getScale();
 
