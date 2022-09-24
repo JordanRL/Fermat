@@ -244,7 +244,7 @@ class NumbersTest extends TestCase
 
         $this->expectException(IntegrityConstraint::class);
 
-        Numbers::makeNaturalLog10(200);
+        Numbers::makeNaturalLog10(-1);
 
     }
     /**

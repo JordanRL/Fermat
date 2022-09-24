@@ -61,7 +61,7 @@ trait InverseTrigonometryScaleTrait
                 }
             };
 
-            $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $intScale, $intScale, SeriesProvider::SUM_MODE_ADD);
+            $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $intScale, $intScale);
 
             $answer = $x->multiply($one->subtract($x2)->sqrt($intScale))->divide($answer, $intScale);
 
@@ -99,13 +99,46 @@ trait InverseTrigonometryScaleTrait
 
         $scale = $scale ?? $this->getScale();
         $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
-        $mulScale = $abs->asInt() > $abs->getScale() ? $abs->asInt() : $abs->getScale();
-        $intScale = $scale * $mulScale;
+        $intScale = $scale + 2;
+        $terms = $abs->multiply($intScale+8)->asInt();
         $x = new ImmutableDecimal($this->getValue(), $intScale);
+        $aPart = new class($x) implements ContinuedFractionTermInterface {
+            private ImmutableDecimal $x;
 
-        $one = Numbers::makeOne($intScale);
+            public function __construct(ImmutableDecimal $x)
+            {
+                $this->x = $x;
+            }
 
-        $answer = $x->divide($one->add($x->pow(2))->sqrt($intScale), $intScale)->arcsin($intScale);
+            public function __invoke(int $n): ImmutableDecimal
+            {
+                if ($n == 1) {
+                    return $this->x;
+                }
+
+                return $this->x->multiply($n-1)->pow(2);
+            }
+        };
+
+        $bPart = new class($intScale) implements ContinuedFractionTermInterface {
+            private int $intScale;
+
+            public function __construct(int $intScale)
+            {
+                $this->intScale = $intScale;
+            }
+
+            public function __invoke(int $n): ImmutableDecimal
+            {
+                if ($n == 0) {
+                    return Numbers::makeZero($this->intScale);
+                }
+
+                return SequenceProvider::nthOddNumber($n - 1)->truncateToScale($this->intScale);
+            }
+        };
+
+        $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $terms, $intScale);
 
         return $answer->getAsBaseTenRealNumber();
 

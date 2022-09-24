@@ -16,11 +16,11 @@ interface DecimalInterface extends SimpleNumberInterface
     public function modulo($mod): DecimalInterface;
 
     /**
-     * @param $mod
+     * @param NumberInterface|string|int|float $mod
      *
      * @return DecimalInterface
      */
-    public function continuousModulo($mod): DecimalInterface;
+    public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface;
 
     /**
      * @param $num
@@ -64,6 +64,8 @@ interface DecimalInterface extends SimpleNumberInterface
      * @return bool
      */
     public function isPrime(): bool;
+
+    public function getDivisors(): NumberCollection;
 
     public function asPrimeFactors(): NumberCollection;
 

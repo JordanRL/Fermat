@@ -6,6 +6,7 @@ namespace Samsara\Fermat\Types\Traits\Arithmetic;
 
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
@@ -70,18 +71,18 @@ trait ArithmeticScaleTrait
     /**
      * @param DecimalInterface $num
      * @return string
-     * @throws MissingPackage
      * @throws IntegrityConstraint
      */
     protected function powScale(DecimalInterface $num): string
     {
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
+        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->getValue(), $this->getScale());
 
         if (!$num->isWhole()) {
-            $scale += 5;
-            $exponent = $num->multiply($this->ln($scale));
-            return $exponent->exp($scale)->truncateToScale($scale - 5)->getValue();
+            $scale += 2;
+            $exponent = $num->multiply($thisNum->ln($scale));
+            return $exponent->exp($scale)->truncateToScale($scale - 2)->getValue();
         }
 
         return ArithmeticProvider::pow($this->asReal(), $num->asReal(), $scale);

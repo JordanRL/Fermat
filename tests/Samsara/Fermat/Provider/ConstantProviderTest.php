@@ -26,4 +26,10 @@ class ConstantProviderTest extends TestCase
         $this->assertEquals('2.71828', $value);
 
     }
+
+    public function testMakeLn10()
+    {
+        $value = ConstantProvider::makeLn10(5);
+        $this->assertEquals('2.30258', $value);
+    }
 }

@@ -7,12 +7,23 @@ namespace Samsara\Fermat\Provider;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 class ConstantProvider
 {
 
+    private static DecimalInterface $pi;
+    private static DecimalInterface $e;
+    private static DecimalInterface $ln10;
+    private static DecimalInterface $ln2;
+
     public static function makePi(int $digits): string
     {
+
+        if (isset(self::$pi) && self::$pi->numberOfDecimalDigits() >= $digits) {
+            return self::$pi->truncateToScale($digits)->getValue();
+        }
 
         $internalScale = $digits + 10;
 
@@ -45,6 +56,8 @@ class ConstantProvider
 
         $pi = $C->divide($sum, $internalScale);
 
+        self::$pi = $pi->truncateToScale($digits);
+
         return $pi->truncateToScale($digits)->getValue();
 
     }
@@ -67,6 +80,10 @@ class ConstantProvider
     public static function makeE(int $digits): string
     {
 
+        if (isset(self::$e) && self::$e->numberOfDecimalDigits() >= $digits) {
+            return self::$e->truncateToScale($digits)->getValue();
+        }
+
         $internalScale = $digits + 3;
 
         $one = Numbers::makeOne($internalScale+5)->setMode(CalcMode::Precision);
@@ -88,7 +105,57 @@ class ConstantProvider
             $e->add($term);
         }
 
+        self::$e = $e->truncateToScale($digits);
+
         return $e->truncateToScale($digits)->getValue();
+
+    }
+
+    /**
+     * The lnScale() implementation is very efficient, so this is probably our best bet for computing more digits of
+     * ln(10) to provide.
+     *
+     * @param int $digits
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    public static function makeLn10(int $digits): string
+    {
+
+        if (isset(self::$ln10) && self::$ln10->numberOfDecimalDigits() >= $digits) {
+            return self::$ln10->truncateToScale($digits)->getValue();
+        }
+
+        $ln10 = Numbers::make(Numbers::IMMUTABLE, 10, $digits+2)->setMode(CalcMode::Precision);
+        $ln10 = $ln10->ln();
+
+        self::$ln10 = $ln10;
+
+        return $ln10->truncateToScale($digits)->getValue();
+
+    }
+
+    /**
+     * The lnScale() implementation is very efficient, so this is probably our best bet for computing more digits of
+     * ln(10) to provide.
+     *
+     * @param int $digits
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    public static function makeLn2(int $digits): string
+    {
+
+        if (isset(self::$ln2) && self::$ln2->numberOfDecimalDigits() >= $digits) {
+            return self::$ln2->truncateToScale($digits)->getValue();
+        }
+
+        $ln2 = Numbers::make(Numbers::IMMUTABLE, 2, $digits+2)->setMode(CalcMode::Precision);
+        $ln2 = $ln2->ln();
+
+        self::$ln2 = $ln2;
+
+        return $ln2->truncateToScale($digits)->getValue();
 
     }
 

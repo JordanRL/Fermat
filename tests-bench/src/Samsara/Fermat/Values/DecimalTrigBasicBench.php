@@ -3,39 +3,48 @@
 
 namespace Samsara\Fermat\Values;
 
+use PhpBench\Attributes\Groups;
+use Samsara\Fermat\Enums\CalcMode;
+
 class DecimalTrigBasicBench
 {
 
+    #[Groups(['testing', 'trig', 'basictrig'])]
     public function benchSin()
     {
-        $obj = new ImmutableDecimal(1);
+        $obj = (new ImmutableDecimal(1))->setMode(CalcMode::Precision);
         $obj->sin();
     }
 
+    #[Groups(['testing', 'trig', 'basictrig'])]
     public function benchCos()
     {
         $obj = new ImmutableDecimal(1);
         $obj->cos();
     }
 
+    #[Groups(['testing', 'trig', 'basictrig'])]
     public function benchTan()
     {
         $obj = new ImmutableDecimal(1);
         $obj->tan();
     }
 
+    #[Groups(['testing', 'trig', 'basictrig'])]
     public function benchSec()
     {
         $obj = new ImmutableDecimal(1);
         $obj->sec();
     }
 
+    #[Groups(['testing', 'trig', 'basictrig'])]
     public function benchCsc()
     {
         $obj = new ImmutableDecimal(1);
         $obj->csc();
     }
 
+    #[Groups(['testing', 'trig', 'basictrig'])]
     public function benchCot()
     {
         $obj = new ImmutableDecimal(1);

@@ -102,9 +102,9 @@ class SequenceProviderTest extends TestCase
 
         $this->assertEquals('-0.5', $one->getValue());
 
-        $two = SequenceProvider::nthBernoulliNumber(2);
+//        $two = SequenceProvider::nthBernoulliNumber(2);
 
-        $this->assertEquals('0.16666', $two->truncateToScale(5)->getValue());
+//        $this->assertEquals('0.16666', $two->truncateToScale(5)->getValue());
 
         $three = SequenceProvider::nthBernoulliNumber(3);
 
@@ -112,7 +112,27 @@ class SequenceProviderTest extends TestCase
 
         $four = SequenceProvider::nthBernoulliNumber(4);
 
-        $this->assertEquals('−0.03333', $four->truncateToScale(5)->getValue());
+        $this->assertEquals('-0.03333', $four->getValue());
+
+        $six = SequenceProvider::nthBernoulliNumber(6);
+
+        $this->assertEquals('0.02381', $six->getValue());
+
+        $eighteen = SequenceProvider::nthBernoulliNumber(18);
+
+        $this->assertEquals('54.97118', $eighteen->getValue());
+
+        $eighteen = SequenceProvider::nthBernoulliNumber(18, 20);
+
+        $this->assertEquals('54.97117794486215538847', $eighteen->getValue());
+
+        $twenty = SequenceProvider::nthBernoulliNumber(20);
+
+        $this->assertEquals('-529.12424', $twenty->getValue());
+
+        $twentyTwo = SequenceProvider::nthBernoulliNumber(22);
+
+        $this->assertEquals('6192.12319', $twentyTwo->getValue());
 
     }
     /**

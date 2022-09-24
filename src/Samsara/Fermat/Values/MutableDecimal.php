@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Values;
 
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
@@ -15,7 +16,7 @@ class MutableDecimal extends Decimal
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function continuousModulo($mod): DecimalInterface
+    public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface
     {
 
         $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, $this->scale+1);

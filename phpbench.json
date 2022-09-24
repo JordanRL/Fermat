@@ -1,12 +1,18 @@
 {
   "runner.bootstrap": "vendor/autoload.php",
-  "runner.path": "tests-bench/test",
+  "runner.path": "tests-bench/src",
   "runner.output_mode": "throughput",
   "runner.time_unit": "seconds",
   "runner.revs": 100,
   "runner.iterations": 50,
-  "runner.retry_threshold": 5,
+  "runner.retry_threshold": 2,
   "runner.warmup": 2,
+  "runner.progress": "verbose",
+  "report.outputs": {
+    "my-output": {
+      "extends": "console"
+    }
+  },
   "report.generators": {
     "my-report": {
       "generator": "expression",
@@ -15,10 +21,12 @@
       ],
       "aggregate": [
         "benchmark_class",
-        "subject_name"
+        "subject_name",
+        "suite_tag",
+        "variant_index"
       ],
       "expressions": {
-        "equivalent": "format(\"%2.4f\", mode(result_time_avg)/first(env_sampler_hash)) ~ \" md5() hashes\""
+        "equivalent": "format(\"%2.4f\", mode(result_time_avg)/first(env_sampler_md5)) ~ \" md5() hashes\""
       },
       "cols": [
         "benchmark",

@@ -122,8 +122,6 @@ class RandomProvider
                 );
             }
         } else {
-            $two = Numbers::make(Numbers::IMMUTABLE, 2, 0);
-
             /**
              * We only need to request enough bytes to find a number within the range, since we
              * will be adding the minimum value to it at the end.
@@ -131,7 +129,7 @@ class RandomProvider
             /** @noinspection PhpUnhandledExceptionInspection */
             $range = $maxDecimal->subtract($minDecimal);
             /** @noinspection PhpUnhandledExceptionInspection */
-            $bitsNeeded = $range->ln(1)->divide($two->ln(1), 1)->floor()->add(1);
+            $bitsNeeded = $range->ln(1)->divide(Numbers::makeNaturalLog2(1), 1)->floor()->add(1);
             $bytesNeeded = $bitsNeeded->divide(8)->ceil();
 
             do {

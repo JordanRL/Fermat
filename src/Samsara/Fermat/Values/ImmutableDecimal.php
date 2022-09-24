@@ -4,13 +4,14 @@ namespace Samsara\Fermat\Values;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 class ImmutableDecimal extends Decimal
 {
 
-    public function continuousModulo($mod): DecimalInterface
+    public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface
     {
 
         if (is_object($mod) && method_exists($mod, 'getScale')) {
