@@ -90,16 +90,17 @@ trait ArithmeticSimpleTrait
                 $finalNumerator,
                 $finalDenominator
             );
+        } else {
+            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
+
+            $value = $this->addSelector($num);
+
+            if ($this->isImaginary()) {
+                $value .= 'i';
+            }
+
+            return $this->setValue($value);
         }
-        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
-        $value = $this->addSelector($num);
-
-        if ($this->isImaginary()) {
-            $value .= 'i';
-        }
-
-        return $this->setValue($value);
     }
 
     public function subtract($num)
@@ -160,16 +161,17 @@ trait ArithmeticSimpleTrait
                 $finalNumerator,
                 $finalDenominator
             );
+        } else {
+            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
+
+            $value = $this->subtractSelector($num);
+
+            if ($this->isImaginary()) {
+                $value .= 'i';
+            }
+
+            return $this->setValue($value);
         }
-        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
-        $value = $this->subtractSelector($num);
-
-        if ($this->isImaginary()) {
-            $value .= 'i';
-        }
-
-        return $this->setValue($value);
     }
 
     public function multiply($num)
@@ -208,18 +210,19 @@ trait ArithmeticSimpleTrait
             $value = $this->asDecimal()->multiply($num);
 
             return new ImmutableDecimal($value, $this->getScale());
+        } else {
+            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
+
+            $value = $this->multiplySelector($num);
+
+            if ($this->isImaginary() xor $num->isImaginary()) {
+                $value .= 'i';
+            } elseif ($this->isImaginary() && $num->isImaginary()) {
+                $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
+            }
+
+            return $this->setValue($value);
         }
-        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
-        $value = $this->multiplySelector($num);
-
-        if ($this->isImaginary() xor $num->isImaginary()) {
-            $value .= 'i';
-        } elseif ($this->isImaginary() && $num->isImaginary()) {
-            $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
-        }
-
-        return $this->setValue($value);
     }
 
     public function divide($num, ?int $scale = null)
@@ -261,17 +264,18 @@ trait ArithmeticSimpleTrait
             $value = $this->asDecimal($scale)->divide($num);
 
             return new ImmutableDecimal($value, $scale);
+        } else {
+
+            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
+
+            $value = $this->divideSelector($num, $scale);
+
+            if ($this->isImaginary()) {
+                $value .= 'i';
+            }
+
+            return $this->setValue($value);
         }
-
-        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
-        $value = $this->divideSelector($num, $scale);
-
-        if ($this->isImaginary()) {
-            $value .= 'i';
-        }
-
-        return $this->setValue($value);
     }
 
     public function pow($num)
@@ -311,17 +315,18 @@ trait ArithmeticSimpleTrait
             }
 
             return $powNumerator->divide($powDenominator)->truncateToScale(10);
+        } else {
+
+            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
+
+            $value = $this->powSelector($num);
+
+            if ($this->isImaginary()) {
+                $value .= 'i';
+            }
+
+            return $this->setValue($value)->truncateToScale($this->getScale());
         }
-
-        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
-        $value = $this->powSelector($num);
-
-        if ($this->isImaginary()) {
-            $value .= 'i';
-        }
-
-        return $this->setValue($value)->truncateToScale($this->getScale());
     }
 
     public function sqrt(?int $scale = null)

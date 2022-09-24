@@ -334,6 +334,6 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
      */
     abstract protected function setValue(string $value, ?int $scale = null, ?int $base = 10): DecimalInterface; // TODO: Check usages for base correctness & preservation
 
-    abstract public function continuousModulo($mod): DecimalInterface;
+    abstract public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface;
 
 }

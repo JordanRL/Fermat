@@ -320,18 +320,51 @@ class Numbers
     {
 
         if (!is_null($scale)) {
-            if ($scale > 100 || $scale < 1) {
+            if ($scale < 1) {
                 throw new IntegrityConstraint(
-                    '$scale must be between 1 and 100 inclusive',
+                    '$scale must be at least 1',
                     'Provide a scale within range',
-                    'The natural log of 10 constant cannot have a scale higher than the constant stored (100)'
+                    'The natural log of 10 constant cannot have a scale less than 1'
                 );
+            }
+
+            if ($scale > 100) {
+                return self::make(self::IMMUTABLE, ConstantProvider::makeLn10($scale), $scale);
             }
 
             return self::make(self::IMMUTABLE, self::LN_10, $scale)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::LN_10, 100);
+
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     */
+    public static function makeNaturalLog2(?int $scale = null): ImmutableDecimal
+    {
+
+        if (!is_null($scale)) {
+            if ($scale < 1) {
+                throw new IntegrityConstraint(
+                    '$scale must be at least 1',
+                    'Provide a scale within range',
+                    'The natural log of 10 constant cannot have a scale less than 1'
+                );
+            }
+
+            if ($scale > 100) {
+                return self::make(self::IMMUTABLE, ConstantProvider::makeLn2($scale), $scale);
+            }
+
+            return self::make(self::IMMUTABLE, self::LN_2, $scale)->truncateToScale($scale);
+        }
+
+        return self::make(self::IMMUTABLE, self::LN_2, 100);
 
     }
 

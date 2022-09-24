@@ -4,7 +4,9 @@ namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\RandomProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\NumberCollection;
@@ -162,7 +164,7 @@ trait IntegerMathTrait
         if (extension_loaded('gmp')) {
             $val = gmp_strval(gmp_gcd($thisNum->getValue(), $num->getValue()));
 
-            return Numbers::make(Numbers::IMMUTABLE, $val);
+            return Numbers::make(Numbers::IMMUTABLE, $val, $this->getScale());
         }
 
         if ($thisNum->isLessThan($num)) {
@@ -187,14 +189,16 @@ trait IntegerMathTrait
     }
 
     /**
-     * This function is a PHP implementation of the function described at: http://stackoverflow.com/a/1801446
+     * This function is a PHP implementation of the Miller-Rabin primality test. The default "certainty" value of 40
+     * results in a false-positive rate of 1 in 1.21 x 10^24.
      *
-     * It is relatively simple to understand, which is why it was chosen as the implementation. However in the future,
-     * an implementation that is based on ECPP (such as the Goldwasser implementation) may be employed to improve speed.
+     * Presumably, the probability of your hardware failing while this code is running is higher, meaning this should be
+     * statistically as certain as a deterministic algorithm on normal computer hardware.
      *
+     * @param int|null $certainty The certainty level desired. False positive rate = 1 in 4^$certainty.
      * @return bool
      */
-    public function isPrime(): bool
+    public function isPrime(?int $certainty = 40): bool
     {
         if (!$this->isInt()) {
             return false;
@@ -208,22 +212,62 @@ trait IntegerMathTrait
             return false;
         } elseif ($this->modulo(3)->isEqual(0)) {
             return false;
+        } elseif ($this->isEqual(1)) {
+            return false;
         }
 
-        $i = Numbers::make(Numbers::IMMUTABLE, 5);
-        $w = Numbers::make(Numbers::IMMUTABLE, 2);
-        $k = Numbers::make(Numbers::IMMUTABLE, 6);
+        if (function_exists('gmp_prob_prime')) {
+            return (bool)gmp_prob_prime($this->getValue(), $certainty);
+        }
 
-        while ($i->pow(2)->isLessThanOrEqualTo($this)) {
-            if ($this->modulo($i)->isEqual(0)) {
-                return false;
+        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $this->getScale());
+
+        $s = $thisNum->subtract(1);
+        $d = $thisNum->subtract(1);
+        $r = Numbers::makeZero();
+
+        while ($d->modulo(2)->isEqual(0)) {
+            $r = $r->add(1);
+            $d = $d->divide(2);
+        }
+
+        $r = $r->subtract(1);
+
+        for ($i = 0;$i < $certainty;$i++) {
+            $a = RandomProvider::randomInt(2, $s, RandomMode::Speed);
+            $x = $a->pow($d)->modulo($thisNum);
+            if ($x->isEqual(1) || $x->isEqual($s)) {
+                continue;
             }
-
-            $i = $i->add($w);
-            $w = $k->subtract($w);
+            for ($j = 0;$j < $r->asInt();$j++) {
+                $x = $x->pow(2)->modulo($thisNum);
+                if ($x->isEqual($s)) {
+                    continue 2;
+                }
+            }
+            return false;
         }
 
         return true;
+    }
+
+    public function getDivisors(): NumberCollection
+    {
+        $half = $this->divide(2);
+
+        $collection = new NumberCollection();
+        $current = Numbers::makeOne(2);
+        while ($current->isLessThan($half)) {
+            if ($this->modulo($current)->isEqual(0)) {
+                $collection->push($current);
+                $collection->push($this->divide($current));
+            }
+            $current = $current->add(1);
+        }
+
+        $collection->sort();
+
+        return $collection;
     }
 
     public function asPrimeFactors(): NumberCollection

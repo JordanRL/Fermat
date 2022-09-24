@@ -16,14 +16,14 @@ trait LogScaleTrait
     {
         $scale = $scale ?? $this->getScale();
 
-        if ($scale <= 98 && $this->isInt()) {
-            $e = Numbers::makeE($scale+$this->asInt());
+        if ($this->isInt()) {
+            $e = Numbers::makeE($scale+1);
             $value = $e->pow($this);
         } else {
             $x = $this instanceof ImmutableDecimal ? $this : new ImmutableDecimal($this->getValue());
             $x2 = $x->pow(2);
-            $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
-            $intScale = $scale + $abs->asInt();
+            $intScale = $scale + 1;
+            $terms = $scale;
             $six = new ImmutableDecimal(6);
 
             $aPart = new class($x2, $x) implements ContinuedFractionTermInterface{
@@ -70,7 +70,7 @@ trait LogScaleTrait
                 }
             };
 
-            $value = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $intScale, $intScale);
+            $value = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $terms, $intScale);
         }
 
         return $value->getAsBaseTenRealNumber();
@@ -86,10 +86,7 @@ trait LogScaleTrait
     public function lnScale(int $scale = null): string
     {
         $internalScale = $scale ?? $this->getScale();
-        $internalScale += 5;
-
-        $oldScale = $this->getScale();
-        $this->scale = $internalScale;
+        $internalScale += 3;
 
         $num = new ImmutableDecimal($this->getAsBaseTenRealNumber(), $internalScale);
 
@@ -99,17 +96,16 @@ trait LogScaleTrait
 
         $eExp = 0;
 
+        while ($num->isLessThanOrEqualTo($e2)) {
+            $num = $num->multiply($e);
+            $eExp--;
+        }
+
         while ($num->isGreaterThan($e2)) {
             $num = $num->divide($e, $internalScale);
             $eExp++;
         }
 
-        while ($num->isLessThan($e)) {
-            $num = $num->multiply($e);
-            $eExp--;
-        }
-
-        $count = 0;
         $expComponent = Numbers::makeZero();
 
         do {
@@ -123,15 +119,10 @@ trait LogScaleTrait
 
             $expComponent = $adjustedNum->exp($internalScale);
 
-            $diff = $expComponent->subtract($num)->truncateToScale($internalScale-4);
-
-            //echo 'Internal Scale: '.$internalScale.' | Object Scale: '.$this->getScale().' Num Scale: '.$num->getScale().' | Adjusted Num Scale: '.$adjustedNum->getScale().PHP_EOL;
-            //$count++;
-        } while (!$diff->isEqual(0) && $count < 15);
+            $diff = $expComponent->subtract($num)->truncateToScale($internalScale-2);
+        } while (!$diff->isEqual(0));
 
         $answer = $adjustedNum->add($eExp);
-
-        $this->scale = $oldScale;
 
         return $answer->getAsBaseTenRealNumber();
     }
@@ -145,9 +136,9 @@ trait LogScaleTrait
     {
 
         $internalScale = $scale ?? $this->scale;
-        $internalScale += 2;
+        $internalScale += 1;
 
-        $log10 = Numbers::makeNaturalLog10($internalScale);
+        $log10 = Numbers::makeNaturalLog10($internalScale+1);
 
         $value = $this->ln($internalScale)->divide($log10);
 

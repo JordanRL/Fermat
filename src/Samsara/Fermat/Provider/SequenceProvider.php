@@ -195,47 +195,125 @@ class SequenceProvider
     }
 
     /**
+     * Returns the nth Bernoulli Number, where odd indexes return zero, and B1() is -1/2.
      *
-     * WARNING: This function is VERY unoptimized. Be careful of large m values.
+     * This function gets very slow if you demand large precision.
      *
      * @param $n
      *
-     * @return DecimalInterface|NumberInterface
+     * @return DecimalInterface
      * @throws IntegrityConstraint
      */
-    public static function nthBernoulliNumber($n)
+    public static function nthBernoulliNumber($n, ?int $scale = null): DecimalInterface
     {
 
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100)->setMode(CalcMode::Precision);
+        $scale = $scale ?? 5;
+
+        $internalScale = (int)ceil($scale*(log10($scale)+1));
+
+        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, $internalScale)->setMode(CalcMode::Precision);
+
+        if (!$n->isWhole()) {
+            throw new IntegrityConstraint(
+                'Only integers may be indexes for Bernoulli numbers',
+                'Ensure only integers are provided as indexes',
+                'An attempt was made to get a Bernoulli number with a non-integer index'
+            );
+        }
+
+        if ($n->isLessThan(0)) {
+            throw new IntegrityConstraint(
+                'Index must be non-negative',
+                'Provide only non-negative indexes for Bernoulli number generation',
+                'An attempt was made to get a Bernoulli number with a negative index'
+            );
+        }
 
         if ($n->isEqual(0)) {
-            return Numbers::makeOne();
+            return Numbers::makeOne($scale);
         }
 
         if ($n->isEqual(1)) {
-            return Numbers::make(Numbers::IMMUTABLE, '-0.5', 100);
+            return Numbers::make(Numbers::IMMUTABLE, '-0.5', $scale);
         }
 
-        $sum = Numbers::makeZero(100);
-        $sum->setMode(CalcMode::Precision);
+        if ($n->modulo(2)->isEqual(1)) {
+            return Numbers::makeZero($scale);
+        }
 
-        // TODO: Figure out why the fuck this doesn't work?
-        for ($k = 0;$k <= $n->asInt();$k++) {
-            $kNum = Numbers::make(Numbers::IMMUTABLE, $k, 100)->setMode(CalcMode::Precision);
-            for ($v = 0;$v <= $k;$v++) {
-                $vNum = Numbers::make(Numbers::IMMUTABLE, $v, 100)->setMode(CalcMode::Precision);
-                $sum = $sum->add(
-                    SequenceProvider::nthPowerNegativeOne($v)->multiply(
-                        $kNum->factorial()->divide(
-                                $vNum->factorial()->multiply($kNum->subtract($vNum)->factorial()), 100
-                            )
-                    )->multiply($vNum->pow($n))->divide($kNum->add(1), 100)
-                );
+        $tau = Numbers::makeTau($internalScale)->setMode(CalcMode::Precision);
+
+        $d = Numbers::make(Numbers::IMMUTABLE, 4, $internalScale)->setMode(CalcMode::Precision)->add(
+            $n->factorial()->ln($internalScale)->subtract(
+                $n->multiply($tau->log10($internalScale))
+            )->truncate()
+        )->add(
+            $n->numberOfIntDigits()
+        );
+        $s = $d->multiply(
+            Numbers::makeNaturalLog10($internalScale)
+        )->multiply(
+            '0.5'
+        )->divide($n, $internalScale)->exp($internalScale)->truncate()->add(1);
+        $internalScale = ($d->isGreaterThan($internalScale)) ? $d->asInt() : $internalScale;
+
+        $s = $s->truncateToScale($internalScale);
+        $n = $n->truncateToScale($internalScale);
+        $tau = Numbers::make2Pi($internalScale)->setMode(CalcMode::Precision);
+        $p = Numbers::makeOne($internalScale)->setMode(CalcMode::Precision);
+        $t1 = Numbers::makeOne($internalScale)->setMode(CalcMode::Precision);
+        $t2 = Numbers::makeOne($internalScale)->setMode(CalcMode::Precision);
+
+        while ($p->isLessThanOrEqualTo($s)) {
+            $p = self::_nextprime($p);
+            $pn = $p->pow($n);
+            $pn1 = $pn->subtract(1);
+            $t1 = $pn->multiply($t1);
+            $t2 = $pn1->multiply($t2);
+        }
+
+        $z = $t1->divide($t2, $internalScale);
+        $oz = Numbers::makeZero($internalScale)->setMode(CalcMode::Precision);
+
+        while (!$oz->isEqual($z)) {
+            $oz = $z;
+            $p = self::_nextprime($p);
+            $pn = $p->pow($n);
+            $pn1 = $z->divide($pn, $internalScale);
+            $z = $z->add($pn1);
+        }
+
+        $f = $n->factorial();
+        $taun = $tau->pow($n);
+
+        $z = $z->multiply(2)->multiply($f)->divide($taun, $internalScale);
+
+        if ($n->modulo(4)->isEqual(0)) {
+            $z = $z->multiply(-1);
+        }
+
+        return $z->round($scale);
+
+    }
+
+    public static function nthPrimeNumbers(int $n): NumberCollection
+    {
+        $collection = new NumberCollection();
+
+        $collection->push(Numbers::make(Numbers::IMMUTABLE, 2));
+
+        $currentPrime = Numbers::make(Numbers::IMMUTABLE, 3);
+
+        for ($i = 1;$i < $n;$i++) {
+            while (!$currentPrime->isPrime()) {
+                $currentPrime = $currentPrime->add(2);
             }
+
+            $collection->push($currentPrime);
+            $currentPrime = $currentPrime->add(2);
         }
 
-        return $sum->round(99);
-
+        return $collection;
     }
 
     /**
@@ -306,6 +384,24 @@ class SequenceProvider
         }
 
         return [$d, $c->add($d)];
+    }
+
+    private static function _nextprime(ImmutableDecimal $number): ImmutableDecimal
+    {
+        if (function_exists('gmp_nextprime')) {
+            return Numbers::make(Numbers::IMMUTABLE, gmp_strval(gmp_nextprime($number->getValue())));
+        }
+
+        $number = $number->add(1);
+        while (!$number->isPrime()) {
+            if ($number->modulo(2)->isEqual(1)) {
+                $number = $number->add(2);
+            } else {
+                $number = $number->add(1);
+            }
+        }
+
+        return $number;
     }
 
 }

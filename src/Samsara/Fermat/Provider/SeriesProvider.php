@@ -169,14 +169,25 @@ class SeriesProvider
 
         $start = $bPart(0);
         $prevDenominator = new ImmutableDecimal(0, $scale);
+        $loop = 0;
 
         for ($i = $terms;$i > 0;$i--) {
+            $loop++;
             if ($sumMode == self::SUM_MODE_ADD) {
                 $prevDenominator = $bPart($i)->add($prevDenominator);
             } else {
                 $prevDenominator = $bPart($i)->subtract($prevDenominator);
             }
-            $prevDenominator = $aPart($i)->divide($prevDenominator, $scale);
+
+            if ($prevDenominator->isEqual(0)) {
+                throw new IntegrityConstraint(
+                    'Cannot divide by zero',
+                    'balh',
+                    'Current $i: '.$i.' | Current terms: '.$terms.' | Loop: '.$loop
+                );
+            } else {
+                $prevDenominator = $aPart($i)->divide($prevDenominator, $scale);
+            }
         }
 
         return $start->add($prevDenominator);

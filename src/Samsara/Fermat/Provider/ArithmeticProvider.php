@@ -56,12 +56,12 @@ class ArithmeticProvider
     public static function divide(string $numerator, string $denominator, $scale = 100)
     {
         if (extension_loaded('decimal')) {
-            $number1 = new Decimal($numerator, $scale+2);
-            $number2 = new Decimal($denominator, $scale+2);
+            $number1 = new Decimal($numerator, $scale);
+            $number2 = new Decimal($denominator, $scale);
 
             $result = $number1->div($number2);
 
-            $result = $result->toFixed($scale+2, false);
+            $result = $result->toFixed($scale, false, Decimal::ROUND_TRUNCATE);
         } else {
             $result = \bcdiv($numerator, $denominator, $scale);
         }

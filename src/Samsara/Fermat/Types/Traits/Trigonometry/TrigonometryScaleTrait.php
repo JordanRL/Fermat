@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Types\Traits\Trigonometry;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
+use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
@@ -18,22 +19,24 @@ trait TrigonometryScaleTrait
         }
 
         $scale = $scale ?? $this->getScale();
+        $modScale = ($scale > $this->getScale()) ? $scale : $this->getScale();
 
-        $twoPi = Numbers::make2Pi();
-        $pi = Numbers::makePi();
+        $twoPi = Numbers::make2Pi($modScale * 2);
+        $pi = Numbers::makePi( $scale + 2 );
 
         if ($pi->truncate($scale)->isEqual($this) || $twoPi->truncate($scale)->isEqual($this)) {
             return '0';
         }
 
         $modulo = $this->continuousModulo($twoPi);
+        $negOne = Numbers::make(Numbers::IMMUTABLE, -1, $scale+1);
+        $one = Numbers::make(Numbers::IMMUTABLE, 1, $scale+1);
 
         $answer = SeriesProvider::maclaurinSeries(
             $modulo,
-            function ($n) {
-                $negOne = Numbers::make(Numbers::IMMUTABLE, -1, 100);
+            function ($n) use ($scale, $negOne, $one) {
 
-                return $negOne->pow($n);
+                return $n % 2 ? $negOne : $one;
             },
             function ($n) {
                 return SequenceProvider::nthOddNumber($n);
@@ -55,9 +58,10 @@ trait TrigonometryScaleTrait
         }
 
         $scale = $scale ?? $this->getScale();
+        $modScale = ($scale > $this->getScale()) ? $scale : $this->getScale();
 
-        $twoPi = Numbers::make2Pi();
-        $pi = Numbers::makePi();
+        $twoPi = Numbers::make2Pi($modScale * 2);
+        $pi = Numbers::makePi( $scale + 2 );
 
         if ($twoPi->truncate($scale)->isEqual($this)) {
             return '1';
@@ -68,11 +72,14 @@ trait TrigonometryScaleTrait
         }
 
         $modulo = $this->continuousModulo($twoPi);
+        $negOne = Numbers::make(Numbers::IMMUTABLE, -1, $scale+1);
+        $one = Numbers::make(Numbers::IMMUTABLE, 1, $scale+1);
 
         $answer = SeriesProvider::maclaurinSeries(
             $modulo,
-            function ($n) {
-                return SequenceProvider::nthPowerNegativeOne($n);
+            function ($n) use ($scale, $negOne, $one) {
+
+                return $n % 2 ? $negOne : $one;
             },
             function ($n) {
                 return SequenceProvider::nthEvenNumber($n);
@@ -90,34 +97,35 @@ trait TrigonometryScaleTrait
     protected function tanScale(int $scale = null): string
     {
         $scale = $scale ?? $this->getScale();
+        $intScale = $scale + 2;
 
-        $pi = Numbers::makePi();
-        $piDivTwo = Numbers::makePi()->divide(2);
-        $piDivFour = Numbers::makePi()->divide(4);
-        $piDivEight = Numbers::makePi()->divide(8);
-        $threePiDivTwo = Numbers::makePi()->multiply(3)->divide(2);
-        $twoPi = Numbers::make2Pi();
-        $two = Numbers::make(Numbers::IMMUTABLE, 2, 100);
-        $one = Numbers::make(Numbers::IMMUTABLE, 1, 100);
+        $pi = Numbers::makePi($intScale);
+        $piDivTwo = Numbers::makePi($intScale)->divide(2);
+        $piDivFour = Numbers::makePi($intScale)->divide(4);
+        $piDivEight = Numbers::makePi($intScale)->divide(8);
+        $threePiDivTwo = Numbers::makePi($intScale)->multiply(3)->divide(2);
+        $twoPi = Numbers::make2Pi($intScale);
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, $intScale);
+        $one = Numbers::make(Numbers::IMMUTABLE, 1, $intScale);
 
         $exitModulo = $this->continuousModulo($pi);
 
-        if ($exitModulo->truncate(99)->isEqual(0)) {
+        if ($exitModulo->truncate($intScale-2)->isEqual(0)) {
             return '0';
         }
 
         $modulo = $this->continuousModulo($twoPi);
 
         if (
-            $modulo->truncate(99)->isEqual($piDivTwo->truncate(99)) ||
-            ($this->isNegative() && $modulo->subtract($pi)->abs()->truncate(99)->isEqual($piDivTwo->truncate(99)))
+            $modulo->truncate($intScale-2)->isEqual($piDivTwo->truncate($intScale-2)) ||
+            ($this->isNegative() && $modulo->subtract($pi)->abs()->truncate($intScale-2)->isEqual($piDivTwo->truncate($intScale-2)))
         ) {
             return static::INFINITY;
         }
 
         if (
-            $modulo->subtract($pi)->truncate(99)->isEqual($piDivTwo->truncate(99)) ||
-            ($this->isNegative() && $modulo->truncate(99)->abs()->isEqual($piDivTwo->truncate(99)))
+            $modulo->subtract($pi)->truncate($intScale-2)->isEqual($piDivTwo->truncate($intScale-2)) ||
+            ($this->isNegative() && $modulo->truncate($intScale-2)->abs()->isEqual($piDivTwo->truncate($intScale-2)))
         ) {
             return static::NEG_INFINITY;
         }
@@ -147,26 +155,44 @@ trait TrigonometryScaleTrait
 
         if ($modulo->abs()->isGreaterThan($piDivEight)) {
             /** @var ImmutableDecimal $halfModTan */
-            $halfModTan = Numbers::make(Numbers::IMMUTABLE, $modulo->divide(2)->tanScale($scale+1, false));
+            $halfModTan = Numbers::make(Numbers::IMMUTABLE, $modulo->divide(2)->tanScale($intScale+1, false));
             $answer = $two->multiply($halfModTan)->divide($one->subtract($halfModTan->pow(2)));
         } else {
-            $answer = SeriesProvider::maclaurinSeries(
-                $modulo,
-                function ($n) {
-                    $nthOddNumber = SequenceProvider::nthOddNumber($n);
+            $aPart = new class($modulo) implements ContinuedFractionTermInterface {
+                private ImmutableDecimal $modulo;
 
-                    return SequenceProvider::nthEulerZigzag($nthOddNumber->asInt());
-                },
-                function ($n) {
+                public function __construct(ImmutableDecimal $modulo) {
+                    $this->modulo = $modulo;
+                }
 
-                    return SequenceProvider::nthOddNumber($n);
-                },
-                function ($n) {
-                    return SequenceProvider::nthOddNumber($n)->factorial();
-                },
-                0,
-                $scale + 1
-            );
+                public function __invoke(int $n): ImmutableDecimal
+                {
+                    if ($n > 1) {
+                        return $this->modulo->pow(2);
+                    } else {
+                        return $this->modulo;
+                    }
+                }
+            };
+
+            $bPart = new class($intScale) implements ContinuedFractionTermInterface {
+                private int $intScale;
+
+                public function __construct(int $intScale) {
+                    $this->intScale = $intScale;
+                }
+
+                public function __invoke(int $n): ImmutableDecimal
+                {
+                    if ($n == 0) {
+                        return Numbers::makeZero($this->intScale);
+                    } else {
+                        return SequenceProvider::nthOddNumber($n-1);
+                    }
+                }
+            };
+
+            $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $intScale, $intScale, SeriesProvider::SUM_MODE_SUB);
         }
 
         if ($reciprocal) {
@@ -204,7 +230,7 @@ trait TrigonometryScaleTrait
             return '0';
         }
 
-        $tan = $num->tanScale($scale+2);
+        $tan = $num->tanScale($scale);
 
         $answer = $one->divide($tan, $scale+2);
 
