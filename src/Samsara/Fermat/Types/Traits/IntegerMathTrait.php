@@ -3,7 +3,9 @@
 namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\RandomProvider;
@@ -12,9 +14,17 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\NumberCollection;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 trait IntegerMathTrait
 {
 
+    /**
+     * @return DecimalInterface
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
     public function factorial(): DecimalInterface
     {
         if ($this->isLessThan(1)) {
@@ -78,7 +88,7 @@ trait IntegerMathTrait
         }
 
         $e = Numbers::makeE($this->getScale());
-        $num = new ImmutableDecimal($this->getValue(10));
+        $num = new ImmutableDecimal($this->getAsBaseTenRealNumber());
 
         $num = $num->factorial();
         $num = $num->divide($e, 3)->add('0.5');
@@ -86,6 +96,12 @@ trait IntegerMathTrait
         return $num->floor();
     }
 
+    /**
+     * @return DecimalInterface
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function doubleFactorial(): DecimalInterface
     {
         if ($this->isWhole() && $this->isLessThanOrEqualTo(1)) {
@@ -117,11 +133,20 @@ trait IntegerMathTrait
 
     }
 
+    /**
+     * @return DecimalInterface
+     * @throws IncompatibleObjectState
+     */
     public function semiFactorial(): DecimalInterface
     {
         return $this->doubleFactorial();
     }
 
+    /**
+     * @param $num
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     */
     public function getLeastCommonMultiple($num): DecimalInterface
     {
 
@@ -146,6 +171,11 @@ trait IntegerMathTrait
 
     }
 
+    /**
+     * @param $num
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     */
     public function getGreatestCommonDivisor($num): DecimalInterface
     {
         /** @var ImmutableDecimal $num */
@@ -251,6 +281,11 @@ trait IntegerMathTrait
         return true;
     }
 
+    /**
+     * @return NumberCollection
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function getDivisors(): NumberCollection
     {
         $half = $this->divide(2);
@@ -270,6 +305,9 @@ trait IntegerMathTrait
         return $collection;
     }
 
+    /**
+     * @return NumberCollection
+     */
     public function asPrimeFactors(): NumberCollection
     {
 

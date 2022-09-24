@@ -11,6 +11,9 @@ use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterfac
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 class SeriesProvider
 {
 
@@ -154,6 +157,7 @@ class SeriesProvider
      * @param ContinuedFractionTermInterface $bPart
      * @param int $terms
      * @param int $scale
+     * @param int $sumMode
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws MissingPackage

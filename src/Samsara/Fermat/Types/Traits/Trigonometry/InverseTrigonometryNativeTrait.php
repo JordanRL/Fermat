@@ -2,9 +2,15 @@
 
 namespace Samsara\Fermat\Types\Traits\Trigonometry;
 
+/**
+ *
+ */
 trait InverseTrigonometryNativeTrait
 {
 
+    /**
+     * @return float
+     */
     protected function arcsinNative(): float
     {
         $thisNum = self::translateToNative($this);
@@ -12,6 +18,9 @@ trait InverseTrigonometryNativeTrait
         return asin($thisNum);
     }
 
+    /**
+     * @return float
+     */
     protected function arccosNative(): float
     {
         $thisNum = self::translateToNative($this);
@@ -19,6 +28,9 @@ trait InverseTrigonometryNativeTrait
         return acos($thisNum);
     }
 
+    /**
+     * @return float
+     */
     protected function arctanNative(): float
     {
         $thisNum = self::translateToNative($this);
@@ -26,6 +38,9 @@ trait InverseTrigonometryNativeTrait
         return atan($thisNum);
     }
 
+    /**
+     * @return float
+     */
     protected function arcsecNative(): float
     {
         $thisNum = self::translateToNative($this);
@@ -34,6 +49,9 @@ trait InverseTrigonometryNativeTrait
         return acos($thisNum);
     }
 
+    /**
+     * @return float
+     */
     protected function arccscNative(): float
     {
         $thisNum = self::translateToNative($this);
@@ -42,6 +60,9 @@ trait InverseTrigonometryNativeTrait
         return asin($thisNum);
     }
 
+    /**
+     * @return float
+     */
     protected function arccotNative(): float
     {
         $thisNum = self::translateToNative($this);

@@ -1,4 +1,20 @@
-<?php
+<?php /** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+
+/** @noinspection ALL */
 
 namespace Samsara\Fermat\Types\Base\Interfaces\Groups;
 
@@ -8,6 +24,9 @@ use Samsara\Fermat\Provider\Distribution\Poisson;
 use Samsara\Fermat\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 
+/**
+ *
+ */
 interface NumberCollectionInterface
 {
 

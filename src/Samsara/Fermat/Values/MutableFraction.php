@@ -4,9 +4,18 @@ namespace Samsara\Fermat\Values;
 
 use Samsara\Fermat\Types\Fraction;
 
+/**
+ *
+ */
 class MutableFraction extends Fraction
 {
 
+    /**
+     * @param ImmutableDecimal $numerator
+     * @param ImmutableDecimal $denominator
+     * @return $this
+     * @throws \Samsara\Exceptions\UsageError\IntegrityConstraint
+     */
     protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator): self
     {
 

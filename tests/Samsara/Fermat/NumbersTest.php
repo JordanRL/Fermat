@@ -4,6 +4,7 @@ namespace Samsara\Fermat;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 
 /**
  * @runTestsInSeparateProcesses
@@ -120,7 +121,7 @@ class NumbersTest extends TestCase
     public function testMakeFromBase10()
     {
 
-        $five = Numbers::makeFromBase10(Numbers::IMMUTABLE, 5, null, 5);
+        $five = Numbers::makeFromBase10(Numbers::IMMUTABLE, 5, null, NumberBase::Five);
 
         $this->assertEquals('10', $five->getValue());
 

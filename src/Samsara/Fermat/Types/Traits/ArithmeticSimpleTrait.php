@@ -1,4 +1,9 @@
-<?php
+<?php /** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+
+/** @noinspection ALL */
 
 
 namespace Samsara\Fermat\Types\Traits;
@@ -13,6 +18,7 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Types\Fraction;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticGMPTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticScaleTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
@@ -23,6 +29,9 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\MutableDecimal;
 
+/**
+ *
+ */
 trait ArithmeticSimpleTrait
 {
 
@@ -31,6 +40,12 @@ trait ArithmeticSimpleTrait
     use ArithmeticNativeTrait;
     use ArithmeticGMPTrait;
 
+    /**
+     * @param $num
+     * @return $this|DecimalInterface|Fraction|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function add($num)
     {
         [
@@ -39,7 +54,7 @@ trait ArithmeticSimpleTrait
             $thisRealPart,
             $thisImaginaryPart,
             $num
-        ] = $this->translateToParts($this, $num, 0);
+        ] = $this->translateToParts($this, $num);
 
         if ($num->isComplex()) {
             return $num->add($this);
@@ -50,7 +65,7 @@ trait ArithmeticSimpleTrait
         }
 
         if ($this->isReal() xor $num->isReal()) {
-            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers")) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
+            if (!(InstalledVersions::isInstalled('samsara/fermat-complex-numbers')) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
                 throw new MissingPackage(
                     'Creating complex numbers is unsupported in Fermat without modules.',
                     'Install the samsara/fermat-complex-numbers package using composer.',
@@ -103,6 +118,12 @@ trait ArithmeticSimpleTrait
         }
     }
 
+    /**
+     * @param $num
+     * @return $this|DecimalInterface|Fraction|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function subtract($num)
     {
         [
@@ -111,7 +132,7 @@ trait ArithmeticSimpleTrait
             $thisRealPart,
             $thisImaginaryPart,
             $num
-        ] = $this->translateToParts($this, $num, 0);
+        ] = $this->translateToParts($this, $num);
 
         if ($num->isComplex()) {
             return $num->multiply(-1)->add($this);
@@ -122,7 +143,7 @@ trait ArithmeticSimpleTrait
         }
 
         if ($this->isReal() xor $num->isReal()) {
-            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers")) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
+            if (!(InstalledVersions::isInstalled('samsara/fermat-complex-numbers')) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
                 throw new MissingPackage(
                     'Creating complex numbers is unsupported in Fermat without modules.',
                     'Install the samsara/fermat-complex-numbers package using composer.',
@@ -174,6 +195,11 @@ trait ArithmeticSimpleTrait
         }
     }
 
+    /**
+     * @param $num
+     * @return $this|DecimalInterface|Fraction|ImmutableDecimal|MutableDecimal
+     * @throws IntegrityConstraint
+     */
     public function multiply($num)
     {
         [
@@ -225,6 +251,12 @@ trait ArithmeticSimpleTrait
         }
     }
 
+    /**
+     * @param $num
+     * @param int|null $scale
+     * @return $this|DecimalInterface|Fraction|ImmutableDecimal|MutableDecimal
+     * @throws IntegrityConstraint
+     */
     public function divide($num, ?int $scale = null)
     {
 
@@ -278,6 +310,12 @@ trait ArithmeticSimpleTrait
         }
     }
 
+    /**
+     * @param $num
+     * @return DecimalInterface|Fraction|ImmutableComplexNumber
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function pow($num)
     {
         [
@@ -289,7 +327,7 @@ trait ArithmeticSimpleTrait
         ] = $this->translateToParts($this, $num, 1);
 
         if ($num->isComplex() || ($this->isReal() xor $num->isReal())) {
-            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers")) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
+            if (!(InstalledVersions::isInstalled('samsara/fermat-complex-numbers')) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
                 throw new MissingPackage(
                     'Creating complex numbers is unsupported in Fermat without modules.',
                     'Install the samsara/fermat-complex-numbers package using composer.',
@@ -329,6 +367,11 @@ trait ArithmeticSimpleTrait
         }
     }
 
+    /**
+     * @param int|null $scale
+     * @return DecimalInterface|Fraction
+     * @throws IntegrityConstraint
+     */
     public function sqrt(?int $scale = null)
     {
         $scale = is_null($scale) ? $this->getScale() : $scale;

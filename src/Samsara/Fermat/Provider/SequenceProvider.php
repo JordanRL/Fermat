@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Numbers;
@@ -11,6 +12,9 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\NumberCollection;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 class SequenceProvider
 {
 
@@ -200,9 +204,11 @@ class SequenceProvider
      * This function gets very slow if you demand large precision.
      *
      * @param $n
-     *
+     * @param int|null $scale
      * @return DecimalInterface
+     * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
+     * @throws MissingPackage
      */
     public static function nthBernoulliNumber($n, ?int $scale = null): DecimalInterface
     {
@@ -296,6 +302,12 @@ class SequenceProvider
 
     }
 
+    /**
+     * @param int $n
+     * @return NumberCollection
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public static function nthPrimeNumbers(int $n): NumberCollection
     {
         $collection = new NumberCollection();
@@ -328,7 +340,7 @@ class SequenceProvider
      * @param int $collectionSize
      *
      * @return ImmutableDecimal|NumberCollection
-     * @throws IntegrityConstraint|\ReflectionException
+     * @throws IntegrityConstraint
      */
     public static function nthFibonacciNumber(int $n, bool $asCollection = false, int $collectionSize = 10)
     {

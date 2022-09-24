@@ -10,6 +10,9 @@ use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
+/**
+ *
+ */
 trait ArithmeticScaleTrait
 {
 

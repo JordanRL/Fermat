@@ -4,12 +4,16 @@
 namespace Samsara\Fermat\Provider;
 
 
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 class ConstantProvider
 {
 
@@ -18,6 +22,12 @@ class ConstantProvider
     private static DecimalInterface $ln10;
     private static DecimalInterface $ln2;
 
+    /**
+     * @param int $digits
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public static function makePi(int $digits): string
     {
 

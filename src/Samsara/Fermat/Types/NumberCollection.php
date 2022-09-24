@@ -1,10 +1,32 @@
-<?php
+<?php /** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+
+/** @noinspection ALL */
 
 namespace Samsara\Fermat\Types;
 
 use Composer\InstalledVersions;
+use Ds\Traits\TValue;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\Distribution\Exponential;
@@ -18,6 +40,9 @@ use Ds\Vector;
 use Samsara\Fermat\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \IteratorAggregate
 {
 
@@ -57,7 +82,7 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
      */
     public function collect(array $numbers): NumberCollectionInterface
     {
-        if (!is_null($this->collection) && $this->getCollection()->count()) {
+        if ($this->getCollection()->count()) {
             throw new IntegrityConstraint(
                 'Collections cannot be overwritten',
                 'Instantiate a new NumberCollection for these values',
@@ -75,16 +100,25 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function count(): int
     {
         return $this->getCollection()->count();
     }
 
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         return $this->collection->toArray();
     }
 
+    /**
+     * @return int
+     */
     public function selectScale(): int
     {
         $scale = 0;
@@ -138,6 +172,10 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
         return $this->getCollection()->shift();
     }
 
+    /**
+     * @param array $filters
+     * @return NumberCollection
+     */
     public function filterByKeys(array $filters): NumberCollection
     {
 
@@ -295,7 +333,7 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
     {
         $maxKey = $this->getCollection()->count() - 1;
 
-        $key = RandomProvider::randomInt(0, $maxKey, RandomProvider::MODE_SPEED)->asInt();
+        $key = RandomProvider::randomInt(0, $maxKey, RandomMode::Speed)->asInt();
 
         return $this->get($key);
     }
@@ -336,7 +374,7 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
      */
     public function makeNormalDistribution(): Normal
     {
-        if (!(InstalledVersions::isInstalled("samsara/fermat-stats"))) {
+        if (!(InstalledVersions::isInstalled('samsara/fermat-stats'))) {
             throw new MissingPackage(
                 'Creating distributions is unsupported in Fermat without modules.',
                 'Install the samsara/fermat-stats package using composer.',
@@ -369,7 +407,7 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
      */
     public function makePoissonDistribution(): Poisson
     {
-        if (!(InstalledVersions::isInstalled("samsara/fermat-stats"))) {
+        if (!(InstalledVersions::isInstalled('samsara/fermat-stats'))) {
             throw new MissingPackage(
                 'Creating distributions is unsupported in Fermat without modules.',
                 'Install the samsara/fermat-stats package using composer.',
@@ -392,7 +430,7 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
      */
     public function makeExponentialDistribution(): Exponential
     {
-        if (!(InstalledVersions::isInstalled("samsara/fermat-stats"))) {
+        if (!(InstalledVersions::isInstalled('samsara/fermat-stats'))) {
             throw new MissingPackage(
                 'Creating distributions is unsupported in Fermat without modules.',
                 'Install the samsara/fermat-stats package using composer.',
@@ -411,11 +449,11 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
 
     /**
      * @return PolynomialFunction
-     * @throws IntegrityConstraint
+     * @throws MissingPackage
      */
     public function makePolynomialFunction(): PolynomialFunction
     {
-        if (!(InstalledVersions::isInstalled("samsara/fermat-algebra-expressions"))) {
+        if (!(InstalledVersions::isInstalled('samsara/fermat-algebra-expressions'))) {
             throw new MissingPackage(
                 'Creating expressions is unsupported in Fermat without modules.',
                 'Install the samsara/fermat-algebra-expressions package using composer.',
@@ -430,26 +468,46 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
 
     }
 
+    /**
+     * @param $offset
+     * @return bool
+     */
     public function offsetExists($offset)
     {
         return $this->getCollection()->offsetExists($offset);
     }
 
+    /**
+     * @param $offset
+     * @return TValue|mixed
+     */
     public function offsetGet($offset)
     {
         return $this->getCollection()->offsetGet($offset);
     }
 
+    /**
+     * @param $offset
+     * @param $value
+     * @return void
+     */
     public function offsetSet($offset, $value)
     {
         $this->getCollection()->offsetSet($offset, $value);
     }
 
+    /**
+     * @param $offset
+     * @return void
+     */
     public function offsetUnset($offset)
     {
         $this->getCollection()->offsetUnset($offset);
     }
 
+    /**
+     * @return array|\Generator|\Traversable
+     */
     public function getIterator()
     {
         return $this->getCollection()->getIterator();

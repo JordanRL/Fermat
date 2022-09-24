@@ -8,6 +8,9 @@ use Samsara\Fermat\Types\Traits\Trigonometry\TrigonometryScaleTrait;
 use Samsara\Fermat\Types\Traits\Trigonometry\TrigonometryNativeTrait;
 use Samsara\Fermat\Types\Traits\Trigonometry\TrigonometrySelectionTrait;
 
+/**
+ *
+ */
 trait TrigonometrySimpleTrait
 {
 
@@ -15,6 +18,11 @@ trait TrigonometrySimpleTrait
     use TrigonometryScaleTrait;
     use TrigonometryNativeTrait;
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function sin(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->sinSelector($scale);
@@ -30,6 +38,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function cos(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->cosSelector($scale);
@@ -45,6 +58,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function tan(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->tanSelector($scale);
@@ -60,6 +78,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function sec(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->secSelector($scale);
@@ -75,6 +98,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function csc(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->cscSelector($scale);
@@ -90,6 +118,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function cot(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->cotSelector($scale);
@@ -105,6 +138,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function sinh(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->sinhSelector($scale);
@@ -120,6 +158,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function cosh(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->coshSelector($scale);
@@ -135,6 +178,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function tanh(?int $scale = null, bool $round = true): DecimalInterface
     {
         $finalScale = $scale ?? $this->getScale();
@@ -150,6 +198,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function sech(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->sechSelector($scale);
@@ -165,6 +218,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function csch(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->cschSelector($scale);
@@ -180,6 +238,11 @@ trait TrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function coth(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->cothSelector($scale);

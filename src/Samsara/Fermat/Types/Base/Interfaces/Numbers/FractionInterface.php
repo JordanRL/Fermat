@@ -4,6 +4,9 @@ namespace Samsara\Fermat\Types\Base\Interfaces\Numbers;
 
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 interface FractionInterface extends SimpleNumberInterface
 {
 

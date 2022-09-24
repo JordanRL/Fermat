@@ -6,11 +6,19 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
+use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Values\ImmutableFraction;
 
+/**
+ *
+ */
 trait ComparisonTrait
 {
 
+    /**
+     * @return int
+     * @throws IntegrityConstraint
+     */
     protected function checkComparisonTraitAndInterface()
     {
 
@@ -28,7 +36,12 @@ trait ComparisonTrait
 
     }
 
-    public function isEqual($value): bool
+    /**
+     * @param NumberInterface|int|string|float $value
+     * @return bool
+     * @throws IntegrityConstraint
+     */
+    public function isEqual(NumberInterface|int|string|float $value): bool
     {
 
         $check = $this->checkComparisonTraitAndInterface();
@@ -61,6 +74,11 @@ trait ComparisonTrait
 
     }
 
+    /**
+     * @param $value
+     * @return bool
+     * @throws IntegrityConstraint
+     */
     public function isGreaterThan($value): bool
     {
 
@@ -90,6 +108,11 @@ trait ComparisonTrait
 
     }
 
+    /**
+     * @param $value
+     * @return bool
+     * @throws IntegrityConstraint
+     */
     public function isLessThan($value): bool
     {
         $check = $this->checkComparisonTraitAndInterface();
@@ -118,6 +141,11 @@ trait ComparisonTrait
 
     }
 
+    /**
+     * @param $value
+     * @return bool
+     * @throws IntegrityConstraint
+     */
     public function isGreaterThanOrEqualTo($value): bool
     {
         $check = $this->checkComparisonTraitAndInterface();
@@ -146,6 +174,11 @@ trait ComparisonTrait
 
     }
 
+    /**
+     * @param $value
+     * @return bool
+     * @throws IntegrityConstraint
+     */
     public function isLessThanOrEqualTo($value): bool
     {
         $check = $this->checkComparisonTraitAndInterface();
@@ -174,6 +207,10 @@ trait ComparisonTrait
 
     }
 
+    /**
+     * @return bool
+     * @throws IntegrityConstraint
+     */
     public function isNegative(): bool
     {
         $check = $this->checkComparisonTraitAndInterface();
@@ -189,6 +226,10 @@ trait ComparisonTrait
         }
     }
 
+    /**
+     * @return bool
+     * @throws IntegrityConstraint
+     */
     public function isPositive(): bool
     {
         $check = $this->checkComparisonTraitAndInterface();
@@ -204,16 +245,28 @@ trait ComparisonTrait
         }
     }
 
+    /**
+     * @return bool
+     * @throws IntegrityConstraint
+     */
     public function isNatural(): bool
     {
         return $this->isInt();
     }
 
+    /**
+     * @return bool
+     * @throws IntegrityConstraint
+     */
     public function isWhole(): bool
     {
         return $this->isInt();
     }
 
+    /**
+     * @return bool
+     * @throws IntegrityConstraint
+     */
     public function isInt(): bool
     {
         $check = $this->checkComparisonTraitAndInterface();

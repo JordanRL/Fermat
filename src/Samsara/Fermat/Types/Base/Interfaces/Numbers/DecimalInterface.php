@@ -2,9 +2,13 @@
 
 namespace Samsara\Fermat\Types\Base\Interfaces\Numbers;
 
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Types\NumberCollection;
 
+/**
+ *
+ */
 interface DecimalInterface extends SimpleNumberInterface
 {
 
@@ -56,17 +60,39 @@ interface DecimalInterface extends SimpleNumberInterface
      */
     public function asInt(): int;
 
+    /**
+     * @return bool
+     */
     public function isFloat(): bool;
 
+    /**
+     * @return float
+     */
     public function asFloat(): float;
+
+    /**
+     * @return string
+     */
+    public function getDecimalPart(): string;
+
+    /**
+     * @return string
+     */
+    public function getWholePart(): string;
 
     /**
      * @return bool
      */
     public function isPrime(): bool;
 
+    /**
+     * @return NumberCollection
+     */
     public function getDivisors(): NumberCollection;
 
+    /**
+     * @return NumberCollection
+     */
     public function asPrimeFactors(): NumberCollection;
 
     /**
@@ -245,18 +271,21 @@ interface DecimalInterface extends SimpleNumberInterface
 
     /**
      * @param int|null $scale
+     * @param bool $round
      * @return DecimalInterface
      */
     public function ln(int $scale = null, bool $round = true): DecimalInterface;
 
     /**
      * @param int|null $scale
+     * @param bool $round
      * @return DecimalInterface
      */
     public function log10(int $scale = null, bool $round = true): DecimalInterface;
 
     /**
      * @param int|null $scale
+     * @param bool $round
      * @return DecimalInterface
      */
     public function exp(int $scale = null, bool $round = true): DecimalInterface;
@@ -290,8 +319,33 @@ interface DecimalInterface extends SimpleNumberInterface
     public function truncateToScale($scale): DecimalInterface;
 
     /**
+     * @return NumberBase
+     */
+    public function getBase(): NumberBase;
+
+    /**
      * @return int
      */
     public function numberOfLeadingZeros(): int;
+
+    /**
+     * @return int
+     */
+    public function numberOfTotalDigits(): int;
+
+    /**
+     * @return int
+     */
+    public function numberOfIntDigits(): int;
+
+    /**
+     * @return int
+     */
+    public function numberOfDecimalDigits(): int;
+
+    /**
+     * @return int
+     */
+    public function numberOfSigDecimalDigits(): int;
 
 }

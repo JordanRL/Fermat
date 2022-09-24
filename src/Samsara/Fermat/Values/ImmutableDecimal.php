@@ -2,15 +2,27 @@
 
 namespace Samsara\Fermat\Values;
 
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\BaseConversionProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
+/**
+ *
+ */
 class ImmutableDecimal extends Decimal
 {
 
+    /**
+     * @param NumberInterface|string|int|float $mod
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface
     {
 
@@ -44,12 +56,12 @@ class ImmutableDecimal extends Decimal
     /**
      * @param string $value
      * @param int|null $scale
-     * @param int|null $base
+     * @param NumberBase|null $base
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    protected function setValue(string $value, ?int $scale = null, ?int $base = null): ImmutableDecimal
+    protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null): ImmutableDecimal
     {
         $imaginary = false;
 
@@ -60,12 +72,11 @@ class ImmutableDecimal extends Decimal
             $imaginary = true;
         }
 
-        if (!is_null($base) || $this->getBase() !== 10) {
-            $base = is_null($base) ? $this->getBase() : $base;
-            $value = $this->convertValue($value, 10, $base);
+        if ((!is_null($base) && $base != NumberBase::Ten) || (is_null($base) && $this->getBase() != NumberBase::Ten)) {
+            $value = BaseConversionProvider::convertStringToBaseTen($value, $base);
         }
 
-        $base = $base ?? 10;
+        $base = $base ?? NumberBase::Ten;
 
         if ($imaginary) {
             $value .= 'i';

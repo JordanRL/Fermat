@@ -29,6 +29,7 @@
     "php-ds/php-ds": "^1.1",
     "jetbrains/phpstorm-attributes": "1.0",
     "php": ">=8.1",
+    "ext-gmp": "*",
     "ext-bcmath": "*"
   },
   "require-dev": {
@@ -39,7 +40,6 @@
     "vimeo/psalm": "*"
   },
   "suggest": {
-    "ext-gmp": "*",
     "ext-ds": "*",
     "ext-decimal": "*"
   },

@@ -2,11 +2,19 @@
 
 namespace Samsara\Fermat\Types\Traits\Trigonometry;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\CalcMode;
 
+/**
+ *
+ */
 trait TrigonometrySelectionTrait
 {
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function sinSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -17,6 +25,10 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function cosSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -27,6 +39,10 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function tanSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -37,6 +53,11 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function secSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -47,6 +68,11 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function cscSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -57,6 +83,11 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function cotSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -67,6 +98,10 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function sinhSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -77,6 +112,10 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function coshSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -87,6 +126,10 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function tanhSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -97,6 +140,11 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function sechSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -107,6 +155,10 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function cschSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();
@@ -117,6 +169,11 @@ trait TrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function cothSelector(?int $scale = null): string
     {
         $calcMode = $this->getMode();

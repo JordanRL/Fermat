@@ -2,6 +2,9 @@
 
 namespace Samsara\Fermat\Enums;
 
+/**
+ *
+ */
 enum RoundingMode {
     // Tie-break modes
     case HalfUp;

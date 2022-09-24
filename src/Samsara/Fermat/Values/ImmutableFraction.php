@@ -5,6 +5,9 @@ namespace Samsara\Fermat\Values;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Types\Fraction;
 
+/**
+ *
+ */
 class ImmutableFraction extends Fraction
 {
 

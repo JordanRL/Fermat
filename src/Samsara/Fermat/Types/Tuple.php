@@ -3,9 +3,13 @@
 namespace Samsara\Fermat\Types;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 class Tuple
 {
 
@@ -20,9 +24,13 @@ class Tuple
     private array $data;
 
 
+    /**
+     * @param ...$data
+     * @throws IntegrityConstraint
+     */
     public function __construct(...$data)
     {
-        if (is_array($data) && is_array($data[0])) {
+        if (is_array($data[0])) {
             $data = $data[0];
         }
         $this->data = Numbers::makeOrDont(Numbers::IMMUTABLE, $data);
@@ -70,16 +78,26 @@ class Tuple
         );
     }
 
+    /**
+     * @return array|ImmutableDecimal
+     */
     public function all(): array
     {
         return $this->data;
     }
 
+    /**
+     * @return int
+     */
     public function size(): int
     {
         return $this->size;
     }
 
+    /**
+     * @param int $index
+     * @return bool
+     */
     public function hasIndex(int $index): bool
     {
         return array_key_exists($index, $this->data);

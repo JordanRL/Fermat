@@ -5,11 +5,21 @@ namespace Samsara\Fermat\Types\Traits\Trigonometry;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
+/**
+ *
+ */
 trait TrigonometryNativeTrait
 {
 
+    /**
+     * @param DecimalInterface $num
+     * @return float|int
+     */
     abstract protected static function translateToNative(DecimalInterface $num): float|int;
 
+    /**
+     * @return float
+     */
     protected function sinNative(): float
     {
         $thisNum = static::translateToNative($this);
@@ -17,6 +27,9 @@ trait TrigonometryNativeTrait
         return sin($thisNum);
     }
 
+    /**
+     * @return float
+     */
     protected function cosNative(): float
     {
         $thisNum = static::translateToNative($this);
@@ -24,6 +37,9 @@ trait TrigonometryNativeTrait
         return cos($thisNum);
     }
 
+    /**
+     * @return float
+     */
     protected function tanNative(): float
     {
         $thisNum = static::translateToNative($this);
@@ -85,6 +101,9 @@ trait TrigonometryNativeTrait
         return 1/$tan;
     }
 
+    /**
+     * @return float
+     */
     protected function sinhNative(): float
     {
         $thisNum = self::translateToNative($this);
@@ -92,6 +111,9 @@ trait TrigonometryNativeTrait
         return sinh($thisNum);
     }
 
+    /**
+     * @return float
+     */
     protected function coshNative(): float
     {
         $thisNum = self::translateToNative($this);
@@ -99,6 +121,9 @@ trait TrigonometryNativeTrait
         return cosh($thisNum);
     }
 
+    /**
+     * @return float
+     */
     protected function tanhNative(): float
     {
         $thisNum = self::translateToNative($this);
@@ -106,6 +131,10 @@ trait TrigonometryNativeTrait
         return tanh($thisNum);
     }
 
+    /**
+     * @return float
+     * @throws IntegrityConstraint
+     */
     protected function sechNative(): float
     {
         $thisNum = self::translateToNative($this);
@@ -121,6 +150,9 @@ trait TrigonometryNativeTrait
         return 1/sinh($thisNum);
     }
 
+    /**
+     * @return float
+     */
     protected function cschNative(): float
     {
         $thisNum = self::translateToNative($this);
@@ -128,6 +160,10 @@ trait TrigonometryNativeTrait
         return 1/cosh($thisNum);
     }
 
+    /**
+     * @return float
+     * @throws IntegrityConstraint
+     */
     protected function cothNative(): float
     {
         $thisNum = self::translateToNative($this);

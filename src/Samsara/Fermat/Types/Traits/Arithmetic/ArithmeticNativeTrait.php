@@ -5,6 +5,9 @@ namespace Samsara\Fermat\Types\Traits\Arithmetic;
 
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
+/**
+ *
+ */
 trait ArithmeticNativeTrait
 {
 

@@ -5,6 +5,9 @@ namespace Samsara\Fermat\Provider;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 
+/**
+ *
+ */
 class TrigonometryProvider
 {
 
