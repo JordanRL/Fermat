@@ -108,9 +108,4 @@ interface NumberInterface
      */
     public function getValue(): string;
 
-    /**
-     * @return string
-     */
-    public function getAsBaseTenRealNumber(): string;
-
 }
