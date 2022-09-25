@@ -829,25 +829,25 @@ class ImmutableDecimalTest extends TestCase
         $this->assertEquals('14', $five->add($four)->getValue());
         $this->assertEquals('20', $five->add($five)->getValue());
 
-        $five = new ImmutableDecimal(10, null, NumberBase::Five);
+        $five = new ImmutableDecimal(10, null, NumberBase::Five, false);
 
         $this->assertEquals('10', $five->getValue());
         $this->assertEquals('5', $five->getValue(NumberBase::Ten));
         $this->assertEquals('5', $five->setBase(NumberBase::Ten)->getValue());
 
-        $five = new ImmutableDecimal(5, null, NumberBase::Five, true);
+        $five = new ImmutableDecimal(5, null, NumberBase::Five);
 
         $this->assertEquals('10', $five->getValue());
         $this->assertEquals('5', $five->getValue(NumberBase::Ten));
         $this->assertEquals('5', $five->setBase(NumberBase::Ten)->getValue());
 
-        $negFive = new ImmutableDecimal(-10, null, NumberBase::Five);
+        $negFive = new ImmutableDecimal(-10, null, NumberBase::Five, false);
 
         $this->assertEquals('-10', $negFive->getValue());
         $this->assertEquals('-5', $negFive->getValue(NumberBase::Ten));
         $this->assertEquals('-5', $negFive->setBase(NumberBase::Ten)->getValue());
 
-        $negFive = new ImmutableDecimal(-5, null, NumberBase::Five, true);
+        $negFive = new ImmutableDecimal(-5, null, NumberBase::Five);
 
         $this->assertEquals('-10', $negFive->getValue());
         $this->assertEquals('-5', $negFive->getValue(NumberBase::Ten));

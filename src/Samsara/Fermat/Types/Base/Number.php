@@ -104,7 +104,7 @@ abstract class Number implements Hashable, NumberInterface
      */
     public function hash(): string
     {
-        return get_class($this).$this->getValue();
+        return get_class($this).$this->getValue(NumberBase::Ten);
     }
 
     /**

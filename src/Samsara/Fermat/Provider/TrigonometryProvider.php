@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Provider;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 
 /**
@@ -22,7 +23,7 @@ class TrigonometryProvider
         $radians = Numbers::makeOrDont(Numbers::IMMUTABLE, $radians);
         $pi = Numbers::makePi($radians->getScale() + 2);
         
-        return $radians->multiply(180)->divide($pi, $radians->getScale() + 2)->round($radians->getScale() - 2)->getValue();
+        return $radians->multiply(180)->divide($pi, $radians->getScale() + 2)->round($radians->getScale() - 2)->getValue(NumberBase::Ten);
     }
 
     /**
@@ -36,7 +37,7 @@ class TrigonometryProvider
         $degrees = Numbers::makeOrDont(Numbers::IMMUTABLE, $degrees);
         $pi = Numbers::makePi($degrees->getScale() + 1);
 
-        return $degrees->multiply($pi)->divide(180)->round($degrees->getScale())->getValue();
+        return $degrees->multiply($pi)->divide(180)->round($degrees->getScale())->getValue(NumberBase::Ten);
     }
 
 }

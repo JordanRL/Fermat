@@ -6,6 +6,7 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\CalcMode;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
@@ -401,7 +402,7 @@ class SequenceProvider
     private static function _nextprime(ImmutableDecimal $number): ImmutableDecimal
     {
         if (function_exists('gmp_nextprime')) {
-            return Numbers::make(Numbers::IMMUTABLE, gmp_strval(gmp_nextprime($number->getValue())));
+            return Numbers::make(Numbers::IMMUTABLE, gmp_strval(gmp_nextprime($number->getValue(NumberBase::Ten))));
         }
 
         $number = $number->add(1);

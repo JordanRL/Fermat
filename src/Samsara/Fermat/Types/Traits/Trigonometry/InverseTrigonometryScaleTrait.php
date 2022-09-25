@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Types\Traits\Trigonometry;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
@@ -43,7 +44,7 @@ trait InverseTrigonometryScaleTrait
             $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
             $addScale = $abs->asInt() > $abs->getScale() ? $abs->asInt() : $abs->getScale();
             $intScale = $scale + $addScale;
-            $x = new ImmutableDecimal($this->getValue(), $intScale);
+            $x = new ImmutableDecimal($this->getValue(NumberBase::Ten), $intScale);
             $x2 = $x->pow(2);
             $one = new ImmutableDecimal(1, $intScale);
 
@@ -139,7 +140,7 @@ trait InverseTrigonometryScaleTrait
         $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
         $intScale = $scale + 2;
         $terms = $abs->multiply($intScale+8)->asInt();
-        $x = new ImmutableDecimal($this->getValue(), $intScale);
+        $x = new ImmutableDecimal($this->getValue(NumberBase::Ten), $intScale);
         $aPart = new class($x) implements ContinuedFractionTermInterface {
             private ImmutableDecimal $x;
 

@@ -57,12 +57,15 @@ class ImmutableDecimal extends Decimal
      * @param string $value
      * @param int|null $scale
      * @param NumberBase|null $base
-     *
+     * @param bool $setToNewBase
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null): ImmutableDecimal
+    protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null, bool $setToNewBase = false): ImmutableDecimal
     {
+        //echo '>>START SET VALUE [From: '.debug_backtrace()[1]['function'].' > '.debug_backtrace()[2]['function'].']<<'.PHP_EOL;
+        //echo 'Input Value: '.$value.PHP_EOL;
+        //echo 'Input Base: '.($base ? $base->value : 'null').PHP_EOL;
         $imaginary = false;
 
         $scale = $scale ?? $this->getScale();
@@ -72,21 +75,29 @@ class ImmutableDecimal extends Decimal
             $imaginary = true;
         }
 
-        if ((!is_null($base) && $base != NumberBase::Ten) || (is_null($base) && $this->getBase() != NumberBase::Ten)) {
+        if ((!is_null($base) && $base != NumberBase::Ten)) {
             $value = BaseConversionProvider::convertStringToBaseTen($value, $base);
         }
 
-        $base = $base ?? NumberBase::Ten;
+        if ($setToNewBase) {
+            $base = $base ?? NumberBase::Ten;
+        } else {
+            $base = $this->getBase();
+        }
 
         if ($imaginary) {
             $value .= 'i';
         }
 
-        $return = new ImmutableDecimal($value, $scale, $base);
+        //echo 'Creating Decimal With: V['.$value.'] B['.$base->value.']'.PHP_EOL;
+
+        $return = new ImmutableDecimal($value, $scale, $base, true);
 
         if (isset($this->calcMode)) {
             $return->setMode($this->calcMode);
         }
+
+        //echo '>>END SET VALUE<<'.PHP_EOL;
 
         return $return;
     }

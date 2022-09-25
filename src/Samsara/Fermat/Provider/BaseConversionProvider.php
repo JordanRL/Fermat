@@ -51,50 +51,70 @@ class BaseConversionProvider
     public static function convertStringToBaseTen(string $number, NumberBase $fromBase): string
     {
         if (str_contains($number, '.')) {
+            $sign = str_starts_with($number, '-') ? '-' : '';
             [$intPart, $decPart] = explode('.', $number);
             $intPart = self::_fromBase($intPart, $fromBase->value);
             $decPart = strrev(self::_fromBase(strrev($decPart), $fromBase->value));
 
-            return $intPart.'.'.$decPart;
+            return $sign.$intPart.'.'.$decPart;
         } else {
-            return self::_fromBase($number, $fromBase->value);
+            $sign = str_starts_with($number, '-') ? '-' : '';
+            return $sign.self::_fromBase($number, $fromBase->value);
         }
     }
 
     private static function _toBase(DecimalInterface $input, int $base): string
     {
-        $intPart = '';
-        $decPart = '';
+        $intPart = '0';
+        $decPart = '0';
         $baseNum = Numbers::make(Numbers::IMMUTABLE, $base, $input->getScale());
         $inputInt = Numbers::make(Numbers::IMMUTABLE, $input->getWholePart());
         $inputDec = Numbers::make(Numbers::IMMUTABLE, strrev($input->getDecimalPart()));
-        $posNum = Numbers::makeOne();
+        $runningTotal = Numbers::makeZero();
 
-        for ($pos = 0;$baseNum->pow($pos)->isLessThan($intPart);$pos++) {
-            if ($pos == 0) {
-                $mod = $inputInt->modulo($baseNum->pow($pos+1));
-            } else {
-                $mod = $inputInt->subtract($baseNum->pow($pos))->modulo($baseNum->pow($pos + 1));
+        if ($inputInt->isGreaterThan(0)) {
+            for ($pos = 0; $runningTotal->isLessThan($inputInt); $pos++) {
+                $basePow = $pos ?
+                    $baseNum->pow($pos) :
+                    $baseNum->pow($pos+1);
+                $intPart = $pos ? $intPart : '';
+                $mod = $pos ?
+                    (int)gmp_strval(gmp_div_q($inputInt->getAsBaseTenRealNumber(), $basePow->getAsBaseTenRealNumber())) :
+                    (int)gmp_strval(gmp_div_r($inputInt->getAsBaseTenRealNumber(), $basePow->getAsBaseTenRealNumber()));
+                $intPart = self::$chars[$mod] . $intPart;
+                $runningTotal = $pos ?
+                    $runningTotal->add($basePow->multiply($mod)) :
+                    $runningTotal->add($mod);
             }
-            $intPart = self::$chars[$mod->asInt()].$intPart;
         }
 
-        for ($pos = 0;$baseNum->pow($pos)->isLessThan($inputDec);$pos++) {
-            if ($pos == 0) {
-                $mod = $inputDec->modulo($baseNum->pow($pos+1));
-            } else {
-                $mod = $inputDec->subtract($baseNum->pow($pos))->modulo($baseNum->pow($pos + 1));
+        if ($inputDec->isGreaterThan(0)) {
+            $runningTotal = Numbers::makeZero();
+            for ($pos = 0; $runningTotal->isLessThan($decPart); $pos++) {
+                $basePow = $baseNum->pow($pos);
+                $decPart = $pos ? $decPart : '';
+                $mod = $pos ?
+                    (int)gmp_strval(gmp_div_q($inputDec->getAsBaseTenRealNumber(), $baseNum->pow($pos)->getAsBaseTenRealNumber())) :
+                    $inputDec->modulo($baseNum->pow($pos))->asInt();
+                $decPart = self::$chars[$mod] . $decPart;
+                $runningTotal = $runningTotal->add($basePow->multiply($mod));
             }
-            $decPart = self::$chars[$mod->asInt()].$decPart;
         }
 
-        return $intPart.'.'.strrev($decPart);
+        $sign = $input->isNegative() ? '-' : '';
+
+        return $sign.$intPart.'.'.strrev($decPart);
     }
 
     private static function _fromBase(string $number, int $base): string
     {
+        if (str_starts_with($number, '-')) {
+            $number = trim($number, '-');
+        }
+
         $output = Numbers::makeZero();
         $input = str_split($number);
+        $input = array_reverse($input);
         $pos = 0;
         $base = Numbers::make(Numbers::IMMUTABLE, $base);
 

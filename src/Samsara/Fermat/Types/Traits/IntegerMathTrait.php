@@ -47,17 +47,17 @@ trait IntegerMathTrait
         }
 
         if (function_exists('gmp_fact') && function_exists('gmp_strval') && $this->extensions) {
-            return $this->setValue(gmp_strval(gmp_fact($this->getValue())));
+            return $this->setValue(gmp_strval(gmp_fact($this->getValue(NumberBase::Ten))));
         }
 
-        $curVal = $this->getValue();
+        $curVal = $this->getValue(NumberBase::Ten);
         $calcVal = Numbers::make(Numbers::IMMUTABLE, 1);
 
         for ($i = 1;$i <= $curVal;$i++) {
             $calcVal = $calcVal->multiply($i);
         }
 
-        return $this->setValue($calcVal->getValue());
+        return $this->setValue($calcVal->getValue(NumberBase::Ten));
 
     }
 
@@ -114,14 +114,14 @@ trait IntegerMathTrait
             );
         }
 
-        $num = Numbers::make(Numbers::MUTABLE, $this->getValue(), $this->getScale(), $this->getBase());
+        $num = Numbers::make(Numbers::MUTABLE, $this->getValue(NumberBase::Ten), $this->getScale(), $this->getBase());
 
         $newVal = Numbers::makeOne();
 
         $continue = true;
 
         while ($continue) {
-            $newVal = $newVal->multiply($num->getValue());
+            $newVal = $newVal->multiply($num->getValue(NumberBase::Ten));
             $num = $num->subtract(2);
 
             if ($num->isLessThanOrEqualTo(1)) {
@@ -129,7 +129,7 @@ trait IntegerMathTrait
             }
         }
 
-        return $this->setValue($newVal->getValue());
+        return $this->setValue($newVal->getValue(NumberBase::Ten));
 
     }
 
@@ -192,7 +192,7 @@ trait IntegerMathTrait
         }
 
         if (extension_loaded('gmp')) {
-            $val = gmp_strval(gmp_gcd($thisNum->getValue(), $num->getValue()));
+            $val = gmp_strval(gmp_gcd($thisNum->getValue(NumberBase::Ten), $num->getValue(NumberBase::Ten)));
 
             return Numbers::make(Numbers::IMMUTABLE, $val, $this->getScale());
         }
@@ -247,7 +247,7 @@ trait IntegerMathTrait
         }
 
         if (function_exists('gmp_prob_prime')) {
-            return (bool)gmp_prob_prime($this->getValue(), $certainty);
+            return (bool)gmp_prob_prime($this->getValue(NumberBase::Ten), $certainty);
         }
 
         $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $this->getScale());

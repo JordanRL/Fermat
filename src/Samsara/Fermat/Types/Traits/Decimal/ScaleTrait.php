@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Types\Traits\Decimal;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
@@ -35,7 +36,7 @@ trait ScaleTrait
      */
     public function round(int $decimals = 0, ?RoundingMode $mode = null): DecimalInterface
     {
-        if ($this->getValue() == Number::INFINITY || $this->getValue() == Number::NEG_INFINITY) {
+        if ($this->getValue(NumberBase::Ten) == Number::INFINITY || $this->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
             return $this;
         }
 
@@ -57,7 +58,7 @@ trait ScaleTrait
      */
     public function truncate(int $decimals = 0): DecimalInterface
     {
-        if ($this->getValue() == Number::INFINITY || $this->getValue() == Number::NEG_INFINITY) {
+        if ($this->getValue(NumberBase::Ten) == Number::INFINITY || $this->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
             return $this;
         }
 

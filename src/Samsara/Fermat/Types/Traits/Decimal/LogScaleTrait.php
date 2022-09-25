@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Types\Traits\Decimal;
 
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
@@ -29,7 +30,7 @@ trait LogScaleTrait
             $e = Numbers::makeE($scale+1);
             $value = $e->pow($this);
         } else {
-            $x = $this instanceof ImmutableDecimal ? $this : new ImmutableDecimal($this->getValue());
+            $x = $this instanceof ImmutableDecimal ? $this : new ImmutableDecimal($this->getValue(NumberBase::Ten));
             $x2 = $x->pow(2);
             $intScale = $scale + 1;
             $terms = $scale;

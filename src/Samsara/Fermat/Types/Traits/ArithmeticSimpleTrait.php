@@ -14,6 +14,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 /** @psalm-suppress UndefinedClass */
 use Samsara\Fermat\ComplexNumbers;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
@@ -77,11 +78,11 @@ trait ArithmeticSimpleTrait
             $newImaginaryPart = $thisImaginaryPart->add($thatImaginaryPart);
 
             if ($newImaginaryPart->isEqual(0)) {
-                return $this->setValue($newRealPart->getValue());
+                return $this->setValue($newRealPart->getValue(NumberBase::Ten));
             }
 
             if ($newRealPart->isEqual(0)) {
-                return $this->setValue($newImaginaryPart->getValue());
+                return $this->setValue($newImaginaryPart->getValue(NumberBase::Ten));
             }
 
             /** @psalm-suppress UndefinedClass */
@@ -155,11 +156,11 @@ trait ArithmeticSimpleTrait
             $newImaginaryPart = $thisImaginaryPart->subtract($thatImaginaryPart);
 
             if ($newImaginaryPart->isEqual(0)) {
-                return $this->setValue($newRealPart->getValue());
+                return $this->setValue($newRealPart->getValue(NumberBase::Ten));
             }
 
             if ($newRealPart->isEqual(0)) {
-                return $this->setValue($newImaginaryPart->getValue());
+                return $this->setValue($newImaginaryPart->getValue(NumberBase::Ten));
             }
 
             /** @psalm-suppress UndefinedClass */

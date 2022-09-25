@@ -64,11 +64,11 @@ class Numbers
         }
 
         if ($type === static::IMMUTABLE) {
-            return new ImmutableDecimal(trim($value), $scale, $base);
+            return new ImmutableDecimal(trim($value), $scale, $base, true);
         }
 
         if ($type === static::MUTABLE) {
-            return new MutableDecimal(trim($value), $scale, $base);
+            return new MutableDecimal(trim($value), $scale, $base, true);
         }
 
         if ($type === static::IMMUTABLE_FRACTION) {
@@ -123,7 +123,7 @@ class Numbers
             }
 
             if ($value instanceof NumberInterface) {
-                return static::make($type, $value->getValue(), $scale, $base);
+                return static::make($type, $value->getValue(NumberBase::Ten), $scale, $base);
             }
         } elseif (is_array($value)) {
             $newInput = [];

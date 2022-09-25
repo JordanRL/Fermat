@@ -25,13 +25,13 @@ class MutableDecimal extends Decimal
     {
 
         $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, $this->scale+1);
-        $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(), $this->scale+1);
+        $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $this->scale+1);
 
         $multiple = $oldNum->divide($mod)->floor();
 
         $remainder = $oldNum->subtract($mod->multiply($multiple));
 
-        return Numbers::make(Numbers::MUTABLE, $remainder->truncate($this->scale)->getValue());
+        return Numbers::make(Numbers::MUTABLE, $remainder->truncate($this->scale)->getValue(NumberBase::Ten), $this->scale, $this->getBase());
 
     }
 
@@ -39,9 +39,10 @@ class MutableDecimal extends Decimal
      * @param string $value
      * @param int|null $scale
      * @param NumberBase|null $base
+     * @param bool $setToNewBase
      * @return MutableDecimal
      */
-    protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null): self
+    protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null, bool $setToNewBase = false): self
     {
         $imaginary = false;
 
@@ -60,6 +61,10 @@ class MutableDecimal extends Decimal
 
         if (is_null($scale)) {
             $this->scale = $this->getScale();
+        }
+
+        if ($setToNewBase) {
+            $this->base = $base ?? $this->getBase();
         }
 
         $this->value = $this->translateValue($value);
