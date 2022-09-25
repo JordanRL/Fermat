@@ -1,29 +1,10 @@
-<?php /** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-
-/** @noinspection ALL */
+<?php
 
 namespace Samsara\Fermat\Types;
 
 use Composer\InstalledVersions;
 use Ds\Traits\TValue;
+use ReturnTypeWillChange;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\RandomMode;
@@ -472,16 +453,16 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
      * @param $offset
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->getCollection()->offsetExists($offset);
     }
 
     /**
      * @param $offset
-     * @return TValue|mixed
+     * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->getCollection()->offsetGet($offset);
     }
@@ -491,7 +472,7 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
      * @param $value
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->getCollection()->offsetSet($offset, $value);
     }
@@ -500,15 +481,15 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
      * @param $offset
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->getCollection()->offsetUnset($offset);
     }
 
     /**
-     * @return array|\Generator|\Traversable
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return $this->getCollection()->getIterator();
     }
