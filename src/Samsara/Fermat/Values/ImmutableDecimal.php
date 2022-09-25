@@ -2,15 +2,27 @@
 
 namespace Samsara\Fermat\Values;
 
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\BaseConversionProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
+/**
+ *
+ */
 class ImmutableDecimal extends Decimal
 {
 
+    /**
+     * @param NumberInterface|string|int|float $mod
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface
     {
 
@@ -44,13 +56,16 @@ class ImmutableDecimal extends Decimal
     /**
      * @param string $value
      * @param int|null $scale
-     * @param int|null $base
-     *
+     * @param NumberBase|null $base
+     * @param bool $setToNewBase
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    protected function setValue(string $value, ?int $scale = null, ?int $base = null): ImmutableDecimal
+    protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null, bool $setToNewBase = false): ImmutableDecimal
     {
+        //echo '>>START SET VALUE [From: '.debug_backtrace()[1]['function'].' > '.debug_backtrace()[2]['function'].']<<'.PHP_EOL;
+        //echo 'Input Value: '.$value.PHP_EOL;
+        //echo 'Input Base: '.($base ? $base->value : 'null').PHP_EOL;
         $imaginary = false;
 
         $scale = $scale ?? $this->getScale();
@@ -60,22 +75,29 @@ class ImmutableDecimal extends Decimal
             $imaginary = true;
         }
 
-        if (!is_null($base) || $this->getBase() !== 10) {
-            $base = is_null($base) ? $this->getBase() : $base;
-            $value = $this->convertValue($value, 10, $base);
+        if ((!is_null($base) && $base != NumberBase::Ten)) {
+            $value = BaseConversionProvider::convertStringToBaseTen($value, $base);
         }
 
-        $base = $base ?? 10;
+        if ($setToNewBase) {
+            $base = $base ?? NumberBase::Ten;
+        } else {
+            $base = $this->getBase();
+        }
 
         if ($imaginary) {
             $value .= 'i';
         }
 
-        $return = new ImmutableDecimal($value, $scale, $base);
+        //echo 'Creating Decimal With: V['.$value.'] B['.$base->value.']'.PHP_EOL;
+
+        $return = new ImmutableDecimal($value, $scale, $base, true);
 
         if (isset($this->calcMode)) {
             $return->setMode($this->calcMode);
         }
+
+        //echo '>>END SET VALUE<<'.PHP_EOL;
 
         return $return;
     }

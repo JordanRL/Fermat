@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Types\NumberCollection;
@@ -26,21 +27,21 @@ class ImmutableDecimalTest extends TestCase
 
         $this->assertEquals('5', $five->getValue());
         $this->assertEquals(10, $five->getScale());
-        $this->assertEquals(10, $five->getBase());
+        $this->assertEquals(NumberBase::Ten, $five->getBase());
 
         /** @var ImmutableDecimal $five */
-        $five = $five->convertToBase(16);
+        $five = $five->setBase(NumberBase::Sixteen);
 
         $this->assertEquals('5', $five->getValue());
         $this->assertEquals(10, $five->getScale());
-        $this->assertEquals(16, $five->getBase());
+        $this->assertEquals(NumberBase::Sixteen, $five->getBase());
 
         /** @var ImmutableDecimal $five */
-        $five = $five->convertToBase(5);
+        $five = $five->setBase(NumberBase::Five);
 
         $this->assertEquals('10', $five->getValue());
         $this->assertEquals(10, $five->getScale());
-        $this->assertEquals(5, $five->getBase());
+        $this->assertEquals(NumberBase::Five, $five->getBase());
 
     }
     /**
@@ -819,7 +820,7 @@ class ImmutableDecimalTest extends TestCase
 
         $five = new ImmutableDecimal(5);
 
-        $five = $five->convertToBase(5);
+        $five = $five->setBase(NumberBase::Five);
 
         $this->assertEquals('10', $five->getValue());
 
@@ -828,29 +829,29 @@ class ImmutableDecimalTest extends TestCase
         $this->assertEquals('14', $five->add($four)->getValue());
         $this->assertEquals('20', $five->add($five)->getValue());
 
-        $five = new ImmutableDecimal(10, null, 5);
+        $five = new ImmutableDecimal(10, null, NumberBase::Five, false);
 
         $this->assertEquals('10', $five->getValue());
-        $this->assertEquals('5', $five->getValue(10));
-        $this->assertEquals('5', $five->convertToBase(10)->getValue());
+        $this->assertEquals('5', $five->getValue(NumberBase::Ten));
+        $this->assertEquals('5', $five->setBase(NumberBase::Ten)->getValue());
 
-        $five = new ImmutableDecimal(5, null, 5, true);
+        $five = new ImmutableDecimal(5, null, NumberBase::Five);
 
         $this->assertEquals('10', $five->getValue());
-        $this->assertEquals('5', $five->getValue(10));
-        $this->assertEquals('5', $five->convertToBase(10)->getValue());
+        $this->assertEquals('5', $five->getValue(NumberBase::Ten));
+        $this->assertEquals('5', $five->setBase(NumberBase::Ten)->getValue());
 
-        $negFive = new ImmutableDecimal(-10, null, 5);
-
-        $this->assertEquals('-10', $negFive->getValue());
-        $this->assertEquals('-5', $negFive->getValue(10));
-        $this->assertEquals('-5', $negFive->convertToBase(10)->getValue());
-
-        $negFive = new ImmutableDecimal(-5, null, 5, true);
+        $negFive = new ImmutableDecimal(-10, null, NumberBase::Five, false);
 
         $this->assertEquals('-10', $negFive->getValue());
-        $this->assertEquals('-5', $negFive->getValue(10));
-        $this->assertEquals('-5', $negFive->convertToBase(10)->getValue());
+        $this->assertEquals('-5', $negFive->getValue(NumberBase::Ten));
+        $this->assertEquals('-5', $negFive->setBase(NumberBase::Ten)->getValue());
+
+        $negFive = new ImmutableDecimal(-5, null, NumberBase::Five);
+
+        $this->assertEquals('-10', $negFive->getValue());
+        $this->assertEquals('-5', $negFive->getValue(NumberBase::Ten));
+        $this->assertEquals('-5', $negFive->setBase(NumberBase::Ten)->getValue());
 
     }
     /**

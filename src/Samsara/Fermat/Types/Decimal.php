@@ -4,9 +4,10 @@ namespace Samsara\Fermat\Types;
 
 use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
-use Samsara\Fermat\Types\Base\Interfaces\Characteristics\BaseConversionInterface;
+use Samsara\Fermat\Provider\BaseConversionProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
@@ -19,10 +20,13 @@ use Samsara\Fermat\Types\Traits\InverseTrigonometrySimpleTrait;
 use Samsara\Fermat\Types\Traits\LogSimpleTrait;
 use Samsara\Fermat\Types\Traits\TrigonometrySimpleTrait;
 
-abstract class Decimal extends Number implements DecimalInterface, BaseConversionInterface
+/**
+ *
+ */
+abstract class Decimal extends Number implements DecimalInterface
 {
 
-    protected int $base;
+    protected NumberBase $base;
 
     use ArithmeticSimpleTrait;
     use ComparisonTrait;
@@ -32,12 +36,19 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     use LogSimpleTrait;
     use ScaleTrait;
 
-    public function __construct($value, int $scale = null, int $base = 10, bool $baseTenInput = false)
+    /**
+     * @param $value
+     * @param int|null $scale
+     * @param NumberBase $base
+     * @param bool $baseTenInput
+     * @throws IntegrityConstraint
+     */
+    public function __construct($value, int $scale = null, NumberBase $base = NumberBase::Ten, bool $baseTenInput = true)
     {
 
         $this->base = $base;
 
-        $value = (string)$value;
+        $value = $value instanceof NumberInterface ? $value->getValue(NumberBase::Ten) : (string)$value;
 
         if (str_contains($value, 'i')) {
             $this->imaginary = true;
@@ -46,14 +57,8 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
             $this->imaginary = false;
         }
 
-        //if (str_starts_with($value, '-')) {
-        //    $this->sign = true;
-        //} else {
-        //    $this->sign = false;
-        //}
-
-        if ($base !== 10 && !$baseTenInput) {
-            $value = $this->convertValue($value, $base, 10);
+        if ($base != NumberBase::Ten && !$baseTenInput) {
+            $value = BaseConversionProvider::convertStringToBaseTen($value, $base);
         }
 
         $this->value = $this->translateValue($value);
@@ -83,11 +88,19 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
 
     }
 
+    /**
+     * @param $mod
+     * @return DecimalInterface
+     */
     public function modulo($mod): DecimalInterface
     {
         return $this->setValue(bcmod($this->getAsBaseTenRealNumber(), $mod), $this->getScale(), $this->getBase());
     }
 
+    /**
+     * @param string $value
+     * @return array
+     */
     protected function translateValue(string $value): array
     {
         $value = trim($value);
@@ -138,36 +151,36 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         return $resultValue;
     }
 
-    protected function convertObject(): false|string
+    /**
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function getAsBaseConverted(): string
     {
-        if ($this->getBase() === 10) {
+        if ($this->getBase() == NumberBase::Ten) {
             return $this->getAsBaseTenRealNumber();
+        } else {
+            $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this);
+            $converted = BaseConversionProvider::convertFromBaseTen($num, $this->getBase());
+
+            $converted = rtrim($converted, '0');
+            return rtrim($converted, '.');
         }
-
-        return $this->convertValue($this->getAsBaseTenRealNumber(), 10, $this->getBase());
-    }
-
-    protected function convertValue(string $value, int $oldBase, int $newBase): false|string
-    {
-        $converter = new BaseConverter($oldBase, $newBase);
-
-        $scale = $this->scale ?? 10;
-
-        $converter->setPrecision($scale);
-
-        return $converter->convert($value);
     }
 
     /**
      * Returns the current base that the value is in.
      *
-     * @return int
+     * @return NumberBase
      */
-    public function getBase(): int
+    public function getBase(): NumberBase
     {
         return $this->base;
     }
 
+    /**
+     * @return string
+     */
     public function getAsBaseTenRealNumber(): string
     {
         $string = '';
@@ -187,17 +200,28 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         return $string;
     }
 
-    public function getValue($base = null): string
+    /**
+     * @param NumberBase|null $base
+     * @return string
+     */
+    public function getValue(?NumberBase $base = null): string
     {
-        if (is_null($base)) {
-            $value = $this->convertObject();
+        //echo '>>START GET VALUE [From: '.debug_backtrace()[1]['function'].' > '.debug_backtrace()[2]['function'].']<<'.PHP_EOL;
+        //echo 'THIS: '.$this->getAsBaseTenRealNumber().PHP_EOL;
+        //echo 'BASE: '.($base ? $base->value : 'null').PHP_EOL;
+        if (is_null($base) && $this->getBase() != NumberBase::Ten) {
+            $value = $this->getAsBaseConverted();
+        } elseif (!is_null($base) && $base != NumberBase::Ten) {
+            $value = BaseConversionProvider::convertFromBaseTen($this, $base);
         } else {
-            $value = $this->convertValue($this->getAsBaseTenRealNumber(), 10, $base);
+            $value = $this->getAsBaseTenRealNumber();
         }
 
         if ($this->isImaginary()) {
             $value .= 'i';
         }
+        //echo 'VALUE: '.$value.PHP_EOL;
+        //echo '>>END GET VALUE<<'.PHP_EOL;
 
         return $value;
     }
@@ -213,21 +237,21 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     {
         $value = Numbers::makeOrDont($this, $value, $this->getScale());
 
-        if ($this->getValue() == Number::INFINITY) {
-            return match ($value->getValue()) {
+        if ($this->getValue(NumberBase::Ten) == Number::INFINITY) {
+            return match ($value->getValue(NumberBase::Ten)) {
                 'INF' => 0,
                 default => 1
             };
-        } elseif ($this->getValue() == Number::NEG_INFINITY) {
-            return match ($value->getValue()) {
+        } elseif ($this->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
+            return match ($value->getValue(NumberBase::Ten)) {
                 '-INF' => 0,
                 default => -1
             };
         }
 
-        if ($value->getValue() == Number::INFINITY) {
+        if ($value->getValue(NumberBase::Ten) == Number::INFINITY) {
             return 1;
-        } elseif ($value->getValue() == Number::NEG_INFINITY) {
+        } elseif ($value->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
             return -1;
         }
 
@@ -250,12 +274,14 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     /**
      * Converts the object to a different base.
      *
-     * @param $base
+     * @param NumberBase $base
      * @return DecimalInterface|NumberInterface
      */
-    public function convertToBase($base): DecimalInterface|NumberInterface
+    public function setBase(NumberBase $base): DecimalInterface|NumberInterface
     {
-        return $this->setValue($this->getValue(10), null, $base);
+        $this->base = $base;
+
+        return $this;
     }
 
     /**
@@ -267,7 +293,7 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
     {
         $newValue = $this->absValue();
 
-        return $this->setValue($newValue, $this->getBase());
+        return $this->setValue($newValue, $this->getScale(), $this->getBase());
     }
 
     /**
@@ -320,20 +346,19 @@ abstract class Decimal extends Number implements DecimalInterface, BaseConversio
         return false;
     }
 
-    public function __toString(): string
-    {
-        return parent::__toString(); // TODO: Change the autogenerated stub
-    }
-
     /**
      * @param string $value
      * @param int|null $scale
-     * @param int $base
-     *
+     * @param NumberBase|null $base
+     * @param bool $setToNewBase
      * @return DecimalInterface
      */
-    abstract protected function setValue(string $value, ?int $scale = null, ?int $base = 10): DecimalInterface; // TODO: Check usages for base correctness & preservation
+    abstract protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null, bool $setToNewBase = false): DecimalInterface; // TODO: Check usages for base correctness & preservation
 
+    /**
+     * @param NumberInterface|string|int|float $mod
+     * @return DecimalInterface
+     */
     abstract public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface;
 
 }

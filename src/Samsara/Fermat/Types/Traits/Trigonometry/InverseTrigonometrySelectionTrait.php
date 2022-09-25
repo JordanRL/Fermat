@@ -4,9 +4,16 @@ namespace Samsara\Fermat\Types\Traits\Trigonometry;
 
 use Samsara\Fermat\Enums\CalcMode;
 
+/**
+ *
+ */
 trait InverseTrigonometrySelectionTrait
 {
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function arcsinSelector(?int $scale): string
     {
         $calcMode = $this->getMode();
@@ -17,6 +24,10 @@ trait InverseTrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function arccosSelector(?int $scale): string
     {
         $calcMode = $this->getMode();
@@ -27,6 +38,10 @@ trait InverseTrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function arctanSelector(?int $scale): string
     {
         $calcMode = $this->getMode();
@@ -37,6 +52,10 @@ trait InverseTrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function arcsecSelector(?int $scale): string
     {
         $calcMode = $this->getMode();
@@ -47,6 +66,10 @@ trait InverseTrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function arccscSelector(?int $scale): string
     {
         $calcMode = $this->getMode();
@@ -57,6 +80,10 @@ trait InverseTrigonometrySelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     */
     protected function arccotSelector(?int $scale): string
     {
         $calcMode = $this->getMode();

@@ -6,9 +6,16 @@ namespace Samsara\Fermat\Types\Traits\Arithmetic;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
+/**
+ *
+ */
 trait ArithmeticGMPTrait
 {
 
+    /**
+     * @param DecimalInterface $num
+     * @return string|false
+     */
     protected function addGMP(DecimalInterface $num): string|false
     {
         if (function_exists('gmp_add') && function_exists('gmp_strval')) {
@@ -22,6 +29,10 @@ trait ArithmeticGMPTrait
         return false;
     }
 
+    /**
+     * @param DecimalInterface $num
+     * @return string|false
+     */
     protected function subtractGMP(DecimalInterface $num): string|false
     {
         if (function_exists('gmp_sub') && function_exists('gmp_strval')) {
@@ -35,6 +46,10 @@ trait ArithmeticGMPTrait
         return false;
     }
 
+    /**
+     * @param DecimalInterface $num
+     * @return string|false
+     */
     protected function multiplyGMP(DecimalInterface $num): string|false
     {
         if (function_exists('gmp_mul') && function_exists('gmp_strval')) {
@@ -48,6 +63,10 @@ trait ArithmeticGMPTrait
         return false;
     }
 
+    /**
+     * @param DecimalInterface $num
+     * @return string|false
+     */
     protected function divideGMP(DecimalInterface $num): string|false
     {
         if (function_exists('gmp_div_qr') && function_exists('gmp_strval')) {
@@ -68,6 +87,10 @@ trait ArithmeticGMPTrait
         return false;
     }
 
+    /**
+     * @param DecimalInterface $num
+     * @return string|false
+     */
     protected function powGMP(DecimalInterface $num): string|false
     {
         if (function_exists('gmp_pow') && function_exists('gmp_strval')) {
@@ -81,6 +104,9 @@ trait ArithmeticGMPTrait
         return false;
     }
 
+    /**
+     * @return string|false
+     */
     protected function sqrtGMP(): string|false
     {
         if (function_exists('gmp_sqrtrem') && function_exists('gmp_strval')) {

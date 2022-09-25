@@ -2,6 +2,9 @@
 
 namespace Samsara\Fermat\Types\Base\Interfaces\Numbers;
 
+/**
+ *
+ */
 interface SimpleNumberInterface extends NumberInterface
 {
 

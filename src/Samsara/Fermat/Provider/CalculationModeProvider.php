@@ -4,6 +4,9 @@ namespace Samsara\Fermat\Provider;
 
 use Samsara\Fermat\Enums\CalcMode;
 
+/**
+ *
+ */
 class CalculationModeProvider
 {
 

@@ -6,10 +6,14 @@ namespace Samsara\Fermat\Types\Traits\Arithmetic;
 
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
+/**
+ *
+ */
 trait ArithmeticScaleTrait
 {
 
@@ -77,12 +81,12 @@ trait ArithmeticScaleTrait
     {
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
-        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->getValue(), $this->getScale());
+        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $this->getScale());
 
         if (!$num->isWhole()) {
             $scale += 2;
             $exponent = $num->multiply($thisNum->ln($scale));
-            return $exponent->exp($scale)->truncateToScale($scale - 2)->getValue();
+            return $exponent->exp($scale)->truncateToScale($scale - 2)->getValue(NumberBase::Ten);
         }
 
         return ArithmeticProvider::pow($this->asReal(), $num->asReal(), $scale);

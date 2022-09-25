@@ -4,13 +4,18 @@ namespace Samsara\Fermat\Types\Base;
 
 use Ds\Hashable;
 use ReflectionException;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\CalcMode;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\CalculationModeProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\ComplexNumber;
 use Samsara\Fermat\Values\ImmutableComplexNumber;
 
+/**
+ *
+ */
 abstract class Number implements Hashable, NumberInterface
 {
     public const INFINITY = 'INF';
@@ -26,6 +31,9 @@ abstract class Number implements Hashable, NumberInterface
     protected bool $sign;
     /** @var CalcMode|null */
     protected ?CalcMode $calcMode = null;
+    /** @var int */
+    protected ?int $scale;
+    protected NumberBase $base;
 
     public function __construct()
     {
@@ -48,6 +56,9 @@ abstract class Number implements Hashable, NumberInterface
         return $this;
     }
 
+    /**
+     * @return CalcMode
+     */
     public function getMode(): CalcMode
     {
 
@@ -93,7 +104,7 @@ abstract class Number implements Hashable, NumberInterface
      */
     public function hash(): string
     {
-        return get_class($this).$this->getValue();
+        return get_class($this).$this->getValue(NumberBase::Ten);
     }
 
     /**
@@ -137,22 +148,40 @@ abstract class Number implements Hashable, NumberInterface
         return !$this->imaginary;
     }
 
+    /**
+     * @return string
+     */
     public function asReal(): string
     {
         return $this->getAsBaseTenRealNumber();
     }
 
+    /**
+     * @return string
+     */
     abstract public function getAsBaseTenRealNumber(): string;
 
+    /**
+     * @return bool
+     */
     abstract public function isComplex(): bool;
 
-    public function asComplex(): ComplexNumber
+    /**
+     * @return ImmutableComplexNumber
+     * @throws IntegrityConstraint
+     */
+    public function asComplex(): ImmutableComplexNumber
     {
         if ($this->isReal()) {
             return new ImmutableComplexNumber(clone $this, Numbers::makeZero());
         }
 
         return new ImmutableComplexNumber(Numbers::makeZero(), clone $this);
+    }
+
+    public function getBase(): NumberBase
+    {
+        return $this->base;
     }
 
 }

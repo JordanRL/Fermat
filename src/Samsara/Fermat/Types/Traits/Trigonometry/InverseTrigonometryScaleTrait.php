@@ -2,7 +2,10 @@
 
 namespace Samsara\Fermat\Types\Traits\Trigonometry;
 
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
@@ -11,9 +14,19 @@ use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterfac
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 trait InverseTrigonometryScaleTrait
 {
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     protected function arcsinScale(int $scale = null): string
     {
 
@@ -31,19 +44,28 @@ trait InverseTrigonometryScaleTrait
             $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
             $addScale = $abs->asInt() > $abs->getScale() ? $abs->asInt() : $abs->getScale();
             $intScale = $scale + $addScale;
-            $x = new ImmutableDecimal($this->getValue(), $intScale);
+            $x = new ImmutableDecimal($this->getValue(NumberBase::Ten), $intScale);
             $x2 = $x->pow(2);
             $one = new ImmutableDecimal(1, $intScale);
 
             $aPart = new class($x2, $intScale) implements ContinuedFractionTermInterface{
                 private ImmutableDecimal $x2;
+                private ImmutableDecimal $negTwo;
 
+                /**
+                 * @param ImmutableDecimal $x2
+                 * @param int $intScale
+                 */
                 public function __construct(ImmutableDecimal $x2, int $intScale)
                 {
                     $this->x2 = $x2;
                     $this->negTwo = new ImmutableDecimal(-2, $intScale);
                 }
 
+                /**
+                 * @param int $n
+                 * @return ImmutableDecimal
+                 */
                 public function __invoke(int $n): ImmutableDecimal
                 {
                     $subterm = floor(($n+1)/2);
@@ -55,6 +77,10 @@ trait InverseTrigonometryScaleTrait
             };
 
             $bPart = new class() implements ContinuedFractionTermInterface{
+                /**
+                 * @param int $n
+                 * @return ImmutableDecimal
+                 */
                 public function __invoke(int $n): ImmutableDecimal
                 {
                     return SequenceProvider::nthOddNumber($n);
@@ -71,6 +97,12 @@ trait InverseTrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     protected function arccosScale(int $scale = null): string
     {
 
@@ -94,6 +126,13 @@ trait InverseTrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     * @throws IncompatibleObjectState
+     */
     protected function arctanScale(int $scale = null): string
     {
 
@@ -101,15 +140,22 @@ trait InverseTrigonometryScaleTrait
         $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
         $intScale = $scale + 2;
         $terms = $abs->multiply($intScale+8)->asInt();
-        $x = new ImmutableDecimal($this->getValue(), $intScale);
+        $x = new ImmutableDecimal($this->getValue(NumberBase::Ten), $intScale);
         $aPart = new class($x) implements ContinuedFractionTermInterface {
             private ImmutableDecimal $x;
 
+            /**
+             * @param ImmutableDecimal $x
+             */
             public function __construct(ImmutableDecimal $x)
             {
                 $this->x = $x;
             }
 
+            /**
+             * @param int $n
+             * @return ImmutableDecimal
+             */
             public function __invoke(int $n): ImmutableDecimal
             {
                 if ($n == 1) {
@@ -123,11 +169,18 @@ trait InverseTrigonometryScaleTrait
         $bPart = new class($intScale) implements ContinuedFractionTermInterface {
             private int $intScale;
 
+            /**
+             * @param int $intScale
+             */
             public function __construct(int $intScale)
             {
                 $this->intScale = $intScale;
             }
 
+            /**
+             * @param int $n
+             * @return ImmutableDecimal
+             */
             public function __invoke(int $n): ImmutableDecimal
             {
                 if ($n == 0) {
@@ -144,6 +197,12 @@ trait InverseTrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     protected function arccotScale(int $scale = null): string
     {
 
@@ -161,6 +220,11 @@ trait InverseTrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function arcsecScale(int $scale = null): string
     {
 
@@ -175,6 +239,11 @@ trait InverseTrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function arccscScale(int $scale = null): string
     {
 
@@ -189,10 +258,22 @@ trait InverseTrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int $scale
+     * @param RoundingMode|null $mode
+     * @return DecimalInterface
+     */
     abstract public function roundToScale(int $scale, ?RoundingMode $mode = null): DecimalInterface;
 
+    /**
+     * @param int $scale
+     * @return DecimalInterface
+     */
     abstract public function truncateToScale(int $scale): DecimalInterface;
 
+    /**
+     * @return int|null
+     */
     abstract public function getScale(): ?int;
 
 }

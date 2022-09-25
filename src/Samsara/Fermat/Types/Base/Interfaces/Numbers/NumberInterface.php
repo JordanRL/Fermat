@@ -3,7 +3,11 @@
 namespace Samsara\Fermat\Types\Base\Interfaces\Numbers;
 
 use Samsara\Fermat\Types\ComplexNumber;
+use Samsara\Fermat\Values\ImmutableComplexNumber;
 
+/**
+ *
+ */
 interface NumberInterface
 {
 
@@ -61,25 +65,47 @@ interface NumberInterface
     public function sqrt(?int $scale = null);
 
     /**
-     * @param int|string|NumberInterface $value
+     * @param float|int|string|NumberInterface $value
      *
      * @return bool
      */
-    public function isEqual($value): bool;
+    public function isEqual(NumberInterface|int|string|float $value): bool;
 
     /**
      * @return int|null
      */
     public function getScale(): ?int;
 
+    /**
+     * @return bool
+     */
     public function isImaginary(): bool;
 
+    /**
+     * @return bool
+     */
     public function isReal(): bool;
 
+    /**
+     * @return string
+     */
     public function asReal(): string;
 
+    /**
+     * @return bool
+     */
     public function isComplex(): bool;
 
-    public function asComplex(): ComplexNumber;
+    /**
+     * @return ImmutableComplexNumber
+     */
+    public function asComplex(): ImmutableComplexNumber;
+
+    /**
+     * Returns the current value as a string.
+     *
+     * @return string
+     */
+    public function getValue(): string;
 
 }

@@ -2,6 +2,9 @@
 
 namespace Samsara\Fermat\Types\Traits\Trigonometry;
 
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
@@ -9,9 +12,19 @@ use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterfac
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 trait TrigonometryScaleTrait
 {
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws \ReflectionException
+     */
     protected function sinScale(int $scale = null): string
     {
         if ($this->isEqual(0)) {
@@ -51,6 +64,13 @@ trait TrigonometryScaleTrait
         return $answer->getAsBaseTenRealNumber();
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws \ReflectionException
+     * @throws OptionalExit
+     */
     protected function cosScale(int $scale = null): string
     {
         if ($this->isEqual(0)) {
@@ -94,6 +114,12 @@ trait TrigonometryScaleTrait
         return $answer->getAsBaseTenRealNumber();
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     protected function tanScale(int $scale = null): string
     {
         $scale = $scale ?? $this->getScale();
@@ -155,16 +181,23 @@ trait TrigonometryScaleTrait
 
         if ($modulo->abs()->isGreaterThan($piDivEight)) {
             /** @var ImmutableDecimal $halfModTan */
-            $halfModTan = Numbers::make(Numbers::IMMUTABLE, $modulo->divide(2)->tanScale($intScale+1, false));
+            $halfModTan = Numbers::make(Numbers::IMMUTABLE, $modulo->divide(2)->tanScale($intScale+1));
             $answer = $two->multiply($halfModTan)->divide($one->subtract($halfModTan->pow(2)));
         } else {
             $aPart = new class($modulo) implements ContinuedFractionTermInterface {
                 private ImmutableDecimal $modulo;
 
+                /**
+                 * @param ImmutableDecimal $modulo
+                 */
                 public function __construct(ImmutableDecimal $modulo) {
                     $this->modulo = $modulo;
                 }
 
+                /**
+                 * @param int $n
+                 * @return ImmutableDecimal
+                 */
                 public function __invoke(int $n): ImmutableDecimal
                 {
                     if ($n > 1) {
@@ -178,10 +211,17 @@ trait TrigonometryScaleTrait
             $bPart = new class($intScale) implements ContinuedFractionTermInterface {
                 private int $intScale;
 
+                /**
+                 * @param int $intScale
+                 */
                 public function __construct(int $intScale) {
                     $this->intScale = $intScale;
                 }
 
+                /**
+                 * @param int $n
+                 * @return ImmutableDecimal
+                 */
                 public function __invoke(int $n): ImmutableDecimal
                 {
                     if ($n == 0) {
@@ -203,6 +243,12 @@ trait TrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     protected function cotScale(int $scale = null): string
     {
 
@@ -238,6 +284,11 @@ trait TrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function secScale(int $scale = null): string
     {
 
@@ -259,6 +310,11 @@ trait TrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function cscScale(int $scale = null): string
     {
 
@@ -270,7 +326,7 @@ trait TrigonometryScaleTrait
 
         $sin = $num->sinScale($scale+2);
 
-        if ($sin == "0") {
+        if ($sin == '0') {
             return static::INFINITY;
         }
 
@@ -280,6 +336,12 @@ trait TrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     protected function sinhScale(int $scale = null): string
     {
 
@@ -295,6 +357,12 @@ trait TrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     protected function coshScale(int $scale = null): string
     {
 
@@ -310,6 +378,11 @@ trait TrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function tanhScale(int $scale = null): string
     {
 
@@ -323,6 +396,11 @@ trait TrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function cothScale(int $scale = null): string
     {
 
@@ -336,6 +414,11 @@ trait TrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function sechScale(int $scale = null): string
     {
 
@@ -350,6 +433,11 @@ trait TrigonometryScaleTrait
 
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function cschScale(int $scale = null): string
     {
 

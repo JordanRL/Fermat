@@ -3,7 +3,9 @@
 namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\RandomProvider;
@@ -12,9 +14,17 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\NumberCollection;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 trait IntegerMathTrait
 {
 
+    /**
+     * @return DecimalInterface
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
     public function factorial(): DecimalInterface
     {
         if ($this->isLessThan(1)) {
@@ -37,17 +47,17 @@ trait IntegerMathTrait
         }
 
         if (function_exists('gmp_fact') && function_exists('gmp_strval') && $this->extensions) {
-            return $this->setValue(gmp_strval(gmp_fact($this->getValue())));
+            return $this->setValue(gmp_strval(gmp_fact($this->getValue(NumberBase::Ten))));
         }
 
-        $curVal = $this->getValue();
+        $curVal = $this->getValue(NumberBase::Ten);
         $calcVal = Numbers::make(Numbers::IMMUTABLE, 1);
 
         for ($i = 1;$i <= $curVal;$i++) {
             $calcVal = $calcVal->multiply($i);
         }
 
-        return $this->setValue($calcVal->getValue());
+        return $this->setValue($calcVal->getValue(NumberBase::Ten));
 
     }
 
@@ -78,7 +88,7 @@ trait IntegerMathTrait
         }
 
         $e = Numbers::makeE($this->getScale());
-        $num = new ImmutableDecimal($this->getValue(10));
+        $num = new ImmutableDecimal($this->getAsBaseTenRealNumber());
 
         $num = $num->factorial();
         $num = $num->divide($e, 3)->add('0.5');
@@ -86,6 +96,12 @@ trait IntegerMathTrait
         return $num->floor();
     }
 
+    /**
+     * @return DecimalInterface
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function doubleFactorial(): DecimalInterface
     {
         if ($this->isWhole() && $this->isLessThanOrEqualTo(1)) {
@@ -98,14 +114,14 @@ trait IntegerMathTrait
             );
         }
 
-        $num = Numbers::make(Numbers::MUTABLE, $this->getValue(), $this->getScale(), $this->getBase());
+        $num = Numbers::make(Numbers::MUTABLE, $this->getValue(NumberBase::Ten), $this->getScale(), $this->getBase());
 
         $newVal = Numbers::makeOne();
 
         $continue = true;
 
         while ($continue) {
-            $newVal = $newVal->multiply($num->getValue());
+            $newVal = $newVal->multiply($num->getValue(NumberBase::Ten));
             $num = $num->subtract(2);
 
             if ($num->isLessThanOrEqualTo(1)) {
@@ -113,15 +129,24 @@ trait IntegerMathTrait
             }
         }
 
-        return $this->setValue($newVal->getValue());
+        return $this->setValue($newVal->getValue(NumberBase::Ten));
 
     }
 
+    /**
+     * @return DecimalInterface
+     * @throws IncompatibleObjectState
+     */
     public function semiFactorial(): DecimalInterface
     {
         return $this->doubleFactorial();
     }
 
+    /**
+     * @param $num
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     */
     public function getLeastCommonMultiple($num): DecimalInterface
     {
 
@@ -146,6 +171,11 @@ trait IntegerMathTrait
 
     }
 
+    /**
+     * @param $num
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     */
     public function getGreatestCommonDivisor($num): DecimalInterface
     {
         /** @var ImmutableDecimal $num */
@@ -162,7 +192,7 @@ trait IntegerMathTrait
         }
 
         if (extension_loaded('gmp')) {
-            $val = gmp_strval(gmp_gcd($thisNum->getValue(), $num->getValue()));
+            $val = gmp_strval(gmp_gcd($thisNum->getValue(NumberBase::Ten), $num->getValue(NumberBase::Ten)));
 
             return Numbers::make(Numbers::IMMUTABLE, $val, $this->getScale());
         }
@@ -217,7 +247,7 @@ trait IntegerMathTrait
         }
 
         if (function_exists('gmp_prob_prime')) {
-            return (bool)gmp_prob_prime($this->getValue(), $certainty);
+            return (bool)gmp_prob_prime($this->getValue(NumberBase::Ten), $certainty);
         }
 
         $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $this->getScale());
@@ -251,6 +281,11 @@ trait IntegerMathTrait
         return true;
     }
 
+    /**
+     * @return NumberCollection
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function getDivisors(): NumberCollection
     {
         $half = $this->divide(2);
@@ -270,6 +305,9 @@ trait IntegerMathTrait
         return $collection;
     }
 
+    /**
+     * @return NumberCollection
+     */
     public function asPrimeFactors(): NumberCollection
     {
 

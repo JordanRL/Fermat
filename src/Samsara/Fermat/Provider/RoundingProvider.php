@@ -8,6 +8,9 @@ use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
+/**
+ *
+ */
 class RoundingProvider
 {
 
@@ -16,6 +19,10 @@ class RoundingProvider
     private static int $alt = 1;
     private static ?string $remainder;
 
+    /**
+     * @param RoundingMode $mode
+     * @return void
+     */
     public static function setRoundingMode(
         RoundingMode $mode
     ): void
@@ -23,11 +30,19 @@ class RoundingProvider
         static::$mode = $mode;
     }
 
+    /**
+     * @return RoundingMode
+     */
     public static function getRoundingMode(): RoundingMode
     {
         return self::$mode;
     }
 
+    /**
+     * @param DecimalInterface $decimal
+     * @param int $places
+     * @return string
+     */
     public static function round(DecimalInterface $decimal, int $places = 0): string
     {
         static::$decimal = $decimal;

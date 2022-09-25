@@ -4,14 +4,24 @@ namespace Samsara\Fermat\Types\Traits\Decimal;
 
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 trait LogScaleTrait
 {
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public function expScale(int $scale = null): string
     {
         $scale = $scale ?? $this->getScale();
@@ -20,7 +30,7 @@ trait LogScaleTrait
             $e = Numbers::makeE($scale+1);
             $value = $e->pow($this);
         } else {
-            $x = $this instanceof ImmutableDecimal ? $this : new ImmutableDecimal($this->getValue());
+            $x = $this instanceof ImmutableDecimal ? $this : new ImmutableDecimal($this->getValue(NumberBase::Ten));
             $x2 = $x->pow(2);
             $intScale = $scale + 1;
             $terms = $scale;
@@ -30,12 +40,20 @@ trait LogScaleTrait
                 private ImmutableDecimal $x2;
                 private ImmutableDecimal $x;
 
+                /**
+                 * @param ImmutableDecimal $x2
+                 * @param ImmutableDecimal $x
+                 */
                 public function __construct(ImmutableDecimal $x2, ImmutableDecimal $x)
                 {
                     $this->x2 = $x2;
                     $this->x = $x;
                 }
 
+                /**
+                 * @param int $n
+                 * @return ImmutableDecimal
+                 */
                 public function __invoke(int $n): ImmutableDecimal
                 {
                     if ($n == 1) {
@@ -50,12 +68,20 @@ trait LogScaleTrait
                 private ImmutableDecimal $x;
                 private ImmutableDecimal $six;
 
+                /**
+                 * @param ImmutableDecimal $x
+                 * @param ImmutableDecimal $six
+                 */
                 public function __construct(ImmutableDecimal $x, ImmutableDecimal $six)
                 {
                     $this->x = $x;
                     $this->six = $six;
                 }
 
+                /**
+                 * @param int $n
+                 * @return ImmutableDecimal
+                 */
                 public function __invoke(int $n): ImmutableDecimal
                 {
                     if ($n == 0) {
@@ -130,7 +156,7 @@ trait LogScaleTrait
     /**
      * @param int|null $scale
      * @return string
-     * @throws IntegrityConstraint|MissingPackage
+     * @throws IntegrityConstraint
      */
     public function log10Scale(int $scale = null): string
     {

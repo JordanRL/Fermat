@@ -9,6 +9,9 @@ use Samsara\Fermat\Types\Traits\Trigonometry\InverseTrigonometryScaleTrait;
 use Samsara\Fermat\Types\Traits\Trigonometry\InverseTrigonometrySelectionTrait;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 trait InverseTrigonometrySimpleTrait
 {
 
@@ -16,6 +19,12 @@ trait InverseTrigonometrySimpleTrait
     use InverseTrigonometryScaleTrait;
     use InverseTrigonometrySelectionTrait;
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     */
     public function arcsin(?int $scale = null, bool $round = true): DecimalInterface
     {
         $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
@@ -40,6 +49,12 @@ trait InverseTrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     */
     public function arccos(?int $scale = null, bool $round = true): DecimalInterface
     {
         $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
@@ -64,6 +79,11 @@ trait InverseTrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function arctan(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->arctanSelector($scale);
@@ -79,6 +99,12 @@ trait InverseTrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     */
     public function arcsec(?int $scale = null, bool $round = true): DecimalInterface
     {
         $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
@@ -103,6 +129,12 @@ trait InverseTrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     * @throws IntegrityConstraint
+     */
     public function arccsc(?int $scale = null, bool $round = true): DecimalInterface
     {
         $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
@@ -127,6 +159,11 @@ trait InverseTrigonometrySimpleTrait
         return $result;
     }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return DecimalInterface
+     */
     public function arccot(?int $scale = null, bool $round = true): DecimalInterface
     {
         $answer = $this->arccotSelector($scale);

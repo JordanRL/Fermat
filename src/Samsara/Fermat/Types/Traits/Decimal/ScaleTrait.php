@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Types\Traits\Decimal;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
@@ -12,19 +13,30 @@ use Samsara\Fermat\Provider\TrigonometryProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Number;
 
+/**
+ *
+ */
 trait ScaleTrait
 {
 
-    protected int $scale;
+    protected ?int $scale;
 
+    /**
+     * @return int
+     */
     public function getScale(): int
     {
         return $this->scale;
     }
 
+    /**
+     * @param int $decimals
+     * @param RoundingMode|null $mode
+     * @return DecimalInterface
+     */
     public function round(int $decimals = 0, ?RoundingMode $mode = null): DecimalInterface
     {
-        if ($this->getValue() == Number::INFINITY || $this->getValue() == Number::NEG_INFINITY) {
+        if ($this->getValue(NumberBase::Ten) == Number::INFINITY || $this->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
             return $this;
         }
 
@@ -40,9 +52,13 @@ trait ScaleTrait
         return $this->setValue(RoundingProvider::round($this, $decimals));
     }
 
+    /**
+     * @param int $decimals
+     * @return DecimalInterface
+     */
     public function truncate(int $decimals = 0): DecimalInterface
     {
-        if ($this->getValue() == Number::INFINITY || $this->getValue() == Number::NEG_INFINITY) {
+        if ($this->getValue(NumberBase::Ten) == Number::INFINITY || $this->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
             return $this;
         }
 
@@ -59,7 +75,7 @@ trait ScaleTrait
             $truncated = $whole.'.';
 
             if ($decimals > strlen($fractional)) {
-                $fractional = str_pad($fractional, $decimals, '0', STR_PAD_RIGHT);
+                $fractional = str_pad($fractional, $decimals, '0');
             } else {
                 $fractional = substr($fractional, 0, $decimals);
             }
@@ -76,6 +92,11 @@ trait ScaleTrait
         return $this->setValue($result);
     }
 
+    /**
+     * @param int $scale
+     * @param RoundingMode|null $mode
+     * @return DecimalInterface
+     */
     public function roundToScale(int $scale, ?RoundingMode $mode = null): DecimalInterface
     {
 
@@ -85,6 +106,10 @@ trait ScaleTrait
 
     }
 
+    /**
+     * @param $scale
+     * @return DecimalInterface
+     */
     public function truncateToScale($scale): DecimalInterface
     {
 
@@ -94,11 +119,17 @@ trait ScaleTrait
 
     }
 
+    /**
+     * @return DecimalInterface
+     */
     public function ceil(): DecimalInterface
     {
         return $this->round(0, RoundingMode::Ceil);
     }
 
+    /**
+     * @return DecimalInterface
+     */
     public function floor(): DecimalInterface
     {
         return $this->round(0, RoundingMode::Floor);
@@ -197,6 +228,9 @@ trait ScaleTrait
         return intval($this->asReal());
     }
 
+    /**
+     * @return bool
+     */
     public function isFloat(): bool
     {
 
@@ -204,17 +238,26 @@ trait ScaleTrait
 
     }
 
+    /**
+     * @return float
+     */
     public function asFloat(): float
     {
         return (float)$this->asReal();
     }
 
-    protected function getDecimalPart()
+    /**
+     * @return string
+     */
+    public function getDecimalPart(): string
     {
         return $this->value[1];
     }
 
-    protected function getWholePart()
+    /**
+     * @return string
+     */
+    public function getWholePart(): string
     {
         return $this->value[0];
     }

@@ -1,4 +1,20 @@
-<?php
+<?php /** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+
+/** @noinspection ALL */
 
 
 namespace Samsara\Fermat\Types\Traits\Arithmetic;
@@ -24,6 +40,9 @@ use Samsara\Fermat\Values\ImmutableFraction;
 use Samsara\Fermat\Values\MutableDecimal;
 use Samsara\Fermat\Values\MutableFraction;
 
+/**
+ *
+ */
 trait ArithmeticSelectionTrait
 {
 
@@ -68,10 +87,10 @@ trait ArithmeticSelectionTrait
     {
 
         $input = trim($input);
-        if (strpos($input, '/') !== false) {
+        if (str_contains($input, '/')) {
             $input = Numbers::makeFractionFromString(Numbers::IMMUTABLE_FRACTION, $input);
         } elseif (strrpos($input, '+') || strrpos($input, '-')) {
-            if (!(InstalledVersions::isInstalled("samsara/fermat-complex-numbers"))) {
+            if (!(InstalledVersions::isInstalled('samsara/fermat-complex-numbers'))) {
                 throw new MissingPackage(
                     'Creating complex numbers is unsupported in Fermat without modules.',
                     'Install the samsara/fermat-complex-numbers package using composer.',
@@ -88,13 +107,18 @@ trait ArithmeticSelectionTrait
 
     }
 
+    /**
+     * @param $left
+     * @param $right
+     * @param $identity
+     * @return array
+     * @throws IntegrityConstraint
+     */
     protected static function rightSelector($left, $right, $identity): array
     {
 
         if ($right instanceof ComplexNumberInterface) {
-            /** @var ComplexNumberInterface $right */
             $thatRealPart = $right->getRealPart();
-            /** @var ComplexNumberInterface $right */
             $thatImaginaryPart = $right->getImaginaryPart();
         } else {
             if ($right instanceof FractionInterface) {
@@ -122,6 +146,12 @@ trait ArithmeticSelectionTrait
 
     }
 
+    /**
+     * @param $left
+     * @param $identity
+     * @return array
+     * @throws IntegrityConstraint
+     */
     protected static function leftSelector($left, $identity): array
     {
 
@@ -137,6 +167,11 @@ trait ArithmeticSelectionTrait
 
     }
 
+    /**
+     * @param DecimalInterface $num
+     * @return CalcMode
+     * @throws IntegrityConstraint
+     */
     protected function modeSelectorForArithmetic(DecimalInterface $num): CalcMode
     {
         /*
@@ -168,6 +203,10 @@ trait ArithmeticSelectionTrait
         }
     }
 
+    /**
+     * @param DecimalInterface $num
+     * @return string
+     */
     protected function addSelector(DecimalInterface $num): string
     {
         $calcMode = $this->getMode();
@@ -187,6 +226,10 @@ trait ArithmeticSelectionTrait
         };
     }
 
+    /**
+     * @param DecimalInterface $num
+     * @return string
+     */
     protected function subtractSelector(DecimalInterface $num): string
     {
         $calcMode = $this->getMode();
@@ -206,6 +249,10 @@ trait ArithmeticSelectionTrait
         };
     }
 
+    /**
+     * @param DecimalInterface $num
+     * @return string
+     */
     protected function multiplySelector(DecimalInterface $num): string
     {
         $calcMode = $this->getMode();
@@ -225,6 +272,11 @@ trait ArithmeticSelectionTrait
         };
     }
 
+    /**
+     * @param DecimalInterface $num
+     * @param int|null $scale
+     * @return string
+     */
     protected function divideSelector(DecimalInterface $num, ?int $scale): string
     {
         $calcMode = $this->getMode();
@@ -244,9 +296,18 @@ trait ArithmeticSelectionTrait
         };
     }
 
+    /**
+     * @param DecimalInterface $num
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function powSelector(DecimalInterface $num): string
     {
         $calcMode = $this->getMode();
+        if ($num->isEqual(0)) {
+            return '1';
+        }
+
         if ($calcMode == CalcMode::Auto) {
             $value = $this->powGMP($num);
 
@@ -263,6 +324,11 @@ trait ArithmeticSelectionTrait
         };
     }
 
+    /**
+     * @param int|null $scale
+     * @return string
+     * @throws IntegrityConstraint
+     */
     protected function sqrtSelector(?int $scale): string
     {
         $calcMode = $this->getMode();

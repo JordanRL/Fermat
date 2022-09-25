@@ -7,11 +7,15 @@ use JetBrains\PhpStorm\ExpectedValues;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\OptionalExit;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 class RandomProvider
 {
 
@@ -42,7 +46,7 @@ class RandomProvider
             throw new IntegrityConstraint(
                 'Random integers cannot be generated with boundaries which are floats',
                 'Provide only whole number, integer values for min and max.',
-                'An attempt was made to generate a random integer with boundaries which are non-integers. Min Provided: '.$min->getValue().' -- Max Provided: '.$max->getValue()
+                'An attempt was made to generate a random integer with boundaries which are non-integers. Min Provided: '.$min->getValue(NumberBase::Ten).' -- Max Provided: '.$max->getValue(NumberBase::Ten)
             );
         }
 
@@ -68,7 +72,7 @@ class RandomProvider
          */
         if ($minDecimal->isEqual($maxDecimal)) {
             trigger_error(
-                'Attempted to get a random value for a range of no size, with minimum of '.$minDecimal->getValue().' and maximum of '.$maxDecimal->getValue(),
+                'Attempted to get a random value for a range of no size, with minimum of '.$minDecimal->getValue(NumberBase::Ten).' and maximum of '.$maxDecimal->getValue(NumberBase::Ten),
                 E_USER_WARNING
             );
 
@@ -154,11 +158,7 @@ class RandomProvider
                     );
                 }
 
-                $randomValue = Numbers::make(
-                    type: Numbers::IMMUTABLE,
-                    value: $baseTwoBytes,
-                    base: 2
-                );
+                $randomValue = BaseConversionProvider::convertStringToBaseTen($baseTwoBytes, NumberBase::Two);
 
                 /**
                  * @var ImmutableDecimal $num
@@ -170,9 +170,8 @@ class RandomProvider
                  */
                 $num = Numbers::make(
                     type: Numbers::IMMUTABLE,
-                    value: substr($randomValue->getValue(), $bitsNeeded->multiply(-1)->asInt()),
-                    base: 2
-                )->convertToBase(10);
+                    value: substr($randomValue, $bitsNeeded->multiply(-1)->asInt())
+                );
             } while ($num->isGreaterThan($range));
             /**
              * It is strictly speaking possible for this to loop infinitely. In the worst case
@@ -210,7 +209,7 @@ class RandomProvider
          * Select the min and max as if we were looking for the decimal part as an integer.
          */
         $min = new ImmutableDecimal(0);
-        $max = new ImmutableDecimal(str_pad('1', $scale+1, '0', STR_PAD_RIGHT));
+        $max = new ImmutableDecimal(str_pad('1', $scale+1, '0'));
 
         /**
          * This allows us to utilize the same randomInt() function.
@@ -229,7 +228,7 @@ class RandomProvider
          * In all other cases we need to reformat our integer as being the decimal portion
          * of our number at the given scale.
          */
-        return new ImmutableDecimal('0.'.str_pad($randomValue->getValue(), $scale, '0', STR_PAD_LEFT));
+        return new ImmutableDecimal('0.'.str_pad($randomValue->getValue(NumberBase::Ten), $scale, '0', STR_PAD_LEFT));
     }
 
     /** @noinspection PhpDocMissingThrowsInspection */
@@ -255,7 +254,7 @@ class RandomProvider
 
         if ($min->isEqual($max)) {
             trigger_error(
-                'Attempted to get a random value for a range of no size, with minimum of '.$min->getValue().' and maximum of '.$max->getValue(),
+                'Attempted to get a random value for a range of no size, with minimum of '.$min->getValue(NumberBase::Ten).' and maximum of '.$max->getValue(NumberBase::Ten),
                 E_USER_WARNING
             );
 
@@ -361,8 +360,8 @@ class RandomProvider
                  * First we use string manipulation to extract the decimal portion as an integer value, the we right
                  * pad with zeroes to make sure that the entire scale is part of the valid result set.
                  */
-                $minDecimal = substr($min->getValue(), strpos($min->getValue(), '.') + 1);
-                $minDecimal = str_pad($minDecimal, $scale, '0', STR_PAD_RIGHT);
+                $minDecimal = $min->getDecimalPart();
+                $minDecimal = str_pad($minDecimal, $scale, '0');
             }
 
             if ($intPart->isLessThan($max->floor())) {
@@ -370,7 +369,7 @@ class RandomProvider
                  * We cannot take advantage of a more efficient check for the top end of the range, so the
                  * less than check is all we need.
                  */
-                $maxDecimal = str_pad('1', $scale + 1, '0', STR_PAD_RIGHT);
+                $maxDecimal = str_pad('1', $scale + 1, '0');
             } else {
                 /**
                  * The max value is guaranteed to have a decimal portion here since we excluded max being
@@ -379,8 +378,8 @@ class RandomProvider
                  * First we use string manipulation to extract the decimal portion as an integer value, the we right
                  * pad with zeroes to make sure that the entire scale is part of the valid result set.
                  */
-                $maxDecimal = substr($max->getValue(), strpos($max->getValue(), '.')+1);
-                $maxDecimal = str_pad($maxDecimal, $scale, '0', STR_PAD_RIGHT);
+                $maxDecimal = $max->getDecimalPart();
+                $maxDecimal = str_pad($maxDecimal, $scale, '0');
             }
 
             /**
@@ -404,7 +403,7 @@ class RandomProvider
                  * that we can simply append as a string with padding to ensure correct scale.
                  */
                 $decPart = new ImmutableDecimal(
-                    value: '0.'.str_pad($decPartAsInt->getValue(), $scale, '0', STR_PAD_LEFT),
+                    value: '0.'.str_pad($decPartAsInt->getValue(NumberBase::Ten), $scale, '0', STR_PAD_LEFT),
                     scale: $scale
                 );
             }

@@ -6,11 +6,15 @@ use ReflectionException;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 class SeriesProvider
 {
 
@@ -65,7 +69,7 @@ class SeriesProvider
         ++$scale;
 
         $sum = Numbers::makeZero($scale);
-        $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue(), $scale);
+        $value = Numbers::make(Numbers::IMMUTABLE, $input->getValue(NumberBase::Ten), $scale);
 
         $continue = true;
         $termNumber = $startTermAt;
@@ -154,6 +158,7 @@ class SeriesProvider
      * @param ContinuedFractionTermInterface $bPart
      * @param int $terms
      * @param int $scale
+     * @param int $sumMode
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws MissingPackage

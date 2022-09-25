@@ -4,12 +4,17 @@
 namespace Samsara\Fermat\Provider;
 
 
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\CalcMode;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ *
+ */
 class ConstantProvider
 {
 
@@ -18,11 +23,17 @@ class ConstantProvider
     private static DecimalInterface $ln10;
     private static DecimalInterface $ln2;
 
+    /**
+     * @param int $digits
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public static function makePi(int $digits): string
     {
 
         if (isset(self::$pi) && self::$pi->numberOfDecimalDigits() >= $digits) {
-            return self::$pi->truncateToScale($digits)->getValue();
+            return self::$pi->truncateToScale($digits)->getValue(NumberBase::Ten);
         }
 
         $internalScale = $digits + 10;
@@ -58,7 +69,7 @@ class ConstantProvider
 
         self::$pi = $pi->truncateToScale($digits);
 
-        return $pi->truncateToScale($digits)->getValue();
+        return $pi->truncateToScale($digits)->getValue(NumberBase::Ten);
 
     }
 
@@ -81,7 +92,7 @@ class ConstantProvider
     {
 
         if (isset(self::$e) && self::$e->numberOfDecimalDigits() >= $digits) {
-            return self::$e->truncateToScale($digits)->getValue();
+            return self::$e->truncateToScale($digits)->getValue(NumberBase::Ten);
         }
 
         $internalScale = $digits + 3;
@@ -107,7 +118,7 @@ class ConstantProvider
 
         self::$e = $e->truncateToScale($digits);
 
-        return $e->truncateToScale($digits)->getValue();
+        return $e->truncateToScale($digits)->getValue(NumberBase::Ten);
 
     }
 
@@ -123,7 +134,7 @@ class ConstantProvider
     {
 
         if (isset(self::$ln10) && self::$ln10->numberOfDecimalDigits() >= $digits) {
-            return self::$ln10->truncateToScale($digits)->getValue();
+            return self::$ln10->truncateToScale($digits)->getValue(NumberBase::Ten);
         }
 
         $ln10 = Numbers::make(Numbers::IMMUTABLE, 10, $digits+2)->setMode(CalcMode::Precision);
@@ -131,7 +142,7 @@ class ConstantProvider
 
         self::$ln10 = $ln10;
 
-        return $ln10->truncateToScale($digits)->getValue();
+        return $ln10->truncateToScale($digits)->getValue(NumberBase::Ten);
 
     }
 
@@ -147,7 +158,7 @@ class ConstantProvider
     {
 
         if (isset(self::$ln2) && self::$ln2->numberOfDecimalDigits() >= $digits) {
-            return self::$ln2->truncateToScale($digits)->getValue();
+            return self::$ln2->truncateToScale($digits)->getValue(NumberBase::Ten);
         }
 
         $ln2 = Numbers::make(Numbers::IMMUTABLE, 2, $digits+2)->setMode(CalcMode::Precision);
@@ -155,7 +166,7 @@ class ConstantProvider
 
         self::$ln2 = $ln2;
 
-        return $ln2->truncateToScale($digits)->getValue();
+        return $ln2->truncateToScale($digits)->getValue(NumberBase::Ten);
 
     }
 

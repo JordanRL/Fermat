@@ -3,6 +3,7 @@
 namespace Samsara\Fermat;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Provider\ConstantProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
@@ -47,15 +48,15 @@ class Numbers
      * The main reason for this class is that you can pass an unknown value instance as the
      * $type parameter and it will behave as if you passed the FQCN.
      *
-     * @param mixed     $type   An instance of FQCN for any Fermat value class.
-     * @param mixed     $value  Any value which is valid for the constructor which will be called.
-     * @param int|null  $scale  The scale setting the created instance should have.
-     * @param int       $base   The base to create the number in. Note, this is not the same as the base of $value, which is always base-10
+     * @param mixed         $type   An instance of FQCN for any Fermat value class.
+     * @param mixed         $value  Any value which is valid for the constructor which will be called.
+     * @param int|null      $scale  The scale setting the created instance should have.
+     * @param NumberBase    $base   The base to create the number in. Note, this is not the same as the base of $value, which is always base-10
      *
      * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|NumberInterface|FractionInterface
      * @throws IntegrityConstraint
      */
-    public static function make(mixed $type, mixed $value, ?int $scale = null, int $base = 10)
+    public static function make(mixed $type, mixed $value, ?int $scale = null, NumberBase $base = NumberBase::Ten)
     {
 
         if (is_object($type)) {
@@ -63,11 +64,11 @@ class Numbers
         }
 
         if ($type === static::IMMUTABLE) {
-            return new ImmutableDecimal(trim($value), $scale, $base);
+            return new ImmutableDecimal(trim($value), $scale, $base, true);
         }
 
         if ($type === static::MUTABLE) {
-            return new MutableDecimal(trim($value), $scale, $base);
+            return new MutableDecimal(trim($value), $scale, $base, true);
         }
 
         if ($type === static::IMMUTABLE_FRACTION) {
@@ -89,31 +90,31 @@ class Numbers
      * @param $type
      * @param $value
      * @param int|null $scale
-     * @param int $base
+     * @param NumberBase $base
      *
      * @return NumberInterface
      * @throws IntegrityConstraint
      */
-    public static function makeFromBase10($type, $value, ?int $scale = null, int $base = 10): NumberInterface
+    public static function makeFromBase10($type, $value, ?int $scale = null, NumberBase $base = NumberBase::Ten): NumberInterface
     {
         /**
-         * @var ImmutableDecimal|MutableDecimal
+         * @var ImmutableDecimal|MutableDecimal $number
          */
         $number = self::make($type, $value, $scale);
 
-        return $number->convertToBase($base);
+        return $number->setBase($base);
     }
 
     /**
      * @param string|object $type
      * @param int|float|string|array|NumberInterface|DecimalInterface|FractionInterface $value
      * @param int|null $scale
-     * @param int $base
+     * @param NumberBase $base
      *
      * @return ImmutableDecimal|MutableDecimal|NumberInterface|ImmutableDecimal[]|MutableDecimal[]|NumberInterface[]
      * @throws IntegrityConstraint
      */
-    public static function makeOrDont($type, $value, $scale = null, $base = 10)
+    public static function makeOrDont(string|object $type, mixed $value, ?int $scale = null, NumberBase $base = NumberBase::Ten)
     {
 
         if (is_object($value)) {
@@ -122,7 +123,7 @@ class Numbers
             }
 
             if ($value instanceof NumberInterface) {
-                return static::make($type, $value->getValue(), $scale, $base);
+                return static::make($type, $value->getValue(NumberBase::Ten), $scale, $base);
             }
         } elseif (is_array($value)) {
             $newInput = [];
@@ -133,7 +134,7 @@ class Numbers
 
             return $newInput;
         } elseif (is_string($value) || is_int($value) || is_float($value)) {
-            $isImaginary = strpos($value, 'i') !== false;
+            $isImaginary = str_contains($value, 'i');
 
             if (is_numeric($value) || $isImaginary) {
                 return static::make($type, $value, $scale, $base);
@@ -151,12 +152,12 @@ class Numbers
     /**
      * @param string $type
      * @param string $value
-     * @param int $base
+     * @param NumberBase $base
      *
-     * @return FractionInterface|ImmutableFraction|MutableFraction
+     * @return FractionInterface
      * @throws IntegrityConstraint
      */
-    public static function makeFractionFromString(string $type, string $value, int $base = 10): FractionInterface
+    public static function makeFractionFromString(string $type, string $value, NumberBase $base = NumberBase::Ten): FractionInterface
     {
         $parts = explode('/', $value);
 
@@ -191,10 +192,10 @@ class Numbers
     /**
      * @param int|null $scale
      *
-     * @return DecimalInterface
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function makePi(int $scale = null)
+    public static function makePi(int $scale = null): ImmutableDecimal
     {
 
         if (!is_null($scale)) {
@@ -218,12 +219,12 @@ class Numbers
     }
 
     /**
-     * @param int|null $scale
+     * @param null $scale
      *
-     * @return DecimalInterface
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function makeTau($scale = null)
+    public static function makeTau($scale = null): ImmutableDecimal
     {
         if (!is_null($scale)) {
             if ($scale < 1) {
@@ -236,6 +237,7 @@ class Numbers
 
             if ($scale > 100) {
                 $pi = self::make(self::IMMUTABLE, ConstantProvider::makePi($scale), $scale + 2);
+                /** @var ImmutableDecimal */
                 return $pi->multiply(2)->truncateToScale($scale);
             }
 
@@ -248,10 +250,10 @@ class Numbers
     /**
      * @param int|null $scale
      *
-     * @return DecimalInterface
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function make2Pi($scale = null)
+    public static function make2Pi(int $scale = null): ImmutableDecimal
     {
         return self::makeTau($scale);
     }
@@ -259,10 +261,10 @@ class Numbers
     /**
      * @param int|null $scale
      *
-     * @return DecimalInterface
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function makeE(int $scale = null)
+    public static function makeE(int $scale = null): ImmutableDecimal
     {
 
         if (!is_null($scale)) {
@@ -288,10 +290,10 @@ class Numbers
     /**
      * @param int|null $scale
      *
-     * @return NumberInterface
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function makeGoldenRatio($scale = null)
+    public static function makeGoldenRatio(?int $scale = null): ImmutableDecimal
     {
 
         if (!is_null($scale)) {
@@ -313,10 +315,10 @@ class Numbers
     /**
      * @param int|null $scale
      *
-     * @return NumberInterface
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function makeNaturalLog10($scale = null)
+    public static function makeNaturalLog10(?int $scale = null): ImmutableDecimal
     {
 
         if (!is_null($scale)) {
@@ -374,7 +376,7 @@ class Numbers
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function makeOne($scale = null)
+    public static function makeOne(?int $scale = null): ImmutableDecimal
     {
         return self::make(self::IMMUTABLE, 1, $scale);
     }
@@ -385,7 +387,7 @@ class Numbers
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public static function makeZero($scale = null)
+    public static function makeZero(?int $scale = null): ImmutableDecimal
     {
         return self::make(self::IMMUTABLE, 0, $scale);
     }
