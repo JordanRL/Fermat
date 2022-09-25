@@ -232,7 +232,7 @@ trait TrigonometryScaleTrait
                 }
             };
 
-            $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $intScale, $intScale, SeriesProvider::SUM_MODE_SUB);
+            $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $intScale, $intScale, SeriesProvider::SUM_MODE_ALT_FIRST_ADD);
         }
 
         if ($reciprocal) {

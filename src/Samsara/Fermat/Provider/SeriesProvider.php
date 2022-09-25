@@ -178,10 +178,16 @@ class SeriesProvider
 
         for ($i = $terms;$i > 0;$i--) {
             $loop++;
-            if ($sumMode == self::SUM_MODE_ADD) {
-                $prevDenominator = $bPart($i)->add($prevDenominator);
-            } else {
-                $prevDenominator = $bPart($i)->subtract($prevDenominator);
+            switch ($sumMode) {
+                case self::SUM_MODE_ADD:
+                case self::SUM_MODE_ALT_FIRST_SUB:
+                    $prevDenominator = $bPart($i)->add($prevDenominator);
+                    break;
+
+                case self::SUM_MODE_SUB:
+                case self::SUM_MODE_ALT_FIRST_ADD:
+                    $prevDenominator = $bPart($i)->subtract($prevDenominator);
+                    break;
             }
 
             if ($prevDenominator->isEqual(0)) {
@@ -195,7 +201,19 @@ class SeriesProvider
             }
         }
 
-        return $start->add($prevDenominator);
+        switch ($sumMode) {
+            case self::SUM_MODE_SUB:
+            case self::SUM_MODE_ALT_FIRST_SUB:
+                $result = $start->subtract($prevDenominator);
+                break;
+
+            case self::SUM_MODE_ALT_FIRST_ADD:
+            case self::SUM_MODE_ADD:
+                $result = $start->add($prevDenominator);
+                break;
+        }
+
+        return $result;
 
     }
     

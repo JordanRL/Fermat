@@ -3,6 +3,8 @@
 namespace Samsara\Fermat\Types\Traits;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\NumberBase;
+use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Traits\Trigonometry\InverseTrigonometryNativeTrait;
 use Samsara\Fermat\Types\Traits\Trigonometry\InverseTrigonometryScaleTrait;
@@ -116,7 +118,13 @@ trait InverseTrigonometrySimpleTrait
             );
         }
 
-        $answer = $this->arcsecSelector($scale);
+        if ($this->isEqual(1)) {
+            $answer = '0';
+        } elseif ($this->isEqual(-1)) {
+            $answer = Numbers::makePi(($scale ?? $this->getScale())+1)->getValue(NumberBase::Ten);
+        } else {
+            $answer = $this->arcsecSelector($scale);
+        }
 
         $finalScale = $scale ?? $this->getScale();
 
@@ -146,7 +154,13 @@ trait InverseTrigonometrySimpleTrait
             );
         }
 
-        $answer = $this->arccscSelector($scale);
+        if ($this->isEqual(1)) {
+            $answer = Numbers::makePi($scale ?? $this->getScale())->divide(2, $scale ?? $this->getScale())->getValue();
+        } elseif ($this->isEqual(-1)) {
+            $answer = Numbers::makePi($scale ?? $this->getScale())->divide(2, $scale ?? $this->getScale())->multiply(-1)->getValue();
+        } else {
+            $answer = $this->arccscSelector($scale);
+        }
 
         $finalScale = $scale ?? $this->getScale();
 

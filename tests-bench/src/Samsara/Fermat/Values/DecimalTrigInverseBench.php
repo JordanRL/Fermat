@@ -3,6 +3,7 @@
 
 namespace Samsara\Fermat\Values;
 
+use PhpBench\Attributes\Groups;
 use Samsara\Fermat\Types\Decimal;
 
 class DecimalTrigInverseBench
@@ -26,12 +27,14 @@ class DecimalTrigInverseBench
         $point5->arctan();
     }
 
+    #[Groups(['slow'])]
     public function benchArcSec()
     {
         $point5 = new ImmutableDecimal('10');
         $point5->arcsec();
     }
 
+    #[Groups(['slow'])]
     public function benchArcCsc()
     {
         $point5 = new ImmutableDecimal('10');
