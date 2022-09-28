@@ -82,6 +82,16 @@ abstract class Fraction extends Number implements FractionInterface
     }
 
     /**
+     * Returns the current value formatted according to the settings in getGrouping() and getFormat()
+     *
+     * @return string
+     */
+    public function getFormattedValue(): string
+    {
+        return $this->getNumerator()->getFormattedValue().'/'.$this->getDenominator()->getFormattedValue();
+    }
+
+    /**
      * @return string
      */
     public function getValue(): string

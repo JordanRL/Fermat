@@ -5,9 +5,12 @@ namespace Samsara\Fermat\Types;
 use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\NumberBase;
+use Samsara\Fermat\Enums\NumberFormat;
+use Samsara\Fermat\Enums\NumberGrouping;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\BaseConversionProvider;
+use Samsara\Fermat\Provider\NumberFormatProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
@@ -26,6 +29,8 @@ use Samsara\Fermat\Types\Traits\TrigonometrySimpleTrait;
 abstract class Decimal extends Number implements DecimalInterface
 {
 
+    protected NumberFormat $format = NumberFormat::Standard;
+    protected NumberGrouping $grouping = NumberGrouping::Standard;
     protected NumberBase $base;
 
     use ArithmeticSimpleTrait;
@@ -86,6 +91,44 @@ abstract class Decimal extends Number implements DecimalInterface
 
         parent::__construct();
 
+    }
+
+    /**
+     * @param NumberFormat $format
+     * @return $this
+     */
+    public function setFormat(NumberFormat $format): self
+    {
+        $this->format = $format;
+
+        return $this;
+    }
+
+    /**
+     * @return NumberFormat
+     */
+    public function getFormat(): NumberFormat
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param NumberGrouping $grouping
+     * @return $this
+     */
+    public function setGrouping(NumberGrouping $grouping): self
+    {
+        $this->grouping = $grouping;
+
+        return $this;
+    }
+
+    /**
+     * @return NumberGrouping
+     */
+    public function getGrouping(): NumberGrouping
+    {
+        return $this->grouping;
     }
 
     /**
@@ -181,7 +224,7 @@ abstract class Decimal extends Number implements DecimalInterface
     /**
      * @return string
      */
-    public function getAsBaseTenRealNumber(): string
+    public function getAsBaseTenRealNumber(bool $formatted = false): string
     {
         $string = '';
 
@@ -189,39 +232,47 @@ abstract class Decimal extends Number implements DecimalInterface
             $string .= '-';
         }
 
-        $string .= $this->value[0];
+        $string .= match ($formatted) {
+            true => NumberFormatProvider::addDelimiter($this->value[0], $this->getFormat(), $this->getGrouping()),
+            false => $this->value[0]
+        };
 
         $decimalVal = trim($this->value[1], '0');
 
         if (strlen($decimalVal) > 0) {
-            $string .= '.'.rtrim($this->value[1], '0');
+            $string .= NumberFormatProvider::getRadixCharacter($this->getFormat()).rtrim($this->value[1], '0');
         }
 
         return $string;
     }
 
     /**
+     * Returns the current value formatted according to the settings in getGrouping() and getFormat()
+     *
+     * @return string
+     */
+    public function getFormattedValue(): string
+    {
+        return $this->getValue(NumberBase::Ten, true);
+    }
+
+    /**
      * @param NumberBase|null $base
      * @return string
      */
-    public function getValue(?NumberBase $base = null): string
+    public function getValue(?NumberBase $base = null, bool $formatted = false): string
     {
-        //echo '>>START GET VALUE [From: '.debug_backtrace()[1]['function'].' > '.debug_backtrace()[2]['function'].']<<'.PHP_EOL;
-        //echo 'THIS: '.$this->getAsBaseTenRealNumber().PHP_EOL;
-        //echo 'BASE: '.($base ? $base->value : 'null').PHP_EOL;
         if (is_null($base) && $this->getBase() != NumberBase::Ten) {
             $value = $this->getAsBaseConverted();
         } elseif (!is_null($base) && $base != NumberBase::Ten) {
             $value = BaseConversionProvider::convertFromBaseTen($this, $base);
         } else {
-            $value = $this->getAsBaseTenRealNumber();
+            $value = $this->getAsBaseTenRealNumber($formatted);
         }
 
         if ($this->isImaginary()) {
             $value .= 'i';
         }
-        //echo 'VALUE: '.$value.PHP_EOL;
-        //echo '>>END GET VALUE<<'.PHP_EOL;
 
         return $value;
     }
