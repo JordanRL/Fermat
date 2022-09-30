@@ -2679,7 +2679,7 @@
 <h3 id="extreme-performance">Extreme Performance</h3>
 <p>While Fermat has different modes that allow you to control performance to a degree, the abstraction and comprehensive nature of the library means that for certain uses, such as working with complex numbers, a large number of object instances may be created temporarily during a calculation, leading to significantly more overhead than using operands directly when doing basic math within common scale limitations.</p>
 <p>Despite the fact that performance is not a primary goal of this library, it does use built in functions wherever possible (where doing so does not affect scale), and it will utilize the GMP functions, the Decimal extension, and PHP-DS types if those extensions are present in your installation of PHP. Installing these extensions should increase performance in most use-cases.</p>
-<p>Detailed information about performance can be reviewed in the <a href="performance/overview/">Performance</a> section.</p>
+<p>Detailed information about performance can be reviewed in the <a href="performance/overview/">Performance</a> section. While performance is not the primary goal of this library, using the available <a href="configuration/calculation-modes/">Calculation Modes</a> it should be performant enough for most applications.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>A good way to increase performance is to avoid using imaginary and complex numbers if possible. The actual math involved in calculating simple operations involving these values is algorithmically complex, and leads to much longer execution times.</p>
