@@ -28,6 +28,11 @@ nav:
                 'Handling Exceptions': getting-started/exceptions.md
             -
                 Modules: getting-started/modules.md
+            - 'Performance': getting-started/performance.md
+            - 'Performance Stats':
+                  - 'Arithmetic': getting-started/performance/arithmetic.md
+                  - 'Logarithms': getting-started/performance/logarithms.md
+                  - 'Trigonometry': getting-started/performance/trigonometry.md
     -
         Configuration:
             -
