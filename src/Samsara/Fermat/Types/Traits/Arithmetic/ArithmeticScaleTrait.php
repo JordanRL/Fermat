@@ -83,10 +83,10 @@ trait ArithmeticScaleTrait
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
         $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $this->getScale());
 
-        if (!$num->isWhole()) {
-            $scale += 2;
+        if (!$num->isWhole() && !extension_loaded('decimal')) {
+            $scale += 1;
             $exponent = $num->multiply($thisNum->ln($scale));
-            return $exponent->exp($scale)->truncateToScale($scale - 2)->getValue(NumberBase::Ten);
+            return $exponent->exp($scale)->truncateToScale($scale - 1)->getValue(NumberBase::Ten);
         }
 
         return ArithmeticProvider::pow($this->asReal(), $num->asReal(), $scale);

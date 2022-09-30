@@ -2,51 +2,100 @@
 
 namespace Samsara\Fermat\Values;
 
-use Samsara\Fermat\Types\Decimal;
+use PhpBench\Attributes\BeforeMethods;
+use PhpBench\Attributes\Groups;
+use PhpBench\Attributes\ParamProviders;
+use PhpBench\Attributes\Revs;
 
 class DecimalIntBench
 {
+    public ImmutableDecimal $valueA;
+    public ImmutableDecimal $valueB;
+    public ImmutableDecimal $valueC;
 
+    #[Groups(['integer-math', 'revs-test'])]
+    #[Revs(2000)]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
     public function benchFactorial()
     {
-        $five = new ImmutableDecimal(5);
-        $five->factorial();
+        $this->valueA->factorial();
     }
 
+    #[Groups(['integer-math'])]
+    #[Revs(500)]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
     public function benchSubFactorial()
     {
-        $five = new ImmutableDecimal(5);
-        $five->subFactorial();
+        $this->valueA->subFactorial();
     }
 
+    #[Groups(['integer-math'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
     public function benchDoubleFactorial()
     {
-        $five = new ImmutableDecimal(5);
-        $five->doubleFactorial();
+        $this->valueA->doubleFactorial();
     }
 
+    #[Groups(['integer-math'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
     public function benchSemiFactorial()
     {
-        $five = new ImmutableDecimal(5);
-        $five->semiFactorial();
+        $this->valueA->semiFactorial();
     }
 
+    #[Groups(['integer-math'])]
+    #[Revs(3000)]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
     public function benchLCM()
     {
-        $num = new ImmutableDecimal(6);
-        $num->getLeastCommonMultiple(8);
+        $this->valueA->getLeastCommonMultiple($this->valueB);
     }
 
+    #[Groups(['integer-math'])]
+    #[Revs(1000)]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
     public function benchGCD()
     {
-        $num = new ImmutableDecimal(24);
-        $num->getGreatestCommonDivisor(16);
+        $this->valueA->getGreatestCommonDivisor($this->valueB);
     }
 
+    #[Groups(['integer-math'])]
+    #[Revs(100)]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
     public function benchIsPrime()
     {
-        $num = new ImmutableDecimal(83);
-        $num->isPrime();
+        $this->valueC->isPrime();
+    }
+
+    public function provideNumbers()
+    {
+        return [
+            'small' => ['valueA' => 6, 'valueB' => 8, 'valueC' => 41],
+            'medium' => ['valueA' => 16, 'valueB' => 24, 'valueC' => 1009],
+            'large' => ['valueA' => 160, 'valueB' => 240, 'valueC' => 5915587277],
+        ];
+    }
+
+    public function provideExtensions()
+    {
+        return [
+            'with-extensions' => ['extensions' => true],
+            'without-extensions' => ['extensions' => false]
+        ];
+    }
+
+    public function setUp(array $params)
+    {
+        $this->valueA = (new ImmutableDecimal($params['valueA']))->setExtensions($params['extensions']);
+        $this->valueB = (new ImmutableDecimal($params['valueB']))->setExtensions($params['extensions']);
+        $this->valueC = (new ImmutableDecimal($params['valueC']))->setExtensions($params['extensions']);
     }
 
 }

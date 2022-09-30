@@ -2,10 +2,12 @@
 
 namespace Samsara\Fermat\Types\Traits\Decimal;
 
+use Decimal\Decimal;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\ConstantProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
@@ -25,6 +27,14 @@ trait LogScaleTrait
     public function expScale(int $scale = null): string
     {
         $scale = $scale ?? $this->getScale();
+
+        if (extension_loaded('decimal')) {
+            $num = new Decimal($this->getValue(NumberBase::Ten), $scale+2);
+
+            $num = $num->exp();
+
+            return $num->toFixed($scale+2);
+        }
 
         if ($this->isInt()) {
             $e = Numbers::makeE($scale+1);
@@ -112,43 +122,75 @@ trait LogScaleTrait
     public function lnScale(int $scale = null): string
     {
         $internalScale = $scale ?? $this->getScale();
-        $internalScale += 3;
+        $internalScale += 1;
+
+        if (extension_loaded('decimal')) {
+            $num = new Decimal($this->getValue(NumberBase::Ten), $internalScale);
+            $num = $num->ln();
+            return $num->toFixed($internalScale);
+        }
 
         $num = new ImmutableDecimal($this->getAsBaseTenRealNumber(), $internalScale);
 
-        $e = Numbers::makeE($internalScale);
-        $e2 = $e->multiply(2);
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, $internalScale);
+        $one = Numbers::makeOne($internalScale);
         $adjustedNum = Numbers::makeZero($internalScale);
+        $pointFour = Numbers::make(Numbers::IMMUTABLE, '0.4', $internalScale);
+        $pointNine = Numbers::make(Numbers::IMMUTABLE, '0.9', $internalScale);
+        $onePointOne = Numbers::make(Numbers::IMMUTABLE, '1.1', $internalScale);
+        $twoPointFive = Numbers::make(Numbers::IMMUTABLE, '1.5', $internalScale);
 
-        $eExp = 0;
+        $exp2 = 0;
+        $exp1p1 = 0;
 
-        while ($num->isLessThanOrEqualTo($e2)) {
-            $num = $num->multiply($e);
-            $eExp--;
-        }
-
-        while ($num->isGreaterThan($e2)) {
-            $num = $num->divide($e, $internalScale);
-            $eExp++;
-        }
-
-        $expComponent = Numbers::makeZero();
-
-        do {
-            if ($adjustedNum->isEqual(0)) {
-                $adjustedNum = $adjustedNum->add($num->subtract(1)->divide($num->add(1), $internalScale)->multiply(2));
-            } else {
-                $adjustedNum = $adjustedNum->add(
-                    $num->subtract($expComponent)->divide($num->add($expComponent), $internalScale)->multiply(2)
-                );
+        if ($num->isLessThan($one)) {
+            while ($num->isLessThan($pointFour)) {
+                $num = $num->multiply($two);
+                $exp2--;
             }
 
-            $expComponent = $adjustedNum->exp($internalScale);
+            while ($num->isLessThan($pointNine)) {
+                $num = $num->multiply($onePointOne);
+                $exp1p1--;
+            }
+        } elseif ($num->isGreaterThan($one)) {
+            while ($num->isGreaterThan($twoPointFive)) {
+                $num = $num->divide($two, $internalScale);
+                $exp2++;
+            }
 
-            $diff = $expComponent->subtract($num)->truncateToScale($internalScale-2);
-        } while (!$diff->isEqual(0));
+            while ($num->isGreaterThan($onePointOne)) {
+                $num = $num->divide($onePointOne, $internalScale);
+                $exp1p1++;
+            }
+        }
 
-        $answer = $adjustedNum->add($eExp);
+
+
+        $right = $num->subtract(1)->divide($num->add(1), $internalScale);
+        $k = 0;
+        do {
+            $left = $two->divide($two->multiply($k)->add(1), $internalScale);
+            $diff = $left->multiply($right->pow(2*$k+1));
+
+            $adjustedNum = $adjustedNum->add($diff);
+
+            $k++;
+        } while ($diff->numberOfLeadingZeros() < $internalScale-1);
+        /**/
+
+        $answer = $adjustedNum;
+
+        if ($exp2) {
+            $answer = $answer->add(Numbers::makeNaturalLog2($internalScale + $exp2)->multiply($exp2));
+        }
+
+        if ($exp1p1) {
+            $answer = $answer->add(
+                Numbers::make(Numbers::IMMUTABLE, ConstantProvider::makeLn1p1($internalScale+$exp1p1), $internalScale+$exp1p1)
+                ->multiply($exp1p1)
+            );
+        }
 
         return $answer->getAsBaseTenRealNumber();
     }
@@ -163,6 +205,12 @@ trait LogScaleTrait
 
         $internalScale = $scale ?? $this->scale;
         $internalScale += 1;
+
+        if (extension_loaded('decimal')) {
+            $num = new Decimal($this->getValue(NumberBase::Ten), $internalScale);
+            $num = $num->log10();
+            return $num->toFixed($internalScale);
+        }
 
         $log10 = Numbers::makeNaturalLog10($internalScale+1);
 

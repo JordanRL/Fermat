@@ -22,6 +22,7 @@ class ConstantProvider
     private static DecimalInterface $e;
     private static DecimalInterface $ln10;
     private static DecimalInterface $ln2;
+    private static DecimalInterface $ln1p1;
 
     /**
      * @param int $digits
@@ -161,12 +162,63 @@ class ConstantProvider
             return self::$ln2->truncateToScale($digits)->getValue(NumberBase::Ten);
         }
 
-        $ln2 = Numbers::make(Numbers::IMMUTABLE, 2, $digits+2)->setMode(CalcMode::Precision);
-        $ln2 = $ln2->ln();
+        $twoThirds = Numbers::make(Numbers::IMMUTABLE, str_pad('0.', $digits+3, '6'));
+        $one = Numbers::makeOne($digits+3);
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, $digits+3);
+        $nine = Numbers::make(Numbers::IMMUTABLE, 9, $digits+3);
+        $sum = Numbers::makeZero($digits+3);
+        $k = 0;
+
+        do {
+
+            $diff = $one->divide($one->add($two->multiply($k))->multiply($nine->pow($k)), $digits+3)->truncate($digits+2);
+
+            $sum = $sum->add($diff);
+
+            $k++;
+
+        } while (!$diff->isEqual(0));
+
+        $ln2 = $twoThirds->multiply($sum);
+        $ln2 = $ln2->truncateToScale($digits);
 
         self::$ln2 = $ln2;
 
-        return $ln2->truncateToScale($digits)->getValue(NumberBase::Ten);
+        return $ln2->getValue(NumberBase::Ten);
+
+    }
+
+    public static function makeLn1p1(int $digits): string
+    {
+
+        if (isset(self::$ln1p1) && self::$ln1p1->numberOfDecimalDigits() >= $digits) {
+            return self::$ln1p1->truncateToScale($digits)->getValue(NumberBase::Ten);
+        }
+
+        $one = Numbers::makeOne($digits+3);
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, $digits+3);
+        $twentyOne = Numbers::make(Numbers::IMMUTABLE, 21, $digits+3);
+        $fourFortyOne = Numbers::make(Numbers::IMMUTABLE, 441, $digits+3);
+        $twoDivTwentyOne = $two->divide($twentyOne);
+        $sum = Numbers::makeZero($digits+3);
+        $k = 0;
+
+        do {
+
+            $diff = $one->divide($one->add($two->multiply($k))->multiply($fourFortyOne->pow($k)), $digits+3)->truncate($digits+2);
+
+            $sum = $sum->add($diff);
+
+            $k++;
+
+        } while (!$diff->isEqual(0));
+
+        $ln1p1 = $twoDivTwentyOne->multiply($sum);
+        $ln1p1 = $ln1p1->truncateToScale($digits);
+
+        self::$ln1p1 = $ln1p1;
+
+        return $ln1p1->getValue(NumberBase::Ten);
 
     }
 

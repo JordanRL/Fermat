@@ -3,88 +3,133 @@
 
 namespace Samsara\Fermat\Values;
 
+use PhpBench\Attributes\BeforeMethods;
 use PhpBench\Attributes\Groups;
+use PhpBench\Attributes\ParamProviders;
+use PhpBench\Attributes\Revs;
 use Samsara\Fermat\Enums\CalcMode;
 
 class DecimalTrigBasicBench
 {
+    public ImmutableDecimal $valueA;
 
-    #[Groups(['testing', 'trig', 'basictrig'])]
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchSin()
     {
-        $obj = (new ImmutableDecimal(1))->setMode(CalcMode::Precision);
-        $obj->sin();
+        $this->valueA->sin();
     }
 
-    #[Groups(['testing', 'trig', 'basictrig'])]
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchCos()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->cos();
+        $this->valueA->cos();
     }
 
-    #[Groups(['testing', 'trig', 'basictrig'])]
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchTan()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->tan();
+        $this->valueA->tan();
     }
 
-    #[Groups(['testing', 'trig', 'basictrig'])]
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchSec()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->sec();
+        $this->valueA->sec();
     }
 
-    #[Groups(['testing', 'trig', 'basictrig'])]
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchCsc()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->csc();
+        $this->valueA->csc();
     }
 
-    #[Groups(['testing', 'trig', 'basictrig'])]
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchCot()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->cot();
+        $this->valueA->cot();
     }
 
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchSinh()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->sinh();
+        $this->valueA->sinh();
     }
 
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchCosh()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->cosh();
+        $this->valueA->cosh();
     }
 
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchTanh()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->tanh();
+        $this->valueA->tanh();
     }
 
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchSech()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->sech();
+        $this->valueA->sech();
     }
 
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchCsch()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->csch();
+        $this->valueA->csch();
     }
 
+    #[Groups(['trig', 'basic-trig'])]
+    #[BeforeMethods('setUp')]
+    #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchCoth()
     {
-        $obj = new ImmutableDecimal(1);
-        $obj->coth();
+        $this->valueA->coth();
+    }
+
+    public function provideNumbers()
+    {
+        return [
+            'near-one' => ['valueA' => 1],
+            'near-two' => ['valueA' => 2],
+            'near-zero' => ['valueA' => '0.001'],
+        ];
+    }
+
+    public function provideModes()
+    {
+        return [
+            'auto-mode' => ['mode' => CalcMode::Auto],
+            'native-mode' => ['mode' => CalcMode::Native],
+            'precision-mode' => ['mode' => CalcMode::Precision]
+        ];
+    }
+
+    public function setUp(array $params)
+    {
+        $this->valueA = (new ImmutableDecimal($params['valueA']))->setMode($params['mode']);
     }
 
 }

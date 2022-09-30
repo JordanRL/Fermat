@@ -161,7 +161,7 @@ trait IntegerMathTrait
             );
         }
 
-        if (extension_loaded('gmp')) {
+        if (extension_loaded('gmp') && $this->extensions) {
             $value = gmp_lcm($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
 
             return $this->setValue(gmp_strval($value), $this->getScale(), $this->getBase());
@@ -191,7 +191,7 @@ trait IntegerMathTrait
             );
         }
 
-        if (extension_loaded('gmp')) {
+        if (extension_loaded('gmp') && $this->extensions) {
             $val = gmp_strval(gmp_gcd($thisNum->getValue(NumberBase::Ten), $num->getValue(NumberBase::Ten)));
 
             return Numbers::make(Numbers::IMMUTABLE, $val, $this->getScale());
@@ -219,8 +219,8 @@ trait IntegerMathTrait
     }
 
     /**
-     * This function is a PHP implementation of the Miller-Rabin primality test. The default "certainty" value of 40
-     * results in a false-positive rate of 1 in 1.21 x 10^24.
+     * This function is a PHP implementation of the Miller-Rabin primality test. The default "certainty" value of 20
+     * results in a false-positive rate of 1 in 1.10 x 10^12.
      *
      * Presumably, the probability of your hardware failing while this code is running is higher, meaning this should be
      * statistically as certain as a deterministic algorithm on normal computer hardware.
@@ -228,7 +228,7 @@ trait IntegerMathTrait
      * @param int|null $certainty The certainty level desired. False positive rate = 1 in 4^$certainty.
      * @return bool
      */
-    public function isPrime(?int $certainty = 40): bool
+    public function isPrime(?int $certainty = 20): bool
     {
         if (!$this->isInt()) {
             return false;
@@ -246,7 +246,7 @@ trait IntegerMathTrait
             return false;
         }
 
-        if (function_exists('gmp_prob_prime')) {
+        if (function_exists('gmp_prob_prime') && $this->extensions) {
             return (bool)gmp_prob_prime($this->getValue(NumberBase::Ten), $certainty);
         }
 

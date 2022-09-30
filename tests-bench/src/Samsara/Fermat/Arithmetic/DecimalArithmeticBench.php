@@ -1,72 +1,78 @@
 <?php
 
-
-namespace Samsara\Fermat\Values;
+namespace Samsara\Fermat\Bench\Arithmetic;
 
 use PhpBench\Attributes\BeforeMethods;
 use PhpBench\Attributes\Groups;
 use PhpBench\Attributes\ParamProviders;
+use PhpBench\Attributes\Revs;
 use Samsara\Fermat\Enums\CalcMode;
-use Samsara\Fermat\Types\Decimal;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
-class DecimalTrigInverseBench
+class DecimalArithmeticBench
 {
     public ImmutableDecimal $valueA;
     public ImmutableDecimal $valueB;
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['arithmetic'])]
+    #[Revs(500)]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
-    public function benchArcSin()
+    public function benchAddInt()
     {
-        $this->valueB->arcsin();
+        $this->valueA->add($this->valueB);
     }
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['arithmetic'])]
+    #[Revs(500)]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
-    public function benchArcCos()
+    public function benchSubtractInt()
     {
-        $this->valueB->arccos();
+        $this->valueA->subtract($this->valueB);
     }
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['arithmetic'])]
+    #[Revs(500)]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
-    public function benchArcTan()
+    public function benchMultiplyInt()
     {
-        $this->valueB->arctan();
+        $this->valueA->multiply($this->valueB);
     }
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['arithmetic'])]
+    #[Revs(500)]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
-    public function benchArcSec()
+    public function benchDivideInt()
     {
-        $this->valueA->arcsec();
+        $this->valueA->divide($this->valueB);
     }
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['arithmetic'])]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
-    public function benchArcCsc()
+    public function benchPowInt()
     {
-        $this->valueA->arccsc();
+        $this->valueA->pow($this->valueB);
     }
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['arithmetic'])]
+    #[Revs(500)]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
-    public function benchArcCot()
+    public function benchSqrtInt()
     {
-        $this->valueB->arccot();
+        $this->valueB->sqrt();
     }
 
     public function provideNumbers()
     {
         return [
-            'near-limit' => ['valueA' => '1.1', 'valueB' => '0.9'],
-            'away-from-limit' => ['valueA' => '10', 'valueB' => '0.001'],
+            'int' => ['valueA' => 3, 'valueB' => 2],
+            'dec' => ['valueA' => '1.5', 'valueB' => '2.6'],
+            'hard' => ['valueA' => '1.5832947568392048757878954329086890732456748409342578978903245', 'valueB' => '2.65832947568392048757878954329086890732456748409342578978903245'],
         ];
     }
 
