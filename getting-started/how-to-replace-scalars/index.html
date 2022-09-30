@@ -9,21 +9,21 @@
       
       
       
-        <link rel="canonical" href="https://jordanrl.github.io/Fermat/roster/latest/Fermat%20Core/Provider/RandomProvider/">
+        <link rel="canonical" href="https://jordanrl.github.io/Fermat/getting-started/how-to-replace-scalars/">
       
-      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
     
     
       
-        <title>RandomProvider - Fermat - PHP Math Library</title>
+        <title>As Scalar Replacements - Fermat - PHP Math Library</title>
       
     
     
-      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ca7ac06f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ca7ac06f.min.css">
       
         
-        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.f1a3b89f.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.f1a3b89f.min.css">
         
       
     
@@ -38,9 +38,9 @@
     
     
     
-      <link rel="stylesheet" href="../../../../../css/md-theme.css">
+      <link rel="stylesheet" href="../../css/md-theme.css">
     
-      <link rel="stylesheet" href="../../../../../css/custom.css">
+      <link rel="stylesheet" href="../../css/custom.css">
     
     
       
@@ -61,7 +61,7 @@
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
-    <script>function __prefix(e){return new URL("../../../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
       <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
@@ -71,7 +71,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#samsarafermatprovider-randomprovider" class="md-skip">
+        <a href="#how-to-use-fermat-in-place-of-scalars" class="md-skip">
           Skip to content
         </a>
       
@@ -82,7 +82,7 @@
     
       <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../../.." title="Fermat - PHP Math Library" class="md-header__button md-logo" aria-label="Fermat - PHP Math Library" data-md-component="logo">
+    <a href="../.." title="Fermat - PHP Math Library" class="md-header__button md-logo" aria-label="Fermat - PHP Math Library" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -101,7 +101,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              RandomProvider
+              As Scalar Replacements
             
           </span>
         </div>
@@ -197,7 +197,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../.." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         Introduction
       </a>
     </li>
@@ -207,13 +207,15 @@
         
   
   
+    
+  
 
 
   
   
   
     <li class="md-tabs__item">
-      <a href="../../../../../getting-started/concepts/" class="md-tabs__link">
+      <a href="../concepts/" class="md-tabs__link md-tabs__link--active">
         Getting Started
       </a>
     </li>
@@ -229,7 +231,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../../performance/overview/" class="md-tabs__link">
+      <a href="../../performance/overview/" class="md-tabs__link">
         Performance
       </a>
     </li>
@@ -245,7 +247,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../../configuration/calculation-modes/" class="md-tabs__link">
+      <a href="../../configuration/calculation-modes/" class="md-tabs__link">
         Configuration
       </a>
     </li>
@@ -266,7 +268,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../../modules/coordinate-systems/about/" class="md-tabs__link">
+      <a href="../../modules/coordinate-systems/about/" class="md-tabs__link">
         Modules
       </a>
     </li>
@@ -277,8 +279,6 @@
       
         
   
-  
-    
   
 
 
@@ -291,7 +291,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../Numbers/" class="md-tabs__link md-tabs__link--active">
+      <a href="../../roster/latest/Fermat%20Core/Numbers/" class="md-tabs__link">
         Source Reference
       </a>
     </li>
@@ -320,7 +320,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../../.." title="Fermat - PHP Math Library" class="md-nav__button md-logo" aria-label="Fermat - PHP Math Library" data-md-component="logo">
+    <a href="../.." title="Fermat - PHP Math Library" class="md-nav__button md-logo" aria-label="Fermat - PHP Math Library" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -373,7 +373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         About Fermat
       </a>
     </li>
@@ -385,7 +385,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../fermat-vs-alternatives/" class="md-nav__link">
+      <a href="../../fermat-vs-alternatives/" class="md-nav__link">
         Fermat vs. Alternatives
       </a>
     </li>
@@ -404,12 +404,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
       
       <label class="md-nav__link" for="__nav_2">
         Getting Started
@@ -427,7 +429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../getting-started/concepts/" class="md-nav__link">
+      <a href="../concepts/" class="md-nav__link">
         Concepts
       </a>
     </li>
@@ -439,7 +441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../getting-started/installation-and-usage/" class="md-nav__link">
+      <a href="../installation-and-usage/" class="md-nav__link">
         Installation & Usage
       </a>
     </li>
@@ -451,7 +453,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../getting-started/mutability/" class="md-nav__link">
+      <a href="../mutability/" class="md-nav__link">
         Mutable vs. Immutable
       </a>
     </li>
@@ -463,7 +465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../getting-started/using-factories/" class="md-nav__link">
+      <a href="../using-factories/" class="md-nav__link">
         Using The Factories
       </a>
     </li>
@@ -475,7 +477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../getting-started/comparing/" class="md-nav__link">
+      <a href="../comparing/" class="md-nav__link">
         Comparing Values
       </a>
     </li>
@@ -487,7 +489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../getting-started/exceptions/" class="md-nav__link">
+      <a href="../exceptions/" class="md-nav__link">
         Handling Exceptions
       </a>
     </li>
@@ -499,7 +501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../getting-started/modules/" class="md-nav__link">
+      <a href="../modules/" class="md-nav__link">
         Modules
       </a>
     </li>
@@ -509,14 +511,16 @@
             
   
   
+    
+  
   
     
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_8" type="checkbox" id="__nav_2_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_8" type="checkbox" id="__nav_2_8" checked>
       
       <label class="md-nav__link" for="__nav_2_8">
         Use Cases
@@ -532,11 +536,98 @@
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../../../../getting-started/how-to-replace-scalars/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          As Scalar Replacements
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         As Scalar Replacements
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#set-the-default-calculation-mode-to-native" class="md-nav__link">
+    Set The Default Calculation Mode To Native
+  </a>
+  
+    <nav class="md-nav" aria-label="Set The Default Calculation Mode To Native">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#precision-mode-at-specific-points" class="md-nav__link">
+    Precision Mode At Specific Points
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-immutables" class="md-nav__link">
+    Use Immutables
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Immutables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#incrementing-and-decrementing" class="md-nav__link">
+    Incrementing and Decrementing
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-you-need-an-actual-scalar" class="md-nav__link">
+    When You Need An Actual Scalar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helper-methods" class="md-nav__link">
+    Helper Methods
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -582,7 +673,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../performance/overview/" class="md-nav__link">
+      <a href="../../performance/overview/" class="md-nav__link">
         Overview
       </a>
     </li>
@@ -617,7 +708,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../performance/arithmetic/" class="md-nav__link">
+      <a href="../../performance/arithmetic/" class="md-nav__link">
         Arithmetic
       </a>
     </li>
@@ -629,7 +720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../performance/logarithms/" class="md-nav__link">
+      <a href="../../performance/logarithms/" class="md-nav__link">
         Logarithms
       </a>
     </li>
@@ -641,7 +732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../performance/trigonometry/" class="md-nav__link">
+      <a href="../../performance/trigonometry/" class="md-nav__link">
         Trigonometry
       </a>
     </li>
@@ -689,7 +780,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../configuration/calculation-modes/" class="md-nav__link">
+      <a href="../../configuration/calculation-modes/" class="md-nav__link">
         Calculation Modes
       </a>
     </li>
@@ -701,7 +792,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../configuration/random-modes/" class="md-nav__link">
+      <a href="../../configuration/random-modes/" class="md-nav__link">
         Random Modes
       </a>
     </li>
@@ -713,7 +804,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../configuration/rounding-modes/" class="md-nav__link">
+      <a href="../../configuration/rounding-modes/" class="md-nav__link">
         Rounding Modes
       </a>
     </li>
@@ -778,7 +869,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../modules/coordinate-systems/about/" class="md-nav__link">
+      <a href="../../modules/coordinate-systems/about/" class="md-nav__link">
         Coordinate Systems
       </a>
     </li>
@@ -790,7 +881,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../modules/stats/about/" class="md-nav__link">
+      <a href="../../modules/stats/about/" class="md-nav__link">
         Stats
       </a>
     </li>
@@ -831,7 +922,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../modules/algebra-expressions/about/" class="md-nav__link">
+      <a href="../../modules/algebra-expressions/about/" class="md-nav__link">
         Algebra Expressions
       </a>
     </li>
@@ -843,7 +934,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../modules/complex-numbers/about/" class="md-nav__link">
+      <a href="../../modules/complex-numbers/about/" class="md-nav__link">
         Complex Numbers
       </a>
     </li>
@@ -855,7 +946,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../modules/linear-algebra/about/" class="md-nav__link">
+      <a href="../../modules/linear-algebra/about/" class="md-nav__link">
         Linear Algebra
       </a>
     </li>
@@ -880,14 +971,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
       <label class="md-nav__link" for="__nav_6">
         Source Reference
@@ -903,16 +992,14 @@
             
   
   
-    
-  
   
     
       
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1" type="checkbox" id="__nav_6_1" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1" type="checkbox" id="__nav_6_1" >
       
       <label class="md-nav__link" for="__nav_6_1">
         Fermat Core
@@ -930,7 +1017,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Numbers/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Numbers/" class="md-nav__link">
         Numbers
       </a>
     </li>
@@ -942,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Collections/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Collections/" class="md-nav__link">
         Collections
       </a>
     </li>
@@ -975,7 +1062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Values/MutableDecimal/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Values/MutableDecimal/" class="md-nav__link">
         MutableDecimal
       </a>
     </li>
@@ -987,7 +1074,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Values/ImmutableDecimal/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Values/ImmutableDecimal/" class="md-nav__link">
         ImmutableDecimal
       </a>
     </li>
@@ -999,7 +1086,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Values/ImmutableFraction/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Values/ImmutableFraction/" class="md-nav__link">
         ImmutableFraction
       </a>
     </li>
@@ -1011,7 +1098,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Values/MutableFraction/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Values/MutableFraction/" class="md-nav__link">
         MutableFraction
       </a>
     </li>
@@ -1050,7 +1137,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Fraction/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Fraction/" class="md-nav__link">
         Fraction
       </a>
     </li>
@@ -1062,7 +1149,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/NumberCollection/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/NumberCollection/" class="md-nav__link">
         NumberCollection
       </a>
     </li>
@@ -1074,7 +1161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Decimal/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Decimal/" class="md-nav__link">
         Decimal
       </a>
     </li>
@@ -1086,7 +1173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Tuple/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Tuple/" class="md-nav__link">
         Tuple
       </a>
     </li>
@@ -1119,7 +1206,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Base/Number/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Number/" class="md-nav__link">
         Number
       </a>
     </li>
@@ -1173,7 +1260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Base/Interfaces/Numbers/NumberInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/NumberInterface/" class="md-nav__link">
         NumberInterface
       </a>
     </li>
@@ -1185,7 +1272,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Base/Interfaces/Numbers/DecimalInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/DecimalInterface/" class="md-nav__link">
         DecimalInterface
       </a>
     </li>
@@ -1197,7 +1284,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Base/Interfaces/Numbers/FractionInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/FractionInterface/" class="md-nav__link">
         FractionInterface
       </a>
     </li>
@@ -1209,7 +1296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Base/Interfaces/Numbers/SimpleNumberInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface/" class="md-nav__link">
         SimpleNumberInterface
       </a>
     </li>
@@ -1248,7 +1335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Base/Interfaces/Callables/ContinuedFractionTermInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Callables/ContinuedFractionTermInterface/" class="md-nav__link">
         ContinuedFractionTermInterface
       </a>
     </li>
@@ -1287,7 +1374,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Base/Interfaces/Groups/NumberCollectionInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Groups/NumberCollectionInterface/" class="md-nav__link">
         NumberCollectionInterface
       </a>
     </li>
@@ -1338,7 +1425,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/ComparisonTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/ComparisonTrait/" class="md-nav__link">
         ComparisonTrait
       </a>
     </li>
@@ -1350,7 +1437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/ArithmeticSimpleTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/ArithmeticSimpleTrait/" class="md-nav__link">
         ArithmeticSimpleTrait
       </a>
     </li>
@@ -1362,7 +1449,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/InverseTrigonometrySimpleTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/InverseTrigonometrySimpleTrait/" class="md-nav__link">
         InverseTrigonometrySimpleTrait
       </a>
     </li>
@@ -1374,7 +1461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/IntegerMathTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/IntegerMathTrait/" class="md-nav__link">
         IntegerMathTrait
       </a>
     </li>
@@ -1386,7 +1473,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/TrigonometrySimpleTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/TrigonometrySimpleTrait/" class="md-nav__link">
         TrigonometrySimpleTrait
       </a>
     </li>
@@ -1398,7 +1485,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/LogSimpleTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/LogSimpleTrait/" class="md-nav__link">
         LogSimpleTrait
       </a>
     </li>
@@ -1431,7 +1518,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Trigonometry/TrigonometrySelectionTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/TrigonometrySelectionTrait/" class="md-nav__link">
         TrigonometrySelectionTrait
       </a>
     </li>
@@ -1443,7 +1530,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Trigonometry/InverseTrigonometryNativeTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/InverseTrigonometryNativeTrait/" class="md-nav__link">
         InverseTrigonometryNativeTrait
       </a>
     </li>
@@ -1455,7 +1542,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Trigonometry/InverseTrigonometrySelectionTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/InverseTrigonometrySelectionTrait/" class="md-nav__link">
         InverseTrigonometrySelectionTrait
       </a>
     </li>
@@ -1467,7 +1554,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Trigonometry/TrigonometryScaleTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/TrigonometryScaleTrait/" class="md-nav__link">
         TrigonometryScaleTrait
       </a>
     </li>
@@ -1479,7 +1566,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Trigonometry/InverseTrigonometryScaleTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/InverseTrigonometryScaleTrait/" class="md-nav__link">
         InverseTrigonometryScaleTrait
       </a>
     </li>
@@ -1491,7 +1578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Trigonometry/TrigonometryNativeTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/TrigonometryNativeTrait/" class="md-nav__link">
         TrigonometryNativeTrait
       </a>
     </li>
@@ -1530,7 +1617,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Arithmetic/ArithmeticGMPTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticGMPTrait/" class="md-nav__link">
         ArithmeticGMPTrait
       </a>
     </li>
@@ -1542,7 +1629,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Arithmetic/ArithmeticSelectionTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticSelectionTrait/" class="md-nav__link">
         ArithmeticSelectionTrait
       </a>
     </li>
@@ -1554,7 +1641,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Arithmetic/ArithmeticScaleTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticScaleTrait/" class="md-nav__link">
         ArithmeticScaleTrait
       </a>
     </li>
@@ -1566,7 +1653,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Arithmetic/ArithmeticNativeTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticNativeTrait/" class="md-nav__link">
         ArithmeticNativeTrait
       </a>
     </li>
@@ -1605,7 +1692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Decimal/LogScaleTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Decimal/LogScaleTrait/" class="md-nav__link">
         LogScaleTrait
       </a>
     </li>
@@ -1617,7 +1704,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Decimal/ScaleTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Decimal/ScaleTrait/" class="md-nav__link">
         ScaleTrait
       </a>
     </li>
@@ -1629,7 +1716,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Decimal/LogNativeTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Decimal/LogNativeTrait/" class="md-nav__link">
         LogNativeTrait
       </a>
     </li>
@@ -1641,7 +1728,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Types/Traits/Decimal/LogSelectionTrait/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Decimal/LogSelectionTrait/" class="md-nav__link">
         LogSelectionTrait
       </a>
     </li>
@@ -1669,14 +1756,12 @@
             
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_5" type="checkbox" id="__nav_6_1_5" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_5" type="checkbox" id="__nav_6_1_5" >
       
       <label class="md-nav__link" for="__nav_6_1_5">
         Provider
@@ -1694,7 +1779,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../TrigonometryProvider/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Provider/TrigonometryProvider/" class="md-nav__link">
         TrigonometryProvider
       </a>
     </li>
@@ -1706,7 +1791,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../SeriesProvider/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Provider/SeriesProvider/" class="md-nav__link">
         SeriesProvider
       </a>
     </li>
@@ -1718,7 +1803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../RoundingProvider/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingProvider/" class="md-nav__link">
         RoundingProvider
       </a>
     </li>
@@ -1730,7 +1815,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ConstantProvider/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Provider/ConstantProvider/" class="md-nav__link">
         ConstantProvider
       </a>
     </li>
@@ -1742,7 +1827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../SequenceProvider/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Provider/SequenceProvider/" class="md-nav__link">
         SequenceProvider
       </a>
     </li>
@@ -1754,7 +1839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../BaseConversionProvider/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Provider/BaseConversionProvider/" class="md-nav__link">
         BaseConversionProvider
       </a>
     </li>
@@ -1766,7 +1851,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ArithmeticProvider/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Provider/ArithmeticProvider/" class="md-nav__link">
         ArithmeticProvider
       </a>
     </li>
@@ -1778,7 +1863,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../CalculationModeProvider/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Core/Provider/CalculationModeProvider/" class="md-nav__link">
         CalculationModeProvider
       </a>
     </li>
@@ -1788,91 +1873,11 @@
             
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          RandomProvider
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RandomProvider/" class="md-nav__link">
         RandomProvider
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
-    Methods
-  </a>
-  
-    <nav class="md-nav" aria-label="Methods">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#static-methods" class="md-nav__link">
-    Static Methods
-  </a>
-  
-    <nav class="md-nav" aria-label="Static Methods">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#randomint" class="md-nav__link">
-    randomInt
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#randomdecimal" class="md-nav__link">
-    randomDecimal
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#randomreal" class="md-nav__link">
-    randomReal
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1959,7 +1964,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Stats/Values/Distribution/Normal/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Stats/Values/Distribution/Normal/" class="md-nav__link">
         Normal
       </a>
     </li>
@@ -1971,7 +1976,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Stats/Values/Distribution/Exponential/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Stats/Values/Distribution/Exponential/" class="md-nav__link">
         Exponential
       </a>
     </li>
@@ -1983,7 +1988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Stats/Values/Distribution/Poisson/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Stats/Values/Distribution/Poisson/" class="md-nav__link">
         Poisson
       </a>
     </li>
@@ -2028,7 +2033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Stats/Types/Distribution/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Stats/Types/Distribution/" class="md-nav__link">
         Distribution
       </a>
     </li>
@@ -2067,7 +2072,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Stats/Provider/StatsProvider/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Stats/Provider/StatsProvider/" class="md-nav__link">
         StatsProvider
       </a>
     </li>
@@ -2177,7 +2182,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/PolarCoordinate/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/PolarCoordinate/" class="md-nav__link">
         PolarCoordinate
       </a>
     </li>
@@ -2189,7 +2194,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/CylindricalCoordinate/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/CylindricalCoordinate/" class="md-nav__link">
         CylindricalCoordinate
       </a>
     </li>
@@ -2201,7 +2206,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/SphericalCoordinate/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/SphericalCoordinate/" class="md-nav__link">
         SphericalCoordinate
       </a>
     </li>
@@ -2213,7 +2218,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/CartesianCoordinate/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/CartesianCoordinate/" class="md-nav__link">
         CartesianCoordinate
       </a>
     </li>
@@ -2264,7 +2269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Coordinate%20Systems/Types/Coordinate/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Types/Coordinate/" class="md-nav__link">
         Coordinate
       </a>
     </li>
@@ -2339,7 +2344,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/ThreeDCoordinateInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/ThreeDCoordinateInterface/" class="md-nav__link">
         ThreeDCoordinateInterface
       </a>
     </li>
@@ -2351,7 +2356,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/TwoDCoordinateInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/TwoDCoordinateInterface/" class="md-nav__link">
         TwoDCoordinateInterface
       </a>
     </li>
@@ -2363,7 +2368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/CoordinateInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/CoordinateInterface/" class="md-nav__link">
         CoordinateInterface
       </a>
     </li>
@@ -2432,38 +2437,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
-    Methods
+  <a href="#set-the-default-calculation-mode-to-native" class="md-nav__link">
+    Set The Default Calculation Mode To Native
   </a>
   
-    <nav class="md-nav" aria-label="Methods">
+    <nav class="md-nav" aria-label="Set The Default Calculation Mode To Native">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#static-methods" class="md-nav__link">
-    Static Methods
-  </a>
-  
-    <nav class="md-nav" aria-label="Static Methods">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#randomint" class="md-nav__link">
-    randomInt
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#randomdecimal" class="md-nav__link">
-    randomDecimal
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#randomreal" class="md-nav__link">
-    randomReal
+  <a href="#precision-mode-at-specific-points" class="md-nav__link">
+    Precision Mode At Specific Points
   </a>
   
 </li>
@@ -2472,9 +2455,38 @@
     </nav>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#use-immutables" class="md-nav__link">
+    Use Immutables
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Immutables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#incrementing-and-decrementing" class="md-nav__link">
+    Incrementing and Decrementing
+  </a>
+  
+</li>
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-you-need-an-actual-scalar" class="md-nav__link">
+    When You Need An Actual Scalar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helper-methods" class="md-nav__link">
+    Helper Methods
+  </a>
   
 </li>
       
@@ -2490,118 +2502,85 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/JordanRL/Fermat/edit/master/docs/roster/latest/Fermat Core/Provider/RandomProvider.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/JordanRL/Fermat/edit/master/docs/getting-started/how-to-replace-scalars.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="samsarafermatprovider-randomprovider">Samsara\Fermat\Provider &gt; RandomProvider</h1>
-<p><em>No description available</em></p>
-<h2 id="methods">Methods</h2>
-<h3 id="static-methods">Static Methods</h3>
-<div class="admonition signature">
-<p class="admonition-title">public RandomProvider::randomInt(int|string|DecimalInterface $min, int|string|DecimalInterface $max, RandomMode $mode)</p>
-<h5 id="randomint">randomInt</h5>
-<p><strong>$min</strong></p>
-<dl>
-<dt>type</dt>
-<dd>int|string|DecimalInterface</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-<p><strong>$max</strong></p>
-<dl>
-<dt>type</dt>
-<dd>int|string|DecimalInterface</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-<p><strong>$mode</strong></p>
-<dl>
-<dt>type</dt>
-<dd>RandomMode</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-<p><strong>return</strong></p>
-<dl>
-<dt>type</dt>
-<dd>Samsara\Fermat\Values\ImmutableDecimal</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-</div>
-<hr />
-<div class="admonition signature">
-<p class="admonition-title">public RandomProvider::randomDecimal(int $scale, RandomMode $mode)</p>
-<h5 id="randomdecimal">randomDecimal</h5>
-<p><strong>$scale</strong></p>
-<dl>
-<dt>type</dt>
-<dd>int</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-<p><strong>$mode</strong></p>
-<dl>
-<dt>type</dt>
-<dd>RandomMode</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-<p><strong>return</strong></p>
-<dl>
-<dt>type</dt>
-<dd>Samsara\Fermat\Values\ImmutableDecimal</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-</div>
-<hr />
-<div class="admonition signature">
-<p class="admonition-title">public RandomProvider::randomReal(int|string|DecimalInterface $min, int|string|DecimalInterface $max, int $scale, RandomMode $mode)</p>
-<h5 id="randomreal">randomReal</h5>
-<p><strong>$min</strong></p>
-<dl>
-<dt>type</dt>
-<dd>int|string|DecimalInterface</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-<p><strong>$max</strong></p>
-<dl>
-<dt>type</dt>
-<dd>int|string|DecimalInterface</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-<p><strong>$scale</strong></p>
-<dl>
-<dt>type</dt>
-<dd>int</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-<p><strong>$mode</strong></p>
-<dl>
-<dt>type</dt>
-<dd>RandomMode</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-<p><strong>return</strong></p>
-<dl>
-<dt>type</dt>
-<dd>Samsara\Fermat\Values\ImmutableDecimal</dd>
-<dt>description</dt>
-<dd><em>No description available</em></dd>
-</dl>
-</div>
-<hr />
-<hr />
-<div class="admonition footer-link">
-<p class="admonition-title">This documentation was generated with <a href="https://jordanrl.github.io/Roster/">Roster</a>.</p>
-</div>
+                <h1 id="how-to-use-fermat-in-place-of-scalars">How To Use Fermat In Place Of Scalars</h1>
+<p>This outlines the way you should configure and use Fermat if you want to use it as a replacement for the <strong>integer</strong> and <strong>float</strong> scalar types in your application.</p>
+<p>You might want to do this if:</p>
+<ul>
+<li>You want a fluent, object-oriented interface for your numbers.</li>
+<li>You want to be able to use non-integer and non-float numbers, such as <strong>fractions</strong> or <strong>imaginary numbers</strong>.</li>
+<li>You want the option at specific points in your application to increase the scale higher than the scale offered by native PHP types.</li>
+<li>You want to be able to provide number types for parameters and properties that are more specific than integer and float.</li>
+</ul>
+<h2 id="set-the-default-calculation-mode-to-native">Set The Default Calculation Mode To Native</h2>
+<p>In the bootstrap phase of your application, you should set <code>CalcMode::Native</code> as your global <a href="../../configuration/calculation-modes/">Calculation Mode</a>. This can be accomplished with:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos">1</span><span class="cp">&lt;?php</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="k">use</span> <span class="nx">Samsara\Fermat\Provider\CalculationModeProvider</span><span class="p">;</span>
+<span class="linenos">4</span><span class="k">use</span> <span class="nx">Samsara\Fermat\Enums\CalcMode</span><span class="p">;</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="nx">CalculationModeProvider</span><span class="o">::</span><span class="na">setCurrentMode</span><span class="p">(</span><span class="nx">CalcMode</span><span class="o">::</span><span class="na">Native</span><span class="p">);</span>
+</code></pre></div>
+<p>If this is set in your program before you begin using any of the Fermat values, they will all automatically use the same mode when performing calculations.</p>
+<h3 id="precision-mode-at-specific-points">Precision Mode At Specific Points</h3>
+<p>If you mostly want to use Fermat in Native mode, but have a few places in your application where you want to take advantage of increased scale, you can do this on each individual object instance.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos"> 1</span><span class="cp">&lt;?php</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">use</span> <span class="nx">Samsara\Fermat\Values\ImmutableDecimal</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="k">use</span> <span class="nx">Samsara\Fermat\Enums\CalcMode</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="k">use</span> <span class="nx">Samsara\Fermat\Numbers</span><span class="p">;</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="nv">$num</span> <span class="o">=</span> <span class="nx">Numbers</span><span class="o">::</span><span class="na">make</span><span class="p">(</span><span class="nx">Numbers</span><span class="o">::</span><span class="na">IMMUTABLE</span><span class="p">,</span> <span class="s1">&#39;25&#39;</span><span class="p">,</span> <span class="nv">$myDesiredScale</span><span class="p">);</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// The setMode() method is mutable for all objects</span>
+<span class="linenos">10</span><span class="nv">$num</span><span class="o">-&gt;</span><span class="na">setMode</span><span class="p">(</span><span class="nx">CalcMode</span><span class="o">::</span><span class="na">Precision</span><span class="p">);</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1">// $answer is now an instance of ImmutableDecimal with mode set</span>
+<span class="linenos">13</span><span class="c1">// to CalcMode::Precision as well</span>
+<span class="linenos">14</span><span class="nv">$answer</span> <span class="o">=</span> <span class="nv">$num</span><span class="o">-&gt;</span><span class="na">tan</span><span class="p">();</span>
+</code></pre></div>
+<h2 id="use-immutables">Use Immutables</h2>
+<p>The <code>ImmutableDecimal</code> and <code>ImmutableFraction</code> value classes should be used when your aim is to replace scalar types. Scalars (and PHP variables in general) behave immutably.</p>
+<h3 id="incrementing-and-decrementing">Incrementing and Decrementing</h3>
+<p>The <code>$foo++</code> and <code>$foo--</code> operations modify the variable in place. To duplicate this behavior with immutable classes, try to following:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos"> 1</span><span class="cp">&lt;?php</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">use</span> <span class="nx">Samsara\Fermat\Values\ImmutableDecimal</span><span class="p">;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="nv">$num</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ImmutableDecimal</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1">// Analogous to the $num++ case</span>
+<span class="linenos"> 8</span><span class="nv">$num</span> <span class="o">=</span> <span class="nv">$num</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1">// Analogous to the $num-- case</span>
+<span class="linenos">11</span><span class="nv">$num</span> <span class="o">=</span> <span class="nv">$num</span><span class="o">-&gt;</span><span class="na">subtract</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">12</span><span class="nv">$num</span><span class="o">-&gt;</span><span class="na">num</span>
+</code></pre></div>
+<h2 id="when-you-need-an-actual-scalar">When You Need An Actual Scalar</h2>
+<p>If you are using Fermat in place of scalar types, you might encounter a point when you need an actual scalar value for your program. A good example might be for an argument to a function.</p>
+<p>In these cases, you can use the <code>asInt()</code> and <code>asFloat()</code> methods to get the current value in the corresponding type.</p>
+<h2 id="helper-methods">Helper Methods</h2>
+<p>There are some useful helper methods in situations such as this. The <code>isInt()</code>, <code>isNatural()</code> and <code>isWhole()</code> methods will all return a boolean telling you whether the current value is a whole number, with no decimal component. This can let you know if using the <code>asInt()</code> method will lose any precision.</p>
+<p>The opposite side can be checked with the <code>isFloat()</code> method, which will return true if the decimal component of the number has anything other that zeros in it.</p>
+<p>The <code>isPositive()</code> and <code>isNegative()</code> methods will give a boolean answering their respective questions.</p>
+<p>The <code>numberOfLeadingZeros()</code> method will tell you how many zeros there are between the decimal point and the first non-zero digit in the decimal portion.</p>
+<p>So you could write some code that casts the value object to an integer only if the decimal portion is less than 1/1000 with the following code:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos"> 1</span><span class="cp">&lt;?php</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">use</span> <span class="nx">Samsara\Fermat\Values\ImmutableDecimal</span><span class="p">;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="nv">$num</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ImmutableDecimal</span><span class="p">(</span><span class="s1">&#39;5.0009&#39;</span><span class="p">);</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="k">if</span> <span class="p">(</span><span class="nv">$num</span><span class="o">-&gt;</span><span class="na">numberOfLeadingZeros</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 8</span>    <span class="nv">$scalarNum</span> <span class="o">=</span> <span class="nv">$num</span><span class="o">-&gt;</span><span class="na">asInt</span><span class="p">();</span>
+<span class="linenos"> 9</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="linenos">10</span>    <span class="nv">$scalarNum</span> <span class="o">=</span> <span class="nv">$num</span><span class="o">-&gt;</span><span class="na">asFloat</span><span class="p">();</span>
+<span class="linenos">11</span><span class="p">}</span>
+</code></pre></div>
                 
               
               
@@ -2625,7 +2604,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../CalculationModeProvider/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CalculationModeProvider" rel="prev">
+        <a href="../modules/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Modules" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -2634,20 +2613,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              CalculationModeProvider
+              Modules
             </div>
           </div>
         </a>
       
       
         
-        <a href="../../../Fermat%20Stats/Values/Distribution/Normal/" class="md-footer__link md-footer__link--next" aria-label="Next: Normal" rel="next">
+        <a href="../../performance/overview/" class="md-footer__link md-footer__link--next" aria-label="Next: Overview" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Normal
+              Overview
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -2680,10 +2659,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.sections", "navigation.top", "navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../../../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
     
     
-      <script src="../../../../../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      <script src="../../assets/javascripts/bundle.82b56eb2.min.js"></script>
       
     
   </body>
