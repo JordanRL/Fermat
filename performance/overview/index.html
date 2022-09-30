@@ -624,8 +624,22 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#auto-mode-performance" class="md-nav__link">
+    Auto Mode Performance
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#scale-sensitivity" class="md-nav__link">
     Scale Sensitivity
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#value-sensitivity" class="md-nav__link">
+    Value Sensitivity
   </a>
   
 </li>
@@ -637,6 +651,13 @@
   
     <nav class="md-nav" aria-label="Performance Metrics">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add" class="md-nav__link">
+    add
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#opssec" class="md-nav__link">
@@ -2441,8 +2462,22 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#auto-mode-performance" class="md-nav__link">
+    Auto Mode Performance
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#scale-sensitivity" class="md-nav__link">
     Scale Sensitivity
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#value-sensitivity" class="md-nav__link">
+    Value Sensitivity
   </a>
   
 </li>
@@ -2454,6 +2489,13 @@
   
     <nav class="md-nav" aria-label="Performance Metrics">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add" class="md-nav__link">
+    add
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#opssec" class="md-nav__link">
@@ -2496,23 +2538,64 @@
 <p>The Fermat library is benchmarked in many scenarios, and the details of performance for the different kinds of math supported are detailed within this section.</p>
 <h2 id="installed-extensions">Installed Extensions</h2>
 <p>The Fermat library <strong>requires</strong> the <a href="https://www.php.net/manual/en/book.gmp">GMP</a> and <a href="https://www.php.net/manual/en/book.bc.php">BCMath</a> extensions to be available, and both are listed as requirements in the <code>composer.json</code> file for the library.</p>
-<p>If the <a href="http://php-decimal.io/#introduction">Decimal</a> extension is installed, it is used in place of the <a href="https://www.php.net/manual/en/book.bc.php">BCMath</a> extension, and offers a 5-10x performance improvement.</p>
+<p>If the <a href="http://php-decimal.io/#introduction">Decimal</a> extension is installed, it is used in place of the BCMath extension, and offers a 5-100x performance improvement over BCMath within Fermat, depending on the operation and algorithm.</p>
 <p>If the <a href="https://www.php.net/manual/en/book.ds.php">Ds</a> extension is installed, then it is used in place of arrays for the <a href="../../roster/latest/Fermat%20Core/Types/NumberCollection/">NumberCollection</a> class as well as for the <a href="../../modules/coordinate-systems/about/">Coordinate Systems Module</a>. This provides substantial memory and read/write performance in most circumstances.</p>
+<h2 id="auto-mode-performance">Auto Mode Performance</h2>
+<p>If you look through the documented performance metrics, you'll see that it's fairly rare for the <code>CalcMode::Auto</code> setting to be the best performing mode for any given operation. So then why is it the default mode?</p>
+<p>Simply put, the Auto mode is more consistent in its performance across different inputs and settings. It looks at your requested scale, the values that you are using, the algorithms that can be used, and the extensions that are available, then chooses what is anticipated to be the best performing based on all of these factors.</p>
+<p>These checks ensure that it will almost always be slightly worse than going directly to the best option, but in different conditions or different points in your program, the best option may be different.</p>
+<p>Auto mode should have the best overall performance across a wide variety of applications, data, and settings.</p>
 <h2 id="scale-sensitivity">Scale Sensitivity</h2>
 <p>The performance metrics in this documentation are for the default scale setting of 10. All calculations are negatively impacted by using a larger value for scale, however different operations have different sensitivity to scale.</p>
 <p>As such, the "Scale Sensitivity" factor in the documentation provides some idea of how the performance might be impacted by using larger scales.</p>
-<p>A "Scale Sensitivity" of <strong>Low</strong> means that the performance can be expected to stay within the same range given, even if the scale is within 10 - 1000.</p>
-<p>A "Scale Sensistivity" of <strong>Moderate</strong> means that the performance can be expected to stay within the same range given, so long as the scale is within 10 - 100.</p>
-<p>A "Scale Sensistivity" of <strong>High</strong> means that the performance can be expected to stay within the same range given, so long as the scale is within 10 - 20.</p>
-<p>A "Scale Sensitivity" of <strong>Extreme</strong> means that the performance cannot be expected to remain within the same range given, even if scale is increased by only a factor of 2.</p>
+<p>A "Scale Sensitivity" of <strong>Low</strong> means that the performance drops off in a somewhat linear fashion, usually at a rate of ~10% for every additional 10 digits of precision.</p>
+<p>A "Scale Sensistivity" of <strong>Moderate</strong> means that the performance drops off in a somewhat linear fashion, but at a higher rate than Low.</p>
+<p>A "Scale Sensistivity" of <strong>High</strong> means that the performance drops off rapidly, often in a quadratic fashion.</p>
+<p>A "Scale Sensitivity" of <strong>Extreme</strong> means that the performance cannot be expected to remain within near the given performance, even if scale is increased by only a factor of 2.</p>
 <div class="admonition note">
 <p class="admonition-title">Scale Sensitivity Applies to Precision Mode</p>
 <p>The <strong>Native</strong> <a href="../../configuration/calculation-modes/">Calculation Mode</a> does not suffer from any scale sensitivity, since your requested scale is ignored when this mode is used. However, that also means that the result given does not necessarily have the scale you requested.</p>
-<p>The <strong>Auto</strong> <a href="">Calculation Mode</a> often, but not always, has lower sensitivity to scale.</p>
+<p>The <strong>Auto</strong> <a href="../../configuration/calculation-modes/">Calculation Mode</a> often, but not always, has lower sensitivity to scale.</p>
 </div>
+<h2 id="value-sensitivity">Value Sensitivity</h2>
+<p>Some operations use algorithms that are very sensitive to the actual numbers which are part of the calculation. This is often a mathematical limitation, and not a problem with PHP or the code used.</p>
+<p>In most cases, such algorithms first try to move your input numbers to the section of the algorithm that converges most quickly using as many mathematical identities as possible.</p>
+<p>Even so, some implementations still have a large variance in performance depending on the numbers which are being calculated.</p>
+<p>A "Value Sensitivity" of <strong>None</strong> means that the performance is not effected by the values being calculated, though it may still be effected by the complexity of those values. The more digits your values have, the worse performance you can expect, since there are simply more calculations to do.</p>
 <h2 id="performance-metrics">Performance Metrics</h2>
 <p>Within this section, performance metrics are provided in two forms, and shown for each of the calculation modes. For example:</p>
-<p>...</p>
+<div class="admonition signature">
+<p class="admonition-title">add()</p>
+<h5 id="add">add</h5>
+<p><strong>Native Mode</strong></p>
+<dl>
+<dt>Ops/sec</dt>
+<dd>150,000</dd>
+<dt>EINOs</dt>
+<dd>565</dd>
+</dl>
+<p><strong>Auto Mode</strong></p>
+<dl>
+<dt>Ops/sec</dt>
+<dd>155,000</dd>
+<dt>EINOs</dt>
+<dd>550</dd>
+</dl>
+<p><strong>Precision Mode</strong></p>
+<dl>
+<dt>Ops/sec</dt>
+<dd>150,000</dd>
+<dt>EINOs</dt>
+<dd>565</dd>
+</dl>
+<p><strong>Characteristics</strong></p>
+<dl>
+<dt>Scale Sensitivity</dt>
+<dd><strong>Low</strong></dd>
+<dt>Value Sensitivity</dt>
+<dd><strong>None</strong></dd>
+</dl>
+</div>
 <h3 id="opssec">Ops/sec</h3>
 <p>These are provided in a range, and represent the number of times you could expect to call that calculation per second within a loop for common value ranges.</p>
 <p>The actual number of operations per second that you can realize in your circumstances depend on your system configuration and hardware. These benchmarks were performed using a Ryzen 3900.</p>
@@ -2535,7 +2618,7 @@
 </div>
 </div>
 </div>
-<p>Another way of putting this is if you removed Fermat from your application and performed all of the math yourself directly in your code using the functions and operators available in PHP core, you would be able to perform that calculation X times without slowing down your application.</p>
+<p>Another way of putting this is if you removed Fermat from your application and performed all the math yourself directly in your code using the functions and operators available in PHP core, you would be able to perform that calculation X times without slowing down your application.</p>
 <p>It is important to note that <strong>this comparison is only valid for a scale setting of 10 and for small numbers (less than 10,000 for most operations)</strong>.</p>
 <p>Outside of those bounds, the EINOs would begin to give rounding and mathematical errors that may impact the correctness of your program.</p>
 <div class="admonition example">
