@@ -41,17 +41,7 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/getting-started/direct-instantiation/</loc>
-         <lastmod>2022-09-30</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/exceptions/</loc>
-         <lastmod>2022-09-30</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://jordanrl.github.io/Fermat/getting-started/how-to-calculate-colors/</loc>
          <lastmod>2022-09-30</lastmod>
          <changefreq>daily</changefreq>
     </url>

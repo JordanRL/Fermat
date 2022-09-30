@@ -71,7 +71,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#limitations-of-native-inequality-operators" class="md-skip">
+        <a href="#comparisons-in-fermat" class="md-skip">
           Skip to content
         </a>
       
@@ -486,9 +486,60 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Comparing Values
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Comparing Values
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-of-native-inequality-operators" class="md-nav__link">
+    Limitations of Native Inequality Operators
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#equality" class="md-nav__link">
+    Equality
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inequality" class="md-nav__link">
+    Inequality
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sorting-comparison" class="md-nav__link">
+    Sorting Comparison &lt;=&gt;
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2363,6 +2414,42 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-of-native-inequality-operators" class="md-nav__link">
+    Limitations of Native Inequality Operators
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#equality" class="md-nav__link">
+    Equality
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inequality" class="md-nav__link">
+    Inequality
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sorting-comparison" class="md-nav__link">
+    Sorting Comparison &lt;=&gt;
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -2378,10 +2465,12 @@
                   </a>
                 
                 
-                <h1 id="limitations-of-native-inequality-operators">Limitations of Native Inequality Operators</h1>
-<p>For values that cannot be represented as an <code>integer</code> or <code>float</code> accurately, using the native inequality operators will result in erroneous results. In some cases, this might also result in underflow and overflow of the native types.</p>
+                <h1 id="comparisons-in-fermat">Comparisons In Fermat</h1>
+<p>One of the most commonly performed operations with numbers in code is to perform a comparison of some kind. To help with this, Fermat values include a wide range of comparison helper methods that are detailed here.</p>
+<h2 id="limitations-of-native-inequality-operators">Limitations of Native Inequality Operators</h2>
+<p>For Fermat values using the native inequality operators will result in erroneous results. </p>
 <p>Because of this, all comparisons, including equality comparisons which would normally be <code>==</code> or <code>===</code> in PHP, should be performed using the comparison methods provided on all objects which extend the <a href="../../roster/latest/Fermat%20Core/Types/Base/Number/">Number</a> abstract class.</p>
-<h1 id="equality">Equality</h1>
+<h2 id="equality">Equality</h2>
 <p>There are two types of equality that can be compared using this library: equality of value, and equality of representation. In virtually all cases equality of value is what is intended, and this is accomplished with the <code>isEqual()</code> method.</p>
 <p>Equality of representation is accomplished with the <code>equals()</code> method, and only returns true if the value being compared has the same value <em>and</em> is an instance of the same class.</p>
 <div class="admonition signature">
@@ -2401,7 +2490,7 @@
 <p class="admonition-title">Implemented As Part of the Hashable Interface</p>
 <p>As part of integration with the <code>ext-ds</code> extension, this method has been implemented to satisfy the <code>Hashable</code> interface. This is mainly so that objects which are instances of the <a href="../../roster/latest/Fermat%20Core/Types/Base/Number/">Number</a> abstract class can be used as array keys.</p>
 </div>
-<h1 id="inequality">Inequality</h1>
+<h2 id="inequality">Inequality</h2>
 <p>These methods are only available on numbers that implement the <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface/">SimpleNumberInterface</a>. They are safe to use between different types of classes that implement the <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface/">SimpleNumberInterface</a>, and will perform the necessary conversions to return an answer.</p>
 <div class="admonition signature">
 <p class="admonition-title">isGreaterThan(mixed $value)</p>
@@ -2416,7 +2505,7 @@
 <p class="admonition-title">isLessThanOrEqualTo(mixed $value)</p>
 </div>
 <p>Any <code>$value</code> which is a valid input for <code>Numbers::makeOrDont()</code> can be provided to these methods. They are analogous to the corresponding comparison operators in PHP, but are safe to use with the arbitrary scale values found in this library.</p>
-<h1 id="sorting-comparison">Sorting Comparison &lt;=&gt;</h1>
+<h2 id="sorting-comparison">Sorting Comparison &lt;=&gt;</h2>
 <p>The spaceship operator <code>&lt;=&gt;</code>, which returns <code>1</code>, <code>0</code>, or <code>-1</code> to provide sorting order information, would result in many of the same issues described for the <code>isEqual()</code> method. This is handled internally by the BCMath extension.</p>
 <div class="admonition signature">
 <p class="admonition-title">compare(mixed $value)</p>

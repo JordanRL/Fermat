@@ -2384,7 +2384,7 @@
 <p>Or by including it in your composer.json file:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos">1</span><span class="p">{</span>
 <span class="linenos">2</span>  <span class="nt">&quot;require&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="linenos">3</span>    <span class="nt">&quot;samsara/fermat&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.0&quot;</span>
+<span class="linenos">3</span>    <span class="nt">&quot;samsara/fermat&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.1&quot;</span>
 <span class="linenos">4</span>  <span class="p">}</span>
 <span class="linenos">5</span><span class="p">}</span>
 </code></pre></div>
@@ -2392,14 +2392,14 @@
 <p class="admonition-title">Dependencies</p>
 <p>Fermat requires the following packages:</p>
 <ul>
-<li><code>riimu/kit-baseconversion</code>: Provides the base conversion library used internally</li>
 <li><code>samsara/common</code>: Provides the exception model used in Fermat</li>
 </ul>
-<p>It also requires the <a href="https://www.php.net/manual/en/book.bc.php">BCMath</a> extension for PHP, however since 7.0 this extension has been included by default in distributions.</p>
+<p>It also requires the <a href="https://www.php.net/manual/en/book.bc.php">BCMath</a> and <a href="https://www.php.net/manual/en/book.gmp">GMP</a> extensions.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Improve Performance With Suggested Extensions</p>
-<p>Fermat suggests that you also install the <code>ext-ds</code> extension and the <code>ext-gmp</code> extension. When present, these help reduce memory usage and computation time.</p>
+<p>Fermat suggests that you also install the <code>ext-decimal</code> extension and the <code>ext-ds</code> extension. When present, these help reduce memory usage and computation time.</p>
+<p>In particular, the <a href="http://php-decimal.io/#introduction">Decimal</a> extension results in performance increases ranging from 5x to 100x depending on the operation.</p>
 </div>
 <h1 id="basic-usage">Basic Usage</h1>
 <p>A basic usage of the Fermat library is straightforward and simple to use quickly.</p>
@@ -2407,7 +2407,7 @@
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="k">use</span> <span class="nx">Samsara\Fermat\Values\ImmutableDecimal</span><span class="p">;</span>
 <span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="c1">// __construct($value, $scale = 10, $base = 10);</span>
+<span class="linenos"> 5</span><span class="c1">// __construct($value, $scale = 10, $base = NumberBase::Ten, $baseTenInput = true);</span>
 <span class="linenos"> 6</span><span class="nv">$five</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ImmutableDecimal</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
 <span class="linenos"> 7</span>
 <span class="linenos"> 8</span><span class="k">echo</span> <span class="nv">$five</span><span class="o">-&gt;</span><span class="na">pow</span><span class="p">(</span><span class="s1">&#39;1.2&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">sin</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">();</span>

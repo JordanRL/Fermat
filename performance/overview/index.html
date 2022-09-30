@@ -638,13 +638,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#value-sensitivity" class="md-nav__link">
-    Value Sensitivity
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#performance-metrics" class="md-nav__link">
     Performance Metrics
   </a>
@@ -2476,13 +2469,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#value-sensitivity" class="md-nav__link">
-    Value Sensitivity
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#performance-metrics" class="md-nav__link">
     Performance Metrics
   </a>
@@ -2557,11 +2543,6 @@
 <p>The <strong>Native</strong> <a href="../../configuration/calculation-modes/">Calculation Mode</a> does not suffer from any scale sensitivity, since your requested scale is ignored when this mode is used. However, that also means that the result given does not necessarily have the scale you requested.</p>
 <p>The <strong>Auto</strong> <a href="../../configuration/calculation-modes/">Calculation Mode</a> often, but not always, has lower sensitivity to scale.</p>
 </div>
-<h2 id="value-sensitivity">Value Sensitivity</h2>
-<p>Some operations use algorithms that are very sensitive to the actual numbers which are part of the calculation. This is often a mathematical limitation, and not a problem with PHP or the code used.</p>
-<p>In most cases, such algorithms first try to move your input numbers to the section of the algorithm that converges most quickly using as many mathematical identities as possible.</p>
-<p>Even so, some implementations still have a large variance in performance depending on the numbers which are being calculated.</p>
-<p>A "Value Sensitivity" of <strong>None</strong> means that the performance is not effected by the values being calculated, though it may still be effected by the complexity of those values. The more digits your values have, the worse performance you can expect, since there are simply more calculations to do.</p>
 <h2 id="performance-metrics">Performance Metrics</h2>
 <p>Within this section, performance metrics are provided in two forms, and shown for each of the calculation modes. For example:</p>
 <div class="admonition signature">
@@ -2592,8 +2573,6 @@
 <dl>
 <dt>Scale Sensitivity</dt>
 <dd><strong>Low</strong></dd>
-<dt>Value Sensitivity</dt>
-<dd><strong>None</strong></dd>
 </dl>
 </div>
 <h3 id="opssec">Ops/sec</h3>

@@ -2472,6 +2472,7 @@
 <p>The current list of providers, documented in more detail in the section for Providers, is:</p>
 <ul>
 <li><a href="../../roster/latest/Fermat%20Core/Provider/ArithmeticProvider/">ArithmeticProvider</a></li>
+<li><a href="../../roster/latest/Fermat%20Core/Provider/BaseConversionProvider/">BaseConversionProvider</a></li>
 <li><a href="../../roster/latest/Fermat%20Core/Provider/CalculationModeProvider/">CalculationModeProvider</a></li>
 <li><a href="../../roster/latest/Fermat%20Core/Provider/ConstantProvider/">ConstantProvider</a></li>
 <li><a href="../../roster/latest/Fermat%20Core/Provider/RandomProvider/">RandomProvider</a></li>
@@ -2499,21 +2500,26 @@
 <li><a href="../../roster/latest/Fermat%20Core/Values/MutableFraction/">MutableFraction</a></li>
 </ul>
 <h2 id="scale">Scale</h2>
-<p>The basis of this library is being able to provide answers at any requested scale. Scale, as used in this library, is the number of digits after the decimal point which are returned. This is in contrast to <em>significant figures</em> or <em>precision</em>, which represent the numbers of digits returned after the decimal point after trimming all the leading zeros.</p>
+<p>The basis of this library is being able to provide answers at any requested scale. Scale, as used in this library, is the number of digits after the decimal point which are returned. This is in contrast to <em>significant figures</em> or <em>precision</em>, which represent the number of digits returned after the decimal point after trimming all the leading zeros.</p>
 <p>There are two main reasons for providing scale as the main way of controlling how precise the answer is:</p>
 <ol>
 <li>It ensures that the string size of values with the same scale are comparable.</li>
-<li>It is far easier to implement some of the converging series calculations within this library, such as those for trigonometry functions, if scale is used instead of precision.</li>
+<li>It is far easier to implement some converging series calculations within this library, such as those for trigonometry functions, if scale is used instead of precision.</li>
 </ol>
-<p>In actual fact, significant figures have much less meaning in the context of a Taylor series or MacLauren series. If precision was used, the library would have to make more assumptions about the intent of calling code, and those assumptions would be less transparent.</p>
+<p>In actual fact, significant figures have much less meaning in the context of a most converging series. If precision was used, the library would have to make more assumptions about the intent of calling code, and those assumptions would be less transparent.</p>
 <div class="admonition caution">
 <p class="admonition-title">Scale Does Not Increase With New Operations</p>
 <p>Unlike significant figures, the scale returned does not change as the number of decimal digits are multiplied or divided.</p>
-<p>This means that multiplying two numbers that each have 10 digits after the decimal will also return a number with 10 digits after the decimal. This can be fixed by setting the scale of the argument value to the sum of the two scales.</p>
+<p>This means that multiplying two numbers that each have 10 digits after the decimal will also return a number with 10 digits after the decimal. This can be addressed by setting the scale of the argument value to the sum of the two scales, if you desire to get results this way.</p>
 </div>
 <div class="admonition caution">
 <p class="admonition-title">Scale Is Only Applied To The Base-10 Form</p>
 <p>Scale is tracked and managed in base-10. This means that if a number has a base smaller than 10, it will return more digits than the scale would suggest after base conversion, while a number with a base larger than 10 will return fewer digits after the base conversion.</p>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Scale Is Ignored For Native Mode</p>
+<p>If you use Fermat with the Native mode setting, the scale on values are ignored for all calculations, and your object will be set to whatever value the PHP engine returns for the equivalent operation.</p>
+<p>In general this results in somewhere between 10 and 12 digits of accuracy for numbers near 0, with fewer digits of accuracy as you move further away from 0 and the density of possible values a float can represent is reduced.</p>
 </div>
                 
               

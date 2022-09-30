@@ -2378,22 +2378,7 @@
                   </a>
                 
                 
-                <link rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css"
-  integrity="sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc"
-  crossorigin="anonymous" />
-
-<style type="text/css">
-    .katex img {
-      object-fit: fill;
-      padding: unset;
-      display: block;
-      position: absolute;
-      width: 100%;
-      height: inherit;
-    }
-</style>
-<p>Fermat provides factory classes to make it easier to get instances of the various Value classes. The available factories are:</p>
+                <p>Fermat provides factory classes to make it easier to get instances of the various Value classes. The available factories are:</p>
 <ul>
 <li><a href="../../roster/latest/Fermat%20Core/Collections/">Collections</a></li>
 <li><a href="../../roster/latest/Fermat%20Core/Numbers/">Numbers</a></li>
@@ -2404,21 +2389,9 @@
 <h1 id="the-numbers-factory-class">The Numbers Factory Class</h1>
 <p>The <a href="../../roster/latest/Fermat%20Core/Numbers/">Numbers</a> factory class provides a way to use the Value classes which implement the <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface/">SimpleNumberInterface</a> in Fermat without being as specific as those classes may require. Consider the following code:</p>
 <h3 id="available-factory-methods">Available Factory Methods</h3>
-<p>The following factory methods are available on the <code>Numbers</code> class.</p>
+<p>The following factory methods are available on the <code>Numbers</code> class. For full signature descriptions, please see the Source Reference section for the <a href="../../roster/latest/Fermat%20Core/Numbers/">Numbers</a> class.</p>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::make(string $type, mixed $value, ?int $scale = null, int $base = 10)</p>
-<dl>
-<dt>$type</dt>
-<dd>The type of <strong>SimpleNumberInterface</strong> implementation to create</dd>
-<dt>$value</dt>
-<dd>The value to create the instance with</dd>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>$base</dt>
-<dd>The base of the instance created</dd>
-<dt>return</dt>
-<dd>An instance of the specified <strong>$type</strong> created with the provided arguments as parameters</dd>
-</dl>
+<p class="admonition-title">Numbers::make()</p>
 </div>
 <p>This factory method returns an instance of <code>DecimalInterface</code> or <code>FractionInterface</code>, depending on the <code>$type</code> given and the <code>$value</code> provided.</p>
 <div class="admonition tip">
@@ -2430,37 +2403,13 @@
 <p>If <code>$type</code> is the fully qualified class name or instance of an object other than <code>ImmutableDecimal</code>, <code>MutableDecimal</code>, <code>ImmutableFraction</code>, or <code>MutableFraction</code>, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown. </p>
 </div>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::makeFromBase10(string $type, mixed $value, ?int $scale = null, int $base = 10)</p>
-<dl>
-<dt>$type</dt>
-<dd>The type of <strong>SimpleNumberInterface</strong> implementation to create</dd>
-<dt>$value</dt>
-<dd>The value to create the instance with</dd>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>$base</dt>
-<dd>The base of the instance created</dd>
-<dt>return</dt>
-<dd>An instance of the specified <strong>$type</strong> created with the provided arguments as parameters</dd>
-</dl>
+<p class="admonition-title">Numbers::makeFromBase10()</p>
 </div>
-<p>This factory method will created a base-10 instance of <code>$type</code> using the provided <code>$value</code>, then convert that value in the <code>$base</code> provided. This allows you to provide a <code>$value</code> in base-10, but get an instance in a different base.</p>
+<p>This factory method will create a base-10 instance of <code>$type</code> using the provided <code>$value</code>, then convert that value in the <code>$base</code> provided. This allows you to provide a <code>$value</code> in base-10, but get an instance in a different base.</p>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::makeOrDont(string $type, mixed $value, ?int $scale = null, int $base = 10)</p>
-<dl>
-<dt>$type</dt>
-<dd>The type of <strong>SimpleNumberInterface</strong> implementation to ensure</dd>
-<dt>$value</dt>
-<dd>The original value which was provided</dd>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>$base</dt>
-<dd>The base of the instance created</dd>
-<dt>return</dt>
-<dd>An instance of the specified <strong>$type</strong> with the provided <strong>$value</strong>; if a new instance is created, it has the given <strong>$scale</strong> and <strong>$base</strong></dd>
-</dl>
+<p class="admonition-title">Numbers::makeOrDont()</p>
 </div>
-<p>This factory method will coerce the given <code>$value</code> into the requested <code>$type</code>. Unlike using <a href="../direct-instantiation/">direct instantiation</a>, this factory will perform all the correct conversions on the various possible values necessary to ensure a valid instance is constructed.</p>
+<p>This factory method will coerce the given <code>$value</code> into the requested <code>$type</code>. Unlike using <a href="direct-instantiation.md">direct instantiation</a>, this factory will perform all the correct conversions on the various possible values necessary to ensure a valid instance is constructed.</p>
 <p>If the provided <code>$value</code> already matches the requested <code>$type</code>, then it is returned without modification. This makes the <code>makeOrDont()</code> factory ideal for accepting any possible valid constructor value as an input while also guaranteeing that your implementation is working with a particular value.</p>
 <p>This is how the math operations such as <code>add($num)</code> are able to accept virtually any input directly.</p>
 <div class="admonition note">
@@ -2486,17 +2435,7 @@
 <p>If the provided <code>$value</code> matches none of these, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown. </p>
 </div>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::makeFractionFromString(string $type, string $value, int $base = 10)</p>
-<dl>
-<dt>$type</dt>
-<dd>The type of <strong>SimpleNumberInterface</strong> implementation to ensure</dd>
-<dt>$value</dt>
-<dd>The original value which was provided</dd>
-<dt>$base</dt>
-<dd>The base of the instance created</dd>
-<dt>return</dt>
-<dd>An instance of the specified <strong>FractionInterface</strong> class with the provided arguments as parameters; translates the string <strong>$value</strong> into the correct constructor arguments</dd>
-</dl>
+<p class="admonition-title">Numbers::makeFractionFromString()</p>
 </div>
 <p>This factory method will take a string as its input and provide an instance of either <code>ImmutableFraction</code> or <code>MutableFraction</code> depending on the value given for <code>$type</code>.</p>
 <div class="admonition fail">
@@ -2508,13 +2447,7 @@
 <p>If <code>$value</code> contains more than one fraction bar, which is assumed to be represented by the character <code>/</code>, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown. </p>
 </div>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::makePi(?int $scale = null)</p>
-<dl>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>return</dt>
-<dd>The number pi (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span></span></span></span>) as an instance of <strong>ImmutableNumber</strong> to the requested <strong>$scale</strong>.</dd>
-</dl>
+<p class="admonition-title">Numbers::makePi()</p>
 </div>
 <p>If no <code>$scale</code> is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the <code>Numbers::PI</code> constant. If a scale of greater than 100 is requested, then a call is made to <code>ConstantProvider::makePi()</code> which computes digits of pi using the most efficient computational method currently available.</p>
 <div class="admonition fail">
@@ -2522,13 +2455,7 @@
 <p>If a scale of less than 1 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown. </p>
 </div>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::makeTau(?int $scale = null)</p>
-<dl>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>return</dt>
-<dd>The number tau (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi></mrow><annotation encoding="application/x-tex">\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span>) as an instance of <strong>ImmutableNumber</strong> to the requested <strong>$scale</strong>.</dd>
-</dl>
+<p class="admonition-title">Numbers::makeTau()</p>
 </div>
 <p>If no <code>$scale</code> is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the <code>Numbers::TAU</code> constant. If a scale of greater than 100 is requested, then a call is made to <code>Numbers::makePi()</code> which uses the methods described above, after which the result is multiplied by 2.</p>
 <div class="admonition fail">
@@ -2536,13 +2463,7 @@
 <p>If a scale of less than 1 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown.</p>
 </div>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::make2Pi(?int $scale = null)</p>
-<dl>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>return</dt>
-<dd>The number 2pi (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span></span></span></span>) as an instance of <strong>ImmutableNumber</strong> to the requested <strong>$scale</strong>.</dd>
-</dl>
+<p class="admonition-title">Numbers::make2Pi()</p>
 </div>
 <p>This factory method is an alias for <code>Numbers::makeTau()</code>.</p>
 <div class="admonition fail">
@@ -2550,13 +2471,7 @@
 <p>If a scale of less than 1 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown.</p>
 </div>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::makeE(?int $scale = null)</p>
-<dl>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>return</dt>
-<dd>Euler's number (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi></mrow><annotation encoding="application/x-tex">e</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">e</span></span></span></span>) as an instance of <strong>ImmutableNumber</strong> to the requested <strong>$scale</strong>.</dd>
-</dl>
+<p class="admonition-title">Numbers::makeE()</p>
 </div>
 <p>If no <code>$scale</code> is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the <code>Numbers::E</code> constant. If a scale of greater than 100 is requested, then a call is made to <code>ConstantProvider::makeE()</code> which uses a fast converging series to calculate digits of e.</p>
 <div class="admonition fail">
@@ -2564,13 +2479,7 @@
 <p>If a scale of less than 1 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown.</p>
 </div>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::makeGoldenRatio(?int $scale = null)</p>
-<dl>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>return</dt>
-<dd>The golden ratio (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">φ</span></span></span></span>) as an instance of <strong>ImmutableNumber</strong> to the requested <strong>$scale</strong>.</dd>
-</dl>
+<p class="admonition-title">Numbers::makeGoldenRatio()</p>
 </div>
 <p>If no <code>$scale</code> is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the <code>Numbers::GOLDEN_RATION</code> constant.</p>
 <div class="admonition fail">
@@ -2578,13 +2487,7 @@
 <p>If a scale of less than 1 or greater than 100 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown.</p>
 </div>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::makeNaturalLog10(?int $scale = null)</p>
-<dl>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>return</dt>
-<dd>The natural log of 10 as an instance of <strong>ImmutableNumber</strong> to the requested <strong>$scale</strong>.</dd>
-</dl>
+<p class="admonition-title">Numbers::makeNaturalLog10()</p>
 </div>
 <p>If no <code>$scale</code> is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the <code>Numbers::LN_10</code> constant. If a scale of greater than 100 is requested, then an exception is thrown.</p>
 <div class="admonition fail">
@@ -2592,56 +2495,13 @@
 <p>If a scale of less than 1 or greater than 100 is requested, an exception of type <code>Samsara\Exceptions\UsageError\IntegrityConstraint</code> is thrown.</p>
 </div>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::makeOne(?int $scale = null)</p>
-<dl>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>return</dt>
-<dd>The number 1 as an instance of <strong>ImmutableNumber</strong> to the requested <strong>$scale</strong>.</dd>
-</dl>
+<p class="admonition-title">Numbers::makeOne()</p>
 </div>
 <p>If <code>$scale</code> is null, then the instance returned will have a scale of 100.</p>
 <div class="admonition signature">
-<p class="admonition-title">Numbers::makeZero(?int $scale = null)</p>
-<dl>
-<dt>$scale</dt>
-<dd>The maximum number of digits after the decimal that the instance can have</dd>
-<dt>return</dt>
-<dd>The number 0 as an instance of <strong>ImmutableNumber</strong> to the requested <strong>$scale</strong>.</dd>
-</dl>
+<p class="admonition-title">Numbers::makeZero()</p>
 </div>
 <p>If <code>$scale</code> is null, then the instance returned will have a scale of 100.</p>
-<h3 id="static-methods">Static Methods</h3>
-<p>The <code>Numbers</code> factory class also has two static methods that work as a global variable for the Fermat library.</p>
-<div class="admonition signature">
-<p class="admonition-title">Numbers::getDefaultCalcMode()</p>
-<dl>
-<dt>return</dt>
-<dd>The current value of the protected parameter <strong>Numbers::$defaultCalcMode</strong></dd>
-</dl>
-</div>
-<p>By default, this value is set to <code>Selectable::CALC_MODE_PRECISION</code>, resulting in the arbitrary scale implementations being used for all math functions.</p>
-<div class="admonition caution">
-<p class="admonition-title">For Internal Use</p>
-<p>This function is meant to be called within the constructors of values that implement the <code>NumberInterface</code> and which use the provided arithmetic traits. It is likely to have limited utility outside of these situations.</p>
-</div>
-<div class="admonition signature">
-<p class="admonition-title">Numbers::setDefaultCalcMode(int $mode)</p>
-<dl>
-<dt>$mode</dt>
-<dd>The calculation mode integer; expected to match constant values on <strong>Selectable</strong></dd>
-<dt>return</dt>
-<dd>Void</dd>
-</dl>
-</div>
-<p>This static method sets the protected parameter <code>Numbers::$defaultCalcMode</code> to the provided <code>$mode</code>. The Fermat library assumes that only values which are constants on the <code>Selectable</code> class are used as inputs for this function.</p>
-<p>Using other values for <code>$mode</code> may be possible in the event you are extending the Fermat classes with your own implementations, however an unknown <code>$mode</code> will cause the classes provided in this library to fall back to <code>Selectable::CALC_MODE_PRECISION</code>.</p>
-<p>This behavior could be changed by overriding the methods defined in the <code>ArithmeticSelectionTrait</code>.</p>
-<div class="admonition see-also">
-<p class="admonition-title">See Also</p>
-<p>For more information on the calculation modes available in Fermat, see the page on <a href="../../configuration/calculation-modes/">Calculation Modes</a>. </p>
-<p>For more information on extending these values, please see the documentation in the "Extending" section.</p>
-</div>
                 
               
               
