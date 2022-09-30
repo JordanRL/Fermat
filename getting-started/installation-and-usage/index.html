@@ -2380,7 +2380,7 @@
                 
                 <h1 id="installation">Installation</h1>
 <p>The Fermat library is available on <a href="https://packagist.org/packages/samsara/fermat">Packagist</a>, and can be installed with composer:</p>
-<p><code>composer require "samsara/fermat:^2.0"</code></p>
+<p><code>composer require "samsara/fermat:^2.1"</code></p>
 <p>Or by including it in your composer.json file:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos">1</span><span class="p">{</span>
 <span class="linenos">2</span>  <span class="nt">&quot;require&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -2407,13 +2407,18 @@
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="k">use</span> <span class="nx">Samsara\Fermat\Values\ImmutableDecimal</span><span class="p">;</span>
 <span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="c1">// __construct($value, $scale = 10, $base = NumberBase::Ten, $baseTenInput = true);</span>
-<span class="linenos"> 6</span><span class="nv">$five</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ImmutableDecimal</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
-<span class="linenos"> 7</span>
-<span class="linenos"> 8</span><span class="k">echo</span> <span class="nv">$five</span><span class="o">-&gt;</span><span class="na">pow</span><span class="p">(</span><span class="s1">&#39;1.2&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">sin</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">();</span>
-<span class="linenos"> 9</span><span class="c1">// Prints: 0.57733662664006904181</span>
-<span class="linenos">10</span><span class="k">echo</span> <span class="nv">$five</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">();</span>
-<span class="linenos">11</span><span class="c1">// Prints: 5</span>
+<span class="linenos"> 5</span><span class="c1">// __construct(</span>
+<span class="linenos"> 6</span><span class="c1">//     $value, </span>
+<span class="linenos"> 7</span><span class="c1">//     $scale = 10, </span>
+<span class="linenos"> 8</span><span class="c1">//     $base = NumberBase::Ten, </span>
+<span class="linenos"> 9</span><span class="c1">//     $baseTenInput = true</span>
+<span class="linenos">10</span><span class="c1">// );</span>
+<span class="linenos">11</span><span class="nv">$five</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ImmutableDecimal</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="k">echo</span> <span class="nv">$five</span><span class="o">-&gt;</span><span class="na">pow</span><span class="p">(</span><span class="s1">&#39;1.2&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">sin</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">();</span>
+<span class="linenos">14</span><span class="c1">// Prints: 0.57733662664006904181</span>
+<span class="linenos">15</span><span class="k">echo</span> <span class="nv">$five</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">();</span>
+<span class="linenos">16</span><span class="c1">// Prints: 5</span>
 </code></pre></div>
 <p>Once you have your number objects created, you can continue using them with your desired scale.</p>
 <div class="admonition note">
