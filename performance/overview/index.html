@@ -2442,9 +2442,9 @@
 <p>The performance of Fermat depends very sensitively on the extensions installed, the settings you have configured for your objects, and the values which you are calculating for.</p>
 <p>The Fermat library is benchmarked in many scenarios, and the details of performance for the different kinds of math supported are detailed within this section.</p>
 <h2 id="installed-extensions">Installed Extensions</h2>
-<p>The Fermat library <strong>requires</strong> the <a href="">GMP</a> and <a href="">BCMath</a> extensions to be available, and both are listed as requirements in the <code>composer.json</code> file for the library.</p>
-<p>If the <a href="">Decimal</a> extension is installed, it is used in place of the <a href="">BCMath</a> extension, and offers a 5-10x performance improvement.</p>
-<p>If the <a href="">Ds</a> extension is installed, then it is used in place of arrays for the <a href="">NumberCollection</a> class as well as for the <a href="">Coordinate Systems Module</a>. This provides substantial memory and read/write performance in most circumstances.</p>
+<p>The Fermat library <strong>requires</strong> the <a href="https://www.php.net/manual/en/book.gmp">GMP</a> and <a href="https://www.php.net/manual/en/book.bc.php">BCMath</a> extensions to be available, and both are listed as requirements in the <code>composer.json</code> file for the library.</p>
+<p>If the <a href="http://php-decimal.io/#introduction">Decimal</a> extension is installed, it is used in place of the <a href="https://www.php.net/manual/en/book.bc.php">BCMath</a> extension, and offers a 5-10x performance improvement.</p>
+<p>If the <a href="https://www.php.net/manual/en/book.ds.php">Ds</a> extension is installed, then it is used in place of arrays for the <a href="../../roster/latest/Fermat%20Core/Types/NumberCollection/">NumberCollection</a> class as well as for the <a href="../../modules/coordinate-systems/about/">Coordinate Systems Module</a>. This provides substantial memory and read/write performance in most circumstances.</p>
 <h2 id="scale-sensitivity">Scale Sensitivity</h2>
 <p>The performance metrics in this documentation are for the default scale setting of 10. All calculations are negatively impacted by using a larger value for scale, however different operations have different sensitivity to scale.</p>
 <p>As such, the "Scale Sensitivity" factor in the documentation provides some idea of how the performance might be impacted by using larger scales.</p>
@@ -2454,7 +2454,7 @@
 <p>A "Scale Sensitivity" of <strong>Extreme</strong> means that the performance cannot be expected to remain within the same range given, even if scale is increased by only a factor of 2.</p>
 <div class="admonition note">
 <p class="admonition-title">Scale Sensitivity Applies to Precision Mode</p>
-<p>The <strong>Native</strong> <a href="">Calculation Mode</a> does not suffer from any scale sensitivity, since your requested scale is ignored when this mode is used. However, that also means that the result given does not necessarily have the scale you requested.</p>
+<p>The <strong>Native</strong> <a href="../../configuration/calculation-modes/">Calculation Mode</a> does not suffer from any scale sensitivity, since your requested scale is ignored when this mode is used. However, that also means that the result given does not necessarily have the scale you requested.</p>
 <p>The <strong>Auto</strong> <a href="">Calculation Mode</a> often, but not always, has lower sensitivity to scale.</p>
 </div>
 <h2 id="performance-metrics">Performance Metrics</h2>
@@ -2468,16 +2468,19 @@
 <p>This represents how many native PHP operations you would need in your code to take the same amount of time as the operation does within Fermat.</p>
 <div class="admonition example">
 <p class="admonition-title">For Example</p>
-<p>=== Fermat
-    <div class="highlight"><pre><span></span><code><span class="linenos">1</span><span class="cp">&lt;?php</span>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Fermat</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="linenos">1</span><span class="cp">&lt;?php</span>
 <span class="linenos">2</span>
 <span class="linenos">3</span><span class="nv">$value</span> <span class="o">=</span> <span class="nv">$fermatValue</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-</code></pre></div></p>
-<p>=== EINO
-    <div class="highlight"><pre><span></span><code><span class="linenos">1</span><span class="cp">&lt;?php</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">EINO</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="linenos">1</span><span class="cp">&lt;?php</span>
 <span class="linenos">2</span>
 <span class="linenos">3</span><span class="nv">$value</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">5</span><span class="p">;</span>
-</code></pre></div></p>
+</code></pre></div>
+</div>
+</div>
 </div>
 <p>Another way of putting this is if you removed Fermat from your application and performed all of the math yourself directly in your code using the functions and operators available in PHP core, you would be able to perform that calculation X times without slowing down your application.</p>
 <p>It is important to note that <strong>this comparison is only valid for a scale setting of 10 and for small numbers (less than 10,000 for most operations)</strong>.</p>
