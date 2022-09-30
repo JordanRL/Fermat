@@ -192,3 +192,11 @@
 .md-typeset code > .linenos {
     padding-right: 5px;
 }
+
+.md-typeset code > .nv {
+    color: #530ea6
+}
+
+.md-typeset code > .na {
+    color: #1358a6;
+}
