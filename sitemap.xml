@@ -61,27 +61,7 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://jordanrl.github.io/Fermat/getting-started/performance/</loc>
-         <lastmod>2022-09-30</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://jordanrl.github.io/Fermat/getting-started/using-factories/</loc>
-         <lastmod>2022-09-30</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://jordanrl.github.io/Fermat/getting-started/performance/arithmetic/</loc>
-         <lastmod>2022-09-30</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://jordanrl.github.io/Fermat/getting-started/performance/logarithms/</loc>
-         <lastmod>2022-09-30</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://jordanrl.github.io/Fermat/getting-started/performance/trigonometry/</loc>
          <lastmod>2022-09-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -117,6 +97,26 @@
     </url>
     <url>
          <loc>https://jordanrl.github.io/Fermat/modules/stats/about/</loc>
+         <lastmod>2022-09-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/performance/arithmetic/</loc>
+         <lastmod>2022-09-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/performance/logarithms/</loc>
+         <lastmod>2022-09-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/performance/overview/</loc>
+         <lastmod>2022-09-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jordanrl.github.io/Fermat/performance/trigonometry/</loc>
          <lastmod>2022-09-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
