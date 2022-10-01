@@ -15,23 +15,9 @@ The [Numbers](../roster/latest/Fermat Core/Numbers.md) factory class provides a 
 
 ### Available Factory Methods
 
-The following factory methods are available on the `Numbers` class.
+The following factory methods are available on the `Numbers` class. For full signature descriptions, please see the Source Reference section for the [Numbers](../roster/latest/Fermat Core/Numbers.md) class.
 
-!!! signature "Numbers::make(string $type, mixed $value, ?int $scale = null, int $base = 10)"
-    $type
-    :   The type of **SimpleNumberInterface** implementation to create
-    
-    $value
-    :   The value to create the instance with
-    
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    $base
-    :   The base of the instance created
-    
-    return
-    :   An instance of the specified **$type** created with the provided arguments as parameters
+!!! signature "Numbers::make()"
 
 This factory method returns an instance of `DecimalInterface` or `FractionInterface`, depending on the `$type` given and the `$value` provided.
 
@@ -41,39 +27,11 @@ This factory method returns an instance of `DecimalInterface` or `FractionInterf
 !!! fail "Type Must Be A Supported FQCN or Class"
     If `$type` is the fully qualified class name or instance of an object other than `ImmutableDecimal`, `MutableDecimal`, `ImmutableFraction`, or `MutableFraction`, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
-!!! signature "Numbers::makeFromBase10(string $type, mixed $value, ?int $scale = null, int $base = 10)"
-    $type
-    :   The type of **SimpleNumberInterface** implementation to create
-    
-    $value
-    :   The value to create the instance with
-    
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    $base
-    :   The base of the instance created
-    
-    return
-    :   An instance of the specified **$type** created with the provided arguments as parameters
+!!! signature "Numbers::makeFromBase10()"
 
-This factory method will created a base-10 instance of `$type` using the provided `$value`, then convert that value in the `$base` provided. This allows you to provide a `$value` in base-10, but get an instance in a different base.
+This factory method will create a base-10 instance of `$type` using the provided `$value`, then convert that value in the `$base` provided. This allows you to provide a `$value` in base-10, but get an instance in a different base.
 
-!!! signature "Numbers::makeOrDont(string $type, mixed $value, ?int $scale = null, int $base = 10)"
-    $type
-    :   The type of **SimpleNumberInterface** implementation to ensure
-    
-    $value
-    :   The original value which was provided
-    
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    $base
-    :   The base of the instance created
-    
-    return
-    :   An instance of the specified **$type** with the provided **$value**; if a new instance is created, it has the given **$scale** and **$base**
+!!! signature "Numbers::makeOrDont()"
 
 This factory method will coerce the given `$value` into the requested `$type`. Unlike using [direct instantiation](direct-instantiation.md), this factory will perform all the correct conversions on the various possible values necessary to ensure a valid instance is constructed.
 
@@ -102,18 +60,7 @@ This is how the math operations such as `add($num)` are able to accept virtually
     
     If the provided `$value` matches none of these, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
-!!! signature "Numbers::makeFractionFromString(string $type, string $value, int $base = 10)"
-    $type
-    :   The type of **SimpleNumberInterface** implementation to ensure
-    
-    $value
-    :   The original value which was provided
-    
-    $base
-    :   The base of the instance created
-    
-    return
-    :   An instance of the specified **FractionInterface** class with the provided arguments as parameters; translates the string **$value** into the correct constructor arguments
+!!! signature "Numbers::makeFractionFromString()"
 
 This factory method will take a string as its input and provide an instance of either `ImmutableFraction` or `MutableFraction` depending on the value given for `$type`.
 
@@ -123,123 +70,52 @@ This factory method will take a string as its input and provide an instance of e
 !!! fail "Value Must Contain at Most One Fraction Bar '/'"
     If `$value` contains more than one fraction bar, which is assumed to be represented by the character `/`, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
-!!! signature "Numbers::makePi(?int $scale = null)"
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    return
-    :   The number pi ($`\pi`$) as an instance of **ImmutableNumber** to the requested **$scale**.
+!!! signature "Numbers::makePi()"
 
 If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::PI` constant. If a scale of greater than 100 is requested, then a call is made to `ConstantProvider::makePi()` which computes digits of pi using the most efficient computational method currently available.
 
 !!! fail "Scale Must Be Positive"
     If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown. 
 
-!!! signature "Numbers::makeTau(?int $scale = null)"
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    return
-    :   The number tau ($`\tau`$) as an instance of **ImmutableNumber** to the requested **$scale**.
+!!! signature "Numbers::makeTau()"
 
 If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::TAU` constant. If a scale of greater than 100 is requested, then a call is made to `Numbers::makePi()` which uses the methods described above, after which the result is multiplied by 2.
 
 !!! fail "Scale Must Be Positive"
     If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
-!!! signature "Numbers::make2Pi(?int $scale = null)"
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    return
-    :   The number 2pi ($`2\pi`$) as an instance of **ImmutableNumber** to the requested **$scale**.
+!!! signature "Numbers::make2Pi()"
 
 This factory method is an alias for `Numbers::makeTau()`.
 
 !!! fail "Scale Must Be Positive"
     If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
-!!! signature "Numbers::makeE(?int $scale = null)"
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    return
-    :   Euler's number ($`e`$) as an instance of **ImmutableNumber** to the requested **$scale**.
+!!! signature "Numbers::makeE()"
 
 If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::E` constant. If a scale of greater than 100 is requested, then a call is made to `ConstantProvider::makeE()` which uses a fast converging series to calculate digits of e.
 
 !!! fail "Scale Must Be Positive"
     If a scale of less than 1 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
-!!! signature "Numbers::makeGoldenRatio(?int $scale = null)"
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    return
-    :   The golden ratio ($`\varphi`$) as an instance of **ImmutableNumber** to the requested **$scale**.
+!!! signature "Numbers::makeGoldenRatio()"
 
 If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::GOLDEN_RATION` constant.
 
 !!! fail "Scale Must Be 1-100"
     If a scale of less than 1 or greater than 100 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
-!!! signature "Numbers::makeNaturalLog10(?int $scale = null)"
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    return
-    :   The natural log of 10 as an instance of **ImmutableNumber** to the requested **$scale**.
+!!! signature "Numbers::makeNaturalLog10()"
 
 If no `$scale` is given, then the value is returned with a scale of 100. If a scale of 100 or less is requested, then the instance is constructed from the `Numbers::LN_10` constant. If a scale of greater than 100 is requested, then an exception is thrown.
 
 !!! fail "Scale Must Be 1-100"
     If a scale of less than 1 or greater than 100 is requested, an exception of type `Samsara\Exceptions\UsageError\IntegrityConstraint` is thrown.
 
-!!! signature "Numbers::makeOne(?int $scale = null)"
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    return
-    :   The number 1 as an instance of **ImmutableNumber** to the requested **$scale**.
+!!! signature "Numbers::makeOne()"
 
 If `$scale` is null, then the instance returned will have a scale of 100.
 
-!!! signature "Numbers::makeZero(?int $scale = null)"
-    $scale
-    :   The maximum number of digits after the decimal that the instance can have
-    
-    return
-    :   The number 0 as an instance of **ImmutableNumber** to the requested **$scale**.
+!!! signature "Numbers::makeZero()"
 
 If `$scale` is null, then the instance returned will have a scale of 100.
-
-### Static Methods
-
-The `Numbers` factory class also has two static methods that work as a global variable for the Fermat library.
-
-!!! signature "Numbers::getDefaultCalcMode()"
-    return
-    :   The current value of the protected parameter **Numbers::$defaultCalcMode**
-
-By default, this value is set to `Selectable::CALC_MODE_PRECISION`, resulting in the arbitrary scale implementations being used for all math functions.
-
-!!! caution "For Internal Use"
-    This function is meant to be called within the constructors of values that implement the `NumberInterface` and which use the provided arithmetic traits. It is likely to have limited utility outside of these situations.
-
-!!! signature "Numbers::setDefaultCalcMode(int $mode)"
-    $mode
-    :   The calculation mode integer; expected to match constant values on **Selectable**
-    
-    return
-    :   Void
-
-This static method sets the protected parameter `Numbers::$defaultCalcMode` to the provided `$mode`. The Fermat library assumes that only values which are constants on the `Selectable` class are used as inputs for this function.
-
-Using other values for `$mode` may be possible in the event you are extending the Fermat classes with your own implementations, however an unknown `$mode` will cause the classes provided in this library to fall back to `Selectable::CALC_MODE_PRECISION`.
-
-This behavior could be changed by overriding the methods defined in the `ArithmeticSelectionTrait`.
-
-!!! see-also "See Also"
-    For more information on the calculation modes available in Fermat, see the page on [Calculation Modes](../configuration/calculation-modes.md). 
-    
-    For more information on extending these values, please see the documentation in the "Extending" section.

@@ -3,29 +3,12 @@
 *No description available*
 
 
-## Variables & Data
-
-
-### Class Constants
-
-!!! signature constant "RandomProvider::MODE_ENTROPY"
-    ##### MODE_ENTROPY
-    value
-    :   1
-
-!!! signature constant "RandomProvider::MODE_SPEED"
-    ##### MODE_SPEED
-    value
-    :   2
-
-
-
 ## Methods
 
 
 ### Static Methods
 
-!!! signature "public RandomProvider::randomInt(int|string|DecimalInterface $min, int|string|DecimalInterface $max, int $mode)"
+!!! signature "public RandomProvider::randomInt(int|string|DecimalInterface $min, int|string|DecimalInterface $max, RandomMode $mode)"
     ##### randomInt
     **$min**
 
@@ -46,7 +29,7 @@
     **$mode**
 
     type
-    :   int
+    :   RandomMode
 
     description
     :   *No description available*
@@ -61,7 +44,7 @@
 
 ---
 
-!!! signature "public RandomProvider::randomDecimal(int $scale, int $mode)"
+!!! signature "public RandomProvider::randomDecimal(int $scale, RandomMode $mode)"
     ##### randomDecimal
     **$scale**
 
@@ -74,7 +57,7 @@
     **$mode**
 
     type
-    :   int
+    :   RandomMode
 
     description
     :   *No description available*
@@ -89,7 +72,7 @@
 
 ---
 
-!!! signature "public RandomProvider::randomReal(int|string|DecimalInterface $min, int|string|DecimalInterface $max, int $scale, int $mode)"
+!!! signature "public RandomProvider::randomReal(int|string|DecimalInterface $min, int|string|DecimalInterface $max, int $scale, RandomMode $mode)"
     ##### randomReal
     **$min**
 
@@ -118,7 +101,7 @@
     **$mode**
 
     type
-    :   int
+    :   RandomMode
 
     description
     :   *No description available*

@@ -5,6 +5,8 @@ A best effort is made to keep this documentation current, and the entire documen
 !!! note "Why Use Fermat?"
     To understand why this library might be useful in comparison to alternatives, please see the [Fermat vs. Alternatives](fermat-vs-alternatives.md) page.
 
+    - [How to Use Fermat to Replace Scalar Types](getting-started/how-to-replace-scalars.md)
+
 ### Info Boxes
 
 Additional information is provided throughout this documentation using color coded information boxes. These are the styles used and what they are used for.
@@ -59,7 +61,9 @@ Provides a consistent abstraction for nearly any math concept that is likely to 
 
 While Fermat has different modes that allow you to control performance to a degree, the abstraction and comprehensive nature of the library means that for certain uses, such as working with complex numbers, a large number of object instances may be created temporarily during a calculation, leading to significantly more overhead than using operands directly when doing basic math within common scale limitations.
 
-Despite the fact that performance is not a primary goal of this library, it does use built in functions wherever possible (where doing so does not affect scale), and it will utilize the GMP functions and PHP-DS types if those extensions are present in your installation of PHP. Installing these extensions should slightly increase performance in most use-cases.
+Despite the fact that performance is not a primary goal of this library, it does use built in functions wherever possible (where doing so does not affect scale), and it will utilize the GMP functions, the Decimal extension, and PHP-DS types if those extensions are present in your installation of PHP. Installing these extensions should increase performance in most use-cases.
+
+Detailed information about performance can be reviewed in the [Performance](performance/overview.md) section. While performance is not the primary goal of this library, using the available [Calculation Modes](configuration/calculation-modes.md) it should be performant enough for most applications.
 
 !!! tip "Tip"
     A good way to increase performance is to avoid using imaginary and complex numbers if possible. The actual math involved in calculating simple operations involving these values is algorithmically complex, and leads to much longer execution times.

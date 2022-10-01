@@ -13,14 +13,14 @@
     **return**
 
     type
-    :   ?int
+    :   int
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public ScaleTrait->round(int $decimals, ?int $mode)"
+!!! signature "public ScaleTrait->round(int $decimals, RoundingMode|null $mode)"
     ##### round
     **$decimals**
 
@@ -33,7 +33,7 @@
     **$mode**
 
     type
-    :   ?int
+    :   RoundingMode|null
 
     description
     :   *No description available*
@@ -68,7 +68,7 @@
     
 ---
 
-!!! signature "public ScaleTrait->roundToScale(int $scale, ?int $mode)"
+!!! signature "public ScaleTrait->roundToScale(int $scale, RoundingMode|null $mode)"
     ##### roundToScale
     **$scale**
 
@@ -81,7 +81,7 @@
     **$mode**
 
     type
-    :   ?int
+    :   RoundingMode|null
 
     description
     :   *No description available*
@@ -251,6 +251,30 @@
 
     type
     :   float
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public ScaleTrait->getDecimalPart()"
+    ##### getDecimalPart
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public ScaleTrait->getWholePart()"
+    ##### getWholePart
+    **return**
+
+    type
+    :   string
 
     description
     :   *No description available*

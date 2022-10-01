@@ -389,12 +389,12 @@
     
 ---
 
-!!! signature "public NumberInterface->isEqual(int|string|NumberInterface $value)"
+!!! signature "public NumberInterface->isEqual(float|int|string|NumberInterface $value)"
     ##### isEqual
     **$value**
 
     type
-    :   int|string|NumberInterface
+    :   float|int|string|NumberInterface
 
     description
     :   
@@ -476,7 +476,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\ComplexNumber
+    :   Samsara\Fermat\Values\ImmutableComplexNumber
 
     description
     :   *No description available*

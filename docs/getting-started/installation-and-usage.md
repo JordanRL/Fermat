@@ -2,14 +2,14 @@
 
 The Fermat library is available on [Packagist](https://packagist.org/packages/samsara/fermat), and can be installed with composer:
 
-`composer require "samsara/fermat:^2.0"`
+`composer require "samsara/fermat:^2.1"`
 
 Or by including it in your composer.json file:
 
 ```json
 {
   "require": {
-    "samsara/fermat": "^2.0"
+    "samsara/fermat": "^2.1"
   }
 }
 ```
@@ -17,13 +17,14 @@ Or by including it in your composer.json file:
 !!! note "Dependencies"
     Fermat requires the following packages:
     
-    - `riimu/kit-baseconversion`: Provides the base conversion library used internally
     - `samsara/common`: Provides the exception model used in Fermat
     
-    It also requires the [BCMath](https://www.php.net/manual/en/book.bc.php) extension for PHP, however since 7.0 this extension has been included by default in distributions.
+    It also requires the [BCMath](https://www.php.net/manual/en/book.bc.php) and [GMP](https://www.php.net/manual/en/book.gmp) extensions.
 
 !!! tip "Improve Performance With Suggested Extensions"
-    Fermat suggests that you also install the `ext-ds` extension and the `ext-gmp` extension. When present, these help reduce memory usage and computation time.
+    Fermat suggests that you also install the `ext-decimal` extension and the `ext-ds` extension. When present, these help reduce memory usage and computation time.
+
+    In particular, the [Decimal](http://php-decimal.io/#introduction) extension results in performance increases ranging from 5x to 100x depending on the operation.
     
 # Basic Usage
 
@@ -34,7 +35,12 @@ A basic usage of the Fermat library is straightforward and simple to use quickly
 
 use Samsara\Fermat\Values\ImmutableDecimal;
 
-// __construct($value, $scale = 10, $base = 10);
+// __construct(
+//     $value, 
+//     $scale = 10, 
+//     $base = NumberBase::Ten, 
+//     $baseTenInput = true
+// );
 $five = new ImmutableDecimal(5, 20);
 
 echo $five->pow('1.2')->sin()->getValue();

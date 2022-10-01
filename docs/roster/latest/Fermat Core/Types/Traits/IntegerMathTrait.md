@@ -90,8 +90,16 @@
     
 ---
 
-!!! signature "public IntegerMathTrait->isPrime()"
+!!! signature "public IntegerMathTrait->isPrime(int|null $certainty)"
     ##### isPrime
+    **$certainty**
+
+    type
+    :   int|null
+
+    description
+    :   The certainty level desired. False positive rate = 1 in 4^$certainty.
+
     **return**
 
     type
@@ -102,9 +110,21 @@
 
     ###### isPrime() Description:
 
-    This function is a PHP implementation of the function described at: http://stackoverflow.com/a/1801446
+    This function is a PHP implementation of the Miller-Rabin primality test. The default "certainty" value of 20 results in a false-positive rate of 1 in 1.10 x 10^12.
     
-     It is relatively simple to understand, which is why it was chosen as the implementation. However in the future, an implementation that is based on ECPP (such as the Goldwasser implementation) may be employed to improve speed.
+     Presumably, the probability of your hardware failing while this code is running is higher, meaning this should be statistically as certain as a deterministic algorithm on normal computer hardware.
+    
+---
+
+!!! signature "public IntegerMathTrait->getDivisors()"
+    ##### getDivisors
+    **return**
+
+    type
+    :   Samsara\Fermat\Types\NumberCollection
+
+    description
+    :   *No description available*
     
 ---
 
