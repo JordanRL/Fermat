@@ -6,6 +6,7 @@ use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\BaseConversionProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Decimal;
@@ -26,16 +27,12 @@ class ImmutableDecimal extends Decimal
     public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface
     {
 
-        if (is_object($mod) && method_exists($mod, 'getScale')) {
-            $scale = ($this->getScale() < $mod->getScale()) ? $mod->getScale() : $this->getScale();
-        } else {
-            $scale = $this->getScale();
-        }
+        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod);
 
-        $oldScale = $this->scale;
-        $newScale = $scale+1;
+        $scale = ($this->getScale() < $mod->getScale()) ? $mod->getScale() : $this->getScale();
 
-        $this->scale = $newScale;
+        $newScale = $scale+2;
+        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $newScale);
 
         if (is_object($mod) && method_exists($mod, 'truncateToScale')) {
             $mod = $mod->truncateToScale($newScale);
@@ -43,13 +40,14 @@ class ImmutableDecimal extends Decimal
             $mod = Numbers::make(Numbers::IMMUTABLE, $mod, $newScale);
         }
 
-        $multiple = $this->divide($mod)->floor();
 
-        $remainder = $this->subtract($mod->multiply($multiple));
+        $multiple = $thisNum->divide($mod, $newScale)->floor();
 
-        $this->scale = $oldScale;
+        $subtract = $mod->multiply($multiple);
 
-        return $remainder->truncateToScale($oldScale);
+        $remainder = $thisNum->subtract($subtract);
+
+        return $remainder->truncateToScale($this->getScale()-1);
 
     }
 

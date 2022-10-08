@@ -29,7 +29,8 @@ trait LogScaleTrait
         $scale = $scale ?? $this->getScale();
 
         if (extension_loaded('decimal')) {
-            $num = new Decimal($this->getValue(NumberBase::Ten), $scale+2);
+            $decimalScale = max($scale*2, $this->numberOfTotalDigits()*2);
+            $num = new Decimal($this->getValue(NumberBase::Ten), $decimalScale);
 
             $num = $num->exp();
 
@@ -125,7 +126,8 @@ trait LogScaleTrait
         $internalScale += 1;
 
         if (extension_loaded('decimal')) {
-            $num = new Decimal($this->getValue(NumberBase::Ten), $internalScale);
+            $decimalScale = max($internalScale*2, $this->numberOfTotalDigits()*2);
+            $num = new Decimal($this->getValue(NumberBase::Ten), $decimalScale);
             $num = $num->ln();
             return $num->toFixed($internalScale);
         }
@@ -207,7 +209,8 @@ trait LogScaleTrait
         $internalScale += 1;
 
         if (extension_loaded('decimal')) {
-            $num = new Decimal($this->getValue(NumberBase::Ten), $internalScale);
+            $decimalScale = max($internalScale*2, $this->numberOfTotalDigits()*2);
+            $num = new Decimal($this->getValue(NumberBase::Ten), $decimalScale);
             $num = $num->log10();
             return $num->toFixed($internalScale);
         }

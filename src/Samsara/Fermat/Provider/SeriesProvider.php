@@ -87,7 +87,7 @@ class SeriesProvider
             try {
                 $exTerm = $value->pow($exponent($termNumber));
                 $term = $term->multiply($exTerm);
-                $term = $term->divide($denominator($termNumber));
+                $term = $term->divide($denominator($termNumber), $scale);
                 $term = $term->multiply($numerator($termNumber));
             } catch (IntegrityConstraint $constraint) {
                 return $sum->truncateToScale($currentScale+1);

@@ -31,7 +31,7 @@ class MutableDecimal extends Decimal
 
         $remainder = $oldNum->subtract($mod->multiply($multiple));
 
-        return Numbers::make(Numbers::MUTABLE, $remainder->truncate($this->scale)->getValue(NumberBase::Ten), $this->scale, $this->getBase());
+        return Numbers::make(Numbers::MUTABLE, $remainder->truncate($this->scale-1)->getValue(NumberBase::Ten), $this->scale-1, $this->getBase());
 
     }
 

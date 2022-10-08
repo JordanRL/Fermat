@@ -1035,15 +1035,26 @@ class ImmutableDecimalTest extends TestCase
     public function testContinuousModulo()
     {
 
-        $pi = new ImmutableDecimal(Numbers::PI);
+        $pi = Numbers::makePi(100);
 
-        $this->assertEquals('0', $pi->continuousModulo(Numbers::PI)->getValue());
+        $this->assertEquals('0', $pi->continuousModulo(Numbers::makePi(100))->getValue());
 
-        $twoPi = new ImmutableDecimal(Numbers::TAU);
+        $twoPi = Numbers::makeTau(100);
 
         $twoPiPlusTwo = $twoPi->add(2);
 
-        $this->assertEquals('2', $twoPiPlusTwo->continuousModulo(Numbers::PI)->getValue());
+        $this->assertEquals('2', $twoPiPlusTwo->continuousModulo(Numbers::makePi(100))->getValue());
+
+        $twoPi = Numbers::makeTau();
+
+        $this->assertEquals('0', $twoPi->continuousModulo(Numbers::makePi())->getValue());
+
+        $four = Numbers::make(Numbers::IMMUTABLE, 4, 100);
+
+        $this->assertEquals(
+            '0.858407346410206761537356616720497115802830600624894179025055407692183593713791001371965174657882932',
+            $four->continuousModulo(Numbers::makePi(100))->getValue()
+        );
 
     }
     /**

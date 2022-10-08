@@ -46,7 +46,6 @@ A "Scale Sensitivity" of **Extreme** means that the performance cannot be expect
 Within this section, performance metrics are provided in two forms, and shown for each of the calculation modes. For example:
 
 !!! signature "add()"
-    ##### add
     **Native Mode**
 
     Ops/sec
@@ -78,7 +77,7 @@ Within this section, performance metrics are provided in two forms, and shown fo
 
 ### Ops/sec
 
-These are provided in a range, and represent the number of times you could expect to call that calculation per second within a loop for common value ranges.
+These figures are the best performance you can expect with all extensions installed, and represent the number of times you could call that calculation per second within a loop for common value ranges.
 
 The actual number of operations per second that you can realize in your circumstances depend on your system configuration and hardware. These benchmarks were performed using a Ryzen 3900.
 
