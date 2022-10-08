@@ -8,9 +8,12 @@
 
 ### Instanced Methods
 
-!!! signature "public ComparisonTrait->isEqual($value)"
+!!! signature "public ComparisonTrait->isEqual(NumberInterface|int|string|float $value)"
     ##### isEqual
     **$value**
+
+    type
+    :   NumberInterface|int|string|float
 
     description
     :   *No description available*

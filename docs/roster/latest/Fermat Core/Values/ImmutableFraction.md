@@ -89,7 +89,7 @@
 
 ### Constructor
 
-!!! signature "public Fraction->__construct($numerator, $denominator, int $base)"
+!!! signature "public Fraction->__construct($numerator, $denominator, NumberBase $base)"
     ##### __construct
     **$numerator**
 
@@ -104,7 +104,7 @@
     **$base**
 
     type
-    :   int
+    :   NumberBase
 
     description
     :   
@@ -153,24 +153,12 @@
     
 ---
 
-!!! signature "public Fraction->getBase()"
-    ##### getBase
-    **return**
-
-    type
-    :   *mixed* (assumed)
-
-    description
-    :   *No description available*
-    
----
-
 !!! signature "public Fraction->getNumerator()"
     ##### getNumerator
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   mixed|DecimalInterface|ImmutableDecimal
 
     description
     :   *No description available*
@@ -182,7 +170,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   mixed|DecimalInterface|ImmutableDecimal
 
     description
     :   *No description available*
@@ -206,7 +194,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   FractionInterface|Fraction
 
     description
     :   *No description available*
@@ -218,7 +206,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|Base\Interfaces\Numbers\DecimalInterface|FractionInterface|NumberInterface|Fraction
 
     description
     :   *No description available*
@@ -237,9 +225,9 @@
     
 ---
 
-!!! signature "public Fraction->compare($number)"
+!!! signature "public Fraction->compare($value)"
     ##### compare
-    **$number**
+    **$value**
 
     description
     :   *No description available*
@@ -283,12 +271,12 @@
     
 ---
 
-!!! signature "public Fraction->getSmallestCommonDenominator(Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface $fraction)"
+!!! signature "public Fraction->getSmallestCommonDenominator(FractionInterface $fraction)"
     ##### getSmallestCommonDenominator
     **$fraction**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface
+    :   FractionInterface
 
     description
     :   *No description available*
@@ -296,7 +284,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   NumberInterface
 
     description
     :   *No description available*
@@ -315,12 +303,12 @@
     
 ---
 
-!!! signature "public Number->setMode(int $mode)"
+!!! signature "public Number->setMode(CalcMode $mode)"
     ##### setMode
     **$mode**
 
     type
-    :   int
+    :   CalcMode
 
     description
     :   *No description available*
@@ -338,6 +326,18 @@
     Allows you to set a mode on a number to select the calculation methods.
     
      MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting. MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
+    
+---
+
+!!! signature "public Number->getMode()"
+    ##### getMode
+    **return**
+
+    type
+    :   Samsara\Fermat\Enums\CalcMode
+
+    description
+    :   *No description available*
     
 ---
 
@@ -466,7 +466,19 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\ComplexNumber
+    :   Samsara\Fermat\Values\ImmutableComplexNumber
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public Number->getBase()"
+    ##### getBase
+    **return**
+
+    type
+    :   Samsara\Fermat\Enums\NumberBase
 
     description
     :   *No description available*
@@ -483,7 +495,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
@@ -500,7 +512,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
@@ -517,14 +529,14 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public Fraction->divide($num, ?int $scale)"
+!!! signature "public Fraction->divide($num, int|null $scale)"
     ##### divide
     **$num**
 
@@ -534,7 +546,7 @@
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -542,7 +554,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
@@ -559,19 +571,19 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   DecimalInterface|Fraction|ImmutableComplexNumber
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public Fraction->sqrt(?int $scale)"
+!!! signature "public Fraction->sqrt(int|null $scale)"
     ##### sqrt
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -579,16 +591,19 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   DecimalInterface|Fraction
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public Fraction->isEqual($value)"
+!!! signature "public Fraction->isEqual(NumberInterface|int|string|float $value)"
     ##### isEqual
     **$value**
+
+    type
+    :   NumberInterface|int|string|float
 
     description
     :   *No description available*

@@ -1,4 +1,4 @@
-# Samsara\Fermat\Provider > RoundingProvider
+# Samsara\Fermat\Provider > BaseConversionProvider
 
 *No description available*
 
@@ -8,41 +8,9 @@
 
 ### Static Methods
 
-!!! signature "public RoundingProvider::setRoundingMode(RoundingMode $mode)"
-    ##### setRoundingMode
-    **$mode**
-
-    type
-    :   RoundingMode
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   void
-
-    description
-    :   *No description available*
-
----
-
-!!! signature "public RoundingProvider::getRoundingMode()"
-    ##### getRoundingMode
-    **return**
-
-    type
-    :   Samsara\Fermat\Enums\RoundingMode
-
-    description
-    :   *No description available*
-
----
-
-!!! signature "public RoundingProvider::round(DecimalInterface $decimal, int $places)"
-    ##### round
-    **$decimal**
+!!! signature "public BaseConversionProvider::convertFromBaseTen(DecimalInterface $number, NumberBase|null $toBase)"
+    ##### convertFromBaseTen
+    **$number**
 
     type
     :   DecimalInterface
@@ -50,10 +18,38 @@
     description
     :   *No description available*
 
-    **$places**
+    **$toBase**
 
     type
-    :   int
+    :   NumberBase|null
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+
+---
+
+!!! signature "public BaseConversionProvider::convertStringToBaseTen(string $number, NumberBase $fromBase)"
+    ##### convertStringToBaseTen
+    **$number**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+
+    **$fromBase**
+
+    type
+    :   NumberBase
 
     description
     :   *No description available*

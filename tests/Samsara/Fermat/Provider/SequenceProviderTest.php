@@ -40,7 +40,7 @@ class SequenceProviderTest extends TestCase
 
         $this->assertEquals('4', $four->getValue());
 
-        $firstFiveEvens = SequenceProvider::nthEvenNumber(0, true, 5);
+        $firstFiveEvens = SequenceProvider::nthEvenNumber(0, null, true, 5);
 
         $this->assertEquals(5, $firstFiveEvens->count());
 

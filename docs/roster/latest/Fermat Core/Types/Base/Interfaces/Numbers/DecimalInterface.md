@@ -30,9 +30,12 @@
     
 ---
 
-!!! signature "public DecimalInterface->continuousModulo($mod)"
+!!! signature "public DecimalInterface->continuousModulo(NumberInterface|string|int|float $mod)"
     ##### continuousModulo
     **$mod**
+
+    type
+    :   NumberInterface|string|int|float
 
     description
     :   
@@ -159,12 +162,48 @@
     
 ---
 
+!!! signature "public DecimalInterface->getDecimalPart()"
+    ##### getDecimalPart
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public DecimalInterface->getWholePart()"
+    ##### getWholePart
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+    
+---
+
 !!! signature "public DecimalInterface->isPrime()"
     ##### isPrime
     **return**
 
     type
     :   bool
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public DecimalInterface->getDivisors()"
+    ##### getDivisors
+    **return**
+
+    type
+    :   Samsara\Fermat\Types\NumberCollection
 
     description
     :   *No description available*
@@ -879,7 +918,7 @@
     
 ---
 
-!!! signature "public DecimalInterface->round(int $decimals, int|null $mode)"
+!!! signature "public DecimalInterface->round(int $decimals, RoundingMode|null $mode)"
     ##### round
     **$decimals**
 
@@ -892,7 +931,7 @@
     **$mode**
 
     type
-    :   int|null
+    :   RoundingMode|null
 
     description
     :   *No description available*
@@ -929,7 +968,7 @@
     
 ---
 
-!!! signature "public DecimalInterface->roundToScale(int $scale, int|null $mode)"
+!!! signature "public DecimalInterface->roundToScale(int $scale, RoundingMode|null $mode)"
     ##### roundToScale
     **$scale**
 
@@ -942,7 +981,7 @@
     **$mode**
 
     type
-    :   int|null
+    :   RoundingMode|null
 
     description
     :   *No description available*
@@ -976,8 +1015,68 @@
     
 ---
 
+!!! signature "public DecimalInterface->getBase()"
+    ##### getBase
+    **return**
+
+    type
+    :   Samsara\Fermat\Enums\NumberBase
+
+    description
+    :   *No description available*
+    
+---
+
 !!! signature "public DecimalInterface->numberOfLeadingZeros()"
     ##### numberOfLeadingZeros
+    **return**
+
+    type
+    :   int
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public DecimalInterface->numberOfTotalDigits()"
+    ##### numberOfTotalDigits
+    **return**
+
+    type
+    :   int
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public DecimalInterface->numberOfIntDigits()"
+    ##### numberOfIntDigits
+    **return**
+
+    type
+    :   int
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public DecimalInterface->numberOfDecimalDigits()"
+    ##### numberOfDecimalDigits
+    **return**
+
+    type
+    :   int
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public DecimalInterface->numberOfSigDecimalDigits()"
+    ##### numberOfSigDecimalDigits
     **return**
 
     type
@@ -1296,12 +1395,12 @@
     
 ---
 
-!!! signature "public NumberInterface->isEqual(int|string|NumberInterface $value)"
+!!! signature "public NumberInterface->isEqual(float|int|string|NumberInterface $value)"
     ##### isEqual
     **$value**
 
     type
-    :   int|string|NumberInterface
+    :   float|int|string|NumberInterface
 
     description
     :   
@@ -1383,7 +1482,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\ComplexNumber
+    :   Samsara\Fermat\Values\ImmutableComplexNumber
 
     description
     :   *No description available*

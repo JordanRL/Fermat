@@ -37,7 +37,7 @@ class ConstantProvider
             return self::$pi->truncateToScale($digits)->getValue(NumberBase::Ten);
         }
 
-        $internalScale = $digits + 10;
+        $internalScale = ($digits*2) + 10;
 
         $C = Numbers::make(Numbers::IMMUTABLE, '10005', $internalScale)->setMode(CalcMode::Precision)->sqrt($internalScale)->multiply(426880);
         $M = Numbers::make(Numbers::IMMUTABLE, '1', $internalScale)->setMode(CalcMode::Precision);
@@ -51,7 +51,7 @@ class ConstantProvider
         $continue = true;
 
         while ($continue) {
-            $term = $M->multiply($L)->divide($X);
+            $term = $M->multiply($L)->divide($X, $internalScale);
 
             if ($termNum > $internalScale) {
                 $continue = false;
@@ -148,8 +148,8 @@ class ConstantProvider
     }
 
     /**
-     * The lnScale() implementation is very efficient, so this is probably our best bet for computing more digits of
-     * ln(10) to provide.
+     * This function is a special case of the ln() function where x can be represented by (n + 1)/n, where n is an
+     * integer. This particular special case converges extremely rapidly. For ln(2), n = 1.
      *
      * @param int $digits
      * @return string
@@ -188,6 +188,15 @@ class ConstantProvider
 
     }
 
+    /**
+     * This function is a special case of the ln() function where x can be represented by (n + 1)/n, where n is an
+     * integer. This particular special case converges extremely rapidly. For ln(1.1), n = 10.
+     *
+     * @param int $digits
+     * @return string
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
+     */
     public static function makeLn1p1(int $digits): string
     {
 

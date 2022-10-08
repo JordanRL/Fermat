@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Types\Traits\Trigonometry;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\SequenceProvider;
 use Samsara\Fermat\Provider\SeriesProvider;
@@ -33,15 +34,18 @@ trait TrigonometryScaleTrait
 
         $scale = $scale ?? $this->getScale();
         $modScale = ($scale > $this->getScale()) ? $scale : $this->getScale();
+        $modScale = $modScale+$this->numberOfIntDigits()+2;
 
-        $twoPi = Numbers::make2Pi($modScale * 2);
+        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $modScale);
+
+        $twoPi = Numbers::make2Pi($modScale + 2);
         $pi = Numbers::makePi( $scale + 2 );
 
-        if ($pi->truncate($scale)->isEqual($this) || $twoPi->truncate($scale)->isEqual($this)) {
+        if ($pi->truncate($scale)->isEqual($thisNum->truncate($scale)) || $twoPi->truncate($scale)->isEqual($thisNum->truncate($scale))) {
             return '0';
         }
 
-        $modulo = $this->continuousModulo($twoPi);
+        $modulo = $thisNum->continuousModulo($twoPi);
         $negOne = Numbers::make(Numbers::IMMUTABLE, -1, $scale+1);
         $one = Numbers::make(Numbers::IMMUTABLE, 1, $scale+1);
 
@@ -58,7 +62,7 @@ trait TrigonometryScaleTrait
                 return SequenceProvider::nthOddNumber($n)->factorial();
             },
             0,
-            $scale+1
+            $scale+2
         );
 
         return $answer->getAsBaseTenRealNumber();
@@ -79,36 +83,40 @@ trait TrigonometryScaleTrait
 
         $scale = $scale ?? $this->getScale();
         $modScale = ($scale > $this->getScale()) ? $scale : $this->getScale();
+        $intScale = $scale+2;
+        $modScale = $modScale+$this->numberOfIntDigits()+2;
 
-        $twoPi = Numbers::make2Pi($modScale * 2);
-        $pi = Numbers::makePi( $scale + 2 );
+        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $modScale);
 
-        if ($twoPi->truncate($scale)->isEqual($this)) {
+        $twoPi = Numbers::make2Pi($modScale + 2);
+        $pi = Numbers::makePi( $intScale );
+
+        if ($twoPi->truncate($scale)->isEqual($thisNum->truncate($scale))) {
             return '1';
         }
 
-        if ($pi->truncate($scale)->isEqual($this)) {
+        if ($pi->truncate($scale)->isEqual($thisNum->truncate($scale))) {
             return '-1';
         }
 
-        $modulo = $this->continuousModulo($twoPi);
-        $negOne = Numbers::make(Numbers::IMMUTABLE, -1, $scale+1);
-        $one = Numbers::make(Numbers::IMMUTABLE, 1, $scale+1);
+        $modulo = $thisNum->continuousModulo($twoPi);
+        $negOne = Numbers::make(Numbers::IMMUTABLE, -1, $intScale);
+        $one = Numbers::make(Numbers::IMMUTABLE, 1, $intScale);
 
         $answer = SeriesProvider::maclaurinSeries(
             $modulo,
-            function ($n) use ($scale, $negOne, $one) {
+            function ($n) use ($negOne, $one) {
 
                 return $n % 2 ? $negOne : $one;
             },
-            function ($n) {
-                return SequenceProvider::nthEvenNumber($n);
+            function ($n) use ($intScale) {
+                return SequenceProvider::nthEvenNumber($n, $intScale);
             },
-            function ($n) {
-                return SequenceProvider::nthEvenNumber($n)->factorial();
+            function ($n) use ($intScale) {
+                return SequenceProvider::nthEvenNumber($n, $intScale)->factorial();
             },
             0,
-            $scale+1
+            $scale+2
         );
 
         return $answer->getAsBaseTenRealNumber();
@@ -123,7 +131,12 @@ trait TrigonometryScaleTrait
     protected function tanScale(int $scale = null): string
     {
         $scale = $scale ?? $this->getScale();
-        $intScale = $scale + 2;
+        $intScale = $scale + 3;
+        if (extension_loaded('decimal')) {
+            $intScale = $intScale+$this->numberOfIntDigits();
+        }
+
+        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $intScale);
 
         $pi = Numbers::makePi($intScale);
         $piDivTwo = Numbers::makePi($intScale)->divide(2);
@@ -134,24 +147,24 @@ trait TrigonometryScaleTrait
         $two = Numbers::make(Numbers::IMMUTABLE, 2, $intScale);
         $one = Numbers::make(Numbers::IMMUTABLE, 1, $intScale);
 
-        $exitModulo = $this->continuousModulo($pi);
+        $exitModulo = $thisNum->continuousModulo($pi);
 
-        if ($exitModulo->truncate($intScale-2)->isEqual(0)) {
+        if ($exitModulo->truncate($scale)->isEqual(0)) {
             return '0';
         }
 
-        $modulo = $this->continuousModulo($twoPi);
+        $modulo = $thisNum->continuousModulo($twoPi);
 
         if (
-            $modulo->truncate($intScale-2)->isEqual($piDivTwo->truncate($intScale-2)) ||
-            ($this->isNegative() && $modulo->subtract($pi)->abs()->truncate($intScale-2)->isEqual($piDivTwo->truncate($intScale-2)))
+            $modulo->truncate($scale)->isEqual($piDivTwo->truncate($scale)) ||
+            ($this->isNegative() && $modulo->subtract($pi)->abs()->truncate($scale)->isEqual($piDivTwo->truncate($scale)))
         ) {
             return static::INFINITY;
         }
 
         if (
-            $modulo->subtract($pi)->truncate($intScale-2)->isEqual($piDivTwo->truncate($intScale-2)) ||
-            ($this->isNegative() && $modulo->truncate($intScale-2)->abs()->isEqual($piDivTwo->truncate($intScale-2)))
+            $modulo->subtract($pi)->truncate($scale)->isEqual($piDivTwo->truncate($scale)) ||
+            ($this->isNegative() && $modulo->truncate($scale)->abs()->isEqual($piDivTwo->truncate($scale)))
         ) {
             return static::NEG_INFINITY;
         }

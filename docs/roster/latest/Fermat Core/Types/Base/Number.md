@@ -80,12 +80,12 @@
 
 ### Instanced Methods
 
-!!! signature "public Number->setMode(int $mode)"
+!!! signature "public Number->setMode(CalcMode $mode)"
     ##### setMode
     **$mode**
 
     type
-    :   int
+    :   CalcMode
 
     description
     :   *No description available*
@@ -103,6 +103,18 @@
     Allows you to set a mode on a number to select the calculation methods.
     
      MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting. MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
+    
+---
+
+!!! signature "public Number->getMode()"
+    ##### getMode
+    **return**
+
+    type
+    :   Samsara\Fermat\Enums\CalcMode
+
+    description
+    :   *No description available*
     
 ---
 
@@ -271,7 +283,19 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\ComplexNumber
+    :   Samsara\Fermat\Values\ImmutableComplexNumber
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public Number->getBase()"
+    ##### getBase
+    **return**
+
+    type
+    :   Samsara\Fermat\Enums\NumberBase
 
     description
     :   *No description available*
@@ -431,12 +455,12 @@
     
 ---
 
-!!! signature "public NumberInterface->isEqual(int|string|NumberInterface $value)"
+!!! signature "public NumberInterface->isEqual(float|int|string|NumberInterface $value)"
     ##### isEqual
     **$value**
 
     type
-    :   int|string|NumberInterface
+    :   float|int|string|NumberInterface
 
     description
     :   

@@ -2,20 +2,20 @@
 
 [![Build Status](https://scrutinizer-ci.com/g/JordanRL/Fermat/badges/build.png?b=master)](https://scrutinizer-ci.com/g/JordanRL/Fermat/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/JordanRL/Fermat/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/JordanRL/Fermat/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/JordanRL/Fermat/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/JordanRL/Fermat/?branch=master) [![Latest Stable Version](https://poser.pugx.org/samsara/fermat/v/stable)](https://packagist.org/packages/samsara/fermat) [![Total Downloads](https://poser.pugx.org/samsara/fermat/downloads)](https://packagist.org/packages/samsara/fermat) [![License](https://poser.pugx.org/samsara/fermat/license)](https://packagist.org/packages/samsara/fermat)
 
-**This project is unit tested against 8.0, and merges are not accepted unless the tests pass.**
+**This project is unit tested against 8.1, and merges are not accepted unless the tests pass.**
 
 ## Installation
 
 To install, simply require the package using composer:
 
-    composer require "samsara/fermat:^2.0"
+    composer require "samsara/fermat:^2.1"
     
 Or include it in your `composer.json` file:
 
 ```json
 {
     "require": {
-        "samsara/fermat": "^2.0"
+        "samsara/fermat": "^2.1"
     }
 }
 ```
@@ -71,9 +71,12 @@ Here is an example of using the factory method to make a value that is in a base
 <?php
 
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Enums\NumberBase;
 
-$five = Numbers::make(Numbers::IMMUTABLE, '10', null, 5); // Value in base5
-$ten = Numbers::make(Numbers::IMMUTABLE, '10'); // Value in base10
+// Value in base5
+$five = Numbers::make(Numbers::IMMUTABLE, '10', null, NumberBase::Five); 
+// Value in base10
+$ten = Numbers::make(Numbers::IMMUTABLE, '10'); 
 
 echo $ten->add($five); // Prints: "15" (The sum in base10)
 echo $five->add($ten); // Prints: "30" (The sum in base5)

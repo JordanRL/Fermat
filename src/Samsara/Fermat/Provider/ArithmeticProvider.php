@@ -20,12 +20,17 @@ class ArithmeticProvider
     public static function add(string $number1, string $number2, $scale = 100)
     {
         if (extension_loaded('decimal')) {
-            $number1 = new Decimal($number1, $scale+2);
-            $number2 = new Decimal($number2, $scale+2);
+            $intDigits1 = self::integerDigits($number1);
+            $intDigits2 = self::integerDigits($number2);
+            $decimalScale = max($intDigits1, $intDigits2);
+            $decimalScale = $decimalScale+$scale+1;
+            $decimalScale = max($decimalScale, strlen($number1)+1, strlen($number2)+1);
+            $number1 = new Decimal($number1, $decimalScale);
+            $number2 = new Decimal($number2, $decimalScale);
 
             $result = $number1->add($number2);
 
-            $result = $result->toFixed($scale+2);
+            $result = $result->toFixed($scale, false, Decimal::ROUND_TRUNCATE);
         } else {
             $result = \bcadd($number1, $number2, $scale);
         }
@@ -41,12 +46,17 @@ class ArithmeticProvider
     public static function subtract(string $left, string $right, $scale = 100)
     {
         if (extension_loaded('decimal')) {
-            $number1 = new Decimal($left, $scale+2);
-            $number2 = new Decimal($right, $scale+2);
+            $intDigits1 = self::integerDigits($left);
+            $intDigits2 = self::integerDigits($right);
+            $decimalScale = max($intDigits1, $intDigits2);
+            $decimalScale = $decimalScale+$scale+1;
+            $decimalScale = max($decimalScale, strlen($left)+1, strlen($right)+1);
+            $number1 = new Decimal($left, $decimalScale);
+            $number2 = new Decimal($right, $decimalScale);
 
             $result = $number1->sub($number2);
 
-            $result = $result->toFixed($scale+2);
+            $result = $result->toFixed($scale, false, Decimal::ROUND_TRUNCATE);
         } else {
             $result = \bcsub($left, $right, $scale);
         }
@@ -62,12 +72,17 @@ class ArithmeticProvider
     public static function multiply(string $number1, string $number2, $scale = 100)
     {
         if (extension_loaded('decimal')) {
-            $number1 = new Decimal($number1, $scale+2);
-            $number2 = new Decimal($number2, $scale+2);
+            $intDigits1 = self::integerDigits($number1);
+            $intDigits2 = self::integerDigits($number2);
+            $decimalScale = max($intDigits1, $intDigits2);
+            $decimalScale = $decimalScale+$scale+1;
+            $decimalScale = max($decimalScale, strlen($number1)+1, strlen($number2)+1);
+            $number1 = new Decimal($number1, $decimalScale);
+            $number2 = new Decimal($number2, $decimalScale);
 
             $result = $number1->mul($number2);
 
-            $result = $result->toFixed($scale+2);
+            $result = $result->toFixed($scale, false, Decimal::ROUND_TRUNCATE);
         } else {
             $result = \bcmul($number1, $number2, $scale);
         }
@@ -83,8 +98,13 @@ class ArithmeticProvider
     public static function divide(string $numerator, string $denominator, $scale = 100)
     {
         if (extension_loaded('decimal')) {
-            $number1 = new Decimal($numerator, $scale);
-            $number2 = new Decimal($denominator, $scale);
+            $intDigits1 = self::integerDigits($numerator);
+            $intDigits2 = self::integerDigits($denominator);
+            $decimalScale = max($intDigits1, $intDigits2);
+            $decimalScale = $decimalScale+$scale+1;
+            $decimalScale = max($decimalScale, strlen($numerator)+1, strlen($denominator)+1);
+            $number1 = new Decimal($numerator, $decimalScale);
+            $number2 = new Decimal($denominator, $decimalScale);
 
             $result = $number1->div($number2);
 
@@ -104,12 +124,17 @@ class ArithmeticProvider
     public static function pow(string $base, string $exponent, $scale = 100)
     {
         if (extension_loaded('decimal')) {
-            $number1 = new Decimal($base, $scale+2);
-            $number2 = new Decimal($exponent, $scale+2);
+            $intDigits1 = self::integerDigits($base);
+            $intDigits2 = self::integerDigits($exponent);
+            $decimalScale = max($intDigits1, $intDigits2);
+            $decimalScale = $decimalScale+$scale+1;
+            $decimalScale = max($decimalScale, strlen($base)+1, strlen($exponent)+1);
+            $number1 = new Decimal($base, $decimalScale);
+            $number2 = new Decimal($exponent, $decimalScale);
 
             $result = $number1->pow($number2);
 
-            $result = $result->toFixed($scale+2);
+            $result = $result->toFixed($scale, false, Decimal::ROUND_TRUNCATE);
         } else {
             $result = \bcpow($base, $exponent, $scale);
         }
@@ -124,11 +149,14 @@ class ArithmeticProvider
     public static function squareRoot(string $number, $scale = 100)
     {
         if (extension_loaded('decimal')) {
-            $number = new Decimal($number, $scale+2);
+            $intDigits1 = self::integerDigits($number);
+            $decimalScale = $intDigits1+$scale+1;
+            $decimalScale = max($decimalScale, strlen($number)+1);
+            $number = new Decimal($number, $decimalScale);
 
             $result = $number->sqrt();
 
-            $result = $result->toFixed($scale+2);
+            $result = $result->toFixed($scale, false, Decimal::ROUND_TRUNCATE);
         } else {
             $result = \bcsqrt($number, $scale);
         }
@@ -143,9 +171,9 @@ class ArithmeticProvider
     public static function modulo(string $number, $modulo)
     {
         if (extension_loaded('decimal')) {
-            $precision = (max(strlen($modulo), 12));
-            $number1 = new Decimal($number, $precision);
-            $number2 = new Decimal($modulo, $precision);
+            $decimalScale = (max(strlen($modulo)*2, strlen($number)*2));
+            $number1 = new Decimal($number, $decimalScale);
+            $number2 = new Decimal($modulo, $decimalScale);
 
             $result = $number1->mod($number2);
 
@@ -165,8 +193,13 @@ class ArithmeticProvider
     public static function compare(string $left, string $right, $scale = 100)
     {
         if (extension_loaded('decimal')) {
-            $number1 = new Decimal($left, $scale+2);
-            $number2 = new Decimal($right, $scale+2);
+            $intDigits1 = self::integerDigits($left);
+            $intDigits2 = self::integerDigits($right);
+            $decimalScale = max($intDigits1, $intDigits2);
+            $decimalScale = $decimalScale+$scale+1;
+            $decimalScale = max($decimalScale, strlen($left)+1, strlen($right)+1);
+            $number1 = new Decimal($left, $decimalScale);
+            $number2 = new Decimal($right, $decimalScale);
 
             $result = $number1->compareTo($number2);
         } else {
@@ -196,6 +229,15 @@ class ArithmeticProvider
             $result = \bcpowmod($left, $right, $modulus, $scale);
         }
         return $result;
+    }
+
+    private static function integerDigits(string $number): int
+    {
+        if (!str_contains($number, '.')) {
+            return strlen($number);
+        }
+
+        return strpos($number, '.');
     }
 
 }

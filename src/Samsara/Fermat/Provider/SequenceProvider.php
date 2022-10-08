@@ -115,7 +115,7 @@ class SequenceProvider
      * @return DecimalInterface|NumberInterface|NumberCollection
      * @throws IntegrityConstraint
      */
-    public static function nthEvenNumber(int $n, bool $asCollection = false, int $collectionSize = 10)
+    public static function nthEvenNumber(int $n, int $scale = null, bool $asCollection = false, int $collectionSize = 10)
     {
 
         if ($asCollection) {
@@ -128,11 +128,11 @@ class SequenceProvider
             return $sequence;
         }
         if ($n > (PHP_INT_MAX/2)) {
-            $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, 100);
+            $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, $scale);
 
             return $n->multiply(2);
         } else {
-            return new ImmutableDecimal(($n*2), 100);
+            return new ImmutableDecimal(($n*2), $scale);
         }
 
     }

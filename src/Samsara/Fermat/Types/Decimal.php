@@ -71,8 +71,10 @@ abstract class Decimal extends Number implements DecimalInterface
                     'Scale of any number cannot be calculated beyond 2147483646 digits'
                 );
             }
+            $checkVal = $this->getDecimalPart();
+            $checkVal = trim($checkVal,'0');
 
-            $this->scale = ($scale > strlen($this->getDecimalPart())) ? $scale : strlen($this->getDecimalPart());
+            $this->scale = ($scale > strlen($checkVal)) ? $scale : strlen($checkVal);
         } else {
             $checkVal = $this->getDecimalPart();
             $checkVal = trim($checkVal,'0');
@@ -206,9 +208,6 @@ abstract class Decimal extends Number implements DecimalInterface
      */
     public function getValue(?NumberBase $base = null): string
     {
-        //echo '>>START GET VALUE [From: '.debug_backtrace()[1]['function'].' > '.debug_backtrace()[2]['function'].']<<'.PHP_EOL;
-        //echo 'THIS: '.$this->getAsBaseTenRealNumber().PHP_EOL;
-        //echo 'BASE: '.($base ? $base->value : 'null').PHP_EOL;
         if (is_null($base) && $this->getBase() != NumberBase::Ten) {
             $value = $this->getAsBaseConverted();
         } elseif (!is_null($base) && $base != NumberBase::Ten) {
@@ -220,8 +219,6 @@ abstract class Decimal extends Number implements DecimalInterface
         if ($this->isImaginary()) {
             $value .= 'i';
         }
-        //echo 'VALUE: '.$value.PHP_EOL;
-        //echo '>>END GET VALUE<<'.PHP_EOL;
 
         return $value;
     }
