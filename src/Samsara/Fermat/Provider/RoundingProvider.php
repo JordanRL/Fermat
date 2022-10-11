@@ -74,7 +74,7 @@ class RoundingProvider
         $carry = 0;
 
         if ($currentPart) {
-            $pos = ($absPlaces > $baseLength) ? $baseLength : $pos;
+            $pos = ($absPlaces > $baseLength && $places < 0) ? $baseLength : $pos;
         } else {
             $pos = ($absPlaces >= $baseLength) ? 0 : $pos;
         }

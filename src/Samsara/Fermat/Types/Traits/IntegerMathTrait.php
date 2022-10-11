@@ -179,9 +179,9 @@ trait IntegerMathTrait
     public function getGreatestCommonDivisor($num): DecimalInterface
     {
         /** @var ImmutableDecimal $num */
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num)->abs();
+        $num = Numbers::make(Numbers::IMMUTABLE, $num)->abs();
         /** @var ImmutableDecimal $thisNum */
-        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this)->abs();
+        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this)->abs();
 
         if (!$this->isInt() || !$num->isInt()) {
             throw new IntegrityConstraint(

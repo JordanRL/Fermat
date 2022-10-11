@@ -45,125 +45,6 @@ class ImmutableDecimalTest extends TestCase
 
     }
     /**
-     * @group arithmetic
-     * @medium
-     */
-    public function testAdd()
-    {
-
-        $five = new ImmutableDecimal(5);
-        $ten = new ImmutableDecimal(10);
-        $oneQuarter = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-
-
-        $this->assertEquals('10', $five->add(5)->getValue());
-        $this->assertEquals(5, $five->asInt());
-
-        $this->assertEquals('15', $five->add($ten)->getValue());
-
-        $this->assertEquals('5.25', $five->add($oneQuarter)->getValue());
-
-        $sixTenths = new ImmutableDecimal('0.6');
-        $fourTenths = new ImmutableDecimal('0.4');
-
-        $this->assertEquals('1', $sixTenths->add($fourTenths)->getValue());
-
-        $oneTenth = new ImmutableDecimal('0.1');
-        $twoTenths = new ImmutableDecimal('0.2');
-
-        $this->assertEquals('0.3', $oneTenth->add($twoTenths)->getValue());
-
-        $tenScale = new ImmutableDecimal('0.0000000001');
-        $elevenScale = new ImmutableDecimal('0.00000000001');
-
-        $this->assertEquals('0.1000000001', $oneTenth->add($tenScale)->getValue());
-        $this->assertEquals('0.10000000001', $oneTenth->add($elevenScale)->getValue());
-
-    }
-    /**
-     * @group arithmetic
-     * @medium
-     */
-    public function testSubtract()
-    {
-
-        $five = new ImmutableDecimal(5);
-        $six = new ImmutableDecimal(6);
-
-        $this->assertEquals('1', $six->subtract($five)->getValue());
-        $this->assertEquals('-1', $five->subtract($six)->getValue());
-        $this->assertEquals('3', $five->subtract(2)->getValue());
-        $this->assertEquals('3', $five->subtract('2')->getValue());
-
-        $oneQuarter = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-
-        $this->assertEquals('4.75', $five->subtract($oneQuarter)->getValue());
-
-        $sixTenths = new ImmutableDecimal('0.6');
-        $fourTenths = new ImmutableDecimal('0.4');
-
-        $this->assertEquals('0.2', $sixTenths->subtract($fourTenths)->getValue());
-
-        $oneTenth = new ImmutableDecimal('0.1');
-        $twoTenths = new ImmutableDecimal('0.2');
-
-        $this->assertEquals('0.1', $twoTenths->subtract($oneTenth)->getValue());
-
-        $tenScale = new ImmutableDecimal('0.0000000001');
-        $elevenScale = new ImmutableDecimal('0.00000000001');
-
-        $this->assertEquals('0.0999999999', $oneTenth->subtract($tenScale)->getValue());
-        $this->assertEquals('0.09999999999', $oneTenth->subtract($elevenScale)->getValue());
-
-    }
-    /**
-     * @group arithmetic
-     * @medium
-     */
-    public function testMultiply()
-    {
-
-        $five = new ImmutableDecimal(5);
-        $six = new ImmutableDecimal(6);
-
-        $this->assertEquals('30', $six->multiply($five)->getValue());
-        $this->assertEquals('30', $five->multiply($six)->getValue());
-        $this->assertEquals('-5', $five->multiply(-1)->getValue());
-        $this->assertEquals(-5, $five->multiply(-1)->asInt());
-
-        $oneQuarter = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-
-        $this->assertEquals('1.5', $six->multiply($oneQuarter)->getValue());
-
-        $sixTenths = new ImmutableDecimal('0.6');
-
-        $this->assertEquals('0.15', $sixTenths->multiply($oneQuarter)->getValue());
-
-        $oneTenth = new ImmutableDecimal('0.1');
-        $twoTenths = new ImmutableDecimal('0.2');
-
-        $this->assertEquals('0.02', $twoTenths->multiply($oneTenth)->getValue());
-
-    }
-    /**
-     * @group arithmetic
-     * @medium
-     */
-    public function testDivide()
-    {
-
-        $five = new ImmutableDecimal(5);
-        $ten = new ImmutableDecimal(10);
-
-        $this->assertEquals('2', $ten->divide($five)->getValue());
-        $this->assertEquals('0.5', $five->divide($ten)->getValue());
-
-        $oneQuarter = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-
-        $this->assertEquals('40', $ten->divide($oneQuarter)->getValue());
-
-    }
-    /**
      * @medium
      */
     public function testFactorial()
@@ -296,7 +177,7 @@ class ImmutableDecimalTest extends TestCase
 
         $fortyTwoTenths = new ImmutableFraction(new ImmutableDecimal(42), new ImmutableDecimal(10));
 
-        $this->assertEquals('100.9042061088', $three->pow($fortyTwoTenths)->getValue());
+        $this->assertEquals('100.9042061089', $three->pow($fortyTwoTenths)->getValue());
 
         $e = Numbers::makeE();
 
@@ -383,7 +264,7 @@ class ImmutableDecimalTest extends TestCase
 
         $two = new ImmutableDecimal(2, 10);
 
-        $this->assertEquals('1.4142135623', $two->sqrt()->getValue());
+        $this->assertEquals('1.4142135624', $two->sqrt()->getValue());
 
         $largeInt = new ImmutableDecimal('1000000000000000000000000000');
 

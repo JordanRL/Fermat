@@ -55,19 +55,17 @@ class MutableDecimal extends Decimal
             $value = BaseConversionProvider::convertStringToBaseTen($value, $base);
         }
 
-        if ($imaginary) {
-            $value .= 'i';
-        }
-
-        if (is_null($scale)) {
-            $this->scale = $this->getScale();
-        }
+        $this->imaginary = $imaginary;
 
         if ($setToNewBase) {
             $this->base = $base ?? $this->getBase();
         }
 
         $this->value = $this->translateValue($value);
+
+        $scale = $scale ?? $this->getScale();
+
+        $this->scale = $this->determineScale($this->getDecimalPart(), $scale);
 
         return $this;
     }

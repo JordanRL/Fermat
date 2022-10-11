@@ -89,7 +89,7 @@ class SequenceProviderTest extends TestCase
         SequenceProvider::nthEulerZigzag(51);
     }
     /**
-     *
+     * @medium
      */
     public function testNthBernoulliNumber()
     {

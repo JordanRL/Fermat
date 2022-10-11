@@ -35,6 +35,7 @@ class RoundingProviderTest extends TestCase
         $num4 = new ImmutableDecimal('9999.9999');
         $num5 = new ImmutableDecimal('2.222222');
         $num6 = new ImmutableDecimal('2.522225');
+        $num7 = new ImmutableDecimal('0.70710678118655');
 
         $this->assertEquals(RoundingMode::HalfEven, RoundingProvider::getRoundingMode());
         $this->assertEquals('1.11111', RoundingProvider::round($num1, 5));
@@ -47,6 +48,7 @@ class RoundingProviderTest extends TestCase
         $this->assertEquals('3.0', RoundingProvider::round($num6));
         $this->assertEquals('2.0', RoundingProvider::round($num6->truncateToScale(1)));
         $this->assertEquals('2.52222', RoundingProvider::round($num6, 5));
+        $this->assertEquals('0.7071067812', RoundingProvider::round($num7, 10));
 
         $num1 = new ImmutableDecimal('-1.111111');
         $num2 = new ImmutableDecimal('-1.555555');

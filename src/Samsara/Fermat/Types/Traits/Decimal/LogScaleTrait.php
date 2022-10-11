@@ -123,7 +123,7 @@ trait LogScaleTrait
     public function lnScale(int $scale = null): string
     {
         $internalScale = $scale ?? $this->getScale();
-        $internalScale += 1;
+        $internalScale += 3;
 
         if (extension_loaded('decimal')) {
             $decimalScale = max($internalScale*2, $this->numberOfTotalDigits()*2);
@@ -178,7 +178,7 @@ trait LogScaleTrait
             $adjustedNum = $adjustedNum->add($diff);
 
             $k++;
-        } while ($diff->numberOfLeadingZeros() < $internalScale-1);
+        } while ($diff->numberOfLeadingZeros() < $internalScale-1 && !$diff->isEqual(0));
         /**/
 
         $answer = $adjustedNum;

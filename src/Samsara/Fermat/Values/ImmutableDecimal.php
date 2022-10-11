@@ -61,12 +61,7 @@ class ImmutableDecimal extends Decimal
      */
     protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null, bool $setToNewBase = false): ImmutableDecimal
     {
-        //echo '>>START SET VALUE [From: '.debug_backtrace()[1]['function'].' > '.debug_backtrace()[2]['function'].']<<'.PHP_EOL;
-        //echo 'Input Value: '.$value.PHP_EOL;
-        //echo 'Input Base: '.($base ? $base->value : 'null').PHP_EOL;
         $imaginary = false;
-
-        $scale = $scale ?? $this->getScale();
 
         if (str_contains($value, 'i')) {
             $value = str_replace('i', '', $value);
@@ -83,19 +78,22 @@ class ImmutableDecimal extends Decimal
             $base = $this->getBase();
         }
 
+        $translated = $this->translateValue($value);
+        $determinedScale = $this->determineScale($translated[1]);
+
+        $determinedScale = $this->getScale() > $determinedScale ? $this->getScale() : $determinedScale;
+
+        $scale = $scale ?? $determinedScale;
+
         if ($imaginary) {
             $value .= 'i';
         }
-
-        //echo 'Creating Decimal With: V['.$value.'] B['.$base->value.']'.PHP_EOL;
 
         $return = new ImmutableDecimal($value, $scale, $base, true);
 
         if (isset($this->calcMode)) {
             $return->setMode($this->calcMode);
         }
-
-        //echo '>>END SET VALUE<<'.PHP_EOL;
 
         return $return;
     }

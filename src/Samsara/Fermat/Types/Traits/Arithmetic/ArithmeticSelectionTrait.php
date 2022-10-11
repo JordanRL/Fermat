@@ -25,6 +25,7 @@ use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\ComplexNumbers;
 use Samsara\Fermat\Enums\CalcMode;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\CalculationModeProvider;
 use Samsara\Fermat\Provider\RoundingProvider;
@@ -67,7 +68,13 @@ trait ArithmeticSelectionTrait
                 break;
 
             case 'object':
-                $right = !($right instanceof NumberInterface) ? Numbers::makeOrDont(Numbers::IMMUTABLE, $right) : $right;
+                if ($right instanceof MutableDecimal) {
+                    $right = Numbers::makeOrDont(Numbers::IMMUTABLE, $right);
+                } elseif ($right instanceof MutableFraction) {
+                    $right = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $right);
+                } else {
+                    $right = !($right instanceof NumberInterface) ? Numbers::makeOrDont(Numbers::IMMUTABLE, $right) : $right;
+                }
                 break;
         }
 
@@ -174,6 +181,7 @@ trait ArithmeticSelectionTrait
      */
     protected function modeSelectorForArithmetic(DecimalInterface $num): CalcMode
     {
+        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten));
         /*
          * Floats have variable density depending on where the exponent is. However, the exponent is also
          * base-2, while our scale is base-10. Thus, in order to determine if the requested scale is within
@@ -193,7 +201,7 @@ trait ArithmeticSelectionTrait
          * We still need to check for integers, since it's possible the GMP extension won't be installed.
          */
         $nativeInt = $this->isInt() && $num->isInt();
-        $nativeInt = $nativeInt && $this->abs()->isLessThan(CalculationModeProvider::PHP_INT_MAX_HALF);
+        $nativeInt = $nativeInt && $thisNum->abs()->isLessThan(CalculationModeProvider::PHP_INT_MAX_HALF);
         $nativeInt = $nativeInt && $num->abs()->isLessThan(CalculationModeProvider::PHP_INT_MAX_HALF);
 
         if ($nativeInt || ($nativeScale && $nativeValues)) {

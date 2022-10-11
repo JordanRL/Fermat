@@ -8,6 +8,7 @@ use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\BaseConversionProvider;
+use Samsara\Fermat\Provider\RoundingProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
@@ -63,27 +64,10 @@ abstract class Decimal extends Number implements DecimalInterface
 
         $this->value = $this->translateValue($value);
 
-        if (!is_null($scale)) {
-            if ($scale > 2147483646) {
-                throw new IntegrityConstraint(
-                    'Scale cannot be larger than 2147483646',
-                    'Use a scale of 2147483646 or less',
-                    'Scale of any number cannot be calculated beyond 2147483646 digits'
-                );
-            }
-            $checkVal = $this->getDecimalPart();
-            $checkVal = trim($checkVal,'0');
+        $this->scale = $this->determineScale($this->getDecimalPart(), $scale);
 
-            $this->scale = ($scale > strlen($checkVal)) ? $scale : strlen($checkVal);
-        } else {
-            $checkVal = $this->getDecimalPart();
-            $checkVal = trim($checkVal,'0');
-
-            if (strlen($checkVal) > 0) {
-                $this->scale = (strlen($this->getDecimalPart()) > 10) ? strlen($this->getDecimalPart()) : 10;
-            } else {
-                $this->scale = (strlen($this->getWholePart()) > 10) ? strlen($this->getWholePart()) : 10;
-            }
+        if ($this->scale < $this->numberOfDecimalDigits()) {
+            $this->value = $this->translateValue(RoundingProvider::round($this, $this->scale));
         }
 
         parent::__construct();
@@ -118,20 +102,21 @@ abstract class Decimal extends Number implements DecimalInterface
             if (strpos($value, 'E')) {
                 [$baseNum, $exp] = explode('E', $value);
                 [$left, $right] = explode('.', $baseNum);
+                $exp = intval($exp);
 
                 if ($exp > 0) {
                     $exp -= strlen($right);
                     if ($exp >= 0) {
                         $right = str_pad($right, $exp - 1, '0').'.0';
                     } else {
-                        $right = substr($right, 0, strlen($right) + $exp).'.'.substr($right, strlen($right) + $exp + 1);
+                        $right = substr($right, 0, strlen($right) + abs($exp)).'.'.substr($right, strlen($right) + abs($exp) + 1);
                     }
                 } else {
                     $exp += strlen($left);
                     if ($exp >= 0) {
                         $left = substr($left, 0, $exp).'.'.substr($left, $exp + 1);
                     } else {
-                        $left = '0.'.str_pad($left, $exp, '0', STR_PAD_LEFT);
+                        $left = '0.'.str_pad($left, abs($exp)+1, '0', STR_PAD_LEFT);
                     }
                 }
                 $value = $left.$right;
@@ -357,5 +342,30 @@ abstract class Decimal extends Number implements DecimalInterface
      * @return DecimalInterface
      */
     abstract public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface;
+
+    /**
+     * @param string $decimalPart
+     * @param int|null $scale
+     * @return int
+     * @throws IntegrityConstraint
+     */
+    protected function determineScale(string $decimalPart, ?int $scale = null): int
+    {
+        if (!is_null($scale)) {
+            if ($scale > 2147483646) {
+                throw new IntegrityConstraint(
+                    'Scale cannot be larger than 2147483646',
+                    'Use a scale of 2147483646 or less',
+                    'Scale of any number cannot be calculated beyond 2147483646 digits'
+                );
+            }
+
+            $calcScale = $scale;
+        } else {
+            $calcScale = (strlen($decimalPart) > 10) ? strlen($decimalPart) : 10;
+        }
+
+        return $calcScale;
+    }
 
 }
