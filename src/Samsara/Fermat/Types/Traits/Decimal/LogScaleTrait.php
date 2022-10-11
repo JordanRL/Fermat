@@ -41,11 +41,11 @@ trait LogScaleTrait
             $e = Numbers::makeE($scale+1);
             $value = $e->pow($this);
         } else {
-            $x = $this instanceof ImmutableDecimal ? $this : new ImmutableDecimal($this->getValue(NumberBase::Ten));
+            $intScale = $scale + 2;
+            $x = $this instanceof ImmutableDecimal ? $this : new ImmutableDecimal($this->getValue(NumberBase::Ten), $intScale);
             $x2 = $x->pow(2);
-            $intScale = $scale + 1;
             $terms = $scale;
-            $six = new ImmutableDecimal(6);
+            $six = new ImmutableDecimal(6, $intScale);
 
             $aPart = new class($x2, $x) implements ContinuedFractionTermInterface{
                 private ImmutableDecimal $x2;
@@ -75,18 +75,20 @@ trait LogScaleTrait
                 }
             };
 
-            $bPart = new class($x, $six) implements ContinuedFractionTermInterface{
+            $bPart = new class($x, $six, $intScale) implements ContinuedFractionTermInterface{
                 private ImmutableDecimal $x;
                 private ImmutableDecimal $six;
+                private int $intScale;
 
                 /**
                  * @param ImmutableDecimal $x
                  * @param ImmutableDecimal $six
                  */
-                public function __construct(ImmutableDecimal $x, ImmutableDecimal $six)
+                public function __construct(ImmutableDecimal $x, ImmutableDecimal $six, int $intScale)
                 {
                     $this->x = $x;
                     $this->six = $six;
+                    $this->intScale = $intScale;
                 }
 
                 /**
@@ -96,9 +98,9 @@ trait LogScaleTrait
                 public function __invoke(int $n): ImmutableDecimal
                 {
                     if ($n == 0) {
-                        return new ImmutableDecimal(1);
+                        return new ImmutableDecimal(1, $this->intScale);
                     } elseif ($n == 1) {
-                        return (new ImmutableDecimal(2))->subtract($this->x);
+                        return (new ImmutableDecimal(2, $this->intScale))->subtract($this->x);
                     } elseif ($n == 2) {
                         return $this->six;
                     }

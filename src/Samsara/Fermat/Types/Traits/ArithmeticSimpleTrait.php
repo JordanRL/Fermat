@@ -397,14 +397,14 @@ trait ArithmeticSimpleTrait
             return $powNumerator->divide($powDenominator)->truncateToScale(10);
         } else {
 
+            $originalScale = $this->getScale();
+
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
             $value = $this->powSelector($num);
 
             if ($this->isImaginary()) {
                 $value .= 'i';
             }
-
-            $originalScale = $this->getScale();
 
             return $this->setValue($value)->roundToScale($originalScale);
         }
