@@ -265,16 +265,19 @@ trait IntegerMathTrait
 
         for ($i = 0;$i < $certainty;$i++) {
             $a = RandomProvider::randomInt(2, $s, RandomMode::Speed);
-            $x = $a->pow($d)->modulo($thisNum);
+            $x = Numbers::make(Numbers::IMMUTABLE, (string)gmp_powm($a->getAsBaseTenRealNumber(), $d->getAsBaseTenRealNumber(), $thisNum->getAsBaseTenRealNumber()));
+
             if ($x->isEqual(1) || $x->isEqual($s)) {
                 continue;
             }
+
             for ($j = 0;$j < $r->asInt();$j++) {
                 $x = $x->pow(2)->modulo($thisNum);
                 if ($x->isEqual($s)) {
                     continue 2;
                 }
             }
+
             return false;
         }
 

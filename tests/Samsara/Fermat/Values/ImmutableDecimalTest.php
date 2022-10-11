@@ -805,7 +805,7 @@ class ImmutableDecimalTest extends TestCase
         $fortyFive = new ImmutableDecimal(45);
         $ninetyOne = new ImmutableDecimal(91);
         $tenThousandSeven = new ImmutableDecimal(10007);
-        //$largeNonPrime = new ImmutableNumber('99799811');
+        $largeNonPrime = new ImmutableDecimal('5915587277');
         $oneHalf = new ImmutableDecimal('0.5');
 
         $this->assertTrue($two->isPrime());
@@ -816,7 +816,7 @@ class ImmutableDecimalTest extends TestCase
         $this->assertFalse($fortyFive->isPrime());
         $this->assertFalse($ninetyOne->isPrime());
         $this->assertTrue($tenThousandSeven->isPrime());
-        //$this->assertFalse($largeNonPrime->isPrime());
+        $this->assertTrue($largeNonPrime->setExtensions(false)->isPrime());
         $this->assertFalse($oneHalf->isPrime());
 
     }

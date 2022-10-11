@@ -366,6 +366,24 @@ trait ArithmeticSimpleTrait
             return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
         }
 
+        if ($this->isNegative() && !$num->isInt()) {
+            if (!(InstalledVersions::isInstalled('samsara/fermat-complex-numbers')) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
+                throw new MissingPackage(
+                    'Creating complex numbers is unsupported in Fermat without modules.',
+                    'Install the samsara/fermat-complex-numbers package using composer.',
+                    'An attempt was made to create a ComplexNumber instance without having the Complex Numbers module. Please install the samsara/fermat-complex-numbers package using composer.'
+                );
+            }
+
+            /** @psalm-suppress UndefinedClass */
+            $thisComplex = new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart);
+
+            /** @psalm-suppress UndefinedClass */
+            $thatComplex = new ImmutableComplexNumber($thatRealPart, $thatImaginaryPart);
+
+            return $thisComplex->pow($thatComplex);
+        }
+
         if ($this instanceof FractionInterface) {
             /** @var ImmutableDecimal $powNumerator */
             $powNumerator = $this->getNumerator()->pow($num);
@@ -380,7 +398,6 @@ trait ArithmeticSimpleTrait
         } else {
 
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
             $value = $this->powSelector($num);
 
             if ($this->isImaginary()) {

@@ -8,12 +8,13 @@ use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Types\Base\Number;
+use Samsara\Fermat\Enums\CalcMode;
 
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class ArithmeticAutoTest extends TestCase
+class ArithmeticPrecisionTest extends TestCase
 {
 
     /*
@@ -23,20 +24,20 @@ class ArithmeticAutoTest extends TestCase
     public function additionImmutableDecimalProvider(): array
     {
 
-        $five = new ImmutableDecimal(5);
-        $fiveBaseFive = new ImmutableDecimal(5, null, NumberBase::Five);
-        $ten = new ImmutableDecimal(10);
-        $oneQuarter = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-        $sixTenths = new ImmutableDecimal('0.6');
-        $fourTenths = new ImmutableDecimal('0.4');
-        $oneTenth = new ImmutableDecimal('0.1');
-        $twoTenths = new ImmutableDecimal('0.2');
-        $tenScale = new ImmutableDecimal('0.0000000001');
-        $elevenScale = new ImmutableDecimal('0.00000000001');
-        $tenPowThirty = new ImmutableDecimal('1000000000000000000000000000000');
-        $negFour = new ImmutableDecimal('-4');
-        $fiveI = new ImmutableDecimal('5i');
-        $tenI = new ImmutableDecimal('10i');
+        $five = (new ImmutableDecimal(5))->setMode(CalcMode::Precision);
+        $fiveBaseFive = (new ImmutableDecimal(5, null, NumberBase::Five))->setMode(CalcMode::Precision);
+        $ten = (new ImmutableDecimal(10))->setMode(CalcMode::Precision);
+        $oneQuarter = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $sixTenths = (new ImmutableDecimal('0.6'))->setMode(CalcMode::Precision);
+        $fourTenths = (new ImmutableDecimal('0.4'))->setMode(CalcMode::Precision);
+        $oneTenth = (new ImmutableDecimal('0.1'))->setMode(CalcMode::Precision);
+        $twoTenths = (new ImmutableDecimal('0.2'))->setMode(CalcMode::Precision);
+        $tenScale = (new ImmutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
+        $elevenScale = (new ImmutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
+        $tenPowThirty = (new ImmutableDecimal('1000000000000000000000000000000'))->setMode(CalcMode::Precision);
+        $negFour = (new ImmutableDecimal('-4'))->setMode(CalcMode::Precision);
+        $fiveI = (new ImmutableDecimal('5i'))->setMode(CalcMode::Precision);
+        $tenI = (new ImmutableDecimal('10i'))->setMode(CalcMode::Precision);
 
         return [
             'IDecimal 5+10' => [$five, $ten, '15', NumberBase::Ten, 10],
@@ -60,20 +61,20 @@ class ArithmeticAutoTest extends TestCase
     public function additionMutableDecimalProvider(): array
     {
 
-        $five = new MutableDecimal(5);
-        $fiveBaseFive = new MutableDecimal(5, null, NumberBase::Five);
-        $ten = new MutableDecimal(10);
-        $oneQuarter = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-        $sixTenths = new MutableDecimal('0.6');
-        $fourTenths = new MutableDecimal('0.4');
-        $oneTenth = new MutableDecimal('0.1');
-        $twoTenths = new MutableDecimal('0.2');
-        $tenScale = new MutableDecimal('0.0000000001');
-        $elevenScale = new MutableDecimal('0.00000000001');
-        $tenPowThirty = new MutableDecimal('1000000000000000000000000000000');
-        $negFour = new MutableDecimal('-4');
-        $fiveI = new MutableDecimal('5i');
-        $tenI = new MutableDecimal('10i');
+        $five = (new MutableDecimal(5))->setMode(CalcMode::Precision);
+        $fiveBaseFive = (new MutableDecimal(5, null, NumberBase::Five))->setMode(CalcMode::Precision);
+        $ten = (new MutableDecimal(10))->setMode(CalcMode::Precision);
+        $oneQuarter = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $sixTenths = (new MutableDecimal('0.6'))->setMode(CalcMode::Precision);
+        $fourTenths = (new MutableDecimal('0.4'))->setMode(CalcMode::Precision);
+        $oneTenth = (new MutableDecimal('0.1'))->setMode(CalcMode::Precision);
+        $twoTenths = (new MutableDecimal('0.2'))->setMode(CalcMode::Precision);
+        $tenScale = (new MutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
+        $elevenScale = (new MutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
+        $tenPowThirty = (new MutableDecimal('1000000000000000000000000000000'))->setMode(CalcMode::Precision);
+        $negFour = (new MutableDecimal('-4'))->setMode(CalcMode::Precision);
+        $fiveI = (new MutableDecimal('5i'))->setMode(CalcMode::Precision);
+        $tenI = (new MutableDecimal('10i'))->setMode(CalcMode::Precision);
 
         return [
             'MDecimal 5+10' => [$five, $ten, '15', NumberBase::Ten, 10],
@@ -96,12 +97,12 @@ class ArithmeticAutoTest extends TestCase
 
     public function additionImmutableFractionProvider(): array
     {
-        $a = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-        $b = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(5));
-        $c = new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal(4));
-        $d = new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(5));
-        $e = new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(8));
-        $f = new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal('10000000000000000000000000'));
+        $a = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $b = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(5))->setMode(CalcMode::Precision));
+        $c = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $d = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Precision), (new ImmutableDecimal(5))->setMode(CalcMode::Precision));
+        $e = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Precision), (new ImmutableDecimal(8))->setMode(CalcMode::Precision));
+        $f = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Precision), (new ImmutableDecimal('10000000000000000000000000'))->setMode(CalcMode::Precision));
 
         return [
             'IFraction 1/4+1/5' => [$a, $b, '9/20', NumberBase::Ten, 10],
@@ -140,20 +141,20 @@ class ArithmeticAutoTest extends TestCase
     public function subtractionMutableDecimalProvider(): array
     {
 
-        $five = new MutableDecimal(5);
-        $fiveBaseFive = new MutableDecimal(5, null, NumberBase::Five);
-        $ten = new MutableDecimal(10);
-        $oneQuarter = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-        $sixTenths = new MutableDecimal('0.6');
-        $fourTenths = new MutableDecimal('0.4');
-        $oneTenth = new MutableDecimal('0.1');
-        $twoTenths = new MutableDecimal('0.2');
-        $tenScale = new MutableDecimal('0.0000000001');
-        $elevenScale = new MutableDecimal('0.00000000001');
-        $tenPowThirty = new MutableDecimal('1000000000000000000000000000000');
-        $negFour = new MutableDecimal('-4');
-        $fiveI = new MutableDecimal('5i');
-        $tenI = new MutableDecimal('10i');
+        $five = (new MutableDecimal(5))->setMode(CalcMode::Precision);
+        $fiveBaseFive = (new MutableDecimal(5, null, NumberBase::Five))->setMode(CalcMode::Precision);
+        $ten = (new MutableDecimal(10))->setMode(CalcMode::Precision);
+        $oneQuarter = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $sixTenths = (new MutableDecimal('0.6'))->setMode(CalcMode::Precision);
+        $fourTenths = (new MutableDecimal('0.4'))->setMode(CalcMode::Precision);
+        $oneTenth = (new MutableDecimal('0.1'))->setMode(CalcMode::Precision);
+        $twoTenths = (new MutableDecimal('0.2'))->setMode(CalcMode::Precision);
+        $tenScale = (new MutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
+        $elevenScale = (new MutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
+        $tenPowThirty = (new MutableDecimal('1000000000000000000000000000000'))->setMode(CalcMode::Precision);
+        $negFour = (new MutableDecimal('-4'))->setMode(CalcMode::Precision);
+        $fiveI = (new MutableDecimal('5i'))->setMode(CalcMode::Precision);
+        $tenI = (new MutableDecimal('10i'))->setMode(CalcMode::Precision);
 
         return [
             'IDecimal 5-10' => [$five, $ten, '-5', NumberBase::Ten, 10],
@@ -177,20 +178,20 @@ class ArithmeticAutoTest extends TestCase
     public function subtractionImmutableDecimalProvider(): array
     {
 
-        $five = new ImmutableDecimal(5);
-        $fiveBaseFive = new ImmutableDecimal(5, null, NumberBase::Five);
-        $ten = new ImmutableDecimal(10);
-        $oneQuarter = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-        $sixTenths = new ImmutableDecimal('0.6');
-        $fourTenths = new ImmutableDecimal('0.4');
-        $oneTenth = new ImmutableDecimal('0.1');
-        $twoTenths = new ImmutableDecimal('0.2');
-        $tenScale = new ImmutableDecimal('0.0000000001');
-        $elevenScale = new ImmutableDecimal('0.00000000001');
-        $tenPowThirty = new ImmutableDecimal('1000000000000000000000000000000');
-        $negFour = new ImmutableDecimal('-4');
-        $fiveI = new ImmutableDecimal('5i');
-        $tenI = new ImmutableDecimal('10i');
+        $five = (new ImmutableDecimal(5))->setMode(CalcMode::Precision);
+        $fiveBaseFive = (new ImmutableDecimal(5, null, NumberBase::Five))->setMode(CalcMode::Precision);
+        $ten = (new ImmutableDecimal(10))->setMode(CalcMode::Precision);
+        $oneQuarter = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $sixTenths = (new ImmutableDecimal('0.6'))->setMode(CalcMode::Precision);
+        $fourTenths = (new ImmutableDecimal('0.4'))->setMode(CalcMode::Precision);
+        $oneTenth = (new ImmutableDecimal('0.1'))->setMode(CalcMode::Precision);
+        $twoTenths = (new ImmutableDecimal('0.2'))->setMode(CalcMode::Precision);
+        $tenScale = (new ImmutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
+        $elevenScale = (new ImmutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
+        $tenPowThirty = (new ImmutableDecimal('1000000000000000000000000000000'))->setMode(CalcMode::Precision);
+        $negFour = (new ImmutableDecimal('-4'))->setMode(CalcMode::Precision);
+        $fiveI = (new ImmutableDecimal('5i'))->setMode(CalcMode::Precision);
+        $tenI = (new ImmutableDecimal('10i'))->setMode(CalcMode::Precision);
 
         return [
             'MDecimal 5-10' => [$five, $ten, '-5', NumberBase::Ten, 10],
@@ -213,12 +214,12 @@ class ArithmeticAutoTest extends TestCase
 
     public function subtractionImmutableFractionProvider(): array
     {
-        $a = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-        $b = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(5));
-        $c = new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal(4));
-        $d = new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(5));
-        $e = new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(8));
-        $f = new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal('10000000000000000000000000'));
+        $a = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $b = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(5))->setMode(CalcMode::Precision));
+        $c = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $d = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Precision), (new ImmutableDecimal(5))->setMode(CalcMode::Precision));
+        $e = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Precision), (new ImmutableDecimal(8))->setMode(CalcMode::Precision));
+        $f = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Precision), (new ImmutableDecimal('10000000000000000000000000'))->setMode(CalcMode::Precision));
 
         return [
             'IFraction 1/4-1/5' =>[$a, $b, '1/20', NumberBase::Ten, 10],
@@ -256,18 +257,18 @@ class ArithmeticAutoTest extends TestCase
 
     public function multiplicationImmutableDecimalProvider(): array
     {
-        $a = new ImmutableDecimal('2');
-        $a2 = new ImmutableDecimal('2', null, NumberBase::Five);
-        $b = new ImmutableDecimal('3');
-        $c = new ImmutableDecimal('-2');
-        $d = new ImmutableDecimal('-3');
-        $e = new ImmutableDecimal('0.5');
-        $f = new ImmutableDecimal('-0.5');
-        $g = new ImmutableDecimal('0.0000000001');
-        $h = new ImmutableDecimal('0.00000000001');
-        $i = new ImmutableDecimal('1000000000000000000000000000000');
-        $j = new ImmutableDecimal('2i');
-        $k = new ImmutableDecimal('3i');
+        $a = (new ImmutableDecimal('2'))->setMode(CalcMode::Precision);
+        $a2 = (new ImmutableDecimal('2', null, NumberBase::Five))->setMode(CalcMode::Precision);
+        $b = (new ImmutableDecimal('3'))->setMode(CalcMode::Precision);
+        $c = (new ImmutableDecimal('-2'))->setMode(CalcMode::Precision);
+        $d = (new ImmutableDecimal('-3'))->setMode(CalcMode::Precision);
+        $e = (new ImmutableDecimal('0.5'))->setMode(CalcMode::Precision);
+        $f = (new ImmutableDecimal('-0.5'))->setMode(CalcMode::Precision);
+        $g = (new ImmutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
+        $h = (new ImmutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
+        $i = (new ImmutableDecimal('1000000000000000000000000000000'))->setMode(CalcMode::Precision);
+        $j = (new ImmutableDecimal('2i'))->setMode(CalcMode::Precision);
+        $k = (new ImmutableDecimal('3i'))->setMode(CalcMode::Precision);
 
         return [
             'IDecimal 2*3' => [$a, $b, '6', NumberBase::Ten, 10],
@@ -290,18 +291,18 @@ class ArithmeticAutoTest extends TestCase
 
     public function multiplicationMutableDecimalProvider(): array
     {
-        $a = new MutableDecimal('2');
-        $a2 = new MutableDecimal('2', null, NumberBase::Five);
-        $b = new MutableDecimal('3');
-        $c = new MutableDecimal('-2');
-        $d = new MutableDecimal('-3');
-        $e = new MutableDecimal('0.5');
-        $f = new MutableDecimal('-0.5');
-        $g = new MutableDecimal('0.0000000001');
-        $h = new MutableDecimal('0.00000000001');
-        $i = new MutableDecimal('1000000000000000000000000000000');
-        $j = new MutableDecimal('2i');
-        $k = new MutableDecimal('3i');
+        $a = (new MutableDecimal('2'))->setMode(CalcMode::Precision);
+        $a2 = (new MutableDecimal('2', null, NumberBase::Five))->setMode(CalcMode::Precision);
+        $b = (new MutableDecimal('3'))->setMode(CalcMode::Precision);
+        $c = (new MutableDecimal('-2'))->setMode(CalcMode::Precision);
+        $d = (new MutableDecimal('-3'))->setMode(CalcMode::Precision);
+        $e = (new MutableDecimal('0.5'))->setMode(CalcMode::Precision);
+        $f = (new MutableDecimal('-0.5'))->setMode(CalcMode::Precision);
+        $g = (new MutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
+        $h = (new MutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
+        $i = (new MutableDecimal('1000000000000000000000000000000'))->setMode(CalcMode::Precision);
+        $j = (new MutableDecimal('2i'))->setMode(CalcMode::Precision);
+        $k = (new MutableDecimal('3i'))->setMode(CalcMode::Precision);
 
         return [
             'MDecimal 2*3' => [$a, $b, '6', NumberBase::Ten, 10],
@@ -324,12 +325,12 @@ class ArithmeticAutoTest extends TestCase
 
     public function multiplicationImmutableFractionProvider(): array
     {
-        $a = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-        $b = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(5));
-        $c = new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal(4));
-        $d = new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(5));
-        $e = new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(8));
-        $f = new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal('10000000000000000000000000'));
+        $a = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $b = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(5))->setMode(CalcMode::Precision));
+        $c = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $d = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Precision), (new ImmutableDecimal(5))->setMode(CalcMode::Precision));
+        $e = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Precision), (new ImmutableDecimal(8))->setMode(CalcMode::Precision));
+        $f = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Precision), (new ImmutableDecimal('10000000000000000000000000'))->setMode(CalcMode::Precision));
 
         return [
             'IFraction 1/4*1/5' => [$a, $b, '1/20', NumberBase::Ten, 10],
@@ -362,19 +363,19 @@ class ArithmeticAutoTest extends TestCase
 
     public function divisionImmutableDecimalProvider(): array
     {
-        $a = new ImmutableDecimal('2');
-        $a2 = new ImmutableDecimal('2', null, NumberBase::Five);
-        $b = new ImmutableDecimal('3');
-        $c = new ImmutableDecimal('-2');
-        $d = new ImmutableDecimal('-3');
-        $e = new ImmutableDecimal('0.5');
-        $f = new ImmutableDecimal('-0.5');
-        $g = new ImmutableDecimal('0.0000000001');
-        $h = new ImmutableDecimal('0.00000000001');
-        $i = new ImmutableDecimal('1000000000000000000000000000000');
-        $j = new ImmutableDecimal('5i');
-        $k = new ImmutableDecimal('10i');
-        $l = new ImmutableDecimal('0');
+        $a = (new ImmutableDecimal('2'))->setMode(CalcMode::Precision);
+        $a2 = (new ImmutableDecimal('2', null, NumberBase::Five))->setMode(CalcMode::Precision);
+        $b = (new ImmutableDecimal('3'))->setMode(CalcMode::Precision);
+        $c = (new ImmutableDecimal('-2'))->setMode(CalcMode::Precision);
+        $d = (new ImmutableDecimal('-3'))->setMode(CalcMode::Precision);
+        $e = (new ImmutableDecimal('0.5'))->setMode(CalcMode::Precision);
+        $f = (new ImmutableDecimal('-0.5'))->setMode(CalcMode::Precision);
+        $g = (new ImmutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
+        $h = (new ImmutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
+        $i = (new ImmutableDecimal('1000000000000000000000000000000'))->setMode(CalcMode::Precision);
+        $j = (new ImmutableDecimal('5i'))->setMode(CalcMode::Precision);
+        $k = (new ImmutableDecimal('10i'))->setMode(CalcMode::Precision);
+        $l = (new ImmutableDecimal('0'))->setMode(CalcMode::Precision);
 
         return [
             'IDecimal 2 / 3' => [$a, $b, '0.6666666667', NumberBase::Ten, 10],
@@ -400,19 +401,19 @@ class ArithmeticAutoTest extends TestCase
 
     public function divisionMutableDecimalProvider(): array
     {
-        $a = new MutableDecimal('2');
-        $a2 = new MutableDecimal('2', null, NumberBase::Five);
-        $b = new MutableDecimal('3');
-        $c = new MutableDecimal('-2');
-        $d = new MutableDecimal('-3');
-        $e = new MutableDecimal('0.5');
-        $f = new MutableDecimal('-0.5');
-        $g = new MutableDecimal('0.0000000001');
-        $h = new MutableDecimal('0.00000000001');
-        $i = new MutableDecimal('1000000000000000000000000000000');
-        $j = new MutableDecimal('5i');
-        $k = new MutableDecimal('10i');
-        $l = new MutableDecimal('0');
+        $a = (new MutableDecimal('2'))->setMode(CalcMode::Precision);
+        $a2 = (new MutableDecimal('2', null, NumberBase::Five))->setMode(CalcMode::Precision);
+        $b = (new MutableDecimal('3'))->setMode(CalcMode::Precision);
+        $c = (new MutableDecimal('-2'))->setMode(CalcMode::Precision);
+        $d = (new MutableDecimal('-3'))->setMode(CalcMode::Precision);
+        $e = (new MutableDecimal('0.5'))->setMode(CalcMode::Precision);
+        $f = (new MutableDecimal('-0.5'))->setMode(CalcMode::Precision);
+        $g = (new MutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
+        $h = (new MutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
+        $i = (new MutableDecimal('1000000000000000000000000000000'))->setMode(CalcMode::Precision);
+        $j = (new MutableDecimal('5i'))->setMode(CalcMode::Precision);
+        $k = (new MutableDecimal('10i'))->setMode(CalcMode::Precision);
+        $l = (new MutableDecimal('0'))->setMode(CalcMode::Precision);
 
 
         return [
@@ -439,12 +440,12 @@ class ArithmeticAutoTest extends TestCase
 
     public function divisionImmutableFractionProvider(): array
     {
-        $a = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
-        $b = new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(5));
-        $c = new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal(4));
-        $d = new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(5));
-        $e = new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(8));
-        $f = new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal('10000000000000000000000000'));
+        $a = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $b = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Precision), (new ImmutableDecimal(5))->setMode(CalcMode::Precision));
+        $c = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Precision), (new ImmutableDecimal(4))->setMode(CalcMode::Precision));
+        $d = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Precision), (new ImmutableDecimal(5))->setMode(CalcMode::Precision));
+        $e = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Precision), (new ImmutableDecimal(8))->setMode(CalcMode::Precision));
+        $f = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Precision), (new ImmutableDecimal('10000000000000000000000000'))->setMode(CalcMode::Precision));
 
         return [
             'IFraction 1/4 / 1/5' => [$a, $b, '5/4', NumberBase::Ten, 10],
@@ -482,15 +483,15 @@ class ArithmeticAutoTest extends TestCase
 
     public function powerImmutableDecimalProvider(): array
     {
-        $a = new ImmutableDecimal('2');
-        $a2 = new ImmutableDecimal('2', null, NumberBase::Five);
-        $b = new ImmutableDecimal('3');
-        $c = new ImmutableDecimal('-2');
-        $d = new ImmutableDecimal('-3');
-        $e = new ImmutableDecimal('0.5');
-        $f = new ImmutableDecimal('-0.5');
-        $g = new ImmutableDecimal('0.0000000001');
-        $h = new ImmutableDecimal('0.00000000001');
+        $a = (new ImmutableDecimal('2'))->setMode(CalcMode::Precision);
+        $a2 = (new ImmutableDecimal('2', null, NumberBase::Five))->setMode(CalcMode::Precision);
+        $b = (new ImmutableDecimal('3'))->setMode(CalcMode::Precision);
+        $c = (new ImmutableDecimal('-2'))->setMode(CalcMode::Precision);
+        $d = (new ImmutableDecimal('-3'))->setMode(CalcMode::Precision);
+        $e = (new ImmutableDecimal('0.5'))->setMode(CalcMode::Precision);
+        $f = (new ImmutableDecimal('-0.5'))->setMode(CalcMode::Precision);
+        $g = (new ImmutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
+        $h = (new ImmutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
 
 
         return [
@@ -511,15 +512,15 @@ class ArithmeticAutoTest extends TestCase
 
     public function powerMutableDecimalProvider(): array
     {
-        $a = new MutableDecimal('2');
-        $a2 = new MutableDecimal('2', null, NumberBase::Five);
-        $b = new MutableDecimal('3');
-        $c = new MutableDecimal('-2');
-        $d = new MutableDecimal('-3');
-        $e = new MutableDecimal('0.5');
-        $f = new MutableDecimal('-0.5');
-        $g = new MutableDecimal('0.0000000001');
-        $h = new MutableDecimal('0.00000000001');
+        $a = (new MutableDecimal('2'))->setMode(CalcMode::Precision);
+        $a2 = (new MutableDecimal('2', null, NumberBase::Five))->setMode(CalcMode::Precision);
+        $b = (new MutableDecimal('3'))->setMode(CalcMode::Precision);
+        $c = (new MutableDecimal('-2'))->setMode(CalcMode::Precision);
+        $d = (new MutableDecimal('-3'))->setMode(CalcMode::Precision);
+        $e = (new MutableDecimal('0.5'))->setMode(CalcMode::Precision);
+        $f = (new MutableDecimal('-0.5'))->setMode(CalcMode::Precision);
+        $g = (new MutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
+        $h = (new MutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
 
 
         return [
