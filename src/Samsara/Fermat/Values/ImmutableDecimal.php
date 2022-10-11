@@ -78,8 +78,12 @@ class ImmutableDecimal extends Decimal
             $base = $this->getBase();
         }
 
+        $sign = $this->sign;
+
         $translated = $this->translateValue($value);
         $determinedScale = $this->determineScale($translated[1]);
+
+        $this->sign = $sign;
 
         $determinedScale = $this->getScale() > $determinedScale ? $this->getScale() : $determinedScale;
 

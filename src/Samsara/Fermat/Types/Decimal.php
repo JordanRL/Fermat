@@ -2,7 +2,6 @@
 
 namespace Samsara\Fermat\Types;
 
-use Riimu\Kit\BaseConversion\BaseConverter;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
@@ -67,7 +66,7 @@ abstract class Decimal extends Number implements DecimalInterface
         $this->scale = $this->determineScale($this->getDecimalPart(), $scale);
 
         if ($this->scale < $this->numberOfDecimalDigits()) {
-            $this->value = $this->translateValue(RoundingProvider::round($this, $this->scale));
+            $this->value = $this->translateValue(RoundingProvider::round($this->getAsBaseTenRealNumber(), $this->scale));
         }
 
         parent::__construct();

@@ -43,13 +43,13 @@ trait ScaleTrait
         if ($mode) {
             $defaultMode = RoundingProvider::getRoundingMode();
             RoundingProvider::setRoundingMode($mode);
-            $return = $this->setValue(RoundingProvider::round($this, $decimals));
+            $return = $this->setValue(RoundingProvider::round($this->getValue(NumberBase::Ten), $decimals));
             RoundingProvider::setRoundingMode($defaultMode);
 
             return $return;
         }
 
-        return $this->setValue(RoundingProvider::round($this, $decimals));
+        return $this->setValue(RoundingProvider::round($this->getValue(NumberBase::Ten), $decimals));
     }
 
     /**
@@ -89,7 +89,7 @@ trait ScaleTrait
             $result .= 'i';
         }
 
-        return $this->setValue($result);
+        return $this->setValue($result, $decimals);
     }
 
     /**
@@ -154,50 +154,36 @@ trait ScaleTrait
      * The number of digits (excludes the radix).
      *
      * @return int
-     * @throws IncompatibleObjectState
      */
     public function numberOfTotalDigits(): int
     {
-        $wholeDigits = $this->getWholePart();
-        $decimalDigits = $this->getDecimalPart();
-
-        $digits = Numbers::makeZero();
-
-        $digits = $digits->add(strlen($wholeDigits))->add(strlen($decimalDigits));
-
-        return $digits->asInt();
+        return $this->numberOfDecimalDigits() + $this->numberOfIntDigits();
     }
 
     /**
      * The number of digits in the integer part.
      *
      * @return int
-     * @throws IntegrityConstraint
-     * @throws IncompatibleObjectState
      */
     public function numberOfIntDigits(): int
     {
-        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getWholePart()))->asInt();
+        return strlen($this->getWholePart());
     }
 
     /**
      * The number of digits in the decimal part.
      *
      * @return int
-     * @throws IntegrityConstraint
-     * @throws IncompatibleObjectState
      */
     public function numberOfDecimalDigits(): int
     {
-        return Numbers::make(Numbers::IMMUTABLE, strlen($this->getDecimalPart()))->asInt();
+        return strlen($this->getDecimalPart());
     }
 
     /**
      * The number of digits in the decimal part, excluding leading zeros.
      *
      * @return int
-     * @throws IntegrityConstraint
-     * @throws IncompatibleObjectState
      */
     public function numberOfSigDecimalDigits(): int
     {
@@ -205,7 +191,7 @@ trait ScaleTrait
 
         $sigDigits = ltrim($decimalPart, '0');
 
-        return Numbers::make(Numbers::IMMUTABLE, strlen($sigDigits))->asInt();
+        return strlen($sigDigits);
     }
 
     /**

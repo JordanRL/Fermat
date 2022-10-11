@@ -15,7 +15,7 @@ class RoundingProvider
 {
 
     private static RoundingMode $mode = RoundingMode::HalfEven;
-    private static ?DecimalInterface $decimal;
+    private static bool $isNegative = false;
     private static int $alt = 1;
     private static ?string $remainder;
 
@@ -39,28 +39,29 @@ class RoundingProvider
     }
 
     /**
-     * @param DecimalInterface $decimal
+     * @param string $decimal
      * @param int $places
      * @return string
      */
-    public static function round(DecimalInterface $decimal, int $places = 0): string
+    public static function round(string $decimal, int $places = 0): string
     {
-        static::$decimal = $decimal;
+        $decimal = trim(rtrim($decimal));
 
-        $rawString = str_replace('-', '', $decimal->getAsBaseTenRealNumber());
+        static::$isNegative = str_starts_with($decimal, '-');
+        $sign = static::$isNegative ? '-' : '';
+        $imaginary = str_ends_with($decimal, 'i') ? 'i' : '';
 
-        $sign = $decimal->isNegative() ? '-' : '';
-        $imaginary = $decimal->isImaginary() ? 'i' : '';
-
-        if ($decimal->isInt() && $places >= 0) {
-            return $sign.$rawString.$imaginary;
-        }
+        $rawString = str_replace('-', '', $decimal);
 
         if (str_contains($rawString, '.')) {
             [$wholePart, $decimalPart] = explode('.', $rawString);
         } else {
             $wholePart = $rawString;
             $decimalPart = '';
+        }
+
+        if (empty($decimalPart) && $places >= 0) {
+            return $sign.$rawString.$imaginary;
         }
 
         $absPlaces = abs($places);
@@ -167,7 +168,6 @@ class RoundingProvider
         }
 
         static::$remainder = null;
-        static::$decimal = null;
 
         return $sign.$newWholePart.'.'.$newDecimalPart.$imaginary;
     }
@@ -180,7 +180,7 @@ class RoundingProvider
 
     private static function negativeReverser(): int
     {
-        if (static::$decimal->isNegative()) {
+        if (static::$isNegative) {
             return 1;
         } else {
             return 0;

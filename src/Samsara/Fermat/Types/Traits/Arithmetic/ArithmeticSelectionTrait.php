@@ -25,6 +25,7 @@ use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\ComplexNumbers;
 use Samsara\Fermat\Enums\CalcMode;
+use Samsara\Fermat\Enums\CalcOperation;
 use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\CalculationModeProvider;
@@ -179,9 +180,10 @@ trait ArithmeticSelectionTrait
      * @return CalcMode
      * @throws IntegrityConstraint
      */
-    protected function modeSelectorForArithmetic(DecimalInterface $num): CalcMode
+    protected function modeSelectorForArithmetic(DecimalInterface $num, CalcOperation $operation): CalcMode
     {
-        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten));
+        $thisAbs = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->absValue());
+        $thatAbs = Numbers::make(Numbers::IMMUTABLE, $num->absValue());
         /*
          * Floats have variable density depending on where the exponent is. However, the exponent is also
          * base-2, while our scale is base-10. Thus, in order to determine if the requested scale is within
@@ -201,10 +203,13 @@ trait ArithmeticSelectionTrait
          * We still need to check for integers, since it's possible the GMP extension won't be installed.
          */
         $nativeInt = $this->isInt() && $num->isInt();
-        $nativeInt = $nativeInt && $thisNum->abs()->isLessThan(CalculationModeProvider::PHP_INT_MAX_HALF);
-        $nativeInt = $nativeInt && $num->abs()->isLessThan(CalculationModeProvider::PHP_INT_MAX_HALF);
+        $nativeInt = $nativeInt && $thisAbs->isLessThan(CalculationModeProvider::PHP_INT_MAX_HALF);
+        $nativeInt = $nativeInt && $thatAbs->isLessThan(CalculationModeProvider::PHP_INT_MAX_HALF);
 
-        if ($nativeInt || ($nativeScale && $nativeValues)) {
+        if (
+            ($nativeInt && ($operation == CalcOperation::Addition || $operation == CalcOperation::Subtraction))
+            || ($nativeScale && $nativeValues)
+        ) {
             return CalcMode::Native;
         } else {
             return CalcMode::Precision;
@@ -225,7 +230,7 @@ trait ArithmeticSelectionTrait
                 return $value;
             }
 
-            $calcMode = $this->modeSelectorForArithmetic($num);
+            $calcMode = $this->modeSelectorForArithmetic($num, CalcOperation::Addition);
         }
 
         return match ($calcMode) {
@@ -248,7 +253,7 @@ trait ArithmeticSelectionTrait
                 return $value;
             }
 
-            $calcMode = $this->modeSelectorForArithmetic($num);
+            $calcMode = $this->modeSelectorForArithmetic($num, CalcOperation::SquareRoot);
         }
 
         return match ($calcMode) {
@@ -271,7 +276,7 @@ trait ArithmeticSelectionTrait
                 return $value;
             }
 
-            $calcMode = $this->modeSelectorForArithmetic($num);
+            $calcMode = $this->modeSelectorForArithmetic($num, CalcOperation::Multiplication);
         }
 
         return match ($calcMode) {
@@ -295,7 +300,7 @@ trait ArithmeticSelectionTrait
                 return $value;
             }
 
-            $calcMode = $this->modeSelectorForArithmetic($num);
+            $calcMode = $this->modeSelectorForArithmetic($num, CalcOperation::Division);
         }
 
         return match ($calcMode) {
@@ -323,7 +328,7 @@ trait ArithmeticSelectionTrait
                 return $value;
             }
 
-            $calcMode = $this->modeSelectorForArithmetic($num);
+            $calcMode = $this->modeSelectorForArithmetic($num, CalcOperation::Power);
         }
 
         return match ($calcMode) {
