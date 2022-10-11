@@ -329,7 +329,7 @@ class ImmutableDecimalTest extends TestCase
         $this->assertEquals('-1.73205080756888', $twoPiDivThree->tan(14)->getValue());
         $this->assertEquals('-1.73205080756887', $twoPiDivThree->tan(14, false)->getValue());
 
-        $piDivTwo = Numbers::makePi()->divide(2);
+        $piDivTwo = Numbers::makePi(50)->divide(2)->truncateToScale(49);
 
         $this->assertEquals('INF', $piDivTwo->tan()->getValue());
 

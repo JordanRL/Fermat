@@ -155,9 +155,9 @@ trait InverseTrigonometrySimpleTrait
         }
 
         if ($this->isEqual(1)) {
-            $answer = Numbers::makePi(($scale ?? $this->getScale())+1)->divide(2, ($scale ?? $this->getScale())+1)->getValue();
+            $answer = Numbers::makePi(($scale ?? $this->getScale())+2)->divide(2, ($scale ?? $this->getScale())+2)->getValue();
         } elseif ($this->isEqual(-1)) {
-            $answer = Numbers::makePi(($scale ?? $this->getScale())+1)->divide(2, ($scale ?? $this->getScale())+1)->multiply(-1)->getValue();
+            $answer = Numbers::makePi(($scale ?? $this->getScale())+2)->divide(2, ($scale ?? $this->getScale())+2)->multiply(-1)->getValue();
         } else {
             $answer = $this->arccscSelector($scale);
         }

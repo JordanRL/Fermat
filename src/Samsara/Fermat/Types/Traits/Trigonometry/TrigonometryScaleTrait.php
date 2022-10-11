@@ -131,7 +131,7 @@ trait TrigonometryScaleTrait
     protected function tanScale(int $scale = null): string
     {
         $scale = $scale ?? $this->getScale();
-        $intScale = $scale + 3;
+        $intScale = $scale + 4;
         if (extension_loaded('decimal')) {
             $intScale = $intScale+$this->numberOfIntDigits();
         }
