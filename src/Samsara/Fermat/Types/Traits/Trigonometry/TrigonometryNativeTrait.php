@@ -52,7 +52,7 @@ trait TrigonometryNativeTrait
      */
     protected function secNative(): float
     {
-        $sin = $this->sinNative();
+        $sin = $this->cosNative();
 
         if ($sin == 0) {
             throw new IntegrityConstraint(
@@ -70,7 +70,7 @@ trait TrigonometryNativeTrait
      */
     protected function cscNative(): float
     {
-        $cos = $this->cosNative();
+        $cos = $this->sinNative();
 
         if ($cos == 0) {
             throw new IntegrityConstraint(
