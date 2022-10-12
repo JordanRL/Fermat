@@ -161,99 +161,6 @@ class ImmutableDecimalTest extends TestCase
      * @group arithmetic
      * @medium
      */
-    public function testPow()
-    {
-
-        $five = new ImmutableDecimal(5);
-        $two = new ImmutableDecimal(2);
-
-        $this->assertEquals('25', $five->pow($two)->getValue());
-
-        $fourPointTwo = new ImmutableDecimal('4.2');
-        $three = new ImmutableDecimal(3);
-
-        $this->assertEquals('74.088', $fourPointTwo->pow($three)->getValue());
-
-        $fortyTwoTenths = new ImmutableFraction(new ImmutableDecimal(42), new ImmutableDecimal(10));
-
-        $this->assertEquals('100.9042061089', $three->pow($fortyTwoTenths)->getValue());
-
-        $e = Numbers::makeE();
-
-        $this->assertEquals('485165195.40979', $e->pow(20)->round(5)->getValue());
-
-    }
-    /**
-     * @medium
-     */
-    public function testExp()
-    {
-
-        $one = new ImmutableDecimal(1);
-        $e = Numbers::makeE();
-
-        $this->assertTrue($one->exp()->truncate(5)->isEqual($e->truncate(5)));
-
-    }
-    /**
-     * @medium
-     */
-    public function testLn()
-    {
-
-        $five = new ImmutableDecimal(5);
-
-        $answer1 = $five->ln()->getValue();
-        $this->assertEquals('1.6094379124', $answer1);
-
-        $this->assertEquals('1.60943791243', $five->ln(11)->getValue());
-
-        $fifteen = new ImmutableDecimal(15);
-
-        $this->assertEquals('2.7080502011', $fifteen->ln(11)->getValue());
-
-        $oneFifty = new ImmutableDecimal(150);
-
-        $this->assertEquals('5.010635294096', $oneFifty->ln(12)->getValue());
-
-        $largeInt = new ImmutableDecimal('1000000000000000000000000000');
-
-        $this->assertEquals('62.16979751', $largeInt->ln(8)->getValue());
-
-        $this->assertEquals('62.16979', $largeInt->ln(5, false)->getValue());
-
-    }
-    /**
-     * @medium
-     */
-    public function testLog10()
-    {
-
-        $five = new ImmutableDecimal(5);
-
-        $this->assertEquals('0.6989700043', $five->log10()->getValue());
-
-        $this->assertEquals('0.69897000434', $five->log10(11)->getValue());
-
-        $fifteen = new ImmutableDecimal(15);
-
-        $this->assertEquals('1.17609125906', $fifteen->log10(11)->getValue());
-
-        $oneFifty = new ImmutableDecimal(150);
-
-        $this->assertEquals('2.176091259056', $oneFifty->log10(12)->getValue());
-
-        $largeInt = new ImmutableDecimal('1000000000000000000000000000');
-
-        $this->assertEquals('27', $largeInt->log10(8)->getValue());
-
-        $this->assertEquals('27', $largeInt->log10(5, false)->getValue());
-
-    }
-    /**
-     * @group arithmetic
-     * @medium
-     */
     public function testSqrt()
     {
 
@@ -268,109 +175,6 @@ class ImmutableDecimalTest extends TestCase
         $largeInt = new ImmutableDecimal('1000000000000000000000000000');
 
         $this->assertEquals('31622776601683.7933199889', $largeInt->sqrt(10)->getValue());
-
-    }
-    /**
-     * @medium
-     */
-    public function testSin()
-    {
-        /** @var ImmutableDecimal $pi */
-        $pi = Numbers::makePi(10);
-        $zero = new ImmutableDecimal(0);
-
-        $this->assertEquals('0', $pi->sin()->getValue());
-        $this->assertEquals('0', $zero->sin()->getValue());
-
-        $four = new ImmutableDecimal(4);
-
-        $this->assertEquals('-0.7568024953', $four->sin()->getValue());
-
-        $largeInt = new ImmutableDecimal('1000000000000000000000000000');
-
-        $this->assertEquals('0.718063496139118', $largeInt->sin(15)->getValue());
-        $this->assertEquals('0.71806349613912', $largeInt->sin(14)->getValue());
-        $this->assertEquals('0.71806349613911', $largeInt->sin(14, false)->getValue());
-
-    }
-    /**
-     * @medium
-     */
-    public function testCos()
-    {
-        /** @var ImmutableDecimal $pi */
-        $pi = Numbers::makePi();
-        $this->assertEquals('-1', $pi->cos()->getValue());
-
-        /** @var ImmutableDecimal $tau */
-        $tau = Numbers::make2Pi();
-        $this->assertEquals('1', $tau->cos()->getValue());
-
-        $four = new ImmutableDecimal(4);
-
-        $this->assertEquals('-0.6536436209', $four->cos()->getValue());
-
-        $largeInt = new ImmutableDecimal('1000000000000000000000000000');
-
-        $this->assertEquals('-0.695977596990354', $largeInt->cos(15)->getValue());
-        $this->assertEquals('-0.69597759699035', $largeInt->cos(14)->getValue());
-        $this->assertEquals('-0.695977596990353', $largeInt->cos(15, false)->getValue());
-
-    }
-    /**
-     * @medium
-     */
-    public function testTan()
-    {
-
-        $twoPiDivThree = Numbers::make2Pi()->divide(3);
-
-        $this->assertEquals('-1.73205080756888', $twoPiDivThree->tan(14)->getValue());
-        $this->assertEquals('-1.73205080756887', $twoPiDivThree->tan(14, false)->getValue());
-
-        $piDivTwo = Numbers::makePi(50)->divide(2)->truncateToScale(49);
-
-        $this->assertEquals('INF', $piDivTwo->tan()->getValue());
-
-    }
-    /**
-     * @medium
-     */
-    public function testCot()
-    {
-
-        $five = new ImmutableDecimal(5);
-
-        $this->assertEquals('-0.295812916', $five->cot(9)->getValue());
-        $this->assertEquals('-0.295812915', $five->cot(9, false)->getValue());
-
-        $test = new ImmutableDecimal('-0.7853981633');
-
-        $this->assertEquals('-1', $test->cot(2)->getValue());
-
-    }
-    /**
-     * @medium
-     */
-    public function testSec()
-    {
-
-        $five = new ImmutableDecimal(5);
-
-        $this->assertEquals('3.525320086', $five->sec(9)->getValue());
-        $this->assertEquals('3.525320085', $five->sec(9, false)->getValue());
-
-    }
-    /**
-     * @medium
-     */
-    public function testCsc()
-    {
-
-        $five = new ImmutableDecimal(5);
-
-        $this->assertEquals('-1.042835213', $five->csc(9)->getValue());
-        $this->assertEquals('-1.042835212', $five->csc(9, false)->getValue());
 
     }
     /**
@@ -891,7 +695,7 @@ class ImmutableDecimalTest extends TestCase
         $this->expectException(IntegrityConstraint::class);
         $this->expectExceptionMessage('Scale of any number cannot be calculated beyond 2147483646 digits');
 
-        $scaleLimit = new ImmutableDecimal(1, 2147483647);
+        new ImmutableDecimal(1, 2147483647);
 
     }
     /**
@@ -1001,38 +805,6 @@ class ImmutableDecimalTest extends TestCase
 
         $this->assertFalse($in1->equals('blahblah'));
         $this->assertFalse($in1->equals($nc));
-
-    }
-
-    /**
-     * @group arithmetic
-     * @group complex
-     * @medium
-     */
-    public function testImaginaryAdd()
-    {
-
-        $one = new ImmutableDecimal(1);
-        $oneI = new ImmutableDecimal('1i');
-
-        $this->expectException(MissingPackage::class);
-        $one->add($oneI);
-
-    }
-
-    /**
-     * @group arithmetic
-     * @group complex
-     * @medium
-     */
-    public function testImaginarySubtract()
-    {
-
-        $one = new ImmutableDecimal(1);
-        $oneI = new ImmutableDecimal('1i');
-
-        $this->expectException(MissingPackage::class);
-        $one->subtract($oneI);
 
     }
 

@@ -143,7 +143,7 @@ trait TrigonometryScaleTrait
         $intScale = $intScale+$this->numberOfIntDigits()+$this->numberOfLeadingZeros();
 
         $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $intScale);
-        $thisNumNonScaled = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $this->getScale());
+        $thisNumNonScaled = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $scale);
 
         $pi = Numbers::makePi($intScale);
         $piDivTwo = Numbers::makePi($intScale)->divide(2);
@@ -279,10 +279,11 @@ trait TrigonometryScaleTrait
 
         $scale = $scale ?? $this->getScale();
 
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+1);
+        $num = Numbers::make(Numbers::IMMUTABLE, $this, $scale+1);
+        $numNonScaled = Numbers::make(Numbers::IMMUTABLE, $this, $scale);
 
-        $modPi = $num->continuousModulo($pi)->truncate($scale);
-        $mod2Pi = $num->continuousModulo($twoPi)->truncate($scale);
+        $modPi = $numNonScaled->continuousModulo($pi)->truncate($scale);
+        $mod2Pi = $numNonScaled->continuousModulo($twoPi)->truncate($scale);
 
         if ($mod2Pi->isEqual(0)) {
             return static::INFINITY;
@@ -290,7 +291,7 @@ trait TrigonometryScaleTrait
             return static::NEG_INFINITY;
         }
 
-        $modPiDiv2 = $num->continuousModulo($piDivTwo)->truncate($scale);
+        $modPiDiv2 = $numNonScaled->continuousModulo($piDivTwo)->truncate($scale);
 
         if ($modPiDiv2->isEqual(0)) {
             return '0';
@@ -318,10 +319,12 @@ trait TrigonometryScaleTrait
 
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+1);
 
-        $cos = $num->cosScale($scale+2);
+        $cos = $num->cos($scale+2);
 
-        if ($cos == 0) {
+        if ($cos->isPositive() && $cos->numberOfLeadingZeros() >= $scale) {
             return static::INFINITY;
+        } elseif ($cos->isNegative() && $cos->numberOfLeadingZeros() >= $scale) {
+            return static::NEG_INFINITY;
         }
 
         $answer = $one->divide($cos, $scale+2);
@@ -344,10 +347,12 @@ trait TrigonometryScaleTrait
 
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $sin = $num->sinScale($scale+2);
+        $sin = $num->sin($scale+2);
 
-        if ($sin == '0') {
+        if ($sin->isPositive() && $sin->numberOfLeadingZeros() >= $scale) {
             return static::INFINITY;
+        } elseif ($sin->isNegative() && $sin->numberOfLeadingZeros() >= $scale) {
+            return static::NEG_INFINITY;
         }
 
         $answer = $one->divide($sin, $scale+2);
