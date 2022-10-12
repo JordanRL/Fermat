@@ -128,16 +128,19 @@ class RoundingProvider
         $absPlaces = abs($places);
 
         $currentPart = $places >= 0;
-        $roundedPart = $currentPart ? str_split($decimalPart) : str_split($wholePart);
-        $roundedPartString = $currentPart ? $decimalPart : $wholePart;
-        $otherPart = $currentPart ? str_split($wholePart) : str_split($decimalPart);
-        $baseLength = $currentPart ? strlen($decimalPart)-1 : strlen($wholePart);
-        $pos = $currentPart ? $places : $baseLength + $places;
 
         if ($currentPart) {
-            $pos = ($absPlaces > $baseLength && $places < 0) ? $baseLength : $pos;
+            $roundedPart = str_split($decimalPart);
+            $roundedPartString = $decimalPart;
+            $otherPart = str_split($wholePart);
+            $baseLength = strlen($decimalPart)-1;
+            $pos = ($absPlaces > $baseLength && $places < 0) ? $baseLength : $places;
         } else {
-            $pos = ($absPlaces >= $baseLength) ? 0 : $pos;
+            $roundedPart = str_split($wholePart);
+            $roundedPartString = $wholePart;
+            $otherPart = str_split($decimalPart);
+            $baseLength = strlen($wholePart);
+            $pos = ($absPlaces >= $baseLength) ? 0 : $baseLength + $places;
         }
 
         return [
