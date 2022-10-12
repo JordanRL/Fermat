@@ -61,8 +61,6 @@ build:
                           format: clover
         standalone-tests-with-decimal:
             environment:
-                apt_packages:
-                    - php-decimal
                 variables:
                     COMPOSER_ROOT_VERSION: 2.0
                 php:
@@ -73,6 +71,7 @@ build:
                 before:
                     - mkdir build
                     - mkdir build/logs
+                    - pecl install decimal
                 override:
                     - command: php vendor/bin/phpunit --group=DecimalLegacy
                       on_node: 1
