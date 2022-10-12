@@ -45,39 +45,24 @@ class RoundingProvider
      */
     public static function round(string $decimal, int $places = 0): string
     {
-        $decimal = trim(rtrim($decimal));
+        $carry = 0;
 
-        static::$isNegative = str_starts_with($decimal, '-');
+        [
+            $rawString,
+            $roundedPart,
+            $roundedPartString,
+            $otherPart,
+            $pos,
+            $wholePart,
+            $decimalPart,
+            $currentPart
+        ] = self::_roundPreFormat($decimal, $places);
+
         $sign = static::$isNegative ? '-' : '';
         $imaginary = str_ends_with($decimal, 'i') ? 'i' : '';
 
-        $rawString = str_replace('-', '', $decimal);
-
-        if (str_contains($rawString, '.')) {
-            [$wholePart, $decimalPart] = explode('.', $rawString);
-        } else {
-            $wholePart = $rawString;
-            $decimalPart = '';
-        }
-
         if (empty($decimalPart) && $places >= 0) {
             return $sign.$rawString.$imaginary;
-        }
-
-        $absPlaces = abs($places);
-
-        $currentPart = $places >= 0;
-        $roundedPart = $currentPart ? str_split($decimalPart) : str_split($wholePart);
-        $roundedPartString = $currentPart ? $decimalPart : $wholePart;
-        $otherPart = $currentPart ? str_split($wholePart) : str_split($decimalPart);
-        $baseLength = $currentPart ? strlen($decimalPart)-1 : strlen($wholePart);
-        $pos = $currentPart ? $places : $baseLength + $places;
-        $carry = 0;
-
-        if ($currentPart) {
-            $pos = ($absPlaces > $baseLength && $places < 0) ? $baseLength : $pos;
-        } else {
-            $pos = ($absPlaces >= $baseLength) ? 0 : $pos;
         }
 
         do {
@@ -85,23 +70,14 @@ class RoundingProvider
                 break;
             }
 
-            $digit = (int)$roundedPart[$pos] + $carry;
-
-            if ($carry == 0 && $digit == 5) {
-                static::$remainder = substr($roundedPartString, $pos+1);
-            } else {
-                static::$remainder = null;
-            }
-
-            if ($pos == 0) {
-                if ($currentPart) {
-                    $nextDigit = (int)$otherPart[count($otherPart)-1];
-                } else {
-                    $nextDigit = 0;
-                }
-            } else {
-                $nextDigit = (int)$roundedPart[$pos-1];
-            }
+            [$digit, $nextDigit] = self::_roundLoopStart(
+                $roundedPart,
+                $otherPart,
+                $roundedPartString,
+                $pos,
+                $carry,
+                $currentPart
+            );
 
             if ($carry == 0) {
                 $carry = match (self::getRoundingMode()) {
@@ -110,10 +86,11 @@ class RoundingProvider
                     RoundingMode::HalfOdd => self::roundHalfOdd($digit, $nextDigit),
                     RoundingMode::HalfZero => self::roundHalfZero($digit),
                     RoundingMode::HalfInf => self::roundHalfInf($digit),
-                    RoundingMode::Ceil => self::roundCeil($digit),
-                    RoundingMode::Floor => self::roundFloor(),
                     RoundingMode::HalfRandom => self::roundRandom($digit),
                     RoundingMode::HalfAlternating => self::roundAlternating($digit),
+                    RoundingMode::Ceil => self::roundCeil($digit),
+                    RoundingMode::Floor => self::roundFloor($digit),
+                    RoundingMode::Truncate => self::roundTruncate(),
                     RoundingMode::Stochastic => self::roundStochastic($digit),
                     default => self::roundHalfEven($digit, $nextDigit)
                 };
@@ -127,45 +104,16 @@ class RoundingProvider
                 }
             }
 
-            if ($pos == 0 && $carry == 1) {
-                if ($currentPart) {
-                    $currentPart = false;
-
-                    // Do the variable swap dance
-                    $temp = $otherPart;
-                    $otherPart = $roundedPart;
-                    $roundedPart = $temp;
-
-                    $pos = count($roundedPart)-1;
-                } else {
-                    array_unshift($roundedPart, $carry);
-                    $carry = 0;
-                }
-            } else {
-                $pos -= 1;
-            }
+            [$roundedPart, $otherPart, $pos, $carry, $currentPart] = self::_roundLoopEnd(
+                $roundedPart,
+                $otherPart,
+                $pos,
+                $carry,
+                $currentPart
+            );
         } while ($carry == 1);
 
-        if ($currentPart) {
-            $newDecimalPart = implode('', $roundedPart);
-            $newWholePart = implode('', $otherPart);
-        } else {
-            $newDecimalPart = implode('', $otherPart);
-            $newWholePart = implode('', $roundedPart);
-        }
-
-        if ($places > 0) {
-            $newDecimalPart = substr($newDecimalPart, 0, $places);
-        } elseif ($places == 0) {
-            $newDecimalPart = '0';
-        } else {
-            $newWholePart = substr($newWholePart, 0, strlen($wholePart)+$places).str_repeat('0', $places*-1);
-            $newDecimalPart = '0';
-        }
-
-        if (!strlen(str_replace('0', '', $newDecimalPart))) {
-            $newDecimalPart = '0';
-        }
+        [$newWholePart, $newDecimalPart] = self::_roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places);
 
         static::$remainder = null;
 
@@ -261,14 +209,25 @@ class RoundingProvider
         return $digit > 4 ? 1 : 0;
     }
 
-    #[Pure]
     private static function roundCeil(int $digit): int
     {
-        return $digit == 0 ? 0 : 1;
+        if (self::$isNegative) {
+            return 0;
+        } else {
+            return $digit == 0 ? 0 : 1;
+        }
     }
 
-    #[Pure]
-    private static function roundFloor(): int
+    private static function roundFloor(int $digit): int
+    {
+        if (self::$isNegative) {
+            return $digit == 0 ? 0 : 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private static function roundTruncate(): int
     {
         return 0;
     }
@@ -322,6 +281,169 @@ class RoundingProvider
         } else {
             return 0;
         }
+    }
+
+    /**
+     * @param string $decimal
+     * @param int $places
+     * @return array
+     */
+    private static function _roundPreFormat(string $decimal, int $places): array
+    {
+        $decimal = trim(rtrim($decimal));
+
+        static::$isNegative = str_starts_with($decimal, '-');
+
+        $rawString = str_replace('-', '', $decimal);
+
+        if (str_contains($rawString, '.')) {
+            [$wholePart, $decimalPart] = explode('.', $rawString);
+        } else {
+            $wholePart = $rawString;
+            $decimalPart = '';
+        }
+
+        $absPlaces = abs($places);
+
+        $currentPart = $places >= 0;
+        $roundedPart = $currentPart ? str_split($decimalPart) : str_split($wholePart);
+        $roundedPartString = $currentPart ? $decimalPart : $wholePart;
+        $otherPart = $currentPart ? str_split($wholePart) : str_split($decimalPart);
+        $baseLength = $currentPart ? strlen($decimalPart)-1 : strlen($wholePart);
+        $pos = $currentPart ? $places : $baseLength + $places;
+
+        if ($currentPart) {
+            $pos = ($absPlaces > $baseLength && $places < 0) ? $baseLength : $pos;
+        } else {
+            $pos = ($absPlaces >= $baseLength) ? 0 : $pos;
+        }
+
+        return [
+            $rawString,
+            $roundedPart,
+            $roundedPartString,
+            $otherPart,
+            $pos,
+            $wholePart,
+            $decimalPart,
+            $currentPart
+        ];
+    }
+
+    /**
+     * @param string $currentPart
+     * @param string $wholePart
+     * @param array $roundedPart
+     * @param array $otherPart
+     * @param int $places
+     * @return array
+     */
+    private static function _roundPostFormat(
+        string $currentPart,
+        string $wholePart,
+        array $roundedPart,
+        array $otherPart,
+        int $places
+    ): array
+    {
+        if ($currentPart) {
+            $newDecimalPart = implode('', $roundedPart);
+            $newWholePart = implode('', $otherPart);
+        } else {
+            $newDecimalPart = implode('', $otherPart);
+            $newWholePart = implode('', $roundedPart);
+        }
+
+        if ($places > 0) {
+            $newDecimalPart = substr($newDecimalPart, 0, $places);
+        } elseif ($places == 0) {
+            $newDecimalPart = '0';
+        } else {
+            $newWholePart = substr($newWholePart, 0, strlen($wholePart)+$places).str_repeat('0', $places*-1);
+            $newDecimalPart = '0';
+        }
+
+        if (!strlen(str_replace('0', '', $newDecimalPart))) {
+            $newDecimalPart = '0';
+        }
+
+        return [$newWholePart, $newDecimalPart];
+    }
+
+    /**
+     * @param array $roundedPart
+     * @param array $otherPart
+     * @param string $roundedPartString
+     * @param int $pos
+     * @param int $carry
+     * @param bool $currentPart
+     * @return int[]
+     */
+    private static function _roundLoopStart(
+        array $roundedPart,
+        array $otherPart,
+        string $roundedPartString,
+        int $pos,
+        int $carry,
+        bool $currentPart
+    ): array
+    {
+        $digit = (int)$roundedPart[$pos] + $carry;
+
+        if ($carry == 0 && $digit == 5) {
+            static::$remainder = substr($roundedPartString, $pos+1);
+        } else {
+            static::$remainder = null;
+        }
+
+        if ($pos == 0) {
+            if ($currentPart) {
+                $nextDigit = (int)$otherPart[count($otherPart)-1];
+            } else {
+                $nextDigit = 0;
+            }
+        } else {
+            $nextDigit = (int)$roundedPart[$pos-1];
+        }
+
+        return [$digit, $nextDigit];
+    }
+
+    /**
+     * @param array $roundedPart
+     * @param array $otherPart
+     * @param int $pos
+     * @param int $carry
+     * @param bool $currentPart
+     * @return array
+     */
+    private static function _roundLoopEnd(
+        array $roundedPart,
+        array $otherPart,
+        int $pos,
+        int $carry,
+        bool $currentPart
+    ): array
+    {
+        if ($pos == 0 && $carry == 1) {
+            if ($currentPart) {
+                $currentPart = false;
+
+                // Do the variable swap dance
+                $temp = $otherPart;
+                $otherPart = $roundedPart;
+                $roundedPart = $temp;
+
+                $pos = count($roundedPart)-1;
+            } else {
+                array_unshift($roundedPart, $carry);
+                $carry = 0;
+            }
+        } else {
+            $pos -= 1;
+        }
+
+        return [$roundedPart, $otherPart, $pos, $carry, $currentPart];
     }
 
 }
