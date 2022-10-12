@@ -188,26 +188,54 @@
 
 ---
 
-!!! signature "public SequenceProvider::nthBernoulliNumber($n)"
+!!! signature "public SequenceProvider::nthBernoulliNumber($n, int|null $scale)"
     ##### nthBernoulliNumber
     **$n**
 
     description
-    :   
-    
-    
+    :   *No description available*
+
+    **$scale**
+
+    type
+    :   int|null
+
+    description
+    :   *No description available*
 
     **return**
 
     type
-    :   DecimalInterface|NumberInterface
+    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
 
     ###### nthBernoulliNumber() Description:
 
-    WARNING: This function is VERY unoptimized. Be careful of large m values.
+    Returns the nth Bernoulli Number, where odd indexes return zero, and B1() is -1/2.
+    
+     This function gets very slow if you demand large precision.
+
+---
+
+!!! signature "public SequenceProvider::nthPrimeNumbers(int $n)"
+    ##### nthPrimeNumbers
+    **$n**
+
+    type
+    :   int
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Types\NumberCollection
+
+    description
+    :   *No description available*
 
 ---
 

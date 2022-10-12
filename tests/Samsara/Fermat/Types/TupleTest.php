@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ * @group Types
+ */
 class TupleTest extends TestCase
 {
 

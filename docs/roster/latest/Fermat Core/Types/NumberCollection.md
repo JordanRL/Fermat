@@ -503,7 +503,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   bool
 
     description
     :   *No description available*
@@ -520,7 +520,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   mixed
 
     description
     :   *No description available*
@@ -542,7 +542,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   void
 
     description
     :   *No description available*
@@ -559,7 +559,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   void
 
     description
     :   *No description available*
@@ -571,7 +571,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   Traversable
 
     description
     :   *No description available*

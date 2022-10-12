@@ -6,6 +6,7 @@ use JetBrains\PhpStorm\ExpectedValues;
 use JetBrains\PhpStorm\Pure;
 use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Enums\RoundingMode;
+use Samsara\Fermat\Provider\RoundingModeAdapters\ModeAdapterFactory;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 /**
@@ -15,9 +16,6 @@ class RoundingProvider
 {
 
     private static RoundingMode $mode = RoundingMode::HalfEven;
-    private static ?DecimalInterface $decimal;
-    private static int $alt = 1;
-    private static ?string $remainder;
 
     /**
      * @param RoundingMode $mode
@@ -39,22 +37,86 @@ class RoundingProvider
     }
 
     /**
-     * @param DecimalInterface $decimal
+     * @param string $decimal
      * @param int $places
      * @return string
      */
-    public static function round(DecimalInterface $decimal, int $places = 0): string
+    public static function round(string $decimal, int $places = 0): string
     {
-        static::$decimal = $decimal;
+        $carry = 0;
 
-        $rawString = str_replace('-', '', $decimal->getAsBaseTenRealNumber());
+        [
+            $rawString,
+            $roundedPart,
+            $roundedPartString,
+            $otherPart,
+            $pos,
+            $wholePart,
+            $decimalPart,
+            $currentPart,
+            $isNegative
+        ] = self::roundPreFormat($decimal, $places);
 
-        $sign = $decimal->isNegative() ? '-' : '';
-        $imaginary = $decimal->isImaginary() ? 'i' : '';
+        $sign = $isNegative ? '-' : '';
+        $imaginary = str_ends_with($decimal, 'i') ? 'i' : '';
 
-        if ($decimal->isInt() && $places >= 0) {
+        if (empty($decimalPart) && $places >= 0) {
             return $sign.$rawString.$imaginary;
         }
+
+        do {
+            if (!array_key_exists($pos, $roundedPart)) {
+                break;
+            }
+
+            [$digit, $nextDigit, $remainder] = self::roundLoopStart(
+                $roundedPart,
+                $otherPart,
+                $roundedPartString,
+                $pos,
+                $carry,
+                $currentPart
+            );
+
+            if ($carry == 0) {
+                $roundingMode = ModeAdapterFactory::getAdapter(self::getRoundingMode(), $isNegative, $remainder);
+                $carry = $roundingMode->determineCarry($digit, $nextDigit);
+            } else {
+                if ($digit > 9) {
+                    $carry = 1;
+                    $roundedPart[$pos] = '0';
+                } else {
+                    $carry = 0;
+                    $roundedPart[$pos] = $digit;
+                }
+            }
+
+            [$roundedPart, $otherPart, $pos, $carry, $currentPart] = self::roundLoopEnd(
+                $roundedPart,
+                $otherPart,
+                $pos,
+                $carry,
+                $currentPart
+            );
+        } while ($carry == 1);
+
+        [$newWholePart, $newDecimalPart] = self::roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places);
+
+        return $sign.$newWholePart.'.'.$newDecimalPart.$imaginary;
+    }
+
+    /**
+     * @param string $decimal
+     * @param int $places
+     * @return array
+     */
+    private static function roundPreFormat(string $decimal, int $places): array
+    {
+        $decimal = trim(rtrim($decimal));
+
+        $isNegative = str_starts_with($decimal, '-');
+
+        $rawString = str_replace('-', '', $decimal);
 
         if (str_contains($rawString, '.')) {
             [$wholePart, $decimalPart] = explode('.', $rawString);
@@ -66,85 +128,50 @@ class RoundingProvider
         $absPlaces = abs($places);
 
         $currentPart = $places >= 0;
-        $roundedPart = $currentPart ? str_split($decimalPart) : str_split($wholePart);
-        $roundedPartString = $currentPart ? $decimalPart : $wholePart;
-        $otherPart = $currentPart ? str_split($wholePart) : str_split($decimalPart);
-        $baseLength = $currentPart ? strlen($decimalPart)-1 : strlen($wholePart);
-        $pos = $currentPart ? $places : $baseLength + $places;
-        $carry = 0;
 
         if ($currentPart) {
-            $pos = ($absPlaces > $baseLength) ? $baseLength : $pos;
+            $roundedPart = str_split($decimalPart);
+            $roundedPartString = $decimalPart;
+            $otherPart = str_split($wholePart);
+            $baseLength = strlen($decimalPart)-1;
+            $pos = ($absPlaces > $baseLength && $places < 0) ? $baseLength : $places;
         } else {
-            $pos = ($absPlaces >= $baseLength) ? 0 : $pos;
+            $roundedPart = str_split($wholePart);
+            $roundedPartString = $wholePart;
+            $otherPart = str_split($decimalPart);
+            $baseLength = strlen($wholePart);
+            $pos = ($absPlaces >= $baseLength) ? 0 : $baseLength + $places;
         }
 
-        do {
-            if (!array_key_exists($pos, $roundedPart)) {
-                break;
-            }
+        return [
+            $rawString,
+            $roundedPart,
+            $roundedPartString,
+            $otherPart,
+            $pos,
+            $wholePart,
+            $decimalPart,
+            $currentPart,
+            $isNegative
+        ];
+    }
 
-            $digit = (int)$roundedPart[$pos] + $carry;
-
-            if ($carry == 0 && $digit == 5) {
-                static::$remainder = substr($roundedPartString, $pos+1);
-            } else {
-                static::$remainder = null;
-            }
-
-            if ($pos == 0) {
-                if ($currentPart) {
-                    $nextDigit = (int)$otherPart[count($otherPart)-1];
-                } else {
-                    $nextDigit = 0;
-                }
-            } else {
-                $nextDigit = (int)$roundedPart[$pos-1];
-            }
-
-            if ($carry == 0) {
-                $carry = match (self::getRoundingMode()) {
-                    RoundingMode::HalfUp => self::roundHalfUp($digit),
-                    RoundingMode::HalfDown => self::roundHalfDown($digit),
-                    RoundingMode::HalfOdd => self::roundHalfOdd($digit, $nextDigit),
-                    RoundingMode::HalfZero => self::roundHalfZero($digit),
-                    RoundingMode::HalfInf => self::roundHalfInf($digit),
-                    RoundingMode::Ceil => self::roundCeil($digit),
-                    RoundingMode::Floor => self::roundFloor(),
-                    RoundingMode::HalfRandom => self::roundRandom($digit),
-                    RoundingMode::HalfAlternating => self::roundAlternating($digit),
-                    RoundingMode::Stochastic => self::roundStochastic($digit),
-                    default => self::roundHalfEven($digit, $nextDigit)
-                };
-            } else {
-                if ($digit > 9) {
-                    $carry = 1;
-                    $roundedPart[$pos] = '0';
-                } else {
-                    $carry = 0;
-                    $roundedPart[$pos] = $digit;
-                }
-            }
-
-            if ($pos == 0 && $carry == 1) {
-                if ($currentPart) {
-                    $currentPart = false;
-
-                    // Do the variable swap dance
-                    $temp = $otherPart;
-                    $otherPart = $roundedPart;
-                    $roundedPart = $temp;
-
-                    $pos = count($roundedPart)-1;
-                } else {
-                    array_unshift($roundedPart, $carry);
-                    $carry = 0;
-                }
-            } else {
-                $pos -= 1;
-            }
-        } while ($carry == 1);
-
+    /**
+     * @param string $currentPart
+     * @param string $wholePart
+     * @param array $roundedPart
+     * @param array $otherPart
+     * @param int $places
+     * @return array
+     */
+    private static function roundPostFormat(
+        string $currentPart,
+        string $wholePart,
+        array $roundedPart,
+        array $otherPart,
+        int $places
+    ): array
+    {
         if ($currentPart) {
             $newDecimalPart = implode('', $roundedPart);
             $newWholePart = implode('', $otherPart);
@@ -166,162 +193,83 @@ class RoundingProvider
             $newDecimalPart = '0';
         }
 
-        static::$remainder = null;
-        static::$decimal = null;
-
-        return $sign.$newWholePart.'.'.$newDecimalPart.$imaginary;
+        return [$newWholePart, $newDecimalPart];
     }
 
-    #[Pure]
-    private static function nonHalfEarlyReturn(int $digit): int
+    /**
+     * @param array $roundedPart
+     * @param array $otherPart
+     * @param string $roundedPartString
+     * @param int $pos
+     * @param int $carry
+     * @param bool $currentPart
+     * @return array
+     */
+    private static function roundLoopStart(
+        array $roundedPart,
+        array $otherPart,
+        string $roundedPartString,
+        int $pos,
+        int $carry,
+        bool $currentPart
+    ): array
     {
-        return $digit <=> 5;
-    }
+        $digit = (int)$roundedPart[$pos] + $carry;
 
-    private static function negativeReverser(): int
-    {
-        if (static::$decimal->isNegative()) {
-            return 1;
+        if ($carry == 0 && $digit == 5 && strlen($roundedPartString) > $pos+1) {
+            $remainder = substr($roundedPartString, $pos+1);
         } else {
-            return 0;
-        }
-    }
-
-    private static function remainderCheck(): bool
-    {
-        $remainder = static::$remainder;
-
-        if (is_null($remainder)) {
-            return false;
+            $remainder = null;
         }
 
-        $remainder = str_replace('0', '', $remainder);
-
-        return !empty($remainder);
-    }
-
-    private static function roundHalfUp(int $digit): int
-    {
-        $negative = self::negativeReverser();
-        $remainder = self::remainderCheck();
-
-        if ($negative) {
-            return $digit > 5 || ($digit == 5 && $remainder) ? 1 : 0;
+        if ($pos == 0) {
+            if ($currentPart) {
+                $nextDigit = (int)$otherPart[count($otherPart)-1];
+            } else {
+                $nextDigit = 0;
+            }
         } else {
-            return $digit > 4 ? 1 : 0;
+            $nextDigit = (int)$roundedPart[$pos-1];
         }
+
+        return [$digit, $nextDigit, $remainder];
     }
 
-    private static function roundHalfDown(int $digit): int
+    /**
+     * @param array $roundedPart
+     * @param array $otherPart
+     * @param int $pos
+     * @param int $carry
+     * @param bool $currentPart
+     * @return array
+     */
+    private static function roundLoopEnd(
+        array $roundedPart,
+        array $otherPart,
+        int $pos,
+        int $carry,
+        bool $currentPart
+    ): array
     {
-        $negative = self::negativeReverser();
-        $remainder = self::remainderCheck();
+        if ($pos == 0 && $carry == 1) {
+            if ($currentPart) {
+                $currentPart = false;
 
-        if ($negative) {
-            return $digit > 4 ? 1 : 0;
+                // Do the variable swap dance
+                $temp = $otherPart;
+                $otherPart = $roundedPart;
+                $roundedPart = $temp;
+
+                $pos = count($roundedPart)-1;
+            } else {
+                array_unshift($roundedPart, $carry);
+                $carry = 0;
+            }
         } else {
-            return $digit > 5 || ($digit == 5 && $remainder) ? 1 : 0;
-        }
-    }
-
-    private static function roundHalfEven(int $digit, int $nextDigit): int
-    {
-        $early = static::nonHalfEarlyReturn($digit);
-        $remainder = self::remainderCheck();
-
-        if ($early == 0) {
-            return ($nextDigit % 2 == 0 && !$remainder) ? 0 : 1;
-        } else {
-            return $early == 1 ? 1 : 0;
-        }
-    }
-
-    private static function roundHalfOdd(int $digit, int $nextDigit): int
-    {
-        $early = static::nonHalfEarlyReturn($digit);
-        $remainder = self::remainderCheck();
-
-        if ($early == 0) {
-            return ($nextDigit % 2 == 1 && !$remainder) ? 0 : 1;
-        } else {
-            return $early == 1 ? 1 : 0;
-        }
-    }
-
-    private static function roundHalfZero(int $digit): int
-    {
-        $remainder = self::remainderCheck();
-
-        return $digit > 5 || ($digit == 5 && $remainder) ? 1 : 0;
-    }
-
-    #[Pure]
-    private static function roundHalfInf(int $digit): int
-    {
-        return $digit > 4 ? 1 : 0;
-    }
-
-    #[Pure]
-    private static function roundCeil(int $digit): int
-    {
-        return $digit == 0 ? 0 : 1;
-    }
-
-    #[Pure]
-    private static function roundFloor(): int
-    {
-        return 0;
-    }
-
-    private static function roundRandom(int $digit): int
-    {
-        $early = static::nonHalfEarlyReturn($digit);
-        $remainder = self::remainderCheck();
-
-        if ($early == 0 && !$remainder) {
-            return RandomProvider::randomInt(0, 1, RandomMode::Speed)->asInt();
-        } else {
-            return (($early == 1 || $remainder) ? 1 : 0);
-        }
-    }
-
-    private static function roundAlternating(int $digit): int
-    {
-        $early = static::nonHalfEarlyReturn($digit);
-        $remainder = self::remainderCheck();
-
-        if ($early == 0 && !$remainder) {
-            $val = self::$alt;
-            self::$alt = (int)!$val;
-
-            return $val;
-        } else {
-            return (($early == 1 || $remainder) ? 1 : 0);
-        }
-    }
-
-    private static function roundStochastic(int $digit): int
-    {
-        $remainder = static::$remainder;
-
-        if (is_null($remainder)) {
-            $target = $digit;
-            $rangeMin = 0;
-            $rangeMax = 9;
-        } else {
-            $remainder = substr($remainder, 0, 3);
-            $target = (int)($digit.$remainder);
-            $rangeMin = 0;
-            $rangeMax = (int)str_repeat('9', strlen($remainder) + 1);
+            $pos -= 1;
         }
 
-        $random = RandomProvider::randomInt($rangeMin, $rangeMax, RandomMode::Speed)->asInt();
-
-        if ($random < $target) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return [$roundedPart, $otherPart, $pos, $carry, $currentPart];
     }
 
 }

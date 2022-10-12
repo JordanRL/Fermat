@@ -38,6 +38,16 @@
 
     *No description available*
 
+!!! signature trait "ArithmeticGMPTrait"
+    ##### ArithmeticGMPTrait
+    namespace
+    :   Samsara\Fermat\Types\Traits\Arithmetic
+
+    description
+    :   
+
+    *No description available*
+
 
 
 ## Methods
@@ -55,7 +65,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
@@ -72,7 +82,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
@@ -89,14 +99,14 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public ArithmeticSimpleTrait->divide($num, ?int $scale)"
+!!! signature "public ArithmeticSimpleTrait->divide($num, int|null $scale)"
     ##### divide
     **$num**
 
@@ -106,7 +116,7 @@
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -114,7 +124,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
@@ -131,19 +141,19 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   DecimalInterface|Fraction|ImmutableComplexNumber
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public ArithmeticSimpleTrait->sqrt(?int $scale)"
+!!! signature "public ArithmeticSimpleTrait->sqrt(int|null $scale)"
     ##### sqrt
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -151,7 +161,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   DecimalInterface|Fraction
 
     description
     :   *No description available*

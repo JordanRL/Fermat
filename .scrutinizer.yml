@@ -1,13 +1,48 @@
 build:
-    environment:
-        variables:
-            COMPOSER_ROOT_VERSION: 2.0
-        php:
-            version: 8.1
-            ini:
-                xdebug.mode: coverage
     nodes:
-        standalone-tests:
+        analysis:
+            environment:
+                variables:
+                    COMPOSER_ROOT_VERSION: 2.0
+                php:
+                    version: 8.1
+                    ini:
+                        xdebug.mode: coverage
+            tests:
+                override:
+                    - php-scrutinizer-run
+        standalone-tests-with-decimal:
+            environment:
+                apt_packages:
+                    - libmpdec-dev
+                variables:
+                    COMPOSER_ROOT_VERSION: 2.0
+                php:
+                    version: 8.1
+                    ini:
+                        xdebug.mode: coverage
+            requires:
+                - node: analysis
+            tests:
+                before:
+                    - mkdir build
+                    - mkdir build/logs
+                    - pecl install decimal
+                override:
+                    - command: php vendor/bin/phpunit -c phpunit-decimal.xml
+                      coverage:
+                          file: build/logs/coverage.clover
+                          format: clover
+        standalone-tests-with-bcmath:
+            environment:
+                variables:
+                    COMPOSER_ROOT_VERSION: 2.0
+                php:
+                    version: 8.1
+                    ini:
+                        xdebug.mode: coverage
+            requires:
+                - node: standalone-tests-with-decimal
             tests:
                 before:
                     - mkdir build
@@ -18,8 +53,15 @@ build:
                           file: build/logs/coverage.clover
                           format: clover
         with-modules-tests:
+            environment:
+                variables:
+                    COMPOSER_ROOT_VERSION: 2.0
+                php:
+                    version: 8.1
+                    ini:
+                        xdebug.mode: coverage
             requires:
-                - node: standalone-tests
+                - node: standalone-tests-with-bcmath
             tests:
                 before:
                     - mkdir build

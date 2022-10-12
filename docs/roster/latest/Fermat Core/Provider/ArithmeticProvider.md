@@ -34,7 +34,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   string
 
     description
     :   *No description available*
@@ -67,7 +67,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   string
 
     description
     :   *No description available*
@@ -100,7 +100,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   string
 
     description
     :   *No description available*
@@ -133,7 +133,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   string
 
     description
     :   *No description available*
@@ -166,7 +166,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   string
 
     description
     :   *No description available*
@@ -191,7 +191,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   string
 
     description
     :   *No description available*
@@ -216,7 +216,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   string
 
     description
     :   *No description available*
@@ -249,7 +249,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   int
 
     description
     :   *No description available*
@@ -290,35 +290,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
-
-    description
-    :   *No description available*
-
----
-
-!!! signature "public ArithmeticProvider::factorial(string $number, int $scale)"
-    ##### factorial
-    **$number**
-
-    type
     :   string
-
-    description
-    :   *No description available*
-
-    **$scale**
-
-    type
-    :   int
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   *mixed* (assumed)
 
     description
     :   *No description available*

@@ -28,6 +28,22 @@ nav:
                 'Handling Exceptions': getting-started/exceptions.md
             -
                 Modules: getting-started/modules.md
+            -
+                'Use Case Guides':
+                    -
+                        'Scalar Replacements': getting-started/how-to-replace-scalars.md
+    -
+        Performance:
+            -
+                Overview: performance/overview.md
+            -
+                'Performance Stats':
+                    -
+                        Arithmetic: performance/arithmetic.md
+                    -
+                        Logarithms: performance/logarithms.md
+                    -
+                        Trigonometry: performance/trigonometry.md
     -
         Configuration:
             -
@@ -36,6 +52,8 @@ nav:
                 'Random Modes': configuration/random-modes.md
             -
                 'Rounding Modes': configuration/rounding-modes.md
+            -
+                'Base Conversion': configuration/base-conversion.md
     -
         Modules:
             -
@@ -61,24 +79,6 @@ nav:
                     -
                         Collections: 'roster/latest/Fermat Core/Collections.md'
                     -
-                        Renderer:
-                            -
-                                Components:
-                                    -
-                                        Operations:
-                                            -
-                                                PowOperation: 'roster/latest/Fermat Core/Renderer/Components/Operations/PowOperation.md'
-                                    -
-                                        Symbols:
-                                            -
-                                                ThetaSymbol: 'roster/latest/Fermat Core/Renderer/Components/Symbols/ThetaSymbol.md'
-                                    -
-                                        Interfaces:
-                                            -
-                                                ComponentInterface: 'roster/latest/Fermat Core/Renderer/Components/Interfaces/ComponentInterface.md'
-                            -
-                                KatexRenderer: 'roster/latest/Fermat Core/Renderer/KatexRenderer.md'
-                    -
                         Values:
                             -
                                 MutableDecimal: 'roster/latest/Fermat Core/Values/MutableDecimal.md'
@@ -101,8 +101,6 @@ nav:
                             -
                                 Base:
                                     -
-                                        Selectable: 'roster/latest/Fermat Core/Types/Base/Selectable.md'
-                                    -
                                         Number: 'roster/latest/Fermat Core/Types/Base/Number.md'
                                     -
                                         Interfaces:
@@ -117,9 +115,9 @@ nav:
                                                     -
                                                         SimpleNumberInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface.md'
                                             -
-                                                Characteristics:
+                                                Callables:
                                                     -
-                                                        BaseConversionInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Characteristics/BaseConversionInterface.md'
+                                                        ContinuedFractionTermInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Callables/ContinuedFractionTermInterface.md'
                                             -
                                                 Groups:
                                                     -
@@ -131,9 +129,31 @@ nav:
                                     -
                                         ArithmeticSimpleTrait: 'roster/latest/Fermat Core/Types/Traits/ArithmeticSimpleTrait.md'
                                     -
+                                        InverseTrigonometrySimpleTrait: 'roster/latest/Fermat Core/Types/Traits/InverseTrigonometrySimpleTrait.md'
+                                    -
                                         IntegerMathTrait: 'roster/latest/Fermat Core/Types/Traits/IntegerMathTrait.md'
                                     -
+                                        TrigonometrySimpleTrait: 'roster/latest/Fermat Core/Types/Traits/TrigonometrySimpleTrait.md'
+                                    -
+                                        LogSimpleTrait: 'roster/latest/Fermat Core/Types/Traits/LogSimpleTrait.md'
+                                    -
+                                        Trigonometry:
+                                            -
+                                                TrigonometrySelectionTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/TrigonometrySelectionTrait.md'
+                                            -
+                                                InverseTrigonometryNativeTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/InverseTrigonometryNativeTrait.md'
+                                            -
+                                                InverseTrigonometrySelectionTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/InverseTrigonometrySelectionTrait.md'
+                                            -
+                                                TrigonometryScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/TrigonometryScaleTrait.md'
+                                            -
+                                                InverseTrigonometryScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/InverseTrigonometryScaleTrait.md'
+                                            -
+                                                TrigonometryNativeTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/TrigonometryNativeTrait.md'
+                                    -
                                         Arithmetic:
+                                            -
+                                                ArithmeticGMPTrait: 'roster/latest/Fermat Core/Types/Traits/Arithmetic/ArithmeticGMPTrait.md'
                                             -
                                                 ArithmeticSelectionTrait: 'roster/latest/Fermat Core/Types/Traits/Arithmetic/ArithmeticSelectionTrait.md'
                                             -
@@ -143,13 +163,13 @@ nav:
                                     -
                                         Decimal:
                                             -
+                                                LogScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/LogScaleTrait.md'
+                                            -
                                                 ScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/ScaleTrait.md'
                                             -
-                                                InverseTrigonometryTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/InverseTrigonometryTrait.md'
+                                                LogNativeTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/LogNativeTrait.md'
                                             -
-                                                TrigonometryTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/TrigonometryTrait.md'
-                                            -
-                                                LogTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/LogTrait.md'
+                                                LogSelectionTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/LogSelectionTrait.md'
                     -
                         Provider:
                             -
@@ -163,7 +183,11 @@ nav:
                             -
                                 SequenceProvider: 'roster/latest/Fermat Core/Provider/SequenceProvider.md'
                             -
+                                BaseConversionProvider: 'roster/latest/Fermat Core/Provider/BaseConversionProvider.md'
+                            -
                                 ArithmeticProvider: 'roster/latest/Fermat Core/Provider/ArithmeticProvider.md'
+                            -
+                                CalculationModeProvider: 'roster/latest/Fermat Core/Provider/CalculationModeProvider.md'
                             -
                                 RandomProvider: 'roster/latest/Fermat Core/Provider/RandomProvider.md'
             -

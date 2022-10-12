@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ * @group Types
+ */
 class ArithmeticNativeTraitTest extends TestCase
 {
 
@@ -53,7 +56,7 @@ class ArithmeticNativeTraitTest extends TestCase
         $one->setMode(CalcMode::Native);
         $three->setMode(CalcMode::Native);
 
-        $this->assertEquals('0.33333333333333', $one->divide(3)->getValue());
+        $this->assertEquals('0.3333333333', $one->divide(3)->getValue());
 
     }
 
@@ -75,7 +78,7 @@ class ArithmeticNativeTraitTest extends TestCase
         $three = new ImmutableDecimal('3');
         $three->setMode(CalcMode::Native);
 
-        $this->assertEquals('1.7320508075', $three->sqrt()->getValue());
+        $this->assertEquals('1.7320508076', $three->sqrt()->getValue());
 
     }
 

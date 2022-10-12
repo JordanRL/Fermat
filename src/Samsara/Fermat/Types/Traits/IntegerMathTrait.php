@@ -161,7 +161,7 @@ trait IntegerMathTrait
             );
         }
 
-        if (extension_loaded('gmp')) {
+        if (extension_loaded('gmp') && $this->extensions) {
             $value = gmp_lcm($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
 
             return $this->setValue(gmp_strval($value), $this->getScale(), $this->getBase());
@@ -179,9 +179,9 @@ trait IntegerMathTrait
     public function getGreatestCommonDivisor($num): DecimalInterface
     {
         /** @var ImmutableDecimal $num */
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num)->abs();
+        $num = Numbers::make(Numbers::IMMUTABLE, $num)->abs();
         /** @var ImmutableDecimal $thisNum */
-        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this)->abs();
+        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this)->abs();
 
         if (!$this->isInt() || !$num->isInt()) {
             throw new IntegrityConstraint(
@@ -191,7 +191,7 @@ trait IntegerMathTrait
             );
         }
 
-        if (extension_loaded('gmp')) {
+        if (extension_loaded('gmp') && $this->extensions) {
             $val = gmp_strval(gmp_gcd($thisNum->getValue(NumberBase::Ten), $num->getValue(NumberBase::Ten)));
 
             return Numbers::make(Numbers::IMMUTABLE, $val, $this->getScale());
@@ -219,8 +219,8 @@ trait IntegerMathTrait
     }
 
     /**
-     * This function is a PHP implementation of the Miller-Rabin primality test. The default "certainty" value of 40
-     * results in a false-positive rate of 1 in 1.21 x 10^24.
+     * This function is a PHP implementation of the Miller-Rabin primality test. The default "certainty" value of 20
+     * results in a false-positive rate of 1 in 1.10 x 10^12.
      *
      * Presumably, the probability of your hardware failing while this code is running is higher, meaning this should be
      * statistically as certain as a deterministic algorithm on normal computer hardware.
@@ -228,25 +228,17 @@ trait IntegerMathTrait
      * @param int|null $certainty The certainty level desired. False positive rate = 1 in 4^$certainty.
      * @return bool
      */
-    public function isPrime(?int $certainty = 40): bool
+    public function isPrime(?int $certainty = 20): bool
     {
-        if (!$this->isInt()) {
-            return false;
+        switch ($this->_primeEarlyExit()) {
+            case 1:
+                return false;
+
+            case 2:
+                return true;
         }
 
-        if ($this->isEqual(2)) {
-            return true;
-        } elseif ($this->isEqual(3)) {
-            return true;
-        } elseif ($this->modulo(2)->isEqual(0)) {
-            return false;
-        } elseif ($this->modulo(3)->isEqual(0)) {
-            return false;
-        } elseif ($this->isEqual(1)) {
-            return false;
-        }
-
-        if (function_exists('gmp_prob_prime')) {
+        if (function_exists('gmp_prob_prime') && $this->extensions) {
             return (bool)gmp_prob_prime($this->getValue(NumberBase::Ten), $certainty);
         }
 
@@ -265,16 +257,19 @@ trait IntegerMathTrait
 
         for ($i = 0;$i < $certainty;$i++) {
             $a = RandomProvider::randomInt(2, $s, RandomMode::Speed);
-            $x = $a->pow($d)->modulo($thisNum);
+            $x = Numbers::make(Numbers::IMMUTABLE, (string)gmp_powm($a->getAsBaseTenRealNumber(), $d->getAsBaseTenRealNumber(), $thisNum->getAsBaseTenRealNumber()));
+
             if ($x->isEqual(1) || $x->isEqual($s)) {
                 continue;
             }
+
             for ($j = 0;$j < $r->asInt();$j++) {
                 $x = $x->pow(2)->modulo($thisNum);
                 if ($x->isEqual($s)) {
                     continue 2;
                 }
             }
+
             return false;
         }
 
@@ -313,6 +308,27 @@ trait IntegerMathTrait
 
         return new NumberCollection();
 
+    }
+
+    private function _primeEarlyExit(): int
+    {
+        if (!$this->isInt()) {
+            return 1;
+        }
+
+        if ($this->isEqual(2)) {
+            return 2;
+        } elseif ($this->isEqual(3)) {
+            return 2;
+        } elseif ($this->modulo(2)->isEqual(0)) {
+            return 1;
+        } elseif ($this->modulo(3)->isEqual(0)) {
+            return 1;
+        } elseif ($this->isEqual(1)) {
+            return 1;
+        }
+
+        return 0;
     }
 
 }

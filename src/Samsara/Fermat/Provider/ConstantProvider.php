@@ -22,6 +22,7 @@ class ConstantProvider
     private static DecimalInterface $e;
     private static DecimalInterface $ln10;
     private static DecimalInterface $ln2;
+    private static DecimalInterface $ln1p1;
 
     /**
      * @param int $digits
@@ -36,7 +37,7 @@ class ConstantProvider
             return self::$pi->truncateToScale($digits)->getValue(NumberBase::Ten);
         }
 
-        $internalScale = $digits + 10;
+        $internalScale = ($digits*2) + 10;
 
         $C = Numbers::make(Numbers::IMMUTABLE, '10005', $internalScale)->setMode(CalcMode::Precision)->sqrt($internalScale)->multiply(426880);
         $M = Numbers::make(Numbers::IMMUTABLE, '1', $internalScale)->setMode(CalcMode::Precision);
@@ -50,7 +51,7 @@ class ConstantProvider
         $continue = true;
 
         while ($continue) {
-            $term = $M->multiply($L)->divide($X);
+            $term = $M->multiply($L)->divide($X, $internalScale);
 
             if ($termNum > $internalScale) {
                 $continue = false;
@@ -147,12 +148,11 @@ class ConstantProvider
     }
 
     /**
-     * The lnScale() implementation is very efficient, so this is probably our best bet for computing more digits of
-     * ln(10) to provide.
+     * This function is a special case of the ln() function where x can be represented by (n + 1)/n, where n is an
+     * integer. This particular special case converges extremely rapidly. For ln(2), n = 1.
      *
      * @param int $digits
      * @return string
-     * @throws IntegrityConstraint
      */
     public static function makeLn2(int $digits): string
     {
@@ -161,13 +161,67 @@ class ConstantProvider
             return self::$ln2->truncateToScale($digits)->getValue(NumberBase::Ten);
         }
 
-        $ln2 = Numbers::make(Numbers::IMMUTABLE, 2, $digits+2)->setMode(CalcMode::Precision);
-        $ln2 = $ln2->ln();
+        $twoThirds = Numbers::make(Numbers::IMMUTABLE, str_pad('0.', $digits+3, '6'));
+        $nine = Numbers::make(Numbers::IMMUTABLE, 9, $digits+3);
+        $ln2 = self::_makeLnSpecial($digits, $nine, $twoThirds);
 
         self::$ln2 = $ln2;
 
-        return $ln2->truncateToScale($digits)->getValue(NumberBase::Ten);
+        return $ln2->getValue(NumberBase::Ten);
 
+    }
+
+    /**
+     * This function is a special case of the ln() function where x can be represented by (n + 1)/n, where n is an
+     * integer. This particular special case converges extremely rapidly. For ln(1.1), n = 10.
+     *
+     * @param int $digits
+     * @return string
+     */
+    public static function makeLn1p1(int $digits): string
+    {
+
+        if (isset(self::$ln1p1) && self::$ln1p1->numberOfDecimalDigits() >= $digits) {
+            return self::$ln1p1->truncateToScale($digits)->getValue(NumberBase::Ten);
+        }
+
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, $digits+3);
+        $twentyOne = Numbers::make(Numbers::IMMUTABLE, 21, $digits+3);
+        $fourFortyOne = Numbers::make(Numbers::IMMUTABLE, 441, $digits+3);
+        $twoDivTwentyOne = $two->divide($twentyOne);
+        $ln1p1 = self::_makeLnSpecial($digits, $fourFortyOne, $twoDivTwentyOne);
+
+        self::$ln1p1 = $ln1p1;
+
+        return $ln1p1->getValue(NumberBase::Ten);
+
+    }
+
+    /**
+     * @param int $digits
+     * @param ImmutableDecimal $innerNum
+     * @param ImmutableDecimal $outerNum
+     * @return ImmutableDecimal
+     */
+    private static function _makeLnSpecial(int $digits, ImmutableDecimal $innerNum, ImmutableDecimal $outerNum): ImmutableDecimal
+    {
+        $one = Numbers::makeOne($digits+3);
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, $digits+3);
+        $sum = Numbers::makeZero($digits+3);
+        $k = 0;
+
+        do {
+
+            $diff = $one->divide($one->add($two->multiply($k))->multiply($innerNum->pow($k)), $digits+3)->truncate($digits+2);
+
+            $sum = $sum->add($diff);
+
+            $k++;
+
+        } while (!$diff->isEqual(0));
+
+        $lnSpecial = $outerNum->multiply($sum);
+        return $lnSpecial->truncateToScale($digits);
     }
 
 }

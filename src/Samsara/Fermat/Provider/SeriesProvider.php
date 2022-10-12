@@ -87,7 +87,7 @@ class SeriesProvider
             try {
                 $exTerm = $value->pow($exponent($termNumber));
                 $term = $term->multiply($exTerm);
-                $term = $term->divide($denominator($termNumber));
+                $term = $term->divide($denominator($termNumber), $scale);
                 $term = $term->multiply($numerator($termNumber));
             } catch (IntegrityConstraint $constraint) {
                 return $sum->truncateToScale($currentScale+1);
@@ -172,8 +172,9 @@ class SeriesProvider
     ): ImmutableDecimal
     {
 
+        $intScale = $scale;
         $start = $bPart(0);
-        $prevDenominator = new ImmutableDecimal(0, $scale);
+        $prevDenominator = new ImmutableDecimal(0, $intScale);
         $loop = 0;
 
         for ($i = $terms;$i > 0;$i--) {
@@ -197,7 +198,7 @@ class SeriesProvider
                     'Current $i: '.$i.' | Current terms: '.$terms.' | Loop: '.$loop
                 );
             } else {
-                $prevDenominator = $aPart($i)->divide($prevDenominator, $scale);
+                $prevDenominator = $aPart($i)->divide($prevDenominator, $intScale);
             }
         }
 

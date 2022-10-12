@@ -6,6 +6,7 @@ use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\BaseConversionProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Decimal;
@@ -26,30 +27,30 @@ class ImmutableDecimal extends Decimal
     public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface
     {
 
-        if (is_object($mod) && method_exists($mod, 'getScale')) {
-            $scale = ($this->getScale() < $mod->getScale()) ? $mod->getScale() : $this->getScale();
+        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod);
+
+        $scale = ($this->getScale() < $mod->getScale()) ? $mod->getScale() : $this->getScale();
+
+        $newScale = $scale+2;
+        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $newScale);
+
+        $mod = $mod->truncateToScale($newScale);
+
+        $multiple = $thisNum->divide($mod, $newScale);
+        $multipleCeil = $multiple->ceil();
+        $digits = $multipleCeil->subtract($multiple)->numberOfLeadingZeros();
+
+        if ($digits >= $this->getScale()) {
+            $multiple = $multipleCeil;
         } else {
-            $scale = $this->getScale();
+            $multiple = $multiple->floor();
         }
 
-        $oldScale = $this->scale;
-        $newScale = $scale+1;
+        $subtract = $mod->multiply($multiple);
 
-        $this->scale = $newScale;
+        $remainder = $thisNum->subtract($subtract);
 
-        if (is_object($mod) && method_exists($mod, 'truncateToScale')) {
-            $mod = $mod->truncateToScale($newScale);
-        } else {
-            $mod = Numbers::make(Numbers::IMMUTABLE, $mod, $newScale);
-        }
-
-        $multiple = $this->divide($mod)->floor();
-
-        $remainder = $this->subtract($mod->multiply($multiple));
-
-        $this->scale = $oldScale;
-
-        return $remainder->truncateToScale($oldScale);
+        return $remainder->truncateToScale($this->getScale()-1);
 
     }
 
@@ -63,12 +64,7 @@ class ImmutableDecimal extends Decimal
      */
     protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null, bool $setToNewBase = false): ImmutableDecimal
     {
-        //echo '>>START SET VALUE [From: '.debug_backtrace()[1]['function'].' > '.debug_backtrace()[2]['function'].']<<'.PHP_EOL;
-        //echo 'Input Value: '.$value.PHP_EOL;
-        //echo 'Input Base: '.($base ? $base->value : 'null').PHP_EOL;
         $imaginary = false;
-
-        $scale = $scale ?? $this->getScale();
 
         if (str_contains($value, 'i')) {
             $value = str_replace('i', '', $value);
@@ -85,19 +81,26 @@ class ImmutableDecimal extends Decimal
             $base = $this->getBase();
         }
 
+        $sign = $this->sign;
+
+        $translated = $this->translateValue($value);
+        $determinedScale = $this->determineScale($translated[1]);
+
+        $this->sign = $sign;
+
+        $determinedScale = $this->getScale() > $determinedScale ? $this->getScale() : $determinedScale;
+
+        $scale = $scale ?? $determinedScale;
+
         if ($imaginary) {
             $value .= 'i';
         }
-
-        //echo 'Creating Decimal With: V['.$value.'] B['.$base->value.']'.PHP_EOL;
 
         $return = new ImmutableDecimal($value, $scale, $base, true);
 
         if (isset($this->calcMode)) {
             $return->setMode($this->calcMode);
         }
-
-        //echo '>>END SET VALUE<<'.PHP_EOL;
 
         return $return;
     }

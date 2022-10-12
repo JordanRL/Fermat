@@ -4,9 +4,15 @@ namespace Samsara\Fermat\Provider;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group Providers
+ */
 class ConstantProviderTest extends TestCase
 {
 
+    /**
+     * @small
+     */
     public function testMakePi()
     {
 
@@ -19,6 +25,9 @@ class ConstantProviderTest extends TestCase
 
     }
 
+    /**
+     * @small
+     */
     public function testMakeE()
     {
 
@@ -27,9 +36,30 @@ class ConstantProviderTest extends TestCase
 
     }
 
+    /**
+     * @small
+     */
     public function testMakeLn10()
     {
         $value = ConstantProvider::makeLn10(5);
         $this->assertEquals('2.30258', $value);
+    }
+
+    /**
+     * @small
+     */
+    public function testMakeLn2()
+    {
+        $value = ConstantProvider::makeLn2(50);
+        $this->assertEquals('0.69314718055994530941723212145817656807550013436025', $value);
+    }
+
+    /**
+     * @small
+     */
+    public function testMakeLn1p1()
+    {
+        $value = ConstantProvider::makeLn1p1(50);
+        $this->assertEquals('0.09531017980432486004395212328076509222060536530864', $value);
     }
 }

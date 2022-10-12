@@ -28,10 +28,18 @@ class MutableDecimal extends Decimal
         $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $this->scale+1);
 
         $multiple = $oldNum->divide($mod)->floor();
+        $multipleCeil = $multiple->ceil();
+        $digits = $multipleCeil->subtract($multiple)->numberOfLeadingZeros();
+
+        if ($digits >= $this->getScale()) {
+            $multiple = $multipleCeil;
+        } else {
+            $multiple = $multiple->floor();
+        }
 
         $remainder = $oldNum->subtract($mod->multiply($multiple));
 
-        return Numbers::make(Numbers::MUTABLE, $remainder->truncate($this->scale)->getValue(NumberBase::Ten), $this->scale, $this->getBase());
+        return Numbers::make(Numbers::MUTABLE, $remainder->truncate($this->scale-1)->getValue(NumberBase::Ten), $this->scale-1, $this->getBase());
 
     }
 
@@ -55,19 +63,17 @@ class MutableDecimal extends Decimal
             $value = BaseConversionProvider::convertStringToBaseTen($value, $base);
         }
 
-        if ($imaginary) {
-            $value .= 'i';
-        }
-
-        if (is_null($scale)) {
-            $this->scale = $this->getScale();
-        }
+        $this->imaginary = $imaginary;
 
         if ($setToNewBase) {
             $this->base = $base ?? $this->getBase();
         }
 
         $this->value = $this->translateValue($value);
+
+        $scale = $scale ?? $this->getScale();
+
+        $this->scale = $this->determineScale($this->getDecimalPart(), $scale);
 
         return $this;
     }

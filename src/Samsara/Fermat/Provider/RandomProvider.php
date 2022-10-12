@@ -133,8 +133,8 @@ class RandomProvider
             /** @noinspection PhpUnhandledExceptionInspection */
             $range = $maxDecimal->subtract($minDecimal);
             /** @noinspection PhpUnhandledExceptionInspection */
-            $bitsNeeded = $range->ln(1)->divide(Numbers::makeNaturalLog2(1), 1)->floor()->add(1);
-            $bytesNeeded = $bitsNeeded->divide(8)->ceil();
+            $bitsNeeded = $range->ln(2)->divide(Numbers::makeNaturalLog2(2), 2)->floor()->add(1);
+            $bytesNeeded = $bitsNeeded->divide(8, 2)->ceil();
 
             do {
                 try {

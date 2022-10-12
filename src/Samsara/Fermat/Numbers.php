@@ -30,7 +30,7 @@ class Numbers
     /* 105 digits after decimal, which is going to be overkill in almost all places */
     public const PI = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679';
     /* Tau (2pi) to 100 digits */
-    public const TAU = '6.283185307179586476925286766559005768394338798750211641949889184615632812572417997256069650684234136';
+    public const TAU = '6.2831853071795864769252867665590057683943387987502116419498891846156328125724179972560696506842341359';
     /* Euler's Number to 100 digits */
     public const E = '2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427';
     /* Golden Ratio to 100 digits */
@@ -211,7 +211,7 @@ class Numbers
                 return self::make(self::IMMUTABLE, ConstantProvider::makePi($scale), $scale);
             }
 
-            return self::make(self::IMMUTABLE, self::PI, $scale)->truncateToScale($scale);
+            return self::make(self::IMMUTABLE, self::PI, $scale+1)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::PI, 100);
@@ -236,12 +236,12 @@ class Numbers
             }
 
             if ($scale > 100) {
-                $pi = self::make(self::IMMUTABLE, ConstantProvider::makePi($scale), $scale + 2);
+                $pi = self::make(self::IMMUTABLE, ConstantProvider::makePi($scale+2), $scale + 2);
                 /** @var ImmutableDecimal */
                 return $pi->multiply(2)->truncateToScale($scale);
             }
 
-            return self::make(self::IMMUTABLE, self::TAU, $scale)->truncateToScale($scale);
+            return self::make(self::IMMUTABLE, self::TAU, $scale+1)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::TAU, 100);
@@ -280,7 +280,7 @@ class Numbers
                 return self::make(self::IMMUTABLE, ConstantProvider::makeE($scale), $scale);
             }
 
-            return self::make(self::IMMUTABLE, self::E, $scale)->truncateToScale($scale);
+            return self::make(self::IMMUTABLE, self::E, $scale+1)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::E, 100);
@@ -305,7 +305,7 @@ class Numbers
                 );
             }
 
-            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $scale)->truncateToScale($scale);
+            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $scale+1)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, 100);
@@ -334,7 +334,7 @@ class Numbers
                 return self::make(self::IMMUTABLE, ConstantProvider::makeLn10($scale), $scale);
             }
 
-            return self::make(self::IMMUTABLE, self::LN_10, $scale)->truncateToScale($scale);
+            return self::make(self::IMMUTABLE, self::LN_10, $scale+1)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::LN_10, 100);
@@ -363,7 +363,7 @@ class Numbers
                 return self::make(self::IMMUTABLE, ConstantProvider::makeLn2($scale), $scale);
             }
 
-            return self::make(self::IMMUTABLE, self::LN_2, $scale)->truncateToScale($scale);
+            return self::make(self::IMMUTABLE, self::LN_2, $scale+1)->truncateToScale($scale);
         }
 
         return self::make(self::IMMUTABLE, self::LN_2, 100);

@@ -90,22 +90,25 @@ trait ArithmeticSimpleTrait
         }
 
         if ($this instanceof FractionInterface) {
-            if ($this->getDenominator()->isEqual($num->getDenominator())) {
+            if ($num instanceof FractionInterface && $this->getDenominator()->isEqual($num->getDenominator())) {
                 $finalDenominator = $this->getDenominator();
                 $finalNumerator = $this->getNumerator()->add($num->getNumerator());
-            } else {
+            } elseif ($num instanceof FractionInterface) {
                 $finalDenominator = $this->getSmallestCommonDenominator($num);
 
                 list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($num, $finalDenominator);
 
                 /** @var ImmutableDecimal $finalNumerator */
                 $finalNumerator = $thisNumerator->add($thatNumerator);
+            } else {
+                $finalDenominator = $this->getDenominator();
+                $finalNumerator = $this->getNumerator()->add($num->multiply($finalDenominator));
             }
 
             return $this->setValue(
                 $finalNumerator,
                 $finalDenominator
-            );
+            )->simplify();
         } else {
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
 
@@ -115,7 +118,9 @@ trait ArithmeticSimpleTrait
                 $value .= 'i';
             }
 
-            return $this->setValue($value);
+            $originalScale = $this->getScale();
+
+            return $this->setValue($value)->roundToScale($originalScale);
         }
     }
 
@@ -168,21 +173,24 @@ trait ArithmeticSimpleTrait
         }
 
         if ($this instanceof FractionInterface) {
-            if ($this->getDenominator()->isEqual($num->getDenominator())) {
+            if ($num instanceof FractionInterface && $this->getDenominator()->isEqual($num->getDenominator())) {
                 $finalDenominator = $this->getDenominator();
                 $finalNumerator = $this->getNumerator()->subtract($num->getNumerator());
-            } else {
+            } elseif ($num instanceof FractionInterface) {
                 $finalDenominator = $this->getSmallestCommonDenominator($num);
 
                 list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($num, $finalDenominator);
 
                 $finalNumerator = $thisNumerator->subtract($thatNumerator);
+            } else {
+                $finalDenominator = $this->getDenominator();
+                $finalNumerator = $this->getNumerator()->subtract($num->multiply($finalDenominator));
             }
 
             return $this->setValue(
                 $finalNumerator,
                 $finalDenominator
-            );
+            )->simplify();
         } else {
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
 
@@ -192,7 +200,9 @@ trait ArithmeticSimpleTrait
                 $value .= 'i';
             }
 
-            return $this->setValue($value);
+            $originalScale = $this->getScale();
+
+            return $this->setValue($value)->roundToScale($originalScale);
         }
     }
 
@@ -224,14 +234,14 @@ trait ArithmeticSimpleTrait
                 return $this->setValue(
                     $this->getNumerator()->multiply($num->getNumerator()),
                     $this->getDenominator()->multiply($num->getDenominator())
-                );
+                )->simplify();
             }
 
             if ($num->isWhole()) {
                 return $this->setValue(
                     $this->getNumerator()->multiply($num),
                     $this->getDenominator()
-                );
+                )->simplify();
             }
 
             $value = $this->asDecimal()->multiply($num);
@@ -239,7 +249,6 @@ trait ArithmeticSimpleTrait
             return new ImmutableDecimal($value, $this->getScale());
         } else {
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
             $value = $this->multiplySelector($num);
 
             if ($this->isImaginary() xor $num->isImaginary()) {
@@ -248,7 +257,9 @@ trait ArithmeticSimpleTrait
                 $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
             }
 
-            return $this->setValue($value);
+            $originalScale = $this->getScale();
+
+            return $this->setValue($value)->roundToScale($originalScale);
         }
     }
 
@@ -261,7 +272,7 @@ trait ArithmeticSimpleTrait
     public function divide($num, ?int $scale = null)
     {
 
-        $scale = is_null($scale) ? $this->getScale() : $scale;
+        $scale = $scale ?? $this->getScale();
 
         [
             $thatRealPart,
@@ -270,6 +281,14 @@ trait ArithmeticSimpleTrait
             $thisImaginaryPart,
             $num
         ] = $this->translateToParts($this, $num, 1);
+
+        if ($num->isEqual(0)) {
+            throw new IntegrityConstraint(
+                'Cannot divide by zero',
+                'Check for zero before calling divide',
+                'An attempt was made to divide by zero, which is not supported by the number system used in Fermat'
+            );
+        }
 
         if ($num->isComplex()) {
             return $num->divide($this);
@@ -284,30 +303,32 @@ trait ArithmeticSimpleTrait
                 return $this->setValue(
                     $this->getNumerator()->multiply($num->getDenominator()),
                     $this->getDenominator()->multiply($num->getNumerator())
-                );
+                )->simplify();
             }
 
             if ($num->isWhole()) {
                 return $this->setValue(
                     $this->getNumerator(),
                     $this->getDenominator()->multiply($num)
-                );
+                )->simplify();
             }
 
             $value = $this->asDecimal($scale)->divide($num);
 
             return new ImmutableDecimal($value, $scale);
         } else {
-
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
             $value = $this->divideSelector($num, $scale);
 
-            if ($this->isImaginary()) {
+            if ($this->isImaginary() xor $num->isImaginary()) {
                 $value .= 'i';
+
+                if ($num->isImaginary()) {
+                    $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
+                }
             }
 
-            return $this->setValue($value);
+            return $this->setValue($value, $scale+1)->roundToScale($scale);
         }
     }
 
@@ -325,10 +346,17 @@ trait ArithmeticSimpleTrait
             $thisRealPart,
             $thisImaginaryPart,
             $num
-        ] = $this->translateToParts($this, $num, 1);
+        ] = $this->translateToParts($this, $num, 0);
 
-        if ($num->isComplex() || ($this->isReal() xor $num->isReal())) {
-            if (!(InstalledVersions::isInstalled('samsara/fermat-complex-numbers')) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
+        if (
+            ($this->isNegative() && !$num->isInt())
+            || $num->isComplex()
+            || ($this->isReal() xor $num->isReal())
+        ) {
+            if (
+                !(InstalledVersions::isInstalled('samsara/fermat-complex-numbers'))
+                || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')
+            ) {
                 throw new MissingPackage(
                     'Creating complex numbers is unsupported in Fermat without modules.',
                     'Install the samsara/fermat-complex-numbers package using composer.',
@@ -336,11 +364,13 @@ trait ArithmeticSimpleTrait
                 );
             }
 
-            $newRealPart = $thisRealPart->pow($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->pow($thatImaginaryPart);
+            /** @psalm-suppress UndefinedClass */
+            $thisComplex = new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart);
 
             /** @psalm-suppress UndefinedClass */
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
+            $thatComplex = new ImmutableComplexNumber($thatRealPart, $thatImaginaryPart);
+
+            return $thisComplex->pow($thatComplex);
         }
 
         if ($this instanceof FractionInterface) {
@@ -356,15 +386,16 @@ trait ArithmeticSimpleTrait
             return $powNumerator->divide($powDenominator)->truncateToScale(10);
         } else {
 
-            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
+            $originalScale = $this->getScale();
 
+            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
             $value = $this->powSelector($num);
 
             if ($this->isImaginary()) {
                 $value .= 'i';
             }
 
-            return $this->setValue($value)->truncateToScale($this->getScale());
+            return $this->setValue($value)->roundToScale($originalScale);
         }
     }
 
@@ -394,7 +425,7 @@ trait ArithmeticSimpleTrait
             $value .= 'i';
         }
 
-        return ($this instanceof DecimalInterface) ? $this->setValue($value)->truncateToScale($scale) : (new ImmutableDecimal($value, $scale))->truncateToScale($scale);
+        return ($this instanceof DecimalInterface) ? $this->setValue($value)->roundToScale($scale) : (new ImmutableDecimal($value, $scale))->roundToScale($scale);
     }
 
 }

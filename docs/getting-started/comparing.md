@@ -1,10 +1,14 @@
-# Limitations of Native Inequality Operators
+# Comparisons In Fermat
 
-For values that cannot be represented as an `integer` or `float` accurately, using the native inequality operators will result in erroneous results. In some cases, this might also result in underflow and overflow of the native types.
+One of the most commonly performed operations with numbers in code is to perform a comparison of some kind. To help with this, Fermat values include a wide range of comparison helper methods that are detailed here.
+
+## Limitations of Native Inequality Operators
+
+For Fermat values using the native inequality operators will result in erroneous results. 
 
 Because of this, all comparisons, including equality comparisons which would normally be `==` or `===` in PHP, should be performed using the comparison methods provided on all objects which extend the [Number](../roster/latest/Fermat Core/Types/Base/Number.md) abstract class.
     
-# Equality
+## Equality
 
 There are two types of equality that can be compared using this library: equality of value, and equality of representation. In virtually all cases equality of value is what is intended, and this is accomplished with the `isEqual()` method.
 
@@ -26,7 +30,7 @@ Returns `true` if the `$value` is an instance of the same class *and* it has the
 !!! note "Implemented As Part of the Hashable Interface"
     As part of integration with the `ext-ds` extension, this method has been implemented to satisfy the `Hashable` interface. This is mainly so that objects which are instances of the [Number](../roster/latest/Fermat Core/Types/Base/Number.md) abstract class can be used as array keys.
 
-# Inequality
+## Inequality
 
 These methods are only available on numbers that implement the [SimpleNumberInterface](../roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface.md). They are safe to use between different types of classes that implement the [SimpleNumberInterface](../roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface.md), and will perform the necessary conversions to return an answer.
 
@@ -40,7 +44,7 @@ These methods are only available on numbers that implement the [SimpleNumberInte
 
 Any `$value` which is a valid input for `Numbers::makeOrDont()` can be provided to these methods. They are analogous to the corresponding comparison operators in PHP, but are safe to use with the arbitrary scale values found in this library.
 
-# Sorting Comparison <=>
+## Sorting Comparison <=>
 
 The spaceship operator `<=>`, which returns `1`, `0`, or `-1` to provide sorting order information, would result in many of the same issues described for the `isEqual()` method. This is handled internally by the BCMath extension.
 

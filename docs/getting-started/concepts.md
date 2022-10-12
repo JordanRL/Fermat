@@ -9,6 +9,7 @@ A provider in Fermat is a static class which provides a specific functionality t
 The current list of providers, documented in more detail in the section for Providers, is:
 
 - [ArithmeticProvider](../roster/latest/Fermat Core/Provider/ArithmeticProvider.md)
+- [BaseConversionProvider](../roster/latest/Fermat%20Core/Provider/BaseConversionProvider.md)
 - [CalculationModeProvider](../roster/latest/Fermat Core/Provider/CalculationModeProvider.md)
 - [ConstantProvider](../roster/latest/Fermat Core/Provider/ConstantProvider.md)
 - [RandomProvider](../roster/latest/Fermat Core/Provider/RandomProvider.md)
@@ -41,19 +42,24 @@ The current list of values is:
     
 ## Scale
 
-The basis of this library is being able to provide answers at any requested scale. Scale, as used in this library, is the number of digits after the decimal point which are returned. This is in contrast to *significant figures* or *precision*, which represent the numbers of digits returned after the decimal point after trimming all the leading zeros.
+The basis of this library is being able to provide answers at any requested scale. Scale, as used in this library, is the number of digits after the decimal point which are returned. This is in contrast to *significant figures* or *precision*, which represent the number of digits returned after the decimal point after trimming all the leading zeros.
 
 There are two main reasons for providing scale as the main way of controlling how precise the answer is:
 
 1. It ensures that the string size of values with the same scale are comparable.
-2. It is far easier to implement some of the converging series calculations within this library, such as those for trigonometry functions, if scale is used instead of precision.
+2. It is far easier to implement some converging series calculations within this library, such as those for trigonometry functions, if scale is used instead of precision.
 
-In actual fact, significant figures have much less meaning in the context of a Taylor series or MacLauren series. If precision was used, the library would have to make more assumptions about the intent of calling code, and those assumptions would be less transparent.
+In actual fact, significant figures have much less meaning in the context of a most converging series. If precision was used, the library would have to make more assumptions about the intent of calling code, and those assumptions would be less transparent.
 
 !!! caution "Scale Does Not Increase With New Operations"
     Unlike significant figures, the scale returned does not change as the number of decimal digits are multiplied or divided.
     
-    This means that multiplying two numbers that each have 10 digits after the decimal will also return a number with 10 digits after the decimal. This can be fixed by setting the scale of the argument value to the sum of the two scales.
+    This means that multiplying two numbers that each have 10 digits after the decimal will also return a number with 10 digits after the decimal. This can be addressed by setting the scale of the argument value to the sum of the two scales, if you desire to get results this way.
     
 !!! caution "Scale Is Only Applied To The Base-10 Form"
     Scale is tracked and managed in base-10. This means that if a number has a base smaller than 10, it will return more digits than the scale would suggest after base conversion, while a number with a base larger than 10 will return fewer digits after the base conversion.
+
+!!! caution "Scale Is Ignored For Native Mode"
+    If you use Fermat with the Native mode setting, the scale on values are ignored for all calculations, and your object will be set to whatever value the PHP engine returns for the equivalent operation.
+
+    In general this results in somewhere between 10 and 12 digits of accuracy for numbers near 0, with fewer digits of accuracy as you move further away from 0 and the density of possible values a float can represent is reduced.

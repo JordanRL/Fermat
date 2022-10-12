@@ -52,31 +52,14 @@ trait TrigonometryNativeTrait
      */
     protected function secNative(): float
     {
-        $sin = $this->sinNative();
-
-        if ($sin == 0) {
-            throw new IntegrityConstraint(
-                'Value of out range, division by zero.',
-                'Do not do this.',
-                'Cannot calculate the secant of a value that has a sin() of 0.'
-            );
-        }
-
-        return 1/$sin;
-    }
-
-    /**
-     * @throws IntegrityConstraint
-     */
-    protected function cscNative(): float
-    {
-        $cos = $this->cosNative();
+        $thisNum = static::translateToNative($this);
+        $cos = cos($thisNum);
 
         if ($cos == 0) {
             throw new IntegrityConstraint(
                 'Value of out range, division by zero.',
                 'Do not do this.',
-                'Cannot calculate the cosecant of a value that has a cos() of 0.'
+                'Cannot calculate the secant of a value that has a sin() of 0.'
             );
         }
 
@@ -86,9 +69,29 @@ trait TrigonometryNativeTrait
     /**
      * @throws IntegrityConstraint
      */
+    protected function cscNative(): float
+    {
+        $thisNum = static::translateToNative($this);
+        $sin = sin($thisNum);
+
+        if ($sin == 0) {
+            throw new IntegrityConstraint(
+                'Value of out range, division by zero.',
+                'Do not do this.',
+                'Cannot calculate the cosecant of a value that has a cos() of 0.'
+            );
+        }
+
+        return 1/$sin;
+    }
+
+    /**
+     * @throws IntegrityConstraint
+     */
     protected function cotNative(): float
     {
-        $tan = $this->tanNative();
+        $thisNum = static::translateToNative($this);
+        $tan = tan($thisNum);
 
         if ($tan == 0) {
             throw new IntegrityConstraint(

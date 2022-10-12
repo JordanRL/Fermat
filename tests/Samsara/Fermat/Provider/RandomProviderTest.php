@@ -7,20 +7,19 @@ use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 /**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
+ * @group Providers
  */
 class RandomProviderTest extends TestCase
 {
 
     /**
-     * @large
+     * @medium
      */
     public function testRandomIntLargeNumbers()
     {
 
         $num1 = new ImmutableDecimal(PHP_INT_MAX);
-        $num2 = $num1->add($num1);
+        $num2 = $num1->add(PHP_INT_MAX);
 
         for ($i=0;$i<20;$i++) {
             $rand = RandomProvider::randomInt($num1, $num2);

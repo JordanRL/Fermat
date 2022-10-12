@@ -55,16 +55,6 @@
 
     *No description available*
 
-!!! signature interface "BaseConversionInterface"
-    ##### BaseConversionInterface
-    namespace
-    :   Samsara\Fermat\Types\Base\Interfaces\Characteristics
-
-    description
-    :   
-
-    *No description available*
-
 !!! signature interface "SimpleNumberInterface"
     ##### SimpleNumberInterface
     namespace
@@ -109,30 +99,30 @@
 
     *No description available*
 
-!!! signature trait "TrigonometryTrait"
-    ##### TrigonometryTrait
+!!! signature trait "TrigonometrySimpleTrait"
+    ##### TrigonometrySimpleTrait
     namespace
-    :   Samsara\Fermat\Types\Traits\Decimal
+    :   Samsara\Fermat\Types\Traits
 
     description
     :   
 
     *No description available*
 
-!!! signature trait "InverseTrigonometryTrait"
-    ##### InverseTrigonometryTrait
+!!! signature trait "InverseTrigonometrySimpleTrait"
+    ##### InverseTrigonometrySimpleTrait
     namespace
-    :   Samsara\Fermat\Types\Traits\Decimal
+    :   Samsara\Fermat\Types\Traits
 
     description
     :   
 
     *No description available*
 
-!!! signature trait "LogTrait"
-    ##### LogTrait
+!!! signature trait "LogSimpleTrait"
+    ##### LogSimpleTrait
     namespace
-    :   Samsara\Fermat\Types\Traits\Decimal
+    :   Samsara\Fermat\Types\Traits
 
     description
     :   
@@ -173,7 +163,7 @@
 
 ### Constructor
 
-!!! signature "public Decimal->__construct($value, $scale, $base, bool $baseTenInput)"
+!!! signature "public Decimal->__construct($value, int|null $scale, NumberBase $base, bool $baseTenInput)"
     ##### __construct
     **$value**
 
@@ -182,10 +172,16 @@
 
     **$scale**
 
+    type
+    :   int|null
+
     description
     :   *No description available*
 
     **$base**
+
+    type
+    :   NumberBase
 
     description
     :   *No description available*
@@ -234,7 +230,7 @@
     **return**
 
     type
-    :   int
+    :   Samsara\Fermat\Enums\NumberBase
 
     description
     :   *No description available*
@@ -257,9 +253,12 @@
     
 ---
 
-!!! signature "public Decimal->getValue($base)"
+!!! signature "public Decimal->getValue(NumberBase|null $base)"
     ##### getValue
     **$base**
+
+    type
+    :   NumberBase|null
 
     description
     :   *No description available*
@@ -298,9 +297,12 @@
     
 ---
 
-!!! signature "public Decimal->convertToBase($base)"
-    ##### convertToBase
+!!! signature "public Decimal->setBase(NumberBase $base)"
+    ##### setBase
     **$base**
+
+    type
+    :   NumberBase
 
     description
     :   *No description available*
@@ -308,12 +310,12 @@
     **return**
 
     type
-    :   NumberInterface
+    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface|Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface
 
     description
     :   *No description available*
 
-    ###### convertToBase() Description:
+    ###### setBase() Description:
 
     Converts the object to a different base.
     
@@ -324,7 +326,7 @@
     **return**
 
     type
-    :   DecimalInterface|NumberInterface
+    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface|Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface
 
     description
     :   *No description available*
@@ -363,21 +365,12 @@
     
 ---
 
-!!! signature "public Decimal->__toString()"
-    ##### __toString
-    **return**
-
-    type
-    :   string
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public Decimal->continuousModulo($mod)"
+!!! signature "public Decimal->continuousModulo(NumberInterface|string|int|float $mod)"
     ##### continuousModulo
     **$mod**
+
+    type
+    :   NumberInterface|string|int|float
 
     description
     :   *No description available*
@@ -402,7 +395,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
@@ -419,7 +412,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
@@ -436,14 +429,14 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public Decimal->divide($num, ?int $scale)"
+!!! signature "public Decimal->divide($num, int|null $scale)"
     ##### divide
     **$num**
 
@@ -453,7 +446,7 @@
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -461,7 +454,7 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   $this|DecimalInterface|Fraction|ImmutableDecimal|MutableDecimal
 
     description
     :   *No description available*
@@ -478,19 +471,19 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   DecimalInterface|Fraction|ImmutableComplexNumber
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public Decimal->sqrt(?int $scale)"
+!!! signature "public Decimal->sqrt(int|null $scale)"
     ##### sqrt
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -498,16 +491,19 @@
     **return**
 
     type
-    :   *mixed* (assumed)
+    :   DecimalInterface|Fraction
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public Decimal->isEqual($value)"
+!!! signature "public Decimal->isEqual(NumberInterface|int|string|float $value)"
     ##### isEqual
     **$value**
+
+    type
+    :   NumberInterface|int|string|float
 
     description
     :   *No description available*
@@ -527,7 +523,7 @@
     **return**
 
     type
-    :   ?int
+    :   int
 
     description
     :   *No description available*
@@ -744,8 +740,16 @@
     
 ---
 
-!!! signature "public Decimal->isPrime()"
+!!! signature "public Decimal->isPrime(int|null $certainty)"
     ##### isPrime
+    **$certainty**
+
+    type
+    :   int|null
+
+    description
+    :   The certainty level desired. False positive rate = 1 in 4^$certainty.
+
     **return**
 
     type
@@ -756,9 +760,21 @@
 
     ###### isPrime() Description:
 
-    This function is a PHP implementation of the function described at: http://stackoverflow.com/a/1801446
+    This function is a PHP implementation of the Miller-Rabin primality test. The default "certainty" value of 20 results in a false-positive rate of 1 in 1.10 x 10^12.
     
-     It is relatively simple to understand, which is why it was chosen as the implementation. However in the future, an implementation that is based on ECPP (such as the Goldwasser implementation) may be employed to improve speed.
+     Presumably, the probability of your hardware failing while this code is running is higher, meaning this should be statistically as certain as a deterministic algorithm on normal computer hardware.
+    
+---
+
+!!! signature "public Decimal->getDivisors()"
+    ##### getDivisors
+    **return**
+
+    type
+    :   Samsara\Fermat\Types\NumberCollection
+
+    description
+    :   *No description available*
     
 ---
 
@@ -774,12 +790,12 @@
     
 ---
 
-!!! signature "public Decimal->sin(?int $scale, bool $round)"
+!!! signature "public Decimal->sin(int|null $scale, bool $round)"
     ##### sin
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -802,12 +818,12 @@
     
 ---
 
-!!! signature "public Decimal->cos(?int $scale, bool $round)"
+!!! signature "public Decimal->cos(int|null $scale, bool $round)"
     ##### cos
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -830,12 +846,12 @@
     
 ---
 
-!!! signature "public Decimal->tan(?int $scale, bool $round)"
+!!! signature "public Decimal->tan(int|null $scale, bool $round)"
     ##### tan
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -858,40 +874,12 @@
     
 ---
 
-!!! signature "public Decimal->cot(?int $scale, bool $round)"
-    ##### cot
-    **$scale**
-
-    type
-    :   ?int
-
-    description
-    :   *No description available*
-
-    **$round**
-
-    type
-    :   bool
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public Decimal->sec(?int $scale, bool $round)"
+!!! signature "public Decimal->sec(int|null $scale, bool $round)"
     ##### sec
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -914,12 +902,12 @@
     
 ---
 
-!!! signature "public Decimal->csc(?int $scale, bool $round)"
+!!! signature "public Decimal->csc(int|null $scale, bool $round)"
     ##### csc
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -942,12 +930,40 @@
     
 ---
 
-!!! signature "public Decimal->sinh(?int $scale, bool $round)"
+!!! signature "public Decimal->cot(int|null $scale, bool $round)"
+    ##### cot
+    **$scale**
+
+    type
+    :   int|null
+
+    description
+    :   *No description available*
+
+    **$round**
+
+    type
+    :   bool
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public Decimal->sinh(int|null $scale, bool $round)"
     ##### sinh
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -970,12 +986,12 @@
     
 ---
 
-!!! signature "public Decimal->cosh(?int $scale, bool $round)"
+!!! signature "public Decimal->cosh(int|null $scale, bool $round)"
     ##### cosh
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -998,12 +1014,12 @@
     
 ---
 
-!!! signature "public Decimal->tanh(?int $scale, bool $round)"
+!!! signature "public Decimal->tanh(int|null $scale, bool $round)"
     ##### tanh
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -1026,40 +1042,12 @@
     
 ---
 
-!!! signature "public Decimal->coth(?int $scale, bool $round)"
-    ##### coth
-    **$scale**
-
-    type
-    :   ?int
-
-    description
-    :   *No description available*
-
-    **$round**
-
-    type
-    :   bool
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public Decimal->sech(?int $scale, bool $round)"
+!!! signature "public Decimal->sech(int|null $scale, bool $round)"
     ##### sech
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -1082,12 +1070,12 @@
     
 ---
 
-!!! signature "public Decimal->csch(?int $scale, bool $round)"
+!!! signature "public Decimal->csch(int|null $scale, bool $round)"
     ##### csch
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -1110,12 +1098,40 @@
     
 ---
 
-!!! signature "public Decimal->arcsin(?int $scale, bool $round)"
+!!! signature "public Decimal->coth(int|null $scale, bool $round)"
+    ##### coth
+    **$scale**
+
+    type
+    :   int|null
+
+    description
+    :   *No description available*
+
+    **$round**
+
+    type
+    :   bool
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public Decimal->arcsin(int|null $scale, bool $round)"
     ##### arcsin
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -1138,12 +1154,12 @@
     
 ---
 
-!!! signature "public Decimal->arccos(?int $scale, bool $round)"
+!!! signature "public Decimal->arccos(int|null $scale, bool $round)"
     ##### arccos
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -1166,12 +1182,12 @@
     
 ---
 
-!!! signature "public Decimal->arctan(?int $scale, bool $round)"
+!!! signature "public Decimal->arctan(int|null $scale, bool $round)"
     ##### arctan
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -1194,40 +1210,12 @@
     
 ---
 
-!!! signature "public Decimal->arccot(?int $scale, bool $round)"
-    ##### arccot
-    **$scale**
-
-    type
-    :   ?int
-
-    description
-    :   *No description available*
-
-    **$round**
-
-    type
-    :   bool
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public Decimal->arcsec(?int $scale, bool $round)"
+!!! signature "public Decimal->arcsec(int|null $scale, bool $round)"
     ##### arcsec
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -1250,12 +1238,12 @@
     
 ---
 
-!!! signature "public Decimal->arccsc(?int $scale, bool $round)"
+!!! signature "public Decimal->arccsc(int|null $scale, bool $round)"
     ##### arccsc
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -1278,7 +1266,35 @@
     
 ---
 
-!!! signature "public Decimal->roundToScale(int $scale, ?int $mode)"
+!!! signature "public Decimal->arccot(int|null $scale, bool $round)"
+    ##### arccot
+    **$scale**
+
+    type
+    :   int|null
+
+    description
+    :   *No description available*
+
+    **$round**
+
+    type
+    :   bool
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public Decimal->roundToScale(int $scale, RoundingMode|null $mode)"
     ##### roundToScale
     **$scale**
 
@@ -1291,7 +1307,7 @@
     **$mode**
 
     type
-    :   ?int
+    :   RoundingMode|null
 
     description
     :   *No description available*
@@ -1323,12 +1339,12 @@
     
 ---
 
-!!! signature "public Decimal->exp(?int $scale, bool $round)"
+!!! signature "public Decimal->exp(int|null $scale, bool $round)"
     ##### exp
     **$scale**
 
     type
-    :   ?int
+    :   int|null
 
     description
     :   *No description available*
@@ -1359,9 +1375,7 @@
     :   int|null
 
     description
-    :   The number of digits which should be accurate
-    
-    
+    :   *No description available*
 
     **$round**
 
@@ -1409,7 +1423,69 @@
     
 ---
 
-!!! signature "public Decimal->round(int $decimals, ?int $mode)"
+!!! signature "public Decimal->expScale(int|null $scale)"
+    ##### expScale
+    **$scale**
+
+    type
+    :   int|null
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public Decimal->lnScale(int|null $scale)"
+    ##### lnScale
+    **$scale**
+
+    type
+    :   int|null
+
+    description
+    :   The number of digits which should be accurate
+    
+    
+
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public Decimal->log10Scale(int|null $scale)"
+    ##### log10Scale
+    **$scale**
+
+    type
+    :   int|null
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public Decimal->round(int $decimals, RoundingMode|null $mode)"
     ##### round
     **$decimals**
 
@@ -1422,7 +1498,7 @@
     **$mode**
 
     type
-    :   ?int
+    :   RoundingMode|null
 
     description
     :   *No description available*
@@ -1601,16 +1677,40 @@
     
 ---
 
+!!! signature "public Decimal->getDecimalPart()"
+    ##### getDecimalPart
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public Decimal->getWholePart()"
+    ##### getWholePart
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+    
+---
+
 
 
 ### Inherited Methods
 
-!!! signature "public Number->setMode(int $mode)"
+!!! signature "public Number->setMode(CalcMode $mode)"
     ##### setMode
     **$mode**
 
     type
-    :   int
+    :   CalcMode
 
     description
     :   *No description available*
@@ -1628,6 +1728,18 @@
     Allows you to set a mode on a number to select the calculation methods.
     
      MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting. MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
+    
+---
+
+!!! signature "public Number->getMode()"
+    ##### getMode
+    **return**
+
+    type
+    :   Samsara\Fermat\Enums\CalcMode
+
+    description
+    :   *No description available*
     
 ---
 
@@ -1652,6 +1764,18 @@
     ###### setExtensions() Description:
 
     Allows the object to ignore PHP extensions (such a GMP) and use only the Fermat implementations. NOTE: This does not ignore ext-bcmath or ext-decimal, as those are necessary for the string math itself.
+    
+---
+
+!!! signature "public Number->__toString()"
+    ##### __toString
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
     
 ---
 
@@ -1744,7 +1868,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\ComplexNumber
+    :   Samsara\Fermat\Values\ImmutableComplexNumber
 
     description
     :   *No description available*

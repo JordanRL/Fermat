@@ -7,8 +7,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 /**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
+ * @group Providers
  */
 class SequenceProviderTest extends TestCase
 {
@@ -40,7 +39,7 @@ class SequenceProviderTest extends TestCase
 
         $this->assertEquals('4', $four->getValue());
 
-        $firstFiveEvens = SequenceProvider::nthEvenNumber(0, true, 5);
+        $firstFiveEvens = SequenceProvider::nthEvenNumber(0, null, true, 5);
 
         $this->assertEquals(5, $firstFiveEvens->count());
 
@@ -89,7 +88,7 @@ class SequenceProviderTest extends TestCase
         SequenceProvider::nthEulerZigzag(51);
     }
     /**
-     *
+     * @medium
      */
     public function testNthBernoulliNumber()
     {

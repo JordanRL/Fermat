@@ -3,13 +3,13 @@
 namespace Samsara\Fermat\Provider;
 
 use PHPUnit\Framework\TestCase;
+use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Enums\RoundingMode;
 use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 /**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
+ * @group Providers
  */
 class RoundingProviderTest extends TestCase
 {
@@ -26,266 +26,258 @@ class RoundingProviderTest extends TestCase
         RoundingProvider::setRoundingMode(static::$roundingMode);
     }
 
-    public function testRoundDefault()
+    public function halfEvenProvider(): array
     {
+        $a = new ImmutableDecimal('1.111111');
+        $b = new ImmutableDecimal('1.555555');
+        $c = new ImmutableDecimal('555555');
+        $d = new ImmutableDecimal('9999.9999');
+        $e = new ImmutableDecimal('2.222222');
+        $f = new ImmutableDecimal('2.522225');
+        $g = new ImmutableDecimal('0.70710678118655');
+        $h = new ImmutableDecimal('-1.111111');
+        $i = new ImmutableDecimal('-1.555555');
+        $j = new ImmutableDecimal('-555555');
+        $k = new ImmutableDecimal('-9999.9999');
+        $l = new ImmutableDecimal('-2.222222');
+        $m = new ImmutableDecimal('-2.522225');
 
-        $num1 = new ImmutableDecimal('1.111111');
-        $num2 = new ImmutableDecimal('1.555555');
-        $num3 = new ImmutableDecimal('555555');
-        $num4 = new ImmutableDecimal('9999.9999');
-        $num5 = new ImmutableDecimal('2.222222');
-        $num6 = new ImmutableDecimal('2.522225');
-
-        $this->assertEquals(RoundingMode::HalfEven, RoundingProvider::getRoundingMode());
-        $this->assertEquals('1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('1.55556', RoundingProvider::round($num2, 5));
-        $this->assertEquals('2.0', RoundingProvider::round($num2));
-        $this->assertEquals('556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('3.0', RoundingProvider::round($num6));
-        $this->assertEquals('2.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('2.52222', RoundingProvider::round($num6, 5));
-
-        $num1 = new ImmutableDecimal('-1.111111');
-        $num2 = new ImmutableDecimal('-1.555555');
-        $num3 = new ImmutableDecimal('-555555');
-        $num4 = new ImmutableDecimal('-9999.9999');
-        $num5 = new ImmutableDecimal('-2.222222');
-        $num6 = new ImmutableDecimal('-2.522225');
-
-        $this->assertEquals('-1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('-1.55556', RoundingProvider::round($num2, 5));
-        $this->assertEquals('-2.0', RoundingProvider::round($num2));
-        $this->assertEquals('-556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('-2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('-3.0', RoundingProvider::round($num6));
-        $this->assertEquals('-2.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('-2.52222', RoundingProvider::round($num6, 5));
-
+        return [
+            'Half Even 1.111111 places 5' => [$a, '1.11111', RoundingMode::HalfEven, 5],
+            'Half Even 1.555555 places 5' => [$b, '1.55556', RoundingMode::HalfEven, 5],
+            'Half Even 1.555555 places 0' => [$b, '2.0', RoundingMode::HalfEven, 0],
+            'Half Even 555555 places 0' => [$c, '556000.0', RoundingMode::HalfEven, -3],
+            'Half Even 9999.9999 places 0' => [$d, '10000.0', RoundingMode::HalfEven, 0],
+            'Half Even 9999.9999 places 3' => [$d, '10000.0', RoundingMode::HalfEven, 3],
+            'Half Even 2.222222 places 2' => [$e, '2.22', RoundingMode::HalfEven, 2],
+            'Half Even 2.522225 places 0' => [$f, '3.0', RoundingMode::HalfEven, 0],
+            'Half Even 2.5 places 0' => [$f->truncateToScale(1), '2.0', RoundingMode::HalfEven, 0],
+            'Half Even 2.522225 places 5' => [$f, '2.52222', RoundingMode::HalfEven, 5],
+            'Half Even 0.70710678118655 places 10' => [$g, '0.7071067812', RoundingMode::HalfEven, 10],
+            'Half Even -1.111111 places 5' => [$h, '-1.11111', RoundingMode::HalfEven, 5],
+            'Half Even -1.555555 places 5' => [$i, '-1.55556', RoundingMode::HalfEven, 5],
+            'Half Even -1.555555 places 0' => [$i, '-2.0', RoundingMode::HalfEven, 0],
+            'Half Even -555555 places 0' => [$j, '-556000.0', RoundingMode::HalfEven, -3],
+            'Half Even -9999.9999 places 0' => [$k, '-10000.0', RoundingMode::HalfEven, 0],
+            'Half Even -9999.9999 places 3' => [$k, '-10000.0', RoundingMode::HalfEven, 3],
+            'Half Even -2.222222 places 2' => [$l, '-2.22', RoundingMode::HalfEven, 2],
+            'Half Even -2.522225 places 0' => [$m, '-3.0', RoundingMode::HalfEven, 0],
+            'Half Even -2.5 places 0' => [$m->truncateToScale(1), '-2.0', RoundingMode::HalfEven, 0],
+            'Half Even -2.522225 places 5' => [$m, '-2.52222', RoundingMode::HalfEven, 5],
+        ];
     }
 
-    public function testRoundHalfUp()
+    public function halfUpProvider(): array
     {
+        $a = new ImmutableDecimal('1.111111');
+        $b = new ImmutableDecimal('1.555555');
+        $c = new ImmutableDecimal('555555');
+        $d = new ImmutableDecimal('9999.9999');
+        $e = new ImmutableDecimal('2.222222');
+        $f = new ImmutableDecimal('2.522225');
+        $h = new ImmutableDecimal('-1.111111');
+        $i = new ImmutableDecimal('-1.555555');
+        $j = new ImmutableDecimal('-555555');
+        $k = new ImmutableDecimal('-9999.9999');
+        $l = new ImmutableDecimal('-2.222222');
+        $m = new ImmutableDecimal('-2.522225');
 
-        RoundingProvider::setRoundingMode(RoundingMode::HalfUp);
-
-        $num1 = new ImmutableDecimal('1.111111');
-        $num2 = new ImmutableDecimal('1.555555');
-        $num3 = new ImmutableDecimal('555555');
-        $num4 = new ImmutableDecimal('9999.9999');
-        $num5 = new ImmutableDecimal('2.222222');
-        $num6 = new ImmutableDecimal('2.522225');
-
-        $this->assertEquals(RoundingMode::HalfUp, RoundingProvider::getRoundingMode());
-        $this->assertEquals('1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('1.55556', RoundingProvider::round($num2, 5));
-        $this->assertEquals('2.0', RoundingProvider::round($num2));
-        $this->assertEquals('556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('3.0', RoundingProvider::round($num6));
-        $this->assertEquals('3.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('2.52223', RoundingProvider::round($num6, 5));
-
-        $num1 = new ImmutableDecimal('-1.111111');
-        $num2 = new ImmutableDecimal('-1.555555');
-        $num3 = new ImmutableDecimal('-555555');
-        $num4 = new ImmutableDecimal('-9999.9999');
-        $num5 = new ImmutableDecimal('-2.222222');
-        $num6 = new ImmutableDecimal('-2.522225');
-
-        $this->assertEquals('-1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('-1.55555', RoundingProvider::round($num2, 5));
-        $this->assertEquals('-2.0', RoundingProvider::round($num2));
-        $this->assertEquals('-556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('-2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('-3.0', RoundingProvider::round($num6));
-        $this->assertEquals('-2.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('-2.52222', RoundingProvider::round($num6, 5));
-
+        return [
+            'Half Up 1.111111 places 5' => [$a, '1.11111', RoundingMode::HalfUp, 5],
+            'Half Up 1.555555 places 5' => [$b, '1.55556', RoundingMode::HalfUp, 5],
+            'Half Up 1.555555 places 0' => [$b, '2.0', RoundingMode::HalfUp, 0],
+            'Half Up 555555 places 0' => [$c, '556000.0', RoundingMode::HalfUp, -3],
+            'Half Up 9999.9999 places 0' => [$d, '10000.0', RoundingMode::HalfUp, 0],
+            'Half Up 9999.9999 places 3' => [$d, '10000.0', RoundingMode::HalfUp, 3],
+            'Half Up 2.222222 places 2' => [$e, '2.22', RoundingMode::HalfUp, 2],
+            'Half Up 2.522225 places 0' => [$f, '3.0', RoundingMode::HalfUp, 0],
+            'Half Up 2.5 places 0' => [$f->truncateToScale(1), '3.0', RoundingMode::HalfUp, 0],
+            'Half Up 2.522225 places 5' => [$f, '2.52223', RoundingMode::HalfUp, 5],
+            'Half Up -1.111111 places 5' => [$h, '-1.11111', RoundingMode::HalfUp, 5],
+            'Half Up -1.555555 places 5' => [$i, '-1.55555', RoundingMode::HalfUp, 5],
+            'Half Up -1.555555 places 0' => [$i, '-2.0', RoundingMode::HalfUp, 0],
+            'Half Up -555555 places 0' => [$j, '-556000.0', RoundingMode::HalfUp, -3],
+            'Half Up -9999.9999 places 0' => [$k, '-10000.0', RoundingMode::HalfUp, 0],
+            'Half Up -9999.9999 places 3' => [$k, '-10000.0', RoundingMode::HalfUp, 3],
+            'Half Up -2.222222 places 2' => [$l, '-2.22', RoundingMode::HalfUp, 2],
+            'Half Up -2.522225 places 0' => [$m, '-3.0', RoundingMode::HalfUp, 0],
+            'Half Up -2.5 places 0' => [$m->truncateToScale(1), '-2.0', RoundingMode::HalfUp, 0],
+            'Half Up -2.522225 places 5' => [$m, '-2.52222', RoundingMode::HalfUp, 5],
+        ];
     }
 
-    public function testRoundHalfDown()
+    public function halfDownProvider(): array
     {
+        $a = new ImmutableDecimal('1.111111');
+        $b = new ImmutableDecimal('1.555555');
+        $c = new ImmutableDecimal('555555');
+        $d = new ImmutableDecimal('9999.9999');
+        $e = new ImmutableDecimal('2.222222');
+        $f = new ImmutableDecimal('2.522225');
+        $h = new ImmutableDecimal('-1.111111');
+        $i = new ImmutableDecimal('-1.555555');
+        $j = new ImmutableDecimal('-555555');
+        $k = new ImmutableDecimal('-9999.9999');
+        $l = new ImmutableDecimal('-2.222222');
+        $m = new ImmutableDecimal('-2.522225');
 
-        RoundingProvider::setRoundingMode(RoundingMode::HalfDown);
-
-        $num1 = new ImmutableDecimal('1.111111');
-        $num2 = new ImmutableDecimal('1.555555');
-        $num3 = new ImmutableDecimal('555555');
-        $num4 = new ImmutableDecimal('9999.9999');
-        $num5 = new ImmutableDecimal('2.222222');
-        $num6 = new ImmutableDecimal('2.522225');
-
-        $this->assertEquals(RoundingMode::HalfDown, RoundingProvider::getRoundingMode());
-        $this->assertEquals('1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('1.55555', RoundingProvider::round($num2, 5));
-        $this->assertEquals('2.0', RoundingProvider::round($num2));
-        $this->assertEquals('556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('3.0', RoundingProvider::round($num6));
-        $this->assertEquals('2.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('2.52222', RoundingProvider::round($num6, 5));
-
-        $num1 = new ImmutableDecimal('-1.111111');
-        $num2 = new ImmutableDecimal('-1.555555');
-        $num3 = new ImmutableDecimal('-555555');
-        $num4 = new ImmutableDecimal('-9999.9999');
-        $num5 = new ImmutableDecimal('-2.222222');
-        $num6 = new ImmutableDecimal('-2.522225');
-
-        $this->assertEquals('-1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('-1.55556', RoundingProvider::round($num2, 5));
-        $this->assertEquals('-2.0', RoundingProvider::round($num2));
-        $this->assertEquals('-556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('-2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('-3.0', RoundingProvider::round($num6));
-        $this->assertEquals('-3.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('-2.52223', RoundingProvider::round($num6, 5));
-
+        return [
+            'Half Down 1.111111 places 5' => [$a, '1.11111', RoundingMode::HalfDown, 5],
+            'Half Down 1.555555 places 5' => [$b, '1.55555', RoundingMode::HalfDown, 5],
+            'Half Down 1.555555 places 0' => [$b, '2.0', RoundingMode::HalfDown, 0],
+            'Half Down 555555 places 0' => [$c, '556000.0', RoundingMode::HalfDown, -3],
+            'Half Down 9999.9999 places 0' => [$d, '10000.0', RoundingMode::HalfDown, 0],
+            'Half Down 9999.9999 places 3' => [$d, '10000.0', RoundingMode::HalfDown, 3],
+            'Half Down 2.222222 places 2' => [$e, '2.22', RoundingMode::HalfDown, 2],
+            'Half Down 2.522225 places 0' => [$f, '3.0', RoundingMode::HalfDown, 0],
+            'Half Down 2.5 places 0' => [$f->truncateToScale(1), '2.0', RoundingMode::HalfDown, 0],
+            'Half Down 2.522225 places 5' => [$f, '2.52222', RoundingMode::HalfDown, 5],
+            'Half Down -1.111111 places 5' => [$h, '-1.11111', RoundingMode::HalfDown, 5],
+            'Half Down -1.555555 places 5' => [$i, '-1.55556', RoundingMode::HalfDown, 5],
+            'Half Down -1.555555 places 0' => [$i, '-2.0', RoundingMode::HalfDown, 0],
+            'Half Down -555555 places 0' => [$j, '-556000.0', RoundingMode::HalfDown, -3],
+            'Half Down -9999.9999 places 0' => [$k, '-10000.0', RoundingMode::HalfDown, 0],
+            'Half Down -9999.9999 places 3' => [$k, '-10000.0', RoundingMode::HalfDown, 3],
+            'Half Down -2.222222 places 2' => [$l, '-2.22', RoundingMode::HalfDown, 2],
+            'Half Down -2.522225 places 0' => [$m, '-3.0', RoundingMode::HalfDown, 0],
+            'Half Down -2.5 places 0' => [$m->truncateToScale(1), '-3.0', RoundingMode::HalfDown, 0],
+            'Half Down -2.522225 places 5' => [$m, '-2.52223', RoundingMode::HalfDown, 5],
+        ];
     }
 
-    public function testRoundHalfOdd()
+    public function halfOddProvider(): array
     {
+        $a = new ImmutableDecimal('1.111111');
+        $b = new ImmutableDecimal('1.555555');
+        $c = new ImmutableDecimal('555555');
+        $d = new ImmutableDecimal('9999.9999');
+        $e = new ImmutableDecimal('2.222222');
+        $f = new ImmutableDecimal('2.522225');
+        $h = new ImmutableDecimal('-1.111111');
+        $i = new ImmutableDecimal('-1.555555');
+        $j = new ImmutableDecimal('-555555');
+        $k = new ImmutableDecimal('-9999.9999');
+        $l = new ImmutableDecimal('-2.222222');
+        $m = new ImmutableDecimal('-2.522225');
 
-        RoundingProvider::setRoundingMode(RoundingMode::HalfOdd);
-
-        $num1 = new ImmutableDecimal('1.111111');
-        $num2 = new ImmutableDecimal('1.555555');
-        $num3 = new ImmutableDecimal('555555');
-        $num4 = new ImmutableDecimal('9999.9999');
-        $num5 = new ImmutableDecimal('2.222222');
-        $num6 = new ImmutableDecimal('2.522225');
-
-        $this->assertEquals(RoundingMode::HalfOdd, RoundingProvider::getRoundingMode());
-        $this->assertEquals('1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('1.55555', RoundingProvider::round($num2, 5));
-        $this->assertEquals('2.0', RoundingProvider::round($num2));
-        $this->assertEquals('556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('3.0', RoundingProvider::round($num6));
-        $this->assertEquals('3.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('2.52223', RoundingProvider::round($num6, 5));
-
-        $num1 = new ImmutableDecimal('-1.111111');
-        $num2 = new ImmutableDecimal('-1.555555');
-        $num3 = new ImmutableDecimal('-555555');
-        $num4 = new ImmutableDecimal('-9999.9999');
-        $num5 = new ImmutableDecimal('-2.222222');
-        $num6 = new ImmutableDecimal('-2.522225');
-
-        $this->assertEquals('-1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('-1.55555', RoundingProvider::round($num2, 5));
-        $this->assertEquals('-2.0', RoundingProvider::round($num2));
-        $this->assertEquals('-556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('-2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('-3.0', RoundingProvider::round($num6));
-        $this->assertEquals('-3.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('-2.52223', RoundingProvider::round($num6, 5));
-
+        return [
+            'Half Odd 1.111111 places 5' => [$a, '1.11111', RoundingMode::HalfOdd, 5],
+            'Half Odd 1.555555 places 5' => [$b, '1.55555', RoundingMode::HalfOdd, 5],
+            'Half Odd 1.555555 places 0' => [$b, '2.0', RoundingMode::HalfOdd, 0],
+            'Half Odd 555555 places 0' => [$c, '556000.0', RoundingMode::HalfOdd, -3],
+            'Half Odd 9999.9999 places 0' => [$d, '10000.0', RoundingMode::HalfOdd, 0],
+            'Half Odd 9999.9999 places 3' => [$d, '10000.0', RoundingMode::HalfOdd, 3],
+            'Half Odd 2.222222 places 2' => [$e, '2.22', RoundingMode::HalfOdd, 2],
+            'Half Odd 2.522225 places 0' => [$f, '3.0', RoundingMode::HalfOdd, 0],
+            'Half Odd 2.5 places 0' => [$f->truncateToScale(1), '3.0', RoundingMode::HalfOdd, 0],
+            'Half Odd 2.522225 places 5' => [$f, '2.52223', RoundingMode::HalfOdd, 5],
+            'Half Odd -1.111111 places 5' => [$h, '-1.11111', RoundingMode::HalfOdd, 5],
+            'Half Odd -1.555555 places 5' => [$i, '-1.55555', RoundingMode::HalfOdd, 5],
+            'Half Odd -1.555555 places 0' => [$i, '-2.0', RoundingMode::HalfOdd, 0],
+            'Half Odd -555555 places 0' => [$j, '-556000.0', RoundingMode::HalfOdd, -3],
+            'Half Odd -9999.9999 places 0' => [$k, '-10000.0', RoundingMode::HalfOdd, 0],
+            'Half Odd -9999.9999 places 3' => [$k, '-10000.0', RoundingMode::HalfOdd, 3],
+            'Half Odd -2.222222 places 2' => [$l, '-2.22', RoundingMode::HalfOdd, 2],
+            'Half Odd -2.522225 places 0' => [$m, '-3.0', RoundingMode::HalfOdd, 0],
+            'Half Odd -2.5 places 0' => [$m->truncateToScale(1), '-3.0', RoundingMode::HalfOdd, 0],
+            'Half Odd -2.522225 places 5' => [$m, '-2.52223', RoundingMode::HalfOdd, 5],
+        ];
     }
 
-    public function testRoundHalfZero()
+    public function halfZeroProvider(): array
     {
+        $a = new ImmutableDecimal('1.111111');
+        $b = new ImmutableDecimal('1.555555');
+        $c = new ImmutableDecimal('555555');
+        $d = new ImmutableDecimal('9999.9999');
+        $e = new ImmutableDecimal('2.222222');
+        $f = new ImmutableDecimal('2.522225');
+        $h = new ImmutableDecimal('-1.111111');
+        $i = new ImmutableDecimal('-1.555555');
+        $j = new ImmutableDecimal('-555555');
+        $k = new ImmutableDecimal('-9999.9999');
+        $l = new ImmutableDecimal('-2.222222');
+        $m = new ImmutableDecimal('-2.522225');
 
-        RoundingProvider::setRoundingMode(RoundingMode::HalfZero);
-
-        $num1 = new ImmutableDecimal('1.111111');
-        $num2 = new ImmutableDecimal('1.555555');
-        $num3 = new ImmutableDecimal('555555');
-        $num4 = new ImmutableDecimal('9999.9999');
-        $num5 = new ImmutableDecimal('2.222222');
-        $num6 = new ImmutableDecimal('2.522225');
-
-        $this->assertEquals(RoundingMode::HalfZero, RoundingProvider::getRoundingMode());
-        $this->assertEquals('1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('1.55555', RoundingProvider::round($num2, 5));
-        $this->assertEquals('2.0', RoundingProvider::round($num2));
-        $this->assertEquals('556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('3.0', RoundingProvider::round($num6));
-        $this->assertEquals('2.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('2.52222', RoundingProvider::round($num6, 5));
-
-        $num1 = new ImmutableDecimal('-1.111111');
-        $num2 = new ImmutableDecimal('-1.555555');
-        $num3 = new ImmutableDecimal('-555555');
-        $num4 = new ImmutableDecimal('-9999.9999');
-        $num5 = new ImmutableDecimal('-2.222222');
-        $num6 = new ImmutableDecimal('-2.522225');
-
-        $this->assertEquals('-1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('-1.55555', RoundingProvider::round($num2, 5));
-        $this->assertEquals('-2.0', RoundingProvider::round($num2));
-        $this->assertEquals('-556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('-2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('-3.0', RoundingProvider::round($num6));
-        $this->assertEquals('-2.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('-2.52222', RoundingProvider::round($num6, 5));
-
+        return [
+            'Half Zero 1.111111 places 5' => [$a, '1.11111', RoundingMode::HalfZero, 5],
+            'Half Zero 1.555555 places 5' => [$b, '1.55555', RoundingMode::HalfZero, 5],
+            'Half Zero 1.555555 places 0' => [$b, '2.0', RoundingMode::HalfZero, 0],
+            'Half Zero 555555 places 0' => [$c, '556000.0', RoundingMode::HalfZero, -3],
+            'Half Zero 9999.9999 places 0' => [$d, '10000.0', RoundingMode::HalfZero, 0],
+            'Half Zero 9999.9999 places 3' => [$d, '10000.0', RoundingMode::HalfZero, 3],
+            'Half Zero 2.222222 places 2' => [$e, '2.22', RoundingMode::HalfZero, 2],
+            'Half Zero 2.522225 places 0' => [$f, '3.0', RoundingMode::HalfZero, 0],
+            'Half Zero 2.5 places 0' => [$f->truncateToScale(1), '2.0', RoundingMode::HalfZero, 0],
+            'Half Zero 2.522225 places 5' => [$f, '2.52222', RoundingMode::HalfZero, 5],
+            'Half Zero -1.111111 places 5' => [$h, '-1.11111', RoundingMode::HalfZero, 5],
+            'Half Zero -1.555555 places 5' => [$i, '-1.55555', RoundingMode::HalfZero, 5],
+            'Half Zero -1.555555 places 0' => [$i, '-2.0', RoundingMode::HalfZero, 0],
+            'Half Zero -555555 places 0' => [$j, '-556000.0', RoundingMode::HalfZero, -3],
+            'Half Zero -9999.9999 places 0' => [$k, '-10000.0', RoundingMode::HalfZero, 0],
+            'Half Zero -9999.9999 places 3' => [$k, '-10000.0', RoundingMode::HalfZero, 3],
+            'Half Zero -2.222222 places 2' => [$l, '-2.22', RoundingMode::HalfZero, 2],
+            'Half Zero -2.522225 places 0' => [$m, '-3.0', RoundingMode::HalfZero, 0],
+            'Half Zero -2.5 places 0' => [$m->truncateToScale(1), '-2.0', RoundingMode::HalfZero, 0],
+            'Half Zero -2.522225 places 5' => [$m, '-2.52222', RoundingMode::HalfZero, 5],
+        ];
     }
 
-    public function testRoundHalfInf()
+    public function halfInfProvider(): array
     {
+        $a = new ImmutableDecimal('1.111111');
+        $b = new ImmutableDecimal('1.555555');
+        $c = new ImmutableDecimal('555555');
+        $d = new ImmutableDecimal('9999.9999');
+        $e = new ImmutableDecimal('2.222222');
+        $f = new ImmutableDecimal('2.522225');
+        $h = new ImmutableDecimal('-1.111111');
+        $i = new ImmutableDecimal('-1.555555');
+        $j = new ImmutableDecimal('-555555');
+        $k = new ImmutableDecimal('-9999.9999');
+        $l = new ImmutableDecimal('-2.222222');
+        $m = new ImmutableDecimal('-2.522225');
 
-        RoundingProvider::setRoundingMode(RoundingMode::HalfInf);
+        return [
+            'Half Infinity 1.111111 places 5' => [$a, '1.11111', RoundingMode::HalfInf, 5],
+            'Half Infinity 1.555555 places 5' => [$b, '1.55556', RoundingMode::HalfInf, 5],
+            'Half Infinity 1.555555 places 0' => [$b, '2.0', RoundingMode::HalfInf, 0],
+            'Half Infinity 555555 places 0' => [$c, '556000.0', RoundingMode::HalfInf, -3],
+            'Half Infinity 9999.9999 places 0' => [$d, '10000.0', RoundingMode::HalfInf, 0],
+            'Half Infinity 9999.9999 places 3' => [$d, '10000.0', RoundingMode::HalfInf, 3],
+            'Half Infinity 2.222222 places 2' => [$e, '2.22', RoundingMode::HalfInf, 2],
+            'Half Infinity 2.522225 places 0' => [$f, '3.0', RoundingMode::HalfInf, 0],
+            'Half Infinity 2.5 places 0' => [$f->truncateToScale(1), '3.0', RoundingMode::HalfInf, 0],
+            'Half Infinity 2.522225 places 5' => [$f, '2.52223', RoundingMode::HalfInf, 5],
+            'Half Infinity -1.111111 places 5' => [$h, '-1.11111', RoundingMode::HalfInf, 5],
+            'Half Infinity -1.555555 places 5' => [$i, '-1.55556', RoundingMode::HalfInf, 5],
+            'Half Infinity -1.555555 places 0' => [$i, '-2.0', RoundingMode::HalfInf, 0],
+            'Half Infinity -555555 places 0' => [$j, '-556000.0', RoundingMode::HalfInf, -3],
+            'Half Infinity -9999.9999 places 0' => [$k, '-10000.0', RoundingMode::HalfInf, 0],
+            'Half Infinity -9999.9999 places 3' => [$k, '-10000.0', RoundingMode::HalfInf, 3],
+            'Half Infinity -2.222222 places 2' => [$l, '-2.22', RoundingMode::HalfInf, 2],
+            'Half Infinity -2.522225 places 0' => [$m, '-3.0', RoundingMode::HalfInf, 0],
+            'Half Infinity -2.5 places 0' => [$m->truncateToScale(1), '-3.0', RoundingMode::HalfInf, 0],
+            'Half Infinity -2.522225 places 5' => [$m, '-2.52223', RoundingMode::HalfInf, 5],
+        ];
+    }
 
-        $num1 = new ImmutableDecimal('1.111111');
-        $num2 = new ImmutableDecimal('1.555555');
-        $num3 = new ImmutableDecimal('555555');
-        $num4 = new ImmutableDecimal('9999.9999');
-        $num5 = new ImmutableDecimal('2.222222');
-        $num6 = new ImmutableDecimal('2.522225');
-
-        $this->assertEquals(RoundingMode::HalfInf, RoundingProvider::getRoundingMode());
-        $this->assertEquals('1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('1.55556', RoundingProvider::round($num2, 5));
-        $this->assertEquals('2.0', RoundingProvider::round($num2));
-        $this->assertEquals('556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('3.0', RoundingProvider::round($num6));
-        $this->assertEquals('3.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('2.52223', RoundingProvider::round($num6, 5));
-
-        $num1 = new ImmutableDecimal('-1.111111');
-        $num2 = new ImmutableDecimal('-1.555555');
-        $num3 = new ImmutableDecimal('-555555');
-        $num4 = new ImmutableDecimal('-9999.9999');
-        $num5 = new ImmutableDecimal('-2.222222');
-        $num6 = new ImmutableDecimal('-2.522225');
-
-        $this->assertEquals('-1.11111', RoundingProvider::round($num1, 5));
-        $this->assertEquals('-1.55556', RoundingProvider::round($num2, 5));
-        $this->assertEquals('-2.0', RoundingProvider::round($num2));
-        $this->assertEquals('-556000.0', RoundingProvider::round($num3, -3));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4));
-        $this->assertEquals('-10000.0', RoundingProvider::round($num4, 3));
-        $this->assertEquals('-2.22', RoundingProvider::round($num5, 2));
-        $this->assertEquals('-3.0', RoundingProvider::round($num6));
-        $this->assertEquals('-3.0', RoundingProvider::round($num6->truncateToScale(1)));
-        $this->assertEquals('-2.52223', RoundingProvider::round($num6, 5));
-
+    /**
+     * @dataProvider halfEvenProvider
+     * @dataProvider halfUpProvider
+     * @dataProvider halfDownProvider
+     * @dataProvider halfOddProvider
+     * @dataProvider halfZeroProvider
+     * @dataProvider halfInfProvider
+     */
+    public function testRound(ImmutableDecimal $a, string $expected, RoundingMode $mode, int $places)
+    {
+        $oldMode = RoundingProvider::getRoundingMode();
+        RoundingProvider::setRoundingMode($mode);
+        $this->assertEquals($mode, RoundingProvider::getRoundingMode());
+        $this->assertEquals($expected, RoundingProvider::round($a->getValue(NumberBase::Ten), $places));
+        RoundingProvider::setRoundingMode($oldMode);
+        $this->assertEquals($oldMode, RoundingProvider::getRoundingMode());
     }
 
     public function testRoundHalfRandom()

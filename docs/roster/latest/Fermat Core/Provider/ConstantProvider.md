@@ -58,6 +58,74 @@
 
 ---
 
+!!! signature "public ConstantProvider::makeLn10(int $digits)"
+    ##### makeLn10
+    **$digits**
+
+    type
+    :   int
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+
+    ###### makeLn10() Description:
+
+    The lnScale() implementation is very efficient, so this is probably our best bet for computing more digits of ln(10) to provide.
+
+---
+
+!!! signature "public ConstantProvider::makeLn2(int $digits)"
+    ##### makeLn2
+    **$digits**
+
+    type
+    :   int
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+
+    ###### makeLn2() Description:
+
+    The lnScale() implementation is very efficient, so this is probably our best bet for computing more digits of ln(10) to provide.
+
+---
+
+!!! signature "public ConstantProvider::makeLn1p1(int $digits)"
+    ##### makeLn1p1
+    **$digits**
+
+    type
+    :   int
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+
+---
+
 
 
 

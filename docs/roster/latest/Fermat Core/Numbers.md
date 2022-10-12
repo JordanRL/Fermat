@@ -53,6 +53,11 @@ This class contains useful factory methods to create various numbers, verify the
     value
     :   '2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298'
 
+!!! signature constant "Numbers::LN_2"
+    ##### LN_2
+    value
+    :   '0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687'
+
 !!! signature constant "Numbers::I_POW_I"
     ##### I_POW_I
     value
@@ -65,7 +70,7 @@ This class contains useful factory methods to create various numbers, verify the
 
 ### Static Methods
 
-!!! signature "public Numbers::make(mixed $type, mixed $value, int|null $scale, int $base)"
+!!! signature "public Numbers::make(mixed $type, mixed $value, int|null $scale, NumberBase $base)"
     ##### make
     **$type**
 
@@ -94,7 +99,7 @@ This class contains useful factory methods to create various numbers, verify the
     **$base**
 
     type
-    :   int
+    :   NumberBase
 
     description
     :   The base to create the number in. Note, this is not the same as the base of $value, which is always base-10
@@ -117,7 +122,7 @@ This class contains useful factory methods to create various numbers, verify the
 
 ---
 
-!!! signature "public Numbers::makeFromBase10($type, $value, int|null $scale, int $base)"
+!!! signature "public Numbers::makeFromBase10($type, $value, int|null $scale, NumberBase $base)"
     ##### makeFromBase10
     **$type**
 
@@ -140,7 +145,7 @@ This class contains useful factory methods to create various numbers, verify the
     **$base**
 
     type
-    :   int
+    :   NumberBase
 
     description
     :   
@@ -157,7 +162,7 @@ This class contains useful factory methods to create various numbers, verify the
 
 ---
 
-!!! signature "public Numbers::makeOrDont(string|object $type, int|float|string|array|NumberInterface|DecimalInterface|FractionInterface $value, int|null $scale, int $base)"
+!!! signature "public Numbers::makeOrDont(string|object $type, int|float|string|array|NumberInterface|DecimalInterface|FractionInterface $value, int|null $scale, NumberBase $base)"
     ##### makeOrDont
     **$type**
 
@@ -186,7 +191,7 @@ This class contains useful factory methods to create various numbers, verify the
     **$base**
 
     type
-    :   int
+    :   NumberBase
 
     description
     :   
@@ -203,7 +208,7 @@ This class contains useful factory methods to create various numbers, verify the
 
 ---
 
-!!! signature "public Numbers::makeFractionFromString(string $type, string $value, int $base)"
+!!! signature "public Numbers::makeFractionFromString(string $type, string $value, NumberBase $base)"
     ##### makeFractionFromString
     **$type**
 
@@ -224,7 +229,7 @@ This class contains useful factory methods to create various numbers, verify the
     **$base**
 
     type
-    :   int
+    :   NumberBase
 
     description
     :   
@@ -256,19 +261,19 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   DecimalInterface
+    :   Samsara\Fermat\Values\ImmutableDecimal
 
     description
     :   *No description available*
 
 ---
 
-!!! signature "public Numbers::makeTau(int|null $scale)"
+!!! signature "public Numbers::makeTau(null $scale)"
     ##### makeTau
     **$scale**
 
     type
-    :   int|null
+    :   null
 
     description
     :   
@@ -278,7 +283,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   DecimalInterface
+    :   Samsara\Fermat\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -300,7 +305,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   DecimalInterface
+    :   Samsara\Fermat\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -322,7 +327,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   DecimalInterface
+    :   Samsara\Fermat\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -344,7 +349,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   NumberInterface
+    :   Samsara\Fermat\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -366,7 +371,29 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   NumberInterface
+    :   Samsara\Fermat\Values\ImmutableDecimal
+
+    description
+    :   *No description available*
+
+---
+
+!!! signature "public Numbers::makeNaturalLog2(int|null $scale)"
+    ##### makeNaturalLog2
+    **$scale**
+
+    type
+    :   int|null
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -388,7 +415,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   ImmutableDecimal
+    :   Samsara\Fermat\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -410,39 +437,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   ImmutableDecimal
-
-    description
-    :   *No description available*
-
----
-
-!!! signature "public Numbers::getDefaultCalcMode()"
-    ##### getDefaultCalcMode
-    **return**
-
-    type
-    :   int
-
-    description
-    :   *No description available*
-
----
-
-!!! signature "public Numbers::setDefaultCalcMode(int $mode)"
-    ##### setDefaultCalcMode
-    **$mode**
-
-    type
-    :   int
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   void
+    :   Samsara\Fermat\Values\ImmutableDecimal
 
     description
     :   *No description available*
