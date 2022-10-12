@@ -33,7 +33,7 @@ build:
         standalone-tests-with-decimal:
             environment:
                 apt_packages:
-                    - libmpdec3
+                    - libmpdec
                 variables:
                     COMPOSER_ROOT_VERSION: 2.0
                 php:
