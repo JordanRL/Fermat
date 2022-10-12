@@ -1,6 +1,13 @@
 build:
     nodes:
         analysis:
+            environment:
+                variables:
+                    COMPOSER_ROOT_VERSION: 2.0
+                php:
+                    version: 8.1
+                    ini:
+                        xdebug.mode: coverage
             tests:
                 override:
                     - php-scrutinizer-run
