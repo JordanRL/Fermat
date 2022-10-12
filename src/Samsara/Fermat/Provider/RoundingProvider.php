@@ -38,18 +38,11 @@ class RoundingProvider
         return self::$mode;
     }
 
-    /**
-     * @param string $decimal
-     * @param int $places
-     * @return string
-     */
-    public static function round(string $decimal, int $places = 0): string
+    private static function _roundPreFormat(string $decimal, int $places): array
     {
         $decimal = trim(rtrim($decimal));
 
         static::$isNegative = str_starts_with($decimal, '-');
-        $sign = static::$isNegative ? '-' : '';
-        $imaginary = str_ends_with($decimal, 'i') ? 'i' : '';
 
         $rawString = str_replace('-', '', $decimal);
 
@@ -60,10 +53,6 @@ class RoundingProvider
             $decimalPart = '';
         }
 
-        if (empty($decimalPart) && $places >= 0) {
-            return $sign.$rawString.$imaginary;
-        }
-
         $absPlaces = abs($places);
 
         $currentPart = $places >= 0;
@@ -72,12 +61,82 @@ class RoundingProvider
         $otherPart = $currentPart ? str_split($wholePart) : str_split($decimalPart);
         $baseLength = $currentPart ? strlen($decimalPart)-1 : strlen($wholePart);
         $pos = $currentPart ? $places : $baseLength + $places;
-        $carry = 0;
 
         if ($currentPart) {
             $pos = ($absPlaces > $baseLength && $places < 0) ? $baseLength : $pos;
         } else {
             $pos = ($absPlaces >= $baseLength) ? 0 : $pos;
+        }
+
+        return [
+            $rawString,
+            $roundedPart,
+            $roundedPartString,
+            $otherPart,
+            $pos,
+            $wholePart,
+            $decimalPart,
+            $currentPart
+        ];
+    }
+
+    private static function _roundPostFormat(
+        string $currentPart,
+        string $wholePart,
+        array $roundedPart,
+        array $otherPart,
+        int $places
+    ): array
+    {
+        if ($currentPart) {
+            $newDecimalPart = implode('', $roundedPart);
+            $newWholePart = implode('', $otherPart);
+        } else {
+            $newDecimalPart = implode('', $otherPart);
+            $newWholePart = implode('', $roundedPart);
+        }
+
+        if ($places > 0) {
+            $newDecimalPart = substr($newDecimalPart, 0, $places);
+        } elseif ($places == 0) {
+            $newDecimalPart = '0';
+        } else {
+            $newWholePart = substr($newWholePart, 0, strlen($wholePart)+$places).str_repeat('0', $places*-1);
+            $newDecimalPart = '0';
+        }
+
+        if (!strlen(str_replace('0', '', $newDecimalPart))) {
+            $newDecimalPart = '0';
+        }
+
+        return [$newWholePart, $newDecimalPart];
+    }
+
+    /**
+     * @param string $decimal
+     * @param int $places
+     * @return string
+     */
+    public static function round(string $decimal, int $places = 0): string
+    {
+        $carry = 0;
+
+        [
+            $rawString,
+            $roundedPart,
+            $roundedPartString,
+            $otherPart,
+            $pos,
+            $wholePart,
+            $decimalPart,
+            $currentPart
+        ] = self::_roundPreFormat($decimal, $places);
+
+        $sign = static::$isNegative ? '-' : '';
+        $imaginary = str_ends_with($decimal, 'i') ? 'i' : '';
+
+        if (empty($decimalPart) && $places >= 0) {
+            return $sign.$rawString.$imaginary;
         }
 
         do {
@@ -146,26 +205,7 @@ class RoundingProvider
             }
         } while ($carry == 1);
 
-        if ($currentPart) {
-            $newDecimalPart = implode('', $roundedPart);
-            $newWholePart = implode('', $otherPart);
-        } else {
-            $newDecimalPart = implode('', $otherPart);
-            $newWholePart = implode('', $roundedPart);
-        }
-
-        if ($places > 0) {
-            $newDecimalPart = substr($newDecimalPart, 0, $places);
-        } elseif ($places == 0) {
-            $newDecimalPart = '0';
-        } else {
-            $newWholePart = substr($newWholePart, 0, strlen($wholePart)+$places).str_repeat('0', $places*-1);
-            $newDecimalPart = '0';
-        }
-
-        if (!strlen(str_replace('0', '', $newDecimalPart))) {
-            $newDecimalPart = '0';
-        }
+        [$newWholePart, $newDecimalPart] = self::_roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places);
 
         static::$remainder = null;
 
