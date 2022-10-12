@@ -317,9 +317,7 @@ trait ArithmeticSimpleTrait
 
             return new ImmutableDecimal($value, $scale);
         } else {
-
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
             $value = $this->divideSelector($num, $scale);
 
             if ($this->isImaginary() xor $num->isImaginary()) {
@@ -348,26 +346,17 @@ trait ArithmeticSimpleTrait
             $thisRealPart,
             $thisImaginaryPart,
             $num
-        ] = $this->translateToParts($this, $num, 1);
+        ] = $this->translateToParts($this, $num, 0);
 
-        if ($num->isComplex() || ($this->isReal() xor $num->isReal())) {
-            if (!(InstalledVersions::isInstalled('samsara/fermat-complex-numbers')) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
-                throw new MissingPackage(
-                    'Creating complex numbers is unsupported in Fermat without modules.',
-                    'Install the samsara/fermat-complex-numbers package using composer.',
-                    'An attempt was made to create a ComplexNumber instance without having the Complex Numbers module. Please install the samsara/fermat-complex-numbers package using composer.'
-                );
-            }
-
-            $newRealPart = $thisRealPart->pow($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->pow($thatImaginaryPart);
-
-            /** @psalm-suppress UndefinedClass */
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
-        }
-
-        if ($this->isNegative() && !$num->isInt()) {
-            if (!(InstalledVersions::isInstalled('samsara/fermat-complex-numbers')) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
+        if (
+            ($this->isNegative() && !$num->isInt())
+            || $num->isComplex()
+            || ($this->isReal() xor $num->isReal())
+        ) {
+            if (
+                !(InstalledVersions::isInstalled('samsara/fermat-complex-numbers'))
+                || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')
+            ) {
                 throw new MissingPackage(
                     'Creating complex numbers is unsupported in Fermat without modules.',
                     'Install the samsara/fermat-complex-numbers package using composer.',

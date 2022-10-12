@@ -83,13 +83,14 @@ trait TrigonometryScaleTrait
 
         $scale = $scale ?? $this->getScale();
         $modScale = ($scale > $this->getScale()) ? $scale : $this->getScale();
-        $intScale = $scale+2;
+        $intScale = $scale+3;
         $modScale = $modScale+$this->numberOfIntDigits()+2;
 
         $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $modScale);
 
         $twoPi = Numbers::make2Pi($modScale + 2);
-        $pi = Numbers::makePi( $intScale );
+        $pi = Numbers::makePi( $modScale + 2);
+        $piDivTwo = $pi->divide(2);
 
         if ($twoPi->truncate($scale)->isEqual($thisNum->truncate($scale))) {
             return '1';
@@ -97,6 +98,13 @@ trait TrigonometryScaleTrait
 
         if ($pi->truncate($scale)->isEqual($thisNum->truncate($scale))) {
             return '-1';
+        }
+
+        if (
+            $piDivTwo->truncate($scale)->isEqual($thisNum->truncate($scale))
+            || $piDivTwo->multiply(3)->truncate($scale)->isEqual($thisNum->truncate($scale))
+        ) {
+            return '0';
         }
 
         $modulo = $thisNum->continuousModulo($twoPi);
