@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Types;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\Currency;
 use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Enums\NumberFormat;
 use Samsara\Fermat\Enums\NumberGrouping;
@@ -29,7 +30,7 @@ use Samsara\Fermat\Types\Traits\TrigonometrySimpleTrait;
 abstract class Decimal extends Number implements DecimalInterface
 {
 
-    protected NumberFormat $format = NumberFormat::Standard;
+    protected NumberFormat $format = NumberFormat::English;
     protected NumberGrouping $grouping = NumberGrouping::Standard;
     protected NumberBase $base;
 
@@ -76,6 +77,32 @@ abstract class Decimal extends Number implements DecimalInterface
 
         parent::__construct();
 
+    }
+
+    /**
+     * @param NumberFormat $format
+     * @param NumberGrouping $grouping
+     * @param string $value
+     * @param int|null $scale
+     * @param NumberBase $base
+     * @param bool $baseTenInput
+     * @return static
+     * @throws IntegrityConstraint
+     */
+    public static function createFromFormat(
+        NumberFormat $format,
+        NumberGrouping $grouping,
+        string $value,
+        int $scale = null,
+        NumberBase $base = NumberBase::Ten,
+        bool $baseTenInput = true
+    ): static
+    {
+        $value = str_replace(NumberFormatProvider::getDelimiterCharacter($format), '', $value);
+
+        $value = str_replace(NumberFormatProvider::getRadixCharacter($format), '.', $value);
+
+        return (new static($value, $scale, $base, $baseTenInput))->setFormat($format)->setGrouping($grouping);
     }
 
     /**
@@ -186,15 +213,11 @@ abstract class Decimal extends Number implements DecimalInterface
      */
     protected function getAsBaseConverted(): string
     {
-        if ($this->getBase() == NumberBase::Ten) {
-            return $this->getAsBaseTenRealNumber();
-        } else {
-            $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this);
-            $converted = BaseConversionProvider::convertFromBaseTen($num, $this->getBase());
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this);
+        $converted = BaseConversionProvider::convertFromBaseTen($num, $this->getBase());
 
-            $converted = rtrim($converted, '0');
-            return rtrim($converted, '.');
-        }
+        $converted = rtrim($converted, '0');
+        return rtrim($converted, '.');
     }
 
     /**
@@ -210,7 +233,7 @@ abstract class Decimal extends Number implements DecimalInterface
     /**
      * @return string
      */
-    public function getAsBaseTenRealNumber(bool $formatted = false): string
+    public function getAsBaseTenRealNumber(): string
     {
         $string = '';
 
@@ -218,15 +241,12 @@ abstract class Decimal extends Number implements DecimalInterface
             $string .= '-';
         }
 
-        $string .= match ($formatted) {
-            true => NumberFormatProvider::addDelimiter($this->value[0], $this->getFormat(), $this->getGrouping()),
-            false => $this->value[0]
-        };
+        $string .= $this->value[0];
 
         $decimalVal = trim($this->value[1], '0');
 
         if (strlen($decimalVal) > 0) {
-            $string .= NumberFormatProvider::getRadixCharacter($this->getFormat()).rtrim($this->value[1], '0');
+            $string .= '.'.rtrim($this->value[1], '0');
         }
 
         return $string;
@@ -235,25 +255,81 @@ abstract class Decimal extends Number implements DecimalInterface
     /**
      * Returns the current value formatted according to the settings in getGrouping() and getFormat()
      *
+     * @param NumberBase|null $base
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    public function getFormattedValue(?NumberBase $base = null): string
+    {
+        return NumberFormatProvider::formatNumber(
+            $this->getValue($base),
+            $this->getFormat(),
+            $this->getGrouping()
+        );
+    }
+
+    /**
+     * @param Currency $currency
      * @return string
      */
-    public function getFormattedValue(): string
+    public function getCurrencyValue(Currency $currency): string
     {
-        return $this->getValue(NumberBase::Ten, true);
+        return NumberFormatProvider::formatCurrency(
+            $this->getValue(NumberBase::Ten),
+            $currency,
+            $this->getFormat(),
+            $this->getGrouping()
+        );
+    }
+
+    /**
+     * @param int|null $scale
+     * @return string
+     */
+    public function getScientificValue(?int $scale = null): string
+    {
+        $baseValue = $this->getValue(NumberBase::Ten);
+
+        if (!is_null($scale)) {
+            if ($this->numberOfIntDigits() > $scale+1) {
+                $baseValue = substr($this->getWholePart(), 0, $scale+1);
+                $baseValue = str_pad($baseValue, $this->numberOfIntDigits(), '0');
+            } elseif ($this->getWholePart() == '0' && $this->numberOfSigDecimalDigits() > $scale+1) {
+                $baseValue = trim($this->getDecimalPart(), '0');
+                $baseValue = substr($baseValue, 0, $scale+1);
+                $baseValue = str_pad($baseValue, $this->numberOfLeadingZeros()+strlen($baseValue), '0', STR_PAD_LEFT);
+                $baseValue = '0.'.$baseValue;
+            } elseif ($this->numberOfTotalDigits() > $scale+1) {
+                $baseValue = $this->getWholePart()
+                    .'.'
+                    .substr($this->getDecimalPart(), 0, ($scale+1)-$this->numberOfIntDigits());
+            }
+
+            if ($this->isNegative()) {
+                $baseValue = '-'.$baseValue;
+            }
+
+            if ($this->isImaginary()) {
+                $baseValue .= 'i';
+            }
+        }
+
+        return NumberFormatProvider::formatScientific($baseValue);
     }
 
     /**
      * @param NumberBase|null $base
      * @return string
+     * @throws IntegrityConstraint
      */
-    public function getValue(?NumberBase $base = null, bool $formatted = false): string
+    public function getValue(?NumberBase $base = null): string
     {
         if (is_null($base) && $this->getBase() != NumberBase::Ten) {
             $value = $this->getAsBaseConverted();
         } elseif (!is_null($base) && $base != NumberBase::Ten) {
             $value = BaseConversionProvider::convertFromBaseTen($this, $base);
         } else {
-            $value = $this->getAsBaseTenRealNumber($formatted);
+            $value = $this->getAsBaseTenRealNumber();
         }
 
         if ($this->isImaginary()) {
@@ -300,10 +376,6 @@ abstract class Decimal extends Number implements DecimalInterface
         $thatValue = $value->getAsBaseTenRealNumber();
 
         $scale = ($this->getScale() < $value->getScale()) ? $this->getScale() : $value->getScale();
-
-        //if ($this->isInt() && $value->isInt() && extension_loaded('gmp')) {
-        //    return gmp_cmp($thisValue, $thatValue);
-        //}
 
         return ArithmeticProvider::compare($thisValue, $thatValue, $scale);
     }
