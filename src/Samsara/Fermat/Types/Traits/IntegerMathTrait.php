@@ -230,20 +230,12 @@ trait IntegerMathTrait
      */
     public function isPrime(?int $certainty = 20): bool
     {
-        if (!$this->isInt()) {
-            return false;
-        }
+        switch ($this->_primeEarlyExit()) {
+            case 1:
+                return false;
 
-        if ($this->isEqual(2)) {
-            return true;
-        } elseif ($this->isEqual(3)) {
-            return true;
-        } elseif ($this->modulo(2)->isEqual(0)) {
-            return false;
-        } elseif ($this->modulo(3)->isEqual(0)) {
-            return false;
-        } elseif ($this->isEqual(1)) {
-            return false;
+            case 2:
+                return true;
         }
 
         if (function_exists('gmp_prob_prime') && $this->extensions) {
@@ -316,6 +308,27 @@ trait IntegerMathTrait
 
         return new NumberCollection();
 
+    }
+
+    private function _primeEarlyExit(): int
+    {
+        if (!$this->isInt()) {
+            return 1;
+        }
+
+        if ($this->isEqual(2)) {
+            return 2;
+        } elseif ($this->isEqual(3)) {
+            return 2;
+        } elseif ($this->modulo(2)->isEqual(0)) {
+            return 1;
+        } elseif ($this->modulo(3)->isEqual(0)) {
+            return 1;
+        } elseif ($this->isEqual(1)) {
+            return 1;
+        }
+
+        return 0;
     }
 
 }
