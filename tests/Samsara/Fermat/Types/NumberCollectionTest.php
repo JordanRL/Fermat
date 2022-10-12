@@ -8,6 +8,9 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ * @group Types
+ */
 class NumberCollectionTest extends TestCase
 {
 

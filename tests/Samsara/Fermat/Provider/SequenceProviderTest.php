@@ -9,6 +9,7 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
+ * @group Providers
  */
 class SequenceProviderTest extends TestCase
 {

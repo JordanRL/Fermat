@@ -8,6 +8,7 @@ use Samsara\Fermat\Numbers;
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
+ * @group DecimalLegacy
  */
 class MutableDecimalTest extends TestCase
 {

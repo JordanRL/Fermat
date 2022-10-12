@@ -14,6 +14,7 @@ use Samsara\Fermat\Enums\CalcMode;
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
+ * @group ArithmeticNative
  */
 class ArithmeticNativeTest extends TestCase
 {

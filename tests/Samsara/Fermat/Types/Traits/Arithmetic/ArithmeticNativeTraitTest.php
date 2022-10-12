@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
+/**
+ * @group Types
+ */
 class ArithmeticNativeTraitTest extends TestCase
 {
 

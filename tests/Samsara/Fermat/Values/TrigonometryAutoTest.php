@@ -2,13 +2,14 @@
 
 namespace Samsara\Fermat\Values;
 
-
-
 use PHPUnit\Framework\TestCase;
 use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Decimal;
 
+/**
+ * @group BasicTrigonometry
+ */
 class TrigonometryAutoTest extends TestCase
 {
 

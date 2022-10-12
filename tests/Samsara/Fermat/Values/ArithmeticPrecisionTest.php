@@ -11,7 +11,9 @@ use Samsara\Fermat\Types\Base\Number;
 use Samsara\Fermat\Enums\CalcMode;
 
 /**
+ * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
+ * @group ArithmeticPrecision
  */
 class ArithmeticPrecisionTest extends TestCase
 {

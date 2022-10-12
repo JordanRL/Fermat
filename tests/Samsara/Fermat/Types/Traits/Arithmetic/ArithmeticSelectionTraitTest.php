@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Fermat\Numbers;
 
+/**
+ * @group Types
+ */
 class ArithmeticSelectionTraitTest extends TestCase
 {
 

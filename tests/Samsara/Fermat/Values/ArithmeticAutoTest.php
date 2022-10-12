@@ -12,6 +12,7 @@ use Samsara\Fermat\Types\Base\Number;
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
+ * @group ArithmeticAuto
  */
 class ArithmeticAutoTest extends TestCase
 {

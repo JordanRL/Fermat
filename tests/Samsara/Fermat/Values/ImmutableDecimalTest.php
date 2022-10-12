@@ -14,6 +14,7 @@ use Samsara\Fermat\Types\NumberCollection;
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
+ * @group DecimalLegacy
  */
 class ImmutableDecimalTest extends TestCase
 {

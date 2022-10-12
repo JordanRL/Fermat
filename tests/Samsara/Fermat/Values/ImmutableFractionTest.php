@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
+ * @group DecimalLegacy
  */
 class ImmutableFractionTest extends TestCase
 {

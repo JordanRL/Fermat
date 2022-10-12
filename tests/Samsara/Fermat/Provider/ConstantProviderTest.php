@@ -4,6 +4,9 @@ namespace Samsara\Fermat\Provider;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group Providers
+ */
 class ConstantProviderTest extends TestCase
 {
 

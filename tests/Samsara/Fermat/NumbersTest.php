@@ -9,6 +9,7 @@ use Samsara\Fermat\Enums\NumberBase;
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
+ * @group DecimalLegacy
  */
 class NumbersTest extends TestCase
 {
