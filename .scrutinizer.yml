@@ -11,7 +11,7 @@ build:
             tests:
                 override:
                     - php-scrutinizer-run
-        standalone-tests-1:
+        standalone-tests-bcmath:
             environment:
                 variables:
                     COMPOSER_ROOT_VERSION: 2.0
@@ -32,6 +32,8 @@ build:
                           format: clover
         standalone-tests-with-decimal:
             environment:
+                apt_package:
+                    - libmpdec3
                 variables:
                     COMPOSER_ROOT_VERSION: 2.0
                 php:
@@ -39,7 +41,7 @@ build:
                     ini:
                         xdebug.mode: coverage
             requires:
-                - node: /standalone-tests-\d+/
+                - node: standalone-tests-bcmath
             tests:
                 before:
                     - mkdir build
@@ -74,9 +76,6 @@ build:
                       coverage:
                           file: build/logs/coverage.clover
                           format: clover
-filter:
-    paths:
-        - src/
 build_failure_conditions:
     - 'project.metric_change("scrutinizer.test_coverage", < -0.05)'
     - 'project.metric("scrutinizer.test_coverage", < 0.70)'
