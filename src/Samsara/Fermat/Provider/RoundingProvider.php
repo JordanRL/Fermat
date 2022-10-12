@@ -55,7 +55,7 @@ class RoundingProvider
             $decimalPart,
             $currentPart,
             $isNegative
-        ] = self::_roundPreFormat($decimal, $places);
+        ] = self::roundPreFormat($decimal, $places);
 
         $sign = $isNegative ? '-' : '';
         $imaginary = str_ends_with($decimal, 'i') ? 'i' : '';
@@ -69,7 +69,7 @@ class RoundingProvider
                 break;
             }
 
-            [$digit, $nextDigit, $remainder] = self::_roundLoopStart(
+            [$digit, $nextDigit, $remainder] = self::roundLoopStart(
                 $roundedPart,
                 $otherPart,
                 $roundedPartString,
@@ -91,7 +91,7 @@ class RoundingProvider
                 }
             }
 
-            [$roundedPart, $otherPart, $pos, $carry, $currentPart] = self::_roundLoopEnd(
+            [$roundedPart, $otherPart, $pos, $carry, $currentPart] = self::roundLoopEnd(
                 $roundedPart,
                 $otherPart,
                 $pos,
@@ -100,7 +100,7 @@ class RoundingProvider
             );
         } while ($carry == 1);
 
-        [$newWholePart, $newDecimalPart] = self::_roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places);
+        [$newWholePart, $newDecimalPart] = self::roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places);
 
         return $sign.$newWholePart.'.'.$newDecimalPart.$imaginary;
     }
@@ -110,7 +110,7 @@ class RoundingProvider
      * @param int $places
      * @return array
      */
-    private static function _roundPreFormat(string $decimal, int $places): array
+    private static function roundPreFormat(string $decimal, int $places): array
     {
         $decimal = trim(rtrim($decimal));
 
@@ -161,7 +161,7 @@ class RoundingProvider
      * @param int $places
      * @return array
      */
-    private static function _roundPostFormat(
+    private static function roundPostFormat(
         string $currentPart,
         string $wholePart,
         array $roundedPart,
@@ -202,7 +202,7 @@ class RoundingProvider
      * @param bool $currentPart
      * @return array
      */
-    private static function _roundLoopStart(
+    private static function roundLoopStart(
         array $roundedPart,
         array $otherPart,
         string $roundedPartString,
@@ -213,7 +213,7 @@ class RoundingProvider
     {
         $digit = (int)$roundedPart[$pos] + $carry;
 
-        if ($carry == 0 && $digit == 5) {
+        if ($carry == 0 && $digit == 5 && strlen($roundedPartString) > $pos+1) {
             $remainder = substr($roundedPartString, $pos+1);
         } else {
             $remainder = null;
@@ -240,7 +240,7 @@ class RoundingProvider
      * @param bool $currentPart
      * @return array
      */
-    private static function _roundLoopEnd(
+    private static function roundLoopEnd(
         array $roundedPart,
         array $otherPart,
         int $pos,
