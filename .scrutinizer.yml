@@ -32,7 +32,7 @@ build:
                           format: clover
         standalone-tests-with-decimal:
             environment:
-                apt_package:
+                apt_packages:
                     - libmpdec3
                 variables:
                     COMPOSER_ROOT_VERSION: 2.0
