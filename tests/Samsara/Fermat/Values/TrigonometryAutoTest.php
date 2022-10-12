@@ -124,6 +124,8 @@ class TrigonometryAutoTest extends TestCase
         $l = new ImmutableDecimal(0);
         $m = new ImmutableDecimal(Numbers::makePi(12)->divide(2)->truncateToScale(10), 10);
         $n = new ImmutableDecimal(Numbers::makePi(17)->divide(2)->truncateToScale(15), 15);
+        $o = new ImmutableDecimal(Numbers::makePi(12)->multiply(3)->divide(2)->truncateToScale(10), 10);
+        $p = new ImmutableDecimal(Numbers::makePi(17)->multiply(3)->divide(2)->truncateToScale(15), 15);
 
         return [
             'IDecimal cos(1)' => [$a, '0.5403023059', NumberBase::Ten, 10],
@@ -140,6 +142,8 @@ class TrigonometryAutoTest extends TestCase
             'IDecimal cos(0)' => [$l, '1', NumberBase::Ten, 10],
             'IDecimal cos(Pi/2) scale 10' => [$m, '0', NumberBase::Ten, 10],
             'IDecimal cos(Pi/2) scale 15' => [$n, '0', NumberBase::Ten, 15],
+            'IDecimal cos(3Pi/2) scale 10' => [$o, '0', NumberBase::Ten, 10],
+            'IDecimal cos(3Pi/2) scale 15' => [$p, '0', NumberBase::Ten, 15],
         ];
     }
 
@@ -159,6 +163,8 @@ class TrigonometryAutoTest extends TestCase
         $l = new MutableDecimal(0);
         $m = new MutableDecimal(Numbers::makePi(12)->divide(2)->truncateToScale(10), 10);
         $n = new MutableDecimal(Numbers::makePi(17)->divide(2)->truncateToScale(15), 15);
+        $o = new ImmutableDecimal(Numbers::makePi(12)->multiply(3)->divide(2)->truncateToScale(10), 10);
+        $p = new ImmutableDecimal(Numbers::makePi(17)->multiply(3)->divide(2)->truncateToScale(15), 15);
 
         return [
             'MDecimal cos(1)' => [$a, '0.5403023059', NumberBase::Ten, 10],
@@ -175,6 +181,8 @@ class TrigonometryAutoTest extends TestCase
             'MDecimal cos(0)' => [$l, '1', NumberBase::Ten, 10],
             'MDecimal cos(Pi/2) scale 10' => [$m, '0', NumberBase::Ten, 10],
             'MDecimal cos(Pi/2) scale 15' => [$n, '0', NumberBase::Ten, 15],
+            'MDecimal cos(3Pi/2) scale 10' => [$o, '0', NumberBase::Ten, 10],
+            'MDecimal cos(3Pi/2) scale 15' => [$p, '0', NumberBase::Ten, 15],
         ];
     }
 

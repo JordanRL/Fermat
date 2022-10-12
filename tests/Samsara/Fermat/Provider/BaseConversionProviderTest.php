@@ -8,8 +8,6 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 /**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
  * @group Providers
  */
 class BaseConversionProviderTest extends TestCase

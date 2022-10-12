@@ -7,8 +7,6 @@ use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 /**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
  * @group Providers
  */
 class RandomProviderTest extends TestCase

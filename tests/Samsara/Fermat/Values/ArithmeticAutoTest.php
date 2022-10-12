@@ -10,9 +10,7 @@ use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Types\Base\Number;
 
 /**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
- * @group ArithmeticAuto
+ * @group Arithmetic
  */
 class ArithmeticAutoTest extends TestCase
 {
@@ -79,16 +77,16 @@ class ArithmeticAutoTest extends TestCase
         return [
             'MDecimal 5+10' => [$five, $ten, '15', NumberBase::Ten, 10],
             'MDecimal 5+10 base 5' => [$fiveBaseFive, $ten, '30', NumberBase::Five, 10],
-            'MDecimal 5+1/4' => [$five, $oneQuarter, '5.25', NumberBase::Ten, 10],
-            'MDecimal 1/4+5' => [$oneQuarter, $five, '21/4', NumberBase::Ten, 10],
+            'MDecimal 5+1/4' => [$five, $oneQuarter, '15.25', NumberBase::Ten, 10],
+            'MDecimal 1/4+5' => [$oneQuarter, $five, '31/2', NumberBase::Ten, 10],
             'MDecimal 0.6+0.4' => [$sixTenths, $fourTenths, '1', NumberBase::Ten, 10],
             'MDecimal 0.1+0.2' => [$oneTenth, $twoTenths, '0.3', NumberBase::Ten, 10],
-            'MDecimal 0.1+0.0000000001' => [$oneTenth, $tenScale, '0.1000000001', NumberBase::Ten, 10],
-            'MDecimal 0.1+0.00000000001' => [$oneTenth, $elevenScale, '0.1', NumberBase::Ten, 10],
-            'MDecimal 1000000000000000000000000000000+5' => [$tenPowThirty, $five, '1000000000000000000000000000005', NumberBase::Ten, 10],
-            'MDecimal 1000000000000000000000000000000+0.00000000001' => [$tenPowThirty, $elevenScale, '1000000000000000000000000000000', NumberBase::Ten, 10],
-            'MDecimal 0.00000000001+1000000000000000000000000000000' => [$elevenScale, $tenPowThirty, '1000000000000000000000000000000.00000000001', NumberBase::Ten, 11],
-            'MDecimal -4+0.1' => [$negFour, $oneTenth, '-3.9', NumberBase::Ten, 10],
+            'MDecimal 0.1+0.0000000001' => [$oneTenth, $tenScale, '0.3000000001', NumberBase::Ten, 10],
+            'MDecimal 0.1+0.00000000001' => [$oneTenth, $elevenScale, '0.3000000001', NumberBase::Ten, 10],
+            'MDecimal 1000000000000000000000000000000+5' => [$tenPowThirty, $five, '1000000000000000000000000000015.25', NumberBase::Ten, 10],
+            'MDecimal 1000000000000000000000000000000+0.00000000001' => [$tenPowThirty, $elevenScale, '1000000000000000000000000000015.25', NumberBase::Ten, 10],
+            'MDecimal 0.00000000001+1000000000000000000000000000000' => [$elevenScale, $tenPowThirty, '1000000000000000000000000000015.25000000001', NumberBase::Ten, 11],
+            'MDecimal -4+0.1' => [$negFour, $oneTenth, '-3.6999999999', NumberBase::Ten, 10],
             'MDecimal 5+5i' => [$five, $fiveI, MissingPackage::class, NumberBase::Ten, 10],
             'MDecimal 5i+10i' => [$fiveI, $tenI, '15i', NumberBase::Ten, 10],
         ];
@@ -157,20 +155,20 @@ class ArithmeticAutoTest extends TestCase
         $tenI = new MutableDecimal('10i');
 
         return [
-            'IDecimal 5-10' => [$five, $ten, '-5', NumberBase::Ten, 10],
-            'IDecimal 5-10 base 5' => [$fiveBaseFive, $ten, '-10', NumberBase::Five, 10],
-            'IDecimal 5-1/4' => [$five, $oneQuarter, '4.75', NumberBase::Ten, 10],
-            'IDecimal 1/4-5' => [$oneQuarter, $five, '-19/4', NumberBase::Ten, 10],
-            'IDecimal 0.6-0.4' => [$sixTenths, $fourTenths, '0.2', NumberBase::Ten, 10],
-            'IDecimal 0.1-0.2' => [$oneTenth, $twoTenths, '-0.1', NumberBase::Ten, 10],
-            'IDecimal 0.1-0.0000000001' => [$oneTenth, $tenScale, '0.0999999999', NumberBase::Ten, 10],
-            'IDecimal 0.1-0.00000000001' => [$oneTenth, $elevenScale, '0.1', NumberBase::Ten, 10],
-            'IDecimal 1000000000000000000000000000000-5' => [$tenPowThirty, $five, '999999999999999999999999999995', NumberBase::Ten, 10],
-            'IDecimal 1000000000000000000000000000000-0.00000000001' => [$tenPowThirty, $elevenScale, '1000000000000000000000000000000', NumberBase::Ten, 10],
-            'IDecimal 0.00000000001-1000000000000000000000000000000' => [$elevenScale, $tenPowThirty, '-999999999999999999999999999999.99999999999', NumberBase::Ten, 11],
-            'IDecimal -4-0.1' => [$negFour, $oneTenth, '-4.1', NumberBase::Ten, 10],
-            'IDecimal 5-5i' => [$five, $fiveI, MissingPackage::class, NumberBase::Ten, 10],
-            'IDecimal 5i-10i' => [$fiveI, $tenI, '-5i', NumberBase::Ten, 10],
+            'MDecimal 5-10' => [$five, $ten, '-5', NumberBase::Ten, 10],
+            'MDecimal 5-10 base 5' => [$fiveBaseFive, $ten, '-10', NumberBase::Five, 10],
+            'MDecimal 5-1/4' => [$five, $oneQuarter, '-5.25', NumberBase::Ten, 10],
+            'MDecimal 1/4-5' => [$oneQuarter, $five, '11/2', NumberBase::Ten, 10],
+            'MDecimal 0.6-0.4' => [$sixTenths, $fourTenths, '0.2', NumberBase::Ten, 10],
+            'MDecimal 0.1-0.2' => [$oneTenth, $twoTenths, '-0.1', NumberBase::Ten, 10],
+            'MDecimal 0.1-0.0000000001' => [$oneTenth, $tenScale, '-0.1000000001', NumberBase::Ten, 10],
+            'MDecimal 0.1-0.00000000001' => [$oneTenth, $elevenScale, '-0.1000000001', NumberBase::Ten, 10],
+            'MDecimal 1000000000000000000000000000000-5' => [$tenPowThirty, $five, '1000000000000000000000000000005.25', NumberBase::Ten, 10],
+            'MDecimal 1000000000000000000000000000000-0.00000000001' => [$tenPowThirty, $elevenScale, '1000000000000000000000000000005.25', NumberBase::Ten, 10],
+            'MDecimal 0.00000000001-1000000000000000000000000000000' => [$elevenScale, $tenPowThirty, '-1000000000000000000000000000005.24999999999', NumberBase::Ten, 11],
+            'MDecimal -4-0.1' => [$negFour, $oneTenth, '-3.8999999999', NumberBase::Ten, 10],
+            'MDecimal 5-5i' => [$five, $fiveI, MissingPackage::class, NumberBase::Ten, 10],
+            'MDecimal 5i-10i' => [$fiveI, $tenI, '-5i', NumberBase::Ten, 10],
         ];
 
     }
@@ -194,20 +192,20 @@ class ArithmeticAutoTest extends TestCase
         $tenI = new ImmutableDecimal('10i');
 
         return [
-            'MDecimal 5-10' => [$five, $ten, '-5', NumberBase::Ten, 10],
-            'MDecimal 5-10 base 5' => [$fiveBaseFive, $ten, '-10', NumberBase::Five, 10],
-            'MDecimal 5-1/4' => [$five, $oneQuarter, '4.75', NumberBase::Ten, 10],
-            'MDecimal 1/4-5' => [$oneQuarter, $five, '-19/4', NumberBase::Ten, 10],
-            'MDecimal 0.6-0.4' => [$sixTenths, $fourTenths, '0.2', NumberBase::Ten, 10],
-            'MDecimal 0.1-0.2' => [$oneTenth, $twoTenths, '-0.1', NumberBase::Ten, 10],
-            'MDecimal 0.1-0.0000000001' => [$oneTenth, $tenScale, '0.0999999999', NumberBase::Ten, 10],
-            'MDecimal 0.1-0.00000000001' => [$oneTenth, $elevenScale, '0.1', NumberBase::Ten, 10],
-            'MDecimal 1000000000000000000000000000000-5' => [$tenPowThirty, $five, '999999999999999999999999999995', NumberBase::Ten, 10],
-            'MDecimal 1000000000000000000000000000000-0.00000000001' => [$tenPowThirty, $elevenScale, '1000000000000000000000000000000', NumberBase::Ten, 10],
+            'IDecimal 5-10' => [$five, $ten, '-5', NumberBase::Ten, 10],
+            'IDecimal 5-10 base 5' => [$fiveBaseFive, $ten, '-10', NumberBase::Five, 10],
+            'IDecimal 5-1/4' => [$five, $oneQuarter, '4.75', NumberBase::Ten, 10],
+            'IDecimal 1/4-5' => [$oneQuarter, $five, '-19/4', NumberBase::Ten, 10],
+            'IDecimal 0.6-0.4' => [$sixTenths, $fourTenths, '0.2', NumberBase::Ten, 10],
+            'IDecimal 0.1-0.2' => [$oneTenth, $twoTenths, '-0.1', NumberBase::Ten, 10],
+            'IDecimal 0.1-0.0000000001' => [$oneTenth, $tenScale, '0.0999999999', NumberBase::Ten, 10],
+            'IDecimal 0.1-0.00000000001' => [$oneTenth, $elevenScale, '0.1', NumberBase::Ten, 10],
+            'IDecimal 1000000000000000000000000000000-5' => [$tenPowThirty, $five, '999999999999999999999999999995', NumberBase::Ten, 10],
+            'IDecimal 1000000000000000000000000000000-0.00000000001' => [$tenPowThirty, $elevenScale, '1000000000000000000000000000000', NumberBase::Ten, 10],
             'IDecimal 0.00000000001-1000000000000000000000000000000' => [$elevenScale, $tenPowThirty, '-999999999999999999999999999999.99999999999', NumberBase::Ten, 11],
-            'MDecimal -4-0.1' => [$negFour, $oneTenth, '-4.1', NumberBase::Ten, 10],
-            'MDecimal 5-5i' => [$five, $fiveI, MissingPackage::class, NumberBase::Ten, 10],
-            'MDecimal 5i-10i' => [$fiveI, $tenI, '-5i', NumberBase::Ten, 10],
+            'IDecimal -4-0.1' => [$negFour, $oneTenth, '-4.1', NumberBase::Ten, 10],
+            'IDecimal 5-5i' => [$five, $fiveI, MissingPackage::class, NumberBase::Ten, 10],
+            'IDecimal 5i-10i' => [$fiveI, $tenI, '-5i', NumberBase::Ten, 10],
         ];
 
     }
@@ -307,18 +305,18 @@ class ArithmeticAutoTest extends TestCase
         return [
             'MDecimal 2*3' => [$a, $b, '6', NumberBase::Ten, 10],
             'MDecimal 2*3 base 5' => [$a2, $b, '11', NumberBase::Five, 10],
-            'MDecimal 2*-2' => [$a, $c, '-4', NumberBase::Ten, 10],
+            'MDecimal 2*-2' => [$a, $c, '-12', NumberBase::Ten, 10],
             'MDecimal 3*-2' => [$b, $c, '-6', NumberBase::Ten, 10],
             'MDecimal -2*-3' => [$c, $d, '6', NumberBase::Ten, 10],
-            'MDecimal 2*0.5' => [$a, $e, '1', NumberBase::Ten, 10],
-            'MDecimal 3*0.5' => [$b, $e, '1.5', NumberBase::Ten, 10],
-            'MDecimal 2*-0.5' => [$a, $f, '-1', NumberBase::Ten, 10],
-            'MDecimal 3*-0.5' => [$b, $f, '-1.5', NumberBase::Ten, 10],
-            'MDecimal 2*0.0000000001' => [$a, $g, '0.0000000002', NumberBase::Ten, 10],
+            'MDecimal 2*0.5' => [$a, $e, '-6', NumberBase::Ten, 10],
+            'MDecimal 3*0.5' => [$b, $e, '-3', NumberBase::Ten, 10],
+            'MDecimal 2*-0.5' => [$a, $f, '3', NumberBase::Ten, 10],
+            'MDecimal 3*-0.5' => [$b, $f, '1.5', NumberBase::Ten, 10],
+            'MDecimal 2*0.0000000001' => [$a, $g, '0.0000000003', NumberBase::Ten, 10],
             'MDecimal 2*0.00000000001' => [$a, $h, '0', NumberBase::Ten, 10],
-            'MDecimal 2*1000000000000000000000000000000' => [$a, $i, '2000000000000000000000000000000', NumberBase::Ten, 10],
+            'MDecimal 2*1000000000000000000000000000000' => [$a, $i, '0', NumberBase::Ten, 10],
             'MDecimal 0.0000000001*1000000000000000000000000000000' => [$g, $i, '100000000000000000000', NumberBase::Ten, 10],
-            'MDecimal 2*2i' => [$a, $j, '4i', NumberBase::Ten, 10],
+            'MDecimal 2*2i' => [$a, $j, '0i', NumberBase::Ten, 10],
             'MDecimal 2i*3i' => [$j, $k, '-6', NumberBase::Ten, 10],
         ];
     }
@@ -419,21 +417,21 @@ class ArithmeticAutoTest extends TestCase
         return [
             'MDecimal 2 / 3' => [$a, $b, '0.6666666667', NumberBase::Ten, 10],
             'MDecimal 2 / 3 base 5' => [$a2, $b, '0.131313131002111', NumberBase::Five, 10],
-            'MDecimal 2 / -2' => [$a, $c, '-1', NumberBase::Ten, 10],
+            'MDecimal 2 / -2' => [$a, $c, '-0.3333333334', NumberBase::Ten, 10],
             'MDecimal 3 / -2' => [$b, $c, '-1.5', NumberBase::Ten, 10],
             'MDecimal -2 / -3' => [$c, $d, '0.6666666667', NumberBase::Ten, 10],
-            'MDecimal 2 / 0.5' => [$a, $e, '4', NumberBase::Ten, 10],
-            'MDecimal 3 / 0.5' => [$b, $e, '6', NumberBase::Ten, 10],
-            'MDecimal 2 / -0.5' => [$a, $f, '-4', NumberBase::Ten, 10],
-            'MDecimal 3 / -0.5' => [$b, $f, '-6', NumberBase::Ten, 10],
-            'MDecimal 2 / 0.0000000001' => [$a, $g, '20000000000', NumberBase::Ten, 10],
-            'MDecimal 2 / 0.00000000001' => [$a, $h, '200000000000', NumberBase::Ten, 10],
-            'MDecimal 2 / 1000000000000000000000000000000' => [$a, $i, '0', NumberBase::Ten, 10],
-            'MDecimal 1000000000000000000000000000000 / 2' => [$i, $a, '500000000000000000000000000000', NumberBase::Ten, 10],
+            'MDecimal 2 / 0.5' => [$a, $e, '-0.6666666668', NumberBase::Ten, 10],
+            'MDecimal 3 / 0.5' => [$b, $e, '-3', NumberBase::Ten, 10],
+            'MDecimal 2 / -0.5' => [$a, $f, '1.3333333336', NumberBase::Ten, 10],
+            'MDecimal 3 / -0.5' => [$b, $f, '6', NumberBase::Ten, 10],
+            'MDecimal 2 / 0.0000000001' => [$a, $g, '13333333336', NumberBase::Ten, 10],
+            'MDecimal 2 / 0.00000000001' => [$a, $h, '1333333333600000000000', NumberBase::Ten, 10],
+            'MDecimal 2 / 1000000000000000000000000000000' => [$a, $i, '0.0000000013', NumberBase::Ten, 10],
+            'MDecimal 1000000000000000000000000000000 / 2' => [$i, $a, '769230769230769230769230769230769230769.2307692308', NumberBase::Ten, 10],
             'MDecimal 0.0000000001 / 1000000000000000000000000000000' => [$g, $i, '0', NumberBase::Ten, 10],
-            'MDecimal 2 / 5i' => [$a, $j, '-0.4i', NumberBase::Ten, 10],
-            'MDecimal 5i / 2' => [$j, $a, '2.5i', NumberBase::Ten, 10],
-            'MDecimal 5i / 10i' => [$j, $k, '0.5', NumberBase::Ten, 10],
+            'MDecimal 2 / 5i' => [$a, $j, '-0.0000000003i', NumberBase::Ten, 10],
+            'MDecimal 5i / 2' => [$j, $a, '-16666666666.667', NumberBase::Ten, 10],
+            'MDecimal 5i / 10i' => [$j, $k, '1666666666.6667i', NumberBase::Ten, 10],
             'MDecimal 2 / 0' => [$a, $l, IntegrityConstraint::class, NumberBase::Ten, 10]
         ];
     }
@@ -526,14 +524,14 @@ class ArithmeticAutoTest extends TestCase
         return [
             'MDecimal 2^3' => [$a, $b, '8', NumberBase::Ten, 10],
             'MDecimal 2^3 base 5' => [$a2, $b, '13', NumberBase::Five, 10],
-            'MDecimal 2^-2' => [$a, $c, '0.25', NumberBase::Ten, 10],
+            'MDecimal 2^-2' => [$a, $c, '0.015625', NumberBase::Ten, 10],
             'MDecimal 3^-2' => [$b, $c, '0.1111111111', NumberBase::Ten, 10],
             'MDecimal -2^-3' => [$c, $d, '-0.125', NumberBase::Ten, 10],
-            'MDecimal 2^0.5' => [$a, $e, '1.4142135624', NumberBase::Ten, 10],
+            'MDecimal 2^0.5' => [$a, $e, '0.125', NumberBase::Ten, 10],
             'MDecimal -2^0.5' => [$c, $e, MissingPackage::class, NumberBase::Ten, 10],
-            'MDecimal 3^0.5' => [$b, $e, '1.7320508076', NumberBase::Ten, 10],
-            'MDecimal 2^-0.5' => [$a, $f, '0.7071067812', NumberBase::Ten, 10],
-            'MDecimal 3^-0.5' => [$b, $f, '0.5773502692', NumberBase::Ten, 10],
+            'MDecimal 3^0.5' => [$b, $e, '0.3333333333', NumberBase::Ten, 10],
+            'MDecimal 2^-0.5' => [$a, $f, '2.8284271247', NumberBase::Ten, 10],
+            'MDecimal 3^-0.5' => [$b, $f, '1.7320508077', NumberBase::Ten, 10],
             'MDecimal 2^0.0000000001' => [$a, $g, '1.0000000001', NumberBase::Ten, 10],
             'MDecimal 2^0.00000000001' => [$a, $h, '1', NumberBase::Ten, 10],
         ];

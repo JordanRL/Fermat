@@ -5,8 +5,6 @@ namespace Samsara\Fermat\Values;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
  * @group DecimalLegacy
  */
 class ImmutableFractionTest extends TestCase

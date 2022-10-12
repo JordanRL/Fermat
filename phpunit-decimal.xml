@@ -8,7 +8,7 @@
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="false"
         convertWarningsToExceptions="false"
-        processIsolation="true"
+        processIsolation="false"
         stopOnFailure="false"
         beStrictAboutOutputDuringTests="false"
         timeoutForSmallTests="2"

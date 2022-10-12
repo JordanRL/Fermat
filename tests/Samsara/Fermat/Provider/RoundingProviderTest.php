@@ -8,8 +8,6 @@ use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 /**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
  * @group Providers
  */
 class RoundingProviderTest extends TestCase

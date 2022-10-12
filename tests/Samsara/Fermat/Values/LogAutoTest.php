@@ -5,7 +5,10 @@ namespace Samsara\Fermat\Values;
 use PHPUnit\Framework\TestCase;
 use Samsara\Fermat\Types\Decimal;
 
-class LogAutoTests extends TestCase
+/**
+ * @group Logs
+ */
+class LogAutoTest extends TestCase
 {
 
     /*

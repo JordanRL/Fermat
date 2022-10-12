@@ -12,8 +12,6 @@ use Samsara\Fermat\Types\Decimal;
 use Samsara\Fermat\Types\NumberCollection;
 
 /**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
  * @group DecimalLegacy
  */
 class ImmutableDecimalTest extends TestCase
@@ -296,7 +294,7 @@ class ImmutableDecimalTest extends TestCase
 
     }
     /**
-     *
+     * @medium
      */
     public function testCos()
     {
