@@ -24,7 +24,7 @@ trait LogScaleTrait
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function expScale(int $scale = null): string
+    protected function expScale(int $scale = null): string
     {
         $scale = $scale ?? $this->getScale();
 
@@ -38,10 +38,18 @@ trait LogScaleTrait
         }
 
         if ($this->isInt()) {
-            $e = Numbers::makeE($scale+1);
+            $addScale = 1;
+            $addScaleCount = 0;
+            do {
+                $addScaleCount++;
+                $addScale *= 1.3;
+            } while ($addScale <= $this->asInt());
+            $addScale = ceil($addScale);
+            $e = Numbers::makeE($scale+$addScale);
             $value = $e->pow($this);
         } else {
-            $intScale = $scale + 2;
+            $intScale = ($this->numberOfIntDigits()) ? ($scale + 2) * $this->numberOfIntDigits() : ($scale + 2);
+            $intScale = ($this->numberOfLeadingZeros()) ? $intScale * $this->numberOfLeadingZeros() : $intScale;
             $x = $this instanceof ImmutableDecimal ? $this : new ImmutableDecimal($this->getValue(NumberBase::Ten), $intScale);
             $x2 = $x->pow(2);
             $terms = $scale;
@@ -122,10 +130,10 @@ trait LogScaleTrait
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function lnScale(int $scale = null): string
+    protected function lnScale(int $scale = null): string
     {
         $internalScale = $scale ?? $this->getScale();
-        $internalScale += 3;
+        $internalScale += 3 + $this->numberOfLeadingZeros();
 
         if (extension_loaded('decimal')) {
             $decimalScale = max($internalScale*2, $this->numberOfTotalDigits()*2);
@@ -181,12 +189,11 @@ trait LogScaleTrait
 
             $k++;
         } while ($diff->numberOfLeadingZeros() < $internalScale-1 && !$diff->isEqual(0));
-        /**/
 
         $answer = $adjustedNum;
 
         if ($exp2) {
-            $answer = $answer->add(Numbers::makeNaturalLog2($internalScale + $exp2)->multiply($exp2));
+            $answer = $answer->add(Numbers::makeNaturalLog2($internalScale + abs($exp2))->multiply($exp2));
         }
 
         if ($exp1p1) {
@@ -204,7 +211,7 @@ trait LogScaleTrait
      * @return string
      * @throws IntegrityConstraint
      */
-    public function log10Scale(int $scale = null): string
+    protected function log10Scale(int $scale = null): string
     {
 
         $internalScale = $scale ?? $this->scale;

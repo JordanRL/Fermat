@@ -29,7 +29,7 @@ build:
                     - mkdir build/logs
                     - pecl install decimal
                 override:
-                    - command: php vendor/bin/phpunit
+                    - command: php vendor/bin/phpunit -c phpunit-decimal.xml
                       coverage:
                           file: build/logs/coverage.clover
                           format: clover

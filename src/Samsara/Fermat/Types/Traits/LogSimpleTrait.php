@@ -27,9 +27,9 @@ trait LogSimpleTrait
      */
     public function exp(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->expSelector($scale);
-
         $finalScale = $scale ?? $this->getScale();
+
+        $answer = $this->expSelector($scale);
 
         if ($round) {
             $result = $this->setValue($answer)->roundToScale($finalScale);
@@ -49,9 +49,9 @@ trait LogSimpleTrait
      */
     public function ln(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->lnSelector($scale);
-
         $finalScale = $scale ?? $this->getScale();
+
+        $answer = $this->lnSelector($scale);
 
         if ($round) {
             $result = $this->setValue($answer)->roundToScale($finalScale);
@@ -70,9 +70,9 @@ trait LogSimpleTrait
      */
     public function log10(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->log10Selector($scale);
-
         $finalScale = $scale ?? $this->getScale();
+
+        $answer = $this->log10Selector($scale);
 
         if ($round) {
             $result = $this->setValue($answer)->roundToScale($finalScale);
