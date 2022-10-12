@@ -86,10 +86,11 @@ class RoundingProvider
                     RoundingMode::HalfOdd => self::roundHalfOdd($digit, $nextDigit),
                     RoundingMode::HalfZero => self::roundHalfZero($digit),
                     RoundingMode::HalfInf => self::roundHalfInf($digit),
-                    RoundingMode::Ceil => self::roundCeil($digit),
-                    RoundingMode::Floor => self::roundFloor(),
                     RoundingMode::HalfRandom => self::roundRandom($digit),
                     RoundingMode::HalfAlternating => self::roundAlternating($digit),
+                    RoundingMode::Ceil => self::roundCeil($digit),
+                    RoundingMode::Floor => self::roundFloor($digit),
+                    RoundingMode::Truncate => self::roundTruncate(),
                     RoundingMode::Stochastic => self::roundStochastic($digit),
                     default => self::roundHalfEven($digit, $nextDigit)
                 };
@@ -208,14 +209,25 @@ class RoundingProvider
         return $digit > 4 ? 1 : 0;
     }
 
-    #[Pure]
     private static function roundCeil(int $digit): int
     {
-        return $digit == 0 ? 0 : 1;
+        if (self::$isNegative) {
+            return 0;
+        } else {
+            return $digit == 0 ? 0 : 1;
+        }
     }
 
-    #[Pure]
-    private static function roundFloor(): int
+    private static function roundFloor(int $digit): int
+    {
+        if (self::$isNegative) {
+            return $digit == 0 ? 0 : 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private static function roundTruncate(): int
     {
         return 0;
     }
@@ -271,6 +283,11 @@ class RoundingProvider
         }
     }
 
+    /**
+     * @param string $decimal
+     * @param int $places
+     * @return array
+     */
     private static function _roundPreFormat(string $decimal, int $places): array
     {
         $decimal = trim(rtrim($decimal));
@@ -313,6 +330,14 @@ class RoundingProvider
         ];
     }
 
+    /**
+     * @param string $currentPart
+     * @param string $wholePart
+     * @param array $roundedPart
+     * @param array $otherPart
+     * @param int $places
+     * @return array
+     */
     private static function _roundPostFormat(
         string $currentPart,
         string $wholePart,
@@ -345,6 +370,15 @@ class RoundingProvider
         return [$newWholePart, $newDecimalPart];
     }
 
+    /**
+     * @param array $roundedPart
+     * @param array $otherPart
+     * @param string $roundedPartString
+     * @param int $pos
+     * @param int $carry
+     * @param bool $currentPart
+     * @return int[]
+     */
     private static function _roundLoopStart(
         array $roundedPart,
         array $otherPart,
@@ -375,6 +409,14 @@ class RoundingProvider
         return [$digit, $nextDigit];
     }
 
+    /**
+     * @param array $roundedPart
+     * @param array $otherPart
+     * @param int $pos
+     * @param int $carry
+     * @param bool $currentPart
+     * @return array
+     */
     private static function _roundLoopEnd(
         array $roundedPart,
         array $otherPart,

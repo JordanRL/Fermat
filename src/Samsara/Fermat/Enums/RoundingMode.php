@@ -19,5 +19,6 @@ enum RoundingMode {
     // Always-round modes
     case Ceil;
     case Floor;
+    case Truncate;
     case Stochastic;
 }
