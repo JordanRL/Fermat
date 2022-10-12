@@ -11,8 +11,10 @@ build:
             tests:
                 override:
                     - php-scrutinizer-run
-        standalone-tests-bcmath:
+        standalone-tests-with-decimal:
             environment:
+                apt_packages:
+                    - libmpdec-dev
                 variables:
                     COMPOSER_ROOT_VERSION: 2.0
                 php:
@@ -25,15 +27,14 @@ build:
                 before:
                     - mkdir build
                     - mkdir build/logs
+                    - pecl install decimal
                 override:
                     - command: php vendor/bin/phpunit
                       coverage:
                           file: build/logs/coverage.clover
                           format: clover
-        standalone-tests-with-decimal:
+        standalone-tests-with-bcmath:
             environment:
-                apt_packages:
-                    - libmpdec-dev
                 variables:
                     COMPOSER_ROOT_VERSION: 2.0
                 php:
@@ -41,12 +42,11 @@ build:
                     ini:
                         xdebug.mode: coverage
             requires:
-                - node: standalone-tests-bcmath
+                - node: standalone-tests-with-decimal
             tests:
                 before:
                     - mkdir build
                     - mkdir build/logs
-                    - pecl install decimal
                 override:
                     - command: php vendor/bin/phpunit
                       coverage:
@@ -61,7 +61,7 @@ build:
                     ini:
                         xdebug.mode: coverage
             requires:
-                - node: standalone-tests-with-decimal
+                - node: standalone-tests-with-bcmath
             tests:
                 before:
                     - mkdir build
