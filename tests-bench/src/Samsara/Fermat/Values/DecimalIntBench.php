@@ -65,7 +65,7 @@ class DecimalIntBench
         $this->valueA->getGreatestCommonDivisor($this->valueB);
     }
 
-    #[Groups(['integer-math'])]
+    #[Groups(['integer-math', 'prime-numbers'])]
     #[Revs(100)]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideExtensions'])]

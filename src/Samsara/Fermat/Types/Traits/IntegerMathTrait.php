@@ -179,9 +179,9 @@ trait IntegerMathTrait
     public function getGreatestCommonDivisor($num): DecimalInterface
     {
         /** @var ImmutableDecimal $num */
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num)->abs();
+        $num = Numbers::make(Numbers::IMMUTABLE, $num)->abs();
         /** @var ImmutableDecimal $thisNum */
-        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this)->abs();
+        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this)->abs();
 
         if (!$this->isInt() || !$num->isInt()) {
             throw new IntegrityConstraint(
@@ -265,16 +265,19 @@ trait IntegerMathTrait
 
         for ($i = 0;$i < $certainty;$i++) {
             $a = RandomProvider::randomInt(2, $s, RandomMode::Speed);
-            $x = $a->pow($d)->modulo($thisNum);
+            $x = Numbers::make(Numbers::IMMUTABLE, (string)gmp_powm($a->getAsBaseTenRealNumber(), $d->getAsBaseTenRealNumber(), $thisNum->getAsBaseTenRealNumber()));
+
             if ($x->isEqual(1) || $x->isEqual($s)) {
                 continue;
             }
+
             for ($j = 0;$j < $r->asInt();$j++) {
                 $x = $x->pow(2)->modulo($thisNum);
                 if ($x->isEqual($s)) {
                     continue 2;
                 }
             }
+
             return false;
         }
 

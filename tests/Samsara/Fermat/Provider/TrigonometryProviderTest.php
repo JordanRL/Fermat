@@ -5,6 +5,9 @@ namespace Samsara\Fermat\Provider;
 use PHPUnit\Framework\TestCase;
 use Samsara\Fermat\Numbers;
 
+/**
+ * @group Providers
+ */
 class TrigonometryProviderTest extends TestCase
 {
 

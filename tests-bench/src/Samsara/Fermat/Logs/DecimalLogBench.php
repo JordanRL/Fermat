@@ -59,5 +59,4 @@ class DecimalLogBench
     {
         $this->valueA = (new ImmutableDecimal($params['valueA']))->setMode($params['mode']);
     }
-
 }

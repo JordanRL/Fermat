@@ -4,6 +4,9 @@ namespace Samsara\Fermat\Values;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group DecimalLegacy
+ */
 class MutableFractionTest extends TestCase
 {
 

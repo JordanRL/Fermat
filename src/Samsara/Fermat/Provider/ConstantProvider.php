@@ -153,7 +153,6 @@ class ConstantProvider
      *
      * @param int $digits
      * @return string
-     * @throws IntegrityConstraint
      */
     public static function makeLn2(int $digits): string
     {
@@ -163,24 +162,8 @@ class ConstantProvider
         }
 
         $twoThirds = Numbers::make(Numbers::IMMUTABLE, str_pad('0.', $digits+3, '6'));
-        $one = Numbers::makeOne($digits+3);
-        $two = Numbers::make(Numbers::IMMUTABLE, 2, $digits+3);
         $nine = Numbers::make(Numbers::IMMUTABLE, 9, $digits+3);
-        $sum = Numbers::makeZero($digits+3);
-        $k = 0;
-
-        do {
-
-            $diff = $one->divide($one->add($two->multiply($k))->multiply($nine->pow($k)), $digits+3)->truncate($digits+2);
-
-            $sum = $sum->add($diff);
-
-            $k++;
-
-        } while (!$diff->isEqual(0));
-
-        $ln2 = $twoThirds->multiply($sum);
-        $ln2 = $ln2->truncateToScale($digits);
+        $ln2 = self::_makeLnSpecial($digits, $nine, $twoThirds);
 
         self::$ln2 = $ln2;
 
@@ -194,8 +177,6 @@ class ConstantProvider
      *
      * @param int $digits
      * @return string
-     * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public static function makeLn1p1(int $digits): string
     {
@@ -204,17 +185,34 @@ class ConstantProvider
             return self::$ln1p1->truncateToScale($digits)->getValue(NumberBase::Ten);
         }
 
-        $one = Numbers::makeOne($digits+3);
         $two = Numbers::make(Numbers::IMMUTABLE, 2, $digits+3);
         $twentyOne = Numbers::make(Numbers::IMMUTABLE, 21, $digits+3);
         $fourFortyOne = Numbers::make(Numbers::IMMUTABLE, 441, $digits+3);
         $twoDivTwentyOne = $two->divide($twentyOne);
+        $ln1p1 = self::_makeLnSpecial($digits, $fourFortyOne, $twoDivTwentyOne);
+
+        self::$ln1p1 = $ln1p1;
+
+        return $ln1p1->getValue(NumberBase::Ten);
+
+    }
+
+    /**
+     * @param int $digits
+     * @param ImmutableDecimal $innerNum
+     * @param ImmutableDecimal $outerNum
+     * @return ImmutableDecimal
+     */
+    private static function _makeLnSpecial(int $digits, ImmutableDecimal $innerNum, ImmutableDecimal $outerNum): ImmutableDecimal
+    {
+        $one = Numbers::makeOne($digits+3);
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, $digits+3);
         $sum = Numbers::makeZero($digits+3);
         $k = 0;
 
         do {
 
-            $diff = $one->divide($one->add($two->multiply($k))->multiply($fourFortyOne->pow($k)), $digits+3)->truncate($digits+2);
+            $diff = $one->divide($one->add($two->multiply($k))->multiply($innerNum->pow($k)), $digits+3)->truncate($digits+2);
 
             $sum = $sum->add($diff);
 
@@ -222,13 +220,8 @@ class ConstantProvider
 
         } while (!$diff->isEqual(0));
 
-        $ln1p1 = $twoDivTwentyOne->multiply($sum);
-        $ln1p1 = $ln1p1->truncateToScale($digits);
-
-        self::$ln1p1 = $ln1p1;
-
-        return $ln1p1->getValue(NumberBase::Ten);
-
+        $lnSpecial = $outerNum->multiply($sum);
+        return $lnSpecial->truncateToScale($digits);
     }
 
 }

@@ -68,7 +68,7 @@ trait ArithmeticScaleTrait
             $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
         }
 
-        return ArithmeticProvider::divide($this->asReal(), $num->asReal(), $scale);
+        return ArithmeticProvider::divide($this->asReal(), $num->asReal(), $scale+1);
 
     }
 
@@ -81,15 +81,16 @@ trait ArithmeticScaleTrait
     {
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
-        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $this->getScale());
 
         if (!$num->isWhole() && !extension_loaded('decimal')) {
-            $scale += 1;
-            $exponent = $num->multiply($thisNum->ln($scale));
-            return $exponent->exp($scale)->truncateToScale($scale - 1)->getValue(NumberBase::Ten);
+            $scale += 3;
+            $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $scale);
+            $thatNum = Numbers::make(Numbers::IMMUTABLE, $num->getValue(NumberBase::Ten), $scale);
+            $exponent = $thatNum->multiply($thisNum->ln($scale, false));
+            return $exponent->exp($scale, false)->getValue(NumberBase::Ten);
         }
 
-        return ArithmeticProvider::pow($this->asReal(), $num->asReal(), $scale);
+        return ArithmeticProvider::pow($this->asReal(), $num->asReal(), $scale+1);
 
     }
 

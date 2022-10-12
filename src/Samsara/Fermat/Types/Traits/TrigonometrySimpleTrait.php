@@ -105,7 +105,11 @@ trait TrigonometrySimpleTrait
      */
     public function csc(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->cscSelector($scale);
+        if ($this->isEqual(0)) {
+            $answer = static::INFINITY;
+        } else {
+            $answer = $this->cscSelector($scale);
+        }
 
         $finalScale = $scale ?? $this->getScale();
 

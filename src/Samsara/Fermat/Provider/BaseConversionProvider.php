@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Provider;
 use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Values\ImmutableDecimal;
 
 /**
  *
@@ -65,41 +66,12 @@ class BaseConversionProvider
 
     private static function _toBase(DecimalInterface $input, int $base): string
     {
-        $intPart = '0';
-        $decPart = '0';
         $baseNum = Numbers::make(Numbers::IMMUTABLE, $base, $input->getScale());
         $inputInt = Numbers::make(Numbers::IMMUTABLE, $input->getWholePart());
         $inputDec = Numbers::make(Numbers::IMMUTABLE, strrev($input->getDecimalPart()));
-        $runningTotal = Numbers::makeZero();
 
-        if ($inputInt->isGreaterThan(0)) {
-            for ($pos = 0; $runningTotal->isLessThan($inputInt); $pos++) {
-                $basePow = $pos ?
-                    $baseNum->pow($pos) :
-                    $baseNum->pow($pos+1);
-                $intPart = $pos ? $intPart : '';
-                $mod = $pos ?
-                    (int)gmp_strval(gmp_div_q($inputInt->getAsBaseTenRealNumber(), $basePow->getAsBaseTenRealNumber())) :
-                    (int)gmp_strval(gmp_div_r($inputInt->getAsBaseTenRealNumber(), $basePow->getAsBaseTenRealNumber()));
-                $intPart = self::$chars[$mod] . $intPart;
-                $runningTotal = $pos ?
-                    $runningTotal->add($basePow->multiply($mod)) :
-                    $runningTotal->add($mod);
-            }
-        }
-
-        if ($inputDec->isGreaterThan(0)) {
-            $runningTotal = Numbers::makeZero();
-            for ($pos = 0; $runningTotal->isLessThan($decPart); $pos++) {
-                $basePow = $baseNum->pow($pos);
-                $decPart = $pos ? $decPart : '';
-                $mod = $pos ?
-                    (int)gmp_strval(gmp_div_q($inputDec->getAsBaseTenRealNumber(), $baseNum->pow($pos)->getAsBaseTenRealNumber())) :
-                    $inputDec->modulo($baseNum->pow($pos))->asInt();
-                $decPart = self::$chars[$mod] . $decPart;
-                $runningTotal = $runningTotal->add($basePow->multiply($mod));
-            }
-        }
+        $intPart = self::_toBasePart($baseNum, $inputInt);
+        $decPart = self::_toBasePart($baseNum, $inputDec);
 
         $sign = $input->isNegative() ? '-' : '';
 
@@ -124,6 +96,24 @@ class BaseConversionProvider
         }
 
         return $output->getAsBaseTenRealNumber();
+    }
+
+    public static function _toBasePart(ImmutableDecimal $baseNum, ImmutableDecimal $startVal): string
+    {
+        if ($startVal->isGreaterThan(0)) {
+            $stringVal = '';
+            $runningTotal = Numbers::make(Numbers::IMMUTABLE, $startVal->getAsBaseTenRealNumber());
+            while ($runningTotal->isGreaterThan(0)) {
+                $current = gmp_div_qr($runningTotal->getAsBaseTenRealNumber(), $baseNum->getAsBaseTenRealNumber());
+                $mod = (int)$current[1];
+                $stringVal = self::$chars[$mod] . $stringVal;
+                $runningTotal = Numbers::make(Numbers::IMMUTABLE, $current[0]);
+            }
+        } else {
+            $stringVal = '0';
+        }
+
+        return $stringVal;
     }
 
 }

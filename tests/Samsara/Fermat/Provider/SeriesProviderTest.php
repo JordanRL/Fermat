@@ -6,8 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Samsara\Fermat\Values\ImmutableDecimal;
 
 /**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
+ * @group Providers
  */
 class SeriesProviderTest extends TestCase
 {
