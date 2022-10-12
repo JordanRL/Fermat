@@ -6,6 +6,7 @@ use JetBrains\PhpStorm\ExpectedValues;
 use JetBrains\PhpStorm\Pure;
 use Samsara\Fermat\Enums\RandomMode;
 use Samsara\Fermat\Enums\RoundingMode;
+use Samsara\Fermat\Provider\RoundingModeAdapters\ModeAdapterFactory;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 /**
@@ -15,9 +16,6 @@ class RoundingProvider
 {
 
     private static RoundingMode $mode = RoundingMode::HalfEven;
-    private static bool $isNegative = false;
-    private static int $alt = 1;
-    private static ?string $remainder;
 
     /**
      * @param RoundingMode $mode
@@ -55,10 +53,11 @@ class RoundingProvider
             $pos,
             $wholePart,
             $decimalPart,
-            $currentPart
-        ] = self::_roundPreFormat($decimal, $places);
+            $currentPart,
+            $isNegative
+        ] = self::roundPreFormat($decimal, $places);
 
-        $sign = static::$isNegative ? '-' : '';
+        $sign = $isNegative ? '-' : '';
         $imaginary = str_ends_with($decimal, 'i') ? 'i' : '';
 
         if (empty($decimalPart) && $places >= 0) {
@@ -70,7 +69,7 @@ class RoundingProvider
                 break;
             }
 
-            [$digit, $nextDigit] = self::_roundLoopStart(
+            [$digit, $nextDigit, $remainder] = self::roundLoopStart(
                 $roundedPart,
                 $otherPart,
                 $roundedPartString,
@@ -80,20 +79,8 @@ class RoundingProvider
             );
 
             if ($carry == 0) {
-                $carry = match (self::getRoundingMode()) {
-                    RoundingMode::HalfUp => self::roundHalfUp($digit),
-                    RoundingMode::HalfDown => self::roundHalfDown($digit),
-                    RoundingMode::HalfOdd => self::roundHalfOdd($digit, $nextDigit),
-                    RoundingMode::HalfZero => self::roundHalfZero($digit),
-                    RoundingMode::HalfInf => self::roundHalfInf($digit),
-                    RoundingMode::HalfRandom => self::roundRandom($digit),
-                    RoundingMode::HalfAlternating => self::roundAlternating($digit),
-                    RoundingMode::Ceil => self::roundCeil($digit),
-                    RoundingMode::Floor => self::roundFloor($digit),
-                    RoundingMode::Truncate => self::roundTruncate(),
-                    RoundingMode::Stochastic => self::roundStochastic($digit),
-                    default => self::roundHalfEven($digit, $nextDigit)
-                };
+                $roundingMode = ModeAdapterFactory::getAdapter(self::getRoundingMode(), $isNegative, $remainder);
+                $carry = $roundingMode->determineCarry($digit, $nextDigit);
             } else {
                 if ($digit > 9) {
                     $carry = 1;
@@ -104,7 +91,7 @@ class RoundingProvider
                 }
             }
 
-            [$roundedPart, $otherPart, $pos, $carry, $currentPart] = self::_roundLoopEnd(
+            [$roundedPart, $otherPart, $pos, $carry, $currentPart] = self::roundLoopEnd(
                 $roundedPart,
                 $otherPart,
                 $pos,
@@ -113,174 +100,9 @@ class RoundingProvider
             );
         } while ($carry == 1);
 
-        [$newWholePart, $newDecimalPart] = self::_roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places);
-
-        static::$remainder = null;
+        [$newWholePart, $newDecimalPart] = self::roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places);
 
         return $sign.$newWholePart.'.'.$newDecimalPart.$imaginary;
-    }
-
-    #[Pure]
-    private static function nonHalfEarlyReturn(int $digit): int
-    {
-        return $digit <=> 5;
-    }
-
-    private static function negativeReverser(): int
-    {
-        if (static::$isNegative) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    private static function remainderCheck(): bool
-    {
-        $remainder = static::$remainder;
-
-        if (is_null($remainder)) {
-            return false;
-        }
-
-        $remainder = str_replace('0', '', $remainder);
-
-        return !empty($remainder);
-    }
-
-    private static function roundHalfUp(int $digit): int
-    {
-        $negative = self::negativeReverser();
-        $remainder = self::remainderCheck();
-
-        if ($negative) {
-            return $digit > 5 || ($digit == 5 && $remainder) ? 1 : 0;
-        } else {
-            return $digit > 4 ? 1 : 0;
-        }
-    }
-
-    private static function roundHalfDown(int $digit): int
-    {
-        $negative = self::negativeReverser();
-        $remainder = self::remainderCheck();
-
-        if ($negative) {
-            return $digit > 4 ? 1 : 0;
-        } else {
-            return $digit > 5 || ($digit == 5 && $remainder) ? 1 : 0;
-        }
-    }
-
-    private static function roundHalfEven(int $digit, int $nextDigit): int
-    {
-        $early = static::nonHalfEarlyReturn($digit);
-        $remainder = self::remainderCheck();
-
-        if ($early == 0) {
-            return ($nextDigit % 2 == 0 && !$remainder) ? 0 : 1;
-        } else {
-            return $early == 1 ? 1 : 0;
-        }
-    }
-
-    private static function roundHalfOdd(int $digit, int $nextDigit): int
-    {
-        $early = static::nonHalfEarlyReturn($digit);
-        $remainder = self::remainderCheck();
-
-        if ($early == 0) {
-            return ($nextDigit % 2 == 1 && !$remainder) ? 0 : 1;
-        } else {
-            return $early == 1 ? 1 : 0;
-        }
-    }
-
-    private static function roundHalfZero(int $digit): int
-    {
-        $remainder = self::remainderCheck();
-
-        return $digit > 5 || ($digit == 5 && $remainder) ? 1 : 0;
-    }
-
-    #[Pure]
-    private static function roundHalfInf(int $digit): int
-    {
-        return $digit > 4 ? 1 : 0;
-    }
-
-    private static function roundCeil(int $digit): int
-    {
-        if (self::$isNegative) {
-            return 0;
-        } else {
-            return $digit == 0 ? 0 : 1;
-        }
-    }
-
-    private static function roundFloor(int $digit): int
-    {
-        if (self::$isNegative) {
-            return $digit == 0 ? 0 : 1;
-        } else {
-            return 0;
-        }
-    }
-
-    private static function roundTruncate(): int
-    {
-        return 0;
-    }
-
-    private static function roundRandom(int $digit): int
-    {
-        $early = static::nonHalfEarlyReturn($digit);
-        $remainder = self::remainderCheck();
-
-        if ($early == 0 && !$remainder) {
-            return RandomProvider::randomInt(0, 1, RandomMode::Speed)->asInt();
-        } else {
-            return (($early == 1 || $remainder) ? 1 : 0);
-        }
-    }
-
-    private static function roundAlternating(int $digit): int
-    {
-        $early = static::nonHalfEarlyReturn($digit);
-        $remainder = self::remainderCheck();
-
-        if ($early == 0 && !$remainder) {
-            $val = self::$alt;
-            self::$alt = (int)!$val;
-
-            return $val;
-        } else {
-            return (($early == 1 || $remainder) ? 1 : 0);
-        }
-    }
-
-    private static function roundStochastic(int $digit): int
-    {
-        $remainder = static::$remainder;
-
-        if (is_null($remainder)) {
-            $target = $digit;
-            $rangeMin = 0;
-            $rangeMax = 9;
-        } else {
-            $remainder = substr($remainder, 0, 3);
-            $target = (int)($digit.$remainder);
-            $rangeMin = 0;
-            $rangeMax = (int)str_repeat('9', strlen($remainder) + 1);
-        }
-
-        $random = RandomProvider::randomInt($rangeMin, $rangeMax, RandomMode::Speed)->asInt();
-
-        if ($random < $target) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     /**
@@ -288,11 +110,11 @@ class RoundingProvider
      * @param int $places
      * @return array
      */
-    private static function _roundPreFormat(string $decimal, int $places): array
+    private static function roundPreFormat(string $decimal, int $places): array
     {
         $decimal = trim(rtrim($decimal));
 
-        static::$isNegative = str_starts_with($decimal, '-');
+        $isNegative = str_starts_with($decimal, '-');
 
         $rawString = str_replace('-', '', $decimal);
 
@@ -326,7 +148,8 @@ class RoundingProvider
             $pos,
             $wholePart,
             $decimalPart,
-            $currentPart
+            $currentPart,
+            $isNegative
         ];
     }
 
@@ -338,7 +161,7 @@ class RoundingProvider
      * @param int $places
      * @return array
      */
-    private static function _roundPostFormat(
+    private static function roundPostFormat(
         string $currentPart,
         string $wholePart,
         array $roundedPart,
@@ -377,9 +200,9 @@ class RoundingProvider
      * @param int $pos
      * @param int $carry
      * @param bool $currentPart
-     * @return int[]
+     * @return array
      */
-    private static function _roundLoopStart(
+    private static function roundLoopStart(
         array $roundedPart,
         array $otherPart,
         string $roundedPartString,
@@ -390,10 +213,10 @@ class RoundingProvider
     {
         $digit = (int)$roundedPart[$pos] + $carry;
 
-        if ($carry == 0 && $digit == 5) {
-            static::$remainder = substr($roundedPartString, $pos+1);
+        if ($carry == 0 && $digit == 5 && strlen($roundedPartString) > $pos+1) {
+            $remainder = substr($roundedPartString, $pos+1);
         } else {
-            static::$remainder = null;
+            $remainder = null;
         }
 
         if ($pos == 0) {
@@ -406,7 +229,7 @@ class RoundingProvider
             $nextDigit = (int)$roundedPart[$pos-1];
         }
 
-        return [$digit, $nextDigit];
+        return [$digit, $nextDigit, $remainder];
     }
 
     /**
@@ -417,7 +240,7 @@ class RoundingProvider
      * @param bool $currentPart
      * @return array
      */
-    private static function _roundLoopEnd(
+    private static function roundLoopEnd(
         array $roundedPart,
         array $otherPart,
         int $pos,
