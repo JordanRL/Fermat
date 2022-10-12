@@ -203,4 +203,103 @@ class TrigonometryAutoTest extends TestCase
         }
     }
 
+    /*
+     * COS()
+     */
+
+    public function tanImmutableProvider(): array
+    {
+        $a = new ImmutableDecimal(1);
+        $b = new ImmutableDecimal(2);
+        $c = new ImmutableDecimal(3);
+        $d = new ImmutableDecimal(10);
+        $e = new ImmutableDecimal(100000000000);
+        $f = new ImmutableDecimal('1000000000000000000000000000000');
+        $g = new ImmutableDecimal('0.0000000001');
+        $h = new ImmutableDecimal(Numbers::makePi(10), 10);
+        $i = new ImmutableDecimal(Numbers::makePi(15), 15);
+        $j = new ImmutableDecimal(Numbers::makeTau(10), 10);
+        $k = new ImmutableDecimal(Numbers::makeTau(15), 15);
+        $l = new ImmutableDecimal(0);
+        $m = new ImmutableDecimal(Numbers::makePi(12)->divide(2)->truncateToScale(10), 10);
+        $n = new ImmutableDecimal(Numbers::makePi(17)->divide(2)->truncateToScale(15), 15);
+        $o = new ImmutableDecimal(Numbers::makePi(12)->multiply(3)->divide(2)->truncateToScale(10), 10);
+        $p = new ImmutableDecimal(Numbers::makePi(17)->multiply(3)->divide(2)->truncateToScale(15), 15);
+
+        return [
+            'IDecimal tan(1)' => [$a, '1.5574077247', NumberBase::Ten, 10],
+            'IDecimal tan(2)' => [$b, '-2.1850398633', NumberBase::Ten, 10],
+            'IDecimal tan(3)' => [$c, '-0.1425465431', NumberBase::Ten, 10],
+            'IDecimal tan(10)' => [$d, '0.6483608275', NumberBase::Ten, 10],
+            'IDecimal tan(100000000000)' => [$e, '2.5042448145', NumberBase::Ten, 10],
+            'IDecimal tan(1000000000000000000000000000000)' => [$f, '0.0904850681', NumberBase::Ten, 10],
+            'IDecimal tan(0.0000000001)' => [$g, '0', NumberBase::Ten, 10],
+            'IDecimal tan(Pi) scale 10' => [$h, '0', NumberBase::Ten, 10],
+            'IDecimal tan(Pi) scale 15' => [$i, '0', NumberBase::Ten, 15],
+            'IDecimal tan(2Pi) scale 10' => [$j, '0', NumberBase::Ten, 10],
+            'IDecimal tan(2Pi) scale 15' => [$k, '0', NumberBase::Ten, 15],
+            'IDecimal tan(0)' => [$l, '0', NumberBase::Ten, 10],
+            'IDecimal tan(Pi/2) scale 10' => [$m, 'INF', NumberBase::Ten, 10],
+            'IDecimal tan(Pi/2) scale 15' => [$n, 'INF', NumberBase::Ten, 15],
+            'IDecimal tan(3Pi/2) scale 10' => [$o, '-INF', NumberBase::Ten, 10],
+            'IDecimal tan(3Pi/2) scale 15' => [$p, '-INF', NumberBase::Ten, 15],
+        ];
+    }
+
+    public function tanMutableProvider(): array
+    {
+        $a = new MutableDecimal(1);
+        $b = new MutableDecimal(2);
+        $c = new MutableDecimal(3);
+        $d = new MutableDecimal(10);
+        $e = new MutableDecimal(100000000000);
+        $f = new MutableDecimal('1000000000000000000000000000000');
+        $g = new MutableDecimal('0.0000000001');
+        $h = new MutableDecimal(Numbers::makePi(10), 10);
+        $i = new MutableDecimal(Numbers::makePi(15), 15);
+        $j = new MutableDecimal(Numbers::makeTau(10), 10);
+        $k = new MutableDecimal(Numbers::makeTau(15), 15);
+        $l = new MutableDecimal(0);
+        $m = new MutableDecimal(Numbers::makePi(12)->divide(2)->truncateToScale(10), 10);
+        $n = new MutableDecimal(Numbers::makePi(17)->divide(2)->truncateToScale(15), 15);
+        $o = new ImmutableDecimal(Numbers::makePi(12)->multiply(3)->divide(2)->truncateToScale(10), 10);
+        $p = new ImmutableDecimal(Numbers::makePi(17)->multiply(3)->divide(2)->truncateToScale(15), 15);
+
+        return [
+            'MDecimal tan(1)' => [$a, '1.5574077247', NumberBase::Ten, 10],
+            'MDecimal tan(2)' => [$b, '-2.1850398633', NumberBase::Ten, 10],
+            'MDecimal tan(3)' => [$c, '-0.1425465431', NumberBase::Ten, 10],
+            'MDecimal tan(10)' => [$d, '0.6483608275', NumberBase::Ten, 10],
+            'MDecimal tan(100000000000)' => [$e, '2.5042448145', NumberBase::Ten, 10],
+            'MDecimal tan(1000000000000000000000000000000)' => [$f, '0.0904850681', NumberBase::Ten, 10],
+            'MDecimal tan(0.0000000001)' => [$g, '0', NumberBase::Ten, 10],
+            'MDecimal tan(Pi) scale 10' => [$h, '0', NumberBase::Ten, 10],
+            'MDecimal tan(Pi) scale 15' => [$i, '0', NumberBase::Ten, 15],
+            'MDecimal tan(2Pi) scale 10' => [$j, '0', NumberBase::Ten, 10],
+            'MDecimal tan(2Pi) scale 15' => [$k, '0', NumberBase::Ten, 15],
+            'MDecimal tan(0)' => [$l, '0', NumberBase::Ten, 10],
+            'MDecimal tan(Pi/2) scale 10' => [$m, 'INF', NumberBase::Ten, 10],
+            'MDecimal tan(Pi/2) scale 15' => [$n, 'INF', NumberBase::Ten, 15],
+            'MDecimal tan(3Pi/2) scale 10' => [$o, '-INF', NumberBase::Ten, 10],
+            'MDecimal tan(3Pi/2) scale 15' => [$p, '-INF', NumberBase::Ten, 15],
+        ];
+    }
+
+    /**
+     * @dataProvider tanImmutableProvider
+     * @dataProvider tanMutableProvider
+     */
+    public function testTan(Decimal $num, string $expected, NumberBase $base, int $scale)
+    {
+        if (str_contains($expected, 'Exception')) {
+            $this->expectException($expected);
+            $num->tan();
+        } else {
+            $answer = $num->tan();
+            $this->assertEquals($expected, $answer->getValue());
+            $this->assertEquals($base, $answer->getBase());
+            $this->assertEquals($scale, $answer->getScale());
+        }
+    }
+
 }

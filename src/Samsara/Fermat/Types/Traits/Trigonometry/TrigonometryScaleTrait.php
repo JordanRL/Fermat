@@ -140,11 +140,10 @@ trait TrigonometryScaleTrait
     {
         $scale = $scale ?? $this->getScale();
         $intScale = $scale + 4;
-        if (extension_loaded('decimal')) {
-            $intScale = $intScale+$this->numberOfIntDigits();
-        }
+        $intScale = $intScale+$this->numberOfIntDigits()+$this->numberOfLeadingZeros();
 
         $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $intScale);
+        $thisNumNonScaled = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $this->getScale());
 
         $pi = Numbers::makePi($intScale);
         $piDivTwo = Numbers::makePi($intScale)->divide(2);
@@ -155,9 +154,9 @@ trait TrigonometryScaleTrait
         $two = Numbers::make(Numbers::IMMUTABLE, 2, $intScale);
         $one = Numbers::make(Numbers::IMMUTABLE, 1, $intScale);
 
-        $exitModulo = $thisNum->continuousModulo($pi);
+        $exitModulo = $thisNumNonScaled->continuousModulo($pi);
 
-        if ($exitModulo->truncate($scale)->isEqual(0)) {
+        if ($exitModulo->truncate($scale)->isEqual(0) || $thisNum->truncate($scale)->isEqual($pi->truncate($scale))) {
             return '0';
         }
 
@@ -171,8 +170,8 @@ trait TrigonometryScaleTrait
         }
 
         if (
-            $modulo->subtract($pi)->truncate($scale)->isEqual($piDivTwo->truncate($scale)) ||
-            ($this->isNegative() && $modulo->truncate($scale)->abs()->isEqual($piDivTwo->truncate($scale)))
+            $modulo->truncate($scale)->isEqual($threePiDivTwo->truncate($scale)) ||
+            ($this->isNegative() && $modulo->truncate($scale)->abs()->isEqual($threePiDivTwo->truncate($scale)))
         ) {
             return static::NEG_INFINITY;
         }

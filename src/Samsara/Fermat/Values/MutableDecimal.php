@@ -28,6 +28,14 @@ class MutableDecimal extends Decimal
         $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $this->scale+1);
 
         $multiple = $oldNum->divide($mod)->floor();
+        $multipleCeil = $multiple->ceil();
+        $digits = $multipleCeil->subtract($multiple)->numberOfLeadingZeros();
+
+        if ($digits >= $this->getScale()) {
+            $multiple = $multipleCeil;
+        } else {
+            $multiple = $multiple->floor();
+        }
 
         $remainder = $oldNum->subtract($mod->multiply($multiple));
 

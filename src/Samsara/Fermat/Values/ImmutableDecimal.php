@@ -34,14 +34,17 @@ class ImmutableDecimal extends Decimal
         $newScale = $scale+2;
         $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $newScale);
 
-        if (is_object($mod) && method_exists($mod, 'truncateToScale')) {
-            $mod = $mod->truncateToScale($newScale);
+        $mod = $mod->truncateToScale($newScale);
+
+        $multiple = $thisNum->divide($mod, $newScale);
+        $multipleCeil = $multiple->ceil();
+        $digits = $multipleCeil->subtract($multiple)->numberOfLeadingZeros();
+
+        if ($digits >= $this->getScale()) {
+            $multiple = $multipleCeil;
         } else {
-            $mod = Numbers::make(Numbers::IMMUTABLE, $mod, $newScale);
+            $multiple = $multiple->floor();
         }
-
-
-        $multiple = $thisNum->divide($mod, $newScale)->floor();
 
         $subtract = $mod->multiply($multiple);
 
