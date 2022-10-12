@@ -23,6 +23,7 @@ build:
                 - node: analysis
             tests:
                 before:
+                    - apt search mpdec
                     - mkdir build
                     - mkdir build/logs
                 override:
