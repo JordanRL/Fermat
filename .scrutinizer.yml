@@ -26,121 +26,7 @@ build:
                     - mkdir build
                     - mkdir build/logs
                 override:
-                    - command: php vendor/bin/phpunit --group=DecimalLegacy
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-        standalone-tests-2:
-            environment:
-                variables:
-                    COMPOSER_ROOT_VERSION: 2.0
-                php:
-                    version: 8.1
-                    ini:
-                        xdebug.mode: coverage
-            requires:
-                - node: analysis
-            tests:
-                before:
-                    - mkdir build
-                    - mkdir build/logs
-                override:
-                    - command: php vendor/bin/phpunit --group=ArithmeticAuto
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-        standalone-tests-3:
-            environment:
-                variables:
-                    COMPOSER_ROOT_VERSION: 2.0
-                php:
-                    version: 8.1
-                    ini:
-                        xdebug.mode: coverage
-            requires:
-                - node: analysis
-            tests:
-                before:
-                    - mkdir build
-                    - mkdir build/logs
-                override:
-                    - command: php vendor/bin/phpunit --group=ArithmeticNative
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-        standalone-tests-4:
-            environment:
-                variables:
-                    COMPOSER_ROOT_VERSION: 2.0
-                php:
-                    version: 8.1
-                    ini:
-                        xdebug.mode: coverage
-            requires:
-                - node: analysis
-            tests:
-                before:
-                    - mkdir build
-                    - mkdir build/logs
-                override:
-                    - command: php vendor/bin/phpunit --group=ArithmeticPrecision
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-        standalone-tests-5:
-            environment:
-                variables:
-                    COMPOSER_ROOT_VERSION: 2.0
-                php:
-                    version: 8.1
-                    ini:
-                        xdebug.mode: coverage
-            requires:
-                - node: analysis
-            tests:
-                before:
-                    - mkdir build
-                    - mkdir build/logs
-                override:
-                    - command: php vendor/bin/phpunit --group=Types
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-        standalone-tests-6:
-            environment:
-                variables:
-                    COMPOSER_ROOT_VERSION: 2.0
-                php:
-                    version: 8.1
-                    ini:
-                        xdebug.mode: coverage
-            requires:
-                - node: analysis
-            tests:
-                before:
-                    - mkdir build
-                    - mkdir build/logs
-                override:
-                    - command: php vendor/bin/phpunit --group=Providers
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-        standalone-tests-7:
-            environment:
-                variables:
-                    COMPOSER_ROOT_VERSION: 2.0
-                php:
-                    version: 8.1
-                    ini:
-                        xdebug.mode: coverage
-            requires:
-                - node: analysis
-            tests:
-                before:
-                    - mkdir build
-                    - mkdir build/logs
-                override:
-                    - command: php vendor/bin/phpunit --group=BasicTrigonometry
+                    - command: php vendor/bin/phpunit
                       coverage:
                           file: build/logs/coverage.clover
                           format: clover
@@ -160,45 +46,12 @@ build:
                     - mkdir build/logs
                     - pecl install decimal
                 override:
-                    - command: php vendor/bin/phpunit --group=DecimalLegacy
-                      on_node: 1
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-                    - command: php vendor/bin/phpunit --group=ArithmeticAuto
-                      on_node: 2
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-                    - command: php vendor/bin/phpunit --group=ArithmeticNative
-                      on_node: 3
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-                    - command: php vendor/bin/phpunit --group=ArithmeticPrecision
-                      on_node: 4
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-                    - command: php vendor/bin/phpunit --group=Types
-                      on_node: 5
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-                    - command: php vendor/bin/phpunit --group=Providers
-                      on_node: 6
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-                    - command: php vendor/bin/phpunit --group=BasicTrigonometry
-                      on_node: 7
+                    - command: php vendor/bin/phpunit
                       coverage:
                           file: build/logs/coverage.clover
                           format: clover
         with-modules-tests:
             environment:
-                apt_packages:
-                    - php-decimal
                 variables:
                     COMPOSER_ROOT_VERSION: 2.0
                 php:
@@ -221,6 +74,9 @@ build:
                       coverage:
                           file: build/logs/coverage.clover
                           format: clover
+filter:
+    paths:
+        - src/
 build_failure_conditions:
     - 'project.metric_change("scrutinizer.test_coverage", < -0.05)'
     - 'project.metric("scrutinizer.test_coverage", < 0.70)'
