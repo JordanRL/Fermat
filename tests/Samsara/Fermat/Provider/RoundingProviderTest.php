@@ -262,6 +262,123 @@ class RoundingProviderTest extends TestCase
         ];
     }
 
+    public function ceilProvider(): array
+    {
+        $a = new ImmutableDecimal('1.111111');
+        $b = new ImmutableDecimal('1.555555');
+        $c = new ImmutableDecimal('555555');
+        $d = new ImmutableDecimal('9999.9999');
+        $e = new ImmutableDecimal('2.222222');
+        $f = new ImmutableDecimal('2.522225');
+        $h = new ImmutableDecimal('-1.111111');
+        $i = new ImmutableDecimal('-1.555555');
+        $j = new ImmutableDecimal('-555555');
+        $k = new ImmutableDecimal('-9999.9999');
+        $l = new ImmutableDecimal('-2.222222');
+        $m = new ImmutableDecimal('-2.522225');
+
+        return [
+            'Ceil 1.111111 places 5' => [$a, '1.11112', RoundingMode::Ceil, 5],
+            'Ceil 1.555555 places 5' => [$b, '1.55556', RoundingMode::Ceil, 5],
+            'Ceil 1.555555 places 0' => [$b, '2.0', RoundingMode::Ceil, 0],
+            'Ceil 555555 places 0' => [$c, '556000.0', RoundingMode::Ceil, -3],
+            'Ceil 9999.9999 places 0' => [$d, '10000.0', RoundingMode::Ceil, 0],
+            'Ceil 9999.9999 places 3' => [$d, '10000.0', RoundingMode::Ceil, 3],
+            'Ceil 2.222222 places 2' => [$e, '2.23', RoundingMode::Ceil, 2],
+            'Ceil 2.522225 places 0' => [$f, '3.0', RoundingMode::Ceil, 0],
+            'Ceil 2.5 places 0' => [$f->truncateToScale(1), '3.0', RoundingMode::Ceil, 0],
+            'Ceil 2.522225 places 5' => [$f, '2.52223', RoundingMode::Ceil, 5],
+            'Ceil -1.111111 places 5' => [$h, '-1.11111', RoundingMode::Ceil, 5],
+            'Ceil -1.555555 places 5' => [$i, '-1.55555', RoundingMode::Ceil, 5],
+            'Ceil -1.555555 places 0' => [$i, '-1.0', RoundingMode::Ceil, 0],
+            'Ceil -555555 places 0' => [$j, '-555000.0', RoundingMode::Ceil, -3],
+            'Ceil -9999.9999 places 0' => [$k, '-9999.0', RoundingMode::Ceil, 0],
+            'Ceil -9999.9999 places 3' => [$k, '-9999.999', RoundingMode::Ceil, 3],
+            'Ceil -2.222222 places 2' => [$l, '-2.22', RoundingMode::Ceil, 2],
+            'Ceil -2.522225 places 0' => [$m, '-2.0', RoundingMode::Ceil, 0],
+            'Ceil -2.5 places 0' => [$m->truncateToScale(1), '-2.0', RoundingMode::Ceil, 0],
+            'Ceil -2.522225 places 5' => [$m, '-2.52222', RoundingMode::Ceil, 5],
+        ];
+    }
+
+    public function floorProvider(): array
+    {
+        $a = new ImmutableDecimal('1.111111');
+        $b = new ImmutableDecimal('1.555555');
+        $c = new ImmutableDecimal('555555');
+        $d = new ImmutableDecimal('9999.9999');
+        $e = new ImmutableDecimal('2.222222');
+        $f = new ImmutableDecimal('2.522225');
+        $h = new ImmutableDecimal('-1.111111');
+        $i = new ImmutableDecimal('-1.555555');
+        $j = new ImmutableDecimal('-555555');
+        $k = new ImmutableDecimal('-9999.9999');
+        $l = new ImmutableDecimal('-2.222222');
+        $m = new ImmutableDecimal('-2.522225');
+
+        return [
+            'Floor 1.111111 places 5' => [$a, '1.11111', RoundingMode::Floor, 5],
+            'Floor 1.555555 places 5' => [$b, '1.55555', RoundingMode::Floor, 5],
+            'Floor 1.555555 places 0' => [$b, '1.0', RoundingMode::Floor, 0],
+            'Floor 555555 places 0' => [$c, '555000.0', RoundingMode::Floor, -3],
+            'Floor 9999.9999 places 0' => [$d, '9999.0', RoundingMode::Floor, 0],
+            'Floor 9999.9999 places 3' => [$d, '9999.999', RoundingMode::Floor, 3],
+            'Floor 2.222222 places 2' => [$e, '2.22', RoundingMode::Floor, 2],
+            'Floor 2.522225 places 0' => [$f, '2.0', RoundingMode::Floor, 0],
+            'Floor 2.5 places 0' => [$f->truncateToScale(1), '2.0', RoundingMode::Floor, 0],
+            'Floor 2.522225 places 5' => [$f, '2.52222', RoundingMode::Floor, 5],
+            'Floor -1.111111 places 5' => [$h, '-1.11112', RoundingMode::Floor, 5],
+            'Floor -1.555555 places 5' => [$i, '-1.55556', RoundingMode::Floor, 5],
+            'Floor -1.555555 places 0' => [$i, '-2.0', RoundingMode::Floor, 0],
+            'Floor -555555 places 0' => [$j, '-556000.0', RoundingMode::Floor, -3],
+            'Floor -9999.9999 places 0' => [$k, '-10000.0', RoundingMode::Floor, 0],
+            'Floor -9999.9999 places 3' => [$k, '-10000.0', RoundingMode::Floor, 3],
+            'Floor -2.222222 places 2' => [$l, '-2.23', RoundingMode::Floor, 2],
+            'Floor -2.522225 places 0' => [$m, '-3.0', RoundingMode::Floor, 0],
+            'Floor -2.5 places 0' => [$m->truncateToScale(1), '-3.0', RoundingMode::Floor, 0],
+            'Floor -2.522225 places 5' => [$m, '-2.52223', RoundingMode::Floor, 5],
+        ];
+    }
+
+    public function truncateProvider(): array
+    {
+        $a = new ImmutableDecimal('1.111111');
+        $b = new ImmutableDecimal('1.555555');
+        $c = new ImmutableDecimal('555555');
+        $d = new ImmutableDecimal('9999.9999');
+        $e = new ImmutableDecimal('2.222222');
+        $f = new ImmutableDecimal('2.522225');
+        $h = new ImmutableDecimal('-1.111111');
+        $i = new ImmutableDecimal('-1.555555');
+        $j = new ImmutableDecimal('-555555');
+        $k = new ImmutableDecimal('-9999.9999');
+        $l = new ImmutableDecimal('-2.222222');
+        $m = new ImmutableDecimal('-2.522225');
+
+        return [
+            'Truncate 1.111111 places 5' => [$a, '1.11111', RoundingMode::Truncate, 5],
+            'Truncate 1.555555 places 5' => [$b, '1.55555', RoundingMode::Truncate, 5],
+            'Truncate 1.555555 places 0' => [$b, '1.0', RoundingMode::Truncate, 0],
+            'Truncate 555555 places 0' => [$c, '555000.0', RoundingMode::Truncate, -3],
+            'Truncate 9999.9999 places 0' => [$d, '9999.0', RoundingMode::Truncate, 0],
+            'Truncate 9999.9999 places 3' => [$d, '9999.999', RoundingMode::Truncate, 3],
+            'Truncate 2.222222 places 2' => [$e, '2.22', RoundingMode::Truncate, 2],
+            'Truncate 2.522225 places 0' => [$f, '2.0', RoundingMode::Truncate, 0],
+            'Truncate 2.5 places 0' => [$f->truncateToScale(1), '2.0', RoundingMode::Truncate, 0],
+            'Truncate 2.522225 places 5' => [$f, '2.52222', RoundingMode::Truncate, 5],
+            'Truncate -1.111111 places 5' => [$h, '-1.11111', RoundingMode::Truncate, 5],
+            'Truncate -1.555555 places 5' => [$i, '-1.55555', RoundingMode::Truncate, 5],
+            'Truncate -1.555555 places 0' => [$i, '-1.0', RoundingMode::Truncate, 0],
+            'Truncate -555555 places 0' => [$j, '-555000.0', RoundingMode::Truncate, -3],
+            'Truncate -9999.9999 places 0' => [$k, '-9999.0', RoundingMode::Truncate, 0],
+            'Truncate -9999.9999 places 3' => [$k, '-9999.999', RoundingMode::Truncate, 3],
+            'Truncate -2.222222 places 2' => [$l, '-2.22', RoundingMode::Truncate, 2],
+            'Truncate -2.522225 places 0' => [$m, '-2.0', RoundingMode::Truncate, 0],
+            'Truncate -2.5 places 0' => [$m->truncateToScale(1), '-2.0', RoundingMode::Truncate, 0],
+            'Truncate -2.522225 places 5' => [$m, '-2.52222', RoundingMode::Truncate, 5],
+        ];
+    }
+
     /**
      * @dataProvider halfEvenProvider
      * @dataProvider halfUpProvider
@@ -269,6 +386,9 @@ class RoundingProviderTest extends TestCase
      * @dataProvider halfOddProvider
      * @dataProvider halfZeroProvider
      * @dataProvider halfInfProvider
+     * @dataProvider ceilProvider
+     * @dataProvider floorProvider
+     * @dataProvider truncateProvider
      */
     public function testRound(ImmutableDecimal $a, string $expected, RoundingMode $mode, int $places)
     {
