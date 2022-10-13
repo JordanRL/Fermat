@@ -19,7 +19,7 @@ use Samsara\Fermat\Types\Base\Number;
 trait ScaleTrait
 {
 
-    protected ?int $scale;
+    protected int $scale;
 
     /**
      * @return int

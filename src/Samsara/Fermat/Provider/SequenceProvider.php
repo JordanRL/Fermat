@@ -80,10 +80,11 @@ class SequenceProvider
      * @param bool $asCollection
      * @param int $collectionSize
      *
-     * @return DecimalInterface|NumberInterface|NumberCollection
-     * @throws IntegrityConstraint|\ReflectionException
+     * @return ImmutableDecimal|NumberCollection
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
      */
-    public static function nthOddNumber(int $n, bool $asCollection = false, int $collectionSize = 10)
+    public static function nthOddNumber(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
     {
         if ($asCollection) {
             $sequence = new NumberCollection();
@@ -109,13 +110,14 @@ class SequenceProvider
      * OEIS: A005843
      *
      * @param int $n
+     * @param int|null $scale
      * @param bool $asCollection
      * @param int $collectionSize
      *
-     * @return DecimalInterface|NumberInterface|NumberCollection
+     * @return ImmutableDecimal|NumberCollection
      * @throws IntegrityConstraint
      */
-    public static function nthEvenNumber(int $n, int $scale = null, bool $asCollection = false, int $collectionSize = 10)
+    public static function nthEvenNumber(int $n, int $scale = null, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
     {
 
         if ($asCollection) {
@@ -144,10 +146,10 @@ class SequenceProvider
      * @param bool $asCollection
      * @param int $collectionSize
      *
-     * @return DecimalInterface|NumberInterface|NumberCollection
+     * @return ImmutableDecimal|NumberCollection
      * @throws IntegrityConstraint
      */
-    public static function nthPowerNegativeOne(int $n, bool $asCollection = false, int $collectionSize = 10)
+    public static function nthPowerNegativeOne(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
     {
 
         if ($asCollection) {
@@ -171,10 +173,10 @@ class SequenceProvider
      * @param bool $asCollection
      * @param int $collectionSize
      *
-     * @return DecimalInterface|NumberInterface|NumberCollection
+     * @return ImmutableDecimal|NumberCollection
      * @throws IntegrityConstraint
      */
-    public static function nthEulerZigzag(int $n, bool $asCollection = false, int $collectionSize = 10)
+    public static function nthEulerZigzag(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
     {
 
         if ($asCollection) {
@@ -206,12 +208,12 @@ class SequenceProvider
      *
      * @param $n
      * @param int|null $scale
-     * @return DecimalInterface
+     * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public static function nthBernoulliNumber($n, ?int $scale = null): DecimalInterface
+    public static function nthBernoulliNumber($n, ?int $scale = null): ImmutableDecimal
     {
 
         $scale = $scale ?? 5;
@@ -343,7 +345,7 @@ class SequenceProvider
      * @return ImmutableDecimal|NumberCollection
      * @throws IntegrityConstraint
      */
-    public static function nthFibonacciNumber(int $n, bool $asCollection = false, int $collectionSize = 10)
+    public static function nthFibonacciNumber(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
     {
         $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
 
@@ -401,20 +403,7 @@ class SequenceProvider
 
     private static function _nextprime(ImmutableDecimal $number): ImmutableDecimal
     {
-        if (function_exists('gmp_nextprime')) {
-            return Numbers::make(Numbers::IMMUTABLE, gmp_strval(gmp_nextprime($number->getValue(NumberBase::Ten))));
-        }
-
-        $number = $number->add(1);
-        while (!$number->isPrime()) {
-            if ($number->modulo(2)->isEqual(1)) {
-                $number = $number->add(2);
-            } else {
-                $number = $number->add(1);
-            }
-        }
-
-        return $number;
+        return Numbers::make(Numbers::IMMUTABLE, gmp_strval(gmp_nextprime($number->getValue(NumberBase::Ten))));
     }
 
 }

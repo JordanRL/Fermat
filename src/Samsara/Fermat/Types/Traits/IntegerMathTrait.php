@@ -46,19 +46,7 @@ trait IntegerMathTrait
             );
         }
 
-        if (function_exists('gmp_fact') && function_exists('gmp_strval') && $this->extensions) {
-            return $this->setValue(gmp_strval(gmp_fact($this->getValue(NumberBase::Ten))));
-        }
-
-        $curVal = $this->getValue(NumberBase::Ten);
-        $calcVal = Numbers::make(Numbers::IMMUTABLE, 1);
-
-        for ($i = 1;$i <= $curVal;$i++) {
-            $calcVal = $calcVal->multiply($i);
-        }
-
-        return $this->setValue($calcVal->getValue(NumberBase::Ten));
-
+        return $this->setValue(gmp_strval(gmp_fact($this->getValue(NumberBase::Ten))));
     }
 
     /**
@@ -161,13 +149,9 @@ trait IntegerMathTrait
             );
         }
 
-        if (extension_loaded('gmp') && $this->extensions) {
-            $value = gmp_lcm($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
+        $value = gmp_lcm($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
 
-            return $this->setValue(gmp_strval($value), $this->getScale(), $this->getBase());
-        }
-
-        return $this->multiply($num)->abs()->divide($this->getGreatestCommonDivisor($num));
+        return $this->setValue(gmp_strval($value), $this->getScale(), $this->getBase());
 
     }
 
@@ -191,30 +175,9 @@ trait IntegerMathTrait
             );
         }
 
-        if (extension_loaded('gmp') && $this->extensions) {
-            $val = gmp_strval(gmp_gcd($thisNum->getValue(NumberBase::Ten), $num->getValue(NumberBase::Ten)));
+        $val = gmp_strval(gmp_gcd($thisNum->getValue(NumberBase::Ten), $num->getValue(NumberBase::Ten)));
 
-            return Numbers::make(Numbers::IMMUTABLE, $val, $this->getScale());
-        }
-
-        if ($thisNum->isLessThan($num)) {
-            $greater = $num;
-            $lesser = $thisNum;
-        } else {
-            $greater = $thisNum;
-            $lesser = $num;
-        }
-
-        /** @var NumberInterface $remainder */
-        $remainder = $greater->modulo($lesser);
-
-        while ($remainder->isGreaterThan(0)) {
-            $greater = $lesser;
-            $lesser = $remainder;
-            $remainder = $greater->modulo($lesser);
-        }
-
-        return $lesser;
+        return Numbers::make(Numbers::IMMUTABLE, $val, $this->getScale());
 
     }
 
@@ -230,50 +193,12 @@ trait IntegerMathTrait
      */
     public function isPrime(?int $certainty = 20): bool
     {
-        switch ($this->_primeEarlyExit()) {
-            case 1:
-                return false;
+        return match ($this->_primeEarlyExit()) {
+            1 => false,
+            2 => true,
+            default => (bool)gmp_prob_prime($this->getValue(NumberBase::Ten), $certainty),
+        };
 
-            case 2:
-                return true;
-        }
-
-        if (function_exists('gmp_prob_prime') && $this->extensions) {
-            return (bool)gmp_prob_prime($this->getValue(NumberBase::Ten), $certainty);
-        }
-
-        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $this->getScale());
-
-        $s = $thisNum->subtract(1);
-        $d = $thisNum->subtract(1);
-        $r = Numbers::makeZero();
-
-        while ($d->modulo(2)->isEqual(0)) {
-            $r = $r->add(1);
-            $d = $d->divide(2);
-        }
-
-        $r = $r->subtract(1);
-
-        for ($i = 0;$i < $certainty;$i++) {
-            $a = RandomProvider::randomInt(2, $s, RandomMode::Speed);
-            $x = Numbers::make(Numbers::IMMUTABLE, (string)gmp_powm($a->getAsBaseTenRealNumber(), $d->getAsBaseTenRealNumber(), $thisNum->getAsBaseTenRealNumber()));
-
-            if ($x->isEqual(1) || $x->isEqual($s)) {
-                continue;
-            }
-
-            for ($j = 0;$j < $r->asInt();$j++) {
-                $x = $x->pow(2)->modulo($thisNum);
-                if ($x->isEqual($s)) {
-                    continue 2;
-                }
-            }
-
-            return false;
-        }
-
-        return true;
     }
 
     /**

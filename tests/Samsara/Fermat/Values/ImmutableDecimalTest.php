@@ -56,12 +56,6 @@ class ImmutableDecimalTest extends TestCase
         $five = new ImmutableDecimal(5);
 
         $this->assertEquals('120', $five->factorial()->getValue());
-
-        $three->setExtensions(false);
-        $five->setExtensions(false);
-
-        $this->assertEquals('6', $three->factorial()->getValue());
-        $this->assertEquals('120', $five->factorial()->getValue());
     }
 
     /**
@@ -489,12 +483,6 @@ class ImmutableDecimalTest extends TestCase
         $this->assertEquals('3', $three->getGreatestCommonDivisor($six)->getValue());
         $this->assertEquals('3', $six->getGreatestCommonDivisor($three)->getValue());
 
-        $three->setExtensions(false);
-        $six->setExtensions(false);
-
-        $this->assertEquals('3', $three->getGreatestCommonDivisor($six)->getValue());
-        $this->assertEquals('3', $six->getGreatestCommonDivisor($three)->getValue());
-
     }
     /**
      * @medium
@@ -619,7 +607,7 @@ class ImmutableDecimalTest extends TestCase
         $this->assertFalse($fortyFive->isPrime());
         $this->assertFalse($ninetyOne->isPrime());
         $this->assertTrue($tenThousandSeven->isPrime());
-        $this->assertTrue($largeNonPrime->setExtensions(false)->isPrime());
+        $this->assertTrue($largeNonPrime->isPrime());
         $this->assertFalse($oneHalf->isPrime());
 
     }
