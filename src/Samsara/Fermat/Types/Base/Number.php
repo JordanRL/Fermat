@@ -7,6 +7,8 @@ use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Enums\NumberBase;
+use Samsara\Fermat\Enums\NumberFormat;
+use Samsara\Fermat\Enums\NumberGrouping;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\CalculationModeProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;

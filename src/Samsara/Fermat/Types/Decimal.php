@@ -3,10 +3,14 @@
 namespace Samsara\Fermat\Types;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Enums\Currency;
 use Samsara\Fermat\Enums\NumberBase;
+use Samsara\Fermat\Enums\NumberFormat;
+use Samsara\Fermat\Enums\NumberGrouping;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\ArithmeticProvider;
 use Samsara\Fermat\Provider\BaseConversionProvider;
+use Samsara\Fermat\Provider\NumberFormatProvider;
 use Samsara\Fermat\Provider\RoundingProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
@@ -14,6 +18,7 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Number;
 use Samsara\Fermat\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
+use Samsara\Fermat\Types\Traits\Decimal\FormatterTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
 use Samsara\Fermat\Types\Traits\Decimal\ScaleTrait;
 use Samsara\Fermat\Types\Traits\InverseTrigonometrySimpleTrait;
@@ -35,6 +40,7 @@ abstract class Decimal extends Number implements DecimalInterface
     use InverseTrigonometrySimpleTrait;
     use LogSimpleTrait;
     use ScaleTrait;
+    use FormatterTrait;
 
     /**
      * @param $value
@@ -143,15 +149,11 @@ abstract class Decimal extends Number implements DecimalInterface
      */
     protected function getAsBaseConverted(): string
     {
-        if ($this->getBase() == NumberBase::Ten) {
-            return $this->getAsBaseTenRealNumber();
-        } else {
-            $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this);
-            $converted = BaseConversionProvider::convertFromBaseTen($num, $this->getBase());
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this);
+        $converted = BaseConversionProvider::convertFromBaseTen($num, $this->getBase());
 
-            $converted = rtrim($converted, '0');
-            return rtrim($converted, '.');
-        }
+        $converted = rtrim($converted, '0');
+        return rtrim($converted, '.');
     }
 
     /**
@@ -189,6 +191,7 @@ abstract class Decimal extends Number implements DecimalInterface
     /**
      * @param NumberBase|null $base
      * @return string
+     * @throws IntegrityConstraint
      */
     public function getValue(?NumberBase $base = null): string
     {
@@ -244,10 +247,6 @@ abstract class Decimal extends Number implements DecimalInterface
         $thatValue = $value->getAsBaseTenRealNumber();
 
         $scale = ($this->getScale() < $value->getScale()) ? $this->getScale() : $value->getScale();
-
-        //if ($this->isInt() && $value->isInt() && extension_loaded('gmp')) {
-        //    return gmp_cmp($thisValue, $thatValue);
-        //}
 
         return ArithmeticProvider::compare($thisValue, $thatValue, $scale);
     }
