@@ -18,6 +18,7 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Base\Number;
 use Samsara\Fermat\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Types\Traits\ComparisonTrait;
+use Samsara\Fermat\Types\Traits\Decimal\FormatterTrait;
 use Samsara\Fermat\Types\Traits\IntegerMathTrait;
 use Samsara\Fermat\Types\Traits\Decimal\ScaleTrait;
 use Samsara\Fermat\Types\Traits\InverseTrigonometrySimpleTrait;
@@ -30,8 +31,6 @@ use Samsara\Fermat\Types\Traits\TrigonometrySimpleTrait;
 abstract class Decimal extends Number implements DecimalInterface
 {
 
-    protected NumberFormat $format = NumberFormat::English;
-    protected NumberGrouping $grouping = NumberGrouping::Standard;
     protected NumberBase $base;
 
     use ArithmeticSimpleTrait;
@@ -41,6 +40,7 @@ abstract class Decimal extends Number implements DecimalInterface
     use InverseTrigonometrySimpleTrait;
     use LogSimpleTrait;
     use ScaleTrait;
+    use FormatterTrait;
 
     /**
      * @param $value
@@ -77,70 +77,6 @@ abstract class Decimal extends Number implements DecimalInterface
 
         parent::__construct();
 
-    }
-
-    /**
-     * @param NumberFormat $format
-     * @param NumberGrouping $grouping
-     * @param string $value
-     * @param int|null $scale
-     * @param NumberBase $base
-     * @param bool $baseTenInput
-     * @return static
-     * @throws IntegrityConstraint
-     */
-    public static function createFromFormat(
-        NumberFormat $format,
-        NumberGrouping $grouping,
-        string $value,
-        int $scale = null,
-        NumberBase $base = NumberBase::Ten,
-        bool $baseTenInput = true
-    ): static
-    {
-        $value = str_replace(NumberFormatProvider::getDelimiterCharacter($format), '', $value);
-
-        $value = str_replace(NumberFormatProvider::getRadixCharacter($format), '.', $value);
-
-        return (new static($value, $scale, $base, $baseTenInput))->setFormat($format)->setGrouping($grouping);
-    }
-
-    /**
-     * @param NumberFormat $format
-     * @return $this
-     */
-    public function setFormat(NumberFormat $format): self
-    {
-        $this->format = $format;
-
-        return $this;
-    }
-
-    /**
-     * @return NumberFormat
-     */
-    public function getFormat(): NumberFormat
-    {
-        return $this->format;
-    }
-
-    /**
-     * @param NumberGrouping $grouping
-     * @return $this
-     */
-    public function setGrouping(NumberGrouping $grouping): self
-    {
-        $this->grouping = $grouping;
-
-        return $this;
-    }
-
-    /**
-     * @return NumberGrouping
-     */
-    public function getGrouping(): NumberGrouping
-    {
-        return $this->grouping;
     }
 
     /**
@@ -250,71 +186,6 @@ abstract class Decimal extends Number implements DecimalInterface
         }
 
         return $string;
-    }
-
-    /**
-     * Returns the current value formatted according to the settings in getGrouping() and getFormat()
-     *
-     * @param NumberBase|null $base
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    public function getFormattedValue(?NumberBase $base = null): string
-    {
-        return NumberFormatProvider::formatNumber(
-            $this->getValue($base),
-            $this->getFormat(),
-            $this->getGrouping()
-        );
-    }
-
-    /**
-     * @param Currency $currency
-     * @return string
-     */
-    public function getCurrencyValue(Currency $currency): string
-    {
-        return NumberFormatProvider::formatCurrency(
-            $this->getValue(NumberBase::Ten),
-            $currency,
-            $this->getFormat(),
-            $this->getGrouping()
-        );
-    }
-
-    /**
-     * @param int|null $scale
-     * @return string
-     */
-    public function getScientificValue(?int $scale = null): string
-    {
-        $baseValue = $this->getValue(NumberBase::Ten);
-
-        if (!is_null($scale)) {
-            if ($this->numberOfIntDigits() > $scale+1) {
-                $baseValue = substr($this->getWholePart(), 0, $scale+1);
-                $baseValue = str_pad($baseValue, $this->numberOfIntDigits(), '0');
-            } elseif ($this->getWholePart() == '0' && $this->numberOfSigDecimalDigits() > $scale+1) {
-                $baseValue = trim($this->getDecimalPart(), '0');
-                $baseValue = substr($baseValue, 0, $scale+1);
-                $baseValue = str_pad($baseValue, $this->numberOfLeadingZeros()+strlen($baseValue), '0', STR_PAD_LEFT);
-                $baseValue = '0.'.$baseValue;
-            } elseif ($this->numberOfTotalDigits() > $scale+1) {
-                $baseValue = $this->getWholePart()
-                    .'.'
-                    .substr($this->getDecimalPart(), 0, ($scale+1)-$this->numberOfIntDigits());
-            }
-
-            if ($this->isNegative()) {
-                $baseValue = '-'.$baseValue;
-            }
-
-            if ($this->isImaginary()) {
-                $baseValue .= 'i';
-            }
-        }
-
-        return NumberFormatProvider::formatScientific($baseValue);
     }
 
     /**
