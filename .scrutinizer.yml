@@ -66,6 +66,8 @@ build:
                 before:
                     - mkdir build
                     - mkdir build/logs
+                    - composer config minimum-stability dev
+                    - composer config prefer-stable true
                     - composer require -w "samsara/fermat-coordinate-systems:dev-master@dev"
                     - composer require -w "samsara/fermat-complex-numbers:dev-master@dev"
                     - composer require -w "samsara/fermat-matrices-and-vectors:dev-master@dev"
