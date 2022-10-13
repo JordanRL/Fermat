@@ -90,7 +90,7 @@ trait ArithmeticNativeTrait
      */
     protected function sqrtNative(): int|float
     {
-        $value = sqrt($this->asFloat());
+        $value = sqrt($this->abs()->asFloat());
         return (string)$value;
     }
 
