@@ -176,7 +176,7 @@ trait ArithmeticHelperTrait
 
         $newRealPart = match($operation) {
             CalcOperation::Addition => $thisRealPart->add($thatRealPart),
-            CalcOperation::Subtraction => $thatRealPart->subtract($thatRealPart),
+            CalcOperation::Subtraction => $thisRealPart->subtract($thatRealPart),
         };
         $newImaginaryPart = match($operation) {
             CalcOperation::Addition => $thisImaginaryPart->add($thatImaginaryPart),
