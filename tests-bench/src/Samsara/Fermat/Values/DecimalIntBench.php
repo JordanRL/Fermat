@@ -13,10 +13,10 @@ class DecimalIntBench
     public ImmutableDecimal $valueB;
     public ImmutableDecimal $valueC;
 
-    #[Groups(['integer-math', 'revs-test'])]
+    #[Groups(['integer-math'])]
     #[Revs(2000)]
     #[BeforeMethods('setUp')]
-    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
+    #[ParamProviders(['provideNumbers'])]
     public function benchFactorial()
     {
         $this->valueA->factorial();
@@ -25,7 +25,7 @@ class DecimalIntBench
     #[Groups(['integer-math'])]
     #[Revs(500)]
     #[BeforeMethods('setUp')]
-    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
+    #[ParamProviders(['provideNumbers'])]
     public function benchSubFactorial()
     {
         $this->valueA->subFactorial();
@@ -33,7 +33,7 @@ class DecimalIntBench
 
     #[Groups(['integer-math'])]
     #[BeforeMethods('setUp')]
-    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
+    #[ParamProviders(['provideNumbers'])]
     public function benchDoubleFactorial()
     {
         $this->valueA->doubleFactorial();
@@ -41,7 +41,7 @@ class DecimalIntBench
 
     #[Groups(['integer-math'])]
     #[BeforeMethods('setUp')]
-    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
+    #[ParamProviders(['provideNumbers'])]
     public function benchSemiFactorial()
     {
         $this->valueA->semiFactorial();
@@ -50,7 +50,7 @@ class DecimalIntBench
     #[Groups(['integer-math'])]
     #[Revs(3000)]
     #[BeforeMethods('setUp')]
-    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
+    #[ParamProviders(['provideNumbers'])]
     public function benchLCM()
     {
         $this->valueA->getLeastCommonMultiple($this->valueB);
@@ -59,7 +59,7 @@ class DecimalIntBench
     #[Groups(['integer-math'])]
     #[Revs(1000)]
     #[BeforeMethods('setUp')]
-    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
+    #[ParamProviders(['provideNumbers'])]
     public function benchGCD()
     {
         $this->valueA->getGreatestCommonDivisor($this->valueB);
@@ -68,7 +68,7 @@ class DecimalIntBench
     #[Groups(['integer-math', 'prime-numbers'])]
     #[Revs(100)]
     #[BeforeMethods('setUp')]
-    #[ParamProviders(['provideNumbers', 'provideExtensions'])]
+    #[ParamProviders(['provideNumbers'])]
     public function benchIsPrime()
     {
         $this->valueC->isPrime();
@@ -83,19 +83,11 @@ class DecimalIntBench
         ];
     }
 
-    public function provideExtensions()
-    {
-        return [
-            'with-extensions' => ['extensions' => true],
-            'without-extensions' => ['extensions' => false]
-        ];
-    }
-
     public function setUp(array $params)
     {
-        $this->valueA = (new ImmutableDecimal($params['valueA']))->setExtensions($params['extensions']);
-        $this->valueB = (new ImmutableDecimal($params['valueB']))->setExtensions($params['extensions']);
-        $this->valueC = (new ImmutableDecimal($params['valueC']))->setExtensions($params['extensions']);
+        $this->valueA = new ImmutableDecimal($params['valueA']);
+        $this->valueB = new ImmutableDecimal($params['valueB']);
+        $this->valueC = new ImmutableDecimal($params['valueC']);
     }
 
 }

@@ -3,8 +3,6 @@
 namespace Samsara\Fermat\Types;
 
 use Composer\InstalledVersions;
-use Ds\Traits\TValue;
-use ReturnTypeWillChange;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\RandomMode;
@@ -20,6 +18,7 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Ds\Vector;
 use Samsara\Fermat\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Values\ImmutableDecimal;
+use Traversable;
 
 /**
  *
@@ -320,9 +319,9 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
     }
 
     /**
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function sum(): NumberInterface
+    public function sum(): ImmutableDecimal
     {
         $sum = Numbers::makeZero();
 
@@ -334,17 +333,17 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
     }
 
     /**
-     * @return DecimalInterface
+     * @return ImmutableDecimal
      */
-    public function mean(): DecimalInterface
+    public function mean(): ImmutableDecimal
     {
         return $this->sum()->divide($this->getCollection()->count());
     }
 
     /**
-     * @return DecimalInterface
+     * @return ImmutableDecimal
      */
-    public function average(): DecimalInterface
+    public function average(): ImmutableDecimal
     {
         return $this->mean();
     }
@@ -363,7 +362,6 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
             );
         }
 
-        /** @var ImmutableDecimal $mean */
         $mean = $this->mean();
 
         $squaredSum = Numbers::makeZero();
@@ -487,9 +485,9 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
     }
 
     /**
-     * @return \Traversable
+     * @return Traversable
      */
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         return $this->getCollection()->getIterator();
     }
