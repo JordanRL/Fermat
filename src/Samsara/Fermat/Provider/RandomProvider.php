@@ -208,7 +208,7 @@ class RandomProvider
         /**
          * Select the min and max as if we were looking for the decimal part as an integer.
          */
-        $min = new ImmutableDecimal(0);
+        $min = new ImmutableDecimal(1);
         $max = new ImmutableDecimal(str_pad('1', $scale+1, '0'));
 
         /**
