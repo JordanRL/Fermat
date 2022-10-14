@@ -68,6 +68,8 @@ trait ArithmeticScaleTrait
             $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
         }
 
+        $scale = $scale + $this->numberOfLeadingZeros() + $num->numberOfLeadingZeros();
+
         return ArithmeticProvider::divide($this->asReal(), $num->asReal(), $scale+1);
 
     }
@@ -82,7 +84,11 @@ trait ArithmeticScaleTrait
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
 
-        if (!$num->isWhole() && !extension_loaded('decimal')) {
+        $scale += $this->numberOfDecimalDigits() + $num->numberOfDecimalDigits();
+
+        if ($this->isWhole() && $num->isPositive() && $num->isWhole() && $num->isLessThan(PHP_INT_MAX)) {
+            return gmp_strval(gmp_pow($this->getAsBaseTenRealNumber(), $num->asInt()));
+        } elseif (!$num->isWhole() && !extension_loaded('decimal')) {
             $scale += 3;
             $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $scale);
             $thatNum = Numbers::make(Numbers::IMMUTABLE, $num->getValue(NumberBase::Ten), $scale);

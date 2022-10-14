@@ -20,6 +20,8 @@ use Samsara\Fermat\Values\ImmutableDecimal;
 trait InverseTrigonometryScaleTrait
 {
 
+    use InverseTrigonometryHelpersTrait;
+
     /**
      * @param int|null $scale
      * @return string
@@ -41,56 +43,10 @@ trait InverseTrigonometryScaleTrait
         } elseif ($this->isEqual(0)) {
             $answer = Numbers::makeZero();
         } else {
-            $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
-            $addScale = $abs->asInt() > $abs->getScale() ? $abs->asInt() : $abs->getScale();
-            $intScale = $scale + $addScale;
-            $x = new ImmutableDecimal($this->getValue(NumberBase::Ten), $intScale);
-            $x2 = $x->pow(2);
-            $one = new ImmutableDecimal(1, $intScale);
+            $intScale = $scale + 2;
+            $num = new ImmutableDecimal($this->getValue(NumberBase::Ten), $intScale);
 
-            $aPart = new class($x2, $intScale) implements ContinuedFractionTermInterface{
-                private ImmutableDecimal $x2;
-                private ImmutableDecimal $negTwo;
-
-                /**
-                 * @param ImmutableDecimal $x2
-                 * @param int $intScale
-                 */
-                public function __construct(ImmutableDecimal $x2, int $intScale)
-                {
-                    $this->x2 = $x2;
-                    $this->negTwo = new ImmutableDecimal(-2, $intScale);
-                }
-
-                /**
-                 * @param int $n
-                 * @return ImmutableDecimal
-                 */
-                public function __invoke(int $n): ImmutableDecimal
-                {
-                    $subterm = floor(($n+1)/2);
-
-                    return $this->negTwo->multiply(
-                        2*$subterm-1
-                    )->multiply($subterm)->multiply($this->x2);
-                }
-            };
-
-            $bPart = new class() implements ContinuedFractionTermInterface{
-                /**
-                 * @param int $n
-                 * @return ImmutableDecimal
-                 */
-                public function __invoke(int $n): ImmutableDecimal
-                {
-                    return SequenceProvider::nthOddNumber($n);
-                }
-            };
-
-            $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $intScale, $intScale);
-
-            $answer = $x->multiply($one->subtract($x2)->sqrt($intScale))->divide($answer, $intScale);
-
+            $answer = $this->helperArcsinGCF($num, $intScale);
         }
 
         return $answer->getAsBaseTenRealNumber();
@@ -131,67 +87,30 @@ trait InverseTrigonometryScaleTrait
      * @return string
      * @throws IntegrityConstraint
      * @throws MissingPackage
-     * @throws IncompatibleObjectState
      */
     protected function arctanScale(int $scale = null): string
     {
+        $intScale = ($scale ?? $this->getScale()) + 2;
 
-        $scale = $scale ?? $this->getScale();
-        $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
-        $intScale = $scale + 2;
-        $terms = $abs->multiply($intScale+8)->asInt();
-        $x = new ImmutableDecimal($this->getValue(NumberBase::Ten), $intScale);
-        $aPart = new class($x) implements ContinuedFractionTermInterface {
-            private ImmutableDecimal $x;
+        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->absValue());
 
-            /**
-             * @param ImmutableDecimal $x
-             */
-            public function __construct(ImmutableDecimal $x)
-            {
-                $this->x = $x;
-            }
+        if ($thisNum->isGreaterThan(1)) {
+            $one = Numbers::makeOne($intScale);
+            $adjustedNum = $one->divide($thisNum, $intScale);
+        } else {
+            $adjustedNum = $thisNum;
+        }
 
-            /**
-             * @param int $n
-             * @return ImmutableDecimal
-             */
-            public function __invoke(int $n): ImmutableDecimal
-            {
-                if ($n == 1) {
-                    return $this->x;
-                }
+        $answer = $this->helperArctanGCF($adjustedNum, $scale);
 
-                return $this->x->multiply($n-1)->pow(2);
-            }
-        };
+        if ($thisNum->isGreaterThan(1)) {
+            $piDiv2 = Numbers::makePi($intScale)->multiply('0.5');
+            $answer = $piDiv2->subtract($answer);
+        }
 
-        $bPart = new class($intScale) implements ContinuedFractionTermInterface {
-            private int $intScale;
-
-            /**
-             * @param int $intScale
-             */
-            public function __construct(int $intScale)
-            {
-                $this->intScale = $intScale;
-            }
-
-            /**
-             * @param int $n
-             * @return ImmutableDecimal
-             */
-            public function __invoke(int $n): ImmutableDecimal
-            {
-                if ($n == 0) {
-                    return Numbers::makeZero($this->intScale);
-                }
-
-                return SequenceProvider::nthOddNumber($n - 1)->truncateToScale($this->intScale);
-            }
-        };
-
-        $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $terms, $intScale);
+        if ($this->isNegative()) {
+            $answer = $answer->multiply(-1);
+        }
 
         return $answer->getAsBaseTenRealNumber();
 
@@ -210,11 +129,15 @@ trait InverseTrigonometryScaleTrait
 
         $piDivTwo = Numbers::makePi($scale + 2)->divide(2, $scale + 2);
 
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale + 2);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->absValue(), $scale + 2);
 
         $arctan = $z->arctan($scale+2, false);
 
         $answer = $piDivTwo->subtract($arctan);
+
+        if ($this->isNegative()) {
+            $answer = $answer->multiply(-1);
+        }
 
         return $answer->getAsBaseTenRealNumber();
 
@@ -232,9 +155,7 @@ trait InverseTrigonometryScaleTrait
         $intScale = $scale + 2;
 
         $one = Numbers::makeOne($intScale);
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $intScale);
-
-        //$answer = $one->divide($z, $scale + 2)->arccos($scale + 2);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->absValue(), $intScale);
 
         $oneDivZSquared = $one->divide($z->pow(2));
         $piDivTwo = Numbers::makePi($intScale)->divide(2, $intScale);
@@ -291,6 +212,11 @@ trait InverseTrigonometryScaleTrait
             $intScale,
             SeriesProvider::SUM_MODE_SUB
         );
+
+        if ($this->isNegative()) {
+            $pi = Numbers::makePi($intScale);
+            $answer = $pi->subtract($answer);
+        }
 
         return $answer->getAsBaseTenRealNumber();
 
@@ -364,6 +290,10 @@ trait InverseTrigonometryScaleTrait
             $intScale,
             SeriesProvider::SUM_MODE_ALT_FIRST_ADD
         );
+
+        if ($this->isNegative() && !$answer->isEqual(0) && extension_loaded('decimal')) {
+            $answer = $answer->multiply(-1);
+        }
 
         return $answer->getAsBaseTenRealNumber();
 

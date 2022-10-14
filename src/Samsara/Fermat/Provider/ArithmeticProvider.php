@@ -233,11 +233,7 @@ class ArithmeticProvider
 
     private static function integerDigits(string $number): int
     {
-        if (!str_contains($number, '.')) {
-            return strlen($number);
-        }
-
-        return strpos($number, '.');
+        return strlen($number);
     }
 
 }
