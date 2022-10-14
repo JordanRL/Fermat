@@ -84,6 +84,8 @@ trait ArithmeticScaleTrait
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
 
+        $scale += $this->numberOfDecimalDigits() + $num->numberOfDecimalDigits();
+
         if ($this->isWhole() && $num->isPositive() && $num->isWhole() && $num->isLessThan(PHP_INT_MAX)) {
             return gmp_strval(gmp_pow($this->getAsBaseTenRealNumber(), $num->asInt()));
         } elseif (!$num->isWhole() && !extension_loaded('decimal')) {
@@ -93,8 +95,6 @@ trait ArithmeticScaleTrait
             $exponent = $thatNum->multiply($thisNum->ln($scale, false));
             return $exponent->exp($scale, false)->getValue(NumberBase::Ten);
         }
-
-        $scale += $this->numberOfDecimalDigits() + $num->numberOfDecimalDigits();
 
         return ArithmeticProvider::pow($this->asReal(), $num->asReal(), $scale+1);
 

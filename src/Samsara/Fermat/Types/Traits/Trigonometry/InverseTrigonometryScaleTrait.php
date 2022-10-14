@@ -291,7 +291,7 @@ trait InverseTrigonometryScaleTrait
             SeriesProvider::SUM_MODE_ALT_FIRST_ADD
         );
 
-        if ($this->isNegative() && !$answer->isEqual(0)) {
+        if ($this->isNegative() && !$answer->isEqual(0) && extension_loaded('decimal')) {
             $answer = $answer->multiply(-1);
         }
 
