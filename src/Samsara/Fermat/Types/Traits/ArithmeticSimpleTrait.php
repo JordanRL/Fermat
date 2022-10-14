@@ -1,10 +1,4 @@
-<?php /** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-
-/** @noinspection ALL */
-
+<?php
 
 namespace Samsara\Fermat\Types\Traits;
 
@@ -14,6 +8,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 /** @psalm-suppress UndefinedClass */
 use Samsara\Fermat\ComplexNumbers;
+use Samsara\Fermat\Enums\CalcOperation;
 use Samsara\Fermat\Enums\NumberBase;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface;
@@ -21,6 +16,7 @@ use Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Types\Fraction;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticGMPTrait;
+use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticHelperTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticScaleTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
 use Samsara\Fermat\Types\Traits\Arithmetic\ArithmeticNativeTrait;
@@ -40,6 +36,7 @@ trait ArithmeticSimpleTrait
     use ArithmeticScaleTrait;
     use ArithmeticNativeTrait;
     use ArithmeticGMPTrait;
+    use ArithmeticHelperTrait;
 
     /**
      * @param $num
@@ -66,49 +63,17 @@ trait ArithmeticSimpleTrait
         }
 
         if ($this->isReal() xor $num->isReal()) {
-            if (!(InstalledVersions::isInstalled('samsara/fermat-complex-numbers')) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
-                throw new MissingPackage(
-                    'Creating complex numbers is unsupported in Fermat without modules.',
-                    'Install the samsara/fermat-complex-numbers package using composer.',
-                    'An attempt was made to create a ComplexNumber instance without having the Complex Numbers module. Please install the samsara/fermat-complex-numbers package using composer.'
-                );
-            }
-
-            $newRealPart = $thisRealPart->add($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->add($thatImaginaryPart);
-
-            if ($newImaginaryPart->isEqual(0)) {
-                return $this->setValue($newRealPart->getValue(NumberBase::Ten));
-            }
-
-            if ($newRealPart->isEqual(0)) {
-                return $this->setValue($newImaginaryPart->getValue(NumberBase::Ten));
-            }
-
-            /** @psalm-suppress UndefinedClass */
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
+            return $this->helperAddSubXor(
+                $thisRealPart,
+                $thisImaginaryPart,
+                $thatRealPart,
+                $thatImaginaryPart,
+                CalcOperation::Addition
+            );
         }
 
         if ($this instanceof FractionInterface) {
-            if ($num instanceof FractionInterface && $this->getDenominator()->isEqual($num->getDenominator())) {
-                $finalDenominator = $this->getDenominator();
-                $finalNumerator = $this->getNumerator()->add($num->getNumerator());
-            } elseif ($num instanceof FractionInterface) {
-                $finalDenominator = $this->getSmallestCommonDenominator($num);
-
-                list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($num, $finalDenominator);
-
-                /** @var ImmutableDecimal $finalNumerator */
-                $finalNumerator = $thisNumerator->add($thatNumerator);
-            } else {
-                $finalDenominator = $this->getDenominator();
-                $finalNumerator = $this->getNumerator()->add($num->multiply($finalDenominator));
-            }
-
-            return $this->setValue(
-                $finalNumerator,
-                $finalDenominator
-            )->simplify();
+            return $this->helperAddSubFraction($num, CalcOperation::Addition);
         } else {
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
 
@@ -149,48 +114,17 @@ trait ArithmeticSimpleTrait
         }
 
         if ($this->isReal() xor $num->isReal()) {
-            if (!(InstalledVersions::isInstalled('samsara/fermat-complex-numbers')) || !class_exists('Samsara\\Fermat\\Values\\ImmutableComplexNumber')) {
-                throw new MissingPackage(
-                    'Creating complex numbers is unsupported in Fermat without modules.',
-                    'Install the samsara/fermat-complex-numbers package using composer.',
-                    'An attempt was made to create a ComplexNumber instance without having the Complex Numbers module. Please install the samsara/fermat-complex-numbers package using composer.'
-                );
-            }
-
-            $newRealPart = $thisRealPart->subtract($thatRealPart);
-            $newImaginaryPart = $thisImaginaryPart->subtract($thatImaginaryPart);
-
-            if ($newImaginaryPart->isEqual(0)) {
-                return $this->setValue($newRealPart->getValue(NumberBase::Ten));
-            }
-
-            if ($newRealPart->isEqual(0)) {
-                return $this->setValue($newImaginaryPart->getValue(NumberBase::Ten));
-            }
-
-            /** @psalm-suppress UndefinedClass */
-            return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
+            return $this->helperAddSubXor(
+                $thisRealPart,
+                $thisImaginaryPart,
+                $thatRealPart,
+                $thatImaginaryPart,
+                CalcOperation::Subtraction
+            );
         }
 
         if ($this instanceof FractionInterface) {
-            if ($num instanceof FractionInterface && $this->getDenominator()->isEqual($num->getDenominator())) {
-                $finalDenominator = $this->getDenominator();
-                $finalNumerator = $this->getNumerator()->subtract($num->getNumerator());
-            } elseif ($num instanceof FractionInterface) {
-                $finalDenominator = $this->getSmallestCommonDenominator($num);
-
-                list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($num, $finalDenominator);
-
-                $finalNumerator = $thisNumerator->subtract($thatNumerator);
-            } else {
-                $finalDenominator = $this->getDenominator();
-                $finalNumerator = $this->getNumerator()->subtract($num->multiply($finalDenominator));
-            }
-
-            return $this->setValue(
-                $finalNumerator,
-                $finalDenominator
-            )->simplify();
+            return $this->helperAddSubFraction($num, CalcOperation::Subtraction);
         } else {
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
 
@@ -421,7 +355,7 @@ trait ArithmeticSimpleTrait
             $value = $this->sqrtSelector($scale);
         }
 
-        if ($this->isImaginary()) {
+        if ($this->isNegative()) {
             $value .= 'i';
         }
 

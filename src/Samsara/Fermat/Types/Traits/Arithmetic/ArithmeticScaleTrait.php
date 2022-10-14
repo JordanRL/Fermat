@@ -109,7 +109,7 @@ trait ArithmeticScaleTrait
 
         $scale = $scale ?? $this->getScale();
 
-        return ArithmeticProvider::squareRoot($this->getAsBaseTenRealNumber(), $scale);
+        return ArithmeticProvider::squareRoot($this->abs()->getAsBaseTenRealNumber(), $scale);
 
     }
 

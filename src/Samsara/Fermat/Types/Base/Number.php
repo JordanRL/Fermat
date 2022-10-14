@@ -7,6 +7,8 @@ use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Enums\CalcMode;
 use Samsara\Fermat\Enums\NumberBase;
+use Samsara\Fermat\Enums\NumberFormat;
+use Samsara\Fermat\Enums\NumberGrouping;
 use Samsara\Fermat\Numbers;
 use Samsara\Fermat\Provider\CalculationModeProvider;
 use Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface;
@@ -24,15 +26,13 @@ abstract class Number implements Hashable, NumberInterface
     /** @var array */
     protected array $value;
     /** @var bool  */
-    protected bool $extensions = true;
-    /** @var bool  */
     protected bool $imaginary;
     /** @var bool */
     protected bool $sign;
     /** @var CalcMode|null */
     protected ?CalcMode $calcMode = null;
     /** @var int */
-    protected ?int $scale;
+    protected int $scale;
     protected NumberBase $base;
 
     public function __construct()
@@ -42,9 +42,6 @@ abstract class Number implements Hashable, NumberInterface
 
     /**
      * Allows you to set a mode on a number to select the calculation methods.
-     *
-     * MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting.
-     * MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
      *
      * @param CalcMode $mode
      * @return $this
@@ -72,22 +69,6 @@ abstract class Number implements Hashable, NumberInterface
      * @return string
      */
     abstract public function getValue(): string;
-
-    /**
-     * Allows the object to ignore PHP extensions (such a GMP) and use only the Fermat implementations. NOTE: This does
-     * not ignore ext-bcmath or ext-decimal, as those are necessary for the string math itself.
-     *
-     * @param bool $flag
-     * @return $this
-     */
-    public function setExtensions(bool $flag): self
-    {
-
-        $this->extensions = $flag;
-
-        return $this;
-
-    }
 
     /**
      * @return string
@@ -129,7 +110,7 @@ abstract class Number implements Hashable, NumberInterface
     }
 
     /**
-     * This function returns true if the number is imaginary, and false in the number is real or complex
+     * This function returns true if the number is imaginary, and false if the number is real or complex
      *
      * @return bool
      */

@@ -3,7 +3,7 @@
 namespace Samsara\Fermat\Enums;
 
 /**
- *
+ * This is used internally in some places to differentiate between where (internally) a call was made from.
  */
 enum CalcOperation
 {
