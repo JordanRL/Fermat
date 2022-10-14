@@ -147,7 +147,7 @@ trait TrigonometryNativeTrait
             );
         }
 
-        return 1/sinh($thisNum);
+        return 1/cosh($thisNum);
     }
 
     /**
@@ -157,7 +157,7 @@ trait TrigonometryNativeTrait
     {
         $thisNum = self::translateToNative($this);
 
-        return 1/cosh($thisNum);
+        return 1/sinh($thisNum);
     }
 
     /**

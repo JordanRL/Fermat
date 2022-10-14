@@ -50,7 +50,7 @@ class DecimalArithmeticBench
         $this->valueA->divide($this->valueB);
     }
 
-    #[Groups(['arithmetic'])]
+    #[Groups(['arithmetic', 'arithmetic-pow'])]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchPowInt()

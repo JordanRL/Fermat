@@ -306,7 +306,7 @@ abstract class Decimal extends Number implements DecimalInterface
             $this->sign = false;
         }
 
-        $value = $this->getValue();
+        $value = $this->getValue(NumberBase::Ten);
 
         if ($makeNegative) {
             $this->sign = true;

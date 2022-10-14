@@ -14,7 +14,7 @@ class DecimalTrigInverseBench
     public ImmutableDecimal $valueA;
     public ImmutableDecimal $valueB;
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['trig', 'inverse-trig', 'arcsin'])]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchArcSin()
@@ -22,7 +22,7 @@ class DecimalTrigInverseBench
         $this->valueB->arcsin();
     }
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['trig', 'inverse-trig', 'arccos'])]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchArcCos()
@@ -30,15 +30,15 @@ class DecimalTrigInverseBench
         $this->valueB->arccos();
     }
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['trig', 'inverse-trig', 'arctan'])]
     #[BeforeMethods('setUp')]
-    #[ParamProviders(['provideNumbers', 'provideModes'])]
+    #[ParamProviders(['provideNumbersArctan', 'provideModes'])]
     public function benchArcTan()
     {
         $this->valueB->arctan();
     }
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['trig', 'inverse-trig', 'arcsec'])]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchArcSec()
@@ -46,7 +46,7 @@ class DecimalTrigInverseBench
         $this->valueA->arcsec();
     }
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['trig', 'inverse-trig', 'arccsc'])]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchArcCsc()
@@ -54,7 +54,7 @@ class DecimalTrigInverseBench
         $this->valueA->arccsc();
     }
 
-    #[Groups(['trig', 'inverse-trig'])]
+    #[Groups(['trig', 'inverse-trig', 'arccot'])]
     #[BeforeMethods('setUp')]
     #[ParamProviders(['provideNumbers', 'provideModes'])]
     public function benchArcCot()
@@ -65,8 +65,17 @@ class DecimalTrigInverseBench
     public function provideNumbers()
     {
         return [
-            'near-limit' => ['valueA' => '1.1', 'valueB' => '0.9'],
-            'away-from-limit' => ['valueA' => '10', 'valueB' => '0.001'],
+            'near-limit' => ['valueA' => '1.0000000001', 'valueB' => '0.9999999999'],
+            'far-from-limit' => ['valueA' => '100000000000', 'valueB' => '0.0000000001'],
+        ];
+    }
+
+    public function provideNumbersArctan()
+    {
+        return [
+            'near-one' => ['valueA' => '1.001', 'valueB' => '0.9999999999'],
+            'near-zero' => ['valueA' => '10', 'valueB' => '0.0000000001'],
+            'near-ten-thousand' => ['valueA' => '1', 'valueB' => '10000']
         ];
     }
 

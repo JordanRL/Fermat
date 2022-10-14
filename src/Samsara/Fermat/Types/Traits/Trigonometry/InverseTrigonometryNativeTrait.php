@@ -68,7 +68,11 @@ trait InverseTrigonometryNativeTrait
         $thisNum = self::translateToNative($this);
         $piDiv2 = M_PI_2;
 
-        return $piDiv2 - atan($thisNum);
+        if ($thisNum < 0) {
+            return -1 * ($piDiv2 - atan(abs($thisNum)));
+        } else {
+            return $piDiv2 - atan($thisNum);
+        }
     }
 
 }

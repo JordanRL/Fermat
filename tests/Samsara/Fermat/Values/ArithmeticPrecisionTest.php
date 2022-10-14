@@ -414,7 +414,6 @@ class ArithmeticPrecisionTest extends TestCase
         $k = (new MutableDecimal('10i'))->setMode(CalcMode::Precision);
         $l = (new MutableDecimal('0'))->setMode(CalcMode::Precision);
 
-
         return [
             'MDecimal 2 / 3' => [$a, $b, '0.6666666667', NumberBase::Ten, 10],
             'MDecimal 2 / 3 base 5' => [$a2, $b, '0.131313131002111', NumberBase::Five, 10],
@@ -492,7 +491,6 @@ class ArithmeticPrecisionTest extends TestCase
         $g = (new ImmutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
         $h = (new ImmutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
 
-
         return [
             'IDecimal 2^3' => [$a, $b, '8', NumberBase::Ten, 10],
             'IDecimal 2^3 base 5' => [$a2, $b, '13', NumberBase::Five, 10],
@@ -521,7 +519,6 @@ class ArithmeticPrecisionTest extends TestCase
         $g = (new MutableDecimal('0.0000000001'))->setMode(CalcMode::Precision);
         $h = (new MutableDecimal('0.00000000001'))->setMode(CalcMode::Precision);
 
-
         return [
             'MDecimal 2^3' => [$a, $b, '8', NumberBase::Ten, 10],
             'MDecimal 2^3 base 5' => [$a2, $b, '13', NumberBase::Five, 10],
@@ -530,9 +527,9 @@ class ArithmeticPrecisionTest extends TestCase
             'MDecimal -2^-3' => [$c, $d, '-0.125', NumberBase::Ten, 10],
             'MDecimal 2^0.5' => [$a, $e, '0.125', NumberBase::Ten, 10],
             'MDecimal -2^0.5' => [$c, $e, MissingPackage::class, NumberBase::Ten, 10],
-            'MDecimal 3^0.5' => [$b, $e, '0.3333333464', NumberBase::Ten, 10],
-            'MDecimal 2^-0.5' => [$a, $f, '2.8284271168', NumberBase::Ten, 10],
-            'MDecimal 3^-0.5' => [$b, $f, '1.7320507736', NumberBase::Ten, 10],
+            'MDecimal 3^0.5' => [$b, $e, '0.3333333333', NumberBase::Ten, 10],
+            'MDecimal 2^-0.5' => [$a, $f, '2.8284271247', NumberBase::Ten, 10],
+            'MDecimal 3^-0.5' => [$b, $f, '1.7320508077', NumberBase::Ten, 10],
             'MDecimal 2^0.0000000001' => [$a, $g, '1.0000000001', NumberBase::Ten, 10],
             'MDecimal 2^0.00000000001' => [$a, $h, '1', NumberBase::Ten, 10],
         ];
