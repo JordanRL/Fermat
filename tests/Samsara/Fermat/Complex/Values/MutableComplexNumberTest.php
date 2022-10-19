@@ -8,6 +8,9 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 class MutableComplexNumberTest extends TestCase
 {
 
+    /**
+     * @medium
+     */
     public function testAdd()
     {
 
