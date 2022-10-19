@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types > Distribution
+# Samsara\Fermat\Core\Types > Distribution
 
 *No description available*
 
@@ -13,7 +13,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -33,7 +33,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\NumberCollection
+    :   Samsara\Fermat\Core\Types\NumberCollection
 
     description
     :   *No description available*
@@ -63,7 +63,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*

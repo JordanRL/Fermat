@@ -1,4 +1,4 @@
-# Samsara\Fermat\Provider > StatsProvider
+# Samsara\Fermat\Core\Provider > StatsProvider
 
 *No description available*
 
@@ -20,7 +20,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -39,7 +39,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -58,7 +58,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -85,7 +85,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -109,7 +109,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -129,7 +129,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableFraction
+    :   Samsara\Fermat\Core\Values\ImmutableFraction
 
     description
     :   *No description available*
@@ -156,7 +156,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*

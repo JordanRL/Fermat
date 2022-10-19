@@ -1,4 +1,4 @@
-# Samsara\Fermat\Provider > RandomProvider
+# Samsara\Fermat\Core\Provider > RandomProvider
 
 *No description available*
 
@@ -37,7 +37,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -65,7 +65,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -109,7 +109,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*

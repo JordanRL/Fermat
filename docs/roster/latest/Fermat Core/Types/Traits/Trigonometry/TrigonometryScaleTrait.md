@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Trigonometry > TrigonometryScaleTrait
+# Samsara\Fermat\Core\Types\Traits\Trigonometry > TrigonometryScaleTrait
 
 *No description available*
 

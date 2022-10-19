@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Trigonometry > InverseTrigonometrySelectionTrait
+# Samsara\Fermat\Core\Types\Traits\Trigonometry > InverseTrigonometrySelectionTrait
 
 *No description available*
 

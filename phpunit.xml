@@ -26,17 +26,23 @@
     </report>
   </coverage>
   <testsuites>
-    <testsuite name="Providers">
-      <directory suffix=".php">./tests/Samsara/Fermat/Provider</directory>
+    <testsuite name="Core">
+      <directory suffix=".php">./tests/Samsara/Fermat/Core</directory>
     </testsuite>
-    <testsuite name="Types">
-      <directory suffix=".php">./tests/Samsara/Fermat/Types</directory>
+    <testsuite name="Coordinates">
+      <directory suffix=".php">./tests/Samsara/Fermat/Coordinates</directory>
     </testsuite>
-    <testsuite name="Values">
-      <directory suffix=".php">./tests/Samsara/Fermat/Values</directory>
+    <testsuite name="Complex">
+      <directory suffix=".php">./tests/Samsara/Fermat/Complex</directory>
     </testsuite>
-    <testsuite name="Factories">
-      <file>tests/Samsara/Fermat/NumbersTest.php</file>
+    <testsuite name="Expressions">
+      <directory suffix=".php">./tests/Samsara/Fermat/Expressions</directory>
+    </testsuite>
+    <testsuite name="LinearAlgebra">
+      <directory suffix=".php">./tests/Samsara/Fermat/LinearAlgebra</directory>
+    </testsuite>
+    <testsuite name="Stats">
+      <directory suffix=".php">./tests/Samsara/Fermat/Stats</directory>
     </testsuite>
   </testsuites>
   <logging/>

@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Base\Interfaces\Numbers > FractionInterface
+# Samsara\Fermat\Core\Types\Base\Interfaces\Numbers > FractionInterface
 
 *No description available*
 
@@ -74,7 +74,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -476,7 +476,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableComplexNumber
+    :   Samsara\Fermat\Core\Values\ImmutableComplexNumber
 
     description
     :   *No description available*

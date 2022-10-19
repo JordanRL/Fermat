@@ -1,6 +1,8 @@
-# Samsara\Fermat > Numbers
+# Samsara\Fermat\Core > Numbers
 
-This class contains useful factory methods to create various numbers, verify the class of a given number, and generally handle all of the formatting necessary to satisfy the various constructors of valid value objects.
+This class contains useful factory methods to create various numbers, verify the
+ class of a given number, and generally handle all of the formatting necessary to
+ satisfy the various constructors of valid value objects.
 
 
 ## Variables & Data
@@ -11,22 +13,22 @@ This class contains useful factory methods to create various numbers, verify the
 !!! signature constant "Numbers::MUTABLE"
     ##### MUTABLE
     value
-    :   'Samsara\Fermat\Values\MutableDecimal'
+    :   'Samsara\Fermat\Core\Values\MutableDecimal'
 
 !!! signature constant "Numbers::IMMUTABLE"
     ##### IMMUTABLE
     value
-    :   'Samsara\Fermat\Values\ImmutableDecimal'
+    :   'Samsara\Fermat\Core\Values\ImmutableDecimal'
 
 !!! signature constant "Numbers::MUTABLE_FRACTION"
     ##### MUTABLE_FRACTION
     value
-    :   'Samsara\Fermat\Values\MutableFraction'
+    :   'Samsara\Fermat\Core\Values\MutableFraction'
 
 !!! signature constant "Numbers::IMMUTABLE_FRACTION"
     ##### IMMUTABLE_FRACTION
     value
-    :   'Samsara\Fermat\Values\ImmutableFraction'
+    :   'Samsara\Fermat\Core\Values\ImmutableFraction'
 
 !!! signature constant "Numbers::PI"
     ##### PI
@@ -118,7 +120,8 @@ This class contains useful factory methods to create various numbers, verify the
 
     This class will make and return an instance of a concrete value.
     
-     The main reason for this class is that you can pass an unknown value instance as the type parameter and it will behave as if you passed the FQCN.
+     The main reason for this class is that you can pass an unknown value instance as the
+ type parameter and it will behave as if you passed the FQCN.
 
 ---
 
@@ -155,7 +158,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
 
     description
     :   *No description available*
@@ -239,7 +242,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\FractionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface
 
     description
     :   *No description available*
@@ -261,7 +264,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -283,7 +286,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -305,7 +308,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -327,7 +330,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -349,7 +352,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -371,7 +374,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -393,7 +396,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -415,7 +418,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -437,7 +440,7 @@ This class contains useful factory methods to create various numbers, verify the
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*

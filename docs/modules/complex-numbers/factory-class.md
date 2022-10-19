@@ -1,6 +1,6 @@
 # The ComplexNumbers Factory Class
 
-The `Samsara\Fermat\ComplexNumbers` factory class allows you to create instances of the Value classes which implement the `ComplexNumberInterface`.
+The `Samsara\Fermat\Core\ComplexNumbers` factory class allows you to create instances of the Value classes which implement the `ComplexNumberInterface`.
 
 ### Available Constants
 

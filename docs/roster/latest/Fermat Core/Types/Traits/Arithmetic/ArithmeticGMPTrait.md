@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Arithmetic > ArithmeticGMPTrait
+# Samsara\Fermat\Core\Types\Traits\Arithmetic > ArithmeticGMPTrait
 
 *No description available*
 

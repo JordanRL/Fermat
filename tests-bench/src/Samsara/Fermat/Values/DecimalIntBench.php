@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Values;
+namespace Samsara\Fermat\Core\Values;
 
 use PhpBench\Attributes\BeforeMethods;
 use PhpBench\Attributes\Groups;

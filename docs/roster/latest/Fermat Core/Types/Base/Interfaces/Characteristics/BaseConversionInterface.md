@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Base\Interfaces\Characteristics > BaseConversionInterface
+# Samsara\Fermat\Core\Types\Base\Interfaces\Characteristics > BaseConversionInterface
 
 *No description available*
 

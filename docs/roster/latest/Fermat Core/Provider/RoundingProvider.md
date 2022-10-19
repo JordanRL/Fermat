@@ -1,4 +1,4 @@
-# Samsara\Fermat\Provider > RoundingProvider
+# Samsara\Fermat\Core\Provider > RoundingProvider
 
 *No description available*
 
@@ -33,7 +33,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Enums\RoundingMode
+    :   Samsara\Fermat\Core\Enums\RoundingMode
 
     description
     :   *No description available*

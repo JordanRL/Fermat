@@ -2,7 +2,7 @@
 
 Calculation modes control how exactly a given calculation is performed. The following methods of calculation are used for mathematical operations, and the calculation mode allows you to control which methods are considered.
 
-- The `BCMath` extension, which operates on real numbers of arbitrary precision.
+- The `BCMath` extension or `Decimal` extension, which operate on real numbers of arbitrary precision.
 - The `GMP` extension, which operates on integers.
 - The `PHP engine` math functions and operations, which work with both integers and floats, and provide a variable amount of precision up to about 12 decimal places.
 
@@ -27,7 +27,7 @@ Each mathematical operation may have its own criteria for deciding which calcula
 
 - If all the inputs and outputs of a given calculation can be expected to be integers, the `GMP` functions are used.
 - If `GMP` cannot be used, the inputs are then checked against the requested scale for the density of native float values. If it can be expected that native floats have enough density to provide the requested scale, then the native `PHP engine` math operations are used.
-- If neither `GMP` nor the `PHP engine` can be used, then the fastest arbitrary precision operation available in your installation is used. For most PHP installations, this will be the `BCMath` extension.
+- If neither `GMP` nor the `PHP engine` can be used, then the fastest arbitrary precision operation available in your installation is used. For most PHP installations, this will be the `BCMath` extension. However, if it is installed then the `Decimal` extension is preferred as it is much, much faster.
 
 ### Precision Mode
 

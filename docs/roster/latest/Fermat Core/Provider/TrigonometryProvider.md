@@ -1,4 +1,4 @@
-# Samsara\Fermat\Provider > TrigonometryProvider
+# Samsara\Fermat\Core\Provider > TrigonometryProvider
 
 *No description available*
 

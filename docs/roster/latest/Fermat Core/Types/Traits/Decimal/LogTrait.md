@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Decimal > LogTrait
+# Samsara\Fermat\Core\Types\Traits\Decimal > LogTrait
 
 *No description available*
 
@@ -29,7 +29,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -59,7 +59,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -87,7 +87,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*

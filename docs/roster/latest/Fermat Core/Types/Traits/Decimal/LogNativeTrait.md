@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Decimal > LogNativeTrait
+# Samsara\Fermat\Core\Types\Traits\Decimal > LogNativeTrait
 
 *No description available*
 

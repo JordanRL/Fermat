@@ -33,7 +33,7 @@ A basic usage of the Fermat library is straightforward and simple to use quickly
 ``` php
 <?php
 
-use Samsara\Fermat\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 // __construct(
 //     $value, 

@@ -1,4 +1,4 @@
-# Samsara\Fermat\Provider > CalculationModeProvider
+# Samsara\Fermat\Core\Provider > CalculationModeProvider
 
 *No description available*
 
@@ -25,7 +25,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Enums\CalcMode
+    :   Samsara\Fermat\Core\Enums\CalcMode
 
     description
     :   *No description available*

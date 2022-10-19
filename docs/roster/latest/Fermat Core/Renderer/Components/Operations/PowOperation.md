@@ -1,4 +1,4 @@
-# Samsara\Fermat\Renderer\Components\Operations > PowOperation
+# Samsara\Fermat\Core\Renderer\Components\Operations > PowOperation
 
 *No description available*
 
@@ -11,7 +11,7 @@
 !!! signature interface "ComponentInterface"
     ##### ComponentInterface
     namespace
-    :   Samsara\Fermat\Renderer\Components\Interfaces
+    :   Samsara\Fermat\Core\Renderer\Components\Interfaces
 
     description
     :   
@@ -25,12 +25,12 @@
 
 ### Constructor
 
-!!! signature "public PowOperation->__construct(Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface|Samsara\Fermat\Renderer\Components\Interfaces\ComponentInterface $left, Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface|Samsara\Fermat\Renderer\Components\Interfaces\ComponentInterface $right)"
+!!! signature "public PowOperation->__construct(Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface|Samsara\Fermat\Core\Renderer\Components\Interfaces\ComponentInterface $left, Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface|Samsara\Fermat\Core\Renderer\Components\Interfaces\ComponentInterface $right)"
     ##### __construct
     **$left**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface|Samsara\Fermat\Renderer\Components\Interfaces\ComponentInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface|Samsara\Fermat\Core\Renderer\Components\Interfaces\ComponentInterface
 
     description
     :   *No description available*
@@ -38,7 +38,7 @@
     **$right**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface|Samsara\Fermat\Renderer\Components\Interfaces\ComponentInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface|Samsara\Fermat\Core\Renderer\Components\Interfaces\ComponentInterface
 
     description
     :   *No description available*

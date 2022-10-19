@@ -1,10 +1,10 @@
 <?php
 
-namespace Samsara\Fermat\Bench\Providers;
+namespace Samsara\Fermat\Core\Bench\Providers;
 
 use PhpBench\Attributes\Groups;
 use PhpBench\Attributes\Revs;
-use Samsara\Fermat\Provider\ConstantProvider;
+use Samsara\Fermat\Core\Provider\ConstantProvider;
 
 class ConstantProviderBench
 {
@@ -79,14 +79,14 @@ class ConstantProviderBench
         ConstantProvider::makePi(5);
     }
 
-    #[Groups(['trig', 'constants', 'providers', 'easy'])]
+    #[Groups(['trig', 'constants', 'providers', 'medium'])]
     #[Revs(500)]
     public function benchMakePiMedium()
     {
         ConstantProvider::makePi(50);
     }
 
-    #[Groups(['trig', 'constants', 'providers', 'easy'])]
+    #[Groups(['trig', 'constants', 'providers', 'hard'])]
     #[Revs(50)]
     public function benchMakePiHard()
     {
@@ -112,6 +112,48 @@ class ConstantProviderBench
     public function benchMakeEHard()
     {
         ConstantProvider::makeE(500);
+    }
+
+    #[Groups(['constants', 'providers', 'easy'])]
+    #[Revs(500)]
+    public function benchMakeGoldenRatioEasy()
+    {
+        ConstantProvider::makeGoldenRatio(5);
+    }
+
+    #[Groups(['constants', 'providers', 'medium'])]
+    #[Revs(500)]
+    public function benchMakeGoldenRatioMedium()
+    {
+        ConstantProvider::makeGoldenRatio(50);
+    }
+
+    #[Groups(['constants', 'providers', 'hard'])]
+    #[Revs(50)]
+    public function benchMakeGoldenRatioHard()
+    {
+        ConstantProvider::makeGoldenRatio(500);
+    }
+
+    #[Groups(['logs', 'constants', 'providers', 'easy'])]
+    #[Revs(500)]
+    public function benchMakeIPowIEasy()
+    {
+        ConstantProvider::makeIPowI(5);
+    }
+
+    #[Groups(['logs', 'constants', 'providers', 'medium'])]
+    #[Revs(500)]
+    public function benchMakeIPowIMedium()
+    {
+        ConstantProvider::makeIPowI(50);
+    }
+
+    #[Groups(['logs', 'constants', 'providers', 'hard'])]
+    #[Revs(50)]
+    public function benchMakeIPowIHard()
+    {
+        ConstantProvider::makeIPowI(500);
     }
 
 }

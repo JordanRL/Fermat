@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Arithmetic > ArithmeticNativeTrait
+# Samsara\Fermat\Core\Types\Traits\Arithmetic > ArithmeticNativeTrait
 
 *No description available*
 

@@ -1,4 +1,4 @@
-# Samsara\Fermat\Renderer\Components\Symbols > ThetaSymbol
+# Samsara\Fermat\Core\Renderer\Components\Symbols > ThetaSymbol
 
 *No description available*
 
@@ -11,7 +11,7 @@
 !!! signature interface "ComponentInterface"
     ##### ComponentInterface
     namespace
-    :   Samsara\Fermat\Renderer\Components\Interfaces
+    :   Samsara\Fermat\Core\Renderer\Components\Interfaces
 
     description
     :   

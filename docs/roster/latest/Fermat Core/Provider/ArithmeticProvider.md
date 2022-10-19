@@ -1,4 +1,4 @@
-# Samsara\Fermat\Provider > ArithmeticProvider
+# Samsara\Fermat\Core\Provider > ArithmeticProvider
 
 *No description available*
 

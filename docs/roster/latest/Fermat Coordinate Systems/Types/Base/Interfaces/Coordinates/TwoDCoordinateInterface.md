@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Base\Interfaces\Coordinates > TwoDCoordinateInterface
+# Samsara\Fermat\Core\Types\Base\Interfaces\Coordinates > TwoDCoordinateInterface
 
 *No description available*
 
@@ -16,7 +16,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\Geometry\CoordinateSystems\PolarCoordinate
+    :   Samsara\Fermat\Core\Values\Geometry\CoordinateSystems\PolarCoordinate
 
     description
     :   *No description available*
@@ -37,7 +37,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -61,7 +61,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -80,12 +80,12 @@
     
 ---
 
-!!! signature "public CoordinateInterface->distanceTo(Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface $coordinate)"
+!!! signature "public CoordinateInterface->distanceTo(Samsara\Fermat\Core\Types\Base\Interfaces\Coordinates\CoordinateInterface $coordinate)"
     ##### distanceTo
     **$coordinate**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Coordinates\CoordinateInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Coordinates\CoordinateInterface
 
     description
     :   *No description available*
@@ -93,7 +93,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -105,7 +105,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\Geometry\CoordinateSystems\CartesianCoordinate
+    :   Samsara\Fermat\Core\Values\Geometry\CoordinateSystems\CartesianCoordinate
 
     description
     :   *No description available*
@@ -117,7 +117,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*

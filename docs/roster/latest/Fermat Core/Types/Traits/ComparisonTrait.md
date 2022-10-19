@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits > ComparisonTrait
+# Samsara\Fermat\Core\Types\Traits > ComparisonTrait
 
 *No description available*
 

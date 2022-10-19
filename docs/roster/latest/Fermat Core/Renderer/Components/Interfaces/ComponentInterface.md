@@ -1,4 +1,4 @@
-# Samsara\Fermat\Renderer\Components\Interfaces > ComponentInterface
+# Samsara\Fermat\Core\Renderer\Components\Interfaces > ComponentInterface
 
 *No description available*
 

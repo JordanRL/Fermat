@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Arithmetic > ArithmeticScaleTrait
+# Samsara\Fermat\Core\Types\Traits\Arithmetic > ArithmeticScaleTrait
 
 *No description available*
 

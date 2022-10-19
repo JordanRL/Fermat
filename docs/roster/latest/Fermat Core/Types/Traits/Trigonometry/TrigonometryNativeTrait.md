@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Trigonometry > TrigonometryNativeTrait
+# Samsara\Fermat\Core\Types\Traits\Trigonometry > TrigonometryNativeTrait
 
 *No description available*
 

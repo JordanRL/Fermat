@@ -29,7 +29,7 @@ build:
                     - mkdir build/logs
                     - pecl install decimal
                 override:
-                    - command: php vendor/bin/phpunit -c phpunit-decimal.xml
+                    - command: php vendor/bin/phpunit
                       coverage:
                           file: build/logs/coverage.clover
                           format: clover
@@ -49,32 +49,6 @@ build:
                     - mkdir build/logs
                 override:
                     - command: php vendor/bin/phpunit
-                      coverage:
-                          file: build/logs/coverage.clover
-                          format: clover
-        with-modules-tests:
-            environment:
-                variables:
-                    COMPOSER_ROOT_VERSION: 2.0
-                php:
-                    version: 8.1
-                    ini:
-                        xdebug.mode: coverage
-            requires:
-                - node: standalone-tests-with-bcmath
-            tests:
-                before:
-                    - mkdir build
-                    - mkdir build/logs
-                    - composer config minimum-stability dev
-                    - composer config prefer-stable true
-                    - composer require -w "samsara/fermat-coordinate-systems:dev-master@dev"
-                    - composer require -w "samsara/fermat-complex-numbers:dev-master@dev"
-                    - composer require -w "samsara/fermat-matrices-and-vectors:dev-master@dev"
-                    - composer require -w "samsara/fermat-stats:dev-master@dev"
-                    - composer require -w "samsara/fermat-algebra-expressions:dev-master@dev"
-                override:
-                    - command: php vendor/bin/phpunit -c phpunit-modules.xml
                       coverage:
                           file: build/logs/coverage.clover
                           format: clover

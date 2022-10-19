@@ -1,4 +1,4 @@
-# Samsara\Fermat\Values\Distribution > Normal
+# Samsara\Fermat\Core\Values\Distribution > Normal
 
 *No description available*
 
@@ -8,7 +8,7 @@
 
 ### Extends
 
-- Samsara\Fermat\Types\Distribution
+- Samsara\Fermat\Core\Types\Distribution
 
 
 ## Methods
@@ -85,7 +85,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\Distribution\Normal
+    :   Samsara\Fermat\Core\Values\Distribution\Normal
 
     description
     :   *No description available*
@@ -123,7 +123,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\Distribution\Normal
+    :   Samsara\Fermat\Core\Values\Distribution\Normal
 
     description
     :   *No description available*
@@ -139,7 +139,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -151,7 +151,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -178,7 +178,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -200,7 +200,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -230,7 +230,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -255,7 +255,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -287,7 +287,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -309,7 +309,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -331,7 +331,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -353,7 +353,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -375,7 +375,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -387,7 +387,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -425,7 +425,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -449,7 +449,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\NumberCollection
+    :   Samsara\Fermat\Core\Types\NumberCollection
 
     description
     :   *No description available*
