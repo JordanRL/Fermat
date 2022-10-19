@@ -16,8 +16,8 @@ In the bootstrap phase of your application, you should set `CalcMode::Native` as
 ```php
 <?php
 
-use Samsara\Fermat\Provider\CalculationModeProvider;
-use Samsara\Fermat\Enums\CalcMode;
+use Samsara\Fermat\Core\Core\Provider\CalculationModeProvider;
+use Samsara\Fermat\Core\Core\Enums\CalcMode;
 
 CalculationModeProvider::setCurrentMode(CalcMode::Native);
 ```
@@ -36,9 +36,9 @@ If you mostly want to use Fermat in Native mode, but have a few places in your a
 ```php
 <?php
 
-use Samsara\Fermat\Values\ImmutableDecimal;
-use Samsara\Fermat\Enums\CalcMode;
-use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Core\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Core\Enums\CalcMode;
+use Samsara\Fermat\Core\Core\Numbers;
 
 $num = Numbers::make(Numbers::IMMUTABLE, '25', $myDesiredScale);
 
@@ -61,7 +61,7 @@ The `$foo++` and `$foo--` operations modify the variable in place. To duplicate 
 ```php
 <?php
 
-use Samsara\Fermat\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Core\Values\ImmutableDecimal;
 
 $num = new ImmutableDecimal(5);
 
@@ -93,7 +93,7 @@ So you could write some code that casts the value object to an integer only if t
 ```php
 <?php
 
-use Samsara\Fermat\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Core\Values\ImmutableDecimal;
 
 $num = new ImmutableDecimal('5.0009');
 

@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Decimal > TrigonometryTrait
+# Samsara\Fermat\Core\Types\Traits\Decimal > TrigonometryTrait
 
 *No description available*
 
@@ -29,7 +29,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -57,7 +57,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -85,7 +85,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -113,7 +113,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -141,7 +141,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -169,7 +169,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -197,7 +197,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -225,7 +225,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -253,7 +253,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -281,7 +281,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -309,7 +309,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -337,7 +337,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*

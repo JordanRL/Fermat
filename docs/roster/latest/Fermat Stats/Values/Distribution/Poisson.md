@@ -1,4 +1,4 @@
-# Samsara\Fermat\Values\Distribution > Poisson
+# Samsara\Fermat\Core\Values\Distribution > Poisson
 
 *No description available*
 
@@ -8,7 +8,7 @@
 
 ### Extends
 
-- Samsara\Fermat\Types\Distribution
+- Samsara\Fermat\Core\Types\Distribution
 
 
 ## Methods
@@ -69,7 +69,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -99,7 +99,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -129,7 +129,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -159,7 +159,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -171,7 +171,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -209,14 +209,15 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
 
     ###### rangeRandom() Description:
 
-    WARNING: This function is of very limited use with Poisson distributions, and may represent a SIGNIFICANT performance hit for certain values of $min, $max, $lambda, and $maxIterations
+    WARNING: This function is of very limited use with Poisson distributions, and may represent a SIGNIFICANT
+ performance hit for certain values of $min, $max, $lambda, and $maxIterations
     
 ---
 
@@ -237,7 +238,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\NumberCollection
+    :   Samsara\Fermat\Core\Types\NumberCollection
 
     description
     :   *No description available*

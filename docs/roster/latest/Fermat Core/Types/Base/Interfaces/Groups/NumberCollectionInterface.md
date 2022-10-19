@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Base\Interfaces\Groups > NumberCollectionInterface
+# Samsara\Fermat\Core\Types\Base\Interfaces\Groups > NumberCollectionInterface
 
 *No description available*
 
@@ -23,7 +23,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -69,7 +69,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -81,7 +81,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
 
     description
     :   *No description available*
@@ -103,7 +103,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -115,7 +115,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
 
     description
     :   *No description available*
@@ -127,7 +127,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -139,7 +139,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -158,7 +158,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -177,7 +177,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -196,7 +196,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -215,7 +215,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -234,7 +234,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -253,7 +253,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -275,7 +275,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
 
     description
     :   *No description available*
@@ -287,7 +287,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
 
     description
     :   *No description available*
@@ -299,7 +299,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
 
     description
     :   *No description available*
@@ -311,7 +311,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\NumberInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
 
     description
     :   *No description available*
@@ -323,7 +323,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Provider\Distribution\Normal
+    :   Samsara\Fermat\Core\Provider\Distribution\Normal
 
     description
     :   *No description available*
@@ -335,7 +335,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Provider\Distribution\Poisson
+    :   Samsara\Fermat\Core\Provider\Distribution\Poisson
 
     description
     :   *No description available*
@@ -347,7 +347,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Provider\Distribution\Exponential
+    :   Samsara\Fermat\Core\Provider\Distribution\Exponential
 
     description
     :   *No description available*
@@ -359,7 +359,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\Algebra\PolynomialFunction
+    :   Samsara\Fermat\Core\Values\Algebra\PolynomialFunction
 
     description
     :   *No description available*

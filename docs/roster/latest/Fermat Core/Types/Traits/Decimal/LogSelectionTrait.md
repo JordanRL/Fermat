@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Decimal > LogSelectionTrait
+# Samsara\Fermat\Core\Types\Traits\Decimal > LogSelectionTrait
 
 *No description available*
 

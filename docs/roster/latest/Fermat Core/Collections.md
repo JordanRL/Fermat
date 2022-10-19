@@ -1,4 +1,4 @@
-# Samsara\Fermat > Collections
+# Samsara\Fermat\Core > Collections
 
 *No description available*
 

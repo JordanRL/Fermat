@@ -1,6 +1,6 @@
 # The Matrices Factory Class
 
-The `Samsara\Fermat\Matrices` factory class provides access to several pre-built matrices that may be useful in common situations.
+The `Samsara\Fermat\Core\Matrices` factory class provides access to several pre-built matrices that may be useful in common situations.
 
 ### Available Constants
 

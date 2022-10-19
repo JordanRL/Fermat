@@ -1,13 +1,13 @@
 <?php
 
-namespace Samsara\Fermat\Bench\Arithmetic;
+namespace Samsara\Fermat\Core\Bench\Arithmetic;
 
 use PhpBench\Attributes\BeforeMethods;
 use PhpBench\Attributes\Groups;
 use PhpBench\Attributes\ParamProviders;
 use PhpBench\Attributes\Revs;
-use Samsara\Fermat\Enums\CalcMode;
-use Samsara\Fermat\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Enums\CalcMode;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 class DecimalArithmeticBench
 {

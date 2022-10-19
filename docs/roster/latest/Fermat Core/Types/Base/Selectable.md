@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Base > Selectable
+# Samsara\Fermat\Core\Types\Base > Selectable
 
 *No description available*
 

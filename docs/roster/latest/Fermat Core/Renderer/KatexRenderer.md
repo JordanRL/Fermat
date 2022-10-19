@@ -1,4 +1,4 @@
-# Samsara\Fermat\Renderer > KatexRenderer
+# Samsara\Fermat\Core\Renderer > KatexRenderer
 
 *No description available*
 

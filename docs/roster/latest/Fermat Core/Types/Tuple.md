@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types > Tuple
+# Samsara\Fermat\Core\Types > Tuple
 
 *No description available*
 
@@ -44,7 +44,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*

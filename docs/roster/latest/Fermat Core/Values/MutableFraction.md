@@ -1,4 +1,4 @@
-# Samsara\Fermat\Values > MutableFraction
+# Samsara\Fermat\Core\Values > MutableFraction
 
 *No description available*
 
@@ -8,7 +8,7 @@
 
 ### Extends
 
-- Samsara\Fermat\Types\Fraction
+- Samsara\Fermat\Core\Types\Fraction
 
 
 ### Implements
@@ -16,7 +16,7 @@
 !!! signature interface "SimpleNumberInterface"
     ##### SimpleNumberInterface
     namespace
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers
 
     description
     :   
@@ -26,7 +26,7 @@
 !!! signature interface "FractionInterface"
     ##### FractionInterface
     namespace
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers
 
     description
     :   
@@ -46,7 +46,7 @@
 !!! signature interface "NumberInterface"
     ##### NumberInterface
     namespace
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers
 
     description
     :   
@@ -252,7 +252,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -325,7 +325,8 @@
 
     Allows you to set a mode on a number to select the calculation methods.
     
-     MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting. MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
+     MODE_PRECISION: Use what is necessary to provide an answer that is accurate to the scale setting.
+ MODE_NATIVE: Use built-in functions to perform the math, and accept whatever rounding or truncation this might cause.
     
 ---
 
@@ -334,7 +335,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Enums\CalcMode
+    :   Samsara\Fermat\Core\Enums\CalcMode
 
     description
     :   *No description available*
@@ -361,7 +362,8 @@
 
     ###### setExtensions() Description:
 
-    Allows the object to ignore PHP extensions (such a GMP) and use only the Fermat implementations. NOTE: This does not ignore ext-bcmath or ext-decimal, as those are necessary for the string math itself.
+    Allows the object to ignore PHP extensions (such a GMP) and use only the Fermat implementations. NOTE: This does
+ not ignore ext-bcmath or ext-decimal, as those are necessary for the string math itself.
     
 ---
 
@@ -466,7 +468,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableComplexNumber
+    :   Samsara\Fermat\Core\Values\ImmutableComplexNumber
 
     description
     :   *No description available*
@@ -478,7 +480,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Enums\NumberBase
+    :   Samsara\Fermat\Core\Enums\NumberBase
 
     description
     :   *No description available*

@@ -1,4 +1,4 @@
-# Samsara\Fermat\Provider > ConstantProvider
+# Samsara\Fermat\Core\Provider > ConstantProvider
 
 *No description available*
 

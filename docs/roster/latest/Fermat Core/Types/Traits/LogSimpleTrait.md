@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits > LogSimpleTrait
+# Samsara\Fermat\Core\Types\Traits > LogSimpleTrait
 
 *No description available*
 
@@ -11,7 +11,7 @@
 !!! signature trait "LogNativeTrait"
     ##### LogNativeTrait
     namespace
-    :   Samsara\Fermat\Types\Traits\Decimal
+    :   Samsara\Fermat\Core\Types\Traits\Decimal
 
     description
     :   
@@ -21,7 +21,7 @@
 !!! signature trait "LogScaleTrait"
     ##### LogScaleTrait
     namespace
-    :   Samsara\Fermat\Types\Traits\Decimal
+    :   Samsara\Fermat\Core\Types\Traits\Decimal
 
     description
     :   
@@ -31,7 +31,7 @@
 !!! signature trait "LogSelectionTrait"
     ##### LogSelectionTrait
     namespace
-    :   Samsara\Fermat\Types\Traits\Decimal
+    :   Samsara\Fermat\Core\Types\Traits\Decimal
 
     description
     :   
@@ -66,7 +66,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -94,7 +94,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*
@@ -122,7 +122,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
 
     description
     :   *No description available*

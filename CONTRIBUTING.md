@@ -33,7 +33,7 @@ The following guidelines are greatly encouraged, although strict adherence is no
 
 - Coding Style: PSR-2
 - Namespacing:
-  - Within `Samsara\Fermat`
+  - Within `Samsara\Fermat\Core`
   - PSR-4
 - Docblock comments should be included and list, at a minimum:
   - The params

@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Base\Interfaces\Numbers > NumberInterface
+# Samsara\Fermat\Core\Types\Base\Interfaces\Numbers > NumberInterface
 
 *No description available*
 
@@ -244,7 +244,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableComplexNumber
+    :   Samsara\Fermat\Core\Values\ImmutableComplexNumber
 
     description
     :   *No description available*

@@ -1,4 +1,4 @@
-# Samsara\Fermat\Provider > BaseConversionProvider
+# Samsara\Fermat\Core\Provider > BaseConversionProvider
 
 *No description available*
 

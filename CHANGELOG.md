@@ -130,7 +130,7 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
 - Types:
   - Base:
     - Interfaces:
-      - ALL: Changed namespace from `Samsara\Fermat\Types\Base` to `Samsara\Fermat\Types\Base\Interfaces`
+      - ALL: Changed namespace from `Samsara\Fermat\Core\Types\Base` to `Samsara\Fermat\Core\Types\Base\Interfaces`
       - DecimalInterface:
         - Changed signature of `log10()` and `ln()` to `$scale = null` instead of `$scale = 10`
         - Changed type of `$scale` parameter in `log10()` and `ln()` from `int` to `int|null`
@@ -140,7 +140,7 @@ This project adheres to [Semantic Versioning](http://semver.org/). At least so m
       - ArithmeticTrait:
         - Updated all arithmetic functions to work with imaginary numbers, complex numbers, and negative numbers (square root)
     - Number:
-      - Changed namespace from `Samsara\Fermat\Types` to `Samsara\Fermat\Types\Base`
+      - Changed namespace from `Samsara\Fermat\Core\Types` to `Samsara\Fermat\Core\Types\Base`
       - Moved many methods into traits
       - Now passes the scale setting to ALL calls to `ArithmeticProvider` allowing scale up to 2147483646 digits.
       - Trig functions are now arbitrary scale

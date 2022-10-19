@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Samsara\Fermat\Values;
+namespace Samsara\Fermat\Core\Values;
 
 use PhpBench\Attributes\BeforeMethods;
 use PhpBench\Attributes\Groups;
 use PhpBench\Attributes\ParamProviders;
 use PhpBench\Attributes\Revs;
-use Samsara\Fermat\Enums\CalcMode;
+use Samsara\Fermat\Core\Enums\CalcMode;
 
 class DecimalTrigBasicBench
 {

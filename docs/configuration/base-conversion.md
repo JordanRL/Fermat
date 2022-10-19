@@ -27,8 +27,8 @@ Alternatively, you can provide the desired base as part of the `getValue()` call
 ```php
 <?php
 
-use Samsara\Fermat\Values\ImmutableDecimal;
-use Samsara\Fermat\Enums\NumberBase;
+use Samsara\Fermat\Core\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Core\Enums\NumberBase;
 
 $five = new ImmutableDecimal(5);
 
@@ -48,9 +48,9 @@ You can also set the base of an object while it is being instantiated.
 ```php
 <?php
 
-use Samsara\Fermat\Values\ImmutableDecimal;
-use Samsara\Fermat\Enums\NumberBase;
-use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Core\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Core\Enums\NumberBase;
+use Samsara\Fermat\Core\Core\Numbers;
 
 $five = new ImmutableDecimal(5, null, NumberBase::Five);
 
@@ -68,8 +68,8 @@ If you want Fermat to assume the value you pass during instantiation is already 
 ```php
 <?php
 
-use Samsara\Fermat\Values\ImmutableDecimal;
-use Samsara\Fermat\Enums\NumberBase;
+use Samsara\Fermat\Core\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Core\Enums\NumberBase;
 
 $five = new ImmutableDecimal(10, null, NumberBase::Five, false);
 
@@ -82,8 +82,8 @@ This is especially useful if you want to, for instance, convert a hex number int
 ```php
 <?php
 
-use Samsara\Fermat\Values\ImmutableDecimal;
-use Samsara\Fermat\Enums\NumberBase;
+use Samsara\Fermat\Core\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Core\Enums\NumberBase;
 
 $color = "FF9933";
 $moreGreen = "003300";

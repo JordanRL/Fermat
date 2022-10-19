@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits > ArithmeticSimpleTrait
+# Samsara\Fermat\Core\Types\Traits > ArithmeticSimpleTrait
 
 *No description available*
 
@@ -11,7 +11,7 @@
 !!! signature trait "ArithmeticSelectionTrait"
     ##### ArithmeticSelectionTrait
     namespace
-    :   Samsara\Fermat\Types\Traits\Arithmetic
+    :   Samsara\Fermat\Core\Types\Traits\Arithmetic
 
     description
     :   
@@ -21,7 +21,7 @@
 !!! signature trait "ArithmeticScaleTrait"
     ##### ArithmeticScaleTrait
     namespace
-    :   Samsara\Fermat\Types\Traits\Arithmetic
+    :   Samsara\Fermat\Core\Types\Traits\Arithmetic
 
     description
     :   
@@ -31,7 +31,7 @@
 !!! signature trait "ArithmeticNativeTrait"
     ##### ArithmeticNativeTrait
     namespace
-    :   Samsara\Fermat\Types\Traits\Arithmetic
+    :   Samsara\Fermat\Core\Types\Traits\Arithmetic
 
     description
     :   
@@ -41,7 +41,7 @@
 !!! signature trait "ArithmeticGMPTrait"
     ##### ArithmeticGMPTrait
     namespace
-    :   Samsara\Fermat\Types\Traits\Arithmetic
+    :   Samsara\Fermat\Core\Types\Traits\Arithmetic
 
     description
     :   

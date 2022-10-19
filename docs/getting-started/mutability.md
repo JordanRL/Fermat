@@ -44,7 +44,7 @@ First, lets look at the differences in your code that using one or the other mig
         ``` php
         <?php
         
-        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Core\Values\ImmutableDecimal;
         
         $balance = new ImmutableDecimal(5);
         
@@ -58,7 +58,7 @@ First, lets look at the differences in your code that using one or the other mig
         ``` php
         <?php
         
-        use Samsara\Fermat\Values\MutableDecimal;
+        use Samsara\Fermat\Core\Values\MutableDecimal;
         
         $balance = new MutableDecimal(5);
         
@@ -79,7 +79,7 @@ So then, why ever use immutable objects? It seems like using immutables will use
         ``` php
         <?php
         
-        use Samsara\Fermat\Values\ImmutableDecimal;
+        use Samsara\Fermat\Core\Values\ImmutableDecimal;
         
         $oldBalance = new ImmutableDecimal(5);
         $deposit = new ImmutableDecimal(10);
@@ -99,7 +99,7 @@ So then, why ever use immutable objects? It seems like using immutables will use
         ``` php
         <?php
         
-        use Samsara\Fermat\Values\MutableDecimal;
+        use Samsara\Fermat\Core\Values\MutableDecimal;
         
         $oldBalance = new MutableDecimal(5);
         $deposit = new MutableDecimal(10);
@@ -122,7 +122,7 @@ As we can see from the second set of examples, *assigning a value from a mutable
 !!! example "Example 3: Mutables Used Without Side Effects"
     ``` php
     <?php 
-    use Samsara\Fermat\Values\MutableDecimal;
+    use Samsara\Fermat\Core\Values\MutableDecimal;
     
     $oldBalance = new MutableDecimal(5);
     $deposit = new MutableDecimal(10);

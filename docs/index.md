@@ -146,7 +146,7 @@ Because PHP doesn't allow operator overloading, using the native math operators 
     ``` php
     <?php
     
-    use Samsara\Fermat\Values\ImmutableComplexNumber;
+    use Samsara\Fermat\Core\Values\ImmutableComplexNumber;
     
     $complexNumber = ImmutableComplexNumber::makeFromString('2+2i');
     

@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Arithmetic > ArithmeticSelectionTrait
+# Samsara\Fermat\Core\Types\Traits\Arithmetic > ArithmeticSelectionTrait
 
 *No description available*
 

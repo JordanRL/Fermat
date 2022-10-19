@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Base\Interfaces\Callables > ContinuedFractionTermInterface
+# Samsara\Fermat\Core\Types\Base\Interfaces\Callables > ContinuedFractionTermInterface
 
 *No description available*
 
@@ -21,7 +21,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Values\ImmutableDecimal
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*

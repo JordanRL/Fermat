@@ -20,7 +20,7 @@ Or include it in your `composer.json` file:
 }
 ```
 
-The project namespace is `Samsara\Fermat\*`. You can view the project on [Packagist](https://packagist.org/packages/samsara/fermat).
+The project namespace is `Samsara\Fermat\Core\*`. You can view the project on [Packagist](https://packagist.org/packages/samsara/fermat).
 
 ### Modules
 
@@ -48,12 +48,12 @@ Or in your `composer.json` file:
 
 ## Documentation
 
-The `Samsara\Fermat\Numbers` factory class provides a way to use the Value classes in Fermat without being as specific as those classes may require. Consider the following code:
+The `Samsara\Fermat\Core\Numbers` factory class provides a way to use the Value classes in Fermat without being as specific as those classes may require. Consider the following code:
 
 ```php
 <?php
 
-use Samsara\Fermat\Numbers;
+use Samsara\Fermat\Core\Core\Numbers;
 
 $five = Numbers::make(Numbers::IMMUTABLE, 5);
 $ten = Numbers::make(Numbers::IMMUTABLE, '10');
@@ -70,8 +70,8 @@ Here is an example of using the factory method to make a value that is in a base
 ```php
 <?php
 
-use Samsara\Fermat\Numbers;
-use Samsara\Fermat\Enums\NumberBase;
+use Samsara\Fermat\Core\Core\Numbers;
+use Samsara\Fermat\Core\Core\Enums\NumberBase;
 
 // Value in base5
 $five = Numbers::make(Numbers::IMMUTABLE, '10', null, NumberBase::Five); 
@@ -87,8 +87,8 @@ You can also use a `Fraction` and `Number` together:
 ```php
 <?php
 
-use Samsara\Fermat\Values\ImmutableDecimal;
-use Samsara\Fermat\Values\ImmutableFraction;
+use Samsara\Fermat\Core\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Core\Values\ImmutableFraction;
 
 $five = new ImmutableDecimal(5);
 $oneQuarter = new ImmutableFraction(1, 4);

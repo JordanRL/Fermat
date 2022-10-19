@@ -1,4 +1,4 @@
-# Samsara\Fermat\Types\Traits\Decimal > LogScaleTrait
+# Samsara\Fermat\Core\Types\Traits\Decimal > LogScaleTrait
 
 *No description available*
 

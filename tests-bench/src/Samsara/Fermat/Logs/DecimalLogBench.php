@@ -1,13 +1,13 @@
 <?php
 
-namespace Samsara\Fermat\Bench\Logs;
+namespace Samsara\Fermat\Core\Bench\Logs;
 
 use PhpBench\Attributes\BeforeMethods;
 use PhpBench\Attributes\Groups;
 use PhpBench\Attributes\ParamProviders;
 use PhpBench\Attributes\Revs;
-use Samsara\Fermat\Enums\CalcMode;
-use Samsara\Fermat\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Enums\CalcMode;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 class DecimalLogBench
 {
