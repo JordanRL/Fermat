@@ -349,6 +349,7 @@ class ArithmeticAutoTest extends TestCase
     }
 
     /**
+     * @medium
      * @dataProvider multiplicationImmutableComplexProvider
      * @dataProvider multiplicationMutableComplexProvider
      */
@@ -469,6 +470,7 @@ class ArithmeticAutoTest extends TestCase
     }
 
     /**
+     * @medium
      * @dataProvider divisionImmutableComplexProvider
      * @dataProvider divisionMutableComplexProvider
      */
