@@ -2,9 +2,9 @@
 
 namespace Samsara\Fermat\Core\Types\Traits\Arithmetic;
 
-use Composer\InstalledVersions;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
@@ -45,19 +45,47 @@ trait ArithmeticHelperTrait
                 break;
 
             case 'object':
-                if ($right instanceof MutableDecimal) {
-                    $right = Numbers::make(Numbers::IMMUTABLE, $right);
-                } elseif ($right instanceof MutableFraction) {
-                    $right = Numbers::make(Numbers::IMMUTABLE_FRACTION, $right);
-                } else {
-                    $right = !($right instanceof NumberInterface) ? Numbers::make(Numbers::IMMUTABLE, $right) : $right;
-                }
+                $right = match (get_class($right)) {
+                    MutableFraction::class,
+                    ImmutableFraction::class => new ImmutableFraction(
+                        $right->getNumerator(),
+                        $right->getDenominator(),
+                        $right->getBase()
+                    ),
+                    MutableDecimal::class,
+                    ImmutableDecimal::class => new ImmutableDecimal(
+                        $right->getValue(NumberBase::Ten),
+                        $right->getScale(),
+                        $right->getBase()
+                    ),
+                    MutableComplexNumber::class,
+                    ImmutableComplexNumber::class => new ImmutableComplexNumber(
+                        new ImmutableDecimal(
+                            $right->getRealPart()->getValue(NumberBase::Ten),
+                            $right->getRealPart()->getScale(),
+                            $right->getRealPart()->getBase()
+                        ),
+                        new ImmutableDecimal(
+                            $right->getImaginaryPart()->getValue(NumberBase::Ten),
+                            $right->getImaginaryPart()->getScale(),
+                            $right->getImaginaryPart()->getBase()
+                        ),
+                        $right->getScale()
+                    ),
+                    default => $right
+                };
                 break;
         }
 
         [$thatRealPart, $thatImaginaryPart, $right] = self::rightSelector($left, $right, $identity);
 
         [$thisRealPart, $thisImaginaryPart] = self::leftSelector($left, $identity);
+
+        $thisRealPart->setMode($this->getMode());
+        $thisImaginaryPart->setMode($this->getMode());
+        $thatRealPart->setMode($this->getMode());
+        $thatImaginaryPart->setMode($this->getMode());
+        $right->setMode($this->getMode());
 
         return [$thatRealPart, $thatImaginaryPart, $thisRealPart, $thisImaginaryPart, $right];
     }
@@ -66,7 +94,6 @@ trait ArithmeticHelperTrait
      * @param string $input
      * @return ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected static function stringSelector(string $input): ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction
     {
@@ -172,8 +199,9 @@ trait ArithmeticHelperTrait
             return $this->setValue($newImaginaryPart->getValue(NumberBase::Ten));
         }
 
-        /** @psalm-suppress UndefinedClass */
-        return new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
+        $complex = new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
+
+        return $complex->setMode($this->getMode());
     }
 
     /**

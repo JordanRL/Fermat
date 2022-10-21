@@ -180,7 +180,7 @@ trait ArithmeticSimpleTrait
 
             $value = $this->asDecimal()->multiply($num);
 
-            return new ImmutableDecimal($value, $this->getScale());
+            return $value->setMode($this->getMode());
         } else {
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
             $value = $this->multiplySelector($num);
@@ -214,7 +214,7 @@ trait ArithmeticSimpleTrait
             $thisRealPart,
             $thisImaginaryPart,
             $num
-        ] = $this->translateToParts($this, $num, 1);
+        ] = $this->translateToParts($this, $num, 0);
 
         if ($num->isEqual(0)) {
             throw new IntegrityConstraint(
@@ -225,7 +225,8 @@ trait ArithmeticSimpleTrait
         }
 
         if ($num->isComplex()) {
-            return $num->divide($this);
+            $thisComplex = (new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart))->setMode($this->getMode());
+            return $thisComplex->divide($num);
         }
 
         if ($num->isEqual(1)) {
@@ -249,7 +250,7 @@ trait ArithmeticSimpleTrait
 
             $value = $this->asDecimal($scale)->divide($num);
 
-            return new ImmutableDecimal($value, $scale);
+            return $value->setMode($this->getMode());
         } else {
             /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
             $value = $this->divideSelector($num, $scale);
@@ -291,11 +292,12 @@ trait ArithmeticSimpleTrait
             $num->isComplex()
             || ($this->isReal() xor $num->isReal())
         ) {
-            /** @psalm-suppress UndefinedClass */
             $thisComplex = new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart);
 
-            /** @psalm-suppress UndefinedClass */
             $thatComplex = new ImmutableComplexNumber($thatRealPart, $thatImaginaryPart);
+
+            $thisComplex->setMode($this->getMode());
+            $thatComplex->setMode($this->getMode());
 
             return $thisComplex->pow($thatComplex);
         }

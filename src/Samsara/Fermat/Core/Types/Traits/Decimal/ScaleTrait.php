@@ -211,7 +211,7 @@ trait ScaleTrait
             );
         }
 
-        return intval($this->asReal());
+        return intval($this->getAsBaseTenRealNumber());
     }
 
     /**
@@ -229,7 +229,7 @@ trait ScaleTrait
      */
     public function asFloat(): float
     {
-        return (float)$this->asReal();
+        return (float)$this->getAsBaseTenRealNumber();
     }
 
     /**

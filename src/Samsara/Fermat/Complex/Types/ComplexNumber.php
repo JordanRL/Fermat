@@ -2,7 +2,11 @@
 
 namespace Samsara\Fermat\Complex\Types;
 
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Complex\ComplexNumbers;
+use Samsara\Fermat\Coordinates\Values\PolarCoordinate;
+use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Complex\Types\Base\Interfaces\Numbers\ComplexNumberInterface;
@@ -10,36 +14,51 @@ use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Complex\Types\Traits\ArithmeticComplexTrait;
 use Samsara\Fermat\Coordinates\Values\CartesianCoordinate;
-use Samsara\Fermat\Coordinates\Values\PolarCoordinate;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Core\Types\Base\Number;
+use Samsara\Fermat\Core\Types\Traits\CalculationModeTrait;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Types\Fraction;
 
-abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInterface
+/**
+ *
+ */
+abstract class ComplexNumber extends Number implements ComplexNumberInterface
 {
 
     /** @var ImmutableDecimal|ImmutableFraction */
-    protected $realPart;
+    protected ImmutableDecimal|ImmutableFraction $realPart;
     /** @var ImmutableDecimal|ImmutableFraction */
-    protected $imaginaryPart;
+    protected ImmutableDecimal|ImmutableFraction $imaginaryPart;
     /** @var int */
-    protected $scale;
+    protected int $scale;
+    protected CartesianCoordinate $cachedCartesian;
+    protected PolarCoordinate $cachedPolar;
+
 
     use ArithmeticComplexTrait;
+    use CalculationModeTrait;
 
+    /**
+     * @param $realPart
+     * @param $imaginaryPart
+     * @param $scale
+     * @param NumberBase $base
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
+     */
     public function __construct($realPart, $imaginaryPart, $scale = null, NumberBase $base = NumberBase::Ten)
     {
 
-        if (is_object($realPart) && $realPart instanceof Fraction) {
+        if ($realPart instanceof Fraction) {
             $this->realPart = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $realPart, $scale, $base);
         } elseif (!is_object($realPart) || !($realPart instanceof ImmutableDecimal)) {
             $this->realPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $realPart, $scale, $base);
         } else {
             $this->realPart = $realPart;
         }
-        if (is_object($imaginaryPart) && $imaginaryPart instanceof Fraction) {
+        if ($imaginaryPart instanceof Fraction) {
             $this->imaginaryPart = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $imaginaryPart, $scale, $base);
         } elseif (!is_object($imaginaryPart) || !($imaginaryPart instanceof ImmutableDecimal)) {
             $this->imaginaryPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $imaginaryPart, $scale, $base);
@@ -52,10 +71,33 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
         $cartesian = new CartesianCoordinate($this->realPart, Numbers::make(Numbers::IMMUTABLE, $this->imaginaryPart->getAsBaseTenRealNumber()));
         $this->cachedCartesian = $cartesian;
 
-        $polar = $cartesian->asPolar();
+        $this->cachedPolar = $cartesian->asPolar($this->scale+$this->realPart->numberOfTotalDigits()+$this->imaginaryPart->numberOfTotalDigits());
+    }
 
-        parent::__construct($polar->getDistanceFromOrigin(), $polar->getPolarAngle());
+    /**
+     * Allows you to set a mode on a number to select the calculation methods.
+     *
+     * @param ?CalcMode $mode
+     * @return $this
+     */
+    public function setMode(?CalcMode $mode): static
+    {
+        $this->calcMode = $mode;
 
+        $this->realPart->setMode($mode);
+        $this->imaginaryPart->setMode($mode);
+
+        return $this;
+    }
+
+    public function asPolar(): PolarCoordinate
+    {
+        return $this->cachedPolar;
+    }
+
+    public function getAsBaseTenRealNumber(): string
+    {
+        return $this->getDistanceFromOrigin();
     }
 
     public function getRealPart(): SimpleNumberInterface
@@ -88,13 +130,27 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
         return false;
     }
 
-    public function asReal(): string
+    public function asReal(): ImmutableDecimal|ImmutableFraction
     {
-        return $this->getDistanceFromOrigin();
+        return (new ImmutableDecimal($this->getAsBaseTenRealNumber(), $this->getScale()))->setMode($this->getMode());
     }
 
     public function isEqual($value): bool
     {
+        if (is_int($value) || is_float($value)) {
+            return false;
+        }
+
+        if (is_string($value) && !str_contains($value, 'i')) {
+            return false;
+        } else {
+            $value = ComplexNumbers::make(ComplexNumbers::IMMUTABLE_COMPLEX, $value);
+        }
+
+        if (!$value->isComplex()) {
+            return false;
+        }
+
         if (!($value instanceof NumberInterface)) {
             if (is_string($value)) {
                 try {
@@ -113,19 +169,7 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
             }
         }
 
-        if ($value->isComplex() == false) {
-            return false;
-        }
-
-        $valueParts = $value->getValue()->all();
-
-        $equal = true;
-
-        foreach ($valueParts as $key => $part) {
-            $equal = $equal && $this->values->get($key)->isEqual($part);
-        }
-
-        return $equal;
+        return $this->getValue() === $value->getValue();
     }
 
     abstract protected function setValue(SimpleNumberInterface $realPart, SimpleNumberInterface $imaginaryPart);
@@ -178,14 +222,30 @@ abstract class ComplexNumber extends PolarCoordinate implements ComplexNumberInt
         return static::makeFromArray([$part1, $part2], $scale, $base);
     }
 
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getDistanceFromOrigin(): ImmutableDecimal
+    {
+        return $this->cachedPolar->getDistanceFromOrigin();
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getPolarAngle(): ImmutableDecimal
+    {
+        return $this->cachedPolar->getPolarAngle();
+    }
+
     public function abs(): ImmutableDecimal
     {
-        return $this->getDistanceFromOrigin();
+        return $this->getDistanceFromOrigin()->roundToScale($this->getScale());
     }
 
     public function absValue(): string
     {
-        return $this->getDistanceFromOrigin()->getValue();
+        return $this->abs()->getValue();
     }
 
     public function getValue(): string

@@ -24,6 +24,8 @@ use Samsara\Fermat\Core\Types\Traits\Decimal\ScaleTrait;
 use Samsara\Fermat\Core\Types\Traits\InverseTrigonometrySimpleTrait;
 use Samsara\Fermat\Core\Types\Traits\LogSimpleTrait;
 use Samsara\Fermat\Core\Types\Traits\TrigonometrySimpleTrait;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
  *
@@ -186,6 +188,11 @@ abstract class Decimal extends Number implements DecimalInterface
         }
 
         return $string;
+    }
+
+    public function asReal(): ImmutableDecimal|ImmutableFraction
+    {
+        return (new ImmutableDecimal($this->getAsBaseTenRealNumber(), $this->getScale()))->setMode($this->getMode());
     }
 
     /**

@@ -63,7 +63,7 @@ trait ArithmeticSelectionTrait
      */
     protected function addSelector(DecimalInterface $num): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
         if ($calcMode == CalcMode::Auto) {
             $value = $this->addGMP($num);
 
@@ -86,7 +86,7 @@ trait ArithmeticSelectionTrait
      */
     protected function subtractSelector(DecimalInterface $num): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
         if ($calcMode == CalcMode::Auto) {
             $value = $this->subtractGMP($num);
 
@@ -109,7 +109,7 @@ trait ArithmeticSelectionTrait
      */
     protected function multiplySelector(DecimalInterface $num): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
         if ($calcMode == CalcMode::Auto) {
             $value = $this->multiplyGMP($num);
 
@@ -133,7 +133,7 @@ trait ArithmeticSelectionTrait
      */
     protected function divideSelector(DecimalInterface $num, ?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
         if ($calcMode == CalcMode::Auto) {
             $value = $this->divideGMP($num);
 
@@ -157,7 +157,7 @@ trait ArithmeticSelectionTrait
      */
     protected function powSelector(DecimalInterface $num): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
         if ($num->isEqual(0)) {
             return '1';
         }
@@ -185,7 +185,7 @@ trait ArithmeticSelectionTrait
      */
     protected function sqrtSelector(?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         if ($calcMode == CalcMode::Auto) {
             $value = $this->sqrtGMP();

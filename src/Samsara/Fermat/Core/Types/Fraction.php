@@ -12,6 +12,7 @@ use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Core\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
  *
@@ -234,6 +235,14 @@ abstract class Fraction extends Number implements FractionInterface
     public function getAsBaseTenRealNumber(): string
     {
         return $this->getNumerator()->getAsBaseTenRealNumber().'/'.$this->getDenominator()->getAsBaseTenRealNumber();
+    }
+
+    /**
+     * @return ImmutableDecimal|ImmutableFraction
+     */
+    public function asReal(): ImmutableDecimal|ImmutableFraction
+    {
+        return (new ImmutableFraction($this->getNumerator()->getAsBaseTenRealNumber(), $this->getDenominator()->getAsBaseTenRealNumber()))->setMode($this->getMode());
     }
 
     /**

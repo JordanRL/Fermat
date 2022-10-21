@@ -3,6 +3,8 @@
 namespace Samsara\Fermat\Core\Types\Base\Interfaces\Numbers;
 
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
  *
@@ -86,9 +88,9 @@ interface NumberInterface
     public function isReal(): bool;
 
     /**
-     * @return string
+     * @return ImmutableDecimal|ImmutableFraction
      */
-    public function asReal(): string;
+    public function asReal(): ImmutableDecimal|ImmutableFraction;
 
     /**
      * @return bool

@@ -18,8 +18,7 @@ class MutableComplexNumber extends ComplexNumber
 
         $polar = $this->cachedCartesian->asPolar();
 
-        $this->values->set(0, $polar->getDistanceFromOrigin());
-        $this->values->set(1, $polar->getPolarAngle());
+        $this->cachedPolar = $polar;
 
         return $this;
     }

@@ -17,7 +17,7 @@ trait TrigonometrySelectionTrait
      */
     protected function sinSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->sinNative(),
@@ -31,7 +31,7 @@ trait TrigonometrySelectionTrait
      */
     protected function cosSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->cosNative(),
@@ -45,7 +45,7 @@ trait TrigonometrySelectionTrait
      */
     protected function tanSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->tanNative(),
@@ -60,7 +60,7 @@ trait TrigonometrySelectionTrait
      */
     protected function secSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->secNative(),
@@ -75,7 +75,7 @@ trait TrigonometrySelectionTrait
      */
     protected function cscSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->cscNative(),
@@ -90,7 +90,7 @@ trait TrigonometrySelectionTrait
      */
     protected function cotSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->cotNative(),
@@ -104,7 +104,7 @@ trait TrigonometrySelectionTrait
      */
     protected function sinhSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->sinhNative(),
@@ -118,7 +118,7 @@ trait TrigonometrySelectionTrait
      */
     protected function coshSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->coshNative(),
@@ -132,7 +132,7 @@ trait TrigonometrySelectionTrait
      */
     protected function tanhSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->tanhNative(),
@@ -147,7 +147,7 @@ trait TrigonometrySelectionTrait
      */
     protected function sechSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->sechNative(),
@@ -161,7 +161,7 @@ trait TrigonometrySelectionTrait
      */
     protected function cschSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->cschNative(),
@@ -176,7 +176,7 @@ trait TrigonometrySelectionTrait
      */
     protected function cothSelector(?int $scale = null): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->cothNative(),

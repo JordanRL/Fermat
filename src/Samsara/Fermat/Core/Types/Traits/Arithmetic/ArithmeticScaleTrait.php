@@ -26,7 +26,7 @@ trait ArithmeticScaleTrait
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
 
-        return ArithmeticProvider::add($this->asReal(), $num->asReal(), $scale);
+        return ArithmeticProvider::add($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale);
 
     }
 
@@ -39,7 +39,7 @@ trait ArithmeticScaleTrait
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
 
-        return ArithmeticProvider::subtract($this->asReal(), $num->asReal(), $scale);
+        return ArithmeticProvider::subtract($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale);
 
     }
 
@@ -52,7 +52,7 @@ trait ArithmeticScaleTrait
 
         $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
 
-        return ArithmeticProvider::multiply($this->asReal(), $num->asReal(), $scale);
+        return ArithmeticProvider::multiply($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale);
 
     }
 
@@ -70,7 +70,7 @@ trait ArithmeticScaleTrait
 
         $scale = $scale + $this->numberOfLeadingZeros() + $num->numberOfLeadingZeros();
 
-        return ArithmeticProvider::divide($this->asReal(), $num->asReal(), $scale+1);
+        return ArithmeticProvider::divide($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale+1);
 
     }
 
@@ -96,7 +96,7 @@ trait ArithmeticScaleTrait
             return $exponent->exp($scale, false)->getValue(NumberBase::Ten);
         }
 
-        return ArithmeticProvider::pow($this->asReal(), $num->asReal(), $scale+1);
+        return ArithmeticProvider::pow($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale+1);
 
     }
 

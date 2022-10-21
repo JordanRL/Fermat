@@ -16,7 +16,7 @@ trait InverseTrigonometrySelectionTrait
      */
     protected function arcsinSelector(?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->arcsinNative(),
@@ -30,7 +30,7 @@ trait InverseTrigonometrySelectionTrait
      */
     protected function arccosSelector(?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->arccosNative(),
@@ -44,7 +44,7 @@ trait InverseTrigonometrySelectionTrait
      */
     protected function arctanSelector(?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->arctanNative(),
@@ -58,7 +58,7 @@ trait InverseTrigonometrySelectionTrait
      */
     protected function arcsecSelector(?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->arcsecNative(),
@@ -72,7 +72,7 @@ trait InverseTrigonometrySelectionTrait
      */
     protected function arccscSelector(?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->arccscNative(),
@@ -86,7 +86,7 @@ trait InverseTrigonometrySelectionTrait
      */
     protected function arccotSelector(?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->arccotNative(),

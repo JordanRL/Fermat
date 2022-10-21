@@ -3,6 +3,7 @@
 
 namespace Samsara\Fermat\Complex\Types\Traits;
 
+use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
@@ -13,7 +14,12 @@ use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
 use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Coordinates\Values\PolarCoordinate;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
 
+/**
+ *
+ */
 trait ArithmeticComplexTrait
 {
 
@@ -22,6 +28,11 @@ trait ArithmeticComplexTrait
     use ArithmeticScaleTrait;
     use ArithmeticNativeTrait;
 
+    /**
+     * @param $num
+     *
+     * @return NumberInterface|DecimalInterface|FractionInterface
+     */
     public function add($num)
     {
 
@@ -100,10 +111,17 @@ trait ArithmeticComplexTrait
 
             $parts = $foiled->describeShape();
 
-            $newRealPart = new ImmutableDecimal($parts[0]);
-            $newImaginaryPart = new ImmutableDecimal($parts[1]);
-            /** @var ImmutableDecimal $newRealPart */
-            $newRealPart = $newRealPart->add($parts[2]);
+            $value = Numbers::makeZero()->setMode($this->getMode());
+
+            foreach ($parts as $part) {
+                $value = $value->add($part);
+            }
+
+            if ($value instanceof ComplexNumber) {
+                return $this->setValue($value->getRealPart(), $value->getImaginaryPart());
+            }
+
+            return $value;
         } else {
             $value1 = $thisRealPart->multiply($num);
             $value2 = $thisImaginaryPart->multiply($num);
@@ -116,11 +134,7 @@ trait ArithmeticComplexTrait
             return $this->setValue($newRealPart, $newImaginaryPart);
         }
 
-        $value = $newRealPart->isEqual(0) ? $newImaginaryPart : $newRealPart;
-        $value = $value->isEqual(0) ? new ImmutableDecimal(0) : $value;
-
-        return new ImmutableDecimal($value->getValue());
-
+        return (new ImmutableDecimal(0))->setMode($this->getMode());
     }
 
     public function divide($num, int $scale = null)
@@ -137,17 +151,34 @@ trait ArithmeticComplexTrait
         ] = $this->translateToParts($this, $num, 1);
 
         if ($num->isComplex()) {
-            $newRho = $this->getDistanceFromOrigin()->divide($num->getDistanceFromOrigin(), $scale);
-            $newTheta = $this->getPolarAngle()->subtract($num->getPolarAngle());
+            $intScale = $scale + 2;
+            $denominator = $thatRealPart->roundToScale($intScale)->pow(2)->add($thatImaginaryPart->asReal()->roundToScale($intScale)->pow(2));
 
-            $polar = new PolarCoordinate($newRho, $newTheta);
-            $cartesian = $polar->asCartesian();
-
-            $newRealPart = $cartesian->getAxis('x');
-            $newImaginaryPart = $cartesian->getAxis('y');
+            $partA = $thisRealPart->roundToScale($intScale)->multiply($thatRealPart->roundToScale($intScale))
+                ->add($thisImaginaryPart->asReal()->roundToScale($intScale)->multiply($thatImaginaryPart->asReal()->roundToScale($intScale)))
+                ->divide($denominator, $intScale);
+            $partB = $thisImaginaryPart->asReal()->roundToScale($intScale)->multiply($thatRealPart->roundToScale($intScale))
+                ->subtract($thisRealPart->roundToScale($intScale)->multiply($thatImaginaryPart->asReal()->roundToScale($intScale)))
+                ->divide($denominator, $intScale)
+                ->multiply('1i');
         } else {
-            $newRealPart = $thisRealPart->divide($num, $scale);
-            $newImaginaryPart = $thisImaginaryPart->divide($num, $scale);
+            $partA = $thisRealPart->divide($num, $scale+2);
+            $partB = $thisImaginaryPart->divide($num, $scale+2);
+        }
+
+        $newRealPart = Numbers::makeZero($scale)->setMode($this->getMode());
+        $newImaginaryPart = Numbers::makeZero($scale)->setMode($this->getMode());
+
+        $newRealPart = $partA->isReal() ? $newRealPart->add($partA) : $newRealPart->add($partB);
+        $newImaginaryPart = $partA->isImaginary() ? $newImaginaryPart->add($partA) : $newImaginaryPart->add($partB);
+
+        if ($newRealPart->isEqual(0) xor $newImaginaryPart->isEqual(0)) {
+            return match ($newRealPart->isEqual(0)) {
+                true => $newImaginaryPart,
+                false => $newRealPart
+            };
+        } elseif ($newRealPart->isEqual(0) && $newImaginaryPart->isEqual(0)) {
+            return (new ImmutableDecimal(0, $this->getScale()))->setMode($this->getMode());
         }
 
         return $this->setValue($newRealPart, $newImaginaryPart);

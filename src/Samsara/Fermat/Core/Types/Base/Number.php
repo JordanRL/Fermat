@@ -11,14 +11,21 @@ use Samsara\Fermat\Core\Enums\NumberFormat;
 use Samsara\Fermat\Core\Enums\NumberGrouping;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\CalculationModeProvider;
+use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\CalcModeInterface;
+use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
+use Samsara\Fermat\Core\Types\Traits\CalculationModeTrait;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
  *
  */
-abstract class Number implements Hashable, NumberInterface
+abstract class Number implements Hashable, NumberInterface, CalcModeInterface
 {
+    use CalculationModeTrait;
+
     public const INFINITY = 'INF';
     public const NEG_INFINITY = '-INF';
 
@@ -28,37 +35,12 @@ abstract class Number implements Hashable, NumberInterface
     protected bool $imaginary;
     /** @var bool */
     protected bool $sign;
-    /** @var CalcMode|null */
-    protected ?CalcMode $calcMode = null;
     /** @var int */
     protected int $scale;
     protected NumberBase $base;
 
     public function __construct()
     {
-
-    }
-
-    /**
-     * Allows you to set a mode on a number to select the calculation methods.
-     *
-     * @param CalcMode $mode
-     * @return $this
-     */
-    public function setMode(CalcMode $mode): self
-    {
-        $this->calcMode = $mode;
-
-        return $this;
-    }
-
-    /**
-     * @return CalcMode
-     */
-    public function getMode(): CalcMode
-    {
-
-        return $this->calcMode ?? CalculationModeProvider::getCurrentMode();
 
     }
 
@@ -129,12 +111,9 @@ abstract class Number implements Hashable, NumberInterface
     }
 
     /**
-     * @return string
+     * @return ImmutableDecimal|ImmutableFraction
      */
-    public function asReal(): string
-    {
-        return $this->getAsBaseTenRealNumber();
-    }
+    abstract public function asReal(): ImmutableDecimal|ImmutableFraction;
 
     /**
      * @return string
