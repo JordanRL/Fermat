@@ -8,7 +8,9 @@ commands:
   phpunit-run:
     description: "Running PHPUnit With BCMath"
     steps:
-      - run: vendor/bin/phpunit
+      - run: mkdir build
+      - run: mkdir build/logs
+      - run: vendor/bin/phpunit --coverage-clover build/logs/coverage.clover
   extensions-install:
     description: "Installing Core PHP Extension"
     steps:
