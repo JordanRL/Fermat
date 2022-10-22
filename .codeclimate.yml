@@ -33,7 +33,7 @@ checks:
   similar-code:
     enabled: true
     config:
-      threshold: 15
+      threshold: 30
   identical-code:
     enabled: true
     config:
