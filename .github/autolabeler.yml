@@ -1,11 +1,52 @@
-'Feature: Type': '/src/Samsara/Fermat/Types'
-'Feature: Value': '/src/Samsara/Fermat/Values'
-'Feature: Provider': '/src/Samsara/Fermat/Provider'
+'Feature: Type':
+  - '/src/Samsara/Fermat/Core/Types'
+  - '/src/Samsara/Fermat/Complex/Types'
+  - '/src/Samsara/Fermat/Coordinates/Types'
+  - '/src/Samsara/Fermat/Expressions/Types'
+  - '/src/Samsara/Fermat/LinearAlgebra/Types'
+  - '/src/Samsara/Fermat/Stats/Types'
+'Feature: Value':
+  - '/src/Samsara/Fermat/Core/Values'
+  - '/src/Samsara/Fermat/Complex/Values'
+  - '/src/Samsara/Fermat/Coordinates/Values'
+  - '/src/Samsara/Fermat/Expressions/Values'
+  - '/src/Samsara/Fermat/LinearAlgebra/Values'
+  - '/src/Samsara/Fermat/Stats/Values'
+'Feature: Provider':
+  - '/src/Samsara/Fermat/Core/Provider'
+  - '/src/Samsara/Fermat/Complex/Provider'
+  - '/src/Samsara/Fermat/Coordinates/Provider'
+  - '/src/Samsara/Fermat/Expressions/Provider'
+  - '/src/Samsara/Fermat/LinearAlgebra/Provider'
+  - '/src/Samsara/Fermat/Stats/Provider'
 'Documentation': '/docs'
-'Code Quality': ['/tests', '/tests-with-modules']
+'Code Quality':
+  - '/tests'
+  - '/tests-bench'
 'Core: Traits': '*Trait.php'
 'Core: Interfaces': '*Interface.php'
 'Core: Immutables': 'Immutable*'
 'Core: Mutables': 'Mutable*'
-'PR: Major': '*Interfaces.php'
-'PR: Minor': '/src/Samsara/Fermat/Provider'
+'Module: Complex Numbers':
+  - '/src/Samsara/Fermat/Complex'
+  - '/tests/Samsara/Fermat/Complex'
+'Module: Coordinate Systems':
+  - '/src/Samsara/Fermat/Coordinates'
+  - '/tests/Samsara/Fermat/Coordinates'
+'Module: Algebra Expressions':
+  - '/src/Samsara/Fermat/Expressions'
+  - '/tests/Samsara/Fermat/Expressions'
+'Module: Matrices and Vectors':
+  - '/src/Samsara/Fermat/LinearAlgebra'
+  - '/tests/Samsara/Fermat/LinearAlgebra'
+'Module: Stats':
+  - '/src/Samsara/Fermat/Stats'
+  - '/tests/Samsara/Fermat/Stats'
+'PR: Major': '*Interface.php'
+'PR: Minor':
+  - '/src/Samsara/Fermat/Core/Provider'
+  - '/src/Samsara/Fermat/Complex/Provider'
+  - '/src/Samsara/Fermat/Coordinates/Provider'
+  - '/src/Samsara/Fermat/Expressions/Provider'
+  - '/src/Samsara/Fermat/LinearAlgebra/Provider'
+  - '/src/Samsara/Fermat/Stats/Provider'
