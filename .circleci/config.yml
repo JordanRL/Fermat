@@ -2,26 +2,43 @@ version: 2.1
 
 commands:
   composer-update:
-    name: "Updating Dependencies With Composer"
+    description: "Updating Dependencies With Composer"
     steps:
-      - run: composer update
+      - run:
+          name: "Running Composer"
+          command: composer update
   phpunit-run:
-    name: "Running PHPUnit"
+    description: "Running Unit Tests With PHPUnit"
     steps:
-      - run: mkdir build
-      - run: mkdir build/logs
-      - run: vendor/bin/phpunit
-  extensions-install:
-    name: "Installing Xdebug And GMP Extensions"
+      - run:
+          name: "Running Unit Tests"
+          command: |
+            mkdir build
+            mkdir build/logs
+            vendor/bin/phpunit
+  xdebug-enable:
+    description: "Enabling XDebug Extension"
     steps:
-      - run: sudo -E install-php-extensions xdebug gmp
-      - run: sudo docker-php-ext-enable xdebug
+      - run:
+          name: "Enabling XDebug Extension"
+          command: |
+              sudo -E install-php-extensions xdebug
+              sudo docker-php-ext-enable xdebug
+  gmp-enable:
+    description: "Enabling GMP Extension"
+    steps:
+      - run:
+          name: "Enabling GMP Extension"
+          command: sudo -E install-php-extensions gmp
   decimal-install:
-    name: "Installing Decimal Extension"
+    description: "Installing Decimal Extension"
     steps:
-      - run: sudo apt update
-      - run: sudo apt install libmpdec-dev
-      - run: sudo pecl install decimal
+      - run:
+          name: "Installing Decimal Extension"
+          command: |
+              sudo apt update
+              sudo apt install libmpdec-dev
+              sudo pecl install decimal
 
 jobs:
   cc-coverage-reporter:
@@ -50,7 +67,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: ./tmp
-      - extensions-install
+      - gmp-enable
+      - xdebug-enable
       - composer-update
       - phpunit-run
       - run:
@@ -69,7 +87,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: ./tmp
-      - extensions-install
+      - gmp-enable
+      - xdebug-enable
       - decimal-install
       - composer-update
       - phpunit-run
@@ -98,7 +117,8 @@ jobs:
       - image: cimg/php:8.1
     steps:
       - checkout
-      - extensions-install
+      - gmp-enable
+      - xdebug-enable
       - composer-update
       - run:
           name: Generate Docs Using Samsara/Roster
@@ -108,7 +128,8 @@ jobs:
       - image: cimg/php:8.1
     steps:
       - checkout
-      - extensions-install
+      - gmp-enable
+      - xdebug-enable
       - composer-update
       - run:
           name: Installing YAML Extension
