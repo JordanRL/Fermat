@@ -20,7 +20,6 @@ commands:
     description: "Installing Decimal Extension"
     steps:
       - run: sudo apt update
-      - run: sudo apt search libmpdec
       - run: sudo apt install libmpdec-dev
       - run: sudo pecl install decimal
 
@@ -54,7 +53,9 @@ jobs:
       - extensions-install
       - composer-update
       - phpunit-run
-      - run: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
+      - run:
+          name: Format Partial Code Coverage
+          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
       - persist_to_workspace:
           root: tmp
           paths:
@@ -72,7 +73,9 @@ jobs:
       - decimal-install
       - composer-update
       - phpunit-run
-      - run: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal.json build/logs/coverage.clover
+      - run:
+          name: Format Partial Code Coverage
+          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal.json build/logs/coverage.clover
       - persist_to_workspace:
          root: tmp
          paths:
@@ -97,28 +100,52 @@ jobs:
       - checkout
       - extensions-install
       - composer-update
-      - run: vendor/bin/roster
+      - run:
+          name: Generate Docs Using Samsara/Roster
+          command: vendor/bin/roster
+  generate-phpmetrics:
+    docker:
+      - image: cimg/php:8.1
+    steps:
+      - checkout
+      - extensions-install
+      - composer-update
+      - run:
+          name: Installing YAML Extension
+          command: |
+            sudo apt install libyaml-dev
+            sudo pecl install yaml
+      - run:
+          name: Preparing Build Directory
+          command: |
+            mkdir build
+            mkdir build/metrics
+      - run:
+          name: Downloading PHPMetrics
+          command: composer require 'phpmetrics/phpmetrics'
+      - run:
+          name: Compiling Metrics
+          command: vendor/bin/phpmetrics --config=phpmetrics.yml
+      - store_artifacts:
+          path: ./build/metrics
 
 workflows:
-  unit-test-workflow:
+  metrics-workflow:
     jobs:
-      - cc-coverage-reporter:
-          filters: &filters-unit-tests
+      - generate-phpmetrics:
+          filters:
             branches:
               only: master
+  unit-test-workflow:
+    jobs:
+      - cc-coverage-reporter
       - coverage-bcmath:
-          filters:
-            <<: *filters-unit-tests
           requires:
             - cc-coverage-reporter
       - coverage-decimal:
-          filters:
-            <<: *filters-unit-tests
           requires:
             - cc-coverage-reporter
       - upload-coverage:
-          filters:
-            <<: *filters-unit-tests
           requires:
             - coverage-bcmath
             - coverage-decimal
