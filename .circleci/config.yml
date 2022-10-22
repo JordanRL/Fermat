@@ -2,22 +2,22 @@ version: 2.1
 
 commands:
   composer-update:
-    description: "Updating Dependencies With Composer"
+    name: "Updating Dependencies With Composer"
     steps:
       - run: composer update
   phpunit-run:
-    description: "Running PHPUnit"
+    name: "Running PHPUnit"
     steps:
       - run: mkdir build
       - run: mkdir build/logs
       - run: vendor/bin/phpunit
   extensions-install:
-    description: "Installing Xdebug And GMP Extensions"
+    name: "Installing Xdebug And GMP Extensions"
     steps:
       - run: sudo -E install-php-extensions xdebug gmp
       - run: sudo docker-php-ext-enable xdebug
   decimal-install:
-    description: "Installing Decimal Extension"
+    name: "Installing Decimal Extension"
     steps:
       - run: sudo apt update
       - run: sudo apt install libmpdec-dev
@@ -113,6 +113,7 @@ jobs:
       - run:
           name: Installing YAML Extension
           command: |
+            sudo apt search libyaml
             sudo apt install libyaml-dev
             sudo pecl install yaml
       - run:
