@@ -202,7 +202,6 @@ class NumbersTest extends TestCase
         );
 
         $this->expectException(IntegrityConstraint::class);
-        $this->expectExceptionMessage('The E constant cannot have a scale less than 1');
 
         Numbers::makeE(-1);
 
