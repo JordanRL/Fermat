@@ -9,6 +9,10 @@ commands:
     description: "Running PHPUnit With BCMath"
     steps:
       - run: vendor/bin/phpunit
+  extensions-install:
+    description: "Installing PHP Extension"
+    steps:
+      - run: sudo -E install-php-extensions xdebug gmp bcmath
 
 jobs:
   coverage-bcmath:
@@ -16,6 +20,7 @@ jobs:
       - image: cimg/php:8.1
     steps:
       - checkout
+      - extensions-install
       - composer-update
       - phpunit-run
 
