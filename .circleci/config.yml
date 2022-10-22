@@ -16,6 +16,7 @@ commands:
     steps:
       - run: sudo -E install-php-extensions xdebug gmp
       - run: sudo docker-php-ext-enable xdebug
+      - run: export XDEBUG_MODE=coverage
   decimal-install:
     description: "Installing ext-decimal"
     steps:
