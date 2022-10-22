@@ -17,6 +17,7 @@ enum CalcOperation
 
     case Modulo;
     case ContinuousModulo;
+    case Compare;
 
     case Sin;
     case Cos;
