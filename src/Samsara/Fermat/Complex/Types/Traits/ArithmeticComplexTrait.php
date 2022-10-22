@@ -31,9 +31,6 @@ trait ArithmeticComplexTrait
 {
 
     use InputNormalizationTrait;
-    use ArithmeticSelectionTrait;
-    use ArithmeticScaleTrait;
-    use ArithmeticNativeTrait;
 
     /**
      * @param string|int|float|Decimal|Fraction|ComplexNumber $num
@@ -227,16 +224,16 @@ trait ArithmeticComplexTrait
          * If the exponent is a real, positive integer, then we can just do repeated multiplication faster
          */
         if ($thatNum->isReal() && $thatNum->isNatural() && $thatNum->isPositive()) {
-            $newValue = clone $this;
+            $newValue = $thisNum;
 
             for ($i=0;$thatNum->isGreaterThan($i);$i++) {
-                $newValue = $newValue->multiply($this);
+                $newValue = $newValue->multiply($thisNum);
             }
 
-            if ($newValue instanceof DecimalInterface) {
-                return $newValue;
-            } else {
+            if ($newValue instanceof ComplexNumber) {
                 return $this->setValue($newValue->getRealPart(), $newValue->getImaginaryPart());
+            } else {
+                return $newValue;
             }
         }
 

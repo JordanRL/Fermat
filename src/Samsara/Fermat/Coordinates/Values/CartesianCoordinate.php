@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Coordinates\Values;
 use ReflectionException;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\CoordinateInterface;
 use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\ThreeDCoordinateInterface;
@@ -222,7 +223,7 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
      * @return PolarCoordinate
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws ReflectionException
+     * @throws OptionalExit
      */
     public function asPolar(?int $scale = null): PolarCoordinate
     {
@@ -240,7 +241,7 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
         $rho = $this->getDistanceFromOrigin($intScale);
 
         if ($rho->isEqual(0)) {
-            throw new IncompatibleObjectState(
+            throw new OptionalExit(
                 'Attempted to convert a CartesianCoordinate at the origin into PolarCoordinate',
                 'Do not attempt to do this.',
                 'The origin has an undefined polar angle in the polar coordinate system.'
