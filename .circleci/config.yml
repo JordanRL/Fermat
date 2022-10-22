@@ -55,6 +55,10 @@ jobs:
       - composer-update
       - phpunit-run
       - run: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - codeclimate.bdmath.json
   coverage-decimal:
     environment:
       - XDEBUG_MODE: coverage
@@ -69,6 +73,10 @@ jobs:
       - composer-update
       - phpunit-run
       - run: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal.json build/logs/coverage.clover
+      - persist_to_workspace:
+         root: tmp
+         paths:
+           - codeclimate.decimal.json
   upload-coverage:
     environment:
       - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
