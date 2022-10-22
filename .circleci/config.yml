@@ -55,12 +55,15 @@ jobs:
       - attach_workspace:
           at: ./tmp
       - extensions-install
+      - decimal-install
       - composer-update
       - phpunit-run
       - run: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal.json build/logs/coverage.clover
   upload-coverage:
     environment:
       - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
+    docker:
+      - image: cimg/php:8.1
     steps:
       - attach_workspace:
           at: ./tmp
