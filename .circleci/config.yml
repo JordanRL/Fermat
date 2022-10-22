@@ -108,17 +108,17 @@ workflows:
               only: master
       - coverage-bcmath:
           filters:
-            <<: &filters-unit-tests
+            <<: *filters-unit-tests
           requires:
             - cc-coverage-reporter
       - coverage-decimal:
           filters:
-            <<: &filters-unit-tests
+            <<: *filters-unit-tests
           requires:
             - cc-coverage-reporter
       - upload-coverage:
           filters:
-            <<: &filters-unit-tests
+            <<: *filters-unit-tests
           requires:
             - coverage-bcmath
             - coverage-decimal
