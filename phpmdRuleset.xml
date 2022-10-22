@@ -6,6 +6,7 @@
     <description>Customized settings for PHPMD rulesets</description>
 
     <rule ref="rulesets/codesize.xml">
+        <exclude name="TooManyMethods"/>
         <exclude name="TooManyPublicMethods"/>
         <exclude name="ExcessiveMethodLength"/>
         <exclude name="ExcessiveClassLength"/>
@@ -16,6 +17,12 @@
     <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
         <properties>
             <property name="maxmethods" value="25" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/TooManyMethods">
+        <properties>
+            <property name="maxmethods" value="40" />
         </properties>
     </rule>
 
