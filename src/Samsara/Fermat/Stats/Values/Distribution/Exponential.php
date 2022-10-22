@@ -50,7 +50,6 @@ class Exponential extends Distribution
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
-        /** @var ImmutableDecimal $one */
         $one = Numbers::makeOne();
 
         if (!$x->isPositive()) {
@@ -63,7 +62,6 @@ class Exponential extends Distribution
 
         $internalScale = $scale + 2;
 
-        /** @var ImmutableDecimal $e */
         $e = Numbers::makeE($internalScale);
 
         /** @var ImmutableDecimal $cdf */
@@ -100,7 +98,6 @@ class Exponential extends Distribution
 
         $internalScale = $scale + 2;
 
-        /** @var ImmutableDecimal $e */
         $e = Numbers::makeE($internalScale);
 
         /** @var ImmutableDecimal $pdf */

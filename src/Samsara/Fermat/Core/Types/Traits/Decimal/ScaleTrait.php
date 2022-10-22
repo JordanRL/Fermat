@@ -4,6 +4,8 @@ namespace Samsara\Fermat\Core\Types\Traits\Decimal;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
+use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\RoundingMode;
 use Samsara\Fermat\Core\Numbers;
@@ -12,6 +14,8 @@ use Samsara\Fermat\Core\Provider\RoundingProvider;
 use Samsara\Fermat\Core\Provider\TrigonometryProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Types\Base\Number;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
  *
@@ -32,9 +36,13 @@ trait ScaleTrait
     /**
      * @param int $decimals
      * @param RoundingMode|null $mode
-     * @return DecimalInterface
+     * @return ImmutableDecimal|MutableDecimal|static
+     * @throws IntegrityConstraint
      */
-    public function round(int $decimals = 0, ?RoundingMode $mode = null): DecimalInterface
+    public function round(
+        int $decimals = 0,
+        ?RoundingMode $mode = null
+    ): ImmutableDecimal|MutableDecimal|static
     {
         if ($this->getValue(NumberBase::Ten) == Number::INFINITY || $this->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
             return $this;
@@ -54,9 +62,12 @@ trait ScaleTrait
 
     /**
      * @param int $decimals
-     * @return DecimalInterface
+     * @return ImmutableDecimal|MutableDecimal|static
+     * @throws IntegrityConstraint
      */
-    public function truncate(int $decimals = 0): DecimalInterface
+    public function truncate(
+        int $decimals = 0
+    ): ImmutableDecimal|MutableDecimal|static
     {
         if ($this->getValue(NumberBase::Ten) == Number::INFINITY || $this->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
             return $this;
@@ -95,9 +106,12 @@ trait ScaleTrait
     /**
      * @param int $scale
      * @param RoundingMode|null $mode
-     * @return DecimalInterface
+     * @return ImmutableDecimal|MutableDecimal|static
      */
-    public function roundToScale(int $scale, ?RoundingMode $mode = null): DecimalInterface
+    public function roundToScale(
+        int $scale,
+        ?RoundingMode $mode = null
+    ): ImmutableDecimal|MutableDecimal|static
     {
 
         $this->scale = $scale;
@@ -107,10 +121,13 @@ trait ScaleTrait
     }
 
     /**
-     * @param $scale
-     * @return DecimalInterface
+     * @param int $scale
+     * @return ImmutableDecimal|MutableDecimal|static
+     * @throws IntegrityConstraint
      */
-    public function truncateToScale($scale): DecimalInterface
+    public function truncateToScale(
+        int $scale
+    ): ImmutableDecimal|MutableDecimal|static
     {
 
         $this->scale = $scale;
@@ -120,17 +137,19 @@ trait ScaleTrait
     }
 
     /**
-     * @return DecimalInterface
+     * @return ImmutableDecimal|MutableDecimal|static
+     * @throws IntegrityConstraint
      */
-    public function ceil(): DecimalInterface
+    public function ceil(): ImmutableDecimal|MutableDecimal|static
     {
         return $this->round(0, RoundingMode::Ceil);
     }
 
     /**
-     * @return DecimalInterface
+     * @return ImmutableDecimal|MutableDecimal|static
+     * @throws IntegrityConstraint
      */
-    public function floor(): DecimalInterface
+    public function floor(): ImmutableDecimal|MutableDecimal|static
     {
         return $this->round(0, RoundingMode::Floor);
     }

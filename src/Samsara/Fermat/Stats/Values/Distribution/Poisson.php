@@ -249,11 +249,11 @@ class Poisson extends Distribution
         $alpha = $this->lambda->multiply($beta);
         /** @var ImmutableDecimal $k */
         $k = $c->ln(20)->subtract($this->lambda)->subtract($beta->ln(20));
-        /** @var ImmutableDecimal $one */
+        
         $one = Numbers::makeOne();
         /** @var ImmutableDecimal $oneHalf */
         $oneHalf = Numbers::make(Numbers::IMMUTABLE, '0.5');
-        /** @var ImmutableDecimal $e */
+        
         $e = Numbers::makeE();
 
         while (true) {
@@ -304,14 +304,14 @@ class Poisson extends Distribution
     {
         /** @var ImmutableDecimal $L */
         $L = Numbers::makeE()->pow($this->lambda->multiply(-1));
-        /** @var ImmutableDecimal $k */
+        
         $k = Numbers::makeZero();
-        /** @var ImmutableDecimal $p */
+        
         $p = Numbers::makeOne();
 
         do {
             $k = $k->add(1);
-            /** @var ImmutableDecimal $u */
+            
             $u = RandomProvider::randomDecimal(10);
             $p = $p->multiply($u);
         } while ($p->isGreaterThan($L));

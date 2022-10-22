@@ -13,6 +13,7 @@ use Samsara\Fermat\Core\Provider\SeriesProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
  *
@@ -298,15 +299,15 @@ trait InverseTrigonometryScaleTrait
     /**
      * @param int $scale
      * @param RoundingMode|null $mode
-     * @return DecimalInterface
+     * @return ImmutableDecimal|MutableDecimal|static
      */
-    abstract public function roundToScale(int $scale, ?RoundingMode $mode = null): DecimalInterface;
+    abstract public function roundToScale(int $scale, ?RoundingMode $mode = null): ImmutableDecimal|MutableDecimal|static;
 
     /**
      * @param int $scale
-     * @return DecimalInterface
+     * @return ImmutableDecimal|MutableDecimal|static
      */
-    abstract public function truncateToScale(int $scale): DecimalInterface;
+    abstract public function truncateToScale(int $scale): ImmutableDecimal|MutableDecimal|static;
 
     /**
      * @return int|null

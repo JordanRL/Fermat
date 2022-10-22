@@ -25,5 +25,5 @@ interface CalcModeInterface
      * @param ?CalcMode $mode
      * @return $this
      */
-    public function setMode(?CalcMode $mode): static;
+    public function setMode(?CalcMode $mode): self;
 }

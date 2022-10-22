@@ -15,6 +15,7 @@ use Samsara\Fermat\Core\Provider\RoundingProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\ScaleInterface;
 use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Core\Types\Traits\ComparisonTrait;
@@ -26,11 +27,12 @@ use Samsara\Fermat\Core\Types\Traits\LogSimpleTrait;
 use Samsara\Fermat\Core\Types\Traits\TrigonometrySimpleTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
+use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
  *
  */
-abstract class Decimal extends Number implements DecimalInterface
+abstract class Decimal extends Number implements DecimalInterface, ScaleInterface
 {
 
     protected NumberBase $base;
@@ -190,6 +192,9 @@ abstract class Decimal extends Number implements DecimalInterface
         return $string;
     }
 
+    /**
+     * @return ImmutableDecimal|ImmutableFraction
+     */
     public function asReal(): ImmutableDecimal|ImmutableFraction
     {
         return (new ImmutableDecimal($this->getAsBaseTenRealNumber(), $this->getScale()))->setMode($this->getMode());
@@ -274,9 +279,9 @@ abstract class Decimal extends Number implements DecimalInterface
     /**
      * Returns the current object as the absolute value of itself.
      *
-     * @return DecimalInterface|NumberInterface
+     * @return ImmutableDecimal|MutableDecimal
      */
-    public function abs(): DecimalInterface|NumberInterface
+    public function abs(): ImmutableDecimal|MutableDecimal
     {
         $newValue = $this->absValue();
 
@@ -338,9 +343,14 @@ abstract class Decimal extends Number implements DecimalInterface
      * @param int|null $scale
      * @param NumberBase|null $base
      * @param bool $setToNewBase
-     * @return DecimalInterface
+     * @return ImmutableDecimal|MutableDecimal|Decimal
      */
-    abstract protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null, bool $setToNewBase = false): DecimalInterface; // TODO: Check usages for base correctness & preservation
+    abstract protected function setValue(
+        string $value,
+        ?int $scale = null,
+        ?NumberBase $base = null,
+        bool $setToNewBase = false
+    ): ImmutableDecimal|MutableDecimal|static;
 
     /**
      * @param NumberInterface|string|int|float $mod

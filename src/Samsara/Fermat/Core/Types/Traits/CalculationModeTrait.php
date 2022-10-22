@@ -2,8 +2,10 @@
 
 namespace Samsara\Fermat\Core\Types\Traits;
 
+use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Provider\CalculationModeProvider;
+use Samsara\Fermat\Core\Types\Base\Number;
 
 /**
  *
@@ -39,7 +41,7 @@ trait CalculationModeTrait
      * @param CalcMode|null $mode
      * @return $this
      */
-    public function setMode(?CalcMode $mode): static
+    public function setMode(?CalcMode $mode): self
     {
         $this->calcMode = $mode;
 

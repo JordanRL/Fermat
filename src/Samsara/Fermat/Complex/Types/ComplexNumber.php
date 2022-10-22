@@ -5,12 +5,16 @@ namespace Samsara\Fermat\Complex\Types;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Complex\ComplexNumbers;
+use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Coordinates\Values\PolarCoordinate;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
+use Samsara\Fermat\Core\Enums\RoundingMode;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Complex\Types\Base\Interfaces\Numbers\ComplexNumberInterface;
+use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\ScaleInterface;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Complex\Types\Traits\ArithmeticComplexTrait;
 use Samsara\Fermat\Coordinates\Values\CartesianCoordinate;
@@ -20,11 +24,12 @@ use Samsara\Fermat\Core\Types\Traits\CalculationModeTrait;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Types\Fraction;
+use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
  *
  */
-abstract class ComplexNumber extends Number implements ComplexNumberInterface
+abstract class ComplexNumber extends Number implements ComplexNumberInterface, ScaleInterface
 {
 
     /** @var ImmutableDecimal|ImmutableFraction */
@@ -75,12 +80,90 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
     }
 
     /**
+     * @param int $decimals
+     * @param RoundingMode|null $mode
+     * @return ImmutableComplexNumber|MutableComplexNumber|static
+     */
+    public function round(
+        int $decimals = 0,
+        ?RoundingMode $mode = null
+    ): ImmutableComplexNumber|MutableComplexNumber|static
+    {
+        $roundedReal = $this->realPart->round($decimals, $mode);
+        $roundedImaginary = $this->imaginaryPart->round($decimals, $mode);
+
+        return $this->setValue($roundedReal, $roundedImaginary);
+    }
+
+    /**
+     * @param int $scale
+     * @param RoundingMode|null $mode
+     * @return ImmutableComplexNumber|MutableComplexNumber|static
+     */
+    public function roundToScale(
+        int $scale,
+        ?RoundingMode $mode = null
+    ): ImmutableComplexNumber|MutableComplexNumber|static
+    {
+        $roundedReal = $this->realPart->round($scale, $mode);
+        $roundedImaginary = $this->imaginaryPart->round($scale, $mode);
+
+        return $this->setValue($roundedReal, $roundedImaginary, $scale);
+    }
+
+    /**
+     * @param int $decimals
+     *
+     * @return ImmutableComplexNumber|MutableComplexNumber|static
+     */
+    public function truncate(
+        int $decimals = 0
+    ): ImmutableComplexNumber|MutableComplexNumber|static
+    {
+        $roundedReal = $this->realPart->truncate($decimals);
+        $roundedImaginary = $this->imaginaryPart->truncate($decimals);
+
+        return $this->setValue($roundedReal, $roundedImaginary);
+    }
+
+    /**
+     * @param int $scale
+     *
+     * @return ImmutableComplexNumber|MutableComplexNumber|static
+     */
+    public function truncateToScale(
+        int $scale
+    ): ImmutableComplexNumber|MutableComplexNumber|static
+    {
+        $roundedReal = $this->realPart->truncate($scale);
+        $roundedImaginary = $this->imaginaryPart->truncate($scale);
+
+        return $this->setValue($roundedReal, $roundedImaginary, $scale);
+    }
+
+    /**
+     * @return ImmutableComplexNumber|MutableComplexNumber|static
+     */
+    public function ceil(): ImmutableComplexNumber|MutableComplexNumber|static
+    {
+        return $this->round(0, RoundingMode::Ceil);
+    }
+
+    /**
+     * @return ImmutableComplexNumber|MutableComplexNumber|static
+     */
+    public function floor(): ImmutableComplexNumber|MutableComplexNumber|static
+    {
+        return $this->round(0, RoundingMode::Floor);
+    }
+
+    /**
      * Allows you to set a mode on a number to select the calculation methods.
      *
      * @param ?CalcMode $mode
      * @return $this
      */
-    public function setMode(?CalcMode $mode): static
+    public function setMode(?CalcMode $mode): self
     {
         $this->calcMode = $mode;
 
@@ -172,7 +255,11 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
         return $this->getValue() === $value->getValue();
     }
 
-    abstract protected function setValue(SimpleNumberInterface $realPart, SimpleNumberInterface $imaginaryPart);
+    abstract protected function setValue(
+        ImmutableDecimal|ImmutableFraction $realPart,
+        ImmutableDecimal|ImmutableFraction $imaginaryPart,
+        ?int $scale = null
+    ): static|ImmutableComplexNumber|MutableComplexNumber;
 
     public static function makeFromArray(array $number, $scale = null, NumberBase $base = NumberBase::Ten): ComplexNumber
     {

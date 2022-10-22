@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="7"
+    errorLevel="8"
     resolveFromConfigFile="true"
     findUnusedVariablesAndParams="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -13,7 +13,7 @@
         <ignoreFiles>
             <directory name="vendor" />
             <directory name="tests" />
-            <directory name="test-bench" />
+            <directory name="tests-bench" />
         </ignoreFiles>
     </projectFiles>
 </psalm>
