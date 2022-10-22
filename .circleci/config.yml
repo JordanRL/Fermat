@@ -58,7 +58,7 @@ jobs:
       - persist_to_workspace:
           root: tmp
           paths:
-            - codeclimate.bdmath.json
+            - codeclimate.bcmath.json
   coverage-decimal:
     environment:
       - XDEBUG_MODE: coverage
