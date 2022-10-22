@@ -1,13 +1,23 @@
 version: 2.1
 
+commands:
+  composer-update:
+    description: "Updating project dependencies with composer"
+    steps:
+      - run: composer update
+  phpunit-run:
+    description: "Running PHPUnit With BCMath"
+    steps:
+      - run: vendor/bin/phpunit
+
 jobs:
   coverage-bcmath:
     docker:
       - image: cimg/php:8.1
     steps:
       - checkout
-      - composer update
-      - vendor/bin/phpunit
+      - composer-update
+      - phpunit-run
 
 workflows:
   unit-test-workflow:
