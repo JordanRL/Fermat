@@ -10,7 +10,7 @@ use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait ComparisonTrait
 {

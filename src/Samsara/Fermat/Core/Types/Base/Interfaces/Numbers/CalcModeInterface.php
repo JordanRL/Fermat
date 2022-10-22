@@ -5,7 +5,8 @@ namespace Samsara\Fermat\Core\Types\Base\Interfaces\Numbers;
 use Samsara\Fermat\Core\Enums\CalcMode;
 
 /**
- *
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\Core
  */
 interface CalcModeInterface
 {

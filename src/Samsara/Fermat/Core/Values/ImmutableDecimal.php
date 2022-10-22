@@ -13,7 +13,7 @@ use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class ImmutableDecimal extends Decimal
 {

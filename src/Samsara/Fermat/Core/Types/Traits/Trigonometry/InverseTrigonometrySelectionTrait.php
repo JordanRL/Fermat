@@ -5,7 +5,7 @@ namespace Samsara\Fermat\Core\Types\Traits\Trigonometry;
 use Samsara\Fermat\Core\Enums\CalcMode;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait InverseTrigonometrySelectionTrait
 {

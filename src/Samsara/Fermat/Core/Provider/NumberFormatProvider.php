@@ -7,7 +7,7 @@ use Samsara\Fermat\Core\Enums\NumberFormat;
 use Samsara\Fermat\Core\Enums\NumberGrouping;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class NumberFormatProvider
 {

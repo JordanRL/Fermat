@@ -10,7 +10,7 @@ use Samsara\Fermat\Core\Types\Traits\Decimal\LogScaleTrait;
 use Samsara\Fermat\Core\Types\Traits\Decimal\LogSelectionTrait;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait LogSimpleTrait
 {

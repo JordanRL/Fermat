@@ -2,13 +2,11 @@
 
 namespace Samsara\Fermat\Core\Types\Traits;
 
-use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Provider\CalculationModeProvider;
-use Samsara\Fermat\Core\Types\Base\Number;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait CalculationModeTrait
 {

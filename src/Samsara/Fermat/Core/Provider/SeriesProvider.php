@@ -13,7 +13,7 @@ use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class SeriesProvider
 {

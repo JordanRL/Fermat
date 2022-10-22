@@ -2,25 +2,24 @@ version: 2.1
 
 commands:
   composer-update:
-    description: "Updating project dependencies with composer"
+    description: "Updating Dependencies With Composer"
     steps:
       - run: composer update
   phpunit-run:
-    description: "Running PHPUnit With BCMath"
+    description: "Running PHPUnit"
     steps:
       - run: mkdir build
       - run: mkdir build/logs
       - run: vendor/bin/phpunit
   extensions-install:
-    description: "Installing Core PHP Extension"
+    description: "Installing Xdebug And GMP Extensions"
     steps:
       - run: sudo -E install-php-extensions xdebug gmp
       - run: sudo docker-php-ext-enable xdebug
   decimal-install:
-    description: "Installing ext-decimal"
+    description: "Installing Decimal Extension"
     steps:
       - run: sudo apt update
-      - run: sudo apt search libmpdec
       - run: sudo apt install libmpdec-dev
       - run: sudo pecl install decimal
 
@@ -54,7 +53,9 @@ jobs:
       - extensions-install
       - composer-update
       - phpunit-run
-      - run: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
+      - run:
+          name: Format Partial Code Coverage
+          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
       - persist_to_workspace:
           root: tmp
           paths:
@@ -72,7 +73,9 @@ jobs:
       - decimal-install
       - composer-update
       - phpunit-run
-      - run: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal.json build/logs/coverage.clover
+      - run:
+          name: Format Partial Code Coverage
+          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal.json build/logs/coverage.clover
       - persist_to_workspace:
          root: tmp
          paths:
@@ -90,8 +93,49 @@ jobs:
           command: |
             ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
             ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+  generate-docs:
+    docker:
+      - image: cimg/php:8.1
+    steps:
+      - checkout
+      - extensions-install
+      - composer-update
+      - run:
+          name: Generate Docs Using Samsara/Roster
+          command: vendor/bin/roster
+  generate-phpmetrics:
+    docker:
+      - image: cimg/php:8.1
+    steps:
+      - checkout
+      - extensions-install
+      - composer-update
+      - run:
+          name: Installing YAML Extension
+          command: |
+            sudo apt install libyaml-dev
+            sudo pecl install yaml
+      - run:
+          name: Preparing Build Directory
+          command: |
+            mkdir build
+            mkdir build/metrics
+      - run:
+          name: Downloading PHPMetrics
+          command: composer require 'phpmetrics/phpmetrics'
+      - run:
+          name: Compiling Metrics
+          command: vendor/bin/phpmetrics --config=phpmetrics.yml
+      - store_artifacts:
+          path: ./build/metrics
 
 workflows:
+  metrics-workflow:
+    jobs:
+      - generate-phpmetrics:
+          filters:
+            branches:
+              only: master
   unit-test-workflow:
     jobs:
       - cc-coverage-reporter
@@ -105,3 +149,11 @@ workflows:
           requires:
             - coverage-bcmath
             - coverage-decimal
+  release-workflow:
+    jobs:
+      - generate-docs:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/

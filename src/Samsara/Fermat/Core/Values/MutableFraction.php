@@ -5,7 +5,7 @@ namespace Samsara\Fermat\Core\Values;
 use Samsara\Fermat\Core\Types\Fraction;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class MutableFraction extends Fraction
 {

@@ -9,7 +9,7 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
- *
+ * @package Samsara\Fermat\Complex
  */
 trait ComplexScaleTrait
 {

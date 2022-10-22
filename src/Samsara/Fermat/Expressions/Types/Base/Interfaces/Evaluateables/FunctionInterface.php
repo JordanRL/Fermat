@@ -4,6 +4,10 @@ namespace Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables;
 
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
+/**
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\Expressions
+ */
 interface FunctionInterface
 {
     public function evaluateAt($x): ImmutableDecimal;

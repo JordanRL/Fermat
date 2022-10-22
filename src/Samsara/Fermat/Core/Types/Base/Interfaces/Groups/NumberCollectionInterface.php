@@ -9,7 +9,8 @@ use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 
 /**
- *
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\Core
  */
 interface NumberCollectionInterface
 {

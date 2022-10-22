@@ -1,0 +1,31 @@
+composer: false
+includes:
+  - "src"
+excludes:
+  - tests
+extensions:
+  - php
+report:
+  html: "build/metrics/"
+  csv: "build/report.csv"
+  json: "build/report.json"
+  violations: "build/violations.xml"
+
+groups:
+  - name: Core
+    match: "/core/i"
+  - name: Complex
+    match: "/complex/i"
+  - name: Coordinates
+    match: "/coordinates/i"
+  - name: Expressions
+    match: "/expressions/i"
+  - name: Linear Algebra
+    match: "/linearalgebra/i"
+  - name: Statistics
+    match: "/stats/i"
+plugins:
+  git:
+    binary: git
+  junit:
+    file: "build/logs/junit.xml"

@@ -11,7 +11,7 @@ use Samsara\Fermat\Core\Types\Base\Interfaces\Callables\ContinuedFractionTermInt
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait InverseTrigonometryHelpersTrait
 {
@@ -29,6 +29,9 @@ trait InverseTrigonometryHelpersTrait
         $intScale = $scale + 2;
         $terms = $intScale + 2;
         $x = new ImmutableDecimal($num, $intScale);
+        /**
+         * @package Samsara\Fermat\Core
+         */
         $aPart = new class($x) implements ContinuedFractionTermInterface {
             private ImmutableDecimal $x;
 
@@ -54,6 +57,9 @@ trait InverseTrigonometryHelpersTrait
             }
         };
 
+        /**
+         * @package Samsara\Fermat\Core
+         */
         $bPart = new class($intScale) implements ContinuedFractionTermInterface {
             private int $intScale;
 
@@ -96,6 +102,9 @@ trait InverseTrigonometryHelpersTrait
         $x2 = $x->pow(2);
         $one = new ImmutableDecimal(1, $scale);
 
+        /**
+         * @package Samsara\Fermat\Core
+         */
         $aPart = new class($x2, $scale) implements ContinuedFractionTermInterface{
             private ImmutableDecimal $x2;
             private ImmutableDecimal $negTwo;
@@ -124,6 +133,9 @@ trait InverseTrigonometryHelpersTrait
             }
         };
 
+        /**
+         * @package Samsara\Fermat\Core
+         */
         $bPart = new class() implements ContinuedFractionTermInterface{
             /**
              * @param int $n

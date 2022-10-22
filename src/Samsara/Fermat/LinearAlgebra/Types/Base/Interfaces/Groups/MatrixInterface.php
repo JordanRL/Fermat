@@ -6,6 +6,10 @@ use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 
+/**
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\LinearAlgebra
+ */
 interface MatrixInterface
 {
 

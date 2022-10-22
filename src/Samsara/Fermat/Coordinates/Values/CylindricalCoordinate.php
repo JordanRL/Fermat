@@ -8,6 +8,9 @@ use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\ThreeDCoordinat
 use Samsara\Fermat\Coordinates\Types\Coordinate;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
+/**
+ * @package Samsara\Fermat\Coordinates
+ */
 class CylindricalCoordinate extends Coordinate implements ThreeDCoordinateInterface
 {
     /** @var CartesianCoordinate */

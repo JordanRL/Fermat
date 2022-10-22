@@ -5,6 +5,10 @@ namespace Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Core\Types\Tuple;
 
+/**
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\LinearAlgebra
+ */
 interface VectorInterface
 {
 

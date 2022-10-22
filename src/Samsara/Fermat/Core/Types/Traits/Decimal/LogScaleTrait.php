@@ -13,7 +13,7 @@ use Samsara\Fermat\Core\Types\Base\Interfaces\Callables\ContinuedFractionTermInt
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait LogScaleTrait
 {
@@ -55,6 +55,9 @@ trait LogScaleTrait
             $terms = $scale;
             $six = new ImmutableDecimal(6, $intScale);
 
+            /**
+             * @package Samsara\Fermat\Core
+             */
             $aPart = new class($x2, $x) implements ContinuedFractionTermInterface{
                 private ImmutableDecimal $x2;
                 private ImmutableDecimal $x;
@@ -83,6 +86,9 @@ trait LogScaleTrait
                 }
             };
 
+            /**
+             * @package Samsara\Fermat\Core
+             */
             $bPart = new class($x, $six, $intScale) implements ContinuedFractionTermInterface{
                 private ImmutableDecimal $x;
                 private ImmutableDecimal $six;

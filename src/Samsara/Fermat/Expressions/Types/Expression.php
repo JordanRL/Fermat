@@ -4,6 +4,9 @@ namespace Samsara\Fermat\Expressions\Types;
 
 use Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables\ExpressionInterface;
 
+/**
+ * @package Samsara\Fermat\Expressions
+ */
 abstract class Expression implements ExpressionInterface
 {
     const POLYNOMIAL = 1;

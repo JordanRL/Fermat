@@ -7,21 +7,13 @@ checks:
     config:
       threshold: 4
   file-lines:
-    enabled: true
-    config:
-      threshold: 350
+    enabled: false
   method-complexity:
-    enabled: true
-    config:
-      threshold: 15
+    enabled: false
   method-count:
-    enabled: true
-    config:
-      threshold: 30
+    enabled: false
   method-lines:
-    enabled: true
-    config:
-      threshold: 30
+    enabled: false
   nested-control-flow:
     enabled: true
     config:
@@ -34,6 +26,12 @@ checks:
     enabled: true
   identical-code:
     enabled: true
+plugins:
+  phpmd:
+    enabled: true
+    config:
+      file_extensions: "php"
+      rulesets: "phpmdRuleset.xml"
 exclude_patterns:
   - ".circleci/"
   - ".github/"
@@ -48,3 +46,9 @@ exclude_patterns:
   - "*.yml"
   - "*.md"
   - "*.xml"
+  - "*Enum.php"
+  - "*Interface.php"
+  - ".*.yml"
+  - ".gitignore"
+  - "LICENSE"
+  - "COPYRIGHT"

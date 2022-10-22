@@ -7,7 +7,8 @@ namespace Samsara\Fermat\Core\Types\Base\Interfaces\Callables;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
- *
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\Core
  */
 interface ContinuedFractionTermInterface
 {

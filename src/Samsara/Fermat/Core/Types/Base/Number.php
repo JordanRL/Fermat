@@ -20,7 +20,7 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 abstract class Number implements Hashable, NumberInterface, CalcModeInterface
 {

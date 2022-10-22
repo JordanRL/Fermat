@@ -8,7 +8,7 @@ use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class Tuple
 {

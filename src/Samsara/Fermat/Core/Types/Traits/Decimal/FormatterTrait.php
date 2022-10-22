@@ -11,7 +11,7 @@ use Samsara\Fermat\Core\Provider\NumberFormatProvider;
 use Samsara\Fermat\Core\Types\Decimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait FormatterTrait
 {

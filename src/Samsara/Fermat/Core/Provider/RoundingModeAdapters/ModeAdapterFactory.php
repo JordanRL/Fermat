@@ -18,7 +18,7 @@ use Samsara\Fermat\Core\Provider\RoundingModeAdapters\Modes\StochasticAdapter;
 use Samsara\Fermat\Core\Provider\RoundingModeAdapters\Modes\TruncateAdapter;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class ModeAdapterFactory
 {

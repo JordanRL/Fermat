@@ -8,6 +8,9 @@ use Samsara\Fermat\Coordinates\Values\CartesianCoordinate;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Types\Tuple;
 
+/**
+ * @package Samsara\Fermat\Coordinates
+ */
 abstract class Coordinate implements CoordinateInterface
 {
 

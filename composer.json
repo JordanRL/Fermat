@@ -36,7 +36,8 @@
     "php-decimal/stubs": "v1.1.0",
     "samsara/roster": "^0.1",
     "phpbench/phpbench": "^1",
-    "vimeo/psalm": "*"
+    "vimeo/psalm": "*",
+    "nunomaduro/phpinsights": "^2.6"
   },
   "suggest": {
     "ext-ds": "*",
@@ -52,5 +53,10 @@
       "Samsara\\Fermat\\": ["tests/Samsara/Fermat/", "tests-with-modules/Samsara/Fermat"]
     }
   },
-  "prefer-stable": true
+  "prefer-stable": true,
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
 }

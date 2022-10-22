@@ -8,6 +8,9 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups\MatrixInterface;
 use Samsara\Fermat\Core\Types\NumberCollection;
 
+/**
+ * @package Samsara\Fermat\LinearAlgebra
+ */
 trait DirectAccessTrait
 {
 

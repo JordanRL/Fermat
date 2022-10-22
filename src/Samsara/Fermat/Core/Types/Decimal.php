@@ -30,7 +30,7 @@ use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 abstract class Decimal extends Number implements DecimalInterface, ScaleInterface
 {

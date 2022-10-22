@@ -12,7 +12,7 @@ use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait ArithmeticScaleTrait
 {
