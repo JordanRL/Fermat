@@ -10,13 +10,13 @@ commands:
     steps:
       - run: mkdir build
       - run: mkdir build/logs
+      - run: export XDEBUG_MODE=coverage
       - run: vendor/bin/phpunit
   extensions-install:
     description: "Installing Core PHP Extension"
     steps:
       - run: sudo -E install-php-extensions xdebug gmp
       - run: sudo docker-php-ext-enable xdebug
-      - run: export XDEBUG_MODE=coverage
   decimal-install:
     description: "Installing ext-decimal"
     steps:
