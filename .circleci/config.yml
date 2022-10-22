@@ -10,7 +10,6 @@ commands:
     steps:
       - run: mkdir build
       - run: mkdir build/logs
-      - run: export XDEBUG_MODE=coverage
       - run: vendor/bin/phpunit
   extensions-install:
     description: "Installing Core PHP Extension"
@@ -44,6 +43,8 @@ jobs:
           paths:
             - cc-test-reporter
   coverage-bcmath:
+    environment:
+      - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
     steps:
@@ -55,6 +56,8 @@ jobs:
       - phpunit-run
       - run: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
   coverage-decimal:
+    environment:
+      - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
     steps:
