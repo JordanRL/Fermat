@@ -32,12 +32,8 @@ checks:
       threshold: 4
   similar-code:
     enabled: true
-    config:
-      threshold: 30
   identical-code:
     enabled: true
-    config:
-      threshold: 15
 exclude_patterns:
   - ".circleci/"
   - ".github/"
