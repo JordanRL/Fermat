@@ -77,6 +77,13 @@ workflows:
   unit-test-workflow:
     jobs:
       - cc-coverage-reporter
-      - coverage-bcmath
-      - coverage-decimal
-      - upload-coverage
+      - coverage-bcmath:
+          requires:
+            - cc-coverage-reporter
+      - coverage-decimal:
+          requires:
+            - cc-coverage-reporter
+      - upload-coverage:
+          requires:
+            - coverage-bcmath
+            - coverage-decimal
