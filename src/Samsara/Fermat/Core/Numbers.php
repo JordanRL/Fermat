@@ -197,25 +197,7 @@ class Numbers
      */
     public static function makePi(int $scale = null): ImmutableDecimal
     {
-
-        if (!is_null($scale)) {
-            if ($scale < 1) {
-                throw new IntegrityConstraint(
-                    '$scale must be at least 1',
-                    'Provide a scale within range',
-                    'The pi constant cannot have a scale less than 1'
-                );
-            }
-
-            if ($scale > 100) {
-                return self::make(self::IMMUTABLE, ConstantProvider::makePi($scale), $scale);
-            }
-
-            return self::make(self::IMMUTABLE, self::PI, $scale+1)->truncateToScale($scale);
-        }
-
-        return self::make(self::IMMUTABLE, self::PI, 100);
-
+        return self::makeConstant(self::PI, $scale);
     }
 
     /**
@@ -266,25 +248,7 @@ class Numbers
      */
     public static function makeE(int $scale = null): ImmutableDecimal
     {
-
-        if (!is_null($scale)) {
-            if ($scale < 1) {
-                throw new IntegrityConstraint(
-                    '$scale must be at least 1',
-                    'Provide a scale within range',
-                    'The E constant cannot have a scale less than 1'
-                );
-            }
-
-            if ($scale > 100) {
-                return self::make(self::IMMUTABLE, ConstantProvider::makeE($scale), $scale);
-            }
-
-            return self::make(self::IMMUTABLE, self::E, $scale+1)->truncateToScale($scale);
-        }
-
-        return self::make(self::IMMUTABLE, self::E, 100);
-
+        return self::makeConstant(self::E, $scale);
     }
 
     /**
@@ -296,23 +260,7 @@ class Numbers
     public static function makeGoldenRatio(?int $scale = null): ImmutableDecimal
     {
 
-        if (!is_null($scale)) {
-            if ($scale < 1) {
-                throw new IntegrityConstraint(
-                    '$scale must be at least 1',
-                    'Provide a scale within range',
-                    'The Phi constant (Golden Ratio) cannot have a scale less than 1'
-                );
-            }
-
-            if ($scale > 100) {
-                return self::make(self::IMMUTABLE, ConstantProvider::makeGoldenRatio($scale), $scale);
-            }
-
-            return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, $scale+1)->truncateToScale($scale);
-        }
-
-        return self::make(self::IMMUTABLE, self::GOLDEN_RATIO, 100);
+        return self::makeConstant(self::GOLDEN_RATIO, $scale);
 
     }
 
@@ -324,25 +272,7 @@ class Numbers
      */
     public static function makeNaturalLog10(?int $scale = null): ImmutableDecimal
     {
-
-        if (!is_null($scale)) {
-            if ($scale < 1) {
-                throw new IntegrityConstraint(
-                    '$scale must be at least 1',
-                    'Provide a scale within range',
-                    'The natural log of 10 constant cannot have a scale less than 1'
-                );
-            }
-
-            if ($scale > 100) {
-                return self::make(self::IMMUTABLE, ConstantProvider::makeLn10($scale), $scale);
-            }
-
-            return self::make(self::IMMUTABLE, self::LN_10, $scale+1)->truncateToScale($scale);
-        }
-
-        return self::make(self::IMMUTABLE, self::LN_10, 100);
-
+        return self::makeConstant(self::LN_10, $scale);
     }
 
     /**
@@ -353,25 +283,7 @@ class Numbers
      */
     public static function makeNaturalLog2(?int $scale = null): ImmutableDecimal
     {
-
-        if (!is_null($scale)) {
-            if ($scale < 1) {
-                throw new IntegrityConstraint(
-                    '$scale must be at least 1',
-                    'Provide a scale within range',
-                    'The natural log of 10 constant cannot have a scale less than 1'
-                );
-            }
-
-            if ($scale > 100) {
-                return self::make(self::IMMUTABLE, ConstantProvider::makeLn2($scale), $scale);
-            }
-
-            return self::make(self::IMMUTABLE, self::LN_2, $scale+1)->truncateToScale($scale);
-        }
-
-        return self::make(self::IMMUTABLE, self::LN_2, 100);
-
+        return self::makeConstant(self::LN_2, $scale);
     }
 
     /**
@@ -394,6 +306,47 @@ class Numbers
     public static function makeZero(?int $scale = null): ImmutableDecimal
     {
         return self::make(self::IMMUTABLE, 0, $scale);
+    }
+
+    private static function makeConstant(string $constant, ?int $scale): ImmutableDecimal
+    {
+
+        if (!is_null($scale)) {
+            if ($scale < 1) {
+                throw new IntegrityConstraint(
+                    'Scale must be at least 1',
+                    'Provide a scale within range',
+                    'Cannot create a constant with a scale less than 1'
+                );
+            }
+
+            if ($scale > 100) {
+                return self::make(
+                    self::IMMUTABLE,
+                    match ($constant) {
+                        self::LN_2 => ConstantProvider::makeLn2($scale),
+                        self::LN_10 => ConstantProvider::makeLn10($scale),
+                        self::GOLDEN_RATIO => ConstantProvider::makeGoldenRatio($scale),
+                        self::E => ConstantProvider::makeE($scale),
+                        self::PI => ConstantProvider::makePi($scale),
+                    },
+                    $scale
+                );
+            }
+
+            return self::make(
+                self::IMMUTABLE,
+                $constant,
+                $scale+1
+            )->truncateToScale($scale);
+        }
+
+        return self::make(
+            self::IMMUTABLE,
+            $constant,
+            100
+        );
+
     }
 
 }

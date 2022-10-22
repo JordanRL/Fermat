@@ -2,11 +2,16 @@
 
 namespace Samsara\Fermat\Core\Types\Traits;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Traits\Trigonometry\TrigonometryScaleTrait;
 use Samsara\Fermat\Core\Types\Traits\Trigonometry\TrigonometryNativeTrait;
 use Samsara\Fermat\Core\Types\Traits\Trigonometry\TrigonometrySelectionTrait;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
  *
@@ -25,17 +30,7 @@ trait TrigonometrySimpleTrait
      */
     public function sin(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->sinSelector($scale);
-
-        $finalScale = $scale ?? $this->getScale();
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::Sin);
     }
 
     /**
@@ -45,17 +40,7 @@ trait TrigonometrySimpleTrait
      */
     public function cos(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->cosSelector($scale);
-
-        $finalScale = $scale ?? $this->getScale();
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::Cos);
     }
 
     /**
@@ -65,17 +50,7 @@ trait TrigonometrySimpleTrait
      */
     public function tan(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->tanSelector($scale);
-
-        $finalScale = $scale ?? $this->getScale();
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::Tan);
     }
 
     /**
@@ -85,17 +60,7 @@ trait TrigonometrySimpleTrait
      */
     public function sec(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->secSelector($scale);
-
-        $finalScale = $scale ?? $this->getScale();
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::Sec);
     }
 
     /**
@@ -105,21 +70,7 @@ trait TrigonometrySimpleTrait
      */
     public function csc(?int $scale = null, bool $round = true): DecimalInterface
     {
-        if ($this->isEqual(0)) {
-            $answer = static::INFINITY;
-        } else {
-            $answer = $this->cscSelector($scale);
-        }
-
-        $finalScale = $scale ?? $this->getScale();
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::Csc);
     }
 
     /**
@@ -129,17 +80,7 @@ trait TrigonometrySimpleTrait
      */
     public function cot(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->cotSelector($scale);
-
-        $finalScale = $scale ?? $this->getScale();
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::Cot);
     }
 
     /**
@@ -149,17 +90,7 @@ trait TrigonometrySimpleTrait
      */
     public function sinh(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->sinhSelector($scale);
-
-        $finalScale = $scale ?? $this->getScale();
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::SinH);
     }
 
     /**
@@ -169,17 +100,7 @@ trait TrigonometrySimpleTrait
      */
     public function cosh(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->coshSelector($scale);
-
-        $finalScale = $scale ?? $this->getScale();
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::CosH);
     }
 
     /**
@@ -189,17 +110,7 @@ trait TrigonometrySimpleTrait
      */
     public function tanh(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $finalScale = $scale ?? $this->getScale();
-
-        $answer = $this->tanhSelector($scale);
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::TanH);
     }
 
     /**
@@ -209,17 +120,7 @@ trait TrigonometrySimpleTrait
      */
     public function sech(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->sechSelector($scale);
-
-        $finalScale = $scale ?? $this->getScale();
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::SecH);
     }
 
     /**
@@ -229,17 +130,7 @@ trait TrigonometrySimpleTrait
      */
     public function csch(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->cschSelector($scale);
-
-        $finalScale = $scale ?? $this->getScale();
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
+        return $this->helperBasicTrig($scale, $round, CalcOperation::CscH);
     }
 
     /**
@@ -249,9 +140,33 @@ trait TrigonometrySimpleTrait
      */
     public function coth(?int $scale = null, bool $round = true): DecimalInterface
     {
-        $answer = $this->cothSelector($scale);
+        return $this->helperBasicTrig($scale, $round, CalcOperation::CotH);
+    }
 
+    /**
+     * @param int|null $scale
+     * @param bool $round
+     * @return Decimal|ImmutableDecimal|MutableDecimal
+     * @throws IntegrityConstraint
+     */
+    protected function helperBasicTrig(?int $scale, bool $round, CalcOperation $operation): ImmutableDecimal|MutableDecimal|Decimal
+    {
         $finalScale = $scale ?? $this->getScale();
+
+        $answer = match ($operation) {
+            CalcOperation::Sin => $this->sinSelector($scale),
+            CalcOperation::Cos => $this->cosSelector($scale),
+            CalcOperation::Tan => $this->tanSelector($scale),
+            CalcOperation::Sec => $this->secSelector($scale),
+            CalcOperation::Csc => $this->cscSelector($scale),
+            CalcOperation::Cot => $this->cotSelector($scale),
+            CalcOperation::SinH => $this->sinhSelector($scale),
+            CalcOperation::CosH => $this->coshSelector($scale),
+            CalcOperation::TanH => $this->tanhSelector($scale),
+            CalcOperation::SecH => $this->sechSelector($scale),
+            CalcOperation::CscH => $this->cschSelector($scale),
+            CalcOperation::CotH => $this->cothSelector($scale),
+        };
 
         if ($round) {
             $result = $this->setValue($answer)->roundToScale($finalScale);

@@ -75,6 +75,10 @@ trait TrigonometrySelectionTrait
      */
     protected function cscSelector(?int $scale = null): string
     {
+        if ($this->isEqual(0)) {
+            return self::INFINITY;
+        }
+
         $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
