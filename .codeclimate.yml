@@ -21,7 +21,7 @@ checks:
   method-lines:
     enabled: true
     config:
-      threshold: 30
+      threshold: 100
   nested-control-flow:
     enabled: true
     config:
@@ -39,7 +39,7 @@ plugins:
     enabled: true
     config:
       file_extensions: "php"
-      rulesets: "codesize,design"
+      rulesets: "phpmdRuleset.xml"
 exclude_patterns:
   - ".circleci/"
   - ".github/"
