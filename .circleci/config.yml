@@ -90,18 +90,43 @@ jobs:
           command: |
             ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
             ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+  generate-docs:
+    docker:
+      - image: cimg/php:8.1
+    steps:
+      - checkout
+      - extensions-install
+      - composer-update
+      - run: vendor/bin/roster
 
 workflows:
   unit-test-workflow:
     jobs:
-      - cc-coverage-reporter
+      - cc-coverage-reporter:
+          filters: &filters-unit-tests
+            branches:
+              only: master
       - coverage-bcmath:
+          filters:
+            <<: &filters-unit-tests
           requires:
             - cc-coverage-reporter
       - coverage-decimal:
+          filters:
+            <<: &filters-unit-tests
           requires:
             - cc-coverage-reporter
       - upload-coverage:
+          filters:
+            <<: &filters-unit-tests
           requires:
             - coverage-bcmath
             - coverage-decimal
+  release-workflow:
+    jobs:
+      - generate-docs:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
