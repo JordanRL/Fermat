@@ -11,7 +11,7 @@ use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait ArithmeticSelectionTrait
 {

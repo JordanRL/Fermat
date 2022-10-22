@@ -34,6 +34,12 @@ checks:
     enabled: true
   identical-code:
     enabled: true
+plugins:
+  phpmd:
+    enabled: true
+    config:
+      file_extensions: "php"
+      rulesets: "cleancode,codesize,design"
 exclude_patterns:
   - ".circleci/"
   - ".github/"
@@ -48,3 +54,9 @@ exclude_patterns:
   - "*.yml"
   - "*.md"
   - "*.xml"
+  - "*Enum.php"
+  - "*Interface.php"
+  - ".*.yml"
+  - ".gitignore"
+  - "LICENSE"
+  - "COPYRIGHT"

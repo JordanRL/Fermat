@@ -13,7 +13,8 @@ use Samsara\Fermat\Core\Values\MutableDecimal;
 use Samsara\Fermat\Core\Values\MutableFraction;
 
 /**
- *
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\Core
  */
 interface NumberInterface
 {

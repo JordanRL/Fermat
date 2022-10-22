@@ -16,6 +16,9 @@ use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Provider\SeriesProvider;
 use Samsara\Fermat\Core\Provider\SequenceProvider;
 
+/**
+ * @package Samsara\Fermat\Stats
+ */
 class StatsProvider
 {
 

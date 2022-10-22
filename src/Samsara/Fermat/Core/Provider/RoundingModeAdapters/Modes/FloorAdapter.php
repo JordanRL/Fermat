@@ -3,7 +3,7 @@
 namespace Samsara\Fermat\Core\Provider\RoundingModeAdapters\Modes;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class FloorAdapter extends BaseAdapter
 {

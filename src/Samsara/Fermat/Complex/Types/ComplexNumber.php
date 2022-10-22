@@ -7,16 +7,13 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Complex\ComplexNumbers;
 use Samsara\Fermat\Complex\Types\Traits\ComplexScaleTrait;
-use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Coordinates\Values\PolarCoordinate;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
-use Samsara\Fermat\Core\Enums\RoundingMode;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Complex\Types\Base\Interfaces\Numbers\ComplexNumberInterface;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\ScaleInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Complex\Types\Traits\ArithmeticComplexTrait;
 use Samsara\Fermat\Coordinates\Values\CartesianCoordinate;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
@@ -28,7 +25,7 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Types\Fraction;
 
 /**
- *
+ *@package Samsara\Fermat\Complex
  */
 abstract class ComplexNumber extends Number implements ComplexNumberInterface, ScaleInterface
 {

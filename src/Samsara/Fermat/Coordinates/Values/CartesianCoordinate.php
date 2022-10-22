@@ -13,6 +13,9 @@ use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\TwoDCoordinateI
 use Samsara\Fermat\Coordinates\Types\Coordinate;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
+/**
+ * @package Samsara\Fermat\Coordinates
+ */
 class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface, ThreeDCoordinateInterface
 {
 

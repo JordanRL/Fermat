@@ -8,6 +8,9 @@ use Samsara\Fermat\Coordinates\Values\CartesianCoordinate;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 
+/**
+ *@package Samsara\Fermat\Complex
+ */
 class MutableComplexNumber extends ComplexNumber
 {
 

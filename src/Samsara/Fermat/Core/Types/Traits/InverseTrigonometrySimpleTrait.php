@@ -12,7 +12,7 @@ use Samsara\Fermat\Core\Types\Traits\Trigonometry\InverseTrigonometrySelectionTr
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait InverseTrigonometrySimpleTrait
 {

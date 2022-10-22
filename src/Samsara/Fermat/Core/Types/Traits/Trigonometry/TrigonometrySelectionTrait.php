@@ -6,7 +6,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcMode;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait TrigonometrySelectionTrait
 {

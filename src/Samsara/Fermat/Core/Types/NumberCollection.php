@@ -20,7 +20,7 @@ use Samsara\Fermat\Stats\Values\Distribution\Poisson;
 use Traversable;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \IteratorAggregate
 {

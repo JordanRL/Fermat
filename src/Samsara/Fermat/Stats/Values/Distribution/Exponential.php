@@ -10,6 +10,9 @@ use Samsara\Fermat\Core\Provider\RandomProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
+/**
+ * @package Samsara\Fermat\Stats
+ */
 class Exponential extends Distribution
 {
 

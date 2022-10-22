@@ -6,6 +6,10 @@ use Samsara\Fermat\Coordinates\Values\CylindricalCoordinate;
 use Samsara\Fermat\Coordinates\Values\SphericalCoordinate;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
+/**
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\Coordinates
+ */
 interface ThreeDCoordinateInterface extends CoordinateInterface
 {
 

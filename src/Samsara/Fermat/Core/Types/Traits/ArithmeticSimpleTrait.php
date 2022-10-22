@@ -25,7 +25,7 @@ use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait ArithmeticSimpleTrait
 {

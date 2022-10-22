@@ -14,7 +14,7 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait TrigonometrySimpleTrait
 {

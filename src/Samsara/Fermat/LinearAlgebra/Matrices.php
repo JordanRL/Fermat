@@ -9,6 +9,9 @@ use Samsara\Fermat\LinearAlgebra\Values\ImmutableMatrix;
 use Samsara\Fermat\LinearAlgebra\Values\MutableMatrix;
 use Samsara\Fermat\Core\Numbers;
 
+/**
+ * @package Samsara\Fermat\LinearAlgebra
+ */
 class Matrices
 {
     const IMMUTABLE_MATRIX = ImmutableMatrix::class;

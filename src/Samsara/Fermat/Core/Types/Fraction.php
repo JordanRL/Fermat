@@ -17,7 +17,7 @@ use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\MutableFraction;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 abstract class Fraction extends Number implements FractionInterface
 {

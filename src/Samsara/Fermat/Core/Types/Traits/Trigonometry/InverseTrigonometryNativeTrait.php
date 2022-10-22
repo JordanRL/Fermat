@@ -3,7 +3,7 @@
 namespace Samsara\Fermat\Core\Types\Traits\Trigonometry;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait InverseTrigonometryNativeTrait
 {

@@ -5,24 +5,18 @@ namespace Samsara\Fermat\Core\Types\Traits;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Complex\ComplexNumbers;
-use Samsara\Fermat\Complex\Types\Base\Interfaces\Numbers\ComplexNumberInterface;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
-use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
-use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticHelperSimpleTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
-use Samsara\Fermat\Core\Values\MutableDecimal;
-use Samsara\Fermat\Core\Values\MutableFraction;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait InputNormalizationTrait
 {

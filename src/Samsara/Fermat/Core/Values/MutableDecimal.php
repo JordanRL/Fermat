@@ -12,7 +12,7 @@ use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class MutableDecimal extends Decimal
 {

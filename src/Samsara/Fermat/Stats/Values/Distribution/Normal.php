@@ -16,6 +16,9 @@ use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
+/**
+ * @package Samsara\Fermat\Stats
+ */
 class Normal extends Distribution
 {
 

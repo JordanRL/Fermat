@@ -4,6 +4,9 @@ namespace Samsara\Fermat\Core\Enums;
 
 /**
  * This is used internally in some places to differentiate between where (internally) a call was made from.
+ *
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\Core
  */
 enum CalcOperation
 {

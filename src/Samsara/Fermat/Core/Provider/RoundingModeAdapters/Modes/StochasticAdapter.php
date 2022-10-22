@@ -6,7 +6,7 @@ use Samsara\Fermat\Core\Enums\RandomMode;
 use Samsara\Fermat\Core\Provider\RandomProvider;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class StochasticAdapter extends BaseAdapter
 {

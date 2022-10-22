@@ -18,7 +18,7 @@ use Samsara\Fermat\Core\Values\MutableDecimal;
 use Samsara\Fermat\Core\Values\MutableFraction;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait ArithmeticHelperSimpleTrait
 {

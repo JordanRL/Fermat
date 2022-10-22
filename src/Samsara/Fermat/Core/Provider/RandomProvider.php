@@ -19,7 +19,7 @@ use Random\Engine\PcgOneseq128XslRr64;
 use Random\Engine\Xoshiro256StarStar;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class RandomProvider
 {

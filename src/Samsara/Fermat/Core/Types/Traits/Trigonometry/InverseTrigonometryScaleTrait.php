@@ -17,7 +17,7 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait InverseTrigonometryScaleTrait
 {
@@ -229,6 +229,9 @@ trait InverseTrigonometryScaleTrait
         $oneDivZSquared = $one->divide($z->pow(2));
         $oneDivZ = $one->divide($z, $intScale);
 
+        /**
+         * @package Samsara\Fermat\Core
+         */
         return new class($oneDivZSquared, $oneDivZ, $one) implements ContinuedFractionTermInterface {
             private ImmutableDecimal $oneDivZSq;
             private ImmutableDecimal $oneDivZ;
@@ -275,6 +278,9 @@ trait InverseTrigonometryScaleTrait
         ImmutableDecimal $zeroTerm
     ): callable|ContinuedFractionTermInterface
     {
+        /**
+         * @package Samsara\Fermat\Core
+         */
         return new class($intScale, $zeroTerm) implements ContinuedFractionTermInterface {
             private ImmutableDecimal $zeroTerm;
             private int $scale;

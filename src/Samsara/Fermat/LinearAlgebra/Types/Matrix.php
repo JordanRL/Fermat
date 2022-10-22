@@ -17,6 +17,9 @@ use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\LinearAlgebra\Values\ImmutableMatrix;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
+/**
+ * @package Samsara\Fermat\LinearAlgebra
+ */
 abstract class Matrix implements MatrixInterface
 {
     public const MODE_ROWS_INPUT = 'rows';

@@ -3,7 +3,8 @@
 namespace Samsara\Fermat\Core\Enums;
 
 /**
- *
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\Core
  */
 enum NumberBase: int
 {

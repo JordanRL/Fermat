@@ -9,19 +9,16 @@ use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Complex\Values\MutableComplexNumber;
-use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\Traits\InputNormalizationTrait;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 use Samsara\Fermat\Core\Values\MutableFraction;
-use Samsara\Fermat\Coordinates\Values\PolarCoordinate;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Complex
  */
 trait ArithmeticComplexTrait
 {

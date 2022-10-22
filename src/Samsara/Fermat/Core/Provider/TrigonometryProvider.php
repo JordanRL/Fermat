@@ -7,7 +7,7 @@ use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class TrigonometryProvider
 {

@@ -3,7 +3,8 @@
 namespace Samsara\Fermat\Core\Types\Base\Interfaces\Numbers;
 
 /**
- *
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\Core
  */
 interface SimpleNumberInterface extends NumberInterface
 {

@@ -14,7 +14,7 @@ use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 trait TrigonometryScaleTrait
 {
@@ -204,6 +204,9 @@ trait TrigonometryScaleTrait
             $halfModTan = Numbers::make(Numbers::IMMUTABLE, $modulo->divide(2)->tanScale($intScale+1));
             $answer = $two->multiply($halfModTan)->divide($one->subtract($halfModTan->pow(2)));
         } else {
+            /**
+             * @package Samsara\Fermat\Core
+             */
             $aPart = new class($modulo) implements ContinuedFractionTermInterface {
                 private ImmutableDecimal $modulo;
 
@@ -228,6 +231,9 @@ trait TrigonometryScaleTrait
                 }
             };
 
+            /**
+             * @package Samsara\Fermat\Core
+             */
             $bPart = new class($intScale) implements ContinuedFractionTermInterface {
                 private int $intScale;
 

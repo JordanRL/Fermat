@@ -2,16 +2,12 @@
 
 namespace Samsara\Fermat\Core\Types\Base\Interfaces\Numbers;
 
-use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
-use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Core\Enums\NumberBase;
-use Samsara\Fermat\Core\Enums\RoundingMode;
 use Samsara\Fermat\Core\Types\NumberCollection;
-use Samsara\Fermat\Core\Values\ImmutableDecimal;
-use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
- *
+ * @codeCoverageIgnore
+ * @package Samsara\Fermat\Core
  */
 interface DecimalInterface extends SimpleNumberInterface
 {

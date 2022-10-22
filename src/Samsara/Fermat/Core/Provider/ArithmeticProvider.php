@@ -6,7 +6,7 @@ use Decimal\Decimal;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class ArithmeticProvider
 {

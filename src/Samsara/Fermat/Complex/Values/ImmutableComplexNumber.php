@@ -7,6 +7,9 @@ use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 
+/**
+ * @package Samsara\Fermat\Complex
+ */
 class ImmutableComplexNumber extends ComplexNumber
 {
 

@@ -8,6 +8,9 @@ use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\TwoDCoordinateI
 use Samsara\Fermat\Coordinates\Types\Coordinate;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
+/**
+ * @package Samsara\Fermat\Coordinates
+ */
 class PolarCoordinate extends Coordinate implements TwoDCoordinateInterface
 {
     /** @var CartesianCoordinate */

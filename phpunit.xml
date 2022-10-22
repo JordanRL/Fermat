@@ -26,6 +26,9 @@
       <clover outputFile="build/logs/coverage.clover"/>
     </report>
   </coverage>
+  <logging>
+    <junit outputFile="build/logs/junit.xml"/>
+  </logging>
   <testsuites>
     <testsuite name="Core">
       <directory suffix=".php">./tests/Samsara/Fermat/Core</directory>
@@ -46,5 +49,4 @@
       <directory suffix=".php">./tests/Samsara/Fermat/Stats</directory>
     </testsuite>
   </testsuites>
-  <logging/>
 </phpunit>

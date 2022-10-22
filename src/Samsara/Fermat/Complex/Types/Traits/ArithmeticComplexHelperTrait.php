@@ -17,7 +17,7 @@ use Samsara\Fermat\Core\Values\MutableFraction;
 use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
 
 /**
- *
+ * @package Samsara\Fermat\Complex
  */
 trait ArithmeticComplexHelperTrait
 {

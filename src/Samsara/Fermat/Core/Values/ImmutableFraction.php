@@ -6,7 +6,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Types\Fraction;
 
 /**
- *
+ * @package Samsara\Fermat\Core
  */
 class ImmutableFraction extends Fraction
 {
