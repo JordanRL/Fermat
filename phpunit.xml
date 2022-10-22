@@ -16,6 +16,7 @@
         timeoutForLargeTests="60"
         failOnRisky="true"
         enforceTimeLimit="true"
+        defaultTimeLimit="2"
         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd">
   <coverage>
     <include>

@@ -1,0 +1,107 @@
+version: 2.1
+
+commands:
+  composer-update:
+    description: "Updating project dependencies with composer"
+    steps:
+      - run: composer update
+  phpunit-run:
+    description: "Running PHPUnit With BCMath"
+    steps:
+      - run: mkdir build
+      - run: mkdir build/logs
+      - run: vendor/bin/phpunit
+  extensions-install:
+    description: "Installing Core PHP Extension"
+    steps:
+      - run: sudo -E install-php-extensions xdebug gmp
+      - run: sudo docker-php-ext-enable xdebug
+  decimal-install:
+    description: "Installing ext-decimal"
+    steps:
+      - run: sudo apt update
+      - run: sudo apt search libmpdec
+      - run: sudo apt install libmpdec-dev
+      - run: sudo pecl install decimal
+
+jobs:
+  cc-coverage-reporter:
+    docker:
+      - image: cimg/php:8.1
+    environment:
+      - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
+    steps:
+      - run:
+          name: Download cc-test-reporter
+          command: |
+            mkdir -p tmp/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
+            ./tmp/cc-test-reporter before-build
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - cc-test-reporter
+  coverage-bcmath:
+    environment:
+      - XDEBUG_MODE: coverage
+    docker:
+      - image: cimg/php:8.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./tmp
+      - extensions-install
+      - composer-update
+      - phpunit-run
+      - run: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - codeclimate.bcmath.json
+  coverage-decimal:
+    environment:
+      - XDEBUG_MODE: coverage
+    docker:
+      - image: cimg/php:8.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./tmp
+      - extensions-install
+      - decimal-install
+      - composer-update
+      - phpunit-run
+      - run: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal.json build/logs/coverage.clover
+      - persist_to_workspace:
+         root: tmp
+         paths:
+           - codeclimate.decimal.json
+  upload-coverage:
+    environment:
+      - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
+    docker:
+      - image: cimg/php:8.1
+    steps:
+      - attach_workspace:
+          at: ./tmp
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+
+workflows:
+  unit-test-workflow:
+    jobs:
+      - cc-coverage-reporter
+      - coverage-bcmath:
+          requires:
+            - cc-coverage-reporter
+      - coverage-decimal:
+          requires:
+            - cc-coverage-reporter
+      - upload-coverage:
+          requires:
+            - coverage-bcmath
+            - coverage-decimal
