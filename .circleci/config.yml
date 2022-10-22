@@ -17,7 +17,7 @@ commands:
     description: "Installing ext-decimal"
     steps:
       - run: sudo apt search libmpdec
-      - run: sudo apt install libmpdec-dev
+      - run: sudo apt install libmpdec2
       - run: sudo pecl install decimal
 
 jobs:
