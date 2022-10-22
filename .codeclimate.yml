@@ -39,7 +39,7 @@ plugins:
     enabled: true
     config:
       file_extensions: "php"
-      rulesets: "cleancode,codesize,design"
+      rulesets: "codesize,design"
 exclude_patterns:
   - ".circleci/"
   - ".github/"
