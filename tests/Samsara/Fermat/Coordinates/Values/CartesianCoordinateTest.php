@@ -3,6 +3,7 @@ namespace Samsara\Fermat\Coordinates\Values;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
@@ -264,7 +265,7 @@ class CartesianCoordinateTest extends TestCase
             '0'
         );
 
-        $this->expectException(IncompatibleObjectState::class);
+        $this->expectException(OptionalExit::class);
         $coord3->asPolar();
     }
 

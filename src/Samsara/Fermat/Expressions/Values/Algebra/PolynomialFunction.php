@@ -49,7 +49,6 @@ class PolynomialFunction extends Expression implements FunctionInterface
         $this->coefficients = $sanitizedCoefficients;
 
         $this->expression = function($x): ImmutableDecimal {
-            /** @var ImmutableDecimal $value */
             $value = Numbers::makeZero();
 
             /** @var ImmutableDecimal $xPart */
@@ -79,7 +78,6 @@ class PolynomialFunction extends Expression implements FunctionInterface
      */
     public function evaluateAt($x): ImmutableDecimal
     {
-        /** @var callable $answer */
         $answer = $this->expression;
 
         return $answer($x);

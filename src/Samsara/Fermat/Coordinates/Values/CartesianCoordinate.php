@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Coordinates\Values;
 use ReflectionException;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\CoordinateInterface;
 use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\ThreeDCoordinateInterface;
@@ -73,8 +74,11 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
     /**
      * @return ImmutableDecimal
      */
-    public function getDistanceFromOrigin(): ImmutableDecimal
+    public function getDistanceFromOrigin(?int $scale = null): ImmutableDecimal
     {
+        $scale = $scale ?? 10;
+        $intScale = $scale + 2;
+
         $x = 0;
 
         if ($this->numberOfDimensions() > 1) {
@@ -89,7 +93,7 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
             $z = null;
         }
 
-        return $this->distanceTo(new CartesianCoordinate($x, $y, $z));
+        return $this->distanceTo(new CartesianCoordinate($x, $y, $z), $intScale)->roundToScale($scale);
     }
 
     /**
@@ -99,14 +103,16 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
      * @throws IntegrityConstraint
      * @throws ReflectionException
      */
-    public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal
+    public function distanceTo(CoordinateInterface $coordinate, ?int $scale = null): ImmutableDecimal
     {
+        $scale = $scale ?? 10;
+        $intScale = $scale + 2;
+
         if (!($coordinate instanceof CartesianCoordinate)) {
             $coordinate = $coordinate->asCartesian();
         }
 
-        /** @var ImmutableDecimal $n */
-        $n = Numbers::makeZero();
+        $n = Numbers::makeZero($intScale);
 
         $firstValues = ($this->numberOfDimensions() >= $coordinate->numberOfDimensions()) ? $this->axesValues() : $coordinate->axesValues();
         $secondValues = ($this->numberOfDimensions() >= $coordinate->numberOfDimensions()) ? $coordinate->axesValues() : $this->axesValues();
@@ -115,9 +121,7 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
             $n = $n->add($secondValues[$index]->subtract($value)->pow(2));
         }
 
-        $n = $n->sqrt();
-
-        return $n;
+        return $n->sqrt($intScale)->roundToScale($scale);
     }
 
     /**
@@ -215,11 +219,17 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
     }
 
     /**
+     * @param int|null $scale
      * @return PolarCoordinate
      * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
-    public function asPolar(): PolarCoordinate
+    public function asPolar(?int $scale = null): PolarCoordinate
     {
+        $scale = $scale ?? 10;
+        $intScale = $scale + 3;
+
         if ($this->numberOfDimensions() !== 2) {
             throw new IncompatibleObjectState(
                 'Can only get PolarCoordinate for a CartesianCoordinate of 2 dimensions.',
@@ -228,22 +238,27 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
             );
         }
 
-        $rho = $this->getDistanceFromOrigin();
+        $rho = $this->getDistanceFromOrigin($intScale);
 
         if ($rho->isEqual(0)) {
-            throw new IncompatibleObjectState(
+            throw new OptionalExit(
                 'Attempted to convert a CartesianCoordinate at the origin into PolarCoordinate',
                 'Do not attempt to do this.',
                 'The origin has an undefined polar angle in the polar coordinate system.'
             );
         }
 
-        /** @var ImmutableDecimal $theta */
-        $theta = $this->getAxis('x')->divide($rho)->arccos();
-        if ($this->getAxis('y')->isNegative()) {
-            $theta = $theta->multiply(-1);
+        if ($this->getAxis('x')->isEqual(0)) {
+            $theta = Numbers::makePi($intScale)->divide(2);
+
+            if ($this->getAxis('y')->isNegative()) {
+                $theta = $theta->multiply(-1);
+            }
+        } else {
+            /** @var ImmutableDecimal $theta */
+            $theta = $this->getAxis('y')->divide($this->getAxis('x'), $intScale)->arctan($intScale);
         }
 
-        return new PolarCoordinate($rho, $theta);
+        return new PolarCoordinate($rho->roundToScale($scale), $theta->roundToScale($scale));
     }
 }

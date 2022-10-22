@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Core\Types;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
@@ -12,6 +13,8 @@ use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Core\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\ImmutableFraction;
+use Samsara\Fermat\Core\Values\MutableFraction;
 
 /**
  *
@@ -81,6 +84,16 @@ abstract class Fraction extends Number implements FractionInterface
 
     }
 
+    public function setMode(?CalcMode $mode): self
+    {
+        $this->calcMode = $mode;
+
+        $this->value[0]->setMode($mode);
+        $this->value[1]->setMode($mode);
+
+        return $this;
+    }
+
     /**
      * Returns the current value formatted according to the settings in getGrouping() and getFormat()
      *
@@ -148,9 +161,10 @@ abstract class Fraction extends Number implements FractionInterface
     }
 
     /**
-     * @return $this|Base\Interfaces\Numbers\DecimalInterface|FractionInterface|NumberInterface|Fraction
+     * @return ImmutableFraction|MutableFraction|static
+     * @throws IntegrityConstraint
      */
-    public function abs()
+    public function abs(): ImmutableFraction|MutableFraction|static
     {
         if ($this->isPositive()) {
             return $this;
@@ -159,10 +173,7 @@ abstract class Fraction extends Number implements FractionInterface
             $numerator = $this->getNumerator()->abs();
             /** @var ImmutableDecimal $denominator */
             $denominator = $this->getDenominator()->abs();
-            return $this->setValue(
-                $numerator,
-                $denominator
-            );
+            return (new static($numerator, $denominator, $this->getBase()))->setMode($this->getMode());
         }
     }
 
@@ -237,6 +248,14 @@ abstract class Fraction extends Number implements FractionInterface
     }
 
     /**
+     * @return ImmutableDecimal|ImmutableFraction
+     */
+    public function asReal(): ImmutableDecimal|ImmutableFraction
+    {
+        return (new ImmutableFraction($this->getNumerator()->getAsBaseTenRealNumber(), $this->getDenominator()->getAsBaseTenRealNumber()))->setMode($this->getMode());
+    }
+
+    /**
      * @param FractionInterface $fraction
      * @param NumberInterface|null $lcm
      * @return array
@@ -262,8 +281,11 @@ abstract class Fraction extends Number implements FractionInterface
      * @param ImmutableDecimal $numerator
      * @param ImmutableDecimal $denominator
      *
-     * @return Fraction
+     * @return MutableFraction|ImmutableFraction
      */
-    abstract protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator);
+    abstract protected function setValue(
+        ImmutableDecimal $numerator,
+        ImmutableDecimal $denominator
+    ): MutableFraction|ImmutableFraction;
 
 }

@@ -2,29 +2,27 @@
 
 namespace Samsara\Fermat\Core\Types\Traits;
 
-use Composer\InstalledVersions;
-use ReflectionException;
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
-/** @psalm-suppress UndefinedClass */
-use Samsara\Fermat\Core\ComplexNumbers;
 use Samsara\Fermat\Core\Enums\CalcOperation;
-use Samsara\Fermat\Core\Enums\NumberBase;
-use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticGMPTrait;
-use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticHelperTrait;
+use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticHelperSimpleTrait;
 use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticScaleTrait;
 use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
 use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticNativeTrait;
-/** @psalm-suppress UndefinedClass */
-use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\MutableDecimal;
+use Samsara\Fermat\Core\Values\MutableFraction;
+use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Complex\Types\ComplexNumber;
+use Samsara\Fermat\Complex\Values\MutableComplexNumber;
+use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 
 /**
  *
@@ -36,187 +34,82 @@ trait ArithmeticSimpleTrait
     use ArithmeticScaleTrait;
     use ArithmeticNativeTrait;
     use ArithmeticGMPTrait;
-    use ArithmeticHelperTrait;
+    use ArithmeticHelperSimpleTrait;
 
     /**
-     * @param $num
-     * @return $this|DecimalInterface|Fraction|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function add($num)
+    public function add(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart,
-            $num
-        ] = $this->translateToParts($this, $num);
+        [$thisNum, $thatNum] = $this->translateToObjects($num);
 
-        if ($num->isComplex()) {
-            return $num->add($this);
+        if ($thatNum->isComplex()) {
+            return $thatNum->add($thisNum);
         }
 
-        if ($num->isEqual(0)) {
-            return $this;
-        }
-
-        if ($this->isReal() xor $num->isReal()) {
-            return $this->helperAddSubXor(
-                $thisRealPart,
-                $thisImaginaryPart,
-                $thatRealPart,
-                $thatImaginaryPart,
-                CalcOperation::Addition
-            );
-        }
-
-        if ($this instanceof FractionInterface) {
-            return $this->helperAddSubFraction($num, CalcOperation::Addition);
-        } else {
-            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
-            $value = $this->addSelector($num);
-
-            if ($this->isImaginary()) {
-                $value .= 'i';
-            }
-
-            $originalScale = $this->getScale();
-
-            return $this->setValue($value)->roundToScale($originalScale);
-        }
+        return $this->helperAddSub($thisNum, $thatNum, CalcOperation::Addition);
     }
 
     /**
-     * @param $num
-     * @return $this|DecimalInterface|Fraction|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function subtract($num)
+    public function subtract(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart,
-            $num
-        ] = $this->translateToParts($this, $num);
+        [$thisNum, $thatNum] = $this->translateToObjects($num);
 
-        if ($num->isComplex()) {
-            return $num->multiply(-1)->add($this);
+        if ($thatNum->isComplex()) {
+            return $thatNum->multiply(-1)->add($thisNum);
         }
 
-        if ($num->isEqual(0)) {
-            return $this;
-        }
-
-        if ($this->isReal() xor $num->isReal()) {
-            return $this->helperAddSubXor(
-                $thisRealPart,
-                $thisImaginaryPart,
-                $thatRealPart,
-                $thatImaginaryPart,
-                CalcOperation::Subtraction
-            );
-        }
-
-        if ($this instanceof FractionInterface) {
-            return $this->helperAddSubFraction($num, CalcOperation::Subtraction);
-        } else {
-            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-
-            $value = $this->subtractSelector($num);
-
-            if ($this->isImaginary()) {
-                $value .= 'i';
-            }
-
-            $originalScale = $this->getScale();
-
-            return $this->setValue($value)->roundToScale($originalScale);
-        }
+        return $this->helperAddSub($thisNum, $thatNum, CalcOperation::Subtraction);
     }
 
     /**
-     * @param $num
-     * @return $this|DecimalInterface|Fraction|ImmutableDecimal|MutableDecimal
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      */
-    public function multiply($num)
+    public function multiply(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart,
-            $num
-        ] = $this->translateToParts($this, $num, 1);
+        [$thisNum, $thatNum] = $this->translateToObjects($num);
 
-        if ($num->isComplex()) {
-            return $num->multiply($this);
+        if ($thatNum->isComplex()) {
+            return $thatNum->multiply($thisNum);
         }
 
-        if ($num->isEqual(1)) {
-            return $this;
-        }
-
-        if ($this instanceof FractionInterface) {
-            if ($num instanceof FractionInterface) {
-                return $this->setValue(
-                    $this->getNumerator()->multiply($num->getNumerator()),
-                    $this->getDenominator()->multiply($num->getDenominator())
-                )->simplify();
-            }
-
-            if ($num->isWhole()) {
-                return $this->setValue(
-                    $this->getNumerator()->multiply($num),
-                    $this->getDenominator()
-                )->simplify();
-            }
-
-            $value = $this->asDecimal()->multiply($num);
-
-            return new ImmutableDecimal($value, $this->getScale());
-        } else {
-            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-            $value = $this->multiplySelector($num);
-
-            if ($this->isImaginary() xor $num->isImaginary()) {
-                $value .= 'i';
-            } elseif ($this->isImaginary() && $num->isImaginary()) {
-                $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
-            }
-
-            $originalScale = $this->getScale();
-
-            return $this->setValue($value)->roundToScale($originalScale);
-        }
+        return $this->helperMulDiv($thisNum, $thatNum, CalcOperation::Multiplication, $this->getScale());
     }
 
     /**
-     * @param $num
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
      * @param int|null $scale
-     * @return $this|DecimalInterface|Fraction|ImmutableDecimal|MutableDecimal
+     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    public function divide($num, ?int $scale = null)
+    public function divide(
+        string|int|float|Decimal|Fraction|ComplexNumber $num,
+        ?int $scale = null
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
 
         $scale = $scale ?? $this->getScale();
 
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart,
-            $num
-        ] = $this->translateToParts($this, $num, 1);
+        [$thisNum, $thatNum] = $this->translateToObjects($num);
 
-        if ($num->isEqual(0)) {
+        if ($thatNum->isEqual(0)) {
             throw new IntegrityConstraint(
                 'Cannot divide by zero',
                 'Check for zero before calling divide',
@@ -224,87 +117,53 @@ trait ArithmeticSimpleTrait
             );
         }
 
-        if ($num->isComplex()) {
-            return $num->divide($this);
+        if ($thatNum->isComplex()) {
+            [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
+            $thisComplex = (new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart))->setMode($this->getMode());
+            return $thisComplex->divide($thatNum);
         }
 
-        if ($num->isEqual(1)) {
-            return $this;
-        }
-
-        if ($this instanceof FractionInterface) {
-            if ($num instanceof FractionInterface) {
-                return $this->setValue(
-                    $this->getNumerator()->multiply($num->getDenominator()),
-                    $this->getDenominator()->multiply($num->getNumerator())
-                )->simplify();
-            }
-
-            if ($num->isWhole()) {
-                return $this->setValue(
-                    $this->getNumerator(),
-                    $this->getDenominator()->multiply($num)
-                )->simplify();
-            }
-
-            $value = $this->asDecimal($scale)->divide($num);
-
-            return new ImmutableDecimal($value, $scale);
-        } else {
-            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-            $value = $this->divideSelector($num, $scale);
-
-            if ($this->isImaginary() xor $num->isImaginary()) {
-                $value .= 'i';
-
-                if ($num->isImaginary()) {
-                    $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
-                }
-            }
-
-            return $this->setValue($value, $scale+1)->roundToScale($scale);
-        }
+        return $this->helperMulDiv($thisNum, $thatNum, CalcOperation::Division, $scale);
     }
 
     /**
-     * @param $num
-     * @return DecimalInterface|Fraction|ImmutableComplexNumber
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
+     * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
-    public function pow($num)
+    public function pow(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
-        [
-            $thatRealPart,
-            $thatImaginaryPart,
-            $thisRealPart,
-            $thisImaginaryPart,
-            $num
-        ] = $this->translateToParts($this, $num, 0);
+        [$thisNum, $thatNum] = $this->translateToObjects($num);
 
-        if (($this->isNegative() && !$num->isInt())) {
+        if (($thisNum->isNegative() && !$thatNum->isInt())) {
             throw new IntegrityConstraint(
                 'Decimal exponents of negative bases are not well defined.',
                 'Provide only positive bases, or provide only integer exponents.'
             );
         } elseif (
-            $num->isComplex()
-            || ($this->isReal() xor $num->isReal())
+            $thatNum->isComplex()
+            || ($thisNum->isReal() xor $thatNum->isReal())
         ) {
-            /** @psalm-suppress UndefinedClass */
-            $thisComplex = new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart);
+            [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
+            [$thatRealPart, $thatImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
 
-            /** @psalm-suppress UndefinedClass */
+            $thisComplex = new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart);
             $thatComplex = new ImmutableComplexNumber($thatRealPart, $thatImaginaryPart);
+
+            $thisComplex->setMode($this->getMode());
+            $thatComplex->setMode($this->getMode());
 
             return $thisComplex->pow($thatComplex);
         }
 
-        if ($this instanceof FractionInterface) {
+        if ($thisNum instanceof FractionInterface) {
             /** @var ImmutableDecimal $powNumerator */
-            $powNumerator = $this->getNumerator()->pow($num);
+            $powNumerator = $thisNum->getNumerator()->pow($thatNum);
             /** @var ImmutableDecimal $powDenominator */
-            $powDenominator = $this->getDenominator()->pow($num);
+            $powDenominator = $thisNum->getDenominator()->pow($thatNum);
 
             if ($powNumerator->isWhole() && $powDenominator->isWhole()) {
                 return $this->setValue($powNumerator, $powDenominator);
@@ -315,8 +174,7 @@ trait ArithmeticSimpleTrait
 
             $originalScale = $this->getScale();
 
-            /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
-            $value = $this->powSelector($num);
+            $value = $thisNum->powSelector($thatNum);
 
             if ($this->isImaginary()) {
                 $value .= 'i';
@@ -328,10 +186,12 @@ trait ArithmeticSimpleTrait
 
     /**
      * @param int|null $scale
-     * @return DecimalInterface|Fraction
+     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      */
-    public function sqrt(?int $scale = null)
+    public function sqrt(
+        ?int $scale = null
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
         $scale = is_null($scale) ? $this->getScale() : $scale;
 

@@ -17,7 +17,7 @@ class PolarCoordinate extends Coordinate implements TwoDCoordinateInterface
     {
         $theta = Numbers::makeOrDont(Numbers::IMMUTABLE, $theta);
 
-        $theta = $theta->continuousModulo(Numbers::TAU);
+        $theta = $theta->continuousModulo(Numbers::makeTau($theta->getScale()));
 
         if ($theta->isNegative()) {
             $theta = Numbers::makeTau($theta->getScale())->add($theta);
@@ -41,11 +41,14 @@ class PolarCoordinate extends Coordinate implements TwoDCoordinateInterface
         return $this->asCartesian()->distanceTo($coordinate);
     }
 
-    public function asCartesian(): CartesianCoordinate
+    public function asCartesian(?int $scale = null): CartesianCoordinate
     {
+        $scale = $scale ?? 10;
+        $intScale = $scale + 2;
+
         if (is_null($this->cachedCartesian)) {
-            $x = $this->getAxis('rho')->multiply($this->getAxis('theta')->cos());
-            $y = $this->getAxis('rho')->multiply($this->getAxis('theta')->sin());
+            $x = $this->getAxis('rho')->multiply($this->getAxis('theta')->cos($intScale))->roundToScale($scale);
+            $y = $this->getAxis('rho')->multiply($this->getAxis('theta')->sin($intScale))->roundToScale($scale);
 
             $this->cachedCartesian = new CartesianCoordinate($x, $y);
         }

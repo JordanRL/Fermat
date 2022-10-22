@@ -2,7 +2,15 @@
 
 namespace Samsara\Fermat\Core\Types\Base\Interfaces\Numbers;
 
+use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
+use Samsara\Fermat\Complex\Values\MutableComplexNumber;
+use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Types\Fraction;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\ImmutableFraction;
+use Samsara\Fermat\Core\Values\MutableDecimal;
+use Samsara\Fermat\Core\Values\MutableFraction;
 
 /**
  *
@@ -11,9 +19,9 @@ interface NumberInterface
 {
 
     /**
-     * @return NumberInterface|DecimalInterface|FractionInterface
+     * @return MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|NumberInterface
      */
-    public function abs();
+    public function abs(): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static;
 
     /**
      * @return string
@@ -21,54 +29,66 @@ interface NumberInterface
     public function absValue(): string;
 
     /**
-     * @param $num
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
      *
-     * @return NumberInterface|DecimalInterface|FractionInterface
+     * @return MutableDecimal|ImmutableComplexNumber|MutableFraction|ImmutableDecimal|MutableComplexNumber|ImmutableFraction|NumberInterface
      */
-    public function add($num);
+    public function add(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static;
 
     /**
-     * @param $num
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
      *
-     * @return NumberInterface|DecimalInterface|FractionInterface
+     * @return MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|NumberInterface
      */
-    public function subtract($num);
+    public function subtract(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static;
 
     /**
-     * @param $num
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
      *
-     * @return NumberInterface|DecimalInterface|FractionInterface
+     * @return MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|NumberInterface
      */
-    public function multiply($num);
+    public function multiply(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static;
 
     /**
-     * @param $num
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
      * @param int|null $scale
      *
-     * @return NumberInterface|DecimalInterface|FractionInterface
+     * @return MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|NumberInterface
      */
-    public function divide($num, ?int $scale = null);
+    public function divide(
+        string|int|float|Decimal|Fraction|ComplexNumber $num,
+        ?int $scale = null
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static;
 
     /**
-     * @param $num
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
      *
-     * @return NumberInterface|DecimalInterface|FractionInterface
+     * @return MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|NumberInterface
      */
-    public function pow($num);
+    public function pow(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static;
 
     /**
-     * @param int? $scale
-     *
-     * @return NumberInterface|DecimalInterface|FractionInterface
+     * @param int|null $scale
+     * @return MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|NumberInterface
      */
-    public function sqrt(?int $scale = null);
+    public function sqrt(
+        ?int $scale = null
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static;
 
     /**
-     * @param float|int|string|NumberInterface $value
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $value
      *
      * @return bool
      */
-    public function isEqual(NumberInterface|int|string|float $value): bool;
+    public function isEqual(string|int|float|Decimal|Fraction|ComplexNumber $value): bool;
 
     /**
      * @return int|null
@@ -86,9 +106,9 @@ interface NumberInterface
     public function isReal(): bool;
 
     /**
-     * @return string
+     * @return ImmutableDecimal|ImmutableFraction
      */
-    public function asReal(): string;
+    public function asReal(): ImmutableDecimal|ImmutableFraction;
 
     /**
      * @return bool

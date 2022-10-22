@@ -20,7 +20,7 @@ trait LogSelectionTrait
      */
     protected function expSelector(?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->expNative(),
@@ -36,7 +36,7 @@ trait LogSelectionTrait
      */
     protected function lnSelector(?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->lnNative(),
@@ -51,7 +51,7 @@ trait LogSelectionTrait
      */
     protected function log10Selector(?int $scale): string
     {
-        $calcMode = $this->getMode();
+        $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
             CalcMode::Native => (string)$this->log10Native(),

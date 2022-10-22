@@ -330,12 +330,12 @@ class ArithmeticNativeTest extends TestCase
 
     public function multiplicationImmutableFractionProvider(): array
     {
-        $a = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Native), (new ImmutableDecimal(4))->setMode(CalcMode::Native));
-        $b = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Native), (new ImmutableDecimal(5))->setMode(CalcMode::Native));
-        $c = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Native), (new ImmutableDecimal(4))->setMode(CalcMode::Native));
-        $d = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Native), (new ImmutableDecimal(5))->setMode(CalcMode::Native));
-        $e = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Native), (new ImmutableDecimal(8))->setMode(CalcMode::Native));
-        $f = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Native), (new ImmutableDecimal('10000000000000000000000000'))->setMode(CalcMode::Native));
+        $a = (new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4)))->setMode(CalcMode::Native);
+        $b = (new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(5)))->setMode(CalcMode::Native);
+        $c = (new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal(4)))->setMode(CalcMode::Native);
+        $d = (new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(5)))->setMode(CalcMode::Native);
+        $e = (new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(8)))->setMode(CalcMode::Native);
+        $f = (new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal('10000000000000000000000000')))->setMode(CalcMode::Native);
 
         return [
             'IFraction 1/4*1/5' => [$a, $b, '1/20', NumberBase::Ten, 10],
@@ -450,12 +450,12 @@ class ArithmeticNativeTest extends TestCase
 
     public function divisionImmutableFractionProvider(): array
     {
-        $a = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Native), (new ImmutableDecimal(4))->setMode(CalcMode::Native));
-        $b = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Native), (new ImmutableDecimal(5))->setMode(CalcMode::Native));
-        $c = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Native), (new ImmutableDecimal(4))->setMode(CalcMode::Native));
-        $d = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Native), (new ImmutableDecimal(5))->setMode(CalcMode::Native));
-        $e = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Native), (new ImmutableDecimal(8))->setMode(CalcMode::Native));
-        $f = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Native), (new ImmutableDecimal('10000000000000000000000000'))->setMode(CalcMode::Native));
+        $a = (new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4)))->setMode(CalcMode::Native);
+        $b = (new ImmutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(5)))->setMode(CalcMode::Native);
+        $c = (new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal(4)))->setMode(CalcMode::Native);
+        $d = (new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(5)))->setMode(CalcMode::Native);
+        $e = (new ImmutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(8)))->setMode(CalcMode::Native);
+        $f = (new ImmutableFraction(new ImmutableDecimal(3), new ImmutableDecimal('10000000000000000000000000')))->setMode(CalcMode::Native);
 
         return [
             'IFraction 1/4 / 1/5' => [$a, $b, '5/4', NumberBase::Ten, 10],
