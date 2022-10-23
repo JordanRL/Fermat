@@ -62,8 +62,8 @@ trait ComplexScaleTrait
         int $scale
     ): ImmutableComplexNumber|MutableComplexNumber|static
     {
-        $roundedReal = $this->realPart->truncate($scale);
-        $roundedImaginary = $this->imaginaryPart->truncate($scale);
+        $roundedReal = $this->realPart->truncateToScale($scale);
+        $roundedImaginary = $this->imaginaryPart->truncateToScale($scale);
 
         return $this->setValue($roundedReal, $roundedImaginary, $scale);
     }
@@ -94,8 +94,8 @@ trait ComplexScaleTrait
         ?RoundingMode $mode = null
     ): ImmutableComplexNumber|MutableComplexNumber|static
     {
-        $roundedReal = $this->realPart->round($scale, $mode);
-        $roundedImaginary = $this->imaginaryPart->round($scale, $mode);
+        $roundedReal = $this->realPart->roundToScale($scale, $mode);
+        $roundedImaginary = $this->imaginaryPart->roundToScale($scale, $mode);
 
         return $this->setValue($roundedReal, $roundedImaginary, $scale);
     }

@@ -117,6 +117,7 @@ class RoundingProvider
         $isNegative = str_starts_with($decimal, '-');
 
         $rawString = str_replace('-', '', $decimal);
+        $rawString = str_replace('i', '', $rawString);
 
         if (str_contains($rawString, '.')) {
             [$wholePart, $decimalPart] = explode('.', $rawString);

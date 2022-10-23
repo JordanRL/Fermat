@@ -34,6 +34,17 @@ trait ScaleTrait
     }
 
     /**
+     * @param int $scale
+     * @return static
+     */
+    protected function setScale(int $scale): static
+    {
+        $this->scale = $scale;
+
+        return $this;
+    }
+
+    /**
      * @param int $decimals
      * @param RoundingMode|null $mode
      * @return ImmutableDecimal|MutableDecimal|static
@@ -113,11 +124,7 @@ trait ScaleTrait
         ?RoundingMode $mode = null
     ): ImmutableDecimal|MutableDecimal|static
     {
-
-        $this->scale = $scale;
-
-        return $this->round($scale, $mode);
-
+        return $this->round($scale, $mode)->setScale($scale);
     }
 
     /**
@@ -129,11 +136,7 @@ trait ScaleTrait
         int $scale
     ): ImmutableDecimal|MutableDecimal|static
     {
-
-        $this->scale = $scale;
-
-        return $this->truncate($scale);
-
+        return $this->truncate($scale)->setScale($scale);
     }
 
     /**
