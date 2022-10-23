@@ -84,7 +84,7 @@ class SequenceProvider
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public static function nthOddNumber(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
+    public static function nthOddNumber(int $n, int $scale = null, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
     {
         if ($asCollection) {
             $sequence = new NumberCollection();
@@ -97,11 +97,11 @@ class SequenceProvider
         }
 
         if ($n >= (PHP_INT_MAX/2)) {
-            $n = new ImmutableDecimal($n, 100);
+            $n = new ImmutableDecimal($n, $scale);
 
             return $n->multiply(2)->add(1);
         } else {
-            return new ImmutableDecimal(($n*2)+1, 100);
+            return new ImmutableDecimal(($n*2)+1, $scale);
         }
 
     }

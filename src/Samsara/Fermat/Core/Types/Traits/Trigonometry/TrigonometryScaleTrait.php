@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Core\Types\Traits\Trigonometry;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
+use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\SequenceProvider;
@@ -19,53 +20,22 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 trait TrigonometryScaleTrait
 {
 
+    use TrigonometryHelpersTrait;
+
     /**
      * @param int|null $scale
      * @return string
-     * @throws IntegrityConstraint
-     * @throws OptionalExit
-     * @throws \ReflectionException
      */
     protected function sinScale(int $scale = null): string
     {
-        if ($this->isEqual(0)) {
-            return $this;
-        }
-
-        $scale = $scale ?? $this->getScale();
-        $modScale = ($scale > $this->getScale()) ? $scale : $this->getScale();
-        $modScale = $modScale+$this->numberOfIntDigits()+2;
-
-        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $modScale);
-
-        $twoPi = Numbers::make2Pi($modScale + 2);
-        $pi = Numbers::makePi( $scale + 2 );
-
-        if ($pi->truncate($scale)->isEqual($thisNum->truncate($scale)) || $twoPi->truncate($scale)->isEqual($thisNum->truncate($scale))) {
-            return '0';
-        }
-
-        $modulo = $thisNum->continuousModulo($twoPi);
-        $negOne = Numbers::make(Numbers::IMMUTABLE, -1, $scale+1);
-        $one = Numbers::make(Numbers::IMMUTABLE, 1, $scale+1);
-
-        $answer = SeriesProvider::maclaurinSeries(
-            $modulo,
-            function ($n) use ($scale, $negOne, $one) {
-
-                return $n % 2 ? $negOne : $one;
-            },
-            function ($n) {
-                return SequenceProvider::nthOddNumber($n);
-            },
-            function ($n) {
-                return SequenceProvider::nthOddNumber($n)->factorial();
-            },
-            0,
-            $scale+2
+        return $this->helperSinCosScale(
+            CalcOperation::Sin,
+            '1',
+            '0',
+            '-1',
+            '0',
+            $scale
         );
-
-        return $answer->getAsBaseTenRealNumber();
     }
 
     /**
@@ -73,61 +43,17 @@ trait TrigonometryScaleTrait
      * @return string
      * @throws IntegrityConstraint
      * @throws \ReflectionException
-     * @throws OptionalExit
      */
-    protected function cosScale(int $scale = null): string
+    protected function cosScale(?int $scale = null): string
     {
-        if ($this->isEqual(0)) {
-            return '1';
-        }
-
-        $scale = $scale ?? $this->getScale();
-        $modScale = ($scale > $this->getScale()) ? $scale : $this->getScale();
-        $intScale = $scale+3;
-        $modScale = $modScale+$this->numberOfIntDigits()+2;
-
-        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $modScale);
-
-        $twoPi = Numbers::make2Pi($modScale + 2);
-        $pi = Numbers::makePi( $modScale + 2);
-        $piDivTwo = $pi->divide(2);
-
-        if ($twoPi->truncate($scale)->isEqual($thisNum->truncate($scale))) {
-            return '1';
-        }
-
-        if ($pi->truncate($scale)->isEqual($thisNum->truncate($scale))) {
-            return '-1';
-        }
-
-        if (
-            $piDivTwo->truncate($scale)->isEqual($thisNum->truncate($scale))
-            || $piDivTwo->multiply(3)->truncate($scale)->isEqual($thisNum->truncate($scale))
-        ) {
-            return '0';
-        }
-
-        $modulo = $thisNum->continuousModulo($twoPi);
-        $negOne = Numbers::make(Numbers::IMMUTABLE, -1, $intScale);
-        $one = Numbers::make(Numbers::IMMUTABLE, 1, $intScale);
-
-        $answer = SeriesProvider::maclaurinSeries(
-            $modulo,
-            function ($n) use ($negOne, $one) {
-
-                return $n % 2 ? $negOne : $one;
-            },
-            function ($n) use ($intScale) {
-                return SequenceProvider::nthEvenNumber($n, $intScale);
-            },
-            function ($n) use ($intScale) {
-                return SequenceProvider::nthEvenNumber($n, $intScale)->factorial();
-            },
-            0,
-            $scale+2
+        return $this->helperSinCosScale(
+            CalcOperation::Cos,
+            '0',
+            '-1',
+            '0',
+            '1',
+            $scale
         );
-
-        return $answer->getAsBaseTenRealNumber();
     }
 
     /**
@@ -253,7 +179,7 @@ trait TrigonometryScaleTrait
                     if ($n == 0) {
                         return Numbers::makeZero($this->intScale);
                     } else {
-                        return SequenceProvider::nthOddNumber($n-1);
+                        return SequenceProvider::nthOddNumber($n-1, $this->intScale);
                     }
                 }
             };
@@ -262,7 +188,7 @@ trait TrigonometryScaleTrait
         }
 
         if ($reciprocal) {
-            $answer = $one->divide($answer);
+            $answer = $one->divide($answer, $intScale);
         }
 
         return $answer->getAsBaseTenRealNumber();
