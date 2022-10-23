@@ -137,7 +137,7 @@ jobs:
           name: Installing YAML Extension
           command: |
             sudo apt update
-            sudo apt --assume-yes install libyaml-dev
+            sudo apt-get -y -q install -y -q libyaml-dev
             sudo pecl install yaml
       - run:
           name: Preparing Build Directory
