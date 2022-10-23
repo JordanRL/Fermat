@@ -46,7 +46,7 @@ exclude_patterns:
   - "*.yml"
   - "*.md"
   - "*.xml"
-  - "**/*Enum.php"
+  - "**/Enums/*.php"
   - "**/*Interface.php"
   - ".*.yml"
   - ".gitignore"
