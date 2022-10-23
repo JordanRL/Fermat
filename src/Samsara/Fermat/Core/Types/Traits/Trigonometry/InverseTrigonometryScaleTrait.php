@@ -9,10 +9,6 @@ use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\RoundingMode;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Provider\SequenceProvider;
-use Samsara\Fermat\Core\Provider\SeriesProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 
@@ -156,7 +152,7 @@ trait InverseTrigonometryScaleTrait
         $intScale = $scale + 2;
         $zeroTerm = Numbers::makePi($intScale)->divide(2, $intScale);
 
-        return $this->helperArcsecArccsc($zeroTerm, CalcOperation::ArcSec, $intScale);
+        return $this->helperArcsecArccscScale($zeroTerm, CalcOperation::ArcSec, $intScale);
     }
 
     /**
@@ -170,7 +166,7 @@ trait InverseTrigonometryScaleTrait
         $intScale = $scale + 2;
         $zeroTerm = Numbers::makeZero($this->scale);
 
-        return $this->helperArcsecArccsc($zeroTerm, CalcOperation::ArcCsc, $intScale);
+        return $this->helperArcsecArccscScale($zeroTerm, CalcOperation::ArcCsc, $intScale);
     }
 
     /**
@@ -190,116 +186,5 @@ trait InverseTrigonometryScaleTrait
      * @return int|null
      */
     abstract public function getScale(): ?int;
-
-    protected function helperArcsecArccsc(ImmutableDecimal $zeroTerm, CalcOperation $operation, int $scale): string
-    {
-        $one = Numbers::makeOne($scale);
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
-        $aPart = $this->helperSecCscAPart($one, $z, $scale);
-
-        $bPart = $this->helperSecCscBPart($scale, $zeroTerm);
-
-        $answer = SeriesProvider::generalizedContinuedFraction(
-            $aPart,
-            $bPart,
-            $scale * 2,
-            $scale,
-            match ($operation) {
-                CalcOperation::ArcCsc => SeriesProvider::SUM_MODE_ALT_FIRST_ADD,
-                CalcOperation::ArcSec => SeriesProvider::SUM_MODE_SUB,
-            }
-        );
-
-        return $answer->getAsBaseTenRealNumber();
-    }
-
-    /**
-     * @param ImmutableDecimal $one
-     * @param ImmutableDecimal $z
-     * @param int|null $intScale
-     * @return callable|ContinuedFractionTermInterface
-     * @throws IncompatibleObjectState
-     * @throws IntegrityConstraint
-     */
-    protected function helperSecCscAPart(
-        ImmutableDecimal $one, 
-        ImmutableDecimal $z, 
-        ?int $intScale): callable|ContinuedFractionTermInterface
-    {
-        $oneDivZSquared = $one->divide($z->pow(2));
-        $oneDivZ = $one->divide($z, $intScale);
-
-        /**
-         * @package Samsara\Fermat\Core
-         */
-        return new class($oneDivZSquared, $oneDivZ, $one) implements ContinuedFractionTermInterface {
-            private ImmutableDecimal $oneDivZSq;
-            private ImmutableDecimal $oneDivZ;
-            private ImmutableDecimal $one;
-
-            /**
-             * @param ImmutableDecimal $oneDivZSq
-             * @param ImmutableDecimal $oneDivZ
-             * @param ImmutableDecimal $one
-             */
-            public function __construct(ImmutableDecimal $oneDivZSq, ImmutableDecimal $oneDivZ, ImmutableDecimal $one)
-            {
-                $this->oneDivZSq = $oneDivZSq;
-                $this->oneDivZ = $oneDivZ;
-                $this->one = $one;
-            }
-
-            /**
-             * @param int $n
-             * @return ImmutableDecimal
-             */
-            public function __invoke(int $n): ImmutableDecimal
-            {
-                if ($n == 1) {
-                    return $this->oneDivZ->multiply($this->one->subtract($this->oneDivZSq)->sqrt());
-                }
-
-                $subterm = floor($n / 2);
-
-                return $this->oneDivZSq->multiply(
-                    2 * $subterm - 1
-                )->multiply(2 * $subterm);
-            }
-        };
-    }
-
-    /**
-     * @param int $intScale
-     * @param ImmutableDecimal $zeroTerm
-     * @return callable|ContinuedFractionTermInterface
-     */
-    protected function helperSecCscBPart(
-        int $intScale,
-        ImmutableDecimal $zeroTerm
-    ): callable|ContinuedFractionTermInterface
-    {
-        /**
-         * @package Samsara\Fermat\Core
-         */
-        return new class($intScale, $zeroTerm) implements ContinuedFractionTermInterface {
-            private ImmutableDecimal $zeroTerm;
-            private int $scale;
-
-            public function __construct(int $scale, ImmutableDecimal $zeroTerm)
-            {
-                $this->zeroTerm = $zeroTerm;
-                $this->scale = $scale;
-            }
-
-            public function __invoke(int $n): ImmutableDecimal
-            {
-                if ($n == 0) {
-                    return $this->zeroTerm;
-                }
-
-                return new ImmutableDecimal(($n * 2) - 1, $this->scale);
-            }
-        };
-    }
 
 }
