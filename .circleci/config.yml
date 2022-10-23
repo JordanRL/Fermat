@@ -134,6 +134,7 @@ jobs:
       - run:
           name: Installing YAML Extension
           command: |
+            sudo apt update
             sudo apt search libyaml
             sudo apt install libyaml-dev
             sudo pecl install yaml
