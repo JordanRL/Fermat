@@ -21,7 +21,7 @@ class SequenceProviderTest extends TestCase
 
         $this->assertEquals('5', $five->getValue());
 
-        $firstFiveOdds = SequenceProvider::nthOddNumber(0, true, 5);
+        $firstFiveOdds = SequenceProvider::nthOddNumber(0, null, true, 5);
 
         $this->assertEquals(5, $firstFiveOdds->count());
 
