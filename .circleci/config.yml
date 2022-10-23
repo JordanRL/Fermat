@@ -112,6 +112,9 @@ jobs:
           command: |
             ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
             ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+      - run:
+          name: Cleaning up Workspace
+          command: rm -rf ./tmp/*
   generate-docs:
     docker:
       - image: cimg/php:8.1
