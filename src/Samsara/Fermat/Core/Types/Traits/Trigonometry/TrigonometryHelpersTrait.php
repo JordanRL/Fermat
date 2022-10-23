@@ -3,7 +3,6 @@
 namespace Samsara\Fermat\Core\Types\Traits\Trigonometry;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Enums\CalcOperation;
@@ -77,10 +76,6 @@ trait TrigonometryHelpersTrait
         ?int $scale
     )
     {
-        if ($this->isEqual(0)) {
-            return $twoPiReturn;
-        }
-
         $scale = $scale ?? $this->getScale();
         $modScale = ($scale > $this->getScale()) ? $scale : $this->getScale();
         $intScale = $scale+3;
