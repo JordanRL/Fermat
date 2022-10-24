@@ -21,16 +21,14 @@ commands:
       - run:
           name: Running Unit Tests
           command: |
-            circleci tests glob "/home/circleci/project/tests/Samsara/Fermat/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
-            vendor/bin/phpunit $(cat ./build/tests-to-run)
+            vendor/bin/phpunit
   phpunit-run-without-large:
     description: "Running Unit Tests With PHPUnit (Without Large Tests)"
     steps:
       - run:
           name: Running Unit Tests (W/O Large)
           command: |
-            circleci tests glob "/home/circleci/project/tests/Samsara/Fermat/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
-            vendor/bin/phpunit --exclude-group large $(cat ./build/tests-to-run)
+            vendor/bin/phpunit --exclude-group large
   xdebug-enable:
     description: "Enabling XDebug Extension"
     steps:
@@ -78,7 +76,6 @@ jobs:
       - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
-    parallelism: 4
     steps:
       - checkout
       - attach_workspace:
@@ -104,7 +101,6 @@ jobs:
       - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
-    parallelism: 4
     steps:
       - checkout
       - attach_workspace:
@@ -196,7 +192,7 @@ workflows:
             - cc-coverage-reporter
       - tests-decimal:
           requires:
-            - tests-bcmath
+            - cc-coverage-reporter
       - upload-coverage:
           requires:
             - tests-bcmath
