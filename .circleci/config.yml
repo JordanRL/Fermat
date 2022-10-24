@@ -279,7 +279,7 @@ workflows:
   unit-test-workflow:
     jobs:
       - cc-coverage-reporter
-      - coverage-bcmath:
+      - tests-bcmath:
           core_suite: true
           complex_suite: true
           coordinates_suite: true
@@ -288,7 +288,7 @@ workflows:
           stats_suite: true
           requires:
             - cc-coverage-reporter
-      - coverage-decimal:
+      - tests-decimal:
           core_suite: true
           complex_suite: true
           coordinates_suite: true
