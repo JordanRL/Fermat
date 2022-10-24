@@ -30,6 +30,7 @@ jobs:
         with:
           path: src/
           level: 1
+          memory_limit: 512MB
   phpmetrics:
     runs-on: ubuntu-latest
     name: PHPMetrics Report

@@ -53,7 +53,7 @@ abstract class Decimal extends Number implements DecimalInterface, ScaleInterfac
      * @param bool $baseTenInput
      * @throws IntegrityConstraint
      */
-    public function __construct($value, int $scale = null, NumberBase $base = NumberBase::Ten, bool $baseTenInput = true)
+    final public function __construct($value, int $scale = null, NumberBase $base = NumberBase::Ten, bool $baseTenInput = true)
     {
 
         $this->base = $base;

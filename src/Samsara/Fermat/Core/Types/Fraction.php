@@ -36,7 +36,7 @@ abstract class Fraction extends Number implements FractionInterface
      *
      * @throws IntegrityConstraint
      */
-    public function __construct($numerator, $denominator, NumberBase $base = NumberBase::Ten)
+    final public function __construct($numerator, $denominator, NumberBase $base = NumberBase::Ten)
     {
 
         $numerator = Numbers::makeOrDont(Numbers::IMMUTABLE, $numerator, null, $base);
