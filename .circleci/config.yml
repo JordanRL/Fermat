@@ -94,10 +94,11 @@ jobs:
           name: Format Partial Code Coverage
           command: |
             ./tmp/cc-test-reporter format-coverage -t clover -o "tmp/codeclimate.bcmath$CIRCLE_NODE_INDEX.json" build/logs/coverage.clover
+            ls -al tmp/
       - persist_to_workspace:
           root: tmp
           paths:
-            - codeclimate.bcmath$CIRCLE_NODE_INDEX.json
+            - codeclimate*
   tests-decimal:
     environment:
       - XDEBUG_MODE: coverage
@@ -122,7 +123,7 @@ jobs:
       - persist_to_workspace:
           root: tmp
           paths:
-            - codeclimate.decimal$CIRCLE_NODE_INDEX.json
+            - codeclimate*
   upload-coverage:
     environment:
       - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
