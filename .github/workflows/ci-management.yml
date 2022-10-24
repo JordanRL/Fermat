@@ -1,11 +1,17 @@
-name: Release Drafter
+name: Circle CI
 
 on:
   push:
+    paths:
+      - 'src/**'
+      - 'tests/**'
     branches:
       - master
   pull_request:
     types: [opened, reopened, synchronize]
+    paths:
+      - 'src/**'
+      - 'tests/**'
     branches:
       - master
 
