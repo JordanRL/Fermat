@@ -5,22 +5,30 @@ commands:
     description: "Updating Dependencies With Composer"
     steps:
       - run:
-          name: "Running Composer"
+          name: Running Composer
           command: composer update
   phpunit-run:
     description: "Running Unit Tests With PHPUnit"
+    parameters:
+      suite:
+        default: "Core"
+        type: string
     steps:
       - run:
-          name: "Running Unit Tests"
+          name: Running Unit Tests For <<parameters.suite>> Suite
           command: |
             mkdir build
             mkdir build/logs
-            vendor/bin/phpunit
+            vendor/bin/phpunit --testsuite <<parameters.suite>>
   phpunit-run-without-large:
     description: "Running Unit Tests With PHPUnit (Without Large Tests)"
+    parameters:
+      suite:
+        default: "Core"
+        type: string
     steps:
       - run:
-          name: "Running Unit Tests"
+          name: Running Unit Tests For <<parameters.suite>> Suite (W/O Large)
           command: |
             mkdir build
             mkdir build/logs
@@ -29,7 +37,7 @@ commands:
     description: "Enabling XDebug Extension"
     steps:
       - run:
-          name: "Enabling XDebug Extension"
+          name: Enabling XDebug Extension
           command: |
               sudo -E install-php-extensions xdebug
               sudo docker-php-ext-enable xdebug
@@ -37,13 +45,13 @@ commands:
     description: "Enabling GMP Extension"
     steps:
       - run:
-          name: "Enabling GMP Extension"
+          name: Enabling GMP Extension
           command: sudo -E install-php-extensions gmp
   decimal-install:
     description: "Installing Decimal Extension"
     steps:
       - run:
-          name: "Installing Decimal Extension"
+          name: Installing Decimal Extension
           command: |
               sudo apt update
               sudo apt install libmpdec-dev
@@ -67,11 +75,30 @@ jobs:
           root: tmp
           paths:
             - cc-test-reporter
-  coverage-bcmath:
+  tests-bcmath:
     environment:
       - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
+    parameters:
+      core_suite:
+        type: string
+        default: ""
+      complex_suite:
+        type: string
+        default: ""
+      coordinates_suite:
+        type: string
+        default: ""
+      expressions_suite:
+        type: string
+        default: ""
+      linearalgebra_suite:
+        type: string
+        default: ""
+      stats_suite:
+        type: string
+        default: ""
     steps:
       - checkout
       - attach_workspace:
@@ -79,7 +106,36 @@ jobs:
       - gmp-enable
       - xdebug-enable
       - composer-update
-      - phpunit-run-without-large
+      - when:
+          condition: <<parameters.core_suite>>
+          steps:
+            - phpunit-run-without-large:
+                suite: Core
+      - when:
+          condition: <<parameters.complex_suite>>
+          steps:
+            - phpunit-run-without-large:
+                suite: Complex
+      - when:
+          condition: <<parameters.coordinates_suite>>
+          steps:
+            - phpunit-run-without-large:
+                suite: Coordinates
+      - when:
+          condition: <<parameters.expressions_suite>>
+          steps:
+            - phpunit-run-without-large:
+                suite: Expressions
+      - when:
+          condition: <<parameters.linearalgebra_suite>>
+          steps:
+            - phpunit-run-without-large:
+                suite: LinearAlgebra
+      - when:
+          condition: <<parameters.stats_suite>>
+          steps:
+            - phpunit-run-without-large:
+                suite: Stats
       - run:
           name: Format Partial Code Coverage
           command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
@@ -87,11 +143,30 @@ jobs:
           root: tmp
           paths:
             - codeclimate.bcmath.json
-  coverage-decimal:
+  tests-decimal:
     environment:
       - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
+    parameters:
+      core_suite:
+        type: string
+        default: ""
+      complex_suite:
+        type: string
+        default: ""
+      coordinates_suite:
+        type: string
+        default: ""
+      expressions_suite:
+        type: string
+        default: ""
+      linearalgebra_suite:
+        type: string
+        default: ""
+      stats_suite:
+        type: string
+        default: ""
     steps:
       - checkout
       - attach_workspace:
@@ -100,14 +175,43 @@ jobs:
       - xdebug-enable
       - decimal-install
       - composer-update
-      - phpunit-run
+      - when:
+          condition: <<parameters.core_suite>>
+          steps:
+            - phpunit-run:
+                suite: Core
+      - when:
+          condition: <<parameters.complex_suite>>
+          steps:
+            - phpunit-run:
+                suite: Complex
+      - when:
+          condition: <<parameters.coordinates_suite>>
+          steps:
+            - phpunit-run:
+                suite: Coordinates
+      - when:
+          condition: <<parameters.expressions_suite>>
+          steps:
+            - phpunit-run:
+                suite: Expressions
+      - when:
+          condition: <<parameters.linearalgebra_suite>>
+          steps:
+            - phpunit-run:
+                suite: LinearAlgebra
+      - when:
+          condition: <<parameters.stats_suite>>
+          steps:
+            - phpunit-run:
+                suite: Stats
       - run:
           name: Format Partial Code Coverage
           command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal.json build/logs/coverage.clover
       - persist_to_workspace:
-         root: tmp
-         paths:
-           - codeclimate.decimal.json
+          root: tmp
+          paths:
+            - codeclimate.decimal.json
   upload-coverage:
     environment:
       - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
@@ -176,9 +280,21 @@ workflows:
     jobs:
       - cc-coverage-reporter
       - coverage-bcmath:
+          core_suite: true
+          complex_suite: true
+          coordinates_suite: true
+          expressions_suite: true
+          linearalgebra_suite: true
+          stats_suite: true
           requires:
             - cc-coverage-reporter
       - coverage-decimal:
+          core_suite: true
+          complex_suite: true
+          coordinates_suite: true
+          expressions_suite: true
+          linearalgebra_suite: true
+          stats_suite: true
           requires:
             - cc-coverage-reporter
       - upload-coverage:
