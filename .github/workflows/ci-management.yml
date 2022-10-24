@@ -18,6 +18,16 @@ on:
       - master
 
 jobs:
+  phpstan:
+    runs-on: ubuntu-latest
+    name: PHPStan Report
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v6 # or alternative dependency management
+      - uses: php-actions/phpstan@v3
+        with:
+          path: src/
+          level: 1
   phpmetrics:
     runs-on: ubuntu-latest
     name: PhpMetrics Action
