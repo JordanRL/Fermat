@@ -33,11 +33,6 @@ jobs:
         with:
           name: HTML Report
           path: phpmetrics.html
-      - name: Upload Violations Report
-        uses: actions/upload-artifact@v1
-        with:
-          name: HTML Report
-          path: violations.xml
   trigger-circle-ci:
     runs-on: ubuntu-latest
     name: Trigger Circle CI Workflow
