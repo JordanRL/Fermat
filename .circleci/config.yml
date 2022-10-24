@@ -299,8 +299,8 @@ workflows:
             - cc-coverage-reporter
       - upload-coverage:
           requires:
-            - coverage-bcmath
-            - coverage-decimal
+            - tests-bcmath
+            - tests-decimal
   release-workflow:
     jobs:
       - generate-docs:
