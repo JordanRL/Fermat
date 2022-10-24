@@ -542,7 +542,7 @@ class ArithmeticAutoTest extends TestCase
     }
 
     /**
-     * @medium
+     * @large
      * @dataProvider powerImmutableComplexProvider
      */
     public function testPow(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
