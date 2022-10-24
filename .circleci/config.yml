@@ -17,27 +17,19 @@ commands:
             mkdir build/logs
   phpunit-run:
     description: "Running Unit Tests With PHPUnit"
-    parameters:
-      suite:
-        default: "Core"
-        type: string
     steps:
       - run:
-          name: Running Unit Tests For <<parameters.suite>> Suite
+          name: Running Unit Tests
           command: |
-            circleci tests glob "tests/Samsara/Fermat/<<parameters.suite>>/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
+            circleci tests glob "tests/Samsara/Fermat/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
             vendor/bin/phpunit $(cat ./build/tests-to-run)
   phpunit-run-without-large:
     description: "Running Unit Tests With PHPUnit (Without Large Tests)"
-    parameters:
-      suite:
-        default: "Core"
-        type: string
     steps:
       - run:
-          name: Running Unit Tests For <<parameters.suite>> Suite (W/O Large)
+          name: Running Unit Tests (W/O Large)
           command: |
-            circleci tests glob "tests/Samsara/Fermat/<<parameters.suite>>/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
+            circleci tests glob "tests/Samsara/Fermat/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
             vendor/bin/phpunit --exclude-group large $(cat ./build/tests-to-run)
   xdebug-enable:
     description: "Enabling XDebug Extension"
@@ -86,25 +78,6 @@ jobs:
       - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
-    parameters:
-      core_suite:
-        type: boolean
-        default: false
-      complex_suite:
-        type: boolean
-        default: false
-      coordinates_suite:
-        type: boolean
-        default: false
-      expressions_suite:
-        type: boolean
-        default: false
-      linearalgebra_suite:
-        type: boolean
-        default: false
-      stats_suite:
-        type: boolean
-        default: false
     parallelism: 4
     steps:
       - checkout
@@ -114,67 +87,19 @@ jobs:
       - xdebug-enable
       - composer-update
       - phpunit-prep
-      - when:
-          condition: <<parameters.core_suite>>
-          steps:
-            - phpunit-run-without-large:
-                suite: Core
-      - when:
-          condition: <<parameters.complex_suite>>
-          steps:
-            - phpunit-run-without-large:
-                suite: Complex
-      - when:
-          condition: <<parameters.coordinates_suite>>
-          steps:
-            - phpunit-run-without-large:
-                suite: Coordinates
-      - when:
-          condition: <<parameters.expressions_suite>>
-          steps:
-            - phpunit-run-without-large:
-                suite: Expressions
-      - when:
-          condition: <<parameters.linearalgebra_suite>>
-          steps:
-            - phpunit-run-without-large:
-                suite: LinearAlgebra
-      - when:
-          condition: <<parameters.stats_suite>>
-          steps:
-            - phpunit-run-without-large:
-                suite: Stats
+      - phpunit-run-without-large
       - run:
           name: Format Partial Code Coverage
           command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath$(echo $CIRCLE_NODE_INDEX).json build/logs/coverage.clover
       - persist_to_workspace:
           root: tmp
           paths:
-            - codeclimate.bcmath.json
+            - codeclimate.bcmath$(echo $CIRCLE_NODE_INDEX).json
   tests-decimal:
     environment:
       - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
-    parameters:
-      core_suite:
-        type: boolean
-        default: false
-      complex_suite:
-        type: boolean
-        default: false
-      coordinates_suite:
-        type: boolean
-        default: false
-      expressions_suite:
-        type: boolean
-        default: false
-      linearalgebra_suite:
-        type: boolean
-        default: false
-      stats_suite:
-        type: boolean
-        default: false
     parallelism: 4
     steps:
       - checkout
@@ -185,43 +110,14 @@ jobs:
       - decimal-install
       - composer-update
       - phpunit-prep
-      - when:
-          condition: <<parameters.core_suite>>
-          steps:
-            - phpunit-run:
-                suite: Core
-      - when:
-          condition: <<parameters.complex_suite>>
-          steps:
-            - phpunit-run:
-                suite: Complex
-      - when:
-          condition: <<parameters.coordinates_suite>>
-          steps:
-            - phpunit-run:
-                suite: Coordinates
-      - when:
-          condition: <<parameters.expressions_suite>>
-          steps:
-            - phpunit-run:
-                suite: Expressions
-      - when:
-          condition: <<parameters.linearalgebra_suite>>
-          steps:
-            - phpunit-run:
-                suite: LinearAlgebra
-      - when:
-          condition: <<parameters.stats_suite>>
-          steps:
-            - phpunit-run:
-                suite: Stats
+      - phpunit-run
       - run:
           name: Format Partial Code Coverage
           command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal$(echo $CIRCLE_NODE_INDEX).json build/logs/coverage.clover
       - persist_to_workspace:
           root: tmp
           paths:
-            - codeclimate.decimal.json
+            - codeclimate.decimal$(echo $CIRCLE_NODE_INDEX).json
   upload-coverage:
     environment:
       - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
@@ -290,21 +186,9 @@ workflows:
     jobs:
       - cc-coverage-reporter
       - tests-bcmath:
-          core_suite: true
-          complex_suite: true
-          coordinates_suite: true
-          expressions_suite: true
-          linearalgebra_suite: true
-          stats_suite: true
           requires:
             - cc-coverage-reporter
       - tests-decimal:
-          core_suite: true
-          complex_suite: true
-          coordinates_suite: true
-          expressions_suite: true
-          linearalgebra_suite: true
-          stats_suite: true
           requires:
             - cc-coverage-reporter
       - upload-coverage:
