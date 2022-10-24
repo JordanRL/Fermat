@@ -21,7 +21,7 @@ commands:
       - run:
           name: Running Unit Tests
           command: |
-            circleci tests glob "tests/Samsara/Fermat/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
+            circleci tests glob "/home/circleci/project/tests/Samsara/Fermat/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
             vendor/bin/phpunit $(cat ./build/tests-to-run)
   phpunit-run-without-large:
     description: "Running Unit Tests With PHPUnit (Without Large Tests)"
@@ -29,7 +29,7 @@ commands:
       - run:
           name: Running Unit Tests (W/O Large)
           command: |
-            circleci tests glob "tests/Samsara/Fermat/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
+            circleci tests glob "/home/circleci/project/tests/Samsara/Fermat/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
             vendor/bin/phpunit --exclude-group large $(cat ./build/tests-to-run)
   xdebug-enable:
     description: "Enabling XDebug Extension"
@@ -92,7 +92,8 @@ jobs:
           path: ./build/logs
       - run:
           name: Format Partial Code Coverage
-          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath$CIRCLE_NODE_INDEX.json build/logs/coverage.clover
+          command: |
+            ./tmp/cc-test-reporter format-coverage -t clover -o "tmp/codeclimate.bcmath$CIRCLE_NODE_INDEX.json" build/logs/coverage.clover
       - persist_to_workspace:
           root: tmp
           paths:
@@ -117,7 +118,7 @@ jobs:
           path: ./build/logs
       - run:
           name: Format Partial Code Coverage
-          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal$CIRCLE_NODE_INDEX.json build/logs/coverage.clover
+          command: ./tmp/cc-test-reporter format-coverage -t clover -o "tmp/codeclimate.decimal$CIRCLE_NODE_INDEX.json" build/logs/coverage.clover
       - persist_to_workspace:
           root: tmp
           paths:
