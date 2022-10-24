@@ -488,4 +488,75 @@ class ArithmeticAutoTest extends TestCase
         }
     }
 
+    /*
+     * pow()
+     */
+
+    public function powerImmutableComplexProvider(): array
+    {
+        $three = new ImmutableDecimal('3');
+        $threeI = new ImmutableDecimal('3i');
+        $negThree = new ImmutableDecimal('-3');
+        $negThreeI = new ImmutableDecimal('-3i');
+        $zero = new ImmutableDecimal('0');
+        $zeroI = new ImmutableDecimal('0i');
+        $one = new ImmutableDecimal('1');
+        $oneI = new ImmutableDecimal('1i');
+        $tenPowThirty = new ImmutableDecimal('1000000000000000000000000000000');
+        $tenPowThirtyI = new ImmutableDecimal('1000000000000000000000000000000i');
+        $tenScale = new ImmutableDecimal('0.0000000001');
+        $tenScaleI = new ImmutableDecimal('0.0000000001i');
+        $twelveScale = new ImmutableDecimal('0.000000000001');
+        $twelveScaleI = new ImmutableDecimal('0.000000000001i');
+
+        $a = new ImmutableComplexNumber($three, $threeI);
+        $b = new ImmutableComplexNumber($negThree, $negThreeI);
+        $c = new ImmutableComplexNumber($three, $negThreeI);
+        $d = new ImmutableComplexNumber($negThree, $threeI);
+        $e = new ImmutableComplexNumber($one, $tenPowThirtyI);
+        $f = new ImmutableComplexNumber($tenPowThirty, $oneI);
+        $g = new ImmutableComplexNumber($one, $tenScaleI);
+        $h = new ImmutableComplexNumber($tenScale, $oneI);
+        $i = new ImmutableComplexNumber($one, $twelveScaleI);
+        $j = new ImmutableComplexNumber($twelveScale, $oneI);
+        $k = new ImmutableComplexNumber($one, $zeroI);
+        $l = new ImmutableComplexNumber($zero, $oneI);
+
+        return [
+            'IComplex (3+3i)^(3+3i)' => [$a, $a, '6.6423696469+2.8756701322i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(-3-3i)' => [$a, $b, '0.1267856367-0.0548890965i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(3-3i)' => [$a, $c, '-320.1132107899-739.4138329992i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(-3+3i)' => [$a, $d, '-0.0004930847+0.0011389523i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(0)' => [$a, $zero, '1', ImmutableDecimal::class],
+            'IComplex (3+3i)^(3i)' => [$a, $threeI, '-0.0348768474-0.088129998i', ImmutableComplexNumber::class],
+            'IComplex (3i)^(3+3i)' => [$threeI, $a, '-0.0372635883+0.2396692999i', ImmutableComplexNumber::class],
+            'IComplex (1+1000000000000000000000000000000i)^(3+3i)' => [$e, $a, '-1008103895072608669621656647656731987966636777577845657842294500190951444855708178470827.8046672167-8926547154809861533401090781765730860411184241176202875421054807180827544305044641700789.1254349717i', ImmutableComplexNumber::class],
+            'IComplex (1000000000000000000000000000000+1i)^(3+3i)' => [$f, $a, '993683398858380499091676249928037050056205700638839289239875498467755979897070841985132647.8378656662-112219886086453915249045522210107306891034790097457935133859983576948619911473186801529969.5691040598i', ImmutableComplexNumber::class],
+            'IComplex (1+0.0000000001i)^(3+3i)' => [$g, $a, '0.9999999997+0.0000000003i', ImmutableComplexNumber::class],
+            'IComplex (0.0000000001+1i)^(3+3i)' => [$h, $a, '-0.008983291i', ImmutableDecimal::class],
+            'IComplex (1+0.000000000001i)^(3+3i)' => [$i, $a, '0.999999999997+0.000000000003i', ImmutableComplexNumber::class],
+            'IComplex (0.000000000001+1i)^(3+3i)' => [$j, $a, '-0.008983291021i', ImmutableDecimal::class],
+            'IComplex (1+0i)^(3+3i)' => [$k, $a, '1', ImmutableDecimal::class],
+            'IComplex (0+1i)^(3+3i)' => [$l, $a, '-0.008983291i', ImmutableDecimal::class],
+        ];
+    }
+
+    /**
+     * @medium
+     * @dataProvider powerImmutableComplexProvider
+     */
+    public function testPow(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    {
+        if (str_contains($expected, 'Exception')) {
+            $this->expectException($expected);
+            $a->pow($b);
+        } else {
+            $answer = $a->pow($b);
+            $this->assertEquals($expected, $answer->getValue());
+            if (!is_null($resultClass)) {
+                $this->assertEquals($resultClass, get_class($answer));
+            }
+        }
+    }
+
 }

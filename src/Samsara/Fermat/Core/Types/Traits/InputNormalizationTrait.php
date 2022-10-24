@@ -33,36 +33,37 @@ trait InputNormalizationTrait
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $partThis,
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $compareTo,
         int $identity,
-        ?CalcMode $mode
+        ?CalcMode $mode,
+        ?int $scale = null
     ): array
     {
 
         if ($partThis->isComplex()) {
-            $realPart = self::normalizeObject($partThis->getRealPart(), $mode);
-            $imaginaryPart = self::normalizeObject($partThis->getImaginaryPart(), $mode);
+            $realPart = self::normalizeObject($partThis->getRealPart(), $mode, $scale);
+            $imaginaryPart = self::normalizeObject($partThis->getImaginaryPart(), $mode, $scale);
         } elseif ($partThis->isReal()) {
             $realPart = match (true) {
                 $partThis instanceof Fraction => match (true) {
-                    $compareTo instanceof Fraction => self::normalizeObject($partThis, $mode),
-                    default => self::normalizeObject($partThis->asDecimal(), $mode)
+                    $compareTo instanceof Fraction => self::normalizeObject($partThis, $mode, $scale),
+                    default => self::normalizeObject($partThis->asDecimal(), $mode, $scale)
                 },
-                $partThis instanceof Decimal => self::normalizeObject($partThis, $mode)
+                $partThis instanceof Decimal => self::normalizeObject($partThis, $mode, $scale)
             };
             $imaginaryPart = match (true) {
                 $compareTo instanceof Fraction => (new ImmutableFraction(
                     new ImmutableDecimal(
                         $identity.'i',
-                        $compareTo->getNumerator()->getScale()
+                        $scale ?? $compareTo->getNumerator()->getScale()
                     ),
                     new ImmutableDecimal(
                         1,
-                        $compareTo->getDenominator()->getScale()
+                        $scale ?? $compareTo->getDenominator()->getScale()
                     ),
                     $compareTo->getBase()
                 ))->setMode($mode),
                 default => (new ImmutableDecimal(
                     $identity.'i',
-                    $compareTo->getScale()
+                    $scale ?? $compareTo->getScale()
                 ))->setMode($mode)
             };
         } else {
@@ -70,25 +71,25 @@ trait InputNormalizationTrait
                 $compareTo instanceof Fraction => (new ImmutableFraction(
                     new ImmutableDecimal(
                         $identity,
-                        $compareTo->getNumerator()->getScale()
+                        $scale ?? $compareTo->getNumerator()->getScale()
                     ),
                     new ImmutableDecimal(
                         1,
-                        $compareTo->getDenominator()->getScale()
+                        $scale ?? $compareTo->getDenominator()->getScale()
                     ),
                     $compareTo->getBase()
                 ))->setMode($mode),
                 default => (new ImmutableDecimal(
                     $identity,
-                    $compareTo->getScale()
+                    $scale ?? $compareTo->getScale()
                 ))->setMode($mode)
             };
             $imaginaryPart = match (true) {
                 $partThis instanceof Fraction => match (true) {
-                    $compareTo instanceof Fraction => self::normalizeObject($partThis, $mode),
-                    default => self::normalizeObject($partThis->asDecimal(), $mode)
+                    $compareTo instanceof Fraction => self::normalizeObject($partThis, $mode, $scale),
+                    default => self::normalizeObject($partThis->asDecimal(), $mode, $scale)
                 },
-                $partThis instanceof Decimal => self::normalizeObject($partThis, $mode)
+                $partThis instanceof Decimal => self::normalizeObject($partThis, $mode, $scale)
             };
         }
 
@@ -127,37 +128,38 @@ trait InputNormalizationTrait
      */
     protected static function normalizeObject(
         Fraction|Decimal|ComplexNumber $object,
-        ?CalcMode $mode
+        ?CalcMode $mode,
+        ?int $scale = null
     ): ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber
     {
         return match (true) {
             $object instanceof Fraction => (new ImmutableFraction(
                 new ImmutableDecimal(
                     $object->getNumerator()->getValue(NumberBase::Ten),
-                    $object->getNumerator()->getScale(),
+                    $scale ?? $object->getNumerator()->getScale(),
                     $object->getNumerator()->getBase()
                 ),
                 new ImmutableDecimal(
                     $object->getDenominator()->getValue(NumberBase::Ten),
-                    $object->getDenominator()->getScale(),
+                    $scale ?? $object->getDenominator()->getScale(),
                     $object->getDenominator()->getBase()
                 ),
                 $object->getBase()
             ))->setMode($mode),
             $object instanceof Decimal => (new ImmutableDecimal(
                 $object->getValue(NumberBase::Ten),
-                $object->getScale(),
+                $scale ?? $object->getScale(),
                 $object->getBase()
             ))->setMode($mode),
             $object instanceof ComplexNumber => (new ImmutableComplexNumber(
                 new ImmutableDecimal(
                     $object->getRealPart()->getValue(NumberBase::Ten),
-                    $object->getRealPart()->getScale(),
+                    $scale ?? $object->getRealPart()->getScale(),
                     $object->getRealPart()->getBase()
                 ),
                 new ImmutableDecimal(
                     $object->getImaginaryPart()->getValue(NumberBase::Ten),
-                    $object->getImaginaryPart()->getScale(),
+                    $scale ?? $object->getImaginaryPart()->getScale(),
                     $object->getImaginaryPart()->getBase()
                 ),
                 $object->getScale()

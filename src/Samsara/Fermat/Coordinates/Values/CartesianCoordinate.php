@@ -233,6 +233,9 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
         $scale = $scale ?? 10;
         $intScale = $scale + 3;
 
+        $xAxis = new ImmutableDecimal($this->getAxis('x'), $intScale);
+        $yAxis = new ImmutableDecimal($this->getAxis('y'), $intScale);
+
         if ($this->numberOfDimensions() !== 2) {
             throw new IncompatibleObjectState(
                 'Can only get PolarCoordinate for a CartesianCoordinate of 2 dimensions.',
@@ -251,15 +254,15 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
             );
         }
 
-        if ($this->getAxis('x')->isEqual(0)) {
+        if ($xAxis->isEqual(0)) {
             $theta = Numbers::makePi($intScale)->divide(2);
 
-            if ($this->getAxis('y')->isNegative()) {
+            if ($yAxis->isNegative()) {
                 $theta = $theta->multiply(-1);
             }
         } else {
             /** @var ImmutableDecimal $theta */
-            $theta = $this->getAxis('y')->divide($this->getAxis('x'), $intScale)->arctan($intScale);
+            $theta = $yAxis->divide($xAxis, $intScale)->arctan($intScale);
         }
 
         return new PolarCoordinate($rho->roundToScale($scale), $theta->roundToScale($scale));

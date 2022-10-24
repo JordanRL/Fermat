@@ -102,6 +102,10 @@ class RoundingProvider
 
         [$newWholePart, $newDecimalPart] = self::roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places);
 
+        if (empty(trim($newWholePart)) && empty(trim($newDecimalPart))) {
+            $sign = '';
+        }
+
         return $sign.$newWholePart.'.'.$newDecimalPart.$imaginary;
     }
 

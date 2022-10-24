@@ -148,7 +148,7 @@ trait ArithmeticSimpleTrait
             || ($thisNum->isReal() xor $thatNum->isReal())
         ) {
             [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
-            [$thatRealPart, $thatImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
+            [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thatNum, 0, $this->getMode());
 
             $thisComplex = new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart);
             $thatComplex = new ImmutableComplexNumber($thatRealPart, $thatImaginaryPart);
