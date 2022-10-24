@@ -82,23 +82,23 @@ jobs:
       - image: cimg/php:8.1
     parameters:
       core_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       complex_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       coordinates_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       expressions_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       linearalgebra_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       stats_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
     steps:
       - checkout
       - attach_workspace:
@@ -150,23 +150,23 @@ jobs:
       - image: cimg/php:8.1
     parameters:
       core_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       complex_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       coordinates_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       expressions_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       linearalgebra_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
       stats_suite:
-        type: string
-        default: ""
+        type: boolean
+        default: false
     steps:
       - checkout
       - attach_workspace:
