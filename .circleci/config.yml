@@ -24,7 +24,9 @@ commands:
     steps:
       - run:
           name: Running Unit Tests For <<parameters.suite>> Suite
-          command: vendor/bin/phpunit --testsuite <<parameters.suite>>
+          command: |
+            circleci tests glob "tests/Samsara/Fermat/<<parameters.suite>>/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
+            vendor/bin/phpunit $(cat ./build/tests-to-run)
   phpunit-run-without-large:
     description: "Running Unit Tests With PHPUnit (Without Large Tests)"
     parameters:
@@ -34,7 +36,9 @@ commands:
     steps:
       - run:
           name: Running Unit Tests For <<parameters.suite>> Suite (W/O Large)
-          command: vendor/bin/phpunit --testsuite <<parameters.suite>> --exclude-group large
+          command: |
+            circleci tests glob "tests/Samsara/Fermat/<<parameters.suite>>/**/*.php" | circleci tests split --split-by=timings > ./build/tests-to-run
+            vendor/bin/phpunit --exclude-group large $(cat ./build/tests-to-run)
   xdebug-enable:
     description: "Enabling XDebug Extension"
     steps:
@@ -101,6 +105,7 @@ jobs:
       stats_suite:
         type: boolean
         default: false
+    parallelism: 4
     steps:
       - checkout
       - attach_workspace:
@@ -141,7 +146,7 @@ jobs:
                 suite: Stats
       - run:
           name: Format Partial Code Coverage
-          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
+          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath$(echo $CIRCLE_NODE_INDEX).json build/logs/coverage.clover
       - persist_to_workspace:
           root: tmp
           paths:
@@ -170,6 +175,7 @@ jobs:
       stats_suite:
         type: boolean
         default: false
+    parallelism: 4
     steps:
       - checkout
       - attach_workspace:
@@ -211,7 +217,7 @@ jobs:
                 suite: Stats
       - run:
           name: Format Partial Code Coverage
-          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal.json build/logs/coverage.clover
+          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal$(echo $CIRCLE_NODE_INDEX).json build/logs/coverage.clover
       - persist_to_workspace:
           root: tmp
           paths:
