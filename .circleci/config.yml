@@ -7,6 +7,14 @@ commands:
       - run:
           name: Running Composer
           command: composer update
+  phpunit-prep:
+    description: "Prepping For Unit Tests"
+    steps:
+      - run:
+          name: Setting Up Output Directory
+          command: |
+            mkdir build
+            mkdir build/logs
   phpunit-run:
     description: "Running Unit Tests With PHPUnit"
     parameters:
@@ -16,10 +24,7 @@ commands:
     steps:
       - run:
           name: Running Unit Tests For <<parameters.suite>> Suite
-          command: |
-            mkdir build
-            mkdir build/logs
-            vendor/bin/phpunit --testsuite <<parameters.suite>>
+          command: vendor/bin/phpunit --testsuite <<parameters.suite>>
   phpunit-run-without-large:
     description: "Running Unit Tests With PHPUnit (Without Large Tests)"
     parameters:
@@ -106,6 +111,7 @@ jobs:
       - gmp-enable
       - xdebug-enable
       - composer-update
+      - phpunit-prep
       - when:
           condition: <<parameters.core_suite>>
           steps:
@@ -175,6 +181,7 @@ jobs:
       - xdebug-enable
       - decimal-install
       - composer-update
+      - phpunit-prep
       - when:
           condition: <<parameters.core_suite>>
           steps:
