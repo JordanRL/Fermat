@@ -16,6 +16,15 @@ commands:
             mkdir build
             mkdir build/logs
             vendor/bin/phpunit
+  phpunit-run-without-large:
+    description: "Running Unit Tests With PHPUnit (Without Large Tests)"
+    steps:
+      - run:
+          name: "Running Unit Tests"
+          command: |
+            mkdir build
+            mkdir build/logs
+            vendor/bin/phpunit --exclude-group large
   xdebug-enable:
     description: "Enabling XDebug Extension"
     steps:
@@ -70,7 +79,7 @@ jobs:
       - gmp-enable
       - xdebug-enable
       - composer-update
-      - phpunit-run
+      - phpunit-run-without-large
       - run:
           name: Format Partial Code Coverage
           command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
