@@ -23,12 +23,13 @@ jobs:
     name: PHPStan Report
     steps:
       - uses: actions/checkout@v2
-      - uses: php-actions/composer@v6 # or alternative dependency management
+      - uses: php-actions/composer@v6
+        with:
+          php_extensions: gmp bcmath
       - uses: php-actions/phpstan@v3
         with:
           path: src/
           level: 1
-          php_extensions: gmp bcmath
   phpmetrics:
     runs-on: ubuntu-latest
     name: PHPMetrics Report
