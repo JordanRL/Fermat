@@ -1,0 +1,19 @@
+name: Release Drafter
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - master
+
+jobs:
+  trigger_circle_ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger CircleCI Pipeline
+        uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.5
+        env:
+          CCI_TOKEN: ${{ secrets.CCI_TOKEN }}

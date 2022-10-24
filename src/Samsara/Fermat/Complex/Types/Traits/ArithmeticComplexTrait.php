@@ -185,7 +185,10 @@ trait ArithmeticComplexTrait
 
         $thisNum = self::normalizeObject($this, $this->getMode());
 
-        [$newRealPart, $newImaginaryPart] = $this->helperRootsPolarRotate($thisNum, new ImmutableDecimal(2), 0, $scale);
+        [$newRealPart, $newImaginaryPart] = $this->helperSquareRoot($thisNum, $scale);
+
+        $newRealPart = $newRealPart->roundToScale($scale);
+        $newImaginaryPart = $newImaginaryPart->roundToScale($scale);
 
         if (!$newRealPart->isEqual(0) && !$newImaginaryPart->isEqual(0)) {
             return $this->setValue($newRealPart, $newImaginaryPart);

@@ -590,4 +590,100 @@ class ArithmeticAutoTest extends TestCase
         }
     }
 
+    /*
+     * sqrt()
+     */
+
+    public function squareRootImmutableComplexMediumProvider(): array
+    {
+        $three = new ImmutableDecimal('3');
+        $threeI = new ImmutableDecimal('3i');
+        $negThree = new ImmutableDecimal('-3');
+        $negThreeI = new ImmutableDecimal('-3i');
+        $zero = new ImmutableDecimal('0');
+        $zeroI = new ImmutableDecimal('0i');
+        $one = new ImmutableDecimal('1');
+        $oneI = new ImmutableDecimal('1i');
+        $tenScale = new ImmutableDecimal('0.0000000001');
+        $tenScaleI = new ImmutableDecimal('0.0000000001i');
+        $twelveScale = new ImmutableDecimal('0.000000000001');
+        $twelveScaleI = new ImmutableDecimal('0.000000000001i');
+
+        $a = new ImmutableComplexNumber($three, $threeI);
+        $b = new ImmutableComplexNumber($negThree, $negThreeI);
+        $c = new ImmutableComplexNumber($three, $negThreeI);
+        $d = new ImmutableComplexNumber($negThree, $threeI);
+        $g = new ImmutableComplexNumber($one, $tenScaleI);
+        $h = new ImmutableComplexNumber($tenScale, $oneI);
+        $i = new ImmutableComplexNumber($one, $twelveScaleI);
+        $j = new ImmutableComplexNumber($twelveScale, $oneI);
+        $k = new ImmutableComplexNumber($one, $zeroI);
+        $l = new ImmutableComplexNumber($zero, $oneI);
+
+        return [
+            'IComplex sqrt(3+3i)' => [$a, '1.902976706+0.7882387605i', ImmutableComplexNumber::class],
+            'IComplex sqrt(-3-3i)' => [$b, '0.7882387605-1.902976706i', ImmutableComplexNumber::class],
+            'IComplex sqrt(3-3i)' => [$c, '1.902976706-0.7882387605i', ImmutableComplexNumber::class],
+            'IComplex sqrt(-3+3i)' => [$d, '0.7882387605+1.902976706i', ImmutableComplexNumber::class],
+            'IComplex sqrt(1+0.0000000001i)' => [$g, '1', ImmutableDecimal::class],
+            'IComplex sqrt(0.0000000001+1i)' => [$h, '0.7071067812+0.7071067812i', ImmutableComplexNumber::class],
+            'IComplex sqrt(1+0.000000000001i)' => [$i, '1', ImmutableDecimal::class],
+            'IComplex sqrt(0.000000000001+1i)' => [$j, '0.707106781187+0.707106781186i', ImmutableComplexNumber::class],
+            'IComplex sqrt(1+0i)' => [$k, '1', ImmutableDecimal::class],
+            'IComplex sqrt(0+1i)' => [$l, '0.7071067812+0.7071067812i', ImmutableComplexNumber::class],
+        ];
+    }
+
+    public function squareRootImmutableComplexLargeProvider(): array
+    {
+        $one = new ImmutableDecimal('1');
+        $oneI = new ImmutableDecimal('1i');
+        $tenPowThirty = new ImmutableDecimal('1000000000000000000000000000000');
+        $tenPowThirtyI = new ImmutableDecimal('1000000000000000000000000000000i');
+
+        $e = new ImmutableComplexNumber($one, $tenPowThirtyI);
+        $f = new ImmutableComplexNumber($tenPowThirty, $oneI);
+
+        return [
+            'IComplex sqrt(1+1000000000000000000000000000000i)' => [$e, '707106781186547.5244008444+707106781186547.5244008444i', ImmutableComplexNumber::class],
+            'IComplex sqrt(1000000000000000000000000000000+1i)' => [$f, '1000000000000000', ImmutableDecimal::class],
+        ];
+    }
+
+    /**
+     * @medium
+     * @dataProvider squareRootImmutableComplexMediumProvider
+     */
+    public function testSqrt(NumberInterface $a, string $expected, ?string $resultClass = null)
+    {
+        if (str_contains($expected, 'Exception')) {
+            $this->expectException($expected);
+            $a->sqrt();
+        } else {
+            $answer = $a->sqrt();
+            $this->assertEquals($expected, $answer->getValue());
+            if (!is_null($resultClass)) {
+                $this->assertEquals($resultClass, get_class($answer));
+            }
+        }
+    }
+
+    /**
+     * @large
+     * @dataProvider squareRootImmutableComplexLargeProvider
+     */
+    public function testSqrtLarge(NumberInterface $a, string $expected, ?string $resultClass = null)
+    {
+        if (str_contains($expected, 'Exception')) {
+            $this->expectException($expected);
+            $a->sqrt();
+        } else {
+            $answer = $a->sqrt();
+            $this->assertEquals($expected, $answer->getValue());
+            if (!is_null($resultClass)) {
+                $this->assertEquals($resultClass, get_class($answer));
+            }
+        }
+    }
+
 }
