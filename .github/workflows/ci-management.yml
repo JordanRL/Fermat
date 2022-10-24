@@ -32,6 +32,7 @@ jobs:
   phpmetrics:
     runs-on: ubuntu-latest
     name: PHPMetrics Report
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: PhpMetrics Scan
