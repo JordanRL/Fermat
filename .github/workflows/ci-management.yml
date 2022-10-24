@@ -28,10 +28,10 @@ jobs:
         with:
           path: src/
           level: 1
+          php_extensions: gmp bcmath
   phpmetrics:
     runs-on: ubuntu-latest
-    name: PhpMetrics Action
-    steps:
+    name: PHPMetrics Report
       - name: Checkout
         uses: actions/checkout@v2
       - name: PhpMetrics Scan
