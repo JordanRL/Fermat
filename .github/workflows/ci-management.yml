@@ -1,4 +1,4 @@
-name: Circle CI
+name: CI Triggers
 
 on:
   push:
@@ -18,7 +18,32 @@ on:
       - master
 
 jobs:
-  trigger_circle_ci:
+  phpmetrics:
+    runs-on: ubuntu-latest
+    name: PhpMetrics Action
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: PhpMetrics Scan
+        uses: umutphp/phpmetrics-action@v1
+        with:
+          folder: './src'
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v1
+        with:
+          name: HTML Report
+          path: phpmetrics.html
+      - name: Upload XML Report
+        uses: actions/upload-artifact@v1
+        with:
+          name: HTML Report
+          path: phpmetrics.xml
+      - name: Upload Violations Report
+        uses: actions/upload-artifact@v1
+        with:
+          name: HTML Report
+          path: violations.xml
+  trigger-circle-ci:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger CircleCI Pipeline
