@@ -100,11 +100,7 @@ class RoundingProvider
             );
         } while ($carry == 1);
 
-        [$newWholePart, $newDecimalPart] = self::roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places);
-
-        if (empty(trim($newWholePart)) && empty(trim($newDecimalPart))) {
-            $sign = '';
-        }
+        [$newWholePart, $newDecimalPart, $sign] = self::roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places, $sign);
 
         return $sign.$newWholePart.'.'.$newDecimalPart.$imaginary;
     }
@@ -167,6 +163,7 @@ class RoundingProvider
      * @param array $roundedPart
      * @param array $otherPart
      * @param int $places
+     * @param string $sign
      * @return array
      */
     private static function roundPostFormat(
@@ -174,7 +171,8 @@ class RoundingProvider
         string $wholePart,
         array $roundedPart,
         array $otherPart,
-        int $places
+        int $places,
+        string $sign
     ): array
     {
         if ($currentPart) {
@@ -198,7 +196,11 @@ class RoundingProvider
             $newDecimalPart = '0';
         }
 
-        return [$newWholePart, $newDecimalPart];
+        if (empty(trim($newWholePart)) && empty(trim($newDecimalPart))) {
+            $sign = '';
+        }
+
+        return [$newWholePart, $newDecimalPart, $sign];
     }
 
     /**
