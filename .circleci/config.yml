@@ -70,6 +70,7 @@ jobs:
   cc-coverage-reporter:
     docker:
       - image: cimg/php:8.1
+    resource_class: small
     environment:
       - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
     steps:
@@ -89,6 +90,7 @@ jobs:
       - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
+    resource_class: medium
     steps:
       - checkout
       - attach_workspace:
@@ -114,6 +116,7 @@ jobs:
       - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
+    resource_class: medium
     steps:
       - checkout
       - attach_workspace:
@@ -138,6 +141,7 @@ jobs:
       - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
     docker:
       - image: cimg/php:8.1
+    resource_class: small
     steps:
       - attach_workspace:
           at: ./tmp
@@ -152,6 +156,7 @@ jobs:
   generate-docs:
     docker:
       - image: cimg/php:8.1
+    resource_class: medium
     steps:
       - checkout
       - gmp-enable
@@ -165,6 +170,7 @@ jobs:
       - DEBIAN_FRONTEND: noninteractive
     docker:
       - image: cimg/php:8.1
+    resource_class: medium
     steps:
       - checkout
       - gmp-enable
