@@ -34,7 +34,7 @@ commands:
     steps:
       - run:
           name: Running Unit Tests For <<parameters.suite>> Suite (W/O Large)
-          command: vendor/bin/phpunit --exclude-group large
+          command: vendor/bin/phpunit --testsuite <<parameters.suite>> --exclude-group large
   xdebug-enable:
     description: "Enabling XDebug Extension"
     steps:
