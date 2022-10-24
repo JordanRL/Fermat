@@ -88,6 +88,8 @@ jobs:
       - composer-update
       - phpunit-prep
       - phpunit-run-without-large
+      - store_test_results:
+          path: ./build/logs
       - run:
           name: Format Partial Code Coverage
           command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath$(echo $CIRCLE_NODE_INDEX).json build/logs/coverage.clover
@@ -111,6 +113,8 @@ jobs:
       - composer-update
       - phpunit-prep
       - phpunit-run
+      - store_test_results:
+          path: ./build/logs
       - run:
           name: Format Partial Code Coverage
           command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal$(echo $CIRCLE_NODE_INDEX).json build/logs/coverage.clover
