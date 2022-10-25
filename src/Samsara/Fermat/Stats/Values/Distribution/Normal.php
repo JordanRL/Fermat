@@ -3,6 +3,8 @@
 namespace Samsara\Fermat\Stats\Values\Distribution;
 
 use ReflectionException;
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
@@ -34,12 +36,12 @@ class Normal extends Distribution
     /**
      * Normal constructor.
      *
-     * @param int|float|Decimal $mean
-     * @param int|float|Decimal $sd
+     * @param int|float|string|Decimal $mean
+     * @param int|float|string|Decimal $sd
      *
      * @throws IntegrityConstraint
      */
-    public function __construct($mean, $sd)
+    public function __construct(int|float|string|Decimal $mean, int|float|string|Decimal $sd)
     {
         /** @var ImmutableDecimal $mean */
         $mean = Numbers::makeOrDont(Numbers::IMMUTABLE, $mean);
@@ -48,6 +50,59 @@ class Normal extends Distribution
 
         $this->mean = $mean;
         $this->sd = $sd;
+    }
+
+    /**
+     * @param int|float|string|Decimal $p
+     * @param int|float|string|Decimal $x
+     * @param int|float|string|Decimal $mean
+     *
+     * @return Normal
+     * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws ReflectionException
+     */
+    public static function makeFromMean(
+        int|float|string|Decimal $p,
+        int|float|string|Decimal $x,
+        int|float|string|Decimal $mean
+    ): Normal
+    {
+        [$x, $mean, $z] = self::prepMake($p, $x, $mean);
+
+        $sd = $x->subtract($mean)
+            ->divide(
+                $z,
+                $z->getScale()
+            )->abs()
+            ->truncateToScale($z->getScale()-2-$mean->numberOfIntDigits());
+
+        return new Normal($mean, $sd);
+    }
+
+    /**
+     * @param int|float|string|Decimal $p
+     * @param int|float|string|Decimal $x
+     * @param int|float|string|Decimal $sd
+     *
+     * @return Normal
+     * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws ReflectionException
+     */
+    public static function makeFromSd(
+        int|float|string|Decimal $p,
+        int|float|string|Decimal $x,
+        int|float|string|Decimal $sd
+    ): Normal
+    {
+        [$x, $sd, $z] = self::prepMake($p, $x, $sd);
+
+        $mean = $x->add(
+            $z->multiply($sd)
+        )->truncateToScale($z->getScale()-3);
+
+        return new Normal($mean, $sd);
     }
 
     /**
@@ -67,12 +122,13 @@ class Normal extends Distribution
     }
 
     /**
-     * @param $x
-     *
+     * @param int|float|string|Decimal $x
+     * @param int $scale
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    public function evaluateAt($x, int $scale = 10): ImmutableDecimal
+    public function evaluateAt(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
     {
 
         $one = Numbers::makeOne($scale);
@@ -114,79 +170,14 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|Decimal $p
-     * @param int|float|Decimal $x
-     * @param int|float|Decimal $mean
-     *
-     * @return Normal
-     * @throws IntegrityConstraint
-     * @throws OptionalExit
-     * @throws ReflectionException
-     */
-    public static function makeFromMean($p, $x, $mean): Normal
-    {
-        $one = Numbers::makeOne(10);
-        $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
-        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
-        $mean = Numbers::makeOrDont(Numbers::IMMUTABLE, $mean);
-
-        $internalScale = (new NumberCollection([$one, $p, $x, $mean]))->selectScale();
-
-        $internalScale += 2;
-
-        $z = StatsProvider::inverseNormalCDF($one->subtract($p), $internalScale);
-
-        $sd =
-            $x->subtract($mean)
-                ->divide(
-                    $z,
-                    $internalScale
-                )->abs()
-                ->truncateToScale($internalScale-2);
-
-        return new Normal($mean, $sd);
-    }
-
-    /**
-     * @param int|float|Decimal $p
-     * @param int|float|Decimal $x
-     * @param int|float|Decimal $sd
-     *
-     * @return Normal
-     * @throws IntegrityConstraint
-     * @throws OptionalExit
-     * @throws ReflectionException
-     */
-    public static function makeFromSd($p, $x, $sd): Normal
-    {
-        $one = Numbers::makeOne(10);
-        $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
-        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
-        $sd = Numbers::makeOrDont(Numbers::IMMUTABLE, $sd);
-
-        $internalScale = (new NumberCollection([$one, $p, $x, $sd]))->selectScale();
-
-        $internalScale += 2;
-
-        $z = StatsProvider::inverseNormalCDF($one->subtract($p), $internalScale);
-
-        $mean =
-            $x->add(
-                $z->multiply($sd)
-            )->truncateToScale($internalScale-2);
-
-        return new Normal($mean, $sd);
-    }
-
-    /**
-     * @param int|float|Decimal $x
+     * @param int|float|string|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
      * @throws ReflectionException
      */
-    public function cdf($x): ImmutableDecimal
+    public function cdf(int|float|string|Decimal $x): ImmutableDecimal
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
@@ -195,8 +186,7 @@ class Normal extends Distribution
         $sqrtTwo = Numbers::make(Numbers::IMMUTABLE, 2)->sqrt();
 
         /** @var ImmutableDecimal $cdf */
-        $cdf =
-            $oneHalf->multiply(
+        $cdf = $oneHalf->multiply(
                 $one->add(
                     StatsProvider::gaussErrorFunction(
                         $x->subtract($this->mean)
@@ -211,27 +201,17 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|Decimal $x1
-     * @param null|int|float|Decimal $x2
+     * @param int|float|string|Decimal $x1
+     * @param int|float|string|Decimal $x2
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws ReflectionException
      */
-    public function pdf($x1, $x2 = null): ImmutableDecimal
+    public function percentBetween(int|float|string|Decimal $x1, int|float|string|Decimal $x2): ImmutableDecimal
     {
 
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
-
-        if (is_null($x2)) {
-            $separation = $x1->subtract($this->mean)->multiply(2)->abs();
-
-            if ($this->mean->isLessThan($x1)) {
-                $x2 = $x1->subtract($separation);
-            } else {
-                $x2 = $x1->add($separation);
-            }
-        }
 
         /** @var ImmutableDecimal $pdf */
         $pdf =
@@ -244,72 +224,24 @@ class Normal extends Distribution
     }
 
     /**
-     * @param FunctionInterface $function
-     * @param $x
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     * @throws ReflectionException
-     */
-    public function cdfProduct(FunctionInterface $function, $x): ImmutableDecimal
-    {
-
-        $loop = 0;
-
-        $cdf = Numbers::makeZero();
-
-        while (true) {
-            if (count($function->describeShape()) === 0) {
-                break;
-            }
-
-            $cdf = $cdf->add($function->evaluateAt($x)->multiply(SequenceProvider::nthPowerNegativeOne($loop)));
-
-            $function = $function->derivativeExpression();
-        }
-
-        /** @var ImmutableDecimal $cdf */
-        $cdf = $cdf->multiply($this->cdf($x));
-
-        return $cdf;
-
-    }
-
-    /**
-     * @param FunctionInterface $function
-     * @param $x1
-     * @param $x2
-     *
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     * @throws ReflectionException
-     */
-    public function pdfProduct(FunctionInterface $function, $x1, $x2): ImmutableDecimal
-    {
-        /** @var ImmutableDecimal $pdf */
-        $pdf = $this->cdfProduct($function, $x2)->subtract($this->cdfProduct($function, $x1));
-
-        return $pdf;
-    }
-
-    /**
-     * @param int|float|Decimal $x
+     * @param int|float|string|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function percentBelowX($x): ImmutableDecimal
+    public function percentBelowX(int|float|string|Decimal $x): ImmutableDecimal
     {
         return $this->cdf($x);
     }
 
     /**
-     * @param int|float|Decimal $x
+     * @param int|float|string|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws ReflectionException
      */
-    public function percentAboveX($x): ImmutableDecimal
+    public function percentAboveX(int|float|string|Decimal $x): ImmutableDecimal
     {
         $one = Numbers::makeOne();
 
@@ -320,12 +252,12 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|Decimal $x
+     * @param int|float|string|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function zScoreOfX($x): ImmutableDecimal
+    public function zScoreOfX(int|float|string|Decimal $x): ImmutableDecimal
     {
         /** @var ImmutableDecimal $x */
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -337,19 +269,19 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|Decimal $z
+     * @param int|float|string|Decimal $z
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function xFromZScore($z): ImmutableDecimal
+    public function xFromZScore(int|float|string|Decimal $z): ImmutableDecimal
     {
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
 
         /** @var ImmutableDecimal $x */
         $x = $z->multiply($this->sd)->add($this->mean);
 
-        return $x;
+        return $x->roundToScale(10);
     }
 
     /**
@@ -406,6 +338,42 @@ class Normal extends Distribution
         }
 
         return $randomNumber;
+    }
+
+    /**
+     * @param int|float|string|Decimal $p
+     * @param int|float|string|Decimal $x
+     * @param int|float|string|Decimal $input
+     * @return ImmutableDecimal[]
+     * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws ReflectionException
+     */
+    private static function prepMake(
+        int|float|string|Decimal $p,
+        int|float|string|Decimal $x,
+        int|float|string|Decimal $input
+    ): array
+    {
+        $one = Numbers::makeOne(10);
+        /** @var ImmutableDecimal $p */
+        $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
+        /** @var ImmutableDecimal $x */
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+        /** @var ImmutableDecimal $input */
+        $input = Numbers::makeOrDont(Numbers::IMMUTABLE, $input);
+
+        $internalScale = (new NumberCollection([$one, $p, $x, $input]))->selectScale();
+
+        $internalScale += 2;
+
+        $z = StatsProvider::inverseNormalCDF($one->subtract($p), $internalScale);
+
+        return [
+            $x,
+            $input,
+            $z
+        ];
     }
 
 }
