@@ -24,7 +24,9 @@ The project namespace is `Samsara\Fermat\Core\*`. You can view the project on [P
 
 ### Modules
 
-Modules for Fermat provide additional functionality, as many of these features would be unused by most people. **NOTE:** Prior to v2.0, much of this functionality was included in this package:
+**NOTE:** For the upcoming 3.0 release, modules will once again be bundled.
+
+Modules for Fermat provide additional functionality, as many of these features would be unused by most people.
 
 - [Algebra Expressions](https://github.com/SamsaraLabs/FermatAlgebraExpressions): Provides support for algebraic expressions such as polynomials and functions.
 - [Complex Numbers](https://github.com/SamsaraLabs/FermatComplexNumbers): Provides complex numbers and enables additional features in Decimal instances.
@@ -107,8 +109,8 @@ You can read the full documentation for Fermat [here](https://jordanrl.github.io
 Please ensure that pull requests meet the following guidelines:
 
 - New files created in the pull request must have a corresponding unit test file, or must be covered within an existing test file.
-- Your merge may not drop the project's test coverage below 70%.
+- Your merge may not drop the project's test coverage below 80%.
 - Your merge may not drop the project's test coverage by MORE than 5%.
-- Your merge must pass Scrutinizer-CI build tests for PHP 8.X.
+- Your merge must pass CI build tests for PHP 8.1.
 
 For more information, please see the section on [Contributing](CONTRIBUTING.md)

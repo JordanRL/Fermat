@@ -18,30 +18,28 @@
       "visibility": "public",
       "aliases": [
         {
-          "namespace": "Samsara\\Fermat\\",
+          "namespace": "Samsara\\Fermat\\Core",
           "alias": "Fermat Core\\"
-        }
-      ]
-    },
-    {
-      "path": "../FermatStats/src",
-      "visibility": "public",
-      "autoloader": "../FermatStats/vendor/autoload.php",
-      "aliases": [
+        },
         {
-          "namespace": "Samsara\\Fermat\\",
-          "alias": "Fermat Stats\\"
-        }
-      ]
-    },
-    {
-      "path": "../FermatCoordinateSystems/src",
-      "visibility": "public",
-      "autoloader": "../FermatCoordinateSystems/vendor/autoload.php",
-      "aliases": [
+          "namespace": "Samsara\\Fermat\\Complex",
+          "alias": "Fermat Complex\\"
+        },
         {
-          "namespace": "Samsara\\Fermat\\",
-          "alias": "Fermat Coordinate Systems\\"
+          "namespace": "Samsara\\Fermat\\Coordinates",
+          "alias": "Fermat Coordinates\\"
+        },
+        {
+          "namespace": "Samsara\\Fermat\\Expressions",
+          "alias": "Fermat Expressions\\"
+        },
+        {
+          "namespace": "Samsara\\Fermat\\LinearAlgebra",
+          "alias": "Fermat Linear Algebra\\"
+        },
+        {
+          "namespace": "Samsara\\Fermat\\Stats",
+          "alias": "Fermat Statistics\\"
         }
       ]
     }
