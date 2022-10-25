@@ -13,211 +13,218 @@ parameters:
     type: string
     default: ""
 
-commands:
-  composer-update:
-    description: "Updating Dependencies With Composer"
-    steps:
-      - run:
-          name: Running Composer
-          command: composer update
-  phpunit-prep:
-    description: "Prepping For Unit Tests"
-    steps:
-      - run:
-          name: Setting Up Output Directory
-          command: |
-            mkdir build
-            mkdir build/logs
-  phpunit-run:
-    description: "Running Unit Tests With PHPUnit"
-    steps:
-      - run:
-          name: Running Unit Tests
-          command: |
-            vendor/bin/phpunit
-  phpunit-run-without-large:
-    description: "Running Unit Tests With PHPUnit (Without Large Tests)"
-    steps:
-      - run:
-          name: Running Unit Tests (W/O Large)
-          command: |
-            vendor/bin/phpunit --exclude-group large
-  xdebug-enable:
-    description: "Enabling XDebug Extension"
-    steps:
-      - run:
-          name: Enabling XDebug Extension
-          command: |
-              sudo -E install-php-extensions xdebug
-              sudo docker-php-ext-enable xdebug
-  gmp-enable:
-    description: "Enabling GMP Extension"
-    steps:
-      - run:
-          name: Enabling GMP Extension
-          command: sudo -E install-php-extensions gmp
-  decimal-install:
-    description: "Installing Decimal Extension"
-    steps:
-      - run:
-          name: Installing Decimal Extension
-          command: |
-              sudo apt update
-              sudo apt install libmpdec-dev
-              sudo pecl install decimal
+orbs:
+  fermat-unit-testing:
+    executors:
+      php-base:
+        parameters:
+          version:
+            description: "The version of PHP to load"
+            default: "8.1"
+            type: string
+        docker:
+          - image: cimg/php:<<parameters.version>>
+        resource_class: medium
+        environment:
+          - XDEBUG_MODE: coverage
+      php-with-cc-reporter:
+        docker:
+          - image: cimg/php:8.1
+        resource_class: small
+        environment:
+          - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
+    commands:
+      composer-update:
+        description: "Updating Dependencies With Composer"
+        steps:
+          - run:
+              name: Running Composer
+              command: composer update
+      phpunit-prep:
+        description: "Prepping For Unit Tests"
+        steps:
+          - run:
+              name: Setting Up Output Directory
+              command: |
+                mkdir build
+                mkdir build/logs
+      phpunit-run:
+        description: "Running Unit Tests With PHPUnit"
+        steps:
+          - run:
+              name: Running Unit Tests
+              command: |
+                vendor/bin/phpunit
+      phpunit-run-without-large:
+        description: "Running Unit Tests With PHPUnit (Without Large Tests)"
+        steps:
+          - run:
+              name: Running Unit Tests (W/O Large)
+              command: |
+                vendor/bin/phpunit --exclude-group large
+      xdebug-enable:
+        description: "Enabling XDebug Extension"
+        steps:
+          - run:
+              name: Enabling XDebug Extension
+              command: |
+                sudo -E install-php-extensions xdebug
+                sudo docker-php-ext-enable xdebug
+      gmp-enable:
+        description: "Enabling GMP Extension"
+        steps:
+          - run:
+              name: Enabling GMP Extension
+              command: sudo -E install-php-extensions gmp
+      decimal-install:
+        description: "Installing Decimal Extension"
+        steps:
+          - run:
+              name: Installing Decimal Extension
+              command: |
+                sudo apt update
+                sudo apt install libmpdec-dev
+                sudo pecl install decimal
+      setup-project:
+        parameters:
+          decimal:
+            type: boolean
+            default: false
+          xdebug:
+            type: boolean
+            default: true
+          for-tests:
+            type: boolean
+            default: true
+        description: "Run all tasks prior to executing tests"
+        steps:
+          - checkout
+          - attach_workspace:
+              at: ./tmp
+          - gmp-enable
+          - when:
+              condition: <<parameters.xdebug>>
+              steps:
+                - xdebug-enable
+          - when:
+              condition: <<parameters.decimal>>
+              steps:
+                - decimal-install
+          - composer-update
+          - when:
+              condition: <<parameters.for-tests>>
+              steps:
+                - phpunit-prep
+      run-tests:
+        parameters:
+          decimal:
+            type: boolean
+            default: false
+        description: "Run all tasks prior to executing tests"
+        steps:
+          - when:
+              condition: <<parameters.decimal>>
+              steps:
+                - phpunit-run
+          - unless:
+              condition: <<parameters.decimal>>
+              steps:
+                - phpunit-run-without-large
+      wrap-up-tests:
+        parameters:
+          cc-file:
+            type: string
+            default: "bcmath"
+        description: "Run all post test tasks"
+        steps:
+          - store_test_results:
+              path: ./build/logs
+          - run:
+              name: Format Partial Code Coverage
+              command: |
+                ./tmp/cc-test-reporter format-coverage -t clover -o "tmp/codeclimate.<<parameters.cc-file>>$CIRCLE_NODE_INDEX.json" build/logs/coverage.clover
+          - persist_to_workspace:
+              root: tmp
+              paths:
+                - codeclimate*
+    jobs:
+      cc-coverage-reporter:
+        executor: php-with-cc-reporter
+        steps:
+          - run:
+              name: Download cc-test-reporter
+              command: |
+                mkdir -p tmp/
+                curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+                chmod +x ./tmp/cc-test-reporter
+                ./tmp/cc-test-reporter before-build
+          - persist_to_workspace:
+              root: tmp
+              paths:
+                - cc-test-reporter
+      tests-bcmath:
+        executor: php-base
+        steps:
+          - setup-project:
+              decimal: false
+              xdebug: true
+              for-tests: true
+          - run-tests:
+              decimal: false
+          - wrap-up-tests:
+              cc-file: "bcmath"
+      tests-decimal:
+        executor: php-base
+        steps:
+          - setup-project:
+              decimal: true
+              xdebug: true
+              for-tests: true
+          - run-tests:
+              decimal: true
+          - wrap-up-tests:
+              cc-file: "decimal"
+      upload-coverage:
+        executor: php-with-cc-reporter
+        steps:
+          - attach_workspace:
+              at: ./tmp
+          - run:
+              name: Upload coverage results to Code Climate
+              command: |
+                ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+                ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+          - run:
+              name: Cleaning up Workspace
+              command: rm -rf ./tmp/*
 
 jobs:
-  cc-coverage-reporter:
-    docker:
-      - image: cimg/php:8.1
-    resource_class: small
-    environment:
-      - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
-    steps:
-      - run:
-          name: Download cc-test-reporter
-          command: |
-            mkdir -p tmp/
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
-            chmod +x ./tmp/cc-test-reporter
-            ./tmp/cc-test-reporter before-build
-      - persist_to_workspace:
-          root: tmp
-          paths:
-            - cc-test-reporter
-  tests-bcmath:
-    environment:
-      - XDEBUG_MODE: coverage
-    docker:
-      - image: cimg/php:8.1
-    resource_class: medium
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ./tmp
-      - gmp-enable
-      - xdebug-enable
-      - composer-update
-      - phpunit-prep
-      - phpunit-run-without-large
-      - store_test_results:
-          path: ./build/logs
-      - run:
-          name: Format Partial Code Coverage
-          command: |
-            ./tmp/cc-test-reporter format-coverage -t clover -o "tmp/codeclimate.bcmath$CIRCLE_NODE_INDEX.json" build/logs/coverage.clover
-            ls -al tmp/
-      - persist_to_workspace:
-          root: tmp
-          paths:
-            - codeclimate*
-  tests-decimal:
-    environment:
-      - XDEBUG_MODE: coverage
-    docker:
-      - image: cimg/php:8.1
-    resource_class: medium
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ./tmp
-      - gmp-enable
-      - xdebug-enable
-      - decimal-install
-      - composer-update
-      - phpunit-prep
-      - phpunit-run
-      - store_test_results:
-          path: ./build/logs
-      - run:
-          name: Format Partial Code Coverage
-          command: ./tmp/cc-test-reporter format-coverage -t clover -o "tmp/codeclimate.decimal$CIRCLE_NODE_INDEX.json" build/logs/coverage.clover
-      - persist_to_workspace:
-          root: tmp
-          paths:
-            - codeclimate*
-  upload-coverage:
-    environment:
-      - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
-    docker:
-      - image: cimg/php:8.1
-    resource_class: small
-    steps:
-      - attach_workspace:
-          at: ./tmp
-      - run:
-          name: Upload coverage results to Code Climate
-          command: |
-            ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
-            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
-      - run:
-          name: Cleaning up Workspace
-          command: rm -rf ./tmp/*
   generate-docs:
-    docker:
-      - image: cimg/php:8.1
-    resource_class: medium
+    executor: fermat-unit-testing/php-base
     steps:
-      - checkout
-      - gmp-enable
-      - xdebug-enable
-      - composer-update
+      - fermat-unit-testing/setup-project:
+          decimal: false
+          xdebug: false
+          for-tests: false
       - run:
           name: Generate Docs Using Samsara/Roster
           command: vendor/bin/roster
-  generate-phpmetrics:
-    environment:
-      - DEBIAN_FRONTEND: noninteractive
-    docker:
-      - image: cimg/php:8.1
-    resource_class: medium
-    steps:
-      - checkout
-      - gmp-enable
-      - xdebug-enable
-      - composer-update
-      - run:
-          name: Installing YAML Extension
-          command: |
-            sudo apt update
-            sudo apt-get install libyaml-dev
-            printf "\n" | sudo pecl install yaml
-      - run:
-          name: Preparing Build Directory
-          command: |
-            mkdir build
-            mkdir build/metrics
-      - run:
-          name: Downloading PHPMetrics
-          command: composer require 'phpmetrics/phpmetrics'
-      - run:
-          name: Compiling Metrics
-          command: vendor/bin/phpmetrics --config=phpmetrics.yml
-      - store_artifacts:
-          path: ./build/metrics
 
 workflows:
-  metrics-workflow:
-    when: << pipeline.parameters.GHA_Action >>
-    jobs:
-      - generate-phpmetrics:
-          filters:
-            branches:
-              only: master
   unit-test-workflow:
     when: << pipeline.parameters.GHA_Action >>
     jobs:
-      - cc-coverage-reporter
-      - tests-bcmath:
+      - fermat-unit-testing/cc-coverage-reporter
+      - fermat-unit-testing/tests-bcmath:
           requires:
-            - cc-coverage-reporter
-      - tests-decimal:
+            - fermat-unit-testing/cc-coverage-reporter
+      - fermat-unit-testing/tests-decimal:
           requires:
-            - cc-coverage-reporter
-      - upload-coverage:
+            - fermat-unit-testing/cc-coverage-reporter
+      - fermat-unit-testing/upload-coverage:
           requires:
-            - tests-bcmath
-            - tests-decimal
+            - fermat-unit-testing/tests-bcmath
+            - fermat-unit-testing/tests-decimal
   release-workflow:
     jobs:
       - generate-docs:
