@@ -101,20 +101,20 @@ orbs:
           - checkout
           - attach_workspace:
               at: ./tmp
-          - fermat-unit-testing/gmp-enable
+          - gmp-enable
           - when:
               condition: <<parameters.xdebug>>
               steps:
-                -fermat-unit-testing/xdebug-enable
+                - xdebug-enable
           - when:
               condition: <<parameters.decimal>>
               steps:
-                - fermat-unit-testing/decimal-install
-          - fermat-unit-testing/composer-update
+                - decimal-install
+          - composer-update
           - when:
               condition: <<parameters.for-tests>>
               steps:
-                - fermat-unit-testing/phpunit-prep
+                - phpunit-prep
       run-tests:
         parameters:
           decimal:
@@ -125,11 +125,11 @@ orbs:
           - when:
               condition: <<parameters.decimal>>
               steps:
-                - fermat-unit-testing/phpunit-run
+                - phpunit-run
           - unless:
               condition: <<parameters.decimal>>
               steps:
-                - fermat-unit-testing/phpunit-run-without-large
+                - phpunit-run-without-large
       wrap-up-tests:
         description: "Run all post test tasks"
         steps:
@@ -145,7 +145,7 @@ orbs:
                 - codeclimate*
     jobs:
       cc-coverage-reporter:
-        executor: fermat-unit-testing/php-with-cc-reporter
+        executor: php-with-cc-reporter
         steps:
           - run:
               name: Download cc-test-reporter
@@ -159,31 +159,31 @@ orbs:
               paths:
                 - cc-test-reporter
       tests-bcmath:
-        executor: fermat-unit-testing/php-base
+        executor: php-base
         steps:
-          - fermat-unit-testing/setup-project:
+          - setup-project:
               with:
                 decimal: false
                 xdebug: true
                 for-tests: true
-          - fermat-unit-testing/run-tests:
+          - run-tests:
               with:
                 decimal: false
-          - fermat-unit-testing/wrap-up-tests
+          - wrap-up-tests
       tests-decimal:
-        executor: fermat-unit-testing/php-base
+        executor: php-base
         steps:
-          - fermat-unit-testing/setup-project:
+          - setup-project:
               with:
                 decimal: true
                 xdebug: true
                 for-tests: true
-          - fermat-unit-testing/run-tests:
+          - run-tests:
               with:
                 decimal: true
-          - fermat-unit-testing/wrap-up-tests
+          - wrap-up-tests
       upload-coverage:
-        executor: fermat-unit-testing/php-with-cc-reporter
+        executor: php-with-cc-reporter
         steps:
           - attach_workspace:
               at: ./tmp
