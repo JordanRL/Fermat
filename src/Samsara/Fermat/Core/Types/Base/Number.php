@@ -3,7 +3,6 @@
 namespace Samsara\Fermat\Core\Types\Base;
 
 use Ds\Hashable;
-use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
@@ -43,6 +42,13 @@ abstract class Number implements Hashable
      * @return string
      */
     abstract public function getValue(): string;
+
+    /**
+     * Returns the string of the absolute value of the current object.
+     *
+     * @return string
+     */
+    abstract public function absValue(): string;
 
     /**
      * @return string
@@ -98,66 +104,88 @@ abstract class Number implements Hashable
     }
 
     /**
+     * Returns a new instance of this object with a base ten real number.
+     *
      * @return ImmutableDecimal|ImmutableFraction
      */
     abstract public function asReal(): ImmutableDecimal|ImmutableFraction;
 
     /**
+     * Returns a new instance of this object with a base ten imaginary number.
+     *
+     * @return ImmutableDecimal|ImmutableFraction
+     */
+    abstract public function asImaginary(): ImmutableDecimal|ImmutableFraction;
+
+    /**
+     * Returns the current value as a string in base 10, converted to a real number. If the number is imaginary, the i is
+     * simply not printed. If the number is complex, then the absolute value is returned.
+     *
      * @return string
      */
     abstract public function getAsBaseTenRealNumber(): string;
 
     /**
+     * Returns true if the number is complex, false if the number is real or imaginary.
+     *
      * @return bool
      */
     abstract public function isComplex(): bool;
 
     /**
-     * @param Number|int|string|float $value
+     * Compares this number to another number and returns whether or not they are equal.
+     *
+     * @param Number|int|string|float $value The value to compare against
      * @return bool
      */
     abstract public function isEqual(Number|int|string|float $value): bool;
 
 
     /**
-     * @param $value
+     * Compares this number to another number and returns true if this number is closer to positive infinity.
+     *
+     * @param Number|int|string|float $value The value to compare against
      * @return bool|null
      */
-    abstract public function isGreaterThan($value): bool|null;
+    abstract public function isGreaterThan(Number|int|string|float $value): bool|null;
 
 
     /**
-     * @param $value
+     * Compares this number to another number and returns true if this number is closer to negative infinity.
+     *
+     * @param Number|int|string|float $value The value to compare against
      * @return bool|null
      */
-    abstract public function isLessThan($value): bool|null;
+    abstract public function isLessThan(Number|int|string|float $value): bool|null;
 
 
     /**
-     * @param $value
+     * Compares this number to another number and returns true if this number is closer to positive infinity or equal.
+     *
+     * @param Number|int|string|float $value The value to compare against
      * @return bool|null
      */
-    abstract public function isGreaterThanOrEqualTo($value): bool|null;
+    abstract public function isGreaterThanOrEqualTo(Number|int|string|float $value): bool|null;
 
     /**
-     * @param $value
+     * Compares this number to another number and returns true if this number is closer to negative infinity or equal.
+     *
+     * @param Number|int|string|float $value The value to compare against
      * @return bool|null
      */
-    abstract public function isLessThanOrEqualTo($value): bool|null;
+    abstract public function isLessThanOrEqualTo(Number|int|string|float $value): bool|null;
 
     /**
      * @return ImmutableComplexNumber
      * @throws IntegrityConstraint
      */
-    public function asComplex(): ImmutableComplexNumber
-    {
-        if ($this->isReal()) {
-            return new ImmutableComplexNumber(clone $this, Numbers::makeZero());
-        }
+    abstract public function asComplex(): ImmutableComplexNumber;
 
-        return new ImmutableComplexNumber(Numbers::makeZero(), clone $this);
-    }
-
+    /**
+     * Returns the current base that the value is in.
+     *
+     * @return NumberBase
+     */
     public function getBase(): NumberBase
     {
         return $this->base;

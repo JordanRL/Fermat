@@ -14,6 +14,8 @@ trait CalculationModeTrait
     protected ?CalcMode $calcMode = null;
 
     /**
+     * Returns the mode that this object would use at the moment, accounting for all values and defaults.
+     *
      * @return CalcMode
      */
     public function getResolvedMode(): CalcMode
@@ -24,6 +26,9 @@ trait CalculationModeTrait
     }
 
     /**
+     * Returns the enum setting for this object's calculation mode. If this is null, then the default mode in the
+     * CalculationModeProvider at the time a calculation is performed will be used.
+     *
      * @return CalcMode|null
      */
     public function getMode(): ?CalcMode
@@ -34,7 +39,8 @@ trait CalculationModeTrait
     }
 
     /**
-     * Allows you to set a mode on a number to select the calculation methods.
+     * Allows you to set a mode on a number to select the calculation methods. If this is null, then the default mode in the
+     * CalculationModeProvider at the time a calculation is performed will be used.
      *
      * @param CalcMode|null $mode
      * @return static

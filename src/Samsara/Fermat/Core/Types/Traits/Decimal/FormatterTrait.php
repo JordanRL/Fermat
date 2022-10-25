@@ -19,6 +19,8 @@ trait FormatterTrait
     protected NumberGrouping $grouping = NumberGrouping::Standard;
 
     /**
+     * Creates an instance of this class from a number string that has been formatted by the Fermat formatter.
+     *
      * @param NumberFormat $format
      * @param NumberGrouping $grouping
      * @param string $value
@@ -44,6 +46,8 @@ trait FormatterTrait
     }
 
     /**
+     * Sets the format of this number for when a format export function is used.
+     *
      * @param NumberFormat $format
      * @return static
      */
@@ -55,14 +59,18 @@ trait FormatterTrait
     }
 
     /**
-     * @return NumberGrouping
+     * Gets the current format setting of this number.
+     *
+     * @return NumberFormat
      */
-    public function getGrouping(): NumberGrouping
+    public function getFormat(): NumberFormat
     {
-        return $this->grouping;
+        return $this->format;
     }
 
     /**
+     * Sets the number grouping of this number for when a format export function is used.
+     *
      * @param NumberGrouping $grouping
      * @return static
      */
@@ -74,15 +82,19 @@ trait FormatterTrait
     }
 
     /**
-     * @return NumberFormat
+     * Gets the current number grouping setting of this number.
+     *
+     * @return NumberGrouping
      */
-    public function getFormat(): NumberFormat
+    public function getGrouping(): NumberGrouping
     {
-        return $this->format;
+        return $this->grouping;
     }
 
     /**
-     * @param Currency $currency
+     * Returns a formatting string according to this number's current settings as a currency.
+     *
+     * @param Currency $currency The currency you want this number to appear in.
      * @return string
      */
     public function getCurrencyValue(Currency $currency): string
@@ -98,7 +110,7 @@ trait FormatterTrait
     /**
      * Returns the current value formatted according to the settings in getGrouping() and getFormat()
      *
-     * @param NumberBase|null $base
+     * @param NumberBase|null $base The base you want the formatted number to be in.
      * @return string
      * @throws IntegrityConstraint
      */
@@ -112,7 +124,9 @@ trait FormatterTrait
     }
 
     /**
-     * @param int|null $scale
+     * Returns the current value in scientific notation compatible with the way PHP coerces float values into strings.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
      * @return string
      */
     public function getScientificValue(?int $scale = null): string

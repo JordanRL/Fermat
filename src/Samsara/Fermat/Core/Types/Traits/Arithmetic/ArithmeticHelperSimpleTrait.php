@@ -124,7 +124,7 @@ trait ArithmeticHelperSimpleTrait
      * @param ImmutableFraction $thisNum
      * @param ImmutableDecimal|ImmutableFraction $thatNum
      * @param CalcOperation $operation
-     * @return ImmutableFraction|MutableFraction
+     * @return static
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      * @throws MissingPackage
@@ -133,7 +133,7 @@ trait ArithmeticHelperSimpleTrait
         ImmutableFraction                  $thisNum,
         ImmutableDecimal|ImmutableFraction $thatNum,
         CalcOperation                      $operation
-    ): ImmutableFraction|MutableFraction
+    ): static
     {
         if ($this instanceof Decimal) {
             throw new IncompatibleObjectState(

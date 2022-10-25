@@ -22,10 +22,11 @@ trait InverseTrigonometrySimpleTrait
     use InverseTrigonometrySelectionTrait;
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the inverse sine of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
-     * @throws IntegrityConstraint
      */
     public function arcsin(?int $scale = null, bool $round = true): Decimal
     {
@@ -33,10 +34,11 @@ trait InverseTrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the inverse cosine of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
-     * @throws IntegrityConstraint
      */
     public function arccos(?int $scale = null, bool $round = true): Decimal
     {
@@ -44,8 +46,10 @@ trait InverseTrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the inverse tangent of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function arctan(?int $scale = null, bool $round = true): Decimal
@@ -54,8 +58,10 @@ trait InverseTrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the inverse cotangent of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function arccot(?int $scale = null, bool $round = true): Decimal
@@ -64,10 +70,11 @@ trait InverseTrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the inverse secant of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
-     * @throws IntegrityConstraint
      */
     public function arcsec(?int $scale = null, bool $round = true): Decimal
     {
@@ -78,10 +85,11 @@ trait InverseTrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the inverse cosecant of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
-     * @throws IntegrityConstraint
      */
     public function arccsc(?int $scale = null, bool $round = true): Decimal
     {

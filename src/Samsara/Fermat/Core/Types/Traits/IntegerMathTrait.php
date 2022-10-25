@@ -18,6 +18,9 @@ trait IntegerMathTrait
 {
 
     /**
+     * Only valid for integer numbers. Takes the factorial of this number. The factorial is every number between 1 and
+     * this number multiplied together.
+     *
      * @return Decimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
@@ -47,6 +50,11 @@ trait IntegerMathTrait
     }
 
     /**
+     * Only valid for integer numbers. Takes the subfactorial of this number. The subfactorial is the number of
+     * derangements of a set with n members.
+     *
+     * For more information, see: https://mathworld.wolfram.com/Subfactorial.html
+     *
      * @return Decimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
@@ -82,6 +90,12 @@ trait IntegerMathTrait
     }
 
     /**
+     * Only valid for integer numbers. Takes the double factorial of this number. Not to be confused with taking the
+     * factorial twice which is (n!)!, the double factorial n!! multiplies all the numbers between 1 and n that share
+     * the same parity (odd or even).
+     *
+     * For more information, see: https://mathworld.wolfram.com/DoubleFactorial.html
+     *
      * @return Decimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
@@ -119,6 +133,8 @@ trait IntegerMathTrait
     }
 
     /**
+     * Alias for doubleFactorial().
+     *
      * @return Decimal
      * @throws IncompatibleObjectState
      */
@@ -128,11 +144,13 @@ trait IntegerMathTrait
     }
 
     /**
+     * Only valid for integer numbers. Returns the least common multiple of this number and the supplied number.
+     *
      * @param $num
-     * @return Decimal
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function getLeastCommonMultiple($num): Decimal
+    public function getLeastCommonMultiple($num): static
     {
 
         /** @var ImmutableDecimal $num */
@@ -153,6 +171,8 @@ trait IntegerMathTrait
     }
 
     /**
+     * Only valid for integer numbers. Returns the greatest common divisor for this number and the supplied number.
+     *
      * @param $num
      * @return Decimal
      * @throws IntegrityConstraint
@@ -179,11 +199,12 @@ trait IntegerMathTrait
     }
 
     /**
-     * This function is a PHP implementation of the Miller-Rabin primality test. The default "certainty" value of 20
+     * Only valid for integer numbers. Uses the Miller-Rabin probabilistic primality test. The default "certainty" value of 20
      * results in a false-positive rate of 1 in 1.10 x 10^12.
      *
-     * Presumably, the probability of your hardware failing while this code is running is higher, meaning this should be
-     * statistically as certain as a deterministic algorithm on normal computer hardware.
+     * With high enough certainty values, the probability that the program returned an incorrect result due to errors in
+     * the computer hardware begins to dominate. Typically, a certainty of around 40 is sufficient for a prime number used
+     * in a cryptographic context.
      *
      * @param int|null $certainty The certainty level desired. False positive rate = 1 in 4^$certainty.
      * @return bool
@@ -199,9 +220,10 @@ trait IntegerMathTrait
     }
 
     /**
+     * Only valid for integer numbers. Returns a collections of all of the integer divisors of this number.
+     *
      * @return NumberCollection
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public function getDivisors(): NumberCollection
     {
@@ -223,6 +245,8 @@ trait IntegerMathTrait
     }
 
     /**
+     * TODO: Implement
+     *
      * @return NumberCollection
      */
     public function asPrimeFactors(): NumberCollection
