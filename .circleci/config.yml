@@ -211,14 +211,14 @@ workflows:
       - fermat-unit-testing/cc-coverage-reporter
       - fermat-unit-testing/tests-bcmath:
           requires:
-            - cc-coverage-reporter
+            - fermat-unit-testing/cc-coverage-reporter
       - fermat-unit-testing/tests-decimal:
           requires:
-            - cc-coverage-reporter
+            - fermat-unit-testing/cc-coverage-reporter
       - fermat-unit-testing/upload-coverage:
           requires:
-            - tests-bcmath
-            - tests-decimal
+            - fermat-unit-testing/tests-bcmath
+            - fermat-unit-testing/tests-decimal
   release-workflow:
     jobs:
       - generate-docs:
