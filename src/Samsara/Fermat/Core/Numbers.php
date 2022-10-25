@@ -5,9 +5,9 @@ namespace Samsara\Fermat\Core;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Provider\ConstantProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Core\Types\Base\Number;
+use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\MutableFraction;
@@ -53,7 +53,7 @@ class Numbers
      * @param int|null      $scale  The scale setting the created instance should have.
      * @param NumberBase    $base   The base to create the number in. Note, this is not the same as the base of $value, which is always base-10
      *
-     * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|NumberInterface|FractionInterface
+     * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|Fraction|Decimal
      * @throws IntegrityConstraint
      */
     public static function make(mixed $type, mixed $value, ?int $scale = null, NumberBase $base = NumberBase::Ten)
@@ -81,8 +81,8 @@ class Numbers
 
         throw new IntegrityConstraint(
             '$type must be an implemented concrete class that is supported',
-            'Provide a type that implements NumberInterface or CoordinateInterface (the Numbers class contains constants for the built in ones)',
-            'The $type argument was not an implementation of NumberInterface or CoordinateInterface'
+            'Provide a type that Decimal',
+            'The $type argument was not an instance of Decimal'
         );
     }
 
@@ -92,10 +92,10 @@ class Numbers
      * @param int|null $scale
      * @param NumberBase $base
      *
-     * @return NumberInterface
+     * @return Decimal
      * @throws IntegrityConstraint
      */
-    public static function makeFromBase10($type, $value, ?int $scale = null, NumberBase $base = NumberBase::Ten): NumberInterface
+    public static function makeFromBase10($type, $value, ?int $scale = null, NumberBase $base = NumberBase::Ten): Decimal
     {
         /**
          * @var ImmutableDecimal|MutableDecimal $number
@@ -107,11 +107,11 @@ class Numbers
 
     /**
      * @param string|object $type
-     * @param int|float|string|array|NumberInterface|DecimalInterface|FractionInterface $value
+     * @param int|float|string|array|Decimal|Fraction $value
      * @param int|null $scale
      * @param NumberBase $base
      *
-     * @return ImmutableDecimal|MutableDecimal|NumberInterface|ImmutableDecimal[]|MutableDecimal[]|NumberInterface[]
+     * @return ImmutableDecimal|MutableDecimal|Decimal|ImmutableDecimal[]|MutableDecimal[]|Decimal[]
      * @throws IntegrityConstraint
      */
     public static function makeOrDont(string|object $type, mixed $value, ?int $scale = null, NumberBase $base = NumberBase::Ten)
@@ -122,7 +122,7 @@ class Numbers
                 return $value;
             }
 
-            if ($value instanceof NumberInterface) {
+            if ($value instanceof Number) {
                 return static::make($type, $value->getValue(NumberBase::Ten), $scale, $base);
             }
         } elseif (is_array($value)) {
@@ -142,9 +142,9 @@ class Numbers
         }
 
         throw new IntegrityConstraint(
-            '$input must be an int, float, numeric string, or an implementation of NumberInterface',
+            '$input must be an int, float, numeric string, or an implementation of Decimal',
             'Provide any of the MANY valid inputs',
-            'The $input argument was not numeric or an implementation of NumberInterface. Given value: '.$value
+            'The $input argument was not numeric or an implementation of Decimal. Given value: '.$value
         );
 
     }
@@ -154,10 +154,10 @@ class Numbers
      * @param string $value
      * @param NumberBase $base
      *
-     * @return FractionInterface
+     * @return Fraction
      * @throws IntegrityConstraint
      */
-    public static function makeFractionFromString(string $type, string $value, NumberBase $base = NumberBase::Ten): FractionInterface
+    public static function makeFractionFromString(string $type, string $value, NumberBase $base = NumberBase::Ten): Fraction
     {
         $parts = explode('/', $value);
 
@@ -183,9 +183,9 @@ class Numbers
         }
 
         throw new IntegrityConstraint(
-            'Type must be an implementation of FractionInterface',
+            'Type must be an implementation of Fraction',
             'Alter to calling code to use the correct type',
-            'makeFractionFromString can only make objects which implement the FractionInterface; '.$type.' given'
+            'makeFractionFromString can only make objects which implement the Fraction; '.$type.' given'
         );
     }
 

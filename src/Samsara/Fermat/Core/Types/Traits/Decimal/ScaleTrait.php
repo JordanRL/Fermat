@@ -4,15 +4,10 @@ namespace Samsara\Fermat\Core\Types\Traits\Decimal;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
-use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\RoundingMode;
-use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Provider\RoundingProvider;
-use Samsara\Fermat\Core\Provider\TrigonometryProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\MutableDecimal;

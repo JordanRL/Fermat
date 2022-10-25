@@ -6,11 +6,8 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
-use Samsara\Fermat\Core\Enums\RandomMode;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Provider\RandomProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
@@ -21,11 +18,11 @@ trait IntegerMathTrait
 {
 
     /**
-     * @return DecimalInterface
+     * @return Decimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function factorial(): DecimalInterface
+    public function factorial(): Decimal
     {
         if ($this->isLessThan(1)) {
             if ($this->isEqual(0)) {
@@ -50,11 +47,11 @@ trait IntegerMathTrait
     }
 
     /**
-     * @return DecimalInterface
+     * @return Decimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function subFactorial(): DecimalInterface
+    public function subFactorial(): Decimal
     {
         if ($this->isLessThan(1)) {
             if ($this->isEqual(0)) {
@@ -85,12 +82,12 @@ trait IntegerMathTrait
     }
 
     /**
-     * @return DecimalInterface
+     * @return Decimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function doubleFactorial(): DecimalInterface
+    public function doubleFactorial(): Decimal
     {
         if ($this->isWhole() && $this->isLessThanOrEqualTo(1)) {
             return $this->setValue('1');
@@ -122,20 +119,20 @@ trait IntegerMathTrait
     }
 
     /**
-     * @return DecimalInterface
+     * @return Decimal
      * @throws IncompatibleObjectState
      */
-    public function semiFactorial(): DecimalInterface
+    public function semiFactorial(): Decimal
     {
         return $this->doubleFactorial();
     }
 
     /**
      * @param $num
-     * @return DecimalInterface
+     * @return Decimal
      * @throws IntegrityConstraint
      */
-    public function getLeastCommonMultiple($num): DecimalInterface
+    public function getLeastCommonMultiple($num): Decimal
     {
 
         /** @var ImmutableDecimal $num */
@@ -157,10 +154,10 @@ trait IntegerMathTrait
 
     /**
      * @param $num
-     * @return DecimalInterface
+     * @return Decimal
      * @throws IntegrityConstraint
      */
-    public function getGreatestCommonDivisor($num): DecimalInterface
+    public function getGreatestCommonDivisor($num): Decimal
     {
         /** @var ImmutableDecimal $num */
         $num = Numbers::make(Numbers::IMMUTABLE, $num)->abs();

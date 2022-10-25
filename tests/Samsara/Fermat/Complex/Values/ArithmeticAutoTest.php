@@ -4,7 +4,9 @@ namespace Samsara\Fermat\Complex\Values;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Complex\Types\ComplexNumber;
+use Samsara\Fermat\Core\Types\Base\Number;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 class ArithmeticAutoTest extends TestCase
@@ -114,7 +116,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider additionImmutableComplexProvider
      * @dataProvider additionMutableComplexProvider
      */
-    public function testAdd(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    public function testAdd(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -232,7 +234,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider subtractionImmutableComplexProvider
      * @dataProvider subtractionMutableComplexProvider
      */
-    public function testSubtract(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    public function testSubtract(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -353,7 +355,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider multiplicationImmutableComplexProvider
      * @dataProvider multiplicationMutableComplexProvider
      */
-    public function testMultiply(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    public function testMultiply(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -474,7 +476,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider divisionImmutableComplexProvider
      * @dataProvider divisionMutableComplexProvider
      */
-    public function testDivide(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    public function testDivide(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -558,7 +560,7 @@ class ArithmeticAutoTest extends TestCase
      * @medium
      * @dataProvider powerImmutableComplexMediumProvider
      */
-    public function testPow(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    public function testPow(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -576,7 +578,7 @@ class ArithmeticAutoTest extends TestCase
      * @large
      * @dataProvider powerImmutableComplexLargeProvider
      */
-    public function testPowLarge(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    public function testPowLarge(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -654,7 +656,7 @@ class ArithmeticAutoTest extends TestCase
      * @medium
      * @dataProvider squareRootImmutableComplexMediumProvider
      */
-    public function testSqrt(NumberInterface $a, string $expected, ?string $resultClass = null)
+    public function testSqrt(ComplexNumber|Decimal $a, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -672,7 +674,7 @@ class ArithmeticAutoTest extends TestCase
      * @large
      * @dataProvider squareRootImmutableComplexLargeProvider
      */
-    public function testSqrtLarge(NumberInterface $a, string $expected, ?string $resultClass = null)
+    public function testSqrtLarge(ComplexNumber|Decimal $a, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);

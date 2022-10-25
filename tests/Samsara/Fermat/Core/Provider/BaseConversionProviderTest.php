@@ -4,7 +4,7 @@ namespace Samsara\Fermat\Core\Provider;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Fermat\Core\Enums\NumberBase;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
@@ -68,7 +68,7 @@ class BaseConversionProviderTest extends TestCase
      * @dataProvider fromLargeInputProvider
      * @dataProvider fromDecimalSmallProvider
      */
-    public function testFromBase10(DecimalInterface $decimal, NumberBase $base, string $expected)
+    public function testFromBase10(Decimal $decimal, NumberBase $base, string $expected)
     {
         $this->assertEquals($expected, BaseConversionProvider::convertFromBaseTen($decimal, $base));
     }

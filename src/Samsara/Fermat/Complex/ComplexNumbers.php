@@ -5,7 +5,6 @@ namespace Samsara\Fermat\Complex;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 
@@ -51,6 +50,11 @@ class ComplexNumbers
 
             return new ImmutableComplexNumber($value[0], $value[1]);
         }
+
+        throw new IntegrityConstraint(
+            'Cannot build complex number from provided inputs',
+            'Ensure oyu provide one of the valid inputs'
+        );
 
     }
 

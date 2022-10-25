@@ -2,7 +2,8 @@
 
 namespace Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups;
 
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Tuple;
 
 /**
@@ -16,13 +17,13 @@ interface VectorInterface
 
     public function subtract(VectorInterface $vector): VectorInterface;
 
-    public function multiply(int|float|string|NumberInterface|VectorInterface $value): NumberInterface|VectorInterface;
+    public function multiply(int|float|string|Decimal|VectorInterface $value): Decimal|VectorInterface;
 
-    public function multiplyScalar(NumberInterface $number): VectorInterface;
+    public function multiplyScalar(Decimal $number): VectorInterface;
 
     public function multiplyVectorProduct(VectorInterface $vector): VectorInterface;
 
-    public function multiplyScalarProduct(VectorInterface $vector): NumberInterface;
+    public function multiplyScalarProduct(VectorInterface $vector): Decimal;
 
     public function asTuple(): Tuple;
 

@@ -4,9 +4,9 @@ namespace Samsara\Fermat\Core\Types\Traits;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Core\Types\Base\Number;
+use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
@@ -16,37 +16,13 @@ trait ComparisonTrait
 {
 
     /**
-     * @return int
-     * @throws IntegrityConstraint
-     */
-    protected function checkComparisonTraitAndInterface()
-    {
-
-        if ($this instanceof DecimalInterface) {
-            return 1;
-        } elseif ($this instanceof FractionInterface) {
-            return 2;
-        } else {
-            throw new IntegrityConstraint(
-                'The ComparisonTrait can only be used by an object that implements either the DecimalInterface or FractionInterface',
-                'Implement either of the required interfaces',
-                'You cannot use the ComparisonTrait without implementing either the DecimalInterface or FractionInterface'
-            );
-        }
-
-    }
-
-    /**
-     * @param NumberInterface|int|string|float $value
+     * @param Number|int|string|float $value
      * @return bool
      * @throws IntegrityConstraint
      */
-    public function isEqual(NumberInterface|int|string|float $value): bool
+    public function isEqual(Number|int|string|float $value): bool
     {
-
-        $check = $this->checkComparisonTraitAndInterface();
-
-        if ($check == 1) {
+        if ($this instanceof Decimal) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if (($this->isImaginary() xor $value->isImaginary()) && $this->getAsBaseTenRealNumber() != '0') {
@@ -81,10 +57,7 @@ trait ComparisonTrait
      */
     public function isGreaterThan($value): bool
     {
-
-        $check = $this->checkComparisonTraitAndInterface();
-
-        if ($check == 1) {
+        if ($this instanceof Decimal) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if ($this->compare($value) === 1) {
@@ -115,9 +88,7 @@ trait ComparisonTrait
      */
     public function isLessThan($value): bool
     {
-        $check = $this->checkComparisonTraitAndInterface();
-
-        if ($check == 1) {
+        if ($this instanceof Decimal) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if ($this->compare($value) === -1) {
@@ -148,9 +119,7 @@ trait ComparisonTrait
      */
     public function isGreaterThanOrEqualTo($value): bool
     {
-        $check = $this->checkComparisonTraitAndInterface();
-
-        if ($check == 1) {
+        if ($this instanceof Decimal) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if ($this->compare($value) > -1) {
@@ -181,9 +150,7 @@ trait ComparisonTrait
      */
     public function isLessThanOrEqualTo($value): bool
     {
-        $check = $this->checkComparisonTraitAndInterface();
-
-        if ($check == 1) {
+        if ($this instanceof Decimal) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if ($this->compare($value) < 1) {
@@ -213,9 +180,7 @@ trait ComparisonTrait
      */
     public function isNegative(): bool
     {
-        $check = $this->checkComparisonTraitAndInterface();
-
-        if ($check == 1) {
+        if ($this instanceof Decimal) {
             if ($this->isEqual(0)) {
                 return false;
             }
@@ -232,9 +197,7 @@ trait ComparisonTrait
      */
     public function isPositive(): bool
     {
-        $check = $this->checkComparisonTraitAndInterface();
-
-        if ($check == 1) {
+        if ($this instanceof Decimal) {
             if ($this->isEqual(0)) {
                 return false;
             }
@@ -269,11 +232,8 @@ trait ComparisonTrait
      */
     public function isInt(): bool
     {
-        $check = $this->checkComparisonTraitAndInterface();
-
-        if ($check === 1) {
+        if ($this instanceof Decimal) {
             $checkVal = $this->getDecimalPart();
-            //$checkVal = str_replace('0', '', $checkVal);
             $checkVal = trim($checkVal, '0');
 
             return !($checkVal !== '');

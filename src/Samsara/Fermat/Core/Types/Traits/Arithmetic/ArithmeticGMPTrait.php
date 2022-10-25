@@ -3,8 +3,7 @@
 
 namespace Samsara\Fermat\Core\Types\Traits\Arithmetic;
 
-use Samsara\Fermat\Core\Provider\ArithmeticProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 
 /**
  * @package Samsara\Fermat\Core
@@ -13,10 +12,10 @@ trait ArithmeticGMPTrait
 {
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return string|false
      */
-    protected function addGMP(DecimalInterface $num): string|false
+    protected function addGMP(Decimal $num): string|false
     {
         if ($this->isInt() && $num->isInt()) {
             $result = gmp_add($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
@@ -28,10 +27,10 @@ trait ArithmeticGMPTrait
     }
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return string|false
      */
-    protected function subtractGMP(DecimalInterface $num): string|false
+    protected function subtractGMP(Decimal $num): string|false
     {
         if ($this->isInt() && $num->isInt()) {
             $result = gmp_sub($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
@@ -43,10 +42,10 @@ trait ArithmeticGMPTrait
     }
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return string|false
      */
-    protected function multiplyGMP(DecimalInterface $num): string|false
+    protected function multiplyGMP(Decimal $num): string|false
     {
         if ($this->isInt() && $num->isInt()) {
             $result = gmp_mul($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
@@ -58,10 +57,10 @@ trait ArithmeticGMPTrait
     }
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return string|false
      */
-    protected function divideGMP(DecimalInterface $num): string|false
+    protected function divideGMP(Decimal $num): string|false
     {
         if ($this->isInt() && $num->isInt()) {
             $result = gmp_div_qr($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
@@ -75,10 +74,10 @@ trait ArithmeticGMPTrait
     }
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return string|false
      */
-    protected function powGMP(DecimalInterface $num): string|false
+    protected function powGMP(Decimal $num): string|false
     {
         if ($this->isInt() && $num->isInt() && $num->isPositive()) {
             $result = gmp_pow($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());

@@ -2,13 +2,11 @@
 
 namespace Samsara\Fermat\Core\Types;
 
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Core\Types\Traits\ComparisonTrait;
@@ -19,7 +17,7 @@ use Samsara\Fermat\Core\Values\MutableFraction;
 /**
  * @package Samsara\Fermat\Core
  */
-abstract class Fraction extends Number implements FractionInterface
+abstract class Fraction extends Number
 {
 
     /** @var ImmutableDecimal[] */
@@ -84,7 +82,13 @@ abstract class Fraction extends Number implements FractionInterface
 
     }
 
-    public function setMode(?CalcMode $mode): self
+    /**
+     * Allows you to set a mode on a number to select the calculation methods.
+     *
+     * @param CalcMode|null $mode
+     * @return static
+     */
+    public function setMode(?CalcMode $mode): static
     {
         $this->calcMode = $mode;
 
@@ -121,17 +125,17 @@ abstract class Fraction extends Number implements FractionInterface
     }
 
     /**
-     * @return mixed|DecimalInterface|ImmutableDecimal
+     * @return ImmutableDecimal
      */
-    public function getNumerator()
+    public function getNumerator(): ImmutableDecimal
     {
         return $this->value[0];
     }
 
     /**
-     * @return mixed|DecimalInterface|ImmutableDecimal
+     * @return ImmutableDecimal
      */
-    public function getDenominator()
+    public function getDenominator(): ImmutableDecimal
     {
         return $this->value[1];
     }
@@ -145,10 +149,11 @@ abstract class Fraction extends Number implements FractionInterface
     }
 
     /**
-     * @return FractionInterface|Fraction
+     * @return Fraction|ImmutableFraction|MutableFraction
      * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    public function simplify()
+    public function simplify(): static|ImmutableFraction|MutableFraction
     {
 
         $gcd = $this->getGreatestCommonDivisor();
@@ -215,28 +220,25 @@ abstract class Fraction extends Number implements FractionInterface
     }
 
     /**
-     * @return NumberInterface
+     * @return Decimal
      * @throws IntegrityConstraint
      */
-    public function getGreatestCommonDivisor()
+    public function getGreatestCommonDivisor(): Decimal
     {
         return $this->getNumerator()->getGreatestCommonDivisor($this->getDenominator());
     }
 
     /**
-     * @param FractionInterface $fraction
-     * @return NumberInterface
+     * @param Fraction $fraction
+     * @return Decimal
      * @throws IntegrityConstraint
      */
-    public function getSmallestCommonDenominator(FractionInterface $fraction)
+    public function getSmallestCommonDenominator(Fraction $fraction): Decimal
     {
         $thisDenominator = $this->getDenominator();
         $thatDenominator = $fraction->getDenominator();
 
-        /** @var NumberInterface $lcm */
-        $lcm = $thisDenominator->getLeastCommonMultiple($thatDenominator);
-
-        return $lcm;
+        return $thisDenominator->getLeastCommonMultiple($thatDenominator);
     }
 
     /**
@@ -256,11 +258,11 @@ abstract class Fraction extends Number implements FractionInterface
     }
 
     /**
-     * @param FractionInterface $fraction
-     * @param NumberInterface|null $lcm
-     * @return array
+     * @param Fraction $fraction
+     * @param Decimal|null $lcm
+     * @return ImmutableDecimal[]
      */
-    protected function getNumeratorsWithSameDenominator(FractionInterface $fraction, NumberInterface $lcm = null)
+    protected function getNumeratorsWithSameDenominator(Fraction $fraction, Decimal $lcm = null): array
     {
 
         $thisNumerator = $this->getNumerator();
@@ -281,11 +283,11 @@ abstract class Fraction extends Number implements FractionInterface
      * @param ImmutableDecimal $numerator
      * @param ImmutableDecimal $denominator
      *
-     * @return MutableFraction|ImmutableFraction
+     * @return static
      */
     abstract protected function setValue(
         ImmutableDecimal $numerator,
         ImmutableDecimal $denominator
-    ): MutableFraction|ImmutableFraction;
+    ): static;
 
 }

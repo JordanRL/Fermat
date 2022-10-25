@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Core\Values;
 
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Types\Fraction;
 
 /**
@@ -13,10 +14,10 @@ class MutableFraction extends Fraction
     /**
      * @param ImmutableDecimal $numerator
      * @param ImmutableDecimal $denominator
-     * @return $this
-     * @throws \Samsara\Exceptions\UsageError\IntegrityConstraint
+     * @return static
+     * @throws IntegrityConstraint
      */
-    protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator): self
+    protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator): static
     {
 
         if ($numerator->isImaginary() xor $denominator->isImaginary()) {

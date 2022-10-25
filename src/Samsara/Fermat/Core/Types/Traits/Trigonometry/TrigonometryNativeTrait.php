@@ -3,7 +3,7 @@
 namespace Samsara\Fermat\Core\Types\Traits\Trigonometry;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 
 /**
  * @package Samsara\Fermat\Core
@@ -12,10 +12,10 @@ trait TrigonometryNativeTrait
 {
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return float|int
      */
-    abstract protected static function translateToNative(DecimalInterface $num): float|int;
+    abstract protected static function translateToNative(Decimal $num): float|int;
 
     /**
      * @return float

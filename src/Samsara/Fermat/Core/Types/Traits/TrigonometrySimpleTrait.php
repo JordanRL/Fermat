@@ -2,15 +2,11 @@
 
 namespace Samsara\Fermat\Core\Types\Traits;
 
-use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcOperation;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Traits\Trigonometry\TrigonometryScaleTrait;
 use Samsara\Fermat\Core\Types\Traits\Trigonometry\TrigonometryNativeTrait;
 use Samsara\Fermat\Core\Types\Traits\Trigonometry\TrigonometrySelectionTrait;
-use Samsara\Fermat\Core\Values\ImmutableDecimal;
-use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
  * @package Samsara\Fermat\Core
@@ -25,9 +21,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function sin(?int $scale = null, bool $round = true): DecimalInterface
+    public function sin(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::Sin);
     }
@@ -35,9 +31,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function cos(?int $scale = null, bool $round = true): DecimalInterface
+    public function cos(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::Cos);
     }
@@ -45,9 +41,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function tan(?int $scale = null, bool $round = true): DecimalInterface
+    public function tan(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::Tan);
     }
@@ -55,9 +51,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function sec(?int $scale = null, bool $round = true): DecimalInterface
+    public function sec(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::Sec);
     }
@@ -65,9 +61,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function csc(?int $scale = null, bool $round = true): DecimalInterface
+    public function csc(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::Csc);
     }
@@ -75,9 +71,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function cot(?int $scale = null, bool $round = true): DecimalInterface
+    public function cot(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::Cot);
     }
@@ -85,9 +81,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function sinh(?int $scale = null, bool $round = true): DecimalInterface
+    public function sinh(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::SinH);
     }
@@ -95,9 +91,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function cosh(?int $scale = null, bool $round = true): DecimalInterface
+    public function cosh(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::CosH);
     }
@@ -105,9 +101,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function tanh(?int $scale = null, bool $round = true): DecimalInterface
+    public function tanh(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::TanH);
     }
@@ -115,9 +111,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function sech(?int $scale = null, bool $round = true): DecimalInterface
+    public function sech(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::SecH);
     }
@@ -125,9 +121,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function csch(?int $scale = null, bool $round = true): DecimalInterface
+    public function csch(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::CscH);
     }
@@ -135,9 +131,9 @@ trait TrigonometrySimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      */
-    public function coth(?int $scale = null, bool $round = true): DecimalInterface
+    public function coth(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::CotH);
     }

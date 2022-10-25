@@ -6,13 +6,12 @@ use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Stats\Types\Distribution;
 use Samsara\Fermat\Core\Provider\RandomProvider;
 use Samsara\Fermat\Core\Provider\SequenceProvider;
 use Samsara\Fermat\Stats\Provider\StatsProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables\FunctionInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
@@ -35,11 +34,10 @@ class Normal extends Distribution
     /**
      * Normal constructor.
      *
-     * @param int|float|DecimalInterface $mean
-     * @param int|float|DecimalInterface $sd
+     * @param int|float|Decimal $mean
+     * @param int|float|Decimal $sd
      *
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public function __construct($mean, $sd)
     {
@@ -73,7 +71,6 @@ class Normal extends Distribution
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public function evaluateAt($x, int $scale = 10): ImmutableDecimal
     {
@@ -117,9 +114,9 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $p
-     * @param int|float|DecimalInterface $x
-     * @param int|float|DecimalInterface $mean
+     * @param int|float|Decimal $p
+     * @param int|float|Decimal $x
+     * @param int|float|Decimal $mean
      *
      * @return Normal
      * @throws IntegrityConstraint
@@ -151,9 +148,9 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $p
-     * @param int|float|DecimalInterface $x
-     * @param int|float|DecimalInterface $sd
+     * @param int|float|Decimal $p
+     * @param int|float|Decimal $x
+     * @param int|float|Decimal $sd
      *
      * @return Normal
      * @throws IntegrityConstraint
@@ -182,7 +179,7 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $x
+     * @param int|float|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
@@ -214,8 +211,8 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $x1
-     * @param null|int|float|DecimalInterface $x2
+     * @param int|float|Decimal $x1
+     * @param null|int|float|Decimal $x2
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
@@ -295,7 +292,7 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $x
+     * @param int|float|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
@@ -306,7 +303,7 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $x
+     * @param int|float|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
@@ -323,11 +320,10 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $x
+     * @param int|float|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public function zScoreOfX($x): ImmutableDecimal
     {
@@ -341,11 +337,10 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $z
+     * @param int|float|Decimal $z
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public function xFromZScore($z): ImmutableDecimal
     {
@@ -360,7 +355,6 @@ class Normal extends Distribution
     /**
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      *
      * @codeCoverageIgnore
      */
@@ -384,14 +378,13 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|NumberInterface $min
-     * @param int|float|NumberInterface $max
+     * @param int|float|Decimal $min
+     * @param int|float|Decimal $max
      * @param int $maxIterations
      *
      * @return ImmutableDecimal
      * @throws OptionalExit
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      *
      * @codeCoverageIgnore
      */

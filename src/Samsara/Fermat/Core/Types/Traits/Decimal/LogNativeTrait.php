@@ -2,8 +2,6 @@
 
 namespace Samsara\Fermat\Core\Types\Traits\Decimal;
 
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
-
 /**
  * @package Samsara\Fermat\Core
  */

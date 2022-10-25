@@ -154,7 +154,7 @@ trait ArithmeticComplexTrait
             return (new ImmutableDecimal('1', $scale))->setMode($this->getMode());
         }
 
-        $internalScale = $scale ?? ($this->getScale() > $thatNum->getScale()) ? $this->getScale() : $thatNum->getScale();
+        $internalScale = $scale;
         $internalScale += max($thisNum->getRealPart()->numberOfIntDigits(), $thisNum->getImaginaryPart()->numberOfIntDigits());
         $internalScale *= intval($thatNum->absValue());
 

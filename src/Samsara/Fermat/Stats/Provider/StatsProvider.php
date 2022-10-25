@@ -9,8 +9,6 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Provider\SeriesProvider;
@@ -139,7 +137,7 @@ class StatsProvider
 
     /**
      * @param     $p
-     * @param int $scale
+     * @param int|null $scale
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
@@ -147,7 +145,7 @@ class StatsProvider
      * @throws ReflectionException
      * @throws MissingPackage
      */
-    public static function inverseNormalCDF($p, int $scale = 10): ImmutableDecimal
+    public static function inverseNormalCDF($p, ?int $scale = null): ImmutableDecimal
     {
         $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
 
@@ -164,7 +162,7 @@ class StatsProvider
      * @param $n
      * @param $k
      *
-     * @return DecimalInterface|NumberInterface|ImmutableDecimal
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
@@ -233,14 +231,14 @@ class StatsProvider
 
     /**
      * @param $z
-     * @param int $scale
+     * @param int|null $scale
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
      * @throws ReflectionException
      */
-    public static function inverseGaussErrorFunction($z, int $scale = 10): ImmutableDecimal
+    public static function inverseGaussErrorFunction($z, ?int $scale = null): ImmutableDecimal
     {
 
         $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);

@@ -2,13 +2,16 @@
 
 namespace Samsara\Fermat\Core\Types\Traits\Arithmetic;
 
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\CalculationModeProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
  * @package Samsara\Fermat\Core
@@ -17,12 +20,18 @@ trait ArithmeticSelectionTrait
 {
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return CalcMode
      * @throws IntegrityConstraint
      */
-    protected function modeSelectorForArithmetic(DecimalInterface $num, CalcOperation $operation): CalcMode
+    protected function modeSelectorForArithmetic(Decimal $num, CalcOperation $operation): CalcMode
     {
+        /**
+         * This method is never reached from Fraction, even though it is defined on the class
+         *
+         * @var ImmutableDecimal|Decimal|MutableDecimal $this
+         */
+
         $thisAbs = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->absValue());
         $thatAbs = Numbers::make(Numbers::IMMUTABLE, $num->absValue());
         /*
@@ -58,10 +67,10 @@ trait ArithmeticSelectionTrait
     }
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return string
      */
-    protected function addSelector(DecimalInterface $num): string
+    protected function addSelector(Decimal $num): string
     {
         $calcMode = $this->getResolvedMode();
         if ($calcMode == CalcMode::Auto) {
@@ -81,10 +90,10 @@ trait ArithmeticSelectionTrait
     }
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return string
      */
-    protected function subtractSelector(DecimalInterface $num): string
+    protected function subtractSelector(Decimal $num): string
     {
         $calcMode = $this->getResolvedMode();
         if ($calcMode == CalcMode::Auto) {
@@ -104,10 +113,10 @@ trait ArithmeticSelectionTrait
     }
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return string
      */
-    protected function multiplySelector(DecimalInterface $num): string
+    protected function multiplySelector(Decimal $num): string
     {
         $calcMode = $this->getResolvedMode();
         if ($calcMode == CalcMode::Auto) {
@@ -127,35 +136,43 @@ trait ArithmeticSelectionTrait
     }
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal|ImmutableDecimal|MutableDecimal $thisNum
+     * @param Decimal|ImmutableDecimal|MutableDecimal $thatNum
      * @param int|null $scale
      * @return string
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    protected function divideSelector(DecimalInterface $num, ?int $scale): string
+    protected function divideSelector(
+        Decimal|ImmutableDecimal|MutableDecimal $thisNum,
+        Decimal|ImmutableDecimal|MutableDecimal $thatNum,
+        ?int $scale
+    ): string
     {
+
         $calcMode = $this->getResolvedMode();
         if ($calcMode == CalcMode::Auto) {
-            $value = $this->divideGMP($num);
+            $value = $this->divideGMP($thatNum);
 
             if ($value !== false) {
                 return $value;
             }
 
-            $calcMode = $this->modeSelectorForArithmetic($num, CalcOperation::Division);
+            $calcMode = $this->modeSelectorForArithmetic($thatNum, CalcOperation::Division);
         }
 
         return match ($calcMode) {
-            CalcMode::Native => $this->divideNative($num),
-            default => $this->divideScale($num, $scale),
+            CalcMode::Native => $this->divideNative($thatNum),
+            default => $this->divideScale($thatNum, $scale),
         };
     }
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return string
      * @throws IntegrityConstraint
      */
-    protected function powSelector(DecimalInterface $num): string
+    protected function powSelector(Decimal $num): string
     {
         $calcMode = $this->getResolvedMode();
         if ($num->isEqual(0)) {

@@ -211,7 +211,7 @@ trait InputNormalizationTrait
         };
 
         if ($normalizedLeft instanceof ImmutableDecimal && $normalizedRight instanceof ImmutableFraction) {
-            $normalizedRight = $normalizedRight->asDecimal($this->getScale());
+            $normalizedRight = $normalizedRight->asDecimal($this->getScale())->setMode($this->getMode());
         }
 
         return [$normalizedLeft, $normalizedRight];

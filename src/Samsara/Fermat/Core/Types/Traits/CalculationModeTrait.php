@@ -37,9 +37,9 @@ trait CalculationModeTrait
      * Allows you to set a mode on a number to select the calculation methods.
      *
      * @param CalcMode|null $mode
-     * @return $this
+     * @return static
      */
-    public function setMode(?CalcMode $mode): self
+    public function setMode(?CalcMode $mode): static
     {
         $this->calcMode = $mode;
 

@@ -5,12 +5,13 @@ namespace Samsara\Fermat\LinearAlgebra\Types;
 use ReflectionException;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Core\Types\Base\Number;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\LinearAlgebra\Matrices;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\SequenceProvider;
 use Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups\MatrixInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\LinearAlgebra\Types\Traits\Matrix\DirectAccessTrait;
 use Samsara\Fermat\LinearAlgebra\Types\Traits\Matrix\ShapeTrait;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
@@ -69,7 +70,8 @@ abstract class Matrix implements MatrixInterface
     {
         if (!$this->isSquare()) {
             throw new IncompatibleObjectState(
-                'Only matrices which are square have determinants.'
+                'Only matrices which are square have determinants.',
+                'Check for matrix shape before getting the determinant'
             );
         }
 
@@ -110,7 +112,7 @@ abstract class Matrix implements MatrixInterface
             $resultArray[$rowKey] = new NumberCollection();
             /**
              * @var int $columnKey
-             * @var NumberInterface $num
+             * @var Decimal $num
              */
             foreach ($row->toArray() as $columnKey => $num) {
                 $resultArray[$rowKey]->push($num->add($value->getRow($rowKey)->get($columnKey)));
@@ -124,11 +126,11 @@ abstract class Matrix implements MatrixInterface
      * This function takes an input scalar value and multiplies an identity matrix by that scalar, then does matrix
      * addition with the resulting matrix.
      *
-     * @param NumberInterface $value
+     * @param Number $value
      * @return MatrixInterface
      * @throws IntegrityConstraint
      */
-    public function addScalarAsI(NumberInterface $value): MatrixInterface
+    public function addScalarAsI(Number $value): MatrixInterface
     {
         if (!$this->isSquare()) {
             throw new IntegrityConstraint(
@@ -147,11 +149,11 @@ abstract class Matrix implements MatrixInterface
     /**
      * This function takes a scalar input value and adds that value to each position in the matrix directly.
      *
-     * @param NumberInterface $value
+     * @param Number $value
      * @return MatrixInterface
      * @throws IntegrityConstraint
      */
-    public function addScalarAsJ(NumberInterface $value): MatrixInterface
+    public function addScalarAsJ(Number $value): MatrixInterface
     {
         $J = Matrices::onesMatrix(Matrices::IMMUTABLE_MATRIX, $this->getRowCount(), $this->getColumnCount());
         $J = $J->multiply($value);
@@ -180,7 +182,7 @@ abstract class Matrix implements MatrixInterface
             $resultArray[$rowKey] = new NumberCollection();
             /**
              * @var int $columnKey
-             * @var NumberInterface $num
+             * @var Decimal $num
              */
             foreach ($row->toArray() as $columnKey => $num) {
                 $resultArray[$rowKey]->push($num->subtract($value->getRow($rowKey)->get($columnKey)));
@@ -191,12 +193,12 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @param NumberInterface $value
+     * @param Decimal $value
      *
      * @return MatrixInterface
      * @throws IntegrityConstraint
      */
-    public function subtractScalarAsI(NumberInterface $value): MatrixInterface
+    public function subtractScalarAsI(Decimal $value): MatrixInterface
     {
         $value = $value->multiply(-1);
 
@@ -204,12 +206,12 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @param NumberInterface $value
+     * @param Decimal $value
      *
      * @return MatrixInterface
      * @throws IntegrityConstraint
      */
-    public function subtractScalarAsJ(NumberInterface $value): MatrixInterface
+    public function subtractScalarAsJ(Decimal $value): MatrixInterface
     {
         $value = $value->multiply(-1);
 
@@ -239,7 +241,7 @@ abstract class Matrix implements MatrixInterface
                 $resultArray[$rowKey] = new NumberCollection();
                 for ($i = 0;$i < $value->getColumnCount();$i++) {
                     $cellVal = Numbers::makeZero();
-                    /** @var NumberInterface $num */
+                    /** @var Decimal $num */
                     foreach ($row->toArray() as $index => $num) {
                         $cellVal = $cellVal->add($num->multiply($value->getColumn($i)->get($index)));
                     }

@@ -5,11 +5,11 @@ namespace Samsara\Fermat\Stats\Values\Distribution;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
+use Samsara\Fermat\Core\Enums\RandomMode;
 use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Stats\Types\Distribution;
 use Samsara\Fermat\Core\Provider\RandomProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
@@ -26,7 +26,7 @@ class Poisson extends Distribution
     /**
      * Poisson constructor.
      *
-     * @param int|float|DecimalInterface $lambda
+     * @param int|float|Decimal $lambda
      *
      * @throws IntegrityConstraint
      */
@@ -46,7 +46,7 @@ class Poisson extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $k
+     * @param int|float|Decimal $k
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
@@ -60,13 +60,13 @@ class Poisson extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $x
+     * @param int|float|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
-    public function cdf(int|float|DecimalInterface $x, int $scale = 10): ImmutableDecimal
+    public function cdf(int|float|Decimal $x, int $scale = 10): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -98,13 +98,13 @@ class Poisson extends Distribution
     }
 
     /**
-     * @param float|int|DecimalInterface $x
+     * @param float|int|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
-    public function pmf(float|int|DecimalInterface $x, int $scale = 10): ImmutableDecimal
+    public function pmf(float|int|Decimal $x, int $scale = 10): ImmutableDecimal
     {
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
@@ -139,8 +139,8 @@ class Poisson extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $x1
-     * @param int|float|DecimalInterface $x2
+     * @param int|float|Decimal $x1
+     * @param int|float|Decimal $x2
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
@@ -200,8 +200,8 @@ class Poisson extends Distribution
      * WARNING: This function is of very limited use with Poisson distributions, and may represent a SIGNIFICANT
      * performance hit for certain values of $min, $max, $lambda, and $maxIterations
      *
-     * @param int|float|NumberInterface $min
-     * @param int|float|NumberInterface $max
+     * @param int|float|Decimal $min
+     * @param int|float|Decimal $max
      * @param int $maxIterations
      *
      * @return ImmutableDecimal
@@ -260,8 +260,7 @@ class Poisson extends Distribution
         $e = Numbers::makeE();
 
         while (true) {
-            /** @var ImmutableDecimal $u */
-            $u = PolyfillProvider::randomInt(0, PHP_INT_MAX) / PHP_INT_MAX;
+            $u = RandomProvider::randomDecimal(10, RandomMode::Speed);
             /** @var ImmutableDecimal $x */
             $x = $alpha->subtract($one->subtract($u)->divide($u)->ln(20)->divide($beta));
             /** @var ImmutableDecimal $n */
@@ -271,8 +270,7 @@ class Poisson extends Distribution
                 continue;
             }
 
-            /** @var ImmutableDecimal $v */
-            $v = Numbers::make(Numbers::IMMUTABLE, PolyfillProvider::randomInt(0, PHP_INT_MAX))->divide(PHP_INT_MAX);
+            $v = RandomProvider::randomDecimal(10, RandomMode::Speed);
             /** @var ImmutableDecimal $y */
             $y = $alpha->subtract($beta->multiply($x));
             /** @var ImmutableDecimal $lhs */
