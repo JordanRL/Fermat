@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Samsara\Fermat\Complex\Values;
 
 use PHPUnit\Framework\TestCase;
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Fermat\Coordinates\Values\PolarCoordinate;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
@@ -76,6 +78,81 @@ class ImmutableComplexNumberTest extends TestCase
         $this->assertEquals('2.2360679775', $complex->absValue());
         $this->assertEquals('2.2360679775', $complex->abs()->getValue());
 
+    }
+
+    public function testAsPolar()
+    {
+
+        $complex = self::$complexOneTwo;
+
+        $this->assertEquals(PolarCoordinate::class, get_class($complex->asPolar()));
+        $this->assertEquals('2.23606797749979', $complex->asPolar()->getDistanceFromOrigin()->getValue());
+        $this->assertEquals('1.107148717794', $complex->asPolar()->getPolarAngle()->getValue());
+
+    }
+
+    public function testGetAsBaseTenRealNumber()
+    {
+        $complex = self::$complexOneTwo;
+
+        $this->assertEquals('2.23606797749979', $complex->getAsBaseTenRealNumber());
+    }
+
+    public function testIsFunctions()
+    {
+        $complex = self::$complexOneTwo;
+
+        // isImaginary
+        $this->assertFalse($complex->isImaginary());
+
+        // isEqual
+        $this->assertFalse($complex->isEqual('1'));
+        $this->assertFalse($complex->isEqual(new ImmutableDecimal(1)));
+        $this->assertFalse($complex->isEqual('1+3i'));
+        $this->assertFalse($complex->isEqual('1+3i+6'));
+        $this->assertFalse($complex->isEqual('2i'));
+        $this->assertFalse($complex->isEqual('2i+4i'));
+        $this->assertTrue($complex->isEqual('1+2i'));
+        $this->assertTrue($complex->isEqual(self::$complexOneTwo));
+    }
+
+    public function testExceptionInequality1()
+    {
+        $complex = self::$complexOneTwo;
+
+        $this->expectException(IncompatibleObjectState::class);
+        $complex->isGreaterThan('1');
+    }
+
+    public function testExceptionInequality2()
+    {
+        $complex = self::$complexOneTwo;
+
+        $this->expectException(IncompatibleObjectState::class);
+        $complex->isGreaterThanOrEqualTo('1');
+    }
+
+    public function testExceptionInequality3()
+    {
+        $complex = self::$complexOneTwo;
+
+        $this->expectException(IncompatibleObjectState::class);
+        $complex->isLessThan('1');
+    }
+
+    public function testExceptionInequality4()
+    {
+        $complex = self::$complexOneTwo;
+
+        $this->expectException(IncompatibleObjectState::class);
+        $complex->isLessThanOrEqualTo('1');
+    }
+
+    public function testAsComplex()
+    {
+        $complex = self::$complexOneTwo;
+
+        $this->assertEquals(ImmutableComplexNumber::class, get_class($complex->asComplex()));
     }
 
 }

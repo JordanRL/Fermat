@@ -171,30 +171,25 @@ trait ArithmeticComplexHelperTrait
     /**
      * @param ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction $thisNum
      * @param ImmutableDecimal $rotation
-     * @param int $scale
      * @return ImmutableDecimal[]
      * @throws IntegrityConstraint
      */
     protected function helperPowPolarRotate(
         ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction $thisNum,
-        ImmutableDecimal $rotation,
-        int $scale
+        ImmutableDecimal $rotation
     ): array
     {
         $rho = $thisNum->getDistanceFromOrigin();
         $theta = $thisNum->getPolarAngle();
 
-        if (!$rho->isEqual(0)) {
-            $rho = ArithmeticProvider::squareRoot($rho->getAsBaseTenRealNumber(), $scale);
-        }
-
+        $rho = $rho->pow($rotation);
         $theta = $theta->multiply($rotation);
 
         $newPolar = new PolarCoordinate($rho, $theta);
         $newCartesian = $newPolar->asCartesian();
 
         $newRealPart = $newCartesian->getAxis('x');
-        $newImaginaryPart = $newCartesian->getAxis('y');
+        $newImaginaryPart = $newCartesian->getAxis('y')->multiply('1i');
         return [$newRealPart, $newImaginaryPart];
     }
 
@@ -214,13 +209,13 @@ trait ArithmeticComplexHelperTrait
         int $scale
     ): array
     {
-        $intScale = $scale + 2;
+        $intScale = $scale + $roots->asInt();
 
         $rho = $thisNum->getDistanceFromOrigin();
         $theta = $thisNum->getPolarAngle();
 
         if (!$rho->isEqual(0)) {
-            $rho = ArithmeticProvider::squareRoot($rho->getAsBaseTenRealNumber(), $intScale);
+            $rho = $rho->pow((new ImmutableDecimal('1', $intScale))->setMode($this->getMode())->divide(3));
         }
 
         $theta = $theta->divide($roots, $intScale);

@@ -161,7 +161,7 @@ trait ArithmeticComplexTrait
         [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thisNum, 0, $this->getMode(), $internalScale);
 
         if ($thatNum->isReal() && $thatNum->isNatural() && $thatNum->isPositive()) {
-            [$newRealPart, $newImaginaryPart] = $this->helperPowPolarRotate($thisNum, $thatNum, $scale);
+            [$newRealPart, $newImaginaryPart] = $this->helperPowPolarRotate($thisNum, $thatNum);
         } else {
             [$newRealPart, $newImaginaryPart] = $this->helperPowPolar($thatRealPart, $thatImaginaryPart, $internalScale);
         }
@@ -208,7 +208,7 @@ trait ArithmeticComplexTrait
      * @throws IntegrityConstraint
      * @throws OptionalExit
      */
-    public function nthRoots(int|ImmutableDecimal $root, ?int $scale): array
+    public function nthRoots(int|ImmutableDecimal $root, ?int $scale = null): array
     {
 
         [$thisNum, $root] = $this->translateToObjects($root);
@@ -226,7 +226,7 @@ trait ArithmeticComplexTrait
         for ($i=0;$root->isGreaterThan($i);$i++) {
             [$newRealPart, $newImaginaryPart] = $this->helperRootsPolarRotate($thisNum, $root, $i, $scale);
 
-            $roots[] = (new ImmutableComplexNumber($newRealPart, $newImaginaryPart))->setMode($this->getMode());
+            $roots[] = (new ImmutableComplexNumber($newRealPart, $newImaginaryPart))->setMode($this->getMode())->roundToScale($scale);
         }
 
         return $roots;

@@ -528,6 +528,8 @@ class ArithmeticAutoTest extends TestCase
             'IComplex (3+3i)^(0)' => [$a, $zero, '1', ImmutableDecimal::class],
             'IComplex (3+3i)^(3i)' => [$a, $threeI, '-0.0348768474-0.088129998i', ImmutableComplexNumber::class],
             'IComplex (3i)^(3+3i)' => [$threeI, $a, '-0.0372635883+0.2396692999i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(3)' => [$a, $three, '-54+54i', ImmutableComplexNumber::class],
+            'IComplex (3)^(3+3i)' => [$three, $a, '-26.6794540328-4.1480998674i', ImmutableComplexNumber::class],
             'IComplex (1+0.0000000001i)^(3+3i)' => [$g, $a, '0.9999999997+0.0000000003i', ImmutableComplexNumber::class],
             'IComplex (0.0000000001+1i)^(3+3i)' => [$h, $a, '-0.008983291i', ImmutableDecimal::class],
             'IComplex (1+0.000000000001i)^(3+3i)' => [$i, $a, '0.999999999997+0.000000000003i', ImmutableComplexNumber::class],
@@ -685,6 +687,73 @@ class ArithmeticAutoTest extends TestCase
             if (!is_null($resultClass)) {
                 $this->assertEquals($resultClass, get_class($answer));
             }
+        }
+    }
+
+
+
+    /*
+     * nthRoot()
+     */
+
+    public function nthRootImmutableComplexMediumProvider(): array
+    {
+        $three = new ImmutableDecimal('3');
+        $threeI = new ImmutableDecimal('3i');
+        $negThree = new ImmutableDecimal('-3');
+        $negThreeI = new ImmutableDecimal('-3i');
+        $zero = new ImmutableDecimal('0');
+        $zeroI = new ImmutableDecimal('0i');
+        $one = new ImmutableDecimal('1');
+        $oneI = new ImmutableDecimal('1i');
+        $tenScale = new ImmutableDecimal('0.0000000001');
+        $tenScaleI = new ImmutableDecimal('0.0000000001i');
+        $twelveScale = new ImmutableDecimal('0.000000000001');
+        $twelveScaleI = new ImmutableDecimal('0.000000000001i');
+
+        $a = new ImmutableComplexNumber($three, $threeI);
+        $b = new ImmutableComplexNumber($negThree, $negThreeI);
+        $c = new ImmutableComplexNumber($three, $negThreeI);
+        $d = new ImmutableComplexNumber($negThree, $threeI);
+        $g = new ImmutableComplexNumber($one, $tenScaleI);
+        $h = new ImmutableComplexNumber($tenScale, $oneI);
+        $i = new ImmutableComplexNumber($one, $twelveScaleI);
+        $j = new ImmutableComplexNumber($twelveScale, $oneI);
+        $k = new ImmutableComplexNumber($one, $zeroI);
+        $l = new ImmutableComplexNumber($zero, $oneI);
+
+        return [
+            'IComplex (3+3i)^(1/3)' => [
+                $a,
+                $three,
+                [
+                    '1.5637087354+0.4189944928i',
+                    '-1.1447142426+1.1447142426i',
+                    '-0.4189944928-1.5637087354i',
+                ]
+            ],
+            //'IComplex (-3-3i)^(1/3)' => [$b, $three, '0.7882387605-1.902976706i', ImmutableComplexNumber::class],
+            //'IComplex (3-3i)^(1/3)' => [$c, $three, '1.902976706-0.7882387605i', ImmutableComplexNumber::class],
+//            'IComplex (-3+3i)^(1/3)' => [$d, $three, '0.7882387605+1.902976706i', ImmutableComplexNumber::class],
+//            'IComplex (1+0.0000000001i)^(1/3)' => [$g, $three, '1', ImmutableDecimal::class],
+//            'IComplex (0.0000000001+1i)^(1/3)' => [$h, $three, '0.7071067812+0.7071067812i', ImmutableComplexNumber::class],
+//            'IComplex (1+0.000000000001i)^(1/3)' => [$i, $three, '1', ImmutableDecimal::class],
+//            'IComplex (0.000000000001+1i)^(1/3)' => [$j, $three, '0.707106781187+0.707106781186i', ImmutableComplexNumber::class],
+//            'IComplex (1+0i)^(1/3)' => [$k, $three, '1', ImmutableDecimal::class],
+//            'IComplex (0+1i)^(1/3)' => [$l, $three, '0.7071067812+0.7071067812i', ImmutableComplexNumber::class],
+        ];
+    }
+
+    /**
+     * @medium
+     * @dataProvider nthRootImmutableComplexMediumProvider
+     */
+    public function testNthRoots(ComplexNumber $a, ImmutableDecimal $b, array $expected)
+    {
+        $answers = $a->nthRoots($b);
+
+        foreach ($answers as $i => $answer) {
+            $this->assertEquals($expected[$i], $answer->getValue());
         }
     }
 

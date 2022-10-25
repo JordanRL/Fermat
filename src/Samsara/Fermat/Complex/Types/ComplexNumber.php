@@ -159,9 +159,6 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
      * @param string|int|float|Number $value
      *
      * @return bool
-     * @throws IncompatibleObjectState
-     * @throws IntegrityConstraint
-     * @throws OptionalExit
      */
     public function isEqual(string|int|float|Number $value): bool
     {
@@ -171,8 +168,6 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
         if (is_string($value) && !str_contains($value, 'i')) {
             return false;
-        } else {
-            $value = ComplexNumbers::make(ComplexNumbers::IMMUTABLE_COMPLEX, $value);
         }
 
         if ($value instanceof Number && !$value->isComplex()) {
@@ -180,19 +175,9 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
         }
 
         if (!($value instanceof Number)) {
-            if (is_string($value)) {
-                try {
-                    $value = static::makeFromString($value);
-                } catch (IntegrityConstraint) {
-                    return false;
-                }
-            } elseif (is_array($value)) {
-                try {
-                    $value = static::makeFromArray($value);
-                } catch (IntegrityConstraint) {
-                    return false;
-                }
-            } else {
+            try {
+                $value = static::makeFromString($value);
+            } catch (\Exception) {
                 return false;
             }
         }
@@ -303,9 +288,9 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
     public static function makeFromString(string $expression, $scale = null, NumberBase $base = NumberBase::Ten): static
     {
         if (str_contains($expression, '+')) {
-            [$part1, $part2] = explode('+', $expression);
+            $parts = explode('+', $expression);
         } elseif (str_contains($expression, '-')) {
-            [$part1, $part2] = explode('-', $expression);
+            $parts = explode('-', $expression);
         } else {
             throw new IntegrityConstraint(
                 'To make a complex number from a string, it must have both a real part and a complex part.',
@@ -314,7 +299,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
             );
         }
 
-        return static::makeFromArray([$part1, $part2], $scale, $base);
+        return static::makeFromArray($parts, $scale, $base);
     }
 
     /**
