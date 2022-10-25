@@ -85,24 +85,36 @@ orbs:
                 sudo apt update
                 sudo apt install libmpdec-dev
                 sudo pecl install decimal
-      setup-for-tests:
+      setup-project:
         parameters:
           decimal:
             type: boolean
             default: false
+          xdebug:
+            type: boolean
+            default: true
+          for-tests:
+            type: boolean
+            default: true
         description: "Run all tasks prior to executing tests"
         steps:
           - checkout
           - attach_workspace:
               at: ./tmp
           - fermat-unit-testing/gmp-enable
-          - fermat-unit-testing/xdebug-enable
+          - when:
+              condition: <<parameters.xdebug>>
+              steps:
+                -fermat-unit-testing/xdebug-enable
           - when:
               condition: <<parameters.decimal>>
               steps:
                 - fermat-unit-testing/decimal-install
           - fermat-unit-testing/composer-update
-          - fermat-unit-testing/phpunit-prep
+          - when:
+              condition: <<parameters.for-tests>>
+              steps:
+                - fermat-unit-testing/phpunit-prep
       run-tests:
         parameters:
           decimal:
@@ -149,9 +161,11 @@ orbs:
       tests-bcmath:
         executor: fermat-unit-testing/php-with-xdebug
         steps:
-          - fermat-unit-testing/setup-for-tests:
+          - fermat-unit-testing/setup-project:
               with:
                 decimal: false
+                xdebug: true
+                for-tests: true
           - fermat-unit-testing/run-tests:
               with:
                 decimal: false
@@ -159,9 +173,11 @@ orbs:
       tests-decimal:
         executor: fermat-unit-testing/php-with-xdebug
         steps:
-          - fermat-unit-testing/setup-for-tests:
+          - fermat-unit-testing/setup-project:
               with:
                 decimal: true
+                xdebug: true
+                for-tests: true
           - fermat-unit-testing/run-tests:
               with:
                 decimal: true
@@ -182,56 +198,18 @@ orbs:
 
 jobs:
   generate-docs:
-    docker:
-      - image: cimg/php:8.1
-    resource_class: medium
+    executor: fermat-unit-tests/php-base
     steps:
-      - checkout
-      - gmp-enable
-      - xdebug-enable
-      - composer-update
+      - fermat-unit-tests/setup-project:
+          with:
+            decimal: false
+            xdebug: false
+            for-tests: false
       - run:
           name: Generate Docs Using Samsara/Roster
           command: vendor/bin/roster
-  generate-phpmetrics:
-    environment:
-      - DEBIAN_FRONTEND: noninteractive
-    docker:
-      - image: cimg/php:8.1
-    resource_class: medium
-    steps:
-      - checkout
-      - gmp-enable
-      - xdebug-enable
-      - composer-update
-      - run:
-          name: Installing YAML Extension
-          command: |
-            sudo apt update
-            sudo apt-get install libyaml-dev
-            printf "\n" | sudo pecl install yaml
-      - run:
-          name: Preparing Build Directory
-          command: |
-            mkdir build
-            mkdir build/metrics
-      - run:
-          name: Downloading PHPMetrics
-          command: composer require 'phpmetrics/phpmetrics'
-      - run:
-          name: Compiling Metrics
-          command: vendor/bin/phpmetrics --config=phpmetrics.yml
-      - store_artifacts:
-          path: ./build/metrics
 
 workflows:
-  metrics-workflow:
-    when: << pipeline.parameters.GHA_Action >>
-    jobs:
-      - generate-phpmetrics:
-          filters:
-            branches:
-              only: master
   unit-test-workflow:
     when: << pipeline.parameters.GHA_Action >>
     jobs:
