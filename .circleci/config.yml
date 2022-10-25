@@ -162,25 +162,21 @@ orbs:
         executor: php-base
         steps:
           - setup-project:
-              with:
-                decimal: false
-                xdebug: true
-                for-tests: true
+              decimal: false
+              xdebug: true
+              for-tests: true
           - run-tests:
-              with:
-                decimal: false
+              decimal: false
           - wrap-up-tests
       tests-decimal:
         executor: php-base
         steps:
           - setup-project:
-              with:
-                decimal: true
-                xdebug: true
-                for-tests: true
+              decimal: true
+              xdebug: true
+              for-tests: true
           - run-tests:
-              with:
-                decimal: true
+              decimal: true
           - wrap-up-tests
       upload-coverage:
         executor: php-with-cc-reporter
@@ -201,10 +197,9 @@ jobs:
     executor: fermat-unit-testing/php-base
     steps:
       - fermat-unit-testing/setup-project:
-          with:
-            decimal: false
-            xdebug: false
-            for-tests: false
+          decimal: false
+          xdebug: false
+          for-tests: false
       - run:
           name: Generate Docs Using Samsara/Roster
           command: vendor/bin/roster
