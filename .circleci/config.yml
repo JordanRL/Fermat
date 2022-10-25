@@ -16,7 +16,7 @@ parameters:
 orbs:
   fermat-unit-testing:
     executors:
-      php-with-xdebug:
+      php-base:
         parameters:
           version:
             description: "The version of PHP to load"
@@ -159,7 +159,7 @@ orbs:
               paths:
                 - cc-test-reporter
       tests-bcmath:
-        executor: fermat-unit-testing/php-with-xdebug
+        executor: fermat-unit-testing/php-base
         steps:
           - fermat-unit-testing/setup-project:
               with:
@@ -171,7 +171,7 @@ orbs:
                 decimal: false
           - fermat-unit-testing/wrap-up-tests
       tests-decimal:
-        executor: fermat-unit-testing/php-with-xdebug
+        executor: fermat-unit-testing/php-base
         steps:
           - fermat-unit-testing/setup-project:
               with:
@@ -198,9 +198,9 @@ orbs:
 
 jobs:
   generate-docs:
-    executor: fermat-unit-tests/php-base
+    executor: fermat-unit-testing/php-base
     steps:
-      - fermat-unit-tests/setup-project:
+      - fermat-unit-testing/setup-project:
           with:
             decimal: false
             xdebug: false
@@ -213,14 +213,14 @@ workflows:
   unit-test-workflow:
     when: << pipeline.parameters.GHA_Action >>
     jobs:
-      - fermat-unit-tests/cc-coverage-reporter
-      - fermat-unit-tests/tests-bcmath:
+      - fermat-unit-testing/cc-coverage-reporter
+      - fermat-unit-testing/tests-bcmath:
           requires:
             - cc-coverage-reporter
-      - fermat-unit-tests/tests-decimal:
+      - fermat-unit-testing/tests-decimal:
           requires:
             - cc-coverage-reporter
-      - fermat-unit-tests/upload-coverage:
+      - fermat-unit-testing/upload-coverage:
           requires:
             - tests-bcmath
             - tests-decimal
