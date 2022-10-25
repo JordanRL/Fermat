@@ -9,6 +9,21 @@ categories:
       - 'Feature: Type'
       - 'Feature: Value'
       - 'Feature: Operation'
+  - title: 'Module: Complex Numbers'
+    labels:
+      - 'Module: Complex Numbers'
+  - title: 'Module: Coordinates'
+    labels:
+      - 'Module: Coordinate Systems'
+  - title: 'Module: Linear Algebra'
+    labels:
+      - 'Module: Matrices and Vectors'
+  - title: 'Module: Statistics'
+    labels:
+      - 'Module: Stats'
+  - title: 'Module: Expressions'
+    labels:
+      - 'Module: Algebra Expressions'
   - title: 'Bug Fixes'
     labels:
       - 'Bug'
@@ -17,7 +32,7 @@ categories:
       - 'Code Quality'
       - 'Performance'
       - 'UX Improvement'
-change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-template: '- $TITLE (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 exclude-labels:
   - 'PR: Skip Changelog'
@@ -33,10 +48,6 @@ version-resolver:
       - 'PR: Patch'
   default: patch
 autolabeler:
-  - label: 'PR: Skip Changelog'
-    files:
-      - '*.md'
-      - '*.yml'
   - label: 'PR: Major'
     title:
       - '/changed/i'
