@@ -131,6 +131,10 @@ orbs:
               steps:
                 - phpunit-run-without-large
       wrap-up-tests:
+        parameters:
+          cc-file:
+            type: string
+            default: "bcmath"
         description: "Run all post test tasks"
         steps:
           - store_test_results:
@@ -138,7 +142,7 @@ orbs:
           - run:
               name: Format Partial Code Coverage
               command: |
-                ./tmp/cc-test-reporter format-coverage -t clover -o "tmp/codeclimate.bcmath$CIRCLE_NODE_INDEX.json" build/logs/coverage.clover
+                ./tmp/cc-test-reporter format-coverage -t clover -o "tmp/codeclimate.<<parameters.cc-file>>$CIRCLE_NODE_INDEX.json" build/logs/coverage.clover
           - persist_to_workspace:
               root: tmp
               paths:
@@ -167,7 +171,8 @@ orbs:
               for-tests: true
           - run-tests:
               decimal: false
-          - wrap-up-tests
+          - wrap-up-tests:
+              cc-file: "bcmath"
       tests-decimal:
         executor: php-base
         steps:
@@ -177,7 +182,8 @@ orbs:
               for-tests: true
           - run-tests:
               decimal: true
-          - wrap-up-tests
+          - wrap-up-tests:
+              cc-file: "decimal"
       upload-coverage:
         executor: php-with-cc-reporter
         steps:
