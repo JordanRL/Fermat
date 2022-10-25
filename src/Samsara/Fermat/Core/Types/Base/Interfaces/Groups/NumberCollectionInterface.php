@@ -6,7 +6,7 @@ use Samsara\Fermat\Stats\Values\Distribution\Exponential;
 use Samsara\Fermat\Stats\Values\Distribution\Normal;
 use Samsara\Fermat\Stats\Values\Distribution\Poisson;
 use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
  * @codeCoverageIgnore
@@ -33,28 +33,28 @@ interface NumberCollectionInterface
     public function toArray(): array;
 
     /**
-     * @param NumberInterface $number
+     * @param ImmutableDecimal $number
      *
      * @return NumberCollectionInterface
      */
-    public function push(NumberInterface $number): NumberCollectionInterface;
+    public function push(ImmutableDecimal $number): NumberCollectionInterface;
 
     /**
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function pop(): NumberInterface;
+    public function pop(): ImmutableDecimal;
 
     /**
-     * @param NumberInterface $number
+     * @param ImmutableDecimal $number
      *
      * @return NumberCollectionInterface
      */
-    public function unshift(NumberInterface $number): NumberCollectionInterface;
+    public function unshift(ImmutableDecimal $number): NumberCollectionInterface;
 
     /**
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function shift(): NumberInterface;
+    public function shift(): ImmutableDecimal;
 
     /**
      * @return NumberCollectionInterface
@@ -111,24 +111,24 @@ interface NumberCollectionInterface
     /**
      * @param int $key
      *
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function get(int $key): NumberInterface;
+    public function get(int $key): ImmutableDecimal;
 
     /**
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function getRandom(): NumberInterface;
+    public function getRandom(): ImmutableDecimal;
 
     /**
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function sum(): NumberInterface;
+    public function sum(): ImmutableDecimal;
 
     /**
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function mean(): NumberInterface;
+    public function mean(): ImmutableDecimal;
 
     /**
      * @return Normal

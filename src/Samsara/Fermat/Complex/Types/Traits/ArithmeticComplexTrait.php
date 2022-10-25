@@ -9,6 +9,7 @@ use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Complex\Values\MutableComplexNumber;
+use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\Traits\InputNormalizationTrait;
@@ -148,12 +149,21 @@ trait ArithmeticComplexTrait
         $scale = $scale ?? $this->getScale();
 
         [$thisNum, $thatNum] = $this->translateToObjects($num);
-        [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thisNum, 1, $this->getMode());
+
+        if ($thatNum->getValue(NumberBase::Ten) === '0') {
+            return (new ImmutableDecimal('1', $scale))->setMode($this->getMode());
+        }
+
+        $internalScale = $scale;
+        $internalScale += max($thisNum->getRealPart()->numberOfIntDigits(), $thisNum->getImaginaryPart()->numberOfIntDigits());
+        $internalScale *= intval($thatNum->absValue());
+
+        [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thisNum, 0, $this->getMode(), $internalScale);
 
         if ($thatNum->isReal() && $thatNum->isNatural() && $thatNum->isPositive()) {
             [$newRealPart, $newImaginaryPart] = $this->helperPowPolarRotate($thisNum, $thatNum, $scale);
         } else {
-            [$newRealPart, $newImaginaryPart] = $this->helperPowPolar($thatNum, $thatRealPart, $thatImaginaryPart);
+            [$newRealPart, $newImaginaryPart] = $this->helperPowPolar($thatRealPart, $thatImaginaryPart, $internalScale);
         }
 
         return $this->helperMulDivPowReturn($newRealPart, $newImaginaryPart, $scale);
@@ -175,7 +185,10 @@ trait ArithmeticComplexTrait
 
         $thisNum = self::normalizeObject($this, $this->getMode());
 
-        [$newRealPart, $newImaginaryPart] = $this->helperRootsPolarRotate($thisNum, new ImmutableDecimal(2), 0, $scale);
+        [$newRealPart, $newImaginaryPart] = $this->helperSquareRoot($thisNum, $scale);
+
+        $newRealPart = $newRealPart->roundToScale($scale);
+        $newImaginaryPart = $newImaginaryPart->roundToScale($scale);
 
         if (!$newRealPart->isEqual(0) && !$newImaginaryPart->isEqual(0)) {
             return $this->setValue($newRealPart, $newImaginaryPart);

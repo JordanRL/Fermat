@@ -12,6 +12,7 @@ use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\RandomMode;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Random\Randomizer;
 use Random\Engine\Secure;
@@ -25,8 +26,8 @@ class RandomProvider
 {
 
     /**
-     * @param int|string|DecimalInterface $min
-     * @param int|string|DecimalInterface $max
+     * @param int|string|Decimal $min
+     * @param int|string|Decimal $max
      * @param RandomMode $mode
      * @param int|null $seed
      * @return ImmutableDecimal
@@ -34,8 +35,8 @@ class RandomProvider
      * @throws IntegrityConstraint
      */
     public static function randomInt(
-        int|string|DecimalInterface $min,
-        int|string|DecimalInterface $max,
+        int|string|Decimal $min,
+        int|string|Decimal $max,
         RandomMode $mode = RandomMode::Entropy,
         ?int $seed = null
     ): ImmutableDecimal
@@ -45,7 +46,7 @@ class RandomProvider
 
         /**
          * We want to prevent providing non-integer values for min and max, even in cases where
-         * the supplied value is a string or a DecimalInterface.
+         * the supplied value is a string or a Decimal.
          */
         if ($minDecimal->isFloat() || $maxDecimal->isFloat()) {
             throw new IntegrityConstraint(
@@ -193,16 +194,16 @@ class RandomProvider
     }
 
     /**
-     * @param int|string|DecimalInterface $min
-     * @param int|string|DecimalInterface $max
+     * @param int|string|Decimal $min
+     * @param int|string|Decimal $max
      * @param int $scale
      * @param RandomMode $mode
      * @return ImmutableDecimal
      * @throws RandomException
      */
     public static function randomReal(
-        int|string|DecimalInterface $min,
-        int|string|DecimalInterface $max,
+        int|string|Decimal $min,
+        int|string|Decimal $max,
         int $scale,
         RandomMode $mode = RandomMode::Entropy
     ): ImmutableDecimal

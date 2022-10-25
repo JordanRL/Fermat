@@ -4,15 +4,10 @@ namespace Samsara\Fermat\Core\Types\Traits\Decimal;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
-use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\RoundingMode;
-use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Provider\RoundingProvider;
-use Samsara\Fermat\Core\Provider\TrigonometryProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\MutableDecimal;
@@ -31,6 +26,17 @@ trait ScaleTrait
     public function getScale(): int
     {
         return $this->scale;
+    }
+
+    /**
+     * @param int $scale
+     * @return static
+     */
+    protected function setScale(int $scale): static
+    {
+        $this->scale = $scale;
+
+        return $this;
     }
 
     /**
@@ -113,11 +119,7 @@ trait ScaleTrait
         ?RoundingMode $mode = null
     ): ImmutableDecimal|MutableDecimal|static
     {
-
-        $this->scale = $scale;
-
-        return $this->round($scale, $mode);
-
+        return $this->round($scale, $mode)->setScale($scale);
     }
 
     /**
@@ -129,11 +131,7 @@ trait ScaleTrait
         int $scale
     ): ImmutableDecimal|MutableDecimal|static
     {
-
-        $this->scale = $scale;
-
-        return $this->truncate($scale);
-
+        return $this->truncate($scale)->setScale($scale);
     }
 
     /**

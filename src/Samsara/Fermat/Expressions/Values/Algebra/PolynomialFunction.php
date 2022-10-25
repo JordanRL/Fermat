@@ -4,11 +4,10 @@ namespace Samsara\Fermat\Expressions\Values\Algebra;
 
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables\FunctionInterface;
 use Samsara\Fermat\Expressions\Types\Expression;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
@@ -75,7 +74,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
     }
 
     /**
-     * @param int|float|string|NumberInterface|DecimalInterface $x
+     * @param int|float|string|Decimal $x
      *
      * @return ImmutableDecimal
      */
@@ -110,12 +109,12 @@ class PolynomialFunction extends Expression implements FunctionInterface
     }
 
     /**
-     * @param int|float|string|NumberInterface|DecimalInterface $C
+     * @param float|int|string|Decimal $C
      *
      * @return FunctionInterface
      * @throws IntegrityConstraint
      */
-    public function integralExpression($C = 0): FunctionInterface
+    public function integralExpression(float|int|string|Decimal $C = 0): FunctionInterface
     {
         $C = Numbers::make(Numbers::IMMUTABLE, $C);
 
@@ -166,8 +165,8 @@ class PolynomialFunction extends Expression implements FunctionInterface
      *      3. If not all exponents are used continuously, a zero must be provided for the position that is skipped. For
      *         example, if one of the provided groups was 4x^2 + 2, it would expect: [4, 0, 2]
      *
-     * @param int[]|float[]|NumberInterface[] $group1
-     * @param int[]|float[]|NumberInterface[] $group2
+     * @param int[]|float[]|Decimal[] $group1
+     * @param int[]|float[]|Decimal[] $group2
      *
      * @return PolynomialFunction
      * @throws IntegrityConstraint|MissingPackage

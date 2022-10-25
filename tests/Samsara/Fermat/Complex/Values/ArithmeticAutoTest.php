@@ -4,7 +4,9 @@ namespace Samsara\Fermat\Complex\Values;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
+use Samsara\Fermat\Complex\Types\ComplexNumber;
+use Samsara\Fermat\Core\Types\Base\Number;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 class ArithmeticAutoTest extends TestCase
@@ -114,7 +116,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider additionImmutableComplexProvider
      * @dataProvider additionMutableComplexProvider
      */
-    public function testAdd(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    public function testAdd(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -232,7 +234,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider subtractionImmutableComplexProvider
      * @dataProvider subtractionMutableComplexProvider
      */
-    public function testSubtract(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    public function testSubtract(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -353,7 +355,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider multiplicationImmutableComplexProvider
      * @dataProvider multiplicationMutableComplexProvider
      */
-    public function testMultiply(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    public function testMultiply(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -460,10 +462,10 @@ class ArithmeticAutoTest extends TestCase
             'MComplex (5i)/(5+5i)' => [$fiveI, $a, '-2.5+2.5i', ImmutableComplexNumber::class],
             'MComplex (1+1000000000000000000000000000000i)/(5+5i)' => [$e, $a, '-499999999999999999999999999999.5+500000000000000000000000000000.5i', MutableComplexNumber::class],
             'MComplex (1000000000000000000000000000000+1i)/(5+5i)' => [$f, $a, '499999999999999999999999999999.5+500000000000000000000000000000.5i', MutableComplexNumber::class],
-            'MComplex (1+0.0000000001i)/(5+5i)' => [$g, $a, '0.5+0.5000000001i', MutableComplexNumber::class],
-            'MComplex (0.0000000001+1i)/(5+5i)' => [$h, $a, '-0.5+0.5000000001i', MutableComplexNumber::class],
-            'MComplex (1+0.000000000001i)/(5+5i)' => [$i, $a, '0.5+0.500000000001i', MutableComplexNumber::class],
-            'MComplex (0.000000000001+1i)/(5+5i)' => [$j, $a, '-0.5+0.500000000001i', MutableComplexNumber::class],
+            'MComplex (1+0.0000000001i)/(5+5i)' => [$g, $a, '0.5+0.5i', MutableComplexNumber::class],
+            'MComplex (0.0000000001+1i)/(5+5i)' => [$h, $a, '-0.5+0.5i', MutableComplexNumber::class],
+            'MComplex (1+0.000000000001i)/(5+5i)' => [$i, $a, '0.5+0.5i', MutableComplexNumber::class],
+            'MComplex (0.000000000001+1i)/(5+5i)' => [$j, $a, '-0.5+0.5i', MutableComplexNumber::class],
             'MComplex (1+0i)/(5+5i)' => [$k, $a, '0.5+0.5i', MutableComplexNumber::class],
             'MComplex (0+1i)/(5+5i)' => [$l, $a, '-0.5+0.5i', MutableComplexNumber::class],
         ];
@@ -474,13 +476,211 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider divisionImmutableComplexProvider
      * @dataProvider divisionMutableComplexProvider
      */
-    public function testDivide(NumberInterface $a, NumberInterface $b, string $expected, ?string $resultClass = null)
+    public function testDivide(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
             $a->divide($b);
         } else {
             $answer = $a->divide($b);
+            $this->assertEquals($expected, $answer->getValue());
+            if (!is_null($resultClass)) {
+                $this->assertEquals($resultClass, get_class($answer));
+            }
+        }
+    }
+
+    /*
+     * pow()
+     */
+
+    public function powerImmutableComplexMediumProvider(): array
+    {
+        $three = new ImmutableDecimal('3');
+        $threeI = new ImmutableDecimal('3i');
+        $negThree = new ImmutableDecimal('-3');
+        $negThreeI = new ImmutableDecimal('-3i');
+        $zero = new ImmutableDecimal('0');
+        $zeroI = new ImmutableDecimal('0i');
+        $one = new ImmutableDecimal('1');
+        $oneI = new ImmutableDecimal('1i');
+        $tenScale = new ImmutableDecimal('0.0000000001');
+        $tenScaleI = new ImmutableDecimal('0.0000000001i');
+        $twelveScale = new ImmutableDecimal('0.000000000001');
+        $twelveScaleI = new ImmutableDecimal('0.000000000001i');
+
+        $a = new ImmutableComplexNumber($three, $threeI);
+        $b = new ImmutableComplexNumber($negThree, $negThreeI);
+        $c = new ImmutableComplexNumber($three, $negThreeI);
+        $d = new ImmutableComplexNumber($negThree, $threeI);
+        $g = new ImmutableComplexNumber($one, $tenScaleI);
+        $h = new ImmutableComplexNumber($tenScale, $oneI);
+        $i = new ImmutableComplexNumber($one, $twelveScaleI);
+        $j = new ImmutableComplexNumber($twelveScale, $oneI);
+        $k = new ImmutableComplexNumber($one, $zeroI);
+        $l = new ImmutableComplexNumber($zero, $oneI);
+
+        return [
+            'IComplex (3+3i)^(3+3i)' => [$a, $a, '6.6423696469+2.8756701322i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(-3-3i)' => [$a, $b, '0.1267856367-0.0548890965i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(3-3i)' => [$a, $c, '-320.1132107899-739.4138329992i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(-3+3i)' => [$a, $d, '-0.0004930847+0.0011389523i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(0)' => [$a, $zero, '1', ImmutableDecimal::class],
+            'IComplex (3+3i)^(3i)' => [$a, $threeI, '-0.0348768474-0.088129998i', ImmutableComplexNumber::class],
+            'IComplex (3i)^(3+3i)' => [$threeI, $a, '-0.0372635883+0.2396692999i', ImmutableComplexNumber::class],
+            'IComplex (1+0.0000000001i)^(3+3i)' => [$g, $a, '0.9999999997+0.0000000003i', ImmutableComplexNumber::class],
+            'IComplex (0.0000000001+1i)^(3+3i)' => [$h, $a, '-0.008983291i', ImmutableDecimal::class],
+            'IComplex (1+0.000000000001i)^(3+3i)' => [$i, $a, '0.999999999997+0.000000000003i', ImmutableComplexNumber::class],
+            'IComplex (0.000000000001+1i)^(3+3i)' => [$j, $a, '-0.008983291021i', ImmutableDecimal::class],
+            'IComplex (1+0i)^(3+3i)' => [$k, $a, '1', ImmutableDecimal::class],
+            'IComplex (0+1i)^(3+3i)' => [$l, $a, '-0.008983291i', ImmutableDecimal::class],
+        ];
+    }
+
+    public function powerImmutableComplexLargeProvider(): array
+    {
+        $three = new ImmutableDecimal('3');
+        $threeI = new ImmutableDecimal('3i');
+        $one = new ImmutableDecimal('1');
+        $oneI = new ImmutableDecimal('1i');
+        $tenPowThirty = new ImmutableDecimal('1000000000000000000000000000000');
+        $tenPowThirtyI = new ImmutableDecimal('1000000000000000000000000000000i');
+
+        $a = new ImmutableComplexNumber($three, $threeI);
+        $e = new ImmutableComplexNumber($one, $tenPowThirtyI);
+        $f = new ImmutableComplexNumber($tenPowThirty, $oneI);
+
+        return [
+            'IComplex (1+1000000000000000000000000000000i)^(3+3i)' => [$e, $a, '-1008103895072608669621656647656731987966636777577845657842294500190951444855708178470827.8046672167-8926547154809861533401090781765730860411184241176202875421054807180827544305044641700789.1254349717i', ImmutableComplexNumber::class],
+            'IComplex (1000000000000000000000000000000+1i)^(3+3i)' => [$f, $a, '993683398858380499091676249928037050056205700638839289239875498467755979897070841985132647.8378656662-112219886086453915249045522210107306891034790097457935133859983576948619911473186801529969.5691040598i', ImmutableComplexNumber::class],
+        ];
+    }
+
+    /**
+     * @medium
+     * @dataProvider powerImmutableComplexMediumProvider
+     */
+    public function testPow(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
+    {
+        if (str_contains($expected, 'Exception')) {
+            $this->expectException($expected);
+            $a->pow($b);
+        } else {
+            $answer = $a->pow($b);
+            $this->assertEquals($expected, $answer->getValue());
+            if (!is_null($resultClass)) {
+                $this->assertEquals($resultClass, get_class($answer));
+            }
+        }
+    }
+
+    /**
+     * @large
+     * @dataProvider powerImmutableComplexLargeProvider
+     */
+    public function testPowLarge(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
+    {
+        if (str_contains($expected, 'Exception')) {
+            $this->expectException($expected);
+            $a->pow($b);
+        } else {
+            $answer = $a->pow($b);
+            $this->assertEquals($expected, $answer->getValue());
+            if (!is_null($resultClass)) {
+                $this->assertEquals($resultClass, get_class($answer));
+            }
+        }
+    }
+
+    /*
+     * sqrt()
+     */
+
+    public function squareRootImmutableComplexMediumProvider(): array
+    {
+        $three = new ImmutableDecimal('3');
+        $threeI = new ImmutableDecimal('3i');
+        $negThree = new ImmutableDecimal('-3');
+        $negThreeI = new ImmutableDecimal('-3i');
+        $zero = new ImmutableDecimal('0');
+        $zeroI = new ImmutableDecimal('0i');
+        $one = new ImmutableDecimal('1');
+        $oneI = new ImmutableDecimal('1i');
+        $tenScale = new ImmutableDecimal('0.0000000001');
+        $tenScaleI = new ImmutableDecimal('0.0000000001i');
+        $twelveScale = new ImmutableDecimal('0.000000000001');
+        $twelveScaleI = new ImmutableDecimal('0.000000000001i');
+
+        $a = new ImmutableComplexNumber($three, $threeI);
+        $b = new ImmutableComplexNumber($negThree, $negThreeI);
+        $c = new ImmutableComplexNumber($three, $negThreeI);
+        $d = new ImmutableComplexNumber($negThree, $threeI);
+        $g = new ImmutableComplexNumber($one, $tenScaleI);
+        $h = new ImmutableComplexNumber($tenScale, $oneI);
+        $i = new ImmutableComplexNumber($one, $twelveScaleI);
+        $j = new ImmutableComplexNumber($twelveScale, $oneI);
+        $k = new ImmutableComplexNumber($one, $zeroI);
+        $l = new ImmutableComplexNumber($zero, $oneI);
+
+        return [
+            'IComplex sqrt(3+3i)' => [$a, '1.902976706+0.7882387605i', ImmutableComplexNumber::class],
+            'IComplex sqrt(-3-3i)' => [$b, '0.7882387605-1.902976706i', ImmutableComplexNumber::class],
+            'IComplex sqrt(3-3i)' => [$c, '1.902976706-0.7882387605i', ImmutableComplexNumber::class],
+            'IComplex sqrt(-3+3i)' => [$d, '0.7882387605+1.902976706i', ImmutableComplexNumber::class],
+            'IComplex sqrt(1+0.0000000001i)' => [$g, '1', ImmutableDecimal::class],
+            'IComplex sqrt(0.0000000001+1i)' => [$h, '0.7071067812+0.7071067812i', ImmutableComplexNumber::class],
+            'IComplex sqrt(1+0.000000000001i)' => [$i, '1', ImmutableDecimal::class],
+            'IComplex sqrt(0.000000000001+1i)' => [$j, '0.707106781187+0.707106781186i', ImmutableComplexNumber::class],
+            'IComplex sqrt(1+0i)' => [$k, '1', ImmutableDecimal::class],
+            'IComplex sqrt(0+1i)' => [$l, '0.7071067812+0.7071067812i', ImmutableComplexNumber::class],
+        ];
+    }
+
+    public function squareRootImmutableComplexLargeProvider(): array
+    {
+        $one = new ImmutableDecimal('1');
+        $oneI = new ImmutableDecimal('1i');
+        $tenPowThirty = new ImmutableDecimal('1000000000000000000000000000000');
+        $tenPowThirtyI = new ImmutableDecimal('1000000000000000000000000000000i');
+
+        $e = new ImmutableComplexNumber($one, $tenPowThirtyI);
+        $f = new ImmutableComplexNumber($tenPowThirty, $oneI);
+
+        return [
+            'IComplex sqrt(1+1000000000000000000000000000000i)' => [$e, '707106781186547.5244008444+707106781186547.5244008444i', ImmutableComplexNumber::class],
+            'IComplex sqrt(1000000000000000000000000000000+1i)' => [$f, '1000000000000000', ImmutableDecimal::class],
+        ];
+    }
+
+    /**
+     * @medium
+     * @dataProvider squareRootImmutableComplexMediumProvider
+     */
+    public function testSqrt(ComplexNumber|Decimal $a, string $expected, ?string $resultClass = null)
+    {
+        if (str_contains($expected, 'Exception')) {
+            $this->expectException($expected);
+            $a->sqrt();
+        } else {
+            $answer = $a->sqrt();
+            $this->assertEquals($expected, $answer->getValue());
+            if (!is_null($resultClass)) {
+                $this->assertEquals($resultClass, get_class($answer));
+            }
+        }
+    }
+
+    /**
+     * @large
+     * @dataProvider squareRootImmutableComplexLargeProvider
+     */
+    public function testSqrtLarge(ComplexNumber|Decimal $a, string $expected, ?string $resultClass = null)
+    {
+        if (str_contains($expected, 'Exception')) {
+            $this->expectException($expected);
+            $a->sqrt();
+        } else {
+            $answer = $a->sqrt();
             $this->assertEquals($expected, $answer->getValue());
             if (!is_null($resultClass)) {
                 $this->assertEquals($resultClass, get_class($answer));

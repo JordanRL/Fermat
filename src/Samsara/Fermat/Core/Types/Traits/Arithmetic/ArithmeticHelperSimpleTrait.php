@@ -5,11 +5,12 @@ namespace Samsara\Fermat\Core\Types\Traits\Arithmetic;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
+use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\Traits\InputNormalizationTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
@@ -47,8 +48,8 @@ trait ArithmeticHelperSimpleTrait
             return $this->helperAddSubXor($thisNum, $thatNum, $operation);
         }
 
-        if ($thisNum instanceof FractionInterface) {
-            return $this->helperAddSubFraction($thatNum, $operation);
+        if ($this instanceof Fraction) {
+            return $this->helperAddSubFraction($thisNum, $thatNum, $operation);
         } else {
             $value = match ($operation) {
                 CalcOperation::Addition => $thisNum->addSelector($thatNum),
@@ -66,7 +67,6 @@ trait ArithmeticHelperSimpleTrait
 
             $originalScale = $this->getScale();
 
-            /** @var ImmutableDecimal|MutableDecimal $this */
             return $this->setValue($value)->roundToScale($originalScale);
         }
     }
@@ -75,7 +75,7 @@ trait ArithmeticHelperSimpleTrait
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum
      * @param CalcOperation $operation
-     * @return ImmutableComplexNumber|static
+     * @return ImmutableComplexNumber|ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
@@ -83,7 +83,7 @@ trait ArithmeticHelperSimpleTrait
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum,
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum,
         CalcOperation $operation
-    ): static|ImmutableComplexNumber
+    ): ImmutableDecimal|ImmutableComplexNumber
     {
         [$thisRealPart, $thisImaginaryPart] = static::partSelector($thisNum, $thatNum, 0, $this->getMode());
         [$thatRealPart, $thatImaginaryPart] = static::partSelector($thatNum, $thisNum, 0, $this->getMode());
@@ -108,11 +108,11 @@ trait ArithmeticHelperSimpleTrait
         };
 
         if ($newImaginaryPart->isEqual(0)) {
-            return $this->setValue($newRealPart->getValue(NumberBase::Ten));
+            return (new ImmutableDecimal($newRealPart->getValue(NumberBase::Ten)))->setMode($this->getMode());
         }
 
         if ($newRealPart->isEqual(0)) {
-            return $this->setValue($newImaginaryPart->getValue(NumberBase::Ten));
+            return (new ImmutableDecimal($newImaginaryPart->getValue(NumberBase::Ten)))->setMode($this->getMode());
         }
 
         $complex = new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
@@ -121,7 +121,8 @@ trait ArithmeticHelperSimpleTrait
     }
 
     /**
-     * @param ImmutableDecimal|ImmutableFraction $num
+     * @param ImmutableFraction $thisNum
+     * @param ImmutableDecimal|ImmutableFraction $thatNum
      * @param CalcOperation $operation
      * @return ImmutableFraction|MutableFraction
      * @throws IncompatibleObjectState
@@ -129,25 +130,26 @@ trait ArithmeticHelperSimpleTrait
      * @throws MissingPackage
      */
     protected function helperAddSubFraction(
-        ImmutableDecimal|ImmutableFraction $num,
-        CalcOperation $operation
+        ImmutableFraction                  $thisNum,
+        ImmutableDecimal|ImmutableFraction $thatNum,
+        CalcOperation                      $operation
     ): ImmutableFraction|MutableFraction
     {
-        if ($num instanceof FractionInterface && $this->getDenominator()->isEqual($num->getDenominator())) {
-            $finalDenominator = $this->getDenominator();
+        if ($thatNum instanceof Fraction && $thisNum->getDenominator()->isEqual($thatNum->getDenominator())) {
+            $finalDenominator = $thisNum->getDenominator();
             $finalNumerator = match ($operation) {
-                CalcOperation::Addition => $this->getNumerator()->add($num->getNumerator()),
-                CalcOperation::Subtraction => $this->getNumerator()->subtract($num->getNumerator()),
+                CalcOperation::Addition => $thisNum->getNumerator()->add($thatNum->getNumerator()),
+                CalcOperation::Subtraction => $thisNum->getNumerator()->subtract($thatNum->getNumerator()),
                 /** @codeCoverageIgnore  */
                 default => throw new IncompatibleObjectState(
                     'Cannot use the AddSub helper with other operations',
                     'None'
                 )
             };
-        } elseif ($num instanceof FractionInterface) {
-            $finalDenominator = $this->getSmallestCommonDenominator($num);
+        } elseif ($thatNum instanceof Fraction) {
+            $finalDenominator = $thisNum->getSmallestCommonDenominator($thatNum);
 
-            [$thisNumerator, $thatNumerator] = $this->getNumeratorsWithSameDenominator($num, $finalDenominator);
+            [$thisNumerator, $thatNumerator] = $thisNum->getNumeratorsWithSameDenominator($thatNum, $finalDenominator);
 
             $finalNumerator = match ($operation) {
                 CalcOperation::Addition => $thisNumerator->add($thatNumerator),
@@ -159,10 +161,10 @@ trait ArithmeticHelperSimpleTrait
                 )
             };
         } else {
-            $finalDenominator = $this->getDenominator();
+            $finalDenominator = $thisNum->getDenominator();
             $finalNumerator = match ($operation) {
-                CalcOperation::Addition => $this->getNumerator()->add($num->multiply($finalDenominator)),
-                CalcOperation::Subtraction => $this->getNumerator()->subtract($num->multiply($finalDenominator)),
+                CalcOperation::Addition => $thisNum->getNumerator()->add($thatNum->multiply($finalDenominator)),
+                CalcOperation::Subtraction => $thisNum->getNumerator()->subtract($thatNum->multiply($finalDenominator)),
                 /** @codeCoverageIgnore  */
                 default => throw new IncompatibleObjectState(
                     'Cannot use the AddSub helper with other operations',
@@ -181,9 +183,12 @@ trait ArithmeticHelperSimpleTrait
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum
      * @param CalcOperation $operation
+     * @param int $scale
      * @return ImmutableComplexNumber|static
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
      */
-    public function helperMulDiv(
+    protected function helperMulDiv(
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum,
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum,
         CalcOperation $operation,
@@ -194,14 +199,13 @@ trait ArithmeticHelperSimpleTrait
             return $this;
         }
 
-        if ($thisNum instanceof ImmutableFraction) {
+        if ($this instanceof Fraction) {
             return $this->helperMulDivFraction($thisNum, $thatNum, $operation, $scale);
         }
 
-        /** @var DecimalInterface|ImmutableDecimal|MutableDecimal $this */
         $value = match ($operation) {
-            CalcOperation::Multiplication => $thisNum->multiplySelector($thatNum),
-            CalcOperation::Division => $thisNum->divideSelector($thatNum, $scale),
+            CalcOperation::Multiplication => $this->multiplySelector($thatNum),
+            CalcOperation::Division => $this->divideSelector($thisNum, $thatNum, $scale),
             /** @codeCoverageIgnore  */
             default => throw new IncompatibleObjectState(
                 'Cannot use the MulDiv helper with other operations',
@@ -209,13 +213,13 @@ trait ArithmeticHelperSimpleTrait
             )
         };
 
-        if ($this->isImaginary() xor $thatNum->isImaginary()) {
+        if ($thisNum->isImaginary() xor $thatNum->isImaginary()) {
             $value .= 'i';
 
             if ($thatNum->isImaginary() && $operation == CalcOperation::Division) {
                 $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
             }
-        } elseif ($this->isImaginary() && $thatNum->isImaginary() && $operation == CalcOperation::Multiplication) {
+        } elseif ($thisNum->isImaginary() && $thatNum->isImaginary() && $operation == CalcOperation::Multiplication) {
             $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
         }
 

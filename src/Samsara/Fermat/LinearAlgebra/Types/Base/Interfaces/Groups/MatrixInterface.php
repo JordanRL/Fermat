@@ -2,9 +2,9 @@
 
 namespace Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups;
 
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 
 /**
  * @codeCoverageIgnore
@@ -45,15 +45,15 @@ interface MatrixInterface
 
     public function add(MatrixInterface $value): MatrixInterface;
 
-    public function addScalarAsI(NumberInterface $value): MatrixInterface;
+    public function addScalarAsI(Decimal $value): MatrixInterface;
 
-    public function addScalarAsJ(NumberInterface $value): MatrixInterface;
+    public function addScalarAsJ(Decimal $value): MatrixInterface;
 
     public function subtract(MatrixInterface $value): MatrixInterface;
 
-    public function subtractScalarAsI(NumberInterface $value): MatrixInterface;
+    public function subtractScalarAsI(Decimal $value): MatrixInterface;
 
-    public function subtractScalarAsJ(NumberInterface $value): MatrixInterface;
+    public function subtractScalarAsJ(Decimal $value): MatrixInterface;
 
     public function multiply($value): MatrixInterface;
 

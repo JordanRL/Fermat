@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Core\Types\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Complex\ComplexNumbers;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
@@ -33,36 +34,37 @@ trait InputNormalizationTrait
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $partThis,
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $compareTo,
         int $identity,
-        ?CalcMode $mode
+        ?CalcMode $mode,
+        ?int $scale = null
     ): array
     {
 
         if ($partThis->isComplex()) {
-            $realPart = self::normalizeObject($partThis->getRealPart(), $mode);
-            $imaginaryPart = self::normalizeObject($partThis->getImaginaryPart(), $mode);
+            $realPart = self::normalizeObject($partThis->getRealPart(), $mode, $scale);
+            $imaginaryPart = self::normalizeObject($partThis->getImaginaryPart(), $mode, $scale);
         } elseif ($partThis->isReal()) {
             $realPart = match (true) {
                 $partThis instanceof Fraction => match (true) {
-                    $compareTo instanceof Fraction => self::normalizeObject($partThis, $mode),
-                    default => self::normalizeObject($partThis->asDecimal(), $mode)
+                    $compareTo instanceof Fraction => self::normalizeObject($partThis, $mode, $scale),
+                    default => self::normalizeObject($partThis->asDecimal(), $mode, $scale)
                 },
-                $partThis instanceof Decimal => self::normalizeObject($partThis, $mode)
+                $partThis instanceof Decimal => self::normalizeObject($partThis, $mode, $scale)
             };
             $imaginaryPart = match (true) {
                 $compareTo instanceof Fraction => (new ImmutableFraction(
                     new ImmutableDecimal(
                         $identity.'i',
-                        $compareTo->getNumerator()->getScale()
+                        $scale ?? $compareTo->getNumerator()->getScale()
                     ),
                     new ImmutableDecimal(
                         1,
-                        $compareTo->getDenominator()->getScale()
+                        $scale ?? $compareTo->getDenominator()->getScale()
                     ),
                     $compareTo->getBase()
                 ))->setMode($mode),
                 default => (new ImmutableDecimal(
                     $identity.'i',
-                    $compareTo->getScale()
+                    $scale ?? $compareTo->getScale()
                 ))->setMode($mode)
             };
         } else {
@@ -70,25 +72,25 @@ trait InputNormalizationTrait
                 $compareTo instanceof Fraction => (new ImmutableFraction(
                     new ImmutableDecimal(
                         $identity,
-                        $compareTo->getNumerator()->getScale()
+                        $scale ?? $compareTo->getNumerator()->getScale()
                     ),
                     new ImmutableDecimal(
                         1,
-                        $compareTo->getDenominator()->getScale()
+                        $scale ?? $compareTo->getDenominator()->getScale()
                     ),
                     $compareTo->getBase()
                 ))->setMode($mode),
                 default => (new ImmutableDecimal(
                     $identity,
-                    $compareTo->getScale()
+                    $scale ?? $compareTo->getScale()
                 ))->setMode($mode)
             };
             $imaginaryPart = match (true) {
                 $partThis instanceof Fraction => match (true) {
-                    $compareTo instanceof Fraction => self::normalizeObject($partThis, $mode),
-                    default => self::normalizeObject($partThis->asDecimal(), $mode)
+                    $compareTo instanceof Fraction => self::normalizeObject($partThis, $mode, $scale),
+                    default => self::normalizeObject($partThis->asDecimal(), $mode, $scale)
                 },
-                $partThis instanceof Decimal => self::normalizeObject($partThis, $mode)
+                $partThis instanceof Decimal => self::normalizeObject($partThis, $mode, $scale)
             };
         }
 
@@ -121,52 +123,76 @@ trait InputNormalizationTrait
     /**
      * @param Fraction|Decimal|ComplexNumber $object
      * @param CalcMode|null $mode
+     * @param int|null $scale
      * @return ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber
      * @throws IntegrityConstraint
-     * @throws IncompatibleObjectState
      */
     protected static function normalizeObject(
         Fraction|Decimal|ComplexNumber $object,
-        ?CalcMode $mode
+        ?CalcMode $mode,
+        ?int $scale = null
     ): ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber
     {
         return match (true) {
-            $object instanceof Fraction => (new ImmutableFraction(
-                new ImmutableDecimal(
-                    $object->getNumerator()->getValue(NumberBase::Ten),
-                    $object->getNumerator()->getScale(),
-                    $object->getNumerator()->getBase()
-                ),
-                new ImmutableDecimal(
-                    $object->getDenominator()->getValue(NumberBase::Ten),
-                    $object->getDenominator()->getScale(),
-                    $object->getDenominator()->getBase()
-                ),
-                $object->getBase()
-            ))->setMode($mode),
+            $object instanceof Fraction => self::buildTwoPartNumber(
+                ImmutableFraction::class,
+                $object,
+                $mode,
+                $scale
+            ),
             $object instanceof Decimal => (new ImmutableDecimal(
                 $object->getValue(NumberBase::Ten),
-                $object->getScale(),
+                $scale ?? $object->getScale(),
                 $object->getBase()
             ))->setMode($mode),
-            $object instanceof ComplexNumber => (new ImmutableComplexNumber(
-                new ImmutableDecimal(
-                    $object->getRealPart()->getValue(NumberBase::Ten),
-                    $object->getRealPart()->getScale(),
-                    $object->getRealPart()->getBase()
-                ),
-                new ImmutableDecimal(
-                    $object->getImaginaryPart()->getValue(NumberBase::Ten),
-                    $object->getImaginaryPart()->getScale(),
-                    $object->getImaginaryPart()->getBase()
-                ),
-                $object->getScale()
-            ))->setMode($mode),
+            $object instanceof ComplexNumber => self::buildTwoPartNumber(
+                ImmutableComplexNumber::class,
+                $object,
+                $mode,
+                $scale
+            ),
             default => throw new IntegrityConstraint(
                 'Cannot normalize provided object.',
                 'When providing custom value classes, extend the abstract classes.'
             )
         };
+    }
+
+    /**
+     * @param string $inputClass
+     * @param Fraction|ComplexNumber $inputObject
+     * @param CalcMode|null $mode
+     * @param int|null $scale
+     * @return ImmutableFraction|ImmutableComplexNumber
+     * @throws IntegrityConstraint
+     */
+    protected static function buildTwoPartNumber(
+        string $inputClass,
+        Fraction|ComplexNumber $inputObject,
+        ?CalcMode $mode,
+        ?int $scale
+    ): ImmutableFraction|ImmutableComplexNumber
+    {
+        $inputA = match ($inputClass) {
+            ImmutableFraction::class => $inputObject->getNumerator(),
+            ImmutableComplexNumber::class => $inputObject->getRealPart()
+        };
+        $inputB = match ($inputClass) {
+            ImmutableFraction::class => $inputObject->getDenominator(),
+            ImmutableComplexNumber::class => $inputObject->getImaginaryPart()
+        };
+
+        return (new $inputClass(
+                new ImmutableDecimal(
+                    $inputA->getValue(NumberBase::Ten),
+                    $scale ?? $inputA->getScale()
+                ),
+                new ImmutableDecimal(
+                    $inputB->getValue(NumberBase::Ten),
+                    $scale ?? $inputB->getScale()
+                ),
+                $inputClass === ImmutableComplexNumber::class ? $inputObject->getScale() : NumberBase::Ten
+            ))->setMode($mode);
     }
 
     /**
@@ -185,7 +211,7 @@ trait InputNormalizationTrait
         };
 
         if ($normalizedLeft instanceof ImmutableDecimal && $normalizedRight instanceof ImmutableFraction) {
-            $normalizedRight = $normalizedRight->asDecimal($this->getScale());
+            $normalizedRight = $normalizedRight->asDecimal($this->getScale())->setMode($this->getMode());
         }
 
         return [$normalizedLeft, $normalizedRight];

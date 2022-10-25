@@ -11,7 +11,6 @@ use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\SequenceProvider;
 use Samsara\Fermat\Core\Provider\SeriesProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**

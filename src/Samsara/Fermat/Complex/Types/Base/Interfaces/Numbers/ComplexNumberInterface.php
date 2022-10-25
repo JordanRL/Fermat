@@ -2,20 +2,30 @@
 
 namespace Samsara\Fermat\Complex\Types\Base\Interfaces\Numbers;
 
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
+
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
  * @codeCoverageIgnore
  * @package Samsara\Fermat\Complex
  */
-interface ComplexNumberInterface extends NumberInterface
+interface ComplexNumberInterface
 {
 
-    public function getRealPart(): SimpleNumberInterface;
+    /**
+     * @return ImmutableDecimal|ImmutableFraction
+     */
+    public function getRealPart(): ImmutableDecimal|ImmutableFraction;
 
-    public function getImaginaryPart(): SimpleNumberInterface;
+    /**
+     * @return ImmutableDecimal|ImmutableFraction
+     */
+    public function getImaginaryPart(): ImmutableDecimal|ImmutableFraction;
 
+    /**
+     * @return string
+     */
     public function getValue(): string;
 
 }

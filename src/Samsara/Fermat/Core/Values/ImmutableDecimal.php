@@ -6,11 +6,8 @@ use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Provider\BaseConversionProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Samsara\Fermat\Core\Types\Decimal;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 /**
  * @package Samsara\Fermat\Core
@@ -19,12 +16,12 @@ class ImmutableDecimal extends Decimal
 {
 
     /**
-     * @param NumberInterface|string|int|float $mod
-     * @return DecimalInterface
+     * @param Decimal|string|int|float $mod
+     * @return static
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface
+    public function continuousModulo(Decimal|string|int|float $mod): static
     {
 
         $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod);

@@ -6,8 +6,6 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Fermat\Core\Enums\CalcOperation;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticGMPTrait;
@@ -148,7 +146,7 @@ trait ArithmeticSimpleTrait
             || ($thisNum->isReal() xor $thatNum->isReal())
         ) {
             [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
-            [$thatRealPart, $thatImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
+            [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thatNum, 0, $this->getMode());
 
             $thisComplex = new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart);
             $thatComplex = new ImmutableComplexNumber($thatRealPart, $thatImaginaryPart);
@@ -159,7 +157,7 @@ trait ArithmeticSimpleTrait
             return $thisComplex->pow($thatComplex);
         }
 
-        if ($thisNum instanceof FractionInterface) {
+        if ($this instanceof Fraction) {
             /** @var ImmutableDecimal $powNumerator */
             $powNumerator = $thisNum->getNumerator()->pow($thatNum);
             /** @var ImmutableDecimal $powDenominator */
@@ -195,7 +193,7 @@ trait ArithmeticSimpleTrait
     {
         $scale = is_null($scale) ? $this->getScale() : $scale;
 
-        if ($this instanceof FractionInterface) {
+        if ($this instanceof Fraction) {
             $numerator = $this->getNumerator()->sqrt($scale);
             $denominator = $this->getDenominator()->sqrt($scale);
 
@@ -212,7 +210,7 @@ trait ArithmeticSimpleTrait
             $value .= 'i';
         }
 
-        return ($this instanceof DecimalInterface) ? $this->setValue($value)->roundToScale($scale) : (new ImmutableDecimal($value, $scale))->roundToScale($scale);
+        return ($this instanceof Decimal) ? $this->setValue($value)->roundToScale($scale) : (new ImmutableDecimal($value, $scale))->roundToScale($scale);
     }
 
 }

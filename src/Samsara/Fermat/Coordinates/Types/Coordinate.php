@@ -3,8 +3,8 @@
 namespace Samsara\Fermat\Coordinates\Types;
 
 use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\CoordinateInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Coordinates\Values\CartesianCoordinate;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Types\Tuple;
 
@@ -30,7 +30,7 @@ abstract class Coordinate implements CoordinateInterface
                 $value = str_replace('i', '', $value);
             }
 
-            if ($value instanceof DecimalInterface && $value->isImaginary()) {
+            if ($value instanceof Decimal && $value->isImaginary()) {
                 $value = $value->getAsBaseTenRealNumber();
             }
 

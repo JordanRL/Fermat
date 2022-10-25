@@ -12,8 +12,6 @@ use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Complex\Types\Base\Interfaces\Numbers\ComplexNumberInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\ScaleInterface;
 use Samsara\Fermat\Complex\Types\Traits\ArithmeticComplexTrait;
 use Samsara\Fermat\Coordinates\Values\CartesianCoordinate;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
@@ -27,7 +25,7 @@ use Samsara\Fermat\Core\Types\Fraction;
 /**
  *@package Samsara\Fermat\Complex
  */
-abstract class ComplexNumber extends Number implements ComplexNumberInterface, ScaleInterface
+abstract class ComplexNumber extends Number implements ComplexNumberInterface
 {
 
     protected ImmutableDecimal|ImmutableFraction $realPart;
@@ -49,7 +47,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface, S
      * @throws IntegrityConstraint
      * @throws OptionalExit
      */
-    public function __construct(
+    final public function __construct(
         ImmutableDecimal|ImmutableFraction $realPart,
         ImmutableDecimal|ImmutableFraction $imaginaryPart,
         ?int $scale = null,
@@ -81,9 +79,9 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface, S
      * Allows you to set a mode on a number to select the calculation methods.
      *
      * @param ?CalcMode $mode
-     * @return $this
+     * @return static
      */
-    public function setMode(?CalcMode $mode): self
+    public function setMode(?CalcMode $mode): static
     {
         $this->calcMode = $mode;
 
@@ -158,11 +156,14 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface, S
     }
 
     /**
-     * @param string|int|float|Decimal|Fraction|ComplexNumber $value
+     * @param string|int|float|Number $value
      *
      * @return bool
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
-    public function isEqual(string|int|float|Decimal|Fraction|ComplexNumber $value): bool
+    public function isEqual(string|int|float|Number $value): bool
     {
         if (is_int($value) || is_float($value)) {
             return false;
@@ -174,11 +175,11 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface, S
             $value = ComplexNumbers::make(ComplexNumbers::IMMUTABLE_COMPLEX, $value);
         }
 
-        if (!$value->isComplex()) {
+        if ($value instanceof Number && !$value->isComplex()) {
             return false;
         }
 
-        if (!($value instanceof NumberInterface)) {
+        if (!($value instanceof Number)) {
             if (is_string($value)) {
                 try {
                     $value = static::makeFromString($value);
@@ -197,6 +198,57 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface, S
         }
 
         return $this->getValue() === $value->getValue();
+    }
+
+    /**
+     * @throws IncompatibleObjectState
+     */
+    protected static function throwForComparison()
+    {
+        throw new IncompatibleObjectState(
+            'Inequality comparisons are not defined for complex numbers.',
+            'Check whether an object is a complex number before calling inequalities.'
+        );
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     * @throws IncompatibleObjectState
+     */
+    public function isGreaterThan($value): bool|null
+    {
+        return self::throwForComparison();
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     * @throws IncompatibleObjectState
+     */
+    public function isGreaterThanOrEqualTo($value): bool|null
+    {
+        return self::throwForComparison();
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     * @throws IncompatibleObjectState
+     */
+    public function isLessThan($value): bool|null
+    {
+        return self::throwForComparison();
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     * @throws IncompatibleObjectState
+     */
+    public function isLessThanOrEqualTo($value): bool|null
+    {
+        return self::throwForComparison();
     }
 
     /**

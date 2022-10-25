@@ -29,8 +29,8 @@ trait InverseTrigonometryHelpersTrait
     protected function helperArctanGCF(ImmutableDecimal $num, ?int $scale): ImmutableDecimal
     {
         $scale = $scale ?? $this->getScale();
-        $intScale = $scale + 2;
-        $terms = $intScale + 2;
+        $intScale = $scale + 3;
+        $terms = $intScale * 2;
         $x = new ImmutableDecimal($num, $intScale);
         /**
          * @package Samsara\Fermat\Core
@@ -84,7 +84,7 @@ trait InverseTrigonometryHelpersTrait
                     return Numbers::makeZero($this->intScale);
                 }
 
-                return SequenceProvider::nthOddNumber($n - 1);
+                return SequenceProvider::nthOddNumber($n - 1, $this->intScale);
             }
         };
 

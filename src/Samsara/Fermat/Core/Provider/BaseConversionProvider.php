@@ -4,7 +4,7 @@ namespace Samsara\Fermat\Core\Provider;
 
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
@@ -33,11 +33,11 @@ class BaseConversionProvider
     ];
 
     /**
-     * @param DecimalInterface $number
+     * @param Decimal $number
      * @param NumberBase|null $toBase
      * @return string
      */
-    public static function convertFromBaseTen(DecimalInterface $number, ?NumberBase $toBase = null): string
+    public static function convertFromBaseTen(Decimal $number, ?NumberBase $toBase = null): string
     {
         $base = $toBase ?? $number->getBase();
 
@@ -64,7 +64,7 @@ class BaseConversionProvider
         }
     }
 
-    private static function _toBase(DecimalInterface $input, int $base): string
+    private static function _toBase(Decimal $input, int $base): string
     {
         $baseNum = Numbers::make(Numbers::IMMUTABLE, $base, $input->getScale());
         $inputInt = Numbers::make(Numbers::IMMUTABLE, $input->getWholePart());

@@ -9,7 +9,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
@@ -18,13 +18,13 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 class ConstantProvider
 {
 
-    private static DecimalInterface $pi;
-    private static DecimalInterface $e;
-    private static DecimalInterface $ln10;
-    private static DecimalInterface $ln2;
-    private static DecimalInterface $ln1p1;
-    private static DecimalInterface $phi;
-    private static DecimalInterface $ipowi;
+    private static Decimal $pi;
+    private static Decimal $e;
+    private static Decimal $ln10;
+    private static Decimal $ln2;
+    private static Decimal $ln1p1;
+    private static Decimal $phi;
+    private static Decimal $ipowi;
 
     /**
      * @param int $digits

@@ -9,7 +9,7 @@ use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
@@ -41,7 +41,7 @@ class SeriesProvider
      * The function continues adding terms until a term has MORE leading zeros than the $scale setting. (That is,
      * until it adds zero to the total when considering significant digits.)
      *
-     * @param SimpleNumberInterface $input
+     * @param Decimal $input
      * @param callable $numerator
      * @param callable $exponent
      * @param callable $denominator
@@ -56,7 +56,7 @@ class SeriesProvider
      * @throws ReflectionException
      */
     public static function maclaurinSeries(
-        SimpleNumberInterface $input, // x value in series
+        Decimal $input, // x value in series
         callable $numerator, // a function determining what the sign (+/-) is at the nth term
         callable $exponent, // a function determining the exponent of x at the nth term
         callable $denominator, // a function determining the denominator at the nth term
@@ -202,19 +202,11 @@ class SeriesProvider
             }
         }
 
-        switch ($sumMode) {
-            case self::SUM_MODE_SUB:
-            case self::SUM_MODE_ALT_FIRST_SUB:
-                $result = $start->subtract($prevDenominator);
-                break;
-
-            case self::SUM_MODE_ALT_FIRST_ADD:
-            case self::SUM_MODE_ADD:
-                $result = $start->add($prevDenominator);
-                break;
-        }
-
-        return $result;
+        return match ($sumMode) {
+            self::SUM_MODE_SUB, self::SUM_MODE_ALT_FIRST_SUB => $start->subtract($prevDenominator),
+            self::SUM_MODE_ALT_FIRST_ADD, self::SUM_MODE_ADD => $start->add($prevDenominator),
+            default => $prevDenominator,
+        };
 
     }
     

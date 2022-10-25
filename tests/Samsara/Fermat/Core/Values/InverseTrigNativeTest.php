@@ -338,7 +338,7 @@ class InverseTrigNativeTest extends TestCase
             'IDecimal arccsc(-2)' => [$h, '-0.5235987756', NumberBase::Ten, 10],
             'IDecimal arccsc(-3)' => [$i, '-0.3398369095', NumberBase::Ten, 10],
             'IDecimal arccsc(-10)' => [$j, '-0.1001674212', NumberBase::Ten, 10],
-            'IDecimal arccsc(-100000000000)' => [$k, '-0', NumberBase::Ten, 10],
+            'IDecimal arccsc(-100000000000)' => [$k, '0', NumberBase::Ten, 10],
             'IDecimal arccsc(-1000000000000000000000000000000)' => [$l, IncompatibleObjectState::class, NumberBase::Ten, 10],
         ];
     }
@@ -369,7 +369,7 @@ class InverseTrigNativeTest extends TestCase
             'MDecimal arccsc(-2)' => [$h, '-0.5235987756', NumberBase::Ten, 10],
             'MDecimal arccsc(-3)' => [$i, '-0.3398369095', NumberBase::Ten, 10],
             'MDecimal arccsc(-10)' => [$j, '-0.1001674212', NumberBase::Ten, 10],
-            'MDecimal arccsc(-100000000000)' => [$k, '-0', NumberBase::Ten, 10],
+            'MDecimal arccsc(-100000000000)' => [$k, '0', NumberBase::Ten, 10],
             'MDecimal arccsc(-1000000000000000000000000000000)' => [$l, IncompatibleObjectState::class, NumberBase::Ten, 10],
         ];
     }
@@ -424,7 +424,7 @@ class InverseTrigNativeTest extends TestCase
             'IDecimal arccot(-2)' => [$i, '-0.463647609', NumberBase::Ten, 10],
             'IDecimal arccot(-3)' => [$j, '-0.3217505544', NumberBase::Ten, 10],
             'IDecimal arccot(-10)' => [$k, '-0.0996686525', NumberBase::Ten, 10],
-            'IDecimal arccot(-100000000000)' => [$l, '-0', NumberBase::Ten, 10],
+            'IDecimal arccot(-100000000000)' => [$l, '0', NumberBase::Ten, 10],
             'IDecimal arccot(-1000000000000000000000000000000)' => [$m, IncompatibleObjectState::class, NumberBase::Ten, 10],
             'IDecimal arccot(-0.0000000001)' => [$n, '-1.5707963267', NumberBase::Ten, 10],
         ];
@@ -459,7 +459,7 @@ class InverseTrigNativeTest extends TestCase
             'MDecimal arccot(-2)' => [$i, '-0.463647609', NumberBase::Ten, 10],
             'MDecimal arccot(-3)' => [$j, '-0.3217505544', NumberBase::Ten, 10],
             'MDecimal arccot(-10)' => [$k, '-0.0996686525', NumberBase::Ten, 10],
-            'MDecimal arccot(-100000000000)' => [$l, '-0', NumberBase::Ten, 10],
+            'MDecimal arccot(-100000000000)' => [$l, '0', NumberBase::Ten, 10],
             'MDecimal arccot(-1000000000000000000000000000000)' => [$m, IncompatibleObjectState::class, NumberBase::Ten, 10],
             'MDecimal arccot(-0.0000000001)' => [$n, '-1.5707963267', NumberBase::Ten, 10],
         ];

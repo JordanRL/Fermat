@@ -5,9 +5,9 @@ namespace Samsara\Fermat\Stats\Values\Distribution;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Stats\Types\Distribution;
 use Samsara\Fermat\Core\Provider\RandomProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
@@ -24,7 +24,7 @@ class Exponential extends Distribution
     /**
      * Exponential constructor.
      *
-     * @param int|float|DecimalInterface $lambda This is the *rate parameter* not the *scale parameter*
+     * @param int|float|Decimal $lambda This is the *rate parameter* not the *scale parameter*
      *
      * @throws IntegrityConstraint
      */
@@ -44,12 +44,12 @@ class Exponential extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $x
+     * @param float|int|Decimal $x
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function cdf($x, int $scale = 10): ImmutableDecimal
+    public function cdf(float|int|Decimal $x, int $scale = 10): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -180,8 +180,8 @@ class Exponential extends Distribution
     }
 
     /**
-     * @param int|float|DecimalInterface $min
-     * @param int|float|DecimalInterface $max
+     * @param int|float|Decimal $min
+     * @param int|float|Decimal $max
      * @param int $maxIterations
      *
      * @return ImmutableDecimal

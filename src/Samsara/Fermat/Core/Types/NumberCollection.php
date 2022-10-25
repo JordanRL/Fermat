@@ -10,7 +10,6 @@ use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Provider\RandomProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
 use Ds\Vector;
 use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
@@ -112,11 +111,11 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
     }
 
     /**
-     * @param NumberInterface $number
+     * @param ImmutableDecimal $number
      *
      * @return NumberCollectionInterface
      */
-    public function push(NumberInterface $number): NumberCollectionInterface
+    public function push(ImmutableDecimal $number): NumberCollectionInterface
     {
         $this->getCollection()->push($number);
 
@@ -124,19 +123,19 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
     }
 
     /**
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function pop(): NumberInterface
+    public function pop(): ImmutableDecimal
     {
         return $this->getCollection()->pop();
     }
 
     /**
-     * @param NumberInterface $number
+     * @param ImmutableDecimal $number
      *
      * @return NumberCollectionInterface
      */
-    public function unshift(NumberInterface $number): NumberCollectionInterface
+    public function unshift(ImmutableDecimal $number): NumberCollectionInterface
     {
         $this->getCollection()->unshift($number);
 
@@ -144,9 +143,9 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
     }
 
     /**
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function shift(): NumberInterface
+    public function shift(): ImmutableDecimal
     {
         return $this->getCollection()->shift();
     }
@@ -298,17 +297,17 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
     /**
      * @param int $key
      *
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function get(int $key): NumberInterface
+    public function get(int $key): ImmutableDecimal
     {
         return $this->getCollection()->get($key);
     }
 
     /**
-     * @return NumberInterface
+     * @return ImmutableDecimal
      */
-    public function getRandom(): NumberInterface
+    public function getRandom(): ImmutableDecimal
     {
         $maxKey = $this->getCollection()->count() - 1;
 

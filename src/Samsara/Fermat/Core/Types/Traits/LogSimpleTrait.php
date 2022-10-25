@@ -4,7 +4,7 @@ namespace Samsara\Fermat\Core\Types\Traits;
 
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Traits\Decimal\LogNativeTrait;
 use Samsara\Fermat\Core\Types\Traits\Decimal\LogScaleTrait;
 use Samsara\Fermat\Core\Types\Traits\Decimal\LogSelectionTrait;
@@ -21,11 +21,11 @@ trait LogSimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function exp(?int $scale = null, bool $round = true): DecimalInterface
+    public function exp(?int $scale = null, bool $round = true): Decimal
     {
         $finalScale = $scale ?? $this->getScale();
 
@@ -43,11 +43,11 @@ trait LogSimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function ln(?int $scale = null, bool $round = true): DecimalInterface
+    public function ln(?int $scale = null, bool $round = true): Decimal
     {
         $finalScale = $scale ?? $this->getScale();
 
@@ -65,10 +65,10 @@ trait LogSimpleTrait
     /**
      * @param int|null $scale
      * @param bool $round
-     * @return DecimalInterface
+     * @return Decimal
      * @throws IntegrityConstraint
      */
-    public function log10(?int $scale = null, bool $round = true): DecimalInterface
+    public function log10(?int $scale = null, bool $round = true): Decimal
     {
         $finalScale = $scale ?? $this->getScale();
 

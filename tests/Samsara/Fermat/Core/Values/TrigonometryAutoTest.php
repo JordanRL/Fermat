@@ -129,9 +129,13 @@ class TrigonometryAutoTest extends TestCase
 
         return [
             'IDecimal cos(1)' => [$a, '0.5403023059', NumberBase::Ten, 10],
+            'IDecimal cos(1) 15 scale' => [$a, '0.54030230586814', NumberBase::Ten, 15],
             'IDecimal cos(2)' => [$b, '-0.4161468365', NumberBase::Ten, 10],
+            'IDecimal cos(2) 15 scale' => [$b, '-0.416146836547142', NumberBase::Ten, 15],
             'IDecimal cos(3)' => [$c, '-0.9899924966', NumberBase::Ten, 10],
+            'IDecimal cos(3) 15 scale' => [$c, '-0.989992496600445', NumberBase::Ten, 15],
             'IDecimal cos(10)' => [$d, '-0.8390715291', NumberBase::Ten, 10],
+            'IDecimal cos(10) 15 scale' => [$d, '-0.839071529076452', NumberBase::Ten, 15],
             'IDecimal cos(100000000000)' => [$e, '0.3708477922', NumberBase::Ten, 10],
             'IDecimal cos(1000000000000000000000000000000)' => [$f, '-0.9959311944', NumberBase::Ten, 10],
             'IDecimal cos(0.0000000001)' => [$g, '1', NumberBase::Ten, 10],
@@ -196,7 +200,8 @@ class TrigonometryAutoTest extends TestCase
             $this->expectException($expected);
             $num->cos();
         } else {
-            $answer = $num->cos();
+            $intScale = ($scale != 10) ? $scale : null;
+            $answer = $num->cos($intScale);
             $this->assertEquals($expected, $answer->getValue());
             $this->assertEquals($base, $answer->getBase());
             $this->assertEquals($scale, $answer->getScale());

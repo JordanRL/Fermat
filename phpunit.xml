@@ -13,9 +13,9 @@
         beStrictAboutOutputDuringTests="false"
         timeoutForSmallTests="2"
         timeoutForMediumTests="15"
-        timeoutForLargeTests="60"
+        timeoutForLargeTests="90"
         failOnRisky="true"
-        enforceTimeLimit="true"
+        enforceTimeLimit="false"
         defaultTimeLimit="2"
         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd">
   <coverage>

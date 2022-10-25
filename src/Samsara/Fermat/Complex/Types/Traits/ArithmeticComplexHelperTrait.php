@@ -3,13 +3,16 @@
 namespace Samsara\Fermat\Complex\Types\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Coordinates\Values\PolarCoordinate;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\ArithmeticProvider;
+use Samsara\Fermat\Core\Types\Traits\InputNormalizationTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\MutableDecimal;
@@ -21,6 +24,8 @@ use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
  */
 trait ArithmeticComplexHelperTrait
 {
+
+    use InputNormalizationTrait;
 
     /**
      * @param MutableDecimal|ImmutableDecimal|MutableFraction|ImmutableFraction $newRealPart
@@ -104,6 +109,9 @@ trait ArithmeticComplexHelperTrait
         $newRealPart = $partA->isReal() ? $partA : $partB;
         $newImaginaryPart = $partA->isImaginary() ? $partA : $partB;
 
+        $newRealPart = $newRealPart->roundToScale($scale);
+        $newImaginaryPart = $newImaginaryPart->roundToScale($scale);
+
         if ($newRealPart->isEqual(0) xor $newImaginaryPart->isEqual(0)) {
             return match ($newRealPart->isEqual(0)) {
                 true => $newImaginaryPart,
@@ -117,34 +125,43 @@ trait ArithmeticComplexHelperTrait
     }
 
     /**
-     * @param ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction $thatNum
      * @param ImmutableDecimal|ImmutableFraction $thatRealPart
      * @param ImmutableDecimal|ImmutableFraction $thatImaginaryPart
+     * @param int $scale
      * @return ImmutableDecimal[]
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
     protected function helperPowPolar(
-        ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction $thatNum,
         ImmutableDecimal|ImmutableFraction $thatRealPart,
-        ImmutableDecimal|ImmutableFraction $thatImaginaryPart
+        ImmutableDecimal|ImmutableFraction $thatImaginaryPart,
+        int $scale
     ): array
     {
-        $internalScale = ($this->getScale() > $thatNum->getScale()) ? $this->getScale() : $thatNum->getScale();
-        $internalScale += 5;
+        $internalScale = $scale;
 
-        $thisRho = $this->getDistanceFromOrigin()->truncateToScale($internalScale);
-        $thisTheta = $this->getPolarAngle()->truncateToScale($internalScale);
+        $thisNum = new ImmutableComplexNumber($this->getRealPart(), $this->getImaginaryPart(), $internalScale);
+        $thatRealPart = $thatRealPart->truncateToScale($internalScale);
+        $thatImaginaryPart = $thatImaginaryPart->truncateToScale($internalScale);
+
+        $thisRho = $thisNum->getDistanceFromOrigin();
+        $thisTheta = $thisNum->getPolarAngle();
 
         $e = Numbers::makeE($internalScale);
 
-        $coef = $thisRho->pow($thatRealPart)->multiply($e->pow($thisTheta->multiply($thatImaginaryPart->asReal())->multiply(-1)));
+        $coefRhoPart = $thisRho->pow($thatRealPart);
+        $coefThetaPart = $e->pow($thisTheta->multiply($thatImaginaryPart->asReal())->multiply(-1));
 
-        /** @var ImmutableDecimal $trigArg */
-        $trigArg = $thisRho->ln()->multiply($thatImaginaryPart->asReal())->add($thatRealPart->multiply($thisTheta));
+        $coef = $coefRhoPart->multiply($coefThetaPart);
+
+        $trigArgLnPart = $thisRho->ln($internalScale)->multiply($thatImaginaryPart->asReal());
+        $trigArgThetaPart = $thatRealPart->multiply($thisTheta);
+
+        $trigArg = $trigArgLnPart->add($trigArgThetaPart);
 
         $newRealPart = $trigArg->cos($internalScale)->multiply($coef);
-        $newImaginaryPart = $trigArg->sin($internalScale)->multiply($coef)->multiply('i');
+        $newImaginaryPart = $trigArg->sin($internalScale)->multiply($coef)->multiply('1i');
 
         return [$newRealPart, $newImaginaryPart];
     }
@@ -195,26 +212,56 @@ trait ArithmeticComplexHelperTrait
         int $scale
     ): array
     {
+        $intScale = $scale + 2;
+
         $rho = $thisNum->getDistanceFromOrigin();
         $theta = $thisNum->getPolarAngle();
 
         if (!$rho->isEqual(0)) {
-            $rho = ArithmeticProvider::squareRoot($rho->getAsBaseTenRealNumber(), $scale);
+            $rho = ArithmeticProvider::squareRoot($rho->getAsBaseTenRealNumber(), $intScale);
         }
 
-        $theta = $theta->divide($roots);
+        $theta = $theta->divide($roots, $intScale);
 
         if ($period > 0) {
-            $period = Numbers::makeTau($scale)->setMode($thisNum->getMode())->multiply($period)->divide($roots);
+            $period = Numbers::makeTau($intScale)->setMode($thisNum->getMode())->multiply($period)->divide($roots, $intScale);
             $theta = $theta->add($period);
         }
 
         $newPolar = new PolarCoordinate($rho, $theta);
-        $newCartesian = $newPolar->asCartesian();
+        $newCartesian = $newPolar->asCartesian($intScale);
 
         $newRealPart = $newCartesian->getAxis('x');
-        $newImaginaryPart = $newCartesian->getAxis('y');
+        $newImaginaryPart = $newCartesian->getAxis('y')->multiply('1i');
         return [$newRealPart, $newImaginaryPart];
+    }
+
+    /**
+     * @param ImmutableComplexNumber $thisNum
+     * @param int $scale
+     * @return ImmutableDecimal[]
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    protected function helperSquareRoot(
+        ImmutableComplexNumber $thisNum,
+        int $scale
+    ): array
+    {
+        $intScale = $scale + 2;
+
+        $rho = $thisNum->getDistanceFromOrigin();
+
+        $partA = $rho->add($thisNum->getRealPart())->divide(2)->sqrt($intScale);
+        $partB = $rho->subtract($thisNum->getRealPart())->divide(2)->sqrt($intScale);
+
+        if ($thisNum->getImaginaryPart()->isNegative()) {
+            $partB = $partB->multiply('-1i');
+        } else {
+            $partB = $partB->multiply('1i');
+        }
+
+        return $partA->isReal() ? [$partA, $partB] : [$partB, $partA];
     }
 
 }

@@ -1,26 +1,52 @@
 version: 2.1
+parameters:
+  GHA_Actor:
+    type: string
+    default: ""
+  GHA_Action:
+    type: string
+    default: ""
+  GHA_Event:
+    type: string
+    default: ""
+  GHA_Meta:
+    type: string
+    default: ""
 
 commands:
   composer-update:
     description: "Updating Dependencies With Composer"
     steps:
       - run:
-          name: "Running Composer"
+          name: Running Composer
           command: composer update
+  phpunit-prep:
+    description: "Prepping For Unit Tests"
+    steps:
+      - run:
+          name: Setting Up Output Directory
+          command: |
+            mkdir build
+            mkdir build/logs
   phpunit-run:
     description: "Running Unit Tests With PHPUnit"
     steps:
       - run:
-          name: "Running Unit Tests"
+          name: Running Unit Tests
           command: |
-            mkdir build
-            mkdir build/logs
             vendor/bin/phpunit
+  phpunit-run-without-large:
+    description: "Running Unit Tests With PHPUnit (Without Large Tests)"
+    steps:
+      - run:
+          name: Running Unit Tests (W/O Large)
+          command: |
+            vendor/bin/phpunit --exclude-group large
   xdebug-enable:
     description: "Enabling XDebug Extension"
     steps:
       - run:
-          name: "Enabling XDebug Extension"
+          name: Enabling XDebug Extension
           command: |
               sudo -E install-php-extensions xdebug
               sudo docker-php-ext-enable xdebug
@@ -28,13 +54,13 @@ commands:
     description: "Enabling GMP Extension"
     steps:
       - run:
-          name: "Enabling GMP Extension"
+          name: Enabling GMP Extension
           command: sudo -E install-php-extensions gmp
   decimal-install:
     description: "Installing Decimal Extension"
     steps:
       - run:
-          name: "Installing Decimal Extension"
+          name: Installing Decimal Extension
           command: |
               sudo apt update
               sudo apt install libmpdec-dev
@@ -44,6 +70,7 @@ jobs:
   cc-coverage-reporter:
     docker:
       - image: cimg/php:8.1
+    resource_class: small
     environment:
       - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
     steps:
@@ -58,11 +85,12 @@ jobs:
           root: tmp
           paths:
             - cc-test-reporter
-  coverage-bcmath:
+  tests-bcmath:
     environment:
       - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
+    resource_class: medium
     steps:
       - checkout
       - attach_workspace:
@@ -70,19 +98,25 @@ jobs:
       - gmp-enable
       - xdebug-enable
       - composer-update
-      - phpunit-run
+      - phpunit-prep
+      - phpunit-run-without-large
+      - store_test_results:
+          path: ./build/logs
       - run:
           name: Format Partial Code Coverage
-          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.bcmath.json build/logs/coverage.clover
+          command: |
+            ./tmp/cc-test-reporter format-coverage -t clover -o "tmp/codeclimate.bcmath$CIRCLE_NODE_INDEX.json" build/logs/coverage.clover
+            ls -al tmp/
       - persist_to_workspace:
           root: tmp
           paths:
-            - codeclimate.bcmath.json
-  coverage-decimal:
+            - codeclimate*
+  tests-decimal:
     environment:
       - XDEBUG_MODE: coverage
     docker:
       - image: cimg/php:8.1
+    resource_class: medium
     steps:
       - checkout
       - attach_workspace:
@@ -91,19 +125,23 @@ jobs:
       - xdebug-enable
       - decimal-install
       - composer-update
+      - phpunit-prep
       - phpunit-run
+      - store_test_results:
+          path: ./build/logs
       - run:
           name: Format Partial Code Coverage
-          command: ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.decimal.json build/logs/coverage.clover
+          command: ./tmp/cc-test-reporter format-coverage -t clover -o "tmp/codeclimate.decimal$CIRCLE_NODE_INDEX.json" build/logs/coverage.clover
       - persist_to_workspace:
-         root: tmp
-         paths:
-           - codeclimate.decimal.json
+          root: tmp
+          paths:
+            - codeclimate*
   upload-coverage:
     environment:
       - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
     docker:
       - image: cimg/php:8.1
+    resource_class: small
     steps:
       - attach_workspace:
           at: ./tmp
@@ -118,6 +156,7 @@ jobs:
   generate-docs:
     docker:
       - image: cimg/php:8.1
+    resource_class: medium
     steps:
       - checkout
       - gmp-enable
@@ -131,6 +170,7 @@ jobs:
       - DEBIAN_FRONTEND: noninteractive
     docker:
       - image: cimg/php:8.1
+    resource_class: medium
     steps:
       - checkout
       - gmp-enable
@@ -158,24 +198,26 @@ jobs:
 
 workflows:
   metrics-workflow:
+    when: << pipeline.parameters.GHA_Action >>
     jobs:
       - generate-phpmetrics:
           filters:
             branches:
               only: master
   unit-test-workflow:
+    when: << pipeline.parameters.GHA_Action >>
     jobs:
       - cc-coverage-reporter
-      - coverage-bcmath:
+      - tests-bcmath:
           requires:
             - cc-coverage-reporter
-      - coverage-decimal:
+      - tests-decimal:
           requires:
             - cc-coverage-reporter
       - upload-coverage:
           requires:
-            - coverage-bcmath
-            - coverage-decimal
+            - tests-bcmath
+            - tests-decimal
   release-workflow:
     jobs:
       - generate-docs:

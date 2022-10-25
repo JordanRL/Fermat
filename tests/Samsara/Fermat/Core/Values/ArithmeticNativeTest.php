@@ -5,12 +5,12 @@ namespace Samsara\Fermat\Core\Values;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Enums\CalcMode;
+use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Types\Fraction;
 
 /**
  * @group Arithmetic
@@ -98,12 +98,12 @@ class ArithmeticNativeTest extends TestCase
 
     public function additionImmutableFractionProvider(): array
     {
-        $a = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Native), (new ImmutableDecimal(4))->setMode(CalcMode::Native));
-        $b = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Native), (new ImmutableDecimal(5))->setMode(CalcMode::Native));
-        $c = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Native), (new ImmutableDecimal(4))->setMode(CalcMode::Native));
-        $d = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Native), (new ImmutableDecimal(5))->setMode(CalcMode::Native));
-        $e = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Native), (new ImmutableDecimal(8))->setMode(CalcMode::Native));
-        $f = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Native), (new ImmutableDecimal('10000000000000000000000000'))->setMode(CalcMode::Native));
+        $a = (new ImmutableFraction((new ImmutableDecimal(1)), new ImmutableDecimal(4)))->setMode(CalcMode::Native);
+        $b = (new ImmutableFraction((new ImmutableDecimal(1)), new ImmutableDecimal(5)))->setMode(CalcMode::Native);
+        $c = (new ImmutableFraction((new ImmutableDecimal(3)), new ImmutableDecimal(4)))->setMode(CalcMode::Native);
+        $d = (new ImmutableFraction((new ImmutableDecimal(4)), new ImmutableDecimal(5)))->setMode(CalcMode::Native);
+        $e = (new ImmutableFraction((new ImmutableDecimal(4)), new ImmutableDecimal(8)))->setMode(CalcMode::Native);
+        $f = (new ImmutableFraction((new ImmutableDecimal(3)), new ImmutableDecimal('10000000000000000000000000')))->setMode(CalcMode::Native);
 
         return [
             'IFraction 1/4+1/5' => [$a, $b, '9/20', NumberBase::Ten, 10],
@@ -122,7 +122,7 @@ class ArithmeticNativeTest extends TestCase
      * @dataProvider additionMutableDecimalProvider
      * @dataProvider additionImmutableFractionProvider
      */
-    public function testAddition(Number $a, Number $b, string $expected, NumberBase $base, int $scale)
+    public function testAddition(Decimal|Fraction $a, Decimal|Fraction $b, string $expected, NumberBase $base, int $scale)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -130,7 +130,7 @@ class ArithmeticNativeTest extends TestCase
         } else {
             $answer = $a->add($b);
             $this->assertEquals($expected, $answer->getValue());
-            if ($answer instanceof SimpleNumberInterface) {
+            if ($answer instanceof Decimal) {
                 $this->assertEquals($base, $answer->getBase());
                 $this->assertEquals($scale, $answer->getScale());
             }
@@ -217,12 +217,12 @@ class ArithmeticNativeTest extends TestCase
 
     public function subtractionImmutableFractionProvider(): array
     {
-        $a = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Native), (new ImmutableDecimal(4))->setMode(CalcMode::Native));
-        $b = new ImmutableFraction((new ImmutableDecimal(1))->setMode(CalcMode::Native), (new ImmutableDecimal(5))->setMode(CalcMode::Native));
-        $c = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Native), (new ImmutableDecimal(4))->setMode(CalcMode::Native));
-        $d = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Native), (new ImmutableDecimal(5))->setMode(CalcMode::Native));
-        $e = new ImmutableFraction((new ImmutableDecimal(4))->setMode(CalcMode::Native), (new ImmutableDecimal(8))->setMode(CalcMode::Native));
-        $f = new ImmutableFraction((new ImmutableDecimal(3))->setMode(CalcMode::Native), (new ImmutableDecimal('10000000000000000000000000'))->setMode(CalcMode::Native));
+        $a = (new ImmutableFraction((new ImmutableDecimal(1)), new ImmutableDecimal(4)))->setMode(CalcMode::Native);
+        $b = (new ImmutableFraction((new ImmutableDecimal(1)), new ImmutableDecimal(5)))->setMode(CalcMode::Native);
+        $c = (new ImmutableFraction((new ImmutableDecimal(3)), new ImmutableDecimal(4)))->setMode(CalcMode::Native);
+        $d = (new ImmutableFraction((new ImmutableDecimal(4)), new ImmutableDecimal(5)))->setMode(CalcMode::Native);
+        $e = (new ImmutableFraction((new ImmutableDecimal(4)), new ImmutableDecimal(8)))->setMode(CalcMode::Native);
+        $f = (new ImmutableFraction((new ImmutableDecimal(3)), new ImmutableDecimal('10000000000000000000000000')))->setMode(CalcMode::Native);
 
         return [
             'IFraction 1/4-1/5' =>[$a, $b, '1/20', NumberBase::Ten, 10],
@@ -249,7 +249,7 @@ class ArithmeticNativeTest extends TestCase
         } else {
             $answer = $a->subtract($b);
             $this->assertEquals($expected, $answer->getValue());
-            if ($answer instanceof SimpleNumberInterface) {
+            if ($answer instanceof Decimal) {
                 $this->assertEquals($base, $answer->getBase());
                 $this->assertEquals($scale, $answer->getScale());
             }

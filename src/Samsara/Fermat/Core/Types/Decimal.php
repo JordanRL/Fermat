@@ -3,19 +3,11 @@
 namespace Samsara\Fermat\Core\Types;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Core\Enums\Currency;
 use Samsara\Fermat\Core\Enums\NumberBase;
-use Samsara\Fermat\Core\Enums\NumberFormat;
-use Samsara\Fermat\Core\Enums\NumberGrouping;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Provider\BaseConversionProvider;
-use Samsara\Fermat\Core\Provider\NumberFormatProvider;
 use Samsara\Fermat\Core\Provider\RoundingProvider;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\FractionInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\ScaleInterface;
 use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Types\Traits\ArithmeticSimpleTrait;
 use Samsara\Fermat\Core\Types\Traits\ComparisonTrait;
@@ -32,7 +24,7 @@ use Samsara\Fermat\Core\Values\MutableDecimal;
 /**
  * @package Samsara\Fermat\Core
  */
-abstract class Decimal extends Number implements DecimalInterface, ScaleInterface
+abstract class Decimal extends Number
 {
 
     protected NumberBase $base;
@@ -53,12 +45,12 @@ abstract class Decimal extends Number implements DecimalInterface, ScaleInterfac
      * @param bool $baseTenInput
      * @throws IntegrityConstraint
      */
-    public function __construct($value, int $scale = null, NumberBase $base = NumberBase::Ten, bool $baseTenInput = true)
+    final public function __construct($value, int $scale = null, NumberBase $base = NumberBase::Ten, bool $baseTenInput = true)
     {
 
         $this->base = $base;
 
-        $value = $value instanceof NumberInterface ? $value->getValue(NumberBase::Ten) : (string)$value;
+        $value = $value instanceof Number ? $value->getValue(NumberBase::Ten) : (string)$value;
 
         if (str_contains($value, 'i')) {
             $this->imaginary = true;
@@ -85,9 +77,9 @@ abstract class Decimal extends Number implements DecimalInterface, ScaleInterfac
 
     /**
      * @param $mod
-     * @return DecimalInterface
+     * @return static
      */
-    public function modulo($mod): DecimalInterface
+    public function modulo($mod): static
     {
         return $this->setValue(bcmod($this->getAsBaseTenRealNumber(), $mod), $this->getScale(), $this->getBase());
     }
@@ -225,7 +217,7 @@ abstract class Decimal extends Number implements DecimalInterface, ScaleInterfac
     /**
      * Returns the sort compare integer (-1, 0, 1) for the two numbers.
      *
-     * @param NumberInterface|int|float|string $value
+     * @param Number|int|float|string $value
      * @return int
      * @throws IntegrityConstraint
      */
@@ -252,7 +244,7 @@ abstract class Decimal extends Number implements DecimalInterface, ScaleInterfac
         }
 
         // TODO: Handle comparison of imaginary numbers
-        if ($value instanceof FractionInterface) {
+        if ($value instanceof Fraction) {
             $value = $value->asDecimal($this->getScale());
         }
         $thisValue = $this->getAsBaseTenRealNumber();
@@ -267,9 +259,9 @@ abstract class Decimal extends Number implements DecimalInterface, ScaleInterfac
      * Converts the object to a different base.
      *
      * @param NumberBase $base
-     * @return DecimalInterface|NumberInterface
+     * @return static
      */
-    public function setBase(NumberBase $base): DecimalInterface|NumberInterface
+    public function setBase(NumberBase $base): static
     {
         $this->base = $base;
 
@@ -289,10 +281,10 @@ abstract class Decimal extends Number implements DecimalInterface, ScaleInterfac
     }
 
     /**
-     * @param DecimalInterface $num
+     * @param Decimal $num
      * @return float|int
      */
-    protected static function translateToNative(DecimalInterface $num): float|int
+    protected static function translateToNative(Decimal $num): float|int
     {
         return ($num->isInt() ? $num->asInt() : $num->asFloat());
     }
@@ -343,7 +335,7 @@ abstract class Decimal extends Number implements DecimalInterface, ScaleInterfac
      * @param int|null $scale
      * @param NumberBase|null $base
      * @param bool $setToNewBase
-     * @return ImmutableDecimal|MutableDecimal|Decimal
+     * @return ImmutableDecimal|MutableDecimal|static
      */
     abstract protected function setValue(
         string $value,
@@ -353,10 +345,10 @@ abstract class Decimal extends Number implements DecimalInterface, ScaleInterfac
     ): ImmutableDecimal|MutableDecimal|static;
 
     /**
-     * @param NumberInterface|string|int|float $mod
-     * @return DecimalInterface
+     * @param Decimal|string|int|float $mod
+     * @return static
      */
-    abstract public function continuousModulo(NumberInterface|string|int|float $mod): DecimalInterface;
+    abstract public function continuousModulo(Decimal|string|int|float $mod): static;
 
     /**
      * @param string $decimalPart

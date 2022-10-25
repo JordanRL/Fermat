@@ -9,6 +9,7 @@ use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\RoundingMode;
 use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Core\Types\Traits\InputNormalizationTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 
@@ -19,6 +20,7 @@ trait InverseTrigonometryScaleTrait
 {
 
     use InverseTrigonometryHelpersTrait;
+    use InputNormalizationTrait;
 
     /**
      * @param int|null $scale
@@ -90,7 +92,7 @@ trait InverseTrigonometryScaleTrait
     {
         $intScale = ($scale ?? $this->getScale()) + 2;
 
-        $thisNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $this->absValue());
+        $thisNum = self::normalizeObject(new ImmutableDecimal($this->absValue()), $this->getMode(), $intScale);
 
         if ($thisNum->isGreaterThan(1)) {
             $one = Numbers::makeOne($intScale);

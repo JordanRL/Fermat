@@ -6,9 +6,12 @@ namespace Samsara\Fermat\Core\Values;
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\SimpleNumberInterface;
 use Samsara\Fermat\Core\Types\Base\Number;
+use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Types\Fraction;
 
 /**
  * @group Arithmetic
@@ -352,7 +355,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider multiplicationMutableDecimalProvider
      * @dataProvider multiplicationImmutableFractionProvider
      */
-    public function testMultiplication(Number $a, Number $b, string $expected, NumberBase $base, int $scale)
+    public function testMultiplication(Decimal|Fraction|ComplexNumber $a, Decimal|Fraction|ComplexNumber $b, string $expected, NumberBase $base, int $scale)
     {
         $answer = $a->multiply($b);
         $this->assertEquals($expected, $answer->getValue());

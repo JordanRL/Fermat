@@ -1,0 +1,56 @@
+name: CI Triggers
+
+on:
+  push:
+    paths:
+      - '.circleci/**'
+      - 'src/**'
+      - 'tests/**'
+    branches:
+      - master
+  pull_request:
+    types: [opened, reopened, synchronize]
+    paths:
+      - '.circleci/**'
+      - 'src/**'
+      - 'tests/**'
+    branches:
+      - master
+
+jobs:
+  phpstan:
+    runs-on: ubuntu-latest
+    name: PHPStan Report
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v6
+        with:
+          php_extensions: gmp bcmath
+      - uses: php-actions/phpstan@v3
+        with:
+          path: src/
+          level: 1
+          memory_limit: 512M
+  phpmetrics:
+    runs-on: ubuntu-latest
+    name: PHPMetrics Report
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: PhpMetrics Scan
+        uses: umutphp/phpmetrics-action@v1
+        with:
+          folder: './src'
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v1
+        with:
+          name: HTML Report
+          path: phpmetrics.html
+  trigger-circle-ci:
+    runs-on: ubuntu-latest
+    name: Trigger Circle CI Workflow
+    steps:
+      - name: Trigger CircleCI Pipeline
+        uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.5
+        env:
+          CCI_TOKEN: ${{ secrets.CCI_TOKEN }}

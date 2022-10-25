@@ -2,12 +2,8 @@
 
 namespace Samsara\Fermat\Core\Provider;
 
-use JetBrains\PhpStorm\ExpectedValues;
-use JetBrains\PhpStorm\Pure;
-use Samsara\Fermat\Core\Enums\RandomMode;
 use Samsara\Fermat\Core\Enums\RoundingMode;
 use Samsara\Fermat\Core\Provider\RoundingModeAdapters\ModeAdapterFactory;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 
 /**
  * @package Samsara\Fermat\Core
@@ -100,7 +96,7 @@ class RoundingProvider
             );
         } while ($carry == 1);
 
-        [$newWholePart, $newDecimalPart] = self::roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places);
+        [$newWholePart, $newDecimalPart, $sign] = self::roundPostFormat($currentPart, $wholePart, $roundedPart, $otherPart, $places, $sign);
 
         return $sign.$newWholePart.'.'.$newDecimalPart.$imaginary;
     }
@@ -117,6 +113,7 @@ class RoundingProvider
         $isNegative = str_starts_with($decimal, '-');
 
         $rawString = str_replace('-', '', $decimal);
+        $rawString = str_replace('i', '', $rawString);
 
         if (str_contains($rawString, '.')) {
             [$wholePart, $decimalPart] = explode('.', $rawString);
@@ -162,6 +159,7 @@ class RoundingProvider
      * @param array $roundedPart
      * @param array $otherPart
      * @param int $places
+     * @param string $sign
      * @return array
      */
     private static function roundPostFormat(
@@ -169,7 +167,8 @@ class RoundingProvider
         string $wholePart,
         array $roundedPart,
         array $otherPart,
-        int $places
+        int $places,
+        string $sign
     ): array
     {
         if ($currentPart) {
@@ -193,7 +192,11 @@ class RoundingProvider
             $newDecimalPart = '0';
         }
 
-        return [$newWholePart, $newDecimalPart];
+        if (empty(trim($newWholePart)) && empty(trim($newDecimalPart))) {
+            $sign = '';
+        }
+
+        return [$newWholePart, $newDecimalPart, $sign];
     }
 
     /**

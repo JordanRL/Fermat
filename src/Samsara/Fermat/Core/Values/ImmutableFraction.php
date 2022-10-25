@@ -12,9 +12,12 @@ class ImmutableFraction extends Fraction
 {
 
     /**
+     * @param ImmutableDecimal $numerator
+     * @param ImmutableDecimal $denominator
+     * @return static
      * @throws IntegrityConstraint
      */
-    protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator): ImmutableFraction
+    protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator): static
     {
 
         return new ImmutableFraction($numerator, $denominator, $this->base);

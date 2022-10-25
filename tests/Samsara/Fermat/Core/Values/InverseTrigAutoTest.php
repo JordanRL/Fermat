@@ -152,8 +152,11 @@ class InverseTrigAutoTest extends TestCase
 
         return [
             'IDecimal arctan(1)' => [$a, '0.7853981634', NumberBase::Ten, 10],
+            'IDecimal arctan(1) scale 15' => [$a, '0.785398163397448', NumberBase::Ten, 15],
             'IDecimal arctan(2)' => [$b, '1.1071487178', NumberBase::Ten, 10],
+            'IDecimal arctan(2) scale 15' => [$b, '1.10714871779409', NumberBase::Ten, 15],
             'IDecimal arctan(3)' => [$c, '1.2490457724', NumberBase::Ten, 10],
+            'IDecimal arctan(3) scale 15' => [$c, '1.249045772398254', NumberBase::Ten, 15],
             'IDecimal arctan(10)' => [$d, '1.4711276743', NumberBase::Ten, 10],
             'IDecimal arctan(100000000000)' => [$e, '1.5707963268', NumberBase::Ten, 10],
             'IDecimal arctan(1000000000000000000000000000000)' => [$f, '1.5707963268', NumberBase::Ten, 10],
@@ -217,7 +220,8 @@ class InverseTrigAutoTest extends TestCase
             $this->expectException($expected);
             $num->arctan();
         } else {
-            $answer = $num->arctan();
+            $inputScale = ($scale != 10) ? $scale : null;
+            $answer = $num->arctan($inputScale);
             $this->assertEquals($expected, $answer->getValue());
             $this->assertEquals($base, $answer->getBase());
             $this->assertEquals($scale, $answer->getScale());
@@ -337,7 +341,7 @@ class InverseTrigAutoTest extends TestCase
             'IDecimal arccsc(-2)' => [$h, '-0.5235987756', NumberBase::Ten, 10],
             'IDecimal arccsc(-3)' => [$i, '-0.3398369095', NumberBase::Ten, 10],
             'IDecimal arccsc(-10)' => [$j, '-0.1001674212', NumberBase::Ten, 10],
-            'IDecimal arccsc(-100000000000)' => [$k, '-0', NumberBase::Ten, 10],
+            'IDecimal arccsc(-100000000000)' => [$k, '0', NumberBase::Ten, 10],
             'IDecimal arccsc(-1000000000000000000000000000000)' => [$l, '0', NumberBase::Ten, 10],
         ];
     }
@@ -368,7 +372,7 @@ class InverseTrigAutoTest extends TestCase
             'MDecimal arccsc(-2)' => [$h, '-0.5235987756', NumberBase::Ten, 10],
             'MDecimal arccsc(-3)' => [$i, '-0.3398369095', NumberBase::Ten, 10],
             'MDecimal arccsc(-10)' => [$j, '-0.1001674212', NumberBase::Ten, 10],
-            'MDecimal arccsc(-100000000000)' => [$k, '-0', NumberBase::Ten, 10],
+            'MDecimal arccsc(-100000000000)' => [$k, '0', NumberBase::Ten, 10],
             'MDecimal arccsc(-1000000000000000000000000000000)' => [$l, '0', NumberBase::Ten, 10],
         ];
     }
@@ -423,7 +427,7 @@ class InverseTrigAutoTest extends TestCase
             'IDecimal arccot(-2)' => [$i, '-0.463647609', NumberBase::Ten, 10],
             'IDecimal arccot(-3)' => [$j, '-0.3217505544', NumberBase::Ten, 10],
             'IDecimal arccot(-10)' => [$k, '-0.0996686525', NumberBase::Ten, 10],
-            'IDecimal arccot(-100000000000)' => [$l, '-0', NumberBase::Ten, 10],
+            'IDecimal arccot(-100000000000)' => [$l, '0', NumberBase::Ten, 10],
             'IDecimal arccot(-1000000000000000000000000000000)' => [$m, '0', NumberBase::Ten, 10],
             'IDecimal arccot(-0.0000000001)' => [$n, '-1.5707963267', NumberBase::Ten, 10],
         ];
@@ -458,7 +462,7 @@ class InverseTrigAutoTest extends TestCase
             'MDecimal arccot(-2)' => [$i, '-0.463647609', NumberBase::Ten, 10],
             'MDecimal arccot(-3)' => [$j, '-0.3217505544', NumberBase::Ten, 10],
             'MDecimal arccot(-10)' => [$k, '-0.0996686525', NumberBase::Ten, 10],
-            'MDecimal arccot(-100000000000)' => [$l, '-0', NumberBase::Ten, 10],
+            'MDecimal arccot(-100000000000)' => [$l, '0', NumberBase::Ten, 10],
             'MDecimal arccot(-1000000000000000000000000000000)' => [$m, '0', NumberBase::Ten, 10],
             'MDecimal arccot(-0.0000000001)' => [$n, '-1.5707963267', NumberBase::Ten, 10],
         ];
