@@ -37,7 +37,9 @@ abstract class Fraction extends Number
     final public function __construct($numerator, $denominator, NumberBase $base = NumberBase::Ten)
     {
 
+        /** @var ImmutableDecimal $numerator */
         $numerator = Numbers::makeOrDont(Numbers::IMMUTABLE, $numerator, null, $base);
+        /** @var ImmutableDecimal $denominator */
         $denominator = Numbers::makeOrDont(Numbers::IMMUTABLE, $denominator, null, $base);
 
         if ($denominator->isEqual(0)) {
@@ -149,7 +151,7 @@ abstract class Fraction extends Number
     }
 
     /**
-     * @return Fraction|ImmutableFraction|MutableFraction
+     * @return static|ImmutableFraction|MutableFraction
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
@@ -262,7 +264,7 @@ abstract class Fraction extends Number
      * @param Decimal|null $lcm
      * @return ImmutableDecimal[]
      */
-    protected function getNumeratorsWithSameDenominator(Fraction $fraction, Decimal $lcm = null): array
+    public function getNumeratorsWithSameDenominator(Fraction $fraction, Decimal $lcm = null): array
     {
 
         $thisNumerator = $this->getNumerator();

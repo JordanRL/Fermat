@@ -2,6 +2,8 @@
 
 namespace Samsara\Fermat\Stats\Values\Distribution;
 
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
@@ -16,20 +18,18 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 class Exponential extends Distribution
 {
 
-    /**
-     * @var ImmutableDecimal
-     */
-    private $lambda;
+    private ImmutableDecimal $lambda;
 
     /**
      * Exponential constructor.
      *
-     * @param int|float|Decimal $lambda This is the *rate parameter* not the *scale parameter*
+     * @param int|float|string|Decimal $lambda This is the *rate parameter* not the *scale parameter*
      *
      * @throws IntegrityConstraint
      */
-    public function __construct($lambda)
+    public function __construct(int|float|string|Decimal $lambda)
     {
+        /** @var ImmutableDecimal $lambda */
         $lambda = Numbers::makeOrDont(Numbers::IMMUTABLE, $lambda);
 
         if (!$lambda->isPositive()) {
@@ -45,9 +45,11 @@ class Exponential extends Distribution
 
     /**
      * @param float|int|Decimal $x
-     *
+     * @param int $scale
      * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
+     * @throws MissingPackage
      */
     public function cdf(float|int|Decimal $x, int $scale = 10): ImmutableDecimal
     {
@@ -82,9 +84,10 @@ class Exponential extends Distribution
 
     /**
      * @param $x
-     *
+     * @param int $scale
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
     public function pdf($x, int $scale = 10): ImmutableDecimal
     {
@@ -121,9 +124,10 @@ class Exponential extends Distribution
     /**
      * @param $x1
      * @param $x2
-     *
+     * @param int $scale
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
+     * @throws MissingPackage
      */
     public function rangePdf($x1, $x2, int $scale = 10): ImmutableDecimal
     {

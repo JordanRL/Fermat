@@ -154,10 +154,10 @@ class Numbers
      * @param string $value
      * @param NumberBase $base
      *
-     * @return Fraction
+     * @return ImmutableFraction|MutableFraction|Fraction
      * @throws IntegrityConstraint
      */
-    public static function makeFractionFromString(string $type, string $value, NumberBase $base = NumberBase::Ten): Fraction
+    public static function makeFractionFromString(string $type, string $value, NumberBase $base = NumberBase::Ten): ImmutableFraction|MutableFraction|Fraction
     {
         $parts = explode('/', $value);
 
@@ -218,15 +218,15 @@ class Numbers
             }
 
             if ($scale > 100) {
-                $pi = self::make(self::IMMUTABLE, ConstantProvider::makePi($scale+2), $scale + 2);
+                $pi = new ImmutableDecimal(ConstantProvider::makePi($scale+2), $scale + 2);
                 /** @var ImmutableDecimal */
                 return $pi->multiply(2)->truncateToScale($scale);
             }
 
-            return self::make(self::IMMUTABLE, self::TAU, $scale+1)->truncateToScale($scale);
+            return (new ImmutableDecimal(self::TAU, $scale+1))->truncateToScale($scale);
         }
 
-        return self::make(self::IMMUTABLE, self::TAU, 100);
+        return new ImmutableDecimal(self::TAU, 100);
     }
 
     /**
@@ -294,7 +294,7 @@ class Numbers
      */
     public static function makeOne(?int $scale = null): ImmutableDecimal
     {
-        return self::make(self::IMMUTABLE, 1, $scale);
+        return new ImmutableDecimal(1, $scale);
     }
 
     /**
@@ -305,7 +305,7 @@ class Numbers
      */
     public static function makeZero(?int $scale = null): ImmutableDecimal
     {
-        return self::make(self::IMMUTABLE, 0, $scale);
+        return new ImmutableDecimal(0, $scale);
     }
 
     private static function makeConstant(string $constant, ?int $scale): ImmutableDecimal
@@ -321,8 +321,7 @@ class Numbers
             }
 
             if ($scale > 100) {
-                return self::make(
-                    self::IMMUTABLE,
+                return new ImmutableDecimal(
                     match ($constant) {
                         self::LN_2 => ConstantProvider::makeLn2($scale),
                         self::LN_10 => ConstantProvider::makeLn10($scale),
@@ -334,15 +333,13 @@ class Numbers
                 );
             }
 
-            return self::make(
-                self::IMMUTABLE,
+            return (new ImmutableDecimal(
                 $constant,
                 $scale+1
-            )->truncateToScale($scale);
+            ))->truncateToScale($scale);
         }
 
-        return self::make(
-            self::IMMUTABLE,
+        return new ImmutableDecimal(
             $constant,
             100
         );

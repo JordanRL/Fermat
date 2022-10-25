@@ -45,9 +45,9 @@ trait FormatterTrait
 
     /**
      * @param NumberFormat $format
-     * @return Decimal
+     * @return static
      */
-    public function setFormat(NumberFormat $format): Decimal
+    public function setFormat(NumberFormat $format): static
     {
         $this->format = $format;
 
@@ -64,9 +64,9 @@ trait FormatterTrait
 
     /**
      * @param NumberGrouping $grouping
-     * @return Decimal
+     * @return static
      */
-    public function setGrouping(NumberGrouping $grouping): Decimal
+    public function setGrouping(NumberGrouping $grouping): static
     {
         $this->grouping = $grouping;
 

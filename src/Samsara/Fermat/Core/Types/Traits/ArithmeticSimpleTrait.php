@@ -93,14 +93,14 @@ trait ArithmeticSimpleTrait
     /**
      * @param string|int|float|Decimal|Fraction|ComplexNumber $num
      * @param int|null $scale
-     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
+     * @return static|ImmutableFraction|ImmutableComplexNumber|ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
     public function divide(
         string|int|float|Decimal|Fraction|ComplexNumber $num,
         ?int $scale = null
-    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
+    ): ImmutableDecimal|ImmutableComplexNumber|ImmutableFraction|static
     {
 
         $scale = $scale ?? $this->getScale();
@@ -172,7 +172,7 @@ trait ArithmeticSimpleTrait
 
             $originalScale = $this->getScale();
 
-            $value = $thisNum->powSelector($thatNum);
+            $value = $this->powSelector($thatNum);
 
             if ($this->isImaginary()) {
                 $value .= 'i';

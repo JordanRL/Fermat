@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Core\Values;
 
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
@@ -16,8 +17,11 @@ class MutableDecimal extends Decimal
 {
 
     /**
+     * @param Decimal|string|int|float $mod
+     * @return static
      * @throws IntegrityConstraint
      * @throws MissingPackage
+     * @throws IncompatibleObjectState
      */
     public function continuousModulo(Decimal|string|int|float $mod): static
     {
@@ -37,7 +41,7 @@ class MutableDecimal extends Decimal
 
         $remainder = $oldNum->subtract($mod->multiply($multiple));
 
-        return Numbers::make(Numbers::MUTABLE, $remainder->truncate($this->scale-1)->getValue(NumberBase::Ten), $this->scale-1, $this->getBase());
+        return new static($remainder->truncate($this->scale-1)->getValue(NumberBase::Ten), $this->scale-1, $this->getBase());
 
     }
 

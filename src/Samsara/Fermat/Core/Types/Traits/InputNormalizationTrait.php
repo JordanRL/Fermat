@@ -111,9 +111,9 @@ trait InputNormalizationTrait
         if (str_contains($input, '/')) {
             $input = Numbers::makeFractionFromString(Numbers::IMMUTABLE_FRACTION, $input)->setMode($mode);
         } elseif (strrpos($input, '+') || strrpos($input, '-')) {
-            $input = ComplexNumbers::make(ComplexNumbers::IMMUTABLE_COMPLEX, $input)->setMode($mode);
+            $input = ImmutableComplexNumber::makeFromString(ComplexNumbers::IMMUTABLE_COMPLEX, $input)->setMode($mode);
         } else {
-            $input = Numbers::make(Numbers::IMMUTABLE, $input)->setMode($mode);
+            $input = (new ImmutableDecimal($input))->setMode($mode);
         }
 
         return $input;

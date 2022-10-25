@@ -48,7 +48,7 @@ class StatsProvider
         $eExponent = Numbers::make(Numbers::IMMUTABLE, $x->getValue());
         $eExponent = $eExponent->pow(2)->divide(2)->multiply(-1);
 
-        $answer = Numbers::make(Numbers::IMMUTABLE, 0.5);
+        $answer = new ImmutableDecimal(0.5);
         $answer = $answer->add(
             $one->divide($pi->multiply(2)->sqrt())
                 ->multiply($e->pow($eExponent))
@@ -169,7 +169,9 @@ class StatsProvider
     public static function binomialCoefficient($n, $k): ImmutableDecimal
     {
 
+        /** @var ImmutableDecimal $n */
         $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+        /** @var ImmutableDecimal $k */
         $k = Numbers::makeOrDont(Numbers::IMMUTABLE, $k);
 
         if ($k->isLessThan(0) || $n->isLessThan($k)) {
@@ -188,7 +190,10 @@ class StatsProvider
             );
         }
 
-        return $n->factorial()->divide($k->factorial()->multiply($n->subtract($k)->factorial()));
+        /** @var ImmutableDecimal $return */
+        $return = $n->factorial()->divide($k->factorial()->multiply($n->subtract($k)->factorial()));
+
+        return $return;
 
     }
 

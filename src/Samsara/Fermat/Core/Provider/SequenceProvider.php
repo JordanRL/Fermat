@@ -75,6 +75,7 @@ class SequenceProvider
      * OEIS: A005408
      *
      * @param int $n
+     * @param int|null $scale
      * @param bool $asCollection
      * @param int $collectionSize
      *
@@ -128,7 +129,7 @@ class SequenceProvider
             return $sequence;
         }
         if ($n > (PHP_INT_MAX/2)) {
-            $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, $scale);
+            $n = new ImmutableDecimal($n, $scale);
 
             return $n->multiply(2);
         } else {
@@ -195,7 +196,7 @@ class SequenceProvider
             );
         }
 
-        return Numbers::make(Numbers::IMMUTABLE, static::EULER_ZIGZAG[$n], 100);
+        return new ImmutableDecimal(static::EULER_ZIGZAG[$n], 100);
 
     }
 
@@ -218,7 +219,7 @@ class SequenceProvider
 
         $internalScale = (int)ceil($scale*(log10($scale)+1));
 
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n, $internalScale)->setMode(CalcMode::Precision);
+        $n = (new ImmutableDecimal($n, $internalScale))->setMode(CalcMode::Precision);
 
         if (!$n->isWhole()) {
             throw new IntegrityConstraint(
@@ -241,7 +242,7 @@ class SequenceProvider
         }
 
         if ($n->isEqual(1)) {
-            return Numbers::make(Numbers::IMMUTABLE, '-0.5', $scale);
+            return new ImmutableDecimal('-0.5', $scale);
         }
 
         if ($n->modulo(2)->isEqual(1)) {
@@ -250,7 +251,7 @@ class SequenceProvider
 
         $tau = Numbers::makeTau($internalScale)->setMode(CalcMode::Precision);
 
-        $d = Numbers::make(Numbers::IMMUTABLE, 4, $internalScale)->setMode(CalcMode::Precision)->add(
+        $d = (new ImmutableDecimal(4, $internalScale))->setMode(CalcMode::Precision)->add(
             $n->factorial()->ln($internalScale)->subtract(
                 $n->multiply($tau->log10($internalScale))
             )->truncate()
@@ -313,9 +314,9 @@ class SequenceProvider
     {
         $collection = new NumberCollection();
 
-        $collection->push(Numbers::make(Numbers::IMMUTABLE, 2));
+        $collection->push(new ImmutableDecimal(2));
 
-        $currentPrime = Numbers::make(Numbers::IMMUTABLE, 3);
+        $currentPrime = new ImmutableDecimal(3);
 
         for ($i = 1;$i < $n;$i++) {
             while (!$currentPrime->isPrime()) {
@@ -345,7 +346,7 @@ class SequenceProvider
      */
     public static function nthFibonacciNumber(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
     {
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+        $n = new ImmutableDecimal($n);
 
         if ($n->isLessThan(0)) {
             throw new IntegrityConstraint(
@@ -355,7 +356,7 @@ class SequenceProvider
             );
         }
 
-        $fastFib = static::_fib($n);
+        $fastFib = self::_fib($n);
 
         if ($asCollection) {
             $sequence = new NumberCollection();
@@ -394,7 +395,7 @@ class SequenceProvider
             );
         }
 
-        return static::_fib($n);
+        return self::_fib($n);
     }
 
     /**
@@ -407,9 +408,9 @@ class SequenceProvider
     {
 
         if ($n == 0) {
-            return Numbers::make(Numbers::IMMUTABLE, 2);
+            return new ImmutableDecimal(2);
         } elseif ($n == 1) {
-            return Numbers::make(Numbers::IMMUTABLE, 1);
+            return new ImmutableDecimal(1);
         } elseif ($n < 0) {
             throw new IntegrityConstraint(
                 'Negative term numbers not valid for Lucas Numbers',
@@ -418,8 +419,8 @@ class SequenceProvider
             );
         }
 
-        [$F1, $fib] = static::_fib(Numbers::make(Numbers::IMMUTABLE, $n-1));
-        [$fib, $F2] = static::_fib($fib);
+        [$F1, $fib] = self::_fib(new ImmutableDecimal($n-1));
+        [, $F2] = self::_fib($fib);
 
         return $F1->add($F2);
 
@@ -460,13 +461,8 @@ class SequenceProvider
             return [Numbers::makeZero(), Numbers::makeOne()];
         }
 
-        /**
-         * @var ImmutableDecimal $a
-         * @var ImmutableDecimal $b
-         * @var ImmutableDecimal $prevCall
-         */
         $prevCall = $number->divide(2)->floor();
-        [$a, $b] = static::_fib($prevCall);
+        [$a, $b] = self::_fib($prevCall);
         $c = $a->multiply($b->multiply(2)->subtract($a));
         $d = $a->multiply($a)->add($b->multiply($b));
 
@@ -479,7 +475,7 @@ class SequenceProvider
 
     private static function _nextprime(ImmutableDecimal $number): ImmutableDecimal
     {
-        return Numbers::make(Numbers::IMMUTABLE, gmp_strval(gmp_nextprime($number->getValue(NumberBase::Ten))));
+        return new ImmutableDecimal(gmp_strval(gmp_nextprime($number->getValue(NumberBase::Ten))));
     }
 
 }

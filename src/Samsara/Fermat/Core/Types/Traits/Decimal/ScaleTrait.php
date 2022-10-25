@@ -42,13 +42,13 @@ trait ScaleTrait
     /**
      * @param int $decimals
      * @param RoundingMode|null $mode
-     * @return ImmutableDecimal|MutableDecimal|static
+     * @return static
      * @throws IntegrityConstraint
      */
     public function round(
         int $decimals = 0,
         ?RoundingMode $mode = null
-    ): ImmutableDecimal|MutableDecimal|static
+    ): static
     {
         if ($this->getValue(NumberBase::Ten) == Number::INFINITY || $this->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
             return $this;
@@ -68,12 +68,12 @@ trait ScaleTrait
 
     /**
      * @param int $decimals
-     * @return ImmutableDecimal|MutableDecimal|static
+     * @return static
      * @throws IntegrityConstraint
      */
     public function truncate(
         int $decimals = 0
-    ): ImmutableDecimal|MutableDecimal|static
+    ): static
     {
         if ($this->getValue(NumberBase::Ten) == Number::INFINITY || $this->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
             return $this;
@@ -112,42 +112,42 @@ trait ScaleTrait
     /**
      * @param int $scale
      * @param RoundingMode|null $mode
-     * @return ImmutableDecimal|MutableDecimal|static
+     * @return static
      */
     public function roundToScale(
         int $scale,
         ?RoundingMode $mode = null
-    ): ImmutableDecimal|MutableDecimal|static
+    ): static
     {
         return $this->round($scale, $mode)->setScale($scale);
     }
 
     /**
      * @param int $scale
-     * @return ImmutableDecimal|MutableDecimal|static
+     * @return static
      * @throws IntegrityConstraint
      */
     public function truncateToScale(
         int $scale
-    ): ImmutableDecimal|MutableDecimal|static
+    ): static
     {
         return $this->truncate($scale)->setScale($scale);
     }
 
     /**
-     * @return ImmutableDecimal|MutableDecimal|static
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function ceil(): ImmutableDecimal|MutableDecimal|static
+    public function ceil(): static
     {
         return $this->round(0, RoundingMode::Ceil);
     }
 
     /**
-     * @return ImmutableDecimal|MutableDecimal|static
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function floor(): ImmutableDecimal|MutableDecimal|static
+    public function floor(): static
     {
         return $this->round(0, RoundingMode::Floor);
     }

@@ -24,12 +24,13 @@ class ImmutableDecimal extends Decimal
     public function continuousModulo(Decimal|string|int|float $mod): static
     {
 
+        /** @var ImmutableDecimal $mod */
         $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod);
 
         $scale = ($this->getScale() < $mod->getScale()) ? $mod->getScale() : $this->getScale();
 
         $newScale = $scale+2;
-        $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $newScale);
+        $thisNum = new ImmutableDecimal($this->getValue(NumberBase::Ten), $newScale);
 
         $mod = $mod->truncateToScale($newScale);
 
@@ -45,6 +46,7 @@ class ImmutableDecimal extends Decimal
 
         $subtract = $mod->multiply($multiple);
 
+        /** @var static $remainder */
         $remainder = $thisNum->subtract($subtract);
 
         return $remainder->truncateToScale($this->getScale()-1);

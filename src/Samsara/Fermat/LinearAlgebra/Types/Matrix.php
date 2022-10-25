@@ -84,7 +84,6 @@ abstract class Matrix implements MatrixInterface
                 $determinant = $determinant->add($value->multiply($childMatrix->getDeterminant())->multiply(SequenceProvider::nthPowerNegativeOne($key)));
             }
         } else {
-            /** @var ImmutableDecimal $value */
             $determinant = $this->rows[0]->get(0)->multiply($this->rows[1]->get(1))->subtract($this->rows[1]->get(0)->multiply($this->rows[0]->get(1)));
         }
 

@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Stats\Values\Distribution;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Enums\RandomMode;
@@ -18,20 +19,18 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 class Poisson extends Distribution
 {
 
-    /**
-     * @var ImmutableDecimal
-     */
-    private $lambda;
+    private ImmutableDecimal $lambda;
 
     /**
      * Poisson constructor.
      *
-     * @param int|float|Decimal $lambda
+     * @param int|float|string|Decimal $lambda
      *
      * @throws IntegrityConstraint
      */
-    public function __construct($lambda)
+    public function __construct(int|float|string|Decimal $lambda)
     {
+        /** @var ImmutableDecimal $lambda */
         $lambda = Numbers::makeOrDont(Numbers::IMMUTABLE, $lambda);
 
         if (!$lambda->isPositive()) {
@@ -47,10 +46,10 @@ class Poisson extends Distribution
 
     /**
      * @param int|float|Decimal $k
-     *
+     * @param int $scale
      * @return ImmutableDecimal
-     * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
      */
     public function probabilityOfKEvents($k, int $scale = 10): ImmutableDecimal
     {
@@ -61,10 +60,11 @@ class Poisson extends Distribution
 
     /**
      * @param int|float|Decimal $x
-     *
+     * @param int $scale
      * @return ImmutableDecimal
-     * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     * @throws MissingPackage
      */
     public function cdf(int|float|Decimal $x, int $scale = 10): ImmutableDecimal
     {
@@ -99,10 +99,10 @@ class Poisson extends Distribution
 
     /**
      * @param float|int|Decimal $x
-     *
+     * @param int $scale
      * @return ImmutableDecimal
-     * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
      */
     public function pmf(float|int|Decimal $x, int $scale = 10): ImmutableDecimal
     {

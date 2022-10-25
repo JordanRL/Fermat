@@ -22,9 +22,9 @@ trait ArithmeticNativeTrait
 
     /**
      * @param Decimal $num
-     * @return int|float
+     * @return string
      */
-    protected function addNative(Decimal $num): int|float
+    protected function addNative(Decimal $num): string
     {
         $left = self::translateToNative($this);
         $right = self::translateToNative($num);
@@ -35,9 +35,9 @@ trait ArithmeticNativeTrait
 
     /**
      * @param Decimal $num
-     * @return int|float
+     * @return string
      */
-    protected function subtractNative(Decimal $num): int|float
+    protected function subtractNative(Decimal $num): string
     {
         $left = self::translateToNative($this);
         $right = self::translateToNative($num);
@@ -48,9 +48,9 @@ trait ArithmeticNativeTrait
 
     /**
      * @param Decimal $num
-     * @return int|float
+     * @return string
      */
-    protected function multiplyNative(Decimal $num): int|float
+    protected function multiplyNative(Decimal $num): string
     {
         $left = self::translateToNative($this);
         $right = self::translateToNative($num);
@@ -61,9 +61,9 @@ trait ArithmeticNativeTrait
 
     /**
      * @param Decimal $num
-     * @return int|float
+     * @return string
      */
-    protected function divideNative(Decimal $num): int|float
+    protected function divideNative(Decimal $num): string
     {
         $left = self::translateToNative($this);
         $right = self::translateToNative($num);
@@ -74,9 +74,9 @@ trait ArithmeticNativeTrait
 
     /**
      * @param Decimal $num
-     * @return int|float
+     * @return string
      */
-    protected function powNative(Decimal $num): int|float
+    protected function powNative(Decimal $num): string
     {
         $left = self::translateToNative($this);
         $right = self::translateToNative($num);
@@ -86,11 +86,13 @@ trait ArithmeticNativeTrait
     }
 
     /**
-     * @return int|float
+     * @return string
      */
-    protected function sqrtNative(): int|float
+    protected function sqrtNative(): string
     {
-        $value = sqrt($this->abs()->asFloat());
+        $left = self::translateToNative($this);
+
+        $value = sqrt(abs($left));
         return (string)$value;
     }
 

@@ -160,7 +160,9 @@ trait ArithmeticComplexHelperTrait
 
         $trigArg = $trigArgLnPart->add($trigArgThetaPart);
 
+        /** @var ImmutableDecimal $newRealPart */
         $newRealPart = $trigArg->cos($internalScale)->multiply($coef);
+        /** @var ImmutableDecimal $newImaginaryPart */
         $newImaginaryPart = $trigArg->sin($internalScale)->multiply($coef)->multiply('1i');
 
         return [$newRealPart, $newImaginaryPart];

@@ -52,8 +52,8 @@ trait ArithmeticHelperSimpleTrait
             return $this->helperAddSubFraction($thisNum, $thatNum, $operation);
         } else {
             $value = match ($operation) {
-                CalcOperation::Addition => $thisNum->addSelector($thatNum),
-                CalcOperation::Subtraction => $thisNum->subtractSelector($thatNum),
+                CalcOperation::Addition => $this->addSelector($thatNum),
+                CalcOperation::Subtraction => $this->subtractSelector($thatNum),
                 /** @codeCoverageIgnore  */
                 default => throw new IncompatibleObjectState(
                     'Cannot use the AddSub helper with other operations',
@@ -135,6 +135,13 @@ trait ArithmeticHelperSimpleTrait
         CalcOperation                      $operation
     ): ImmutableFraction|MutableFraction
     {
+        if ($this instanceof Decimal) {
+            throw new IncompatibleObjectState(
+                'Cannot call protected method helperAddSubFraction() from descendent of Decimal',
+                'Use a descendent of Fraction instead'
+            );
+        }
+
         if ($thatNum instanceof Fraction && $thisNum->getDenominator()->isEqual($thatNum->getDenominator())) {
             $finalDenominator = $thisNum->getDenominator();
             $finalNumerator = match ($operation) {
@@ -147,9 +154,9 @@ trait ArithmeticHelperSimpleTrait
                 )
             };
         } elseif ($thatNum instanceof Fraction) {
-            $finalDenominator = $thisNum->getSmallestCommonDenominator($thatNum);
+            $finalDenominator = $this->getSmallestCommonDenominator($thatNum);
 
-            [$thisNumerator, $thatNumerator] = $thisNum->getNumeratorsWithSameDenominator($thatNum, $finalDenominator);
+            [$thisNumerator, $thatNumerator] = $this->getNumeratorsWithSameDenominator($thatNum, $finalDenominator);
 
             $finalNumerator = match ($operation) {
                 CalcOperation::Addition => $thisNumerator->add($thatNumerator),
@@ -227,7 +234,7 @@ trait ArithmeticHelperSimpleTrait
     }
 
     /**
-     * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum
+     * @param ImmutableFraction $thisNum
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum
      * @param CalcOperation $operation
      * @param int $scale
@@ -236,12 +243,19 @@ trait ArithmeticHelperSimpleTrait
      * @throws IntegrityConstraint
      */
     public function helperMulDivFraction(
-        ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum,
+        ImmutableFraction $thisNum,
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum,
         CalcOperation $operation,
         int $scale
     ): static|ImmutableComplexNumber
     {
+        if ($this instanceof Decimal) {
+            throw new IncompatibleObjectState(
+                'Cannot call protected method helperMulDivFraction() from descendent of Decimal',
+                'Use a descendent of Fraction instead'
+            );
+        }
+
         if ($thatNum instanceof ImmutableFraction) {
             $mulNumerator = match ($operation) {
                 CalcOperation::Multiplication => $thatNum->getNumerator(),

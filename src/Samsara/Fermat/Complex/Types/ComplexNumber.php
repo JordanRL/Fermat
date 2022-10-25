@@ -255,12 +255,12 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
      * @param array $number
      * @param $scale
      * @param NumberBase $base
-     * @return ComplexNumber
+     * @return static
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      * @throws OptionalExit
      */
-    public static function makeFromArray(array $number, $scale = null, NumberBase $base = NumberBase::Ten): ComplexNumber
+    public static function makeFromArray(array $number, $scale = null, NumberBase $base = NumberBase::Ten): static
     {
 
         if (count($number) != 2) {
@@ -273,8 +273,8 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
         [$part1, $part2] = $number;
 
-        $part1 = Numbers::make(Numbers::IMMUTABLE, $part1);
-        $part2 = Numbers::make(Numbers::IMMUTABLE, $part2);
+        $part1 = new ImmutableDecimal($part1);
+        $part2 = new ImmutableDecimal($part2);
 
         if (($part1->isReal() && $part2->isReal()) || ($part1->isImaginary() && $part2->isImaginary())) {
             throw new IntegrityConstraint(
@@ -295,12 +295,12 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
      * @param string $expression
      * @param $scale
      * @param NumberBase $base
-     * @return ComplexNumber
+     * @return static
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      * @throws OptionalExit
      */
-    public static function makeFromString(string $expression, $scale = null, NumberBase $base = NumberBase::Ten): ComplexNumber
+    public static function makeFromString(string $expression, $scale = null, NumberBase $base = NumberBase::Ten): static
     {
         if (str_contains($expression, '+')) {
             [$part1, $part2] = explode('+', $expression);

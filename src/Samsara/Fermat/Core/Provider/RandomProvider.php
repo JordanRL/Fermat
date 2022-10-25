@@ -41,7 +41,9 @@ class RandomProvider
         ?int $seed = null
     ): ImmutableDecimal
     {
+        /** @var ImmutableDecimal $minDecimal */
         $minDecimal = Numbers::makeOrDont(Numbers::IMMUTABLE, $min);
+        /** @var ImmutableDecimal $maxDecimal */
         $maxDecimal = Numbers::makeOrDont(Numbers::IMMUTABLE, $max);
 
         /**

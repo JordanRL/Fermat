@@ -50,7 +50,7 @@ abstract class Decimal extends Number
 
         $this->base = $base;
 
-        $value = $value instanceof Number ? $value->getValue(NumberBase::Ten) : (string)$value;
+        $value = $value instanceof Decimal ? $value->getValue(NumberBase::Ten) : (string)$value;
 
         if (str_contains($value, 'i')) {
             $this->imaginary = true;

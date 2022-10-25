@@ -21,7 +21,7 @@ class RoundingProvider
         RoundingMode $mode
     ): void
     {
-        static::$mode = $mode;
+        self::$mode = $mode;
     }
 
     /**

@@ -20,7 +20,7 @@ class ImmutableFraction extends Fraction
     protected function setValue(ImmutableDecimal $numerator, ImmutableDecimal $denominator): static
     {
 
-        return new ImmutableFraction($numerator, $denominator, $this->base);
+        return new static($numerator, $denominator, $this->base);
 
     }
 
