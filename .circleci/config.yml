@@ -53,7 +53,7 @@ orbs:
         description: "Running Unit Tests With PHPUnit"
         parameters:
           with-parallel:
-            type: bool
+            type: boolean
             default: false
         steps:
           - when:
@@ -76,7 +76,7 @@ orbs:
         description: "Running Unit Tests With PHPUnit (Without Large Tests)"
         parameters:
           with-parallel:
-            type: bool
+            type: boolean
             default: false
         steps:
           - when:
