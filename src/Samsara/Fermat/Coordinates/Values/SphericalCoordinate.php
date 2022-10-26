@@ -12,10 +12,8 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
  */
 class SphericalCoordinate extends Coordinate implements ThreeDCoordinateInterface
 {
-    /** @var CartesianCoordinate */
-    protected $cachedCartesian;
-    /** @var CylindricalCoordinate */
-    protected $cachedCylindrical;
+    protected ?CartesianCoordinate $cachedCartesian = null;
+    protected ?CylindricalCoordinate $cachedCylindrical = null;
 
     public function __construct($rho, $theta, $phi)
     {
@@ -51,16 +49,16 @@ class SphericalCoordinate extends Coordinate implements ThreeDCoordinateInterfac
     public function asCartesian(): CartesianCoordinate
     {
         if (is_null($this->cachedCartesian)) {
-            $sinTheta = $this->getAxis('theta')->sin();
-            $cosTheta = $this->getAxis('theta')->cos();
-            $sinPhi = $this->getAxis('phi')->sin();
-            $cosPhi = $this->getAxis('phi')->cos();
+            $sinTheta = $this->getAxis('theta')->sin(12);
+            $cosTheta = $this->getAxis('theta')->cos(12);
+            $sinPhi = $this->getAxis('phi')->sin(12);
+            $cosPhi = $this->getAxis('phi')->cos(12);
 
             $x = $this->getAxis('rho')->multiply($sinPhi)->multiply($cosTheta);
             $y = $this->getAxis('rho')->multiply($sinPhi)->multiply($sinTheta);
             $z = $this->getAxis('rho')->multiply($cosPhi);
 
-            $this->cachedCartesian = new CartesianCoordinate($x, $y, $z);
+            $this->cachedCartesian = new CartesianCoordinate($x->roundToScale(10), $y->roundToScale(10), $z->roundToScale(10));
         }
 
         return $this->cachedCartesian;
@@ -74,14 +72,14 @@ class SphericalCoordinate extends Coordinate implements ThreeDCoordinateInterfac
     public function asCylindrical(): CylindricalCoordinate
     {
         if (is_null($this->cachedCylindrical)) {
-            $sinPhi = $this->getAxis('phi')->sin();
-            $cosPhi = $this->getAxis('phi')->cos();
+            $sinPhi = $this->getAxis('phi')->sin(12);
+            $cosPhi = $this->getAxis('phi')->cos(12);
 
             $rho = $this->getAxis('rho')->multiply($sinPhi);
             $theta = $this->getAxis('theta');
             $z = $this->getAxis('rho')->multiply($cosPhi);
 
-            $this->cachedCylindrical = new CylindricalCoordinate($rho, $theta, $z);
+            $this->cachedCylindrical = new CylindricalCoordinate($rho->roundToScale(10), $theta->roundToScale(10), $z->roundToScale(10));
         }
 
         return $this->cachedCylindrical;

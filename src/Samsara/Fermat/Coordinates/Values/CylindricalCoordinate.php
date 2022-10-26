@@ -13,10 +13,8 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
  */
 class CylindricalCoordinate extends Coordinate implements ThreeDCoordinateInterface
 {
-    /** @var CartesianCoordinate */
-    protected $cachedCartesian;
-    /** @var SphericalCoordinate */
-    protected $cachedSpherical;
+    protected ?CartesianCoordinate $cachedCartesian = null;
+    protected ?SphericalCoordinate $cachedSpherical = null;
 
     public function __construct($r, $theta, $z)
     {
@@ -29,9 +27,14 @@ class CylindricalCoordinate extends Coordinate implements ThreeDCoordinateInterf
         parent::__construct($data);
     }
 
-    public function getDistanceFromOrigin(): ImmutableDecimal
+    public function getRho(): ImmutableDecimal
     {
         return $this->getAxis('r');
+    }
+
+    public function getDistanceFromOrigin(): ImmutableDecimal
+    {
+        return $this->getAxis('r')->pow(2)->add($this->getAxis('z')->pow(2))->sqrt();
     }
 
     public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal
@@ -67,7 +70,7 @@ class CylindricalCoordinate extends Coordinate implements ThreeDCoordinateInterf
         if (is_null($this->cachedSpherical)) {
             $rho = $this->getAxis('r')->pow(2)->add($this->getAxis('z')->pow(2))->sqrt($this->getAxis('z')->getScale());
             $theta = $this->getAxis('theta');
-            $phi = $this->getAxis('z')->divide($rho);
+            $phi = $this->getAxis('r')->divide($this->getAxis('z'))->arctan();
 
             $this->cachedSpherical = new SphericalCoordinate($rho, $theta, $phi);
         }

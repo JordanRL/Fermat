@@ -28,4 +28,4 @@ plugins:
   git:
     binary: git
   junit:
-    file: "build/logs/junit.xml"
+    file: build/logs/junit.xml

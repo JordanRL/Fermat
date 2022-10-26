@@ -256,6 +256,26 @@ class CartesianCoordinateTest extends TestCase
         $this->assertEquals('5', $cylindrical->getAxis('rho')->truncateToScale(10)->getValue());
         $this->assertEquals('0.927295218', $cylindrical->getAxis('theta')->truncateToScale(10)->getValue());
 
+        $coord = new CartesianCoordinate(
+            '3',
+            '-4'
+        );
+
+        $cylindrical = $coord->asPolar();
+
+        $this->assertEquals('5', $cylindrical->getAxis('rho')->truncateToScale(10)->getValue());
+        $this->assertEquals('5.355890089', $cylindrical->getAxis('theta')->truncateToScale(10)->getValue());
+
+        $coord = new CartesianCoordinate(
+            '0',
+            '-4'
+        );
+
+        $cylindrical = $coord->asPolar();
+
+        $this->assertEquals('4', $cylindrical->getAxis('rho')->truncateToScale(10)->getValue());
+        $this->assertEquals('4.71238898', $cylindrical->getAxis('theta')->truncateToScale(10)->getValue());
+
     }
 
     public function testAsPolarExceptionsOne()

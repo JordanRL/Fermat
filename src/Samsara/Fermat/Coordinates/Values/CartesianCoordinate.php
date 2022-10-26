@@ -56,7 +56,6 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
      * @param $axis
      *
      * @return ImmutableDecimal
-     * @throws ReflectionException
      * @throws IntegrityConstraint
      */
     public function getAxis($axis): ImmutableDecimal
@@ -75,7 +74,9 @@ class CartesianCoordinate extends Coordinate implements TwoDCoordinateInterface,
     }
 
     /**
+     * @param int|null $scale
      * @return ImmutableDecimal
+     * @throws IntegrityConstraint
      */
     public function getDistanceFromOrigin(?int $scale = null): ImmutableDecimal
     {
