@@ -156,19 +156,21 @@ orbs:
           decimal:
             type: boolean
             default: false
+          with-parallel:
+            type: boolean
+            default: false
         description: "Run all tasks prior to executing tests"
-        parallelism: 4
         steps:
           - when:
               condition: <<parameters.decimal>>
               steps:
                 - phpunit-run:
-                    with-parallel: true
+                    with-parallel: <<parameters.with-parallel>>
           - unless:
               condition: <<parameters.decimal>>
               steps:
                 - phpunit-run-without-large:
-                    with-parallel: true
+                    with-parallel: <<parameters.with-parallel>>
       wrap-up-tests:
         parameters:
           cc-file:
@@ -203,6 +205,7 @@ orbs:
                 - cc-test-reporter
       tests-bcmath:
         executor: php-base
+        parallelism: 4
         steps:
           - setup-project:
               decimal: false
@@ -214,6 +217,7 @@ orbs:
               cc-file: "bcmath"
       tests-decimal:
         executor: php-base
+        parallelism: 4
         steps:
           - setup-project:
               decimal: true
