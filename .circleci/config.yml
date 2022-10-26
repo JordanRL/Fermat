@@ -62,9 +62,8 @@ orbs:
                 - run:
                     name: Running Unit Tests With Parallelization
                     command: |
-                      export TESTFILES=$(circleci tests glob "tests/Samsara/**/*Test.php" | circleci tests split --split-by=timings)
-                      echo ${TESTFILES} 
-                      vendor/bin/phpunit --log-junit ~/phpunit/junit.xml ${TESTFILES}
+                      . ./parallel.sh
+                      vendor/bin/phpunit --log-junit ~/phpunit/junit.xml --testsuite ${PHPUNIT_SUITE}
           - unless:
               condition: <<parameters.with-parallel>>
               steps:
@@ -85,9 +84,8 @@ orbs:
                 - run:
                     name: Running Unit Tests With Parallelization
                     command: |
-                      export TESTFILES=$(circleci tests glob "tests/Samsara/**/*Test.php" | circleci tests split --split-by=timings)
-                      echo ${TESTFILES} 
-                      vendor/bin/phpunit --exclude-group large --log-junit ~/phpunit/junit.xml ${TESTFILES}
+                      . ./parallel.sh
+                      vendor/bin/phpunit --log-junit ~/phpunit/junit.xml --testsuite ${PHPUNIT_SUITE}
           - unless:
               condition: <<parameters.with-parallel>>
               steps:
@@ -205,7 +203,7 @@ orbs:
                 - cc-test-reporter
       tests-bcmath:
         executor: php-base
-        parallelism: 4
+        parallelism: 6
         steps:
           - setup-project:
               decimal: false
@@ -218,7 +216,7 @@ orbs:
               cc-file: "bcmath"
       tests-decimal:
         executor: php-base
-        parallelism: 4
+        parallelism: 6
         steps:
           - setup-project:
               decimal: true
@@ -237,7 +235,7 @@ orbs:
           - run:
               name: Upload coverage results to Code Climate
               command: |
-                ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+                ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 12 -o tmp/codeclimate.total.json
                 ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
           - run:
               name: Cleaning up Workspace
