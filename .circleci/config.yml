@@ -48,20 +48,21 @@ orbs:
               command: |
                 mkdir build
                 mkdir build/logs
+                mkdir ~/phpunit
       phpunit-run:
         description: "Running Unit Tests With PHPUnit"
         steps:
           - run:
               name: Running Unit Tests
               command: |
-                vendor/bin/phpunit
+                vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
       phpunit-run-without-large:
         description: "Running Unit Tests With PHPUnit (Without Large Tests)"
         steps:
           - run:
               name: Running Unit Tests (W/O Large)
               command: |
-                vendor/bin/phpunit --exclude-group large
+                vendor/bin/phpunit --log-junit ~/phpunit/junit.xml --exclude-group large
       xdebug-enable:
         description: "Enabling XDebug Extension"
         steps:
@@ -138,7 +139,7 @@ orbs:
         description: "Run all post test tasks"
         steps:
           - store_test_results:
-              path: ./build/logs
+              path: ~/phpunit
           - run:
               name: Format Partial Code Coverage
               command: |
