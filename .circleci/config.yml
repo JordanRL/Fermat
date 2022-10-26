@@ -213,6 +213,7 @@ orbs:
               for-tests: true
           - run-tests:
               decimal: false
+              with-parallel: true
           - wrap-up-tests:
               cc-file: "bcmath"
       tests-decimal:
@@ -225,6 +226,7 @@ orbs:
               for-tests: true
           - run-tests:
               decimal: true
+              with-parallel: true
           - wrap-up-tests:
               cc-file: "decimal"
       upload-coverage:
@@ -242,19 +244,6 @@ orbs:
               command: rm -rf ./tmp/*
 
 jobs:
-  test-bed:
-    executor: fermat-unit-testing/php-base
-    parallelism: 4
-    steps:
-      - fermat-unit-testing/setup-project:
-          decimal: false
-          xdebug: false
-          for-tests: true
-      - run:
-          name: Getting test files
-          command: |
-            TESTFILES=$(circleci tests glob "tests/Samsara/**Test.php" | circleci tests split --split-by=timings)
-            echo ${TESTFILES}
   generate-docs:
     executor: fermat-unit-testing/php-base
     steps:
@@ -267,10 +256,6 @@ jobs:
           command: vendor/bin/roster
 
 workflows:
-  testing:
-    when: never
-    jobs:
-      - test-bed
   unit-test-workflow:
     when: << pipeline.parameters.GHA_Action >>
     jobs:
