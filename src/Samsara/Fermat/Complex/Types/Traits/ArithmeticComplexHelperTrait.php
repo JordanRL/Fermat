@@ -12,7 +12,7 @@ use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Coordinates\Values\PolarCoordinate;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\ArithmeticProvider;
-use Samsara\Fermat\Core\Types\Traits\InputNormalizationTrait;
+use Samsara\Fermat\Core\Types\Traits\NumberNormalizationTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\MutableDecimal;
@@ -25,7 +25,7 @@ use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
 trait ArithmeticComplexHelperTrait
 {
 
-    use InputNormalizationTrait;
+    use NumberNormalizationTrait;
 
     /**
      * @param MutableDecimal|ImmutableDecimal|MutableFraction|ImmutableFraction $newRealPart

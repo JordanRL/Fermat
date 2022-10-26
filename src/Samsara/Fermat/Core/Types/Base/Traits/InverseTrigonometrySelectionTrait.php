@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Core\Types\Traits\Trigonometry;
+namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Fermat\Core\Enums\CalcMode;
 

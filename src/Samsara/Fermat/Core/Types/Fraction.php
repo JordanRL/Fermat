@@ -9,7 +9,7 @@ use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Number;
-use Samsara\Fermat\Core\Types\Traits\ArithmeticSimpleTrait;
+use Samsara\Fermat\Core\Types\Traits\SimpleArithmeticTrait;
 use Samsara\Fermat\Core\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
@@ -24,7 +24,7 @@ abstract class Fraction extends Number
     /** @var ImmutableDecimal[] */
     protected array $value;
 
-    use ArithmeticSimpleTrait;
+    use SimpleArithmeticTrait;
     use ComparisonTrait;
 
     /**

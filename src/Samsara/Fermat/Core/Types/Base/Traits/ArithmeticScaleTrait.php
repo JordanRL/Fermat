@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Samsara\Fermat\Core\Types\Traits\Arithmetic;
+namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
@@ -69,10 +69,6 @@ trait ArithmeticScaleTrait
          *
          * @var ImmutableDecimal|Decimal|MutableDecimal $this
          */
-
-        if (is_null($scale)) {
-            $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
-        }
 
         $scale = $scale + $this->numberOfLeadingZeros() + $num->numberOfLeadingZeros();
 

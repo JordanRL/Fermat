@@ -123,7 +123,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider additionMutableDecimalProvider
      * @dataProvider additionImmutableFractionProvider
      */
-    public function testAddition(Number $a, Number $b, string $expected, NumberBase $base, int $scale)
+    public function testAddition(Decimal|Fraction $a, Decimal|Fraction $b, string $expected, NumberBase $base, int $scale)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -131,7 +131,7 @@ class ArithmeticAutoTest extends TestCase
         } else {
             $answer = $a->add($b);
             $this->assertEquals($expected, $answer->getValue());
-            if ($answer instanceof SimpleNumberInterface) {
+            if ($answer instanceof Decimal || $answer instanceof Fraction) {
                 $this->assertEquals($base, $answer->getBase());
                 $this->assertEquals($scale, $answer->getScale());
             }
@@ -242,7 +242,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider subtractionMutableDecimalProvider
      * @dataProvider subtractionImmutableFractionProvider
      */
-    public function testSubtraction(Number $a, Number $b, string $expected, NumberBase $base, int $scale)
+    public function testSubtraction(Decimal|Fraction $a, Decimal|Fraction $b, string $expected, NumberBase $base, int $scale)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -250,7 +250,7 @@ class ArithmeticAutoTest extends TestCase
         } else {
             $answer = $a->subtract($b);
             $this->assertEquals($expected, $answer->getValue());
-            if ($answer instanceof SimpleNumberInterface) {
+            if ($answer instanceof Decimal || $answer instanceof Fraction) {
                 $this->assertEquals($base, $answer->getBase());
                 $this->assertEquals($scale, $answer->getScale());
             }
@@ -346,7 +346,8 @@ class ArithmeticAutoTest extends TestCase
             'IFraction 1/4*4/5' => [$a, $d, '1/5', NumberBase::Ten, 10],
             'IFraction 1/4*4/8' => [$a, $e, '1/8', NumberBase::Ten, 10],
             'IFraction 4/8*1/4' => [$e, $a, '1/8', NumberBase::Ten, 10],
-            'IFraction 1/4*3/10000000000000000000000000' => [$a, $f, '3/40000000000000000000000000', NumberBase::Ten, 10]
+            'IFraction 1/4*3/10000000000000000000000000' => [$a, $f, '3/40000000000000000000000000', NumberBase::Ten, 10],
+            'IFraction 1/4*0.5' => [$a, new ImmutableDecimal('0.5'), '0.125', NumberBase::Ten, 10]
         ];
     }
 
@@ -461,7 +462,8 @@ class ArithmeticAutoTest extends TestCase
             'IFraction 1/4 / 4/5' => [$a, $d, '5/16', NumberBase::Ten, 10],
             'IFraction 1/4 / 4/8' => [$a, $e, '1/2', NumberBase::Ten, 10],
             'IFraction 4/8 / 1/4' => [$e, $a, '2/1', NumberBase::Ten, 10],
-            'IFraction 1/4 / 3/10000000000000000000000000' => [$a, $f, '2500000000000000000000000/3', NumberBase::Ten, 10]
+            'IFraction 1/4 / 3/10000000000000000000000000' => [$a, $f, '2500000000000000000000000/3', NumberBase::Ten, 10],
+            'IFraction 1/4 / 0.5' => [$a, new ImmutableDecimal('0.5'), '0.5', NumberBase::Ten, 10]
         ];
     }
 
@@ -470,7 +472,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider divisionMutableDecimalProvider
      * @dataProvider divisionImmutableFractionProvider
      */
-    public function testDivision(Number $a, Number $b, string $expected, NumberBase $base, int $scale)
+    public function testDivision(Decimal|Fraction $a, Decimal|Fraction $b, string $expected, NumberBase $base, int $scale)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);

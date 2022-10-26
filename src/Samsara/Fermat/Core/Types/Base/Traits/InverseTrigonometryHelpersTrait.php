@@ -1,9 +1,8 @@
 <?php
 
-namespace Samsara\Fermat\Core\Types\Traits\Trigonometry;
+namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Numbers;
@@ -24,7 +23,6 @@ trait InverseTrigonometryHelpersTrait
      * @param int|null $scale
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function helperArctanGCF(ImmutableDecimal $num, ?int $scale): ImmutableDecimal
     {
@@ -96,7 +94,6 @@ trait InverseTrigonometryHelpersTrait
      * @param int $scale
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function helperArcsinGCF(ImmutableDecimal $num, int $scale): ImmutableDecimal
     {
@@ -267,7 +264,6 @@ trait InverseTrigonometryHelpersTrait
      * @return string
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function helperArcsecArccscScale(ImmutableDecimal $zeroTerm, CalcOperation $operation, int $scale): string
     {

@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Core\Values;
 
 use PHPUnit\Framework\TestCase;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Decimal;
@@ -25,6 +26,7 @@ class InverseTrigAutoTest extends TestCase
         $g = new ImmutableDecimal('-0.5');
         $h = new ImmutableDecimal('-0.1');
         $i = new ImmutableDecimal('-0.0000000001');
+        $j = new ImmutableDecimal('1.1');
 
         return [
             'IDecimal arcsin(1)' => [$a, '1.5707963268', NumberBase::Ten, 10],
@@ -36,6 +38,7 @@ class InverseTrigAutoTest extends TestCase
             'IDecimal arcsin(-0.5)' => [$g, '-0.5235987756', NumberBase::Ten, 10],
             'IDecimal arcsin(-0.1)' => [$h, '-0.1001674212', NumberBase::Ten, 10],
             'IDecimal arcsin(-0.0000000001)' => [$i, '-0.0000000001', NumberBase::Ten, 10],
+            'IDecimal arcsin(1.1)' => [$j, IntegrityConstraint::class, NumberBase::Ten, 10]
         ];
     }
 
@@ -246,6 +249,7 @@ class InverseTrigAutoTest extends TestCase
         $j = new ImmutableDecimal(-10);
         $k = new ImmutableDecimal(-100000000000);
         $l = new ImmutableDecimal('-1000000000000000000000000000000');
+        $m = new ImmutableDecimal('0.5');
 
         return [
             'IDecimal arcsec(1)' => [$a, '0', NumberBase::Ten, 10],
@@ -260,6 +264,7 @@ class InverseTrigAutoTest extends TestCase
             'IDecimal arcsec(-10)' => [$j, '1.670963748', NumberBase::Ten, 10],
             'IDecimal arcsec(-100000000000)' => [$k, '1.5707963268', NumberBase::Ten, 10],
             'IDecimal arcsec(-1000000000000000000000000000000)' => [$l, '1.5707963268', NumberBase::Ten, 10],
+            'IDecimal arcsec(0.5)' => [$m, IntegrityConstraint::class, NumberBase::Ten, 10]
         ];
     }
 

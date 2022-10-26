@@ -19,7 +19,6 @@ class ImmutableDecimal extends Decimal
      * @param Decimal|string|int|float $mod
      * @return static
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public function continuousModulo(Decimal|string|int|float $mod): static
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Core\Types\Traits\Decimal;
+namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Decimal\Decimal;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;

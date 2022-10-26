@@ -5,14 +5,14 @@ namespace Samsara\Fermat\Core\Types\Traits;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Types\Decimal;
-use Samsara\Fermat\Core\Types\Traits\Decimal\LogNativeTrait;
-use Samsara\Fermat\Core\Types\Traits\Decimal\LogScaleTrait;
-use Samsara\Fermat\Core\Types\Traits\Decimal\LogSelectionTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\LogNativeTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\LogScaleTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\LogSelectionTrait;
 
 /**
  * @package Samsara\Fermat\Core
  */
-trait LogSimpleTrait
+trait SimpleLogTrait
 {
     use LogNativeTrait;
     use LogScaleTrait;

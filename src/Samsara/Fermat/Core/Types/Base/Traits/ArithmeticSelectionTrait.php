@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Core\Types\Traits\Arithmetic;
+namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
@@ -9,7 +9,6 @@ use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\CalculationModeProvider;
 use Samsara\Fermat\Core\Types\Decimal;
-use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 
@@ -138,15 +137,14 @@ trait ArithmeticSelectionTrait
     /**
      * @param Decimal|ImmutableDecimal|MutableDecimal $thisNum
      * @param Decimal|ImmutableDecimal|MutableDecimal $thatNum
-     * @param int|null $scale
+     * @param int $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws IncompatibleObjectState
      */
     protected function divideSelector(
         Decimal|ImmutableDecimal|MutableDecimal $thisNum,
         Decimal|ImmutableDecimal|MutableDecimal $thatNum,
-        ?int $scale
+        int $scale
     ): string
     {
 

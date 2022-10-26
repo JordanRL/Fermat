@@ -19,7 +19,7 @@ use Samsara\Fermat\Core\Values\ImmutableFraction;
 /**
  * @package Samsara\Fermat\Core
  */
-trait InputNormalizationTrait
+trait NumberNormalizationTrait
 {
 
     /**

@@ -7,14 +7,14 @@ use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Decimal;
-use Samsara\Fermat\Core\Types\Traits\Trigonometry\InverseTrigonometryNativeTrait;
-use Samsara\Fermat\Core\Types\Traits\Trigonometry\InverseTrigonometryScaleTrait;
-use Samsara\Fermat\Core\Types\Traits\Trigonometry\InverseTrigonometrySelectionTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\InverseTrigonometryNativeTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\InverseTrigonometryScaleTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\InverseTrigonometrySelectionTrait;
 
 /**
  * @package Samsara\Fermat\Core
  */
-trait InverseTrigonometrySimpleTrait
+trait SimpleInverseTrigonometryTrait
 {
 
     use InverseTrigonometryNativeTrait;

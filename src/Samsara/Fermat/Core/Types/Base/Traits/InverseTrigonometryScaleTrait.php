@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Core\Types\Traits\Trigonometry;
+namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
@@ -9,7 +9,8 @@ use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\RoundingMode;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Traits\InputNormalizationTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\InverseTrigonometryHelpersTrait;
+use Samsara\Fermat\Core\Types\Traits\NumberNormalizationTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 
@@ -20,7 +21,7 @@ trait InverseTrigonometryScaleTrait
 {
 
     use InverseTrigonometryHelpersTrait;
-    use InputNormalizationTrait;
+    use NumberNormalizationTrait;
 
     /**
      * @param int|null $scale

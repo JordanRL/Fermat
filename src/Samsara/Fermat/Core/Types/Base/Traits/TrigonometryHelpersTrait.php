@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Core\Types\Traits\Trigonometry;
+namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;

@@ -1,10 +1,9 @@
 <?php
 
-namespace Samsara\Fermat\Core\Types\Traits\Trigonometry;
+namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;

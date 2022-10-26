@@ -4,14 +4,11 @@ namespace Samsara\Fermat\Core\Provider;
 
 use Exception;
 use Random\RandomException;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\RandomMode;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Random\Randomizer;
@@ -83,6 +80,7 @@ class RandomProvider
                 E_USER_WARNING
             );
 
+            /** @codeCoverageIgnore  */
             return $minDecimal;
         }
 
@@ -108,25 +106,33 @@ class RandomProvider
              */
             /** @noinspection PhpUnhandledExceptionInspection */
             $range = $maxDecimal->subtract($minDecimal);
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $bitsNeeded = $range->ln(2)->divide(Numbers::makeNaturalLog2(2), 2)->floor()->add(1);
-            $bytesNeeded = $bitsNeeded->divide(8, 2)->ceil();
+//            /** @noinspection PhpUnhandledExceptionInspection */
+//            $bitsNeeded = $range->ln(2)->divide(Numbers::makeNaturalLog2(2), 2)->floor()->add(1);
+//            $bytesNeeded = $bitsNeeded->divide(8, 2)->ceil();
 
             do {
                 try {
-                    /**
-                     * Returns random bytes based on sources of entropy within the system.
-                     *
-                     * For documentation on these sources please see:
-                     *
-                     * https://www.php.net/manual/en/function.random-bytes.php
-                     */
-                    $entropyBytes = $randomizer->getBytes($bytesNeeded->asInt());
-                    $baseTwoBytes = '';
-                    for($i = 0; $i < strlen($entropyBytes); $i++){
-                        $baseTwoBytes .= decbin( ord( $entropyBytes[$i] ) );
+//                    /**
+//                     * Returns random bytes based on sources of entropy within the system.
+//                     *
+//                     * For documentation on these sources please see:
+//                     *
+//                     * https://www.php.net/manual/en/function.random-bytes.php
+//                     */
+//                    $entropyBytes = $randomizer->getBytes($bytesNeeded->asInt());
+//                    $baseTwoBytes = '';
+//                    for($i = 0; $i < strlen($entropyBytes); $i++){
+//                        $baseTwoBytes .= decbin( ord( $entropyBytes[$i] ) );
+//                    }
+                    $randomValue = '';
+
+                    for ($i = 0; $i < $max->numberOfIntDigits();$i++) {
+                        $randomValue .= $randomizer->getInt(0, 9);
                     }
+
+                /** @codeCoverageIgnore  */
                 } catch (Exception $e) {
+                    /** @codeCoverageIgnore  */
                     throw new OptionalExit(
                         'System error from random_bytes().',
                         'Ensure your system is configured correctly.',
@@ -134,16 +140,16 @@ class RandomProvider
                     );
                 }
 
-                /**
-                 * Since the number of digits is equal to the bits needed, but random_bytes() only
-                 * returns in chunks of 8 bits (duh, bytes), we can substr() from the right to
-                 * select only the correct number of digits by multiplying the number of bits
-                 * needed by -1 and using that as the starting point.
-                 */
-                $randomValue = BaseConversionProvider::convertStringToBaseTen(
-                    substr($baseTwoBytes, $bitsNeeded->multiply(-1)->asInt()),
-                    NumberBase::Two
-                );
+//                /**
+//                 * Since the number of digits is equal to the bits needed, but random_bytes() only
+//                 * returns in chunks of 8 bits (duh, bytes), we can substr() from the right to
+//                 * select only the correct number of digits by multiplying the number of bits
+//                 * needed by -1 and using that as the starting point.
+//                 */
+//                $randomValue = BaseConversionProvider::convertStringToBaseTen(
+//                    substr($baseTwoBytes, $bitsNeeded->multiply(-1)->asInt()),
+//                    NumberBase::Two
+//                );
 
                 /**
                  * @var ImmutableDecimal $num
@@ -219,6 +225,7 @@ class RandomProvider
                 E_USER_WARNING
             );
 
+            /** @codeCoverageIgnore  */
             return $min;
         }
 

@@ -8,16 +8,15 @@ use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
-use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticGMPTrait;
-use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticHelperSimpleTrait;
-use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticScaleTrait;
-use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticSelectionTrait;
-use Samsara\Fermat\Core\Types\Traits\Arithmetic\ArithmeticNativeTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticGMPTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticHelperSimpleTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticScaleTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticSelectionTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticNativeTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 use Samsara\Fermat\Core\Values\MutableFraction;
-use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
@@ -25,7 +24,7 @@ use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 /**
  * @package Samsara\Fermat\Core
  */
-trait ArithmeticSimpleTrait
+trait SimpleArithmeticTrait
 {
 
     use ArithmeticSelectionTrait;

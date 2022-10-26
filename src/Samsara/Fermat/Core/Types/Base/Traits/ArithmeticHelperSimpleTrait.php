@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Core\Types\Traits\Arithmetic;
+namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
@@ -11,7 +11,7 @@ use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
-use Samsara\Fermat\Core\Types\Traits\InputNormalizationTrait;
+use Samsara\Fermat\Core\Types\Traits\NumberNormalizationTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
@@ -24,7 +24,7 @@ use Samsara\Fermat\Core\Values\MutableFraction;
 trait ArithmeticHelperSimpleTrait
 {
 
-    use InputNormalizationTrait;
+    use NumberNormalizationTrait;
 
     /**
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum
@@ -136,6 +136,11 @@ trait ArithmeticHelperSimpleTrait
     ): static
     {
         if ($this instanceof Decimal) {
+            /**
+             * This exception can only be thrown in the case of a badly done implementation by a user created inheritance
+             * structure, so it is not covered by unit testing.
+             */
+            /** @codeCoverageIgnore  */
             throw new IncompatibleObjectState(
                 'Cannot call protected method helperAddSubFraction() from descendent of Decimal',
                 'Use a descendent of Fraction instead'
@@ -191,7 +196,7 @@ trait ArithmeticHelperSimpleTrait
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum
      * @param CalcOperation $operation
      * @param int $scale
-     * @return ImmutableComplexNumber|static
+     * @return ImmutableDecimal|ImmutableComplexNumber|static
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
@@ -200,7 +205,7 @@ trait ArithmeticHelperSimpleTrait
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum,
         CalcOperation $operation,
         int $scale
-    ): static|ImmutableComplexNumber
+    ): static|ImmutableComplexNumber|ImmutableDecimal
     {
         if ($thatNum->isEqual(1)) {
             return $this;
@@ -238,18 +243,23 @@ trait ArithmeticHelperSimpleTrait
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum
      * @param CalcOperation $operation
      * @param int $scale
-     * @return ImmutableComplexNumber|static
+     * @return ImmutableDecimal|ImmutableComplexNumber|static
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function helperMulDivFraction(
+    protected function helperMulDivFraction(
         ImmutableFraction $thisNum,
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum,
         CalcOperation $operation,
         int $scale
-    ): static|ImmutableComplexNumber
+    ): static|ImmutableComplexNumber|ImmutableDecimal
     {
         if ($this instanceof Decimal) {
+            /**
+             * This exception can only be thrown in the case of a badly done implementation by a user created inheritance
+             * structure, so it is not covered by unit testing.
+             */
+            /** @codeCoverageIgnore  */
             throw new IncompatibleObjectState(
                 'Cannot call protected method helperMulDivFraction() from descendent of Decimal',
                 'Use a descendent of Fraction instead'

@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Core\Provider;
 
 use PHPUnit\Framework\TestCase;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\RandomMode;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
@@ -64,6 +65,18 @@ class RandomProviderTest extends TestCase
 
     }
 
+    public function testRandomIntSecure()
+    {
+        $num1 = new ImmutableDecimal('0');
+        $num2 = new ImmutableDecimal('100');
+
+        for ($i=0;$i<20;$i++) {
+            $rand = RandomProvider::randomInt($num1, $num2, RandomMode::Secure);
+            $this->assertTrue($num1->isLessThanOrEqualTo($rand));
+            $this->assertTrue($num2->isGreaterThanOrEqualTo($rand));
+        }
+    }
+
     public function testRandomIntNegativeNumbers()
     {
 
@@ -92,6 +105,20 @@ class RandomProviderTest extends TestCase
 
     }
 
+    public function testRandomIntReversedNumbers()
+    {
+
+        $num1 = new ImmutableDecimal('-100');
+        $num2 = new ImmutableDecimal('100');
+
+        for ($i=0;$i<20;$i++) {
+            $rand = RandomProvider::randomInt($num2, $num1);
+            $this->assertTrue($num1->isLessThanOrEqualTo($rand));
+            $this->assertTrue($num2->isGreaterThanOrEqualTo($rand));
+        }
+
+    }
+
     public function testRandomIntEqualInput()
     {
 
@@ -101,6 +128,18 @@ class RandomProviderTest extends TestCase
         $this->expectWarning();
         $this->expectWarningMessage('Attempted to get a random value for a range of no size, with minimum of 100 and maximum of 100');
         $this->assertEquals('100', RandomProvider::randomInt($num1, $num2)->getValue());
+
+    }
+
+    public function testRandomIntDecimalInput()
+    {
+
+        $num1 = new ImmutableDecimal('0.4');
+        $num2 = new ImmutableDecimal('0.4');
+
+
+        $this->expectException(IntegrityConstraint::class);
+        RandomProvider::randomInt($num1, $num2);
 
     }
 
@@ -189,6 +228,19 @@ class RandomProviderTest extends TestCase
             $this->assertTrue($num2->isGreaterThanOrEqualTo($rand));
             $this->assertLessThanOrEqual(5, strlen($rand->getValue()));
         }
+
+    }
+
+    public function testRandomRealSame()
+    {
+
+        $num1 = new ImmutableDecimal('0.4');
+        $num2 = new ImmutableDecimal('0.4');
+
+
+        $this->expectWarning();
+        $this->expectWarningMessage('Attempted to get a random value for a range of no size, with minimum of 0.4 and maximum of 0.4');
+        $this->assertEquals('0.4', RandomProvider::randomReal($num1, $num2, 3)->getValue());
 
     }
 

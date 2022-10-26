@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Samsara\Fermat\Core\Types\Traits\Arithmetic;
+namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Fermat\Core\Types\Decimal;
 
