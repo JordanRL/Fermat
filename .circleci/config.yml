@@ -62,7 +62,7 @@ orbs:
                 - run:
                     name: Running Unit Tests With Parallelization
                     command: |
-                      export TESTFILES=$(circleci tests glob "tests/Samsara/**Test.php" | circleci tests split --split-by=timings)
+                      export TESTFILES=$(circleci tests glob "tests/Samsara/**/*Test.php" | circleci tests split --split-by=timings)
                       echo ${TESTFILES} 
                       vendor/bin/phpunit --log-junit ~/phpunit/junit.xml ${TESTFILES}
           - unless:
@@ -85,7 +85,7 @@ orbs:
                 - run:
                     name: Running Unit Tests With Parallelization
                     command: |
-                      export TESTFILES=$(circleci tests glob "tests/Samsara/**Test.php" | circleci tests split --split-by=timings)
+                      export TESTFILES=$(circleci tests glob "tests/Samsara/**/*Test.php" | circleci tests split --split-by=timings)
                       echo ${TESTFILES} 
                       vendor/bin/phpunit --exclude-group large --log-junit ~/phpunit/junit.xml ${TESTFILES}
           - unless:
