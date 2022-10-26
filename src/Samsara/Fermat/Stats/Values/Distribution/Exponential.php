@@ -129,7 +129,7 @@ class Exponential extends Distribution
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function rangePdf($x1, $x2, int $scale = 10): ImmutableDecimal
+    public function percentBetween($x1, $x2, int $scale = 10): ImmutableDecimal
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
         $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
@@ -146,11 +146,11 @@ class Exponential extends Distribution
 
         /** @var ImmutableDecimal $rangePdf */
         $rangePdf =
-            $this->pdf(
+            $this->cdf(
                 $x2,
                 $internalScale
             )->subtract(
-                $this->pdf(
+                $this->cdf(
                     $x1,
                     $internalScale)
             )->abs()
