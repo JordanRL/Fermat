@@ -51,18 +51,50 @@ orbs:
                 mkdir ~/phpunit
       phpunit-run:
         description: "Running Unit Tests With PHPUnit"
+        parameters:
+          with-parallel:
+            type: bool
+            default: false
         steps:
-          - run:
-              name: Running Unit Tests
-              command: |
-                vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
+          - when:
+              condition: <<parameters.with-parallel>>
+              steps:
+                - run:
+                    name: Running Unit Tests With Parallelization
+                    command: |
+                      export TESTFILES=$(circleci tests glob "tests/Samsara/**Test.php" | circleci tests split --split-by=timings)
+                      echo ${TESTFILES} 
+                      vendor/bin/phpunit --log-junit ~/phpunit/junit.xml ${TESTFILES}
+          - unless:
+              condition: <<parameters.with-parallel>>
+              steps:
+                - run:
+                    name: Running Unit Tests
+                    command: |
+                      vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
       phpunit-run-without-large:
         description: "Running Unit Tests With PHPUnit (Without Large Tests)"
+        parameters:
+          with-parallel:
+            type: bool
+            default: false
         steps:
-          - run:
-              name: Running Unit Tests (W/O Large)
-              command: |
-                vendor/bin/phpunit --log-junit ~/phpunit/junit.xml --exclude-group large
+          - when:
+              condition: <<parameters.with-parallel>>
+              steps:
+                - run:
+                    name: Running Unit Tests With Parallelization
+                    command: |
+                      export TESTFILES=$(circleci tests glob "tests/Samsara/**Test.php" | circleci tests split --split-by=timings)
+                      echo ${TESTFILES} 
+                      vendor/bin/phpunit --exclude-group large --log-junit ~/phpunit/junit.xml ${TESTFILES}
+          - unless:
+              condition: <<parameters.with-parallel>>
+              steps:
+                - run:
+                    name: Running Unit Tests
+                    command: |
+                      vendor/bin/phpunit --exclude-group large --log-junit ~/phpunit/junit.xml
       xdebug-enable:
         description: "Enabling XDebug Extension"
         steps:
@@ -125,15 +157,18 @@ orbs:
             type: boolean
             default: false
         description: "Run all tasks prior to executing tests"
+        parallelism: 4
         steps:
           - when:
               condition: <<parameters.decimal>>
               steps:
-                - phpunit-run
+                - phpunit-run:
+                    with-parallel: true
           - unless:
               condition: <<parameters.decimal>>
               steps:
-                - phpunit-run-without-large
+                - phpunit-run-without-large:
+                    with-parallel: true
       wrap-up-tests:
         parameters:
           cc-file:
@@ -229,7 +264,7 @@ jobs:
 
 workflows:
   testing:
-    when: << pipeline.parameters.GHA_Action >>
+    when: never
     jobs:
       - test-bed
   unit-test-workflow:
