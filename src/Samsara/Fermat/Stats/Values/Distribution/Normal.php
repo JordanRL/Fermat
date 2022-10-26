@@ -171,19 +171,17 @@ class Normal extends Distribution
 
     /**
      * @param int|float|string|Decimal $x
-     *
+     * @param int $scale
      * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     * @throws OptionalExit
-     * @throws ReflectionException
      */
-    public function cdf(int|float|string|Decimal $x): ImmutableDecimal
+    public function cdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
     {
-        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+        $internalScale = $scale + 2;
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x, $internalScale);
 
-        $oneHalf = Numbers::make(Numbers::IMMUTABLE, '0.5');
+        $oneHalf = Numbers::make(Numbers::IMMUTABLE, '0.5', $internalScale);
         $one = Numbers::makeOne();
-        $sqrtTwo = Numbers::make(Numbers::IMMUTABLE, 2)->sqrt();
+        $sqrtTwo = Numbers::make(Numbers::IMMUTABLE, 2, $internalScale)->sqrt();
 
         /** @var ImmutableDecimal $cdf */
         $cdf = $oneHalf->multiply(
@@ -191,13 +189,15 @@ class Normal extends Distribution
                     StatsProvider::gaussErrorFunction(
                         $x->subtract($this->mean)
                             ->divide(
-                                $this->sd->multiply($sqrtTwo)
-                            )
+                                $this->sd->multiply($sqrtTwo),
+                                $internalScale
+                            ),
+                        $internalScale
                     )
                 )
             );
 
-        return $cdf;
+        return $cdf->roundToScale($scale);
     }
 
     /**

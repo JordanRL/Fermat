@@ -92,18 +92,19 @@ class StatsProvider
 
     /**
      * @param $x
-     *
+     * @param int|null $scale
      * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      * @throws OptionalExit
      * @throws ReflectionException
      */
-    public static function gaussErrorFunction($x): ImmutableDecimal
+    public static function gaussErrorFunction($x, ?int $scale = null): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        $scale = $x->getScale();
+        $scale = $scale ?? $x->getScale();
         $internalScale = $scale + 2;
 
         $answer = Numbers::makeOne($internalScale);
