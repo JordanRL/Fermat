@@ -5,12 +5,28 @@ namespace Samsara\Fermat\Complex\Values;
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
-use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 class ArithmeticAutoTest extends TestCase
 {
+
+    private static ?ComplexNumber $a = null;
+    private static ?ComplexNumber $b = null;
+    private static ?ComplexNumber $c = null;
+    private static ?ComplexNumber $d = null;
+    private static ?ComplexNumber $e = null;
+    private static ?ComplexNumber $f = null;
+    private static ?ComplexNumber $g = null;
+    private static ?ComplexNumber $h = null;
+    private static ?ComplexNumber $i = null;
+    private static ?ComplexNumber $j = null;
+    private static ?ComplexNumber $k = null;
+    private static ?ComplexNumber $l = null;
+    private static ?ComplexNumber $m = null;
+    private static ?ComplexNumber $n = null;
+    private static ?ComplexNumber $o = null;
+    private static ?ComplexNumber $p = null;
 
     /*
      * add()
@@ -33,18 +49,18 @@ class ArithmeticAutoTest extends TestCase
         $twelveScale = new ImmutableDecimal('0.000000000001');
         $twelveScaleI = new ImmutableDecimal('0.000000000001i');
 
-        $a = new ImmutableComplexNumber($five, $fiveI);
-        $b = new ImmutableComplexNumber($negFive, $negFiveI);
-        $c = new ImmutableComplexNumber($five, $negFiveI);
-        $d = new ImmutableComplexNumber($negFive, $fiveI);
-        $e = new ImmutableComplexNumber($one, $tenPowThirtyI);
-        $f = new ImmutableComplexNumber($tenPowThirty, $oneI);
-        $g = new ImmutableComplexNumber($one, $tenScaleI);
-        $h = new ImmutableComplexNumber($tenScale, $oneI);
-        $i = new ImmutableComplexNumber($one, $twelveScaleI);
-        $j = new ImmutableComplexNumber($twelveScale, $oneI);
-        $k = new ImmutableComplexNumber($one, $zeroI);
-        $l = new ImmutableComplexNumber($zero, $oneI);
+        self::$a = $a = self::$a ?? new ImmutableComplexNumber($five, $fiveI);
+        self::$b = $b = self::$b ?? new ImmutableComplexNumber($negFive, $negFiveI);
+        self::$c = $c = self::$c ?? new ImmutableComplexNumber($five, $negFiveI);
+        self::$d = $d = self::$d ?? new ImmutableComplexNumber($negFive, $fiveI);
+        self::$e = $e = self::$e ?? new ImmutableComplexNumber($one, $tenPowThirtyI);
+        self::$f = $f = self::$f ?? new ImmutableComplexNumber($tenPowThirty, $oneI);
+        self::$g = $g = self::$g ?? new ImmutableComplexNumber($one, $tenScaleI);
+        self::$h = $h = self::$h ?? new ImmutableComplexNumber($tenScale, $oneI);
+        self::$i = $i = self::$i ?? new ImmutableComplexNumber($one, $twelveScaleI);
+        self::$j = $j = self::$j ?? new ImmutableComplexNumber($twelveScale, $oneI);
+        self::$k = $k = self::$k ?? new ImmutableComplexNumber($one, $zeroI);
+        self::$l = $l = self::$l ?? new ImmutableComplexNumber($zero, $oneI);
 
         return [
             'IComplex (5+5i)+(5+5i)' => [$a, $a, '10+10i', ImmutableComplexNumber::class],
@@ -151,18 +167,18 @@ class ArithmeticAutoTest extends TestCase
         $twelveScale = new ImmutableDecimal('0.000000000001');
         $twelveScaleI = new ImmutableDecimal('0.000000000001i');
 
-        $a = new ImmutableComplexNumber($five, $fiveI);
-        $b = new ImmutableComplexNumber($negFive, $negFiveI);
-        $c = new ImmutableComplexNumber($five, $negFiveI);
-        $d = new ImmutableComplexNumber($negFive, $fiveI);
-        $e = new ImmutableComplexNumber($one, $tenPowThirtyI);
-        $f = new ImmutableComplexNumber($tenPowThirty, $oneI);
-        $g = new ImmutableComplexNumber($one, $tenScaleI);
-        $h = new ImmutableComplexNumber($tenScale, $oneI);
-        $i = new ImmutableComplexNumber($one, $twelveScaleI);
-        $j = new ImmutableComplexNumber($twelveScale, $oneI);
-        $k = new ImmutableComplexNumber($one, $zeroI);
-        $l = new ImmutableComplexNumber($zero, $oneI);
+        self::$a = $a = self::$a ?? new ImmutableComplexNumber($five, $fiveI);
+        self::$b = $b = self::$b ?? new ImmutableComplexNumber($negFive, $negFiveI);
+        self::$c = $c = self::$c ?? new ImmutableComplexNumber($five, $negFiveI);
+        self::$d = $d = self::$d ?? new ImmutableComplexNumber($negFive, $fiveI);
+        self::$e = $e = self::$e ?? new ImmutableComplexNumber($one, $tenPowThirtyI);
+        self::$f = $f = self::$f ?? new ImmutableComplexNumber($tenPowThirty, $oneI);
+        self::$g = $g = self::$g ?? new ImmutableComplexNumber($one, $tenScaleI);
+        self::$h = $h = self::$h ?? new ImmutableComplexNumber($tenScale, $oneI);
+        self::$i = $i = self::$i ?? new ImmutableComplexNumber($one, $twelveScaleI);
+        self::$j = $j = self::$j ?? new ImmutableComplexNumber($twelveScale, $oneI);
+        self::$k = $k = self::$k ?? new ImmutableComplexNumber($one, $zeroI);
+        self::$l = $l = self::$l ?? new ImmutableComplexNumber($zero, $oneI);
 
         return [
             'IComplex (5+5i)-(5+5i)' => [$a, $a, '0', ImmutableDecimal::class],
@@ -269,18 +285,18 @@ class ArithmeticAutoTest extends TestCase
         $twelveScale = new ImmutableDecimal('0.000000000001');
         $twelveScaleI = new ImmutableDecimal('0.000000000001i');
 
-        $a = new ImmutableComplexNumber($five, $fiveI);
-        $b = new ImmutableComplexNumber($negFive, $negFiveI);
-        $c = new ImmutableComplexNumber($five, $negFiveI);
-        $d = new ImmutableComplexNumber($negFive, $fiveI);
-        $e = new ImmutableComplexNumber($one, $tenPowThirtyI);
-        $f = new ImmutableComplexNumber($tenPowThirty, $oneI);
-        $g = new ImmutableComplexNumber($one, $tenScaleI);
-        $h = new ImmutableComplexNumber($tenScale, $oneI);
-        $i = new ImmutableComplexNumber($one, $twelveScaleI);
-        $j = new ImmutableComplexNumber($twelveScale, $oneI);
-        $k = new ImmutableComplexNumber($one, $zeroI);
-        $l = new ImmutableComplexNumber($zero, $oneI);
+        self::$a = $a = self::$a ?? new ImmutableComplexNumber($five, $fiveI);
+        self::$b = $b = self::$b ?? new ImmutableComplexNumber($negFive, $negFiveI);
+        self::$c = $c = self::$c ?? new ImmutableComplexNumber($five, $negFiveI);
+        self::$d = $d = self::$d ?? new ImmutableComplexNumber($negFive, $fiveI);
+        self::$e = $e = self::$e ?? new ImmutableComplexNumber($one, $tenPowThirtyI);
+        self::$f = $f = self::$f ?? new ImmutableComplexNumber($tenPowThirty, $oneI);
+        self::$g = $g = self::$g ?? new ImmutableComplexNumber($one, $tenScaleI);
+        self::$h = $h = self::$h ?? new ImmutableComplexNumber($tenScale, $oneI);
+        self::$i = $i = self::$i ?? new ImmutableComplexNumber($one, $twelveScaleI);
+        self::$j = $j = self::$j ?? new ImmutableComplexNumber($twelveScale, $oneI);
+        self::$k = $k = self::$k ?? new ImmutableComplexNumber($one, $zeroI);
+        self::$l = $l = self::$l ?? new ImmutableComplexNumber($zero, $oneI);
 
         return [
             'IComplex (5+5i)*(5+5i)' => [$a, $a, '50i', ImmutableDecimal::class],
@@ -390,18 +406,18 @@ class ArithmeticAutoTest extends TestCase
         $twelveScale = new ImmutableDecimal('0.000000000001');
         $twelveScaleI = new ImmutableDecimal('0.000000000001i');
 
-        $a = new ImmutableComplexNumber($five, $fiveI);
-        $b = new ImmutableComplexNumber($negFive, $negFiveI);
-        $c = new ImmutableComplexNumber($five, $negFiveI);
-        $d = new ImmutableComplexNumber($negFive, $fiveI);
-        $e = new ImmutableComplexNumber($one, $tenPowThirtyI);
-        $f = new ImmutableComplexNumber($tenPowThirty, $oneI);
-        $g = new ImmutableComplexNumber($one, $tenScaleI);
-        $h = new ImmutableComplexNumber($tenScale, $oneI);
-        $i = new ImmutableComplexNumber($one, $twelveScaleI);
-        $j = new ImmutableComplexNumber($twelveScale, $oneI);
-        $k = new ImmutableComplexNumber($one, $zeroI);
-        $l = new ImmutableComplexNumber($zero, $oneI);
+        self::$a = $a = self::$a ?? new ImmutableComplexNumber($five, $fiveI);
+        self::$b = $b = self::$b ?? new ImmutableComplexNumber($negFive, $negFiveI);
+        self::$c = $c = self::$c ?? new ImmutableComplexNumber($five, $negFiveI);
+        self::$d = $d = self::$d ?? new ImmutableComplexNumber($negFive, $fiveI);
+        self::$e = $e = self::$e ?? new ImmutableComplexNumber($one, $tenPowThirtyI);
+        self::$f = $f = self::$f ?? new ImmutableComplexNumber($tenPowThirty, $oneI);
+        self::$g = $g = self::$g ?? new ImmutableComplexNumber($one, $tenScaleI);
+        self::$h = $h = self::$h ?? new ImmutableComplexNumber($tenScale, $oneI);
+        self::$i = $i = self::$i ?? new ImmutableComplexNumber($one, $twelveScaleI);
+        self::$j = $j = self::$j ?? new ImmutableComplexNumber($twelveScale, $oneI);
+        self::$k = $k = self::$k ?? new ImmutableComplexNumber($one, $zeroI);
+        self::$l = $l = self::$l ?? new ImmutableComplexNumber($zero, $oneI);
 
         return [
             'IComplex (5+5i)/(5+5i)' => [$a, $a, '1', ImmutableDecimal::class],
@@ -509,33 +525,33 @@ class ArithmeticAutoTest extends TestCase
         $twelveScale = new ImmutableDecimal('0.000000000001');
         $twelveScaleI = new ImmutableDecimal('0.000000000001i');
 
-        $a = new ImmutableComplexNumber($three, $threeI);
-        $b = new ImmutableComplexNumber($negThree, $negThreeI);
-        $c = new ImmutableComplexNumber($three, $negThreeI);
-        $d = new ImmutableComplexNumber($negThree, $threeI);
-        $g = new ImmutableComplexNumber($one, $tenScaleI);
-        $h = new ImmutableComplexNumber($tenScale, $oneI);
-        $i = new ImmutableComplexNumber($one, $twelveScaleI);
-        $j = new ImmutableComplexNumber($twelveScale, $oneI);
-        $k = new ImmutableComplexNumber($one, $zeroI);
-        $l = new ImmutableComplexNumber($zero, $oneI);
+        self::$m = $m = self::$m ?? new ImmutableComplexNumber($three, $threeI);
+        self::$n = $n = self::$n ?? new ImmutableComplexNumber($negThree, $negThreeI);
+        self::$o = $o = self::$o ?? new ImmutableComplexNumber($three, $negThreeI);
+        self::$p = $p = self::$p ?? new ImmutableComplexNumber($negThree, $threeI);
+        self::$g = $g = self::$g ?? new ImmutableComplexNumber($one, $tenScaleI);
+        self::$h = $h = self::$h ?? new ImmutableComplexNumber($tenScale, $oneI);
+        self::$i = $i = self::$i ?? new ImmutableComplexNumber($one, $twelveScaleI);
+        self::$j = $j = self::$j ?? new ImmutableComplexNumber($twelveScale, $oneI);
+        self::$k = $k = self::$k ?? new ImmutableComplexNumber($one, $zeroI);
+        self::$l = $l = self::$l ?? new ImmutableComplexNumber($zero, $oneI);
 
         return [
-            'IComplex (3+3i)^(3+3i)' => [$a, $a, '6.6423696469+2.8756701322i', ImmutableComplexNumber::class],
-            'IComplex (3+3i)^(-3-3i)' => [$a, $b, '0.1267856367-0.0548890965i', ImmutableComplexNumber::class],
-            'IComplex (3+3i)^(3-3i)' => [$a, $c, '-320.1132107899-739.4138329992i', ImmutableComplexNumber::class],
-            'IComplex (3+3i)^(-3+3i)' => [$a, $d, '-0.0004930847+0.0011389523i', ImmutableComplexNumber::class],
-            'IComplex (3+3i)^(0)' => [$a, $zero, '1', ImmutableDecimal::class],
-            'IComplex (3+3i)^(3i)' => [$a, $threeI, '-0.0348768474-0.088129998i', ImmutableComplexNumber::class],
-            'IComplex (3i)^(3+3i)' => [$threeI, $a, '-0.0372635883+0.2396692999i', ImmutableComplexNumber::class],
-            'IComplex (3+3i)^(3)' => [$a, $three, '-54+54i', ImmutableComplexNumber::class],
-            'IComplex (3)^(3+3i)' => [$three, $a, '-26.6794540328-4.1480998674i', ImmutableComplexNumber::class],
-            'IComplex (1+0.0000000001i)^(3+3i)' => [$g, $a, '0.9999999997+0.0000000003i', ImmutableComplexNumber::class],
-            'IComplex (0.0000000001+1i)^(3+3i)' => [$h, $a, '-0.008983291i', ImmutableDecimal::class],
-            'IComplex (1+0.000000000001i)^(3+3i)' => [$i, $a, '0.999999999997+0.000000000003i', ImmutableComplexNumber::class],
-            'IComplex (0.000000000001+1i)^(3+3i)' => [$j, $a, '-0.008983291021i', ImmutableDecimal::class],
-            'IComplex (1+0i)^(3+3i)' => [$k, $a, '1', ImmutableDecimal::class],
-            'IComplex (0+1i)^(3+3i)' => [$l, $a, '-0.008983291i', ImmutableDecimal::class],
+            'IComplex (3+3i)^(3+3i)' => [$m, $m, '6.6423696469+2.8756701322i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(-3-3i)' => [$m, $n, '0.1267856367-0.0548890965i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(3-3i)' => [$m, $o, '-320.1132107899-739.4138329992i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(-3+3i)' => [$m, $p, '-0.0004930847+0.0011389523i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(0)' => [$m, $zero, '1', ImmutableDecimal::class],
+            'IComplex (3+3i)^(3i)' => [$m, $threeI, '-0.0348768474-0.088129998i', ImmutableComplexNumber::class],
+            'IComplex (3i)^(3+3i)' => [$threeI, $m, '-0.0372635883+0.2396692999i', ImmutableComplexNumber::class],
+            'IComplex (3+3i)^(3)' => [$m, $three, '-54+54i', ImmutableComplexNumber::class],
+            'IComplex (3)^(3+3i)' => [$three, $m, '-26.6794540328-4.1480998674i', ImmutableComplexNumber::class],
+            'IComplex (1+0.0000000001i)^(3+3i)' => [$g, $m, '0.9999999997+0.0000000003i', ImmutableComplexNumber::class],
+            'IComplex (0.0000000001+1i)^(3+3i)' => [$h, $m, '-0.008983291i', ImmutableDecimal::class],
+            'IComplex (1+0.000000000001i)^(3+3i)' => [$i, $m, '0.999999999997+0.000000000003i', ImmutableComplexNumber::class],
+            'IComplex (0.000000000001+1i)^(3+3i)' => [$j, $m, '-0.008983291021i', ImmutableDecimal::class],
+            'IComplex (1+0i)^(3+3i)' => [$k, $m, '1', ImmutableDecimal::class],
+            'IComplex (0+1i)^(3+3i)' => [$l, $m, '-0.008983291i', ImmutableDecimal::class],
         ];
     }
 
@@ -548,13 +564,13 @@ class ArithmeticAutoTest extends TestCase
         $tenPowThirty = new ImmutableDecimal('1000000000000000000000000000000');
         $tenPowThirtyI = new ImmutableDecimal('1000000000000000000000000000000i');
 
-        $a = new ImmutableComplexNumber($three, $threeI);
-        $e = new ImmutableComplexNumber($one, $tenPowThirtyI);
-        $f = new ImmutableComplexNumber($tenPowThirty, $oneI);
+        self::$m = $m = self::$m ?? new ImmutableComplexNumber($three, $threeI);
+        self::$e = $e = self::$e ?? new ImmutableComplexNumber($one, $tenPowThirtyI);
+        self::$f = $f = self::$f ?? new ImmutableComplexNumber($tenPowThirty, $oneI);
 
         return [
-            'IComplex (1+1000000000000000000000000000000i)^(3+3i)' => [$e, $a, '-1008103895072608669621656647656731987966636777577845657842294500190951444855708178470827.8046672167-8926547154809861533401090781765730860411184241176202875421054807180827544305044641700789.1254349717i', ImmutableComplexNumber::class],
-            'IComplex (1000000000000000000000000000000+1i)^(3+3i)' => [$f, $a, '993683398858380499091676249928037050056205700638839289239875498467755979897070841985132647.8378656662-112219886086453915249045522210107306891034790097457935133859983576948619911473186801529969.5691040598i', ImmutableComplexNumber::class],
+            'IComplex (1+1000000000000000000000000000000i)^(3+3i)' => [$e, $m, '-1008103895072608669621656647656731987966636777577845657842294500190951444855708178470827.8046672167-8926547154809861533401090781765730860411184241176202875421054807180827544305044641700789.1254349717i', ImmutableComplexNumber::class],
+            'IComplex (1000000000000000000000000000000+1i)^(3+3i)' => [$f, $m, '993683398858380499091676249928037050056205700638839289239875498467755979897070841985132647.8378656662-112219886086453915249045522210107306891034790097457935133859983576948619911473186801529969.5691040598i', ImmutableComplexNumber::class],
         ];
     }
 
@@ -613,22 +629,22 @@ class ArithmeticAutoTest extends TestCase
         $twelveScale = new ImmutableDecimal('0.000000000001');
         $twelveScaleI = new ImmutableDecimal('0.000000000001i');
 
-        $a = new ImmutableComplexNumber($three, $threeI);
-        $b = new ImmutableComplexNumber($negThree, $negThreeI);
-        $c = new ImmutableComplexNumber($three, $negThreeI);
-        $d = new ImmutableComplexNumber($negThree, $threeI);
-        $g = new ImmutableComplexNumber($one, $tenScaleI);
-        $h = new ImmutableComplexNumber($tenScale, $oneI);
-        $i = new ImmutableComplexNumber($one, $twelveScaleI);
-        $j = new ImmutableComplexNumber($twelveScale, $oneI);
-        $k = new ImmutableComplexNumber($one, $zeroI);
-        $l = new ImmutableComplexNumber($zero, $oneI);
+        self::$m = $m = self::$m ?? new ImmutableComplexNumber($three, $threeI);
+        self::$n = $n = self::$n ?? new ImmutableComplexNumber($negThree, $negThreeI);
+        self::$o = $o = self::$o ?? new ImmutableComplexNumber($three, $negThreeI);
+        self::$p = $p = self::$p ?? new ImmutableComplexNumber($negThree, $threeI);
+        self::$g = $g = self::$g ?? new ImmutableComplexNumber($one, $tenScaleI);
+        self::$h = $h = self::$h ?? new ImmutableComplexNumber($tenScale, $oneI);
+        self::$i = $i = self::$i ?? new ImmutableComplexNumber($one, $twelveScaleI);
+        self::$j = $j = self::$j ?? new ImmutableComplexNumber($twelveScale, $oneI);
+        self::$k = $k = self::$k ?? new ImmutableComplexNumber($one, $zeroI);
+        self::$l = $l = self::$l ?? new ImmutableComplexNumber($zero, $oneI);
 
         return [
-            'IComplex sqrt(3+3i)' => [$a, '1.902976706+0.7882387605i', ImmutableComplexNumber::class],
-            'IComplex sqrt(-3-3i)' => [$b, '0.7882387605-1.902976706i', ImmutableComplexNumber::class],
-            'IComplex sqrt(3-3i)' => [$c, '1.902976706-0.7882387605i', ImmutableComplexNumber::class],
-            'IComplex sqrt(-3+3i)' => [$d, '0.7882387605+1.902976706i', ImmutableComplexNumber::class],
+            'IComplex sqrt(3+3i)' => [$m, '1.902976706+0.7882387605i', ImmutableComplexNumber::class],
+            'IComplex sqrt(-3-3i)' => [$n, '0.7882387605-1.902976706i', ImmutableComplexNumber::class],
+            'IComplex sqrt(3-3i)' => [$o, '1.902976706-0.7882387605i', ImmutableComplexNumber::class],
+            'IComplex sqrt(-3+3i)' => [$p, '0.7882387605+1.902976706i', ImmutableComplexNumber::class],
             'IComplex sqrt(1+0.0000000001i)' => [$g, '1', ImmutableDecimal::class],
             'IComplex sqrt(0.0000000001+1i)' => [$h, '0.7071067812+0.7071067812i', ImmutableComplexNumber::class],
             'IComplex sqrt(1+0.000000000001i)' => [$i, '1', ImmutableDecimal::class],
@@ -645,8 +661,8 @@ class ArithmeticAutoTest extends TestCase
         $tenPowThirty = new ImmutableDecimal('1000000000000000000000000000000');
         $tenPowThirtyI = new ImmutableDecimal('1000000000000000000000000000000i');
 
-        $e = new ImmutableComplexNumber($one, $tenPowThirtyI);
-        $f = new ImmutableComplexNumber($tenPowThirty, $oneI);
+        self::$e = $e = self::$e ?? new ImmutableComplexNumber($one, $tenPowThirtyI);
+        self::$f = $f = self::$f ?? new ImmutableComplexNumber($tenPowThirty, $oneI);
 
         return [
             'IComplex sqrt(1+1000000000000000000000000000000i)' => [$e, '707106781186547.5244008444+707106781186547.5244008444i', ImmutableComplexNumber::class],
@@ -711,20 +727,20 @@ class ArithmeticAutoTest extends TestCase
         $twelveScale = new ImmutableDecimal('0.000000000001');
         $twelveScaleI = new ImmutableDecimal('0.000000000001i');
 
-        $a = new ImmutableComplexNumber($three, $threeI);
-        $b = new ImmutableComplexNumber($negThree, $negThreeI);
-        $c = new ImmutableComplexNumber($three, $negThreeI);
-        $d = new ImmutableComplexNumber($negThree, $threeI);
-        $g = new ImmutableComplexNumber($one, $tenScaleI);
-        $h = new ImmutableComplexNumber($tenScale, $oneI);
-        $i = new ImmutableComplexNumber($one, $twelveScaleI);
-        $j = new ImmutableComplexNumber($twelveScale, $oneI);
-        $k = new ImmutableComplexNumber($one, $zeroI);
-        $l = new ImmutableComplexNumber($zero, $oneI);
+        self::$m = $m = self::$m ?? new ImmutableComplexNumber($three, $threeI);
+        self::$n = $n = self::$n ?? new ImmutableComplexNumber($negThree, $negThreeI);
+        self::$o = $o = self::$o ?? new ImmutableComplexNumber($three, $negThreeI);
+        self::$p = $p = self::$p ?? new ImmutableComplexNumber($negThree, $threeI);
+        self::$g = $g = self::$g ?? new ImmutableComplexNumber($one, $tenScaleI);
+        self::$h = $h = self::$h ?? new ImmutableComplexNumber($tenScale, $oneI);
+        self::$i = $i = self::$i ?? new ImmutableComplexNumber($one, $twelveScaleI);
+        self::$j = $j = self::$j ?? new ImmutableComplexNumber($twelveScale, $oneI);
+        self::$k = $k = self::$k ?? new ImmutableComplexNumber($one, $zeroI);
+        self::$l = $l = self::$l ?? new ImmutableComplexNumber($zero, $oneI);
 
         return [
             'IComplex (3+3i)^(1/3)' => [
-                $a,
+                $m,
                 $three,
                 [
                     '1.5637087354+0.4189944928i',
@@ -745,7 +761,7 @@ class ArithmeticAutoTest extends TestCase
     }
 
     /**
-     * @medium
+     * @large
      * @dataProvider nthRootImmutableComplexMediumProvider
      */
     public function testNthRoots(ComplexNumber $a, ImmutableDecimal $b, array $expected)
