@@ -306,6 +306,12 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
             $parts = explode('+', $expression);
         } elseif (str_contains($expression, '-')) {
             $parts = explode('-', $expression);
+            foreach ($parts as $key => &$value) {
+                if ($key === 0) {
+                    continue;
+                }
+                $value = '-'.$value;
+            }
         } else {
             throw new IntegrityConstraint(
                 'To make a complex number from a string, it must have both a real part and a complex part.',

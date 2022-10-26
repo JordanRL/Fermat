@@ -80,6 +80,44 @@ class ImmutableComplexNumberTest extends TestCase
 
     }
 
+    /**
+     * @group complex
+     * @medium
+     */
+    public function testAsReal()
+    {
+
+        $complex = self::$complexThreeFour;
+
+        $this->assertEquals('5', $complex->asReal()->getValue());
+        $this->assertEquals(ImmutableDecimal::class, get_class($complex->asReal()));
+
+        $complex = self::$complexOneTwo;
+
+        $this->assertEquals('2.2360679775', $complex->asReal()->getValue());
+        $this->assertEquals(ImmutableDecimal::class, get_class($complex->asReal()));
+
+    }
+
+    /**
+     * @group complex
+     * @medium
+     */
+    public function testAsImaginary()
+    {
+
+        $complex = self::$complexThreeFour;
+
+        $this->assertEquals('5i', $complex->asImaginary()->getValue());
+        $this->assertEquals(ImmutableDecimal::class, get_class($complex->asImaginary()));
+
+        $complex = self::$complexOneTwo;
+
+        $this->assertEquals('2.2360679775i', $complex->asImaginary()->getValue());
+        $this->assertEquals(ImmutableDecimal::class, get_class($complex->asImaginary()));
+
+    }
+
     public function testAsPolar()
     {
 
@@ -153,6 +191,21 @@ class ImmutableComplexNumberTest extends TestCase
         $complex = self::$complexOneTwo;
 
         $this->assertEquals(ImmutableComplexNumber::class, get_class($complex->asComplex()));
+    }
+
+    public function testMakeFromString()
+    {
+        $complex = ImmutableComplexNumber::makeFromString('1-4i');
+
+        $this->assertEquals('1', $complex->getRealPart()->getValue());
+        $this->assertEquals('-4i', $complex->getImaginaryPart()->getValue());
+        $this->assertEquals(ImmutableComplexNumber::class, get_class($complex));
+
+        $complex = MutableComplexNumber::makeFromString('1-4i');
+
+        $this->assertEquals('1', $complex->getRealPart()->getValue());
+        $this->assertEquals('-4i', $complex->getImaginaryPart()->getValue());
+        $this->assertEquals(MutableComplexNumber::class, get_class($complex));
     }
 
 }
