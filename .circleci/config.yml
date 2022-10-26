@@ -85,7 +85,7 @@ orbs:
                     name: Running Unit Tests With Parallelization
                     command: |
                       . ./parallel.sh
-                      vendor/bin/phpunit --log-junit ~/phpunit/junit.xml --testsuite ${PHPUNIT_SUITE}
+                      vendor/bin/phpunit --exclude-group large --log-junit ~/phpunit/junit.xml --testsuite ${PHPUNIT_SUITE}
           - unless:
               condition: <<parameters.with-parallel>>
               steps:
