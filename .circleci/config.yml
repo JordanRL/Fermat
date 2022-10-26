@@ -203,6 +203,19 @@ orbs:
               command: rm -rf ./tmp/*
 
 jobs:
+  test-bed:
+    executor: fermat-unit-testing/php-base
+    parallelism: 4
+    steps:
+      - fermat-unit-testing/setup-project:
+          decimal: false
+          xdebug: false
+          for-tests: true
+      - run:
+          name: Getting test files
+          command: |
+            TESTFILES=$(circleci tests glob "tests/Samsara/**Test.php" | circleci tests split --split-by=timings)
+            echo ${TESTFILES}
   generate-docs:
     executor: fermat-unit-testing/php-base
     steps:
@@ -215,6 +228,10 @@ jobs:
           command: vendor/bin/roster
 
 workflows:
+  testing:
+    when: << pipeline.parameters.GHA_Action >>
+    jobs:
+      - test-bed
   unit-test-workflow:
     when: << pipeline.parameters.GHA_Action >>
     jobs:
