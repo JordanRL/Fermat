@@ -78,7 +78,7 @@ orbs:
               name: Enabling GMP Extension
               command: |
                 sudo apt update 
-                sudo apt search libgmp
+                sudo apt install libgmp-dev
                 sudo -E install-php-extensions gmp
       decimal-install:
         description: "Installing Decimal Extension"
