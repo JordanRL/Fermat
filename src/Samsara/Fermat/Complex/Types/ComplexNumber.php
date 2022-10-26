@@ -76,9 +76,10 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
     }
 
     /**
-     * Allows you to set a mode on a number to select the calculation methods.
+     * Allows you to set a mode on a number to select the calculation methods. If this is null, then the default mode in the
+     * CalculationModeProvider at the time a calculation is performed will be used.
      *
-     * @param ?CalcMode $mode
+     * @param CalcMode|null $mode
      * @return static
      */
     public function setMode(?CalcMode $mode): static
@@ -148,11 +149,25 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
     }
 
     /**
-     * @return ImmutableDecimal|ImmutableFraction
+     * @return ImmutableDecimal
      */
-    public function asReal(): ImmutableDecimal|ImmutableFraction
+    public function asReal(): ImmutableDecimal
     {
-        return (new ImmutableDecimal($this->getAsBaseTenRealNumber(), $this->getScale()))->setMode($this->getMode());
+        return (new ImmutableDecimal(
+            $this->getAsBaseTenRealNumber(),
+            $this->getScale()
+        ))->setMode($this->getMode());
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function asImaginary(): ImmutableDecimal
+    {
+        return (new ImmutableDecimal(
+            $this->getAsBaseTenRealNumber().'i',
+            $this->getScale()
+        ))->setMode($this->getMode());
     }
 
     /**
@@ -198,7 +213,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
     /**
      * @param $value
-     * @return bool
+     * @return bool|null
      * @throws IncompatibleObjectState
      */
     public function isGreaterThan($value): bool|null
@@ -208,7 +223,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
     /**
      * @param $value
-     * @return bool
+     * @return bool|null
      * @throws IncompatibleObjectState
      */
     public function isGreaterThanOrEqualTo($value): bool|null
@@ -218,7 +233,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
     /**
      * @param $value
-     * @return bool
+     * @return bool|null
      * @throws IncompatibleObjectState
      */
     public function isLessThan($value): bool|null

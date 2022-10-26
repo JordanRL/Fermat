@@ -35,7 +35,10 @@ trait ArithmeticSimpleTrait
     use ArithmeticHelperSimpleTrait;
 
     /**
-     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     * Adds a number to this number. Works (to the degree that math allows it to work) for all classes that extend the
+     * Number abstract class.
+     *
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you are adding to this number
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      * @throws MissingPackage
@@ -54,7 +57,10 @@ trait ArithmeticSimpleTrait
     }
 
     /**
-     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     * Subtracts a number from this number. Works (to the degree that math allows it to work) for all classes that extend the
+     * Number abstract class.
+     *
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you are subtracting from this number
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      * @throws MissingPackage
@@ -73,7 +79,10 @@ trait ArithmeticSimpleTrait
     }
 
     /**
-     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     * Multiplies a number with this number. Works (to the degree that math allows it to work) for all classes that extend the
+     * Number abstract class.
+     *
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you are multiplying with this number
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      */
@@ -91,8 +100,11 @@ trait ArithmeticSimpleTrait
     }
 
     /**
-     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
-     * @param int|null $scale
+     * Divides this number by a number. Works (to the degree that math allows it to work) for all classes that extend the
+     * Number abstract class.
+     *
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you dividing this number by
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
      * @return static|ImmutableFraction|ImmutableComplexNumber|ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
@@ -125,7 +137,10 @@ trait ArithmeticSimpleTrait
     }
 
     /**
-     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     * Raises this number to the power of a number. Works (to the degree that math allows it to work) for all classes
+     * that extend the Number abstract class.
+     *
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num The exponent to raise the number to
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
@@ -136,7 +151,7 @@ trait ArithmeticSimpleTrait
     {
         [$thisNum, $thatNum] = $this->translateToObjects($num);
 
-        if (($thisNum->isNegative() && !$thatNum->isInt())) {
+        if ($thisNum->isNegative() && !$thatNum->isInt()) {
             throw new IntegrityConstraint(
                 'Decimal exponents of negative bases are not well defined.',
                 'Provide only positive bases, or provide only integer exponents.'
@@ -183,7 +198,10 @@ trait ArithmeticSimpleTrait
     }
 
     /**
-     * @param int|null $scale
+     * Takes the (positive) square root of this number. Works (to the degree that math allows it to work) for all classes
+     * that extend the Number abstract class.
+     *
+     * @param int|null $scale The number of digits you want to return from the operation. Leave null to use this object's scale.
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      */

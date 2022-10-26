@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Stats\Types;
 
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
@@ -11,11 +12,23 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 abstract class Distribution
 {
 
+    /**
+     * @param int|float|string|Decimal $x
+     * @param int $scale
+     * @return ImmutableDecimal
+     */
+    abstract public function cdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal;
+
+    /**
+     * @return ImmutableDecimal
+     */
     abstract public function random(): ImmutableDecimal;
 
     /**
      * @param int $sampleSize
      * @return NumberCollection
+     *
+     * @codeCoverageIgnore
      */
     public function randomSample(int $sampleSize = 10): NumberCollection
     {
@@ -28,6 +41,12 @@ abstract class Distribution
         return $sample;
     }
 
-     abstract public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableDecimal;
+    /**
+     * @param $min
+     * @param $max
+     * @param int $maxIterations
+     * @return ImmutableDecimal
+     */
+    abstract public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableDecimal;
 
 }

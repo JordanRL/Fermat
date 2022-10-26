@@ -44,14 +44,14 @@ class Exponential extends Distribution
     }
 
     /**
-     * @param float|int|Decimal $x
+     * @param int|float|string|Decimal $x
      * @param int $scale
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function cdf(float|int|Decimal $x, int $scale = 10): ImmutableDecimal
+    public function cdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -83,13 +83,13 @@ class Exponential extends Distribution
     }
 
     /**
-     * @param $x
+     * @param int|float|string|Decimal $x
      * @param int $scale
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
-    public function pdf($x, int $scale = 10): ImmutableDecimal
+    public function pdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -122,14 +122,14 @@ class Exponential extends Distribution
     }
 
     /**
-     * @param $x1
-     * @param $x2
+     * @param int|float|string|Decimal $x1
+     * @param int|float|string|Decimal $x2
      * @param int $scale
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws MissingPackage
      */
-    public function rangePdf($x1, $x2, int $scale = 10): ImmutableDecimal
+    public function percentBetween(int|float|string|Decimal $x1, int|float|string|Decimal $x2, int $scale = 10): ImmutableDecimal
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
         $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
@@ -146,11 +146,11 @@ class Exponential extends Distribution
 
         /** @var ImmutableDecimal $rangePdf */
         $rangePdf =
-            $this->pdf(
+            $this->cdf(
                 $x2,
                 $internalScale
             )->subtract(
-                $this->pdf(
+                $this->cdf(
                     $x1,
                     $internalScale)
             )->abs()

@@ -19,11 +19,12 @@ trait LogSimpleTrait
     use LogSelectionTrait;
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the result of e^this
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public function exp(?int $scale = null, bool $round = true): Decimal
     {
@@ -41,11 +42,12 @@ trait LogSimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the natural log of this number. The natural log is the inverse of the exp() function.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public function ln(?int $scale = null, bool $round = true): Decimal
     {
@@ -63,8 +65,10 @@ trait LogSimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the log base 10 of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      * @throws IntegrityConstraint
      */

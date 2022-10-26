@@ -9,6 +9,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Provider\SeriesProvider;
@@ -91,18 +92,19 @@ class StatsProvider
 
     /**
      * @param $x
-     *
+     * @param int|null $scale
      * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      * @throws OptionalExit
      * @throws ReflectionException
      */
-    public static function gaussErrorFunction($x): ImmutableDecimal
+    public static function gaussErrorFunction($x, ?int $scale = null): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        $scale = $x->getScale();
+        $scale = $scale ?? $x->getScale();
         $internalScale = $scale + 2;
 
         $answer = Numbers::makeOne($internalScale);
@@ -136,17 +138,17 @@ class StatsProvider
     }
 
     /**
-     * @param     $p
+     * @param float|int|string|Decimal $p
      * @param int|null $scale
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
      * @throws ReflectionException
-     * @throws MissingPackage
      */
-    public static function inverseNormalCDF($p, ?int $scale = null): ImmutableDecimal
+    public static function inverseNormalCDF(float|int|string|Decimal $p, ?int $scale = null): ImmutableDecimal
     {
+        /** @var ImmutableDecimal $p */
         $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
 
         $scale = $scale ?? $p->getScale();

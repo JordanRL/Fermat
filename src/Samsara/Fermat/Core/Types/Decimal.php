@@ -3,6 +3,7 @@
 namespace Samsara\Fermat\Core\Types;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\ArithmeticProvider;
@@ -39,13 +40,13 @@ abstract class Decimal extends Number
     use FormatterTrait;
 
     /**
-     * @param $value
-     * @param int|null $scale
-     * @param NumberBase $base
-     * @param bool $baseTenInput
+     * @param Decimal|string|int|float $value The value to create this number with. Integers and floats are used as real numbers.
+     * @param int|null $scale The number of digits you want to return from math operations. Leave null to autodetect based on input.
+     * @param NumberBase $base The base you want this number to have any time the value is retrieved.
+     * @param bool $baseTenInput If true, the $value argument will be treated as base 10 regardless of $base. If false, the $value will be interpreted as being in $base.
      * @throws IntegrityConstraint
      */
-    final public function __construct($value, int $scale = null, NumberBase $base = NumberBase::Ten, bool $baseTenInput = true)
+    final public function __construct(Decimal|string|int|float $value, int $scale = null, NumberBase $base = NumberBase::Ten, bool $baseTenInput = true)
     {
 
         $this->base = $base;
@@ -153,16 +154,9 @@ abstract class Decimal extends Number
     }
 
     /**
-     * Returns the current base that the value is in.
+     * Returns the current value as a string in base 10, converted to a real number. If the number is imaginary, the i is
+     * simply not printed. If the number is complex, then the absolute value is returned.
      *
-     * @return NumberBase
-     */
-    public function getBase(): NumberBase
-    {
-        return $this->base;
-    }
-
-    /**
      * @return string
      */
     public function getAsBaseTenRealNumber(): string
@@ -185,15 +179,48 @@ abstract class Decimal extends Number
     }
 
     /**
-     * @return ImmutableDecimal|ImmutableFraction
+     * Returns a new instance of this object with a base ten real number.
+     *
+     * @return ImmutableDecimal
      */
-    public function asReal(): ImmutableDecimal|ImmutableFraction
+    public function asReal(): ImmutableDecimal
     {
-        return (new ImmutableDecimal($this->getAsBaseTenRealNumber(), $this->getScale()))->setMode($this->getMode());
+        return (new ImmutableDecimal(
+            $this->getAsBaseTenRealNumber(),
+            $this->getScale()
+        ))->setMode($this->getMode());
     }
 
     /**
-     * @param NumberBase|null $base
+     * Returns a new instance of this object with a base ten imaginary number.
+     *
+     * @return ImmutableDecimal
+     */
+    public function asImaginary(): ImmutableDecimal
+    {
+        return (new ImmutableDecimal(
+            $this->getAsBaseTenRealNumber().'i',
+            $this->getScale()
+        ))->setMode($this->getMode());
+    }
+
+    /**
+     * @return ImmutableComplexNumber
+     * @throws IntegrityConstraint
+     */
+    public function asComplex(): ImmutableComplexNumber
+    {
+        if ($this->isReal()) {
+            return new ImmutableComplexNumber($this->asReal(), Numbers::makeZero());
+        }
+
+        return new ImmutableComplexNumber(Numbers::makeZero(), $this->asImaginary());
+    }
+
+    /**
+     * Returns the current value as a string.
+     *
+     * @param NumberBase|null $base If provided, will return the value in the provided base, regardless of the object's base setting.
      * @return string
      * @throws IntegrityConstraint
      */
@@ -215,13 +242,13 @@ abstract class Decimal extends Number
     }
 
     /**
-     * Returns the sort compare integer (-1, 0, 1) for the two numbers.
+     * Returns the sort compare integer (signum) (-1, 0, 1) for the two numbers.
      *
      * @param Number|int|float|string $value
      * @return int
      * @throws IntegrityConstraint
      */
-    public function compare($value): int
+    public function compare(Number|int|float|string $value): int
     {
         $value = Numbers::makeOrDont($this, $value, $this->getScale());
 
@@ -243,7 +270,6 @@ abstract class Decimal extends Number
             return -1;
         }
 
-        // TODO: Handle comparison of imaginary numbers
         if ($value instanceof Fraction) {
             $value = $value->asDecimal($this->getScale());
         }
@@ -256,7 +282,7 @@ abstract class Decimal extends Number
     }
 
     /**
-     * Converts the object to a different base.
+     * Changes the base setting for this number.
      *
      * @param NumberBase $base
      * @return static
@@ -323,6 +349,8 @@ abstract class Decimal extends Number
     }
 
     /**
+     * Returns true if the number is complex, false if the number is real or imaginary.
+     *
      * @return bool
      */
     public function isComplex(): bool
@@ -345,7 +373,9 @@ abstract class Decimal extends Number
     ): ImmutableDecimal|MutableDecimal|static;
 
     /**
-     * @param Decimal|string|int|float $mod
+     * Returns the current number mod input number, including the decimal portion of the modulo.
+     *
+     * @param Decimal|string|int|float $mod The modulo to use
      * @return static
      */
     abstract public function continuousModulo(Decimal|string|int|float $mod): static;

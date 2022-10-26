@@ -27,7 +27,8 @@ trait InputNormalizationTrait
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $compareTo
      * @param int $identity
      * @param CalcMode|null $mode
-     * @return ImmutableDecimal[]|ImmutableFraction[]
+     * @param int|null $scale
+     * @return ImmutableDecimal[]
      * @throws IntegrityConstraint
      */
     protected static function partSelector(

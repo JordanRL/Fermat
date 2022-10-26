@@ -21,6 +21,11 @@ trait ScaleTrait
     protected int $scale;
 
     /**
+     * Gets this number's setting for the number of decimal places it will calculate accurately based on the inputs.
+     *
+     * Multiple operations, each rounding or truncating digits, will increase the error and reduce the actual accuracy of
+     * the result.
+     *
      * @return int
      */
     public function getScale(): int
@@ -29,7 +34,7 @@ trait ScaleTrait
     }
 
     /**
-     * @param int $scale
+     * @param int $scale The number of digits you want to return from the division. Leave null to use this object's scale.
      * @return static
      */
     protected function setScale(int $scale): static
@@ -40,8 +45,12 @@ trait ScaleTrait
     }
 
     /**
-     * @param int $decimals
-     * @param RoundingMode|null $mode
+     * Round this number's value to the given number of decimal places, but keep the current scale setting of this number.
+     *
+     * NOTE: Rounding to a negative number of digits will round the integer part of the number.
+     *
+     * @param int $decimals The number of decimal places to round to. Negative values round that many integer digits.
+     * @param RoundingMode|null $mode The rounding mode to use for this operation. If null, will use the current default mode.
      * @return static
      * @throws IntegrityConstraint
      */
@@ -67,7 +76,9 @@ trait ScaleTrait
     }
 
     /**
-     * @param int $decimals
+     * Truncate this number's value to the given number of decimal places, but keep the current scale setting of this number.
+     *
+     * @param int $decimals The number of decimal places to truncate to.
      * @return static
      * @throws IntegrityConstraint
      */
@@ -110,8 +121,10 @@ trait ScaleTrait
     }
 
     /**
-     * @param int $scale
-     * @param RoundingMode|null $mode
+     * Round this number's value to the given number of decimal places, and set this number's scale to that many digits.
+     *
+     * @param int $scale The number of decimal places to round to.
+     * @param RoundingMode|null $mode The rounding mode to use for this operation. If null, will use the current default mode.
      * @return static
      */
     public function roundToScale(
@@ -123,7 +136,9 @@ trait ScaleTrait
     }
 
     /**
-     * @param int $scale
+     * Truncate this number's value to the given number of decimal places, and set this number's scale to that many digits.
+     *
+     * @param int $scale The number of decimal places to truncate to.
      * @return static
      * @throws IntegrityConstraint
      */
@@ -135,6 +150,8 @@ trait ScaleTrait
     }
 
     /**
+     * Round to the next integer closest to positive infinity.
+     *
      * @return static
      * @throws IntegrityConstraint
      */
@@ -144,6 +161,8 @@ trait ScaleTrait
     }
 
     /**
+     * Round to the next integer closest to negative infinity.
+     *
      * @return static
      * @throws IntegrityConstraint
      */
@@ -153,7 +172,7 @@ trait ScaleTrait
     }
 
     /**
-     * The number of digits between the radix and the for non-zero digit in the decimal part.
+     * The number of digits between the radix and the first non-zero digit in the decimal part.
      *
      * @return int
      */
@@ -212,7 +231,7 @@ trait ScaleTrait
     }
 
     /**
-     * Returns the current value as an integer if it is within the max a min int values on the current system. Uses the
+     * Returns the current value as an integer if it is within the max and min int values on the current system. Uses the
      * intval() function to convert the string to an integer type.
      *
      * @return int
@@ -232,6 +251,8 @@ trait ScaleTrait
     }
 
     /**
+     * Returns true if any non-zero digits exist in the decimal part.
+     *
      * @return bool
      */
     public function isFloat(): bool
@@ -242,6 +263,9 @@ trait ScaleTrait
     }
 
     /**
+     * Returns the current value as a float if it is within the max and min float values on the current system. Uses the
+     * (float) explicit cast to convert the string to a float type.
+     *
      * @return float
      */
     public function asFloat(): float
@@ -250,6 +274,8 @@ trait ScaleTrait
     }
 
     /**
+     * Returns only the decimal part of the number as a string.
+     *
      * @return string
      */
     public function getDecimalPart(): string
@@ -258,6 +284,8 @@ trait ScaleTrait
     }
 
     /**
+     * Returns only the integer part of the number as a string.
+     *
      * @return string
      */
     public function getWholePart(): string

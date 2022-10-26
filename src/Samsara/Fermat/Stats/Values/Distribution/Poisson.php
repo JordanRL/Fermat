@@ -3,7 +3,6 @@
 namespace Samsara\Fermat\Stats\Values\Distribution;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Enums\RandomMode;
@@ -37,7 +36,7 @@ class Poisson extends Distribution
             throw new IntegrityConstraint(
                 'Lambda must be positive',
                 'Provide a positive lambda',
-                'Poisson distributions work on time to occurrence; the mean time to occurrence (lambda) must be positive'
+                'Poisson distributions number of expected events; the number of expected events (lambda) must be positive.'
             );
         }
 
@@ -45,13 +44,13 @@ class Poisson extends Distribution
     }
 
     /**
-     * @param int|float|Decimal $k
+     * @param int|float|string|Decimal $k
      * @param int $scale
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function probabilityOfKEvents($k, int $scale = 10): ImmutableDecimal
+    public function probabilityOfKEvents(int|float|string|Decimal $k, int $scale = 10): ImmutableDecimal
     {
 
         return $this->pmf($k, $scale);
@@ -59,29 +58,26 @@ class Poisson extends Distribution
     }
 
     /**
-     * @param int|float|Decimal $x
+     * @param int|float|string|Decimal $x
      * @param int $scale
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
-    public function cdf(int|float|Decimal $x, int $scale = 10): ImmutableDecimal
+    public function cdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
     {
+        $internalScale = $scale + 2;
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x, $internalScale);
 
-        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
-
-        if (!$x->isNatural()) {
+        if (!$x->isNatural() || $x->isNegative()) {
             throw new IntegrityConstraint(
-                'Only integers are valid x values for Poisson distributions',
-                'Provide an integer value to calculate the CDF',
-                'Poisson distributions describe discrete occurrences; only integers are valid x values'
+                'Only positive integers are valid x values for Poisson distributions',
+                'Provide a positive integer value to calculate the CDF',
+                'Poisson distributions describe discrete occurrences; only positive integers are valid x values'
             );
         }
 
-        $internalScale = $scale + 2;
-
-        $cumulative = Numbers::makeZero();
+        $cumulative = Numbers::makeZero($internalScale);
 
         for ($i = 0;$x->isGreaterThanOrEqualTo($i);$i++) {
             $cumulative =
@@ -90,35 +86,35 @@ class Poisson extends Distribution
                         $i,
                         $internalScale
                     )
-                )->truncateToScale($scale);
+                );
         }
 
-        return $cumulative;
+        return $cumulative->roundToScale($scale);
 
     }
 
     /**
-     * @param float|int|Decimal $x
+     * @param int|float|string|Decimal $x
      * @param int $scale
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function pmf(float|int|Decimal $x, int $scale = 10): ImmutableDecimal
+    public function pmf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
     {
-        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        if (!$x->isNatural()) {
+        $internalScale = $scale + 2 + $this->lambda->numberOfIntDigits();
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x, $internalScale);
+
+        if (!$x->isNatural() || $x->isNegative()) {
             throw new IntegrityConstraint(
-                'Only integers are valid x values for Poisson distributions',
-                'Provide an integer value to calculate the PMF',
-                'Poisson distributions describe discrete occurrences; only integers are valid x values'
+                'Only positive integers are valid x values for Poisson distributions',
+                'Provide a positive integer value to calculate the PMF',
+                'Poisson distributions describe discrete occurrences; only positive integers are valid x values'
             );
         }
 
-        $internalScale = $scale + 2;
-
-        $e = Numbers::makeE($internalScale);
+        $e = Numbers::makeE($internalScale + ceil($this->lambda->asInt() * Numbers::makeNaturalLog2($internalScale)->asFloat() ));
 
         /** @var ImmutableDecimal $pmf */
         $pmf =
@@ -133,25 +129,25 @@ class Poisson extends Distribution
             )->divide(
                 $x->factorial(),
                 $internalScale
-            )->truncateToScale($scale);
+            );
 
-        return $pmf;
+        return $pmf->roundToScale($scale);
     }
 
     /**
-     * @param int|float|Decimal $x1
-     * @param int|float|Decimal $x2
+     * @param int|float|string|Decimal $x1
+     * @param int|float|string|Decimal $x2
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function rangePmf($x1, $x2): ImmutableDecimal
+    public function rangePmf(int|float|string|Decimal $x1, int|float|string|Decimal $x2): ImmutableDecimal
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
         $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
 
         if ($x1->equals($x2)) {
-            return Numbers::makeZero();
+            return $this->pmf($x1);
         } elseif ($x1->isGreaterThan($x2)) {
             $larger = $x1;
             $smaller = $x2;
@@ -160,11 +156,11 @@ class Poisson extends Distribution
             $smaller = $x1;
         }
 
-        if (!$larger->isNatural() || !$smaller->isNatural()) {
+        if (!$larger->isNatural() || !$smaller->isNatural() || $larger->isNegative() || $smaller->isNegative()) {
             throw new IntegrityConstraint(
-                'Only integers are valid x values for Poisson distributions',
-                'Provide integer values to calculate the range PMF',
-                'Poisson distributions describe discrete occurrences; only integers are valid x values'
+                'Only positive integers are valid x values for Poisson distributions',
+                'Provide positive integer values to calculate the range PMF',
+                'Poisson distributions describe discrete occurrences; only positive integers are valid x values'
             );
         }
 

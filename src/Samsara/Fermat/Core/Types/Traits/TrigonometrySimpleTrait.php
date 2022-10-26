@@ -19,8 +19,10 @@ trait TrigonometrySimpleTrait
     use TrigonometryNativeTrait;
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the sine of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function sin(?int $scale = null, bool $round = true): Decimal
@@ -29,8 +31,10 @@ trait TrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the cosine of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function cos(?int $scale = null, bool $round = true): Decimal
@@ -39,8 +43,10 @@ trait TrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the tangent of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function tan(?int $scale = null, bool $round = true): Decimal
@@ -49,28 +55,10 @@ trait TrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
-     * @return Decimal
-     */
-    public function sec(?int $scale = null, bool $round = true): Decimal
-    {
-        return $this->helperBasicTrigSelector($scale, $round, CalcOperation::Sec);
-    }
-
-    /**
-     * @param int|null $scale
-     * @param bool $round
-     * @return Decimal
-     */
-    public function csc(?int $scale = null, bool $round = true): Decimal
-    {
-        return $this->helperBasicTrigSelector($scale, $round, CalcOperation::Csc);
-    }
-
-    /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the cotangent of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function cot(?int $scale = null, bool $round = true): Decimal
@@ -79,8 +67,34 @@ trait TrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the secant of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
+     * @return Decimal
+     */
+    public function sec(?int $scale = null, bool $round = true): Decimal
+    {
+        return $this->helperBasicTrigSelector($scale, $round, CalcOperation::Sec);
+    }
+
+    /**
+     * Returns the cosecant of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
+     * @return Decimal
+     */
+    public function csc(?int $scale = null, bool $round = true): Decimal
+    {
+        return $this->helperBasicTrigSelector($scale, $round, CalcOperation::Csc);
+    }
+
+    /**
+     * Returns the hyperbolic sine of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function sinh(?int $scale = null, bool $round = true): Decimal
@@ -89,8 +103,10 @@ trait TrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the hyperbolic cosine of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function cosh(?int $scale = null, bool $round = true): Decimal
@@ -99,8 +115,10 @@ trait TrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the hyperbolic tangent of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function tanh(?int $scale = null, bool $round = true): Decimal
@@ -109,8 +127,22 @@ trait TrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the hyperbolic cotangent of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
+     * @return Decimal
+     */
+    public function coth(?int $scale = null, bool $round = true): Decimal
+    {
+        return $this->helperBasicTrigSelector($scale, $round, CalcOperation::CotH);
+    }
+
+    /**
+     * Returns the hyperbolic secant of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function sech(?int $scale = null, bool $round = true): Decimal
@@ -119,23 +151,15 @@ trait TrigonometrySimpleTrait
     }
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * Returns the hyperbolic cosecant of this number.
+     *
+     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param bool $round If true, use the current rounding mode to round the result. If false, truncate the result.
      * @return Decimal
      */
     public function csch(?int $scale = null, bool $round = true): Decimal
     {
         return $this->helperBasicTrigSelector($scale, $round, CalcOperation::CscH);
-    }
-
-    /**
-     * @param int|null $scale
-     * @param bool $round
-     * @return Decimal
-     */
-    public function coth(?int $scale = null, bool $round = true): Decimal
-    {
-        return $this->helperBasicTrigSelector($scale, $round, CalcOperation::CotH);
     }
 
 }

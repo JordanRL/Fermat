@@ -7,6 +7,7 @@ use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
@@ -16,7 +17,9 @@ trait ComparisonTrait
 {
 
     /**
-     * @param Number|int|string|float $value
+     * Compares this number to another number and returns whether or not they are equal.
+     *
+     * @param Number|int|string|float $value The value to compare against
      * @return bool
      * @throws IntegrityConstraint
      */
@@ -51,11 +54,13 @@ trait ComparisonTrait
     }
 
     /**
-     * @param $value
+     * Compares this number to another number and returns true if this number is closer to positive infinity.
+     *
+     * @param Number|int|string|float $value The value to compare against
      * @return bool
      * @throws IntegrityConstraint
      */
-    public function isGreaterThan($value): bool
+    public function isGreaterThan(Number|int|string|float $value): bool
     {
         if ($this instanceof Decimal) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
@@ -82,11 +87,13 @@ trait ComparisonTrait
     }
 
     /**
-     * @param $value
+     * Compares this number to another number and returns true if this number is closer to negative infinity.
+     *
+     * @param Number|int|string|float $value The value to compare against
      * @return bool
      * @throws IntegrityConstraint
      */
-    public function isLessThan($value): bool
+    public function isLessThan(Number|int|string|float $value): bool
     {
         if ($this instanceof Decimal) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
@@ -113,11 +120,13 @@ trait ComparisonTrait
     }
 
     /**
-     * @param $value
+     * Compares this number to another number and returns true if this number is closer to positive infinity or equal.
+     *
+     * @param Number|int|string|float $value The value to compare against
      * @return bool
      * @throws IntegrityConstraint
      */
-    public function isGreaterThanOrEqualTo($value): bool
+    public function isGreaterThanOrEqualTo(Number|int|string|float $value): bool
     {
         if ($this instanceof Decimal) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
@@ -144,13 +153,16 @@ trait ComparisonTrait
     }
 
     /**
-     * @param $value
+     * Compares this number to another number and returns true if this number is closer to negative infinity or equal.
+     *
+     * @param Number|int|string|float $value The value to compare against
      * @return bool
      * @throws IntegrityConstraint
      */
-    public function isLessThanOrEqualTo($value): bool
+    public function isLessThanOrEqualTo(Number|int|string|float $value): bool
     {
         if ($this instanceof Decimal) {
+            /** @var ImmutableDecimal $value */
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
             if ($this->compare($value) < 1) {
@@ -175,6 +187,8 @@ trait ComparisonTrait
     }
 
     /**
+     * Returns true if this number is less than zero
+     *
      * @return bool
      * @throws IntegrityConstraint
      */
@@ -192,6 +206,8 @@ trait ComparisonTrait
     }
 
     /**
+     * Returns true if this number is larger than zero
+     *
      * @return bool
      * @throws IntegrityConstraint
      */
@@ -209,6 +225,8 @@ trait ComparisonTrait
     }
 
     /**
+     * Alias for isInt(). Returns true if this number has no non-zero digits in the decimal part.
+     *
      * @return bool
      * @throws IntegrityConstraint
      */
@@ -218,6 +236,8 @@ trait ComparisonTrait
     }
 
     /**
+     * Alias for isInt(). Returns true if this number has no non-zero digits in the decimal part.
+     *
      * @return bool
      * @throws IntegrityConstraint
      */
@@ -227,6 +247,8 @@ trait ComparisonTrait
     }
 
     /**
+     * Returns true if this number has no non-zero digits in the decimal part.
+     *
      * @return bool
      * @throws IntegrityConstraint
      */
