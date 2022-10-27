@@ -418,6 +418,9 @@ class RoundingProviderTest extends TestCase
             $this->assertEqualsWithDelta(-1.5, RoundingProvider::round($num1), 0.5);
         }
 
+        $num1 = new ImmutableDecimal('-1.53245');
+        $this->assertEqualsWithDelta(-1.5, RoundingProvider::round($num1), 0.5);
+
     }
 
     public function testRoundHalfAlternating()
@@ -447,6 +450,10 @@ class RoundingProviderTest extends TestCase
         }
 
         $this->assertEquals(-30, $sum);
+
+        $num1 = new ImmutableDecimal('-1.54325');
+        $result = (int)RoundingProvider::round($num1);
+        $this->assertEqualsWithDelta(-1.5, $result, 0.5);
 
     }
 
