@@ -2,7 +2,6 @@
 
 namespace Samsara\Fermat\Core\Types\Base\Traits;
 
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
@@ -58,7 +57,6 @@ trait TrigonometryScaleTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function tanScale(int $scale = null): string
     {
@@ -197,7 +195,6 @@ trait TrigonometryScaleTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function cotScale(int $scale = null): string
     {
@@ -295,7 +292,6 @@ trait TrigonometryScaleTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function sinhScale(int $scale = null): string
     {
@@ -316,7 +312,6 @@ trait TrigonometryScaleTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function coshScale(int $scale = null): string
     {

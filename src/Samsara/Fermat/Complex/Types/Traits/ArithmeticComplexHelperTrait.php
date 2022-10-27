@@ -3,7 +3,6 @@
 namespace Samsara\Fermat\Complex\Types\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
@@ -11,7 +10,6 @@ use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Coordinates\Values\PolarCoordinate;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Types\Traits\NumberNormalizationTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;

@@ -4,7 +4,6 @@
 namespace Samsara\Fermat\Core\Provider;
 
 
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
@@ -30,7 +29,6 @@ class ConstantProvider
      * @param int $digits
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public static function makePi(int $digits): string
     {

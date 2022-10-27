@@ -52,3 +52,4 @@ exclude_patterns:
   - ".gitignore"
   - "LICENSE"
   - "COPYRIGHT"
+  - "parallel.sh"

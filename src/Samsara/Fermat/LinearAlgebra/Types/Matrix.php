@@ -2,7 +2,6 @@
 
 namespace Samsara\Fermat\LinearAlgebra\Types;
 
-use ReflectionException;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Types\Base\Number;
@@ -15,7 +14,6 @@ use Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups\MatrixInterface;
 use Samsara\Fermat\LinearAlgebra\Types\Traits\Matrix\DirectAccessTrait;
 use Samsara\Fermat\LinearAlgebra\Types\Traits\Matrix\ShapeTrait;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
-use Samsara\Fermat\LinearAlgebra\Values\ImmutableMatrix;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
@@ -35,7 +33,7 @@ abstract class Matrix implements MatrixInterface
      * @param NumberCollection[] $data
      * @param string $mode
      */
-    public function __construct(array $data, string $mode = Matrix::MODE_ROWS_INPUT)
+    final public function __construct(array $data, string $mode = Matrix::MODE_ROWS_INPUT)
     {
 
         $this->normalizeInputData($data, $mode);
@@ -92,10 +90,10 @@ abstract class Matrix implements MatrixInterface
 
     /**
      * @param MatrixInterface $value
-     * @return MatrixInterface
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function add(MatrixInterface $value): MatrixInterface
+    public function add(MatrixInterface $value): static
     {
         if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
             throw new IntegrityConstraint(
@@ -126,10 +124,10 @@ abstract class Matrix implements MatrixInterface
      * addition with the resulting matrix.
      *
      * @param Number $value
-     * @return MatrixInterface
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function addScalarAsI(Number $value): MatrixInterface
+    public function addScalarAsI(Number $value): static
     {
         if (!$this->isSquare()) {
             throw new IntegrityConstraint(
@@ -149,10 +147,10 @@ abstract class Matrix implements MatrixInterface
      * This function takes a scalar input value and adds that value to each position in the matrix directly.
      *
      * @param Number $value
-     * @return MatrixInterface
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function addScalarAsJ(Number $value): MatrixInterface
+    public function addScalarAsJ(Number $value): static
     {
         $J = Matrices::onesMatrix(Matrices::IMMUTABLE_MATRIX, $this->getRowCount(), $this->getColumnCount());
         $J = $J->multiply($value);
@@ -162,10 +160,10 @@ abstract class Matrix implements MatrixInterface
 
     /**
      * @param MatrixInterface $value
-     * @return MatrixInterface
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function subtract(MatrixInterface $value): MatrixInterface
+    public function subtract(MatrixInterface $value): static
     {
         if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
             throw new IntegrityConstraint(
@@ -194,10 +192,10 @@ abstract class Matrix implements MatrixInterface
     /**
      * @param Decimal $value
      *
-     * @return MatrixInterface
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function subtractScalarAsI(Decimal $value): MatrixInterface
+    public function subtractScalarAsI(Decimal $value): static
     {
         $value = $value->multiply(-1);
 
@@ -207,10 +205,10 @@ abstract class Matrix implements MatrixInterface
     /**
      * @param Decimal $value
      *
-     * @return MatrixInterface
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function subtractScalarAsJ(Decimal $value): MatrixInterface
+    public function subtractScalarAsJ(Decimal $value): static
     {
         $value = $value->multiply(-1);
 
@@ -220,10 +218,10 @@ abstract class Matrix implements MatrixInterface
     /**
      * @param $value
      *
-     * @return MatrixInterface
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function multiply($value): MatrixInterface
+    public function multiply($value): static
     {
         if ($value instanceof MatrixInterface) {
             if ($this->getColumnCount() !== $value->getRowCount()) {
@@ -265,11 +263,11 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @return MatrixInterface
+     * @return static
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function inverseMatrix(): MatrixInterface
+    public function inverseMatrix(): static
     {
         $determinant = $this->getDeterminant();
         $inverseDeterminant = new ImmutableFraction(Numbers::makeOne(), $determinant);
@@ -304,9 +302,9 @@ abstract class Matrix implements MatrixInterface
      * @param int $excludeColumn
      * @param bool $forceNewMatrix
      *
-     * @return MatrixInterface
+     * @return static
      */
-    protected function childMatrix(int $excludeRow, int $excludeColumn, bool $forceNewMatrix = false)
+    protected function childMatrix(int $excludeRow, int $excludeColumn, bool $forceNewMatrix = false): static
     {
 
         $newRows = [];
@@ -319,7 +317,7 @@ abstract class Matrix implements MatrixInterface
             $newRows[] = $this->getRow($i)->filterByKeys([$excludeColumn]);
         }
 
-        return $forceNewMatrix ? new ImmutableMatrix($newRows) : $this->setValue($newRows);
+        return $forceNewMatrix ? new static($newRows) : $this->setValue($newRows);
 
     }
 
@@ -348,6 +346,6 @@ abstract class Matrix implements MatrixInterface
         return $swappedArray;
     }
 
-    abstract protected function setValue(array $data, $mode = Matrix::MODE_ROWS_INPUT): MatrixInterface;
+    abstract protected function setValue(array $data, $mode = Matrix::MODE_ROWS_INPUT): static;
 
 }

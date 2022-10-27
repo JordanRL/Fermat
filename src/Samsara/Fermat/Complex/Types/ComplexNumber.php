@@ -243,7 +243,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
     /**
      * @param $value
-     * @return bool
+     * @return bool|null
      * @throws IncompatibleObjectState
      */
     public function isLessThanOrEqualTo($value): bool|null

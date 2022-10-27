@@ -3,7 +3,6 @@
 namespace Samsara\Fermat\Core\Types\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
@@ -99,7 +98,6 @@ trait IntegerMathTrait
      * @return Decimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public function doubleFactorial(): Decimal
     {

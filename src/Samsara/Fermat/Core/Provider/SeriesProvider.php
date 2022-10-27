@@ -3,7 +3,6 @@
 namespace Samsara\Fermat\Core\Provider;
 
 use ReflectionException;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Enums\NumberBase;
@@ -161,7 +160,6 @@ class SeriesProvider
      * @param int $sumMode
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public static function generalizedContinuedFraction(
         ContinuedFractionTermInterface $aPart,

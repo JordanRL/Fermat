@@ -4,7 +4,6 @@ namespace Samsara\Fermat\Core\Types\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
@@ -40,7 +39,6 @@ trait SimpleArithmeticTrait
      * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you are adding to this number
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public function add(
         string|int|float|Decimal|Fraction|ComplexNumber $num
@@ -62,7 +60,6 @@ trait SimpleArithmeticTrait
      * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you are subtracting from this number
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public function subtract(
         string|int|float|Decimal|Fraction|ComplexNumber $num
@@ -128,6 +125,7 @@ trait SimpleArithmeticTrait
 
         if ($thatNum->isComplex()) {
             [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
+            /** @noinspection PhpUnhandledExceptionInspection */
             $thisComplex = (new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart))->setMode($this->getMode());
             return $thisComplex->divide($thatNum);
         }
@@ -162,7 +160,9 @@ trait SimpleArithmeticTrait
             [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
             [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thatNum, 0, $this->getMode());
 
+            /** @noinspection PhpUnhandledExceptionInspection */
             $thisComplex = new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart);
+            /** @noinspection PhpUnhandledExceptionInspection */
             $thatComplex = new ImmutableComplexNumber($thatRealPart, $thatImaginaryPart);
 
             $thisComplex->setMode($this->getMode());

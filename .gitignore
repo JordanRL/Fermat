@@ -4,3 +4,7 @@ composer.lock
 build
 .phpunit.result.cache
 site
+tools/
+.php-cs-fixer.cache
+.phive/
+phive.phar.asc

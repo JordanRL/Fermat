@@ -3,7 +3,6 @@
 namespace Samsara\Fermat\Stats\Values\Distribution;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
@@ -49,7 +48,6 @@ class Exponential extends Distribution
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public function cdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
     {
@@ -127,7 +125,6 @@ class Exponential extends Distribution
      * @param int $scale
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public function percentBetween(int|float|string|Decimal $x1, int|float|string|Decimal $x2, int $scale = 10): ImmutableDecimal
     {

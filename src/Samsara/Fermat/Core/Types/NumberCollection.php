@@ -2,8 +2,6 @@
 
 namespace Samsara\Fermat\Core\Types;
 
-use Composer\InstalledVersions;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\RandomMode;
 use Samsara\Fermat\Core\Numbers;
@@ -348,7 +346,7 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
 
     /**
      * @return Normal
-     * @throws IntegrityConstraint|MissingPackage
+     * @throws IntegrityConstraint
      */
     public function makeNormalDistribution(): Normal
     {
@@ -373,7 +371,7 @@ class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \Iter
 
     /**
      * @return Poisson
-     * @throws IntegrityConstraint|MissingPackage
+     * @throws IntegrityConstraint
      */
     public function makePoissonDistribution(): Poisson
     {

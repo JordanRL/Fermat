@@ -3,7 +3,6 @@
 namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Decimal\Decimal;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
@@ -22,7 +21,6 @@ trait LogScaleTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function expScale(int $scale = null): string
     {
@@ -134,7 +132,6 @@ trait LogScaleTrait
      *
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function lnScale(int $scale = null): string
     {

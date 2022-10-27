@@ -3,13 +3,11 @@
 namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\RoundingMode;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Base\Traits\InverseTrigonometryHelpersTrait;
 use Samsara\Fermat\Core\Types\Traits\NumberNormalizationTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\MutableDecimal;
@@ -28,7 +26,6 @@ trait InverseTrigonometryScaleTrait
      * @return string
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function arcsinScale(int $scale = null): string
     {
@@ -58,7 +55,6 @@ trait InverseTrigonometryScaleTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function arccosScale(int $scale = null): string
     {
@@ -87,7 +83,6 @@ trait InverseTrigonometryScaleTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function arctanScale(int $scale = null): string
     {
@@ -121,7 +116,6 @@ trait InverseTrigonometryScaleTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function arccotScale(int $scale = null): string
     {

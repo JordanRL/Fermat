@@ -30,6 +30,7 @@ trait TrigonometryHelpersTrait
     {
         $finalScale = $scale ?? $this->getScale();
 
+        /** @noinspection PhpUncoveredEnumCasesInspection */
         $answer = match ($operation) {
             CalcOperation::Sin => $this->sinSelector($scale),
             CalcOperation::Cos => $this->cosSelector($scale),
@@ -116,12 +117,14 @@ trait TrigonometryHelpersTrait
                 return $n % 2 ? $negOne : $one;
             },
             function ($n) use ($intScale, $operation) {
+                /** @noinspection PhpUncoveredEnumCasesInspection */
                 return match ($operation) {
                     CalcOperation::Cos => SequenceProvider::nthEvenNumber($n, $intScale),
                     CalcOperation::Sin => SequenceProvider::nthOddNumber($n, $intScale)
                 };
             },
             function ($n) use ($intScale, $operation) {
+                /** @noinspection PhpUncoveredEnumCasesInspection */
                 return match ($operation) {
                     CalcOperation::Cos => SequenceProvider::nthEvenNumber($n, $intScale)->factorial(),
                     CalcOperation::Sin => SequenceProvider::nthOddNumber($n, $intScale)->factorial()

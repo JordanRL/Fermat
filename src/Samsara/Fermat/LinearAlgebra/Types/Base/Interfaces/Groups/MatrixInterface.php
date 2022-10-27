@@ -25,38 +25,38 @@ interface MatrixInterface
 
     public function getDeterminant(): ImmutableDecimal;
 
-    public function pushRow(NumberCollection $row): MatrixInterface;
+    public function pushRow(NumberCollection $row): static;
 
-    public function pushColumn(NumberCollection $column): MatrixInterface;
+    public function pushColumn(NumberCollection $column): static;
 
     public function popRow(): NumberCollection;
 
     public function popColumn(): NumberCollection;
 
-    public function unshiftRow(NumberCollection $row): MatrixInterface;
+    public function unshiftRow(NumberCollection $row): static;
 
-    public function unshiftColumn(NumberCollection $column): MatrixInterface;
+    public function unshiftColumn(NumberCollection $column): static;
 
     public function shiftRow(): NumberCollection;
 
     public function shiftColumn(): NumberCollection;
 
-    public function rotate(bool $clockwise = true): MatrixInterface;
+    public function rotate(bool $clockwise = true): static;
 
-    public function add(MatrixInterface $value): MatrixInterface;
+    public function add(MatrixInterface $value): static;
 
-    public function addScalarAsI(Decimal $value): MatrixInterface;
+    public function addScalarAsI(Decimal $value): static;
 
-    public function addScalarAsJ(Decimal $value): MatrixInterface;
+    public function addScalarAsJ(Decimal $value): static;
 
-    public function subtract(MatrixInterface $value): MatrixInterface;
+    public function subtract(MatrixInterface $value): static;
 
-    public function subtractScalarAsI(Decimal $value): MatrixInterface;
+    public function subtractScalarAsI(Decimal $value): static;
 
-    public function subtractScalarAsJ(Decimal $value): MatrixInterface;
+    public function subtractScalarAsJ(Decimal $value): static;
 
-    public function multiply($value): MatrixInterface;
+    public function multiply($value): static;
 
-    public function inverseMatrix(): MatrixInterface;
+    public function inverseMatrix(): static;
 
 }

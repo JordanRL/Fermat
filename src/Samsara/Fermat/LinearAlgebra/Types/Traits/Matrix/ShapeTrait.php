@@ -14,13 +14,11 @@ trait ShapeTrait
 {
 
     /** @var NumberCollection[] */
-    protected $rows;
+    protected array $rows;
     /** @var NumberCollection[] */
-    protected $columns;
-    /** @var int */
-    protected $numRows;
-    /** @var int */
-    protected $numColumns;
+    protected array $columns;
+    protected int $numRows;
+    protected int $numColumns;
 
     /**
      * @return bool
@@ -65,9 +63,9 @@ trait ShapeTrait
     }
 
     /**
-     * @return MatrixInterface
+     * @return static
      */
-    public function getAdjoint(): MatrixInterface
+    public function getAdjoint(): static
     {
         $rows = $this->columns;
 
@@ -75,26 +73,26 @@ trait ShapeTrait
     }
 
     /**
-     * @return MatrixInterface
+     * @return static
      */
-    public function getAdjugate(): MatrixInterface
+    public function getAdjugate(): static
     {
         return $this->getAdjoint();
     }
 
     /**
-     * @return MatrixInterface
+     * @return static
      */
-    public function transpose(): MatrixInterface
+    public function transpose(): static
     {
         return $this->getAdjoint();
     }
 
     /**
      * @param bool $clockwise
-     * @return MatrixInterface
+     * @return static
      */
-    public function rotate(bool $clockwise = true): MatrixInterface
+    public function rotate(bool $clockwise = true): static
     {
         $tempData =  $clockwise ? $this->rows :  $this->columns;
         $mode = $clockwise ? self::MODE_COLUMNS_INPUT : self::MODE_ROWS_INPUT;

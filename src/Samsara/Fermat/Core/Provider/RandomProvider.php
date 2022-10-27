@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Core\Provider;
 
 use Exception;
 use Random\RandomException;
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Enums\NumberBase;
@@ -23,17 +24,19 @@ class RandomProvider
 {
 
     /**
-     * @param int|string|Decimal $min
-     * @param int|string|Decimal $max
+     * @param int|float|string|Decimal $min
+     * @param int|float|string|Decimal $max
      * @param RandomMode $mode
      * @param int|null $seed
      * @return ImmutableDecimal
      * @throws RandomException
      * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws IncompatibleObjectState
      */
     public static function randomInt(
-        int|string|Decimal $min,
-        int|string|Decimal $max,
+        int|float|string|Decimal $min,
+        int|float|string|Decimal $max,
         RandomMode $mode = RandomMode::Entropy,
         ?int $seed = null
     ): ImmutableDecimal
@@ -106,24 +109,9 @@ class RandomProvider
              */
             /** @noinspection PhpUnhandledExceptionInspection */
             $range = $maxDecimal->subtract($minDecimal);
-//            /** @noinspection PhpUnhandledExceptionInspection */
-//            $bitsNeeded = $range->ln(2)->divide(Numbers::makeNaturalLog2(2), 2)->floor()->add(1);
-//            $bytesNeeded = $bitsNeeded->divide(8, 2)->ceil();
 
             do {
                 try {
-//                    /**
-//                     * Returns random bytes based on sources of entropy within the system.
-//                     *
-//                     * For documentation on these sources please see:
-//                     *
-//                     * https://www.php.net/manual/en/function.random-bytes.php
-//                     */
-//                    $entropyBytes = $randomizer->getBytes($bytesNeeded->asInt());
-//                    $baseTwoBytes = '';
-//                    for($i = 0; $i < strlen($entropyBytes); $i++){
-//                        $baseTwoBytes .= decbin( ord( $entropyBytes[$i] ) );
-//                    }
                     $randomValue = '';
 
                     for ($i = 0; $i < $max->numberOfIntDigits();$i++) {
@@ -139,17 +127,6 @@ class RandomProvider
                         'A call to random_bytes() threw a system level exception. Most often this is due to a problem with entropy sources in your configuration. Original exception message: ' . $e->getMessage()
                     );
                 }
-
-//                /**
-//                 * Since the number of digits is equal to the bits needed, but random_bytes() only
-//                 * returns in chunks of 8 bits (duh, bytes), we can substr() from the right to
-//                 * select only the correct number of digits by multiplying the number of bits
-//                 * needed by -1 and using that as the starting point.
-//                 */
-//                $randomValue = BaseConversionProvider::convertStringToBaseTen(
-//                    substr($baseTwoBytes, $bitsNeeded->multiply(-1)->asInt()),
-//                    NumberBase::Two
-//                );
 
                 /**
                  * @var ImmutableDecimal $num
@@ -202,16 +179,16 @@ class RandomProvider
     }
 
     /**
-     * @param int|string|Decimal $min
-     * @param int|string|Decimal $max
+     * @param int|float|string|Decimal $min
+     * @param int|float|string|Decimal $max
      * @param int $scale
      * @param RandomMode $mode
      * @return ImmutableDecimal
      * @throws RandomException
      */
     public static function randomReal(
-        int|string|Decimal $min,
-        int|string|Decimal $max,
+        int|float|string|Decimal $min,
+        int|float|string|Decimal $max,
         int $scale,
         RandomMode $mode = RandomMode::Entropy
     ): ImmutableDecimal

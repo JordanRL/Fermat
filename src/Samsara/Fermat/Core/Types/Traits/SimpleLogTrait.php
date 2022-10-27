@@ -2,7 +2,6 @@
 
 namespace Samsara\Fermat\Core\Types\Traits;
 
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Base\Traits\LogNativeTrait;

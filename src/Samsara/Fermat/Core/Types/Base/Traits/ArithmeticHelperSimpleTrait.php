@@ -3,9 +3,7 @@
 namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
@@ -127,7 +125,6 @@ trait ArithmeticHelperSimpleTrait
      * @return static
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function helperAddSubFraction(
         ImmutableFraction                  $thisNum,

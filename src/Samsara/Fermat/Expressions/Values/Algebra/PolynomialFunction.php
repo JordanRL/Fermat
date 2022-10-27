@@ -2,7 +2,6 @@
 
 namespace Samsara\Fermat\Expressions\Values\Algebra;
 
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables\FunctionInterface;
@@ -169,7 +168,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
      * @param int[]|float[]|Decimal[] $group2
      *
      * @return PolynomialFunction
-     * @throws IntegrityConstraint|MissingPackage
+     * @throws IntegrityConstraint
      */
     public static function createFromFoil(array $group1, array $group2): PolynomialFunction
     {

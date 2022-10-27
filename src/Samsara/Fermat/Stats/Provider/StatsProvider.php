@@ -4,7 +4,6 @@ namespace Samsara\Fermat\Stats\Provider;
 
 use Ds\Vector;
 use ReflectionException;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\OptionalExit;
@@ -31,7 +30,6 @@ class StatsProvider
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      * @throws OptionalExit
      * @throws ReflectionException
      */
@@ -78,7 +76,6 @@ class StatsProvider
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      * @throws OptionalExit
      * @throws ReflectionException
      */

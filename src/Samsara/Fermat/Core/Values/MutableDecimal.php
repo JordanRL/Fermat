@@ -3,7 +3,6 @@
 namespace Samsara\Fermat\Core\Values;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Provider\BaseConversionProvider;
@@ -20,7 +19,6 @@ class MutableDecimal extends Decimal
      * @param Decimal|string|int|float $mod
      * @return static
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      * @throws IncompatibleObjectState
      */
     public function continuousModulo(Decimal|string|int|float $mod): static

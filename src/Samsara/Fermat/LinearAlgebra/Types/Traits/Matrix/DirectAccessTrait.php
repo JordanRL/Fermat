@@ -5,7 +5,6 @@ namespace Samsara\Fermat\LinearAlgebra\Types\Traits\Matrix;
 
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups\MatrixInterface;
 use Samsara\Fermat\Core\Types\NumberCollection;
 
 /**
@@ -16,10 +15,10 @@ trait DirectAccessTrait
 
     /**
      * @param NumberCollection $row
-     * @return $this
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function pushRow(NumberCollection $row): MatrixInterface
+    public function pushRow(NumberCollection $row): static
     {
         if ($row->count() !== $this->numColumns) {
             throw new IntegrityConstraint(
@@ -42,10 +41,10 @@ trait DirectAccessTrait
 
     /**
      * @param NumberCollection $column
-     * @return $this
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function pushColumn(NumberCollection $column): MatrixInterface
+    public function pushColumn(NumberCollection $column): static
     {
         if ($column->count() !== $this->numRows) {
             throw new IntegrityConstraint(
@@ -88,10 +87,10 @@ trait DirectAccessTrait
 
     /**
      * @param NumberCollection $row
-     * @return $this
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function unshiftRow(NumberCollection $row): MatrixInterface
+    public function unshiftRow(NumberCollection $row): static
     {
         if ($row->count() !== $this->numColumns) {
             throw new IntegrityConstraint(
@@ -114,10 +113,10 @@ trait DirectAccessTrait
 
     /**
      * @param NumberCollection $column
-     * @return $this
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function unshiftColumn(NumberCollection $column): MatrixInterface
+    public function unshiftColumn(NumberCollection $column): static
     {
         if ($column->count() !== $this->numRows) {
             throw new IntegrityConstraint(

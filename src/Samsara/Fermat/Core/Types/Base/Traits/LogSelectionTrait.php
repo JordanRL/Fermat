@@ -2,7 +2,6 @@
 
 namespace Samsara\Fermat\Core\Types\Base\Traits;
 
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcMode;
 
@@ -16,7 +15,6 @@ trait LogSelectionTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function expSelector(?int $scale): string
     {
@@ -32,7 +30,6 @@ trait LogSelectionTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     protected function lnSelector(?int $scale): string
     {

@@ -186,6 +186,7 @@ trait InverseTrigonometryHelpersTrait
         } elseif ($this->isEqual(-1)) {
             $answer = $negOneInputVal;
         } else {
+            /** @noinspection PhpUncoveredEnumCasesInspection */
             $answer = match ($operation) {
                 CalcOperation::ArcSec => $this->arcsecSelector($scale),
                 CalcOperation::ArcCsc => $this->arccscSelector($scale),
@@ -241,6 +242,7 @@ trait InverseTrigonometryHelpersTrait
     {
         $finalScale = $scale ?? $this->getScale();
 
+        /** @noinspection PhpUncoveredEnumCasesInspection */
         $answer = match ($operation) {
             CalcOperation::ArcTan => $this->arctanSelector($scale),
             CalcOperation::ArcCot => $this->arccotSelector($scale),
@@ -273,6 +275,7 @@ trait InverseTrigonometryHelpersTrait
 
         $bPart = $this->helperArcsecArccscBPart($scale, $zeroTerm);
 
+        /** @noinspection PhpUncoveredEnumCasesInspection */
         $answer = SeriesProvider::generalizedContinuedFraction(
             $aPart,
             $bPart,

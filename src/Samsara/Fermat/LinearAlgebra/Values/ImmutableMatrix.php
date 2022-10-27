@@ -11,9 +11,9 @@ use Samsara\Fermat\LinearAlgebra\Types\Matrix;
 class ImmutableMatrix extends Matrix
 {
 
-    protected function setValue(array $data, $mode = Matrix::MODE_ROWS_INPUT): MatrixInterface
+    protected function setValue(array $data, $mode = Matrix::MODE_ROWS_INPUT): static
     {
-        return new ImmutableMatrix($data, $mode);
+        return new static($data, $mode);
     }
 
 }

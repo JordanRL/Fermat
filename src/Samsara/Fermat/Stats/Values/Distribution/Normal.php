@@ -4,16 +4,13 @@ namespace Samsara\Fermat\Stats\Values\Distribution;
 
 use ReflectionException;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Stats\Types\Distribution;
 use Samsara\Fermat\Core\Provider\RandomProvider;
-use Samsara\Fermat\Core\Provider\SequenceProvider;
 use Samsara\Fermat\Stats\Provider\StatsProvider;
-use Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables\FunctionInterface;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
@@ -206,7 +203,6 @@ class Normal extends Distribution
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public function percentBetween(int|float|string|Decimal $x1, int|float|string|Decimal $x2): ImmutableDecimal
     {
@@ -227,7 +223,6 @@ class Normal extends Distribution
      * @param int|float|string|Decimal $x
      *
      * @return ImmutableDecimal
-     * @throws IntegrityConstraint
      */
     public function percentBelowX(int|float|string|Decimal $x): ImmutableDecimal
     {
@@ -239,7 +234,6 @@ class Normal extends Distribution
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws ReflectionException
      */
     public function percentAboveX(int|float|string|Decimal $x): ImmutableDecimal
     {

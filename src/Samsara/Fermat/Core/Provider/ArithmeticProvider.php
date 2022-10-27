@@ -115,6 +115,7 @@ class ArithmeticProvider
             $number1 = new Decimal($left, $decimalScale);
             $number2 = new Decimal($right, $decimalScale);
 
+            /** @noinspection PhpUncoveredEnumCasesInspection */
             $result = match ($operation) {
                 CalcOperation::Addition => $number1->add($number2)->toFixed($scale, false, Decimal::ROUND_TRUNCATE),
                 CalcOperation::Subtraction => $number1->sub($number2)->toFixed($scale, false, Decimal::ROUND_TRUNCATE),
@@ -124,6 +125,7 @@ class ArithmeticProvider
                 CalcOperation::Compare => $number1->compareTo($number2)
             };
         } else {
+            /** @noinspection PhpUncoveredEnumCasesInspection */
             $result = match ($operation) {
                 CalcOperation::Addition => \bcadd($left, $right, $scale),
                 CalcOperation::Subtraction => \bcsub($left, $right, $scale),

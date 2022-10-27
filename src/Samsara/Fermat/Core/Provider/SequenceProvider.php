@@ -3,7 +3,6 @@
 namespace Samsara\Fermat\Core\Provider;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
@@ -81,7 +80,6 @@ class SequenceProvider
      *
      * @return ImmutableDecimal|NumberCollection
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public static function nthOddNumber(int $n, int $scale = null, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
     {
@@ -210,7 +208,6 @@ class SequenceProvider
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public static function nthBernoulliNumber($n, ?int $scale = null): ImmutableDecimal
     {
@@ -308,7 +305,6 @@ class SequenceProvider
      * @param int $n
      * @return NumberCollection
      * @throws IntegrityConstraint
-     * @throws MissingPackage
      */
     public static function nthPrimeNumbers(int $n): NumberCollection
     {
