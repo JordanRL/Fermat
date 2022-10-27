@@ -112,7 +112,7 @@ trait NumberNormalizationTrait
         if (str_contains($input, '/')) {
             $input = Numbers::makeFractionFromString(Numbers::IMMUTABLE_FRACTION, $input)->setMode($mode);
         } elseif (strrpos($input, '+') || strrpos($input, '-')) {
-            $input = ImmutableComplexNumber::makeFromString(ComplexNumbers::IMMUTABLE_COMPLEX, $input)->setMode($mode);
+            $input = ImmutableComplexNumber::makeFromString($input)->setMode($mode);
         } else {
             $input = (new ImmutableDecimal($input))->setMode($mode);
         }

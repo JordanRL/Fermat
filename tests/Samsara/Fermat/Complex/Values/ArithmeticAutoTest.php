@@ -69,6 +69,7 @@ class ArithmeticAutoTest extends TestCase
             'IComplex (5+5i)+(-5+5i)' => [$a, $d, '10i', ImmutableDecimal::class],
             'IComplex (5+5i)+(5i)' => [$a, $fiveI, '5+10i', ImmutableComplexNumber::class],
             'IComplex (5i)+(5+5i)' => [$fiveI, $a, '5+10i', ImmutableComplexNumber::class],
+            'IComplex (5i)+(5+5i) string' => [$fiveI, '5+5i', '5+10i', ImmutableComplexNumber::class],
             'IComplex (1+1000000000000000000000000000000i)+(5+5i)' => [$e, $a, '6+1000000000000000000000000000005i', ImmutableComplexNumber::class],
             'IComplex (1000000000000000000000000000000+1i)+(5+5i)' => [$f, $a, '1000000000000000000000000000005+6i', ImmutableComplexNumber::class],
             'IComplex (1+0.0000000001i)+(5+5i)' => [$g, $a, '6+5.0000000001i', ImmutableComplexNumber::class],
@@ -132,7 +133,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider additionImmutableComplexProvider
      * @dataProvider additionMutableComplexProvider
      */
-    public function testAdd(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
+    public function testAdd(ComplexNumber|Decimal $a, ComplexNumber|Decimal|string $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -187,6 +188,7 @@ class ArithmeticAutoTest extends TestCase
             'IComplex (5+5i)-(-5+5i)' => [$a, $d, '10', ImmutableDecimal::class],
             'IComplex (5+5i)-(5i)' => [$a, $fiveI, '5', ImmutableDecimal::class],
             'IComplex (5i)-(5+5i)' => [$fiveI, $a, '-5', ImmutableDecimal::class],
+            'IComplex (5i)-(5+5i) string' => [$fiveI, '5+5i', '-5', ImmutableDecimal::class],
             'IComplex (1+1000000000000000000000000000000i)-(5+5i)' => [$e, $a, '-4+999999999999999999999999999995i', ImmutableComplexNumber::class],
             'IComplex (1000000000000000000000000000000+1i)-(5+5i)' => [$f, $a, '999999999999999999999999999995-4i', ImmutableComplexNumber::class],
             'IComplex (1+0.0000000001i)-(5+5i)' => [$g, $a, '-4-4.9999999999i', ImmutableComplexNumber::class],
@@ -250,7 +252,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider subtractionImmutableComplexProvider
      * @dataProvider subtractionMutableComplexProvider
      */
-    public function testSubtract(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
+    public function testSubtract(ComplexNumber|Decimal $a, ComplexNumber|Decimal|string $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -306,6 +308,7 @@ class ArithmeticAutoTest extends TestCase
             'IComplex (5+5i)*(0)' => [$a, $zero, '0', ImmutableDecimal::class],
             'IComplex (5+5i)*(5i)' => [$a, $fiveI, '-25+25i', ImmutableComplexNumber::class],
             'IComplex (5i)*(5+5i)' => [$fiveI, $a, '-25+25i', ImmutableComplexNumber::class],
+            'IComplex (5i)*(5+5i) string' => [$fiveI, '5+5i', '-25+25i', ImmutableComplexNumber::class],
             'IComplex (1+1000000000000000000000000000000i)*(5+5i)' => [$e, $a, '-4999999999999999999999999999995+5000000000000000000000000000005i', ImmutableComplexNumber::class],
             'IComplex (1000000000000000000000000000000+1i)*(5+5i)' => [$f, $a, '4999999999999999999999999999995+5000000000000000000000000000005i', ImmutableComplexNumber::class],
             'IComplex (1+0.0000000001i)*(5+5i)' => [$g, $a, '4.9999999995+5.0000000005i', ImmutableComplexNumber::class],
@@ -371,7 +374,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider multiplicationImmutableComplexProvider
      * @dataProvider multiplicationMutableComplexProvider
      */
-    public function testMultiply(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
+    public function testMultiply(ComplexNumber|Decimal $a, ComplexNumber|Decimal|string $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
@@ -427,6 +430,7 @@ class ArithmeticAutoTest extends TestCase
             'IComplex (5+5i)/(0)' => [$a, $zero, IntegrityConstraint::class, null],
             'IComplex (5+5i)/(5i)' => [$a, $fiveI, '1-1i', ImmutableComplexNumber::class],
             'IComplex (5i)/(5+5i)' => [$fiveI, $a, '0.5+0.5i', ImmutableComplexNumber::class],
+            'IComplex (5i)/(5+5i) string' => [$fiveI, '5+5i', '0.5+0.5i', ImmutableComplexNumber::class],
             'IComplex (1+1000000000000000000000000000000i)/(5+5i)' => [$e, $a, '100000000000000000000000000000.1+99999999999999999999999999999.9i', ImmutableComplexNumber::class],
             'IComplex (1000000000000000000000000000000+1i)/(5+5i)' => [$f, $a, '100000000000000000000000000000.1-99999999999999999999999999999.9i', ImmutableComplexNumber::class],
             'IComplex (1+0.0000000001i)/(5+5i)' => [$g, $a, '0.1-0.1i', ImmutableComplexNumber::class],
@@ -492,7 +496,7 @@ class ArithmeticAutoTest extends TestCase
      * @dataProvider divisionImmutableComplexProvider
      * @dataProvider divisionMutableComplexProvider
      */
-    public function testDivide(ComplexNumber|Decimal $a, ComplexNumber|Decimal $b, string $expected, ?string $resultClass = null)
+    public function testDivide(ComplexNumber|Decimal $a, ComplexNumber|Decimal|string $b, string $expected, ?string $resultClass = null)
     {
         if (str_contains($expected, 'Exception')) {
             $this->expectException($expected);
