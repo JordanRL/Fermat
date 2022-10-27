@@ -28,6 +28,7 @@
   </coverage>
   <logging>
     <junit outputFile="build/logs/junit.xml"/>
+    <testdoxHtml outputFile="build/logs/testdox.html"/>
   </logging>
   <testsuites>
     <testsuite name="Core">

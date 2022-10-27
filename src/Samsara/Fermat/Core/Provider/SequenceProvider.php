@@ -126,7 +126,7 @@ class SequenceProvider
 
             return $sequence;
         }
-        if ($n > (PHP_INT_MAX/2)) {
+        if ($n >= (PHP_INT_MAX/2)) {
             $n = new ImmutableDecimal($n, $scale);
 
             return $n->multiply(2);
@@ -310,17 +310,15 @@ class SequenceProvider
     {
         $collection = new NumberCollection();
 
+        /** @noinspection PhpUnhandledExceptionInspection */
         $collection->push(new ImmutableDecimal(2));
 
+        /** @noinspection PhpUnhandledExceptionInspection */
         $currentPrime = new ImmutableDecimal(3);
 
         for ($i = 1;$i < $n;$i++) {
-            while (!$currentPrime->isPrime()) {
-                $currentPrime = $currentPrime->add(2);
-            }
-
             $collection->push($currentPrime);
-            $currentPrime = $currentPrime->add(2);
+            $currentPrime = self::_nextprime($currentPrime);
         }
 
         return $collection;
@@ -415,8 +413,8 @@ class SequenceProvider
             );
         }
 
-        [$F1, $fib] = self::_fib(new ImmutableDecimal($n-1));
-        [, $F2] = self::_fib($fib);
+        [$F1,] = self::_fib(new ImmutableDecimal($n-1));
+        [,$F2] = self::_fib(new ImmutableDecimal($n));
 
         return $F1->add($F2);
 
@@ -432,7 +430,7 @@ class SequenceProvider
     public static function nthTriangularNumber(int $n): ImmutableDecimal
     {
 
-        if ($n < 1) {
+        if ($n < 0) {
             throw new IntegrityConstraint(
                 'Negative term numbers not valid for Triangular Numbers',
                 'Provide a positive term number',
@@ -449,7 +447,6 @@ class SequenceProvider
     /**
      * @param ImmutableDecimal $number
      * @return ImmutableDecimal[]
-     * @throws IntegrityConstraint
      */
     private static function _fib(ImmutableDecimal $number): array
     {

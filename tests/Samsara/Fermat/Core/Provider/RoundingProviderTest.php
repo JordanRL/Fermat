@@ -467,7 +467,7 @@ class RoundingProviderTest extends TestCase
 
         $this->assertEqualsWithDelta(30, $sum, 10);
 
-        $num1 = new ImmutableDecimal('-1.5');
+        $num1 = new ImmutableDecimal('-1.53674');
 
         $sum = 0;
         for ($i=0;$i<20;$i++) {
