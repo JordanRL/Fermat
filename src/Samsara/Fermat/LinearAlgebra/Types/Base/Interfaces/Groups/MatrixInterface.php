@@ -57,6 +57,6 @@ interface MatrixInterface
 
     public function multiply($value): static;
 
-    public function inverseMatrix(): static;
+    public function getInverseMatrix(): static;
 
 }

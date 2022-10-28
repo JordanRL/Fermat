@@ -6,6 +6,7 @@ namespace Samsara\Fermat\LinearAlgebra\Types\Traits\Matrix;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Types\NumberCollection;
+use Samsara\Fermat\LinearAlgebra\Types\Matrix;
 
 /**
  * @package Samsara\Fermat\LinearAlgebra
@@ -142,9 +143,11 @@ trait DirectAccessTrait
      */
     public function shiftRow(): NumberCollection
     {
-        --$this->numRows;
+        $row = array_shift($this->rows);
 
-        return array_shift($this->rows);
+        $this->normalizeInputData($this->rows, Matrix::MODE_ROWS_INPUT);
+
+        return $row;
     }
 
     /**
@@ -152,9 +155,13 @@ trait DirectAccessTrait
      */
     public function shiftColumn(): NumberCollection
     {
-        --$this->numColumns;
+        $column = array_shift($this->columns);
 
-        return array_shift($this->columns);
+        $this->normalizeInputData($this->columns, Matrix::MODE_COLUMNS_INPUT);
+
+        return $column;
     }
+
+    abstract protected function normalizeInputData(array $data, string $mode): void;
 
 }

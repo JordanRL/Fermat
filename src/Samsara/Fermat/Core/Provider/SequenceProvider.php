@@ -7,6 +7,7 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
@@ -176,6 +177,8 @@ class SequenceProvider
     public static function nthEulerZigzag(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
     {
 
+        self::_validateTerm(new ImmutableDecimal($n));
+
         if ($asCollection) {
             $sequence = new NumberCollection();
 
@@ -203,13 +206,13 @@ class SequenceProvider
      *
      * This function gets very slow if you demand large precision.
      *
-     * @param $n
+     * @param int $n
      * @param int|null $scale
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public static function nthBernoulliNumber($n, ?int $scale = null): ImmutableDecimal
+    public static function nthBernoulliNumber(int $n, ?int $scale = null): ImmutableDecimal
     {
 
         $scale = $scale ?? 5;
@@ -218,21 +221,7 @@ class SequenceProvider
 
         $n = (new ImmutableDecimal($n, $internalScale))->setMode(CalcMode::Precision);
 
-        if (!$n->isWhole()) {
-            throw new IntegrityConstraint(
-                'Only integers may be indexes for Bernoulli numbers',
-                'Ensure only integers are provided as indexes',
-                'An attempt was made to get a Bernoulli number with a non-integer index'
-            );
-        }
-
-        if ($n->isLessThan(0)) {
-            throw new IntegrityConstraint(
-                'Index must be non-negative',
-                'Provide only non-negative indexes for Bernoulli number generation',
-                'An attempt was made to get a Bernoulli number with a negative index'
-            );
-        }
+        self::_validateTerm($n);
 
         if ($n->isEqual(0)) {
             return Numbers::makeOne($scale);
@@ -308,6 +297,8 @@ class SequenceProvider
      */
     public static function nthPrimeNumbers(int $n): NumberCollection
     {
+        self::_validateTerm(new ImmutableDecimal($n));
+
         $collection = new NumberCollection();
 
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -342,13 +333,7 @@ class SequenceProvider
     {
         $n = new ImmutableDecimal($n);
 
-        if ($n->isLessThan(0)) {
-            throw new IntegrityConstraint(
-                'Negative term numbers not valid for Fibonacci Sequence',
-                'Provide a positive term number',
-                'A negative term number for the Fibonacci sequence was requested; provide a positive term number'
-            );
-        }
+        self::_validateTerm($n);
 
         $fastFib = self::_fib($n);
 
@@ -381,13 +366,7 @@ class SequenceProvider
     {
         $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
 
-        if ($n->isLessThan(0)) {
-            throw new IntegrityConstraint(
-                'Negative term numbers not valid for Fibonacci Sequence',
-                'Provide a positive term number',
-                'A negative term number for the Fibonacci sequence was requested; provide a positive term number'
-            );
-        }
+        self::_validateTerm($n);
 
         return self::_fib($n);
     }
@@ -397,24 +376,22 @@ class SequenceProvider
      *
      * @param int $n
      * @return ImmutableDecimal
+     * @throws IntegrityConstraint
      */
     public static function nthLucasNumber(int $n): ImmutableDecimal
     {
+        $n = new ImmutableDecimal($n);
 
-        if ($n == 0) {
+        self::_validateTerm($n);
+
+        if ($n->isEqual(0)) {
             return new ImmutableDecimal(2);
-        } elseif ($n == 1) {
+        } elseif ($n->isEqual(1)) {
             return new ImmutableDecimal(1);
-        } elseif ($n < 0) {
-            throw new IntegrityConstraint(
-                'Negative term numbers not valid for Lucas Numbers',
-                'Provide a positive term number',
-                'A negative term number for the Lucas sequence was requested; provide a positive term number'
-            );
         }
 
-        [$F1,] = self::_fib(new ImmutableDecimal($n-1));
-        [,$F2] = self::_fib(new ImmutableDecimal($n));
+        [$F1,] = self::_fib($n->subtract(1));
+        [,$F2] = self::_fib($n);
 
         return $F1->add($F2);
 
@@ -429,19 +406,28 @@ class SequenceProvider
      */
     public static function nthTriangularNumber(int $n): ImmutableDecimal
     {
-
-        if ($n < 0) {
-            throw new IntegrityConstraint(
-                'Negative term numbers not valid for Triangular Numbers',
-                'Provide a positive term number',
-                'A negative term number for the Triangular Number sequence was requested; provide a positive term number'
-            );
-        }
-
         $n = new ImmutableDecimal($n);
+
+        self::_validateTerm($n);
 
         return $n->multiply($n->add(1))->divide(2);
 
+    }
+
+    /**
+     * @param ImmutableDecimal $n
+     * @return void
+     * @throws IntegrityConstraint
+     */
+    private static function _validateTerm(ImmutableDecimal $n): void
+    {
+        if ($n->isLessThan(0)) {
+            throw new IntegrityConstraint(
+                'Index must be non-negative',
+                'Provide only non-negative indexes for sequence generation',
+                'An attempt was made to get a sequence with a negative index'
+            );
+        }
     }
 
     /**

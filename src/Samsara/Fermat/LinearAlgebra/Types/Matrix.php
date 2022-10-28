@@ -4,8 +4,10 @@ namespace Samsara\Fermat\LinearAlgebra\Types;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\LinearAlgebra\Matrices;
 use Samsara\Fermat\Core\Numbers;
@@ -247,7 +249,7 @@ abstract class Matrix implements MatrixInterface
                 }
             }
         } else {
-            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value);
+            $value = $value instanceof Fraction ? $value->asDecimal() : Numbers::makeOrDont(Numbers::IMMUTABLE, $value);
 
             $resultArray = [];
 
@@ -267,31 +269,73 @@ abstract class Matrix implements MatrixInterface
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function inverseMatrix(): static
+    public function getInverseMatrix(): static
     {
         $determinant = $this->getDeterminant();
         $inverseDeterminant = new ImmutableFraction(Numbers::makeOne(), $determinant);
 
-        $data = $this->rows;
-        $columnCount = $this->getColumnCount();
-
-        $newMatrixData = [];
-
         // TODO: Implement minors & cofactors method https://www.mathsisfun.com/algebra/matrix-inverse-minors-cofactors-adjugate.html
-        for ($i = 0;$i < $columnCount;$i++) {
-            for ($r = 0;$r < $columnCount;$r++) {
-
-            }
+        if ($this->getRowCount() > 2) {
+            $minors = $this->getMatrixOfMinors();
+            $cofactors = $minors->applyAlternatingSigns();
+            $cofactorsAdjoint = $cofactors->getAdjoint();
+        } else {
+            $cofactorsAdjoint = $this->applyAlternatingSigns();
         }
 
-        return $this->multiply($inverseDeterminant);
+        return $cofactorsAdjoint->multiply($inverseDeterminant);
     }
 
-    public function minors()
+    public function getMatrixOfMinors(): static
     {
+        $fn = function(Decimal|Fraction|ComplexNumber $value, int $rowIndex, int $columnIndex) {
+            $minorOf = $this->childMatrix($rowIndex, $columnIndex, true);
+            return $minorOf->getDeterminant();
+        };
 
+        return $this->mapFuction($fn);
+    }
 
+    /**
+     * @return static
+     * @throws IntegrityConstraint
+     */
+    public function applyAlternatingSigns(): static
+    {
+        $fn = function(Decimal|Fraction|ComplexNumber $value, int $rowIndex, int $columnIndex){
+            if (($rowIndex+$columnIndex) % 2 == 1) {
+                return $value->multiply(-1);
+            }
 
+            return $value;
+        };
+
+        return $this->mapFuction($fn);
+    }
+
+    /**
+     * @param callable $fn
+     * @return static
+     */
+    public function mapFuction(callable $fn): static
+    {
+        $rows = [];
+        foreach ($this->rows as $rowIndex => $row) {
+            $rowValues = new NumberCollection();
+            foreach ($row as $columnIndex => $value) {
+                $newValue = $fn($value, $rowIndex, $columnIndex);
+                if (is_null($newValue)) {
+                    continue;
+                }
+                $rowValues->push($newValue);
+            }
+            if ($rowValues->count() == 0) {
+                continue;
+            }
+            $rows[] = $rowValues;
+        }
+
+        return $this->setValue($rows);
     }
 
     /**
@@ -304,7 +348,7 @@ abstract class Matrix implements MatrixInterface
      *
      * @return static
      */
-    protected function childMatrix(int $excludeRow, int $excludeColumn, bool $forceNewMatrix = false): static
+    public function childMatrix(int $excludeRow, int $excludeColumn, bool $forceNewMatrix = false): static
     {
 
         $newRows = [];

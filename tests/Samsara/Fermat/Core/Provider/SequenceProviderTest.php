@@ -227,4 +227,15 @@ class SequenceProviderTest extends TestCase
 
     }
 
+    /**
+     * @small
+     */
+    public function testNegativeTriangularNumber()
+    {
+
+        $this->expectException(IntegrityConstraint::class);
+        SequenceProvider::nthTriangularNumber(-1);
+
+    }
+
 }
