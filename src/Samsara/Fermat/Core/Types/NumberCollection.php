@@ -2,24 +2,26 @@
 
 namespace Samsara\Fermat\Core\Types;
 
+use ArrayAccess;
+use Ds\Vector;
+use IteratorAggregate;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\RandomMode;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Provider\RandomProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface;
-use Ds\Vector;
-use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
-use Samsara\Fermat\Stats\Values\Distribution\Normal;
+use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Stats\Values\Distribution\Exponential;
+use Samsara\Fermat\Stats\Values\Distribution\Normal;
 use Samsara\Fermat\Stats\Values\Distribution\Poisson;
 use Traversable;
 
 /**
  * @package Samsara\Fermat\Core
  */
-class NumberCollection implements NumberCollectionInterface, \ArrayAccess, \IteratorAggregate
+class NumberCollection implements NumberCollectionInterface, ArrayAccess, IteratorAggregate
 {
 
     /**

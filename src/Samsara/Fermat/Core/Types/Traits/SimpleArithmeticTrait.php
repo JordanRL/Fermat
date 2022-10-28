@@ -4,21 +4,21 @@ namespace Samsara\Fermat\Core\Types\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Complex\Types\ComplexNumber;
+use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
+use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcOperation;
-use Samsara\Fermat\Core\Types\Decimal;
-use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticGMPTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticHelperSimpleTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticNativeTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticScaleTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticSelectionTrait;
-use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticNativeTrait;
+use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 use Samsara\Fermat\Core\Values\MutableFraction;
-use Samsara\Fermat\Complex\Types\ComplexNumber;
-use Samsara\Fermat\Complex\Values\MutableComplexNumber;
-use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 
 /**
  * @package Samsara\Fermat\Core

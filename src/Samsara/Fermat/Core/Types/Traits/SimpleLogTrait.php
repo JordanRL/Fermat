@@ -3,10 +3,10 @@
 namespace Samsara\Fermat\Core\Types\Traits;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Base\Traits\LogNativeTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\LogScaleTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\LogSelectionTrait;
+use Samsara\Fermat\Core\Types\Decimal;
 
 /**
  * @package Samsara\Fermat\Core

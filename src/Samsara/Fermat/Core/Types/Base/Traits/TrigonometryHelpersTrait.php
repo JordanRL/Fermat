@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Core\Types\Base\Traits;
 
+use ReflectionException;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
@@ -64,7 +65,7 @@ trait TrigonometryHelpersTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws \ReflectionException
+     * @throws ReflectionException
      * @throws IncompatibleObjectState
      * @throws OptionalExit
      */

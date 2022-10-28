@@ -4,6 +4,7 @@ namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
@@ -12,7 +13,6 @@ use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\Traits\NumberNormalizationTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
-use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 use Samsara\Fermat\Core\Values\MutableFraction;
 

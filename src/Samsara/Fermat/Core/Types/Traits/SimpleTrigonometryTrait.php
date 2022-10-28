@@ -3,10 +3,10 @@
 namespace Samsara\Fermat\Core\Types\Traits;
 
 use Samsara\Fermat\Core\Enums\CalcOperation;
-use Samsara\Fermat\Core\Types\Decimal;
-use Samsara\Fermat\Core\Types\Base\Traits\TrigonometryScaleTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\TrigonometryNativeTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\TrigonometryScaleTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\TrigonometrySelectionTrait;
+use Samsara\Fermat\Core\Types\Decimal;
 
 /**
  * @package Samsara\Fermat\Core

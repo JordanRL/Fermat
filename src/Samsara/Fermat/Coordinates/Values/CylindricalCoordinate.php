@@ -2,10 +2,10 @@
 
 namespace Samsara\Fermat\Coordinates\Values;
 
-use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\CoordinateInterface;
 use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\ThreeDCoordinateInterface;
 use Samsara\Fermat\Coordinates\Types\Coordinate;
+use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**

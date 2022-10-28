@@ -2,17 +2,17 @@
 
 namespace Samsara\Fermat\Stats\Provider;
 
-use Ds\Vector;
+use Ds\Vector as DsVector;
 use ReflectionException;
-use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
+use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Core\Provider\SequenceProvider;
+use Samsara\Fermat\Core\Provider\SeriesProvider;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
-use Samsara\Fermat\Core\Provider\SeriesProvider;
-use Samsara\Fermat\Core\Provider\SequenceProvider;
 
 /**
  * @package Samsara\Fermat\Stats
@@ -21,9 +21,9 @@ class StatsProvider
 {
 
     /**
-     * @var Vector|null
+     * @var DsVector|null
      */
-    protected static ?Vector $inverseErrorCoefs = null;
+    protected static ?DsVector $inverseErrorCoefs = null;
 
     /**
      * @param $x
@@ -53,7 +53,7 @@ class StatsProvider
                 ->multiply($e->pow($eExponent))
                 ->multiply(SeriesProvider::maclaurinSeries(
                     $x,
-                    function ($n) {
+                    function () {
                         return Numbers::makeOne();
                     },
                     function ($n) {
@@ -200,7 +200,7 @@ class StatsProvider
     {
 
         if (is_null(static::$inverseErrorCoefs)) {
-            static::$inverseErrorCoefs = new Vector();
+            static::$inverseErrorCoefs = new DsVector();
             static::$inverseErrorCoefs->push(new ImmutableFraction(Numbers::makeOne(), Numbers::makeOne()));
             static::$inverseErrorCoefs->push(new ImmutableFraction(Numbers::makeOne(), Numbers::makeOne()));
         }

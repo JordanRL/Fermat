@@ -2,14 +2,13 @@
 
 namespace Samsara\Fermat\Core\Types\Traits;
 
-use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Base\Traits\InverseTrigonometryNativeTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\InverseTrigonometryScaleTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\InverseTrigonometrySelectionTrait;
+use Samsara\Fermat\Core\Types\Decimal;
 
 /**
  * @package Samsara\Fermat\Core

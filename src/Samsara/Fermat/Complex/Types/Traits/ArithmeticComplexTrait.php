@@ -13,10 +13,10 @@ use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\Traits\NumberNormalizationTrait;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 use Samsara\Fermat\Core\Values\MutableFraction;
-use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
  * @package Samsara\Fermat\Complex

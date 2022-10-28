@@ -9,8 +9,6 @@ use Samsara\Fermat\Core\Enums\RoundingMode;
 use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Provider\RoundingProvider;
 use Samsara\Fermat\Core\Types\Base\Number;
-use Samsara\Fermat\Core\Values\ImmutableDecimal;
-use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
  * @package Samsara\Fermat\Core

@@ -4,8 +4,8 @@ namespace Samsara\Fermat\Core\Types\Base;
 
 use Ds\Hashable;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
+use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Types\Traits\CalculationModeTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;

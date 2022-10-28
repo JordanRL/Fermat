@@ -2,11 +2,11 @@
 
 namespace Samsara\Fermat\Core\Types\Base\Interfaces\Groups;
 
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
 use Samsara\Fermat\Stats\Values\Distribution\Exponential;
 use Samsara\Fermat\Stats\Values\Distribution\Normal;
 use Samsara\Fermat\Stats\Values\Distribution\Poisson;
-use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
-use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
  * @codeCoverageIgnore

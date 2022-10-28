@@ -5,18 +5,18 @@ namespace Samsara\Fermat\LinearAlgebra\Types;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
+use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Core\Provider\SequenceProvider;
 use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\NumberCollection;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\LinearAlgebra\Matrices;
-use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Provider\SequenceProvider;
 use Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups\MatrixInterface;
 use Samsara\Fermat\LinearAlgebra\Types\Traits\Matrix\DirectAccessTrait;
 use Samsara\Fermat\LinearAlgebra\Types\Traits\Matrix\ShapeTrait;
-use Samsara\Fermat\Core\Values\ImmutableFraction;
-use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
  * @package Samsara\Fermat\LinearAlgebra

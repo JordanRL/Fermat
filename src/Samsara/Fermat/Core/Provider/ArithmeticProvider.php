@@ -4,6 +4,13 @@ namespace Samsara\Fermat\Core\Provider;
 
 use Decimal\Decimal;
 use Samsara\Fermat\Core\Enums\CalcOperation;
+use function bcadd;
+use function bccomp;
+use function bcdiv;
+use function bcmul;
+use function bcpow;
+use function bcsqrt;
+use function bcsub;
 
 /**
  * @package Samsara\Fermat\Core
@@ -83,7 +90,7 @@ class ArithmeticProvider
 
             $result = $result->toFixed($scale, false, Decimal::ROUND_TRUNCATE);
         } else {
-            $result = \bcsqrt($number, $scale);
+            $result = bcsqrt($number, $scale);
         }
         return $result;
     }
@@ -127,12 +134,12 @@ class ArithmeticProvider
         } else {
             /** @noinspection PhpUncoveredEnumCasesInspection */
             $result = match ($operation) {
-                CalcOperation::Addition => \bcadd($left, $right, $scale),
-                CalcOperation::Subtraction => \bcsub($left, $right, $scale),
-                CalcOperation::Multiplication => \bcmul($left, $right, $scale),
-                CalcOperation::Division => \bcdiv($left, $right, $scale),
-                CalcOperation::Power => \bcpow($left, $right, $scale),
-                CalcOperation::Compare => \bccomp($left, $right, $scale),
+                CalcOperation::Addition => bcadd($left, $right, $scale),
+                CalcOperation::Subtraction => bcsub($left, $right, $scale),
+                CalcOperation::Multiplication => bcmul($left, $right, $scale),
+                CalcOperation::Division => bcdiv($left, $right, $scale),
+                CalcOperation::Power => bcpow($left, $right, $scale),
+                CalcOperation::Compare => bccomp($left, $right, $scale),
             };
         }
         return $result;

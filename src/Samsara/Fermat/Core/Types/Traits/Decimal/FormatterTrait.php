@@ -8,7 +8,6 @@ use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\NumberFormat;
 use Samsara\Fermat\Core\Enums\NumberGrouping;
 use Samsara\Fermat\Core\Provider\NumberFormatProvider;
-use Samsara\Fermat\Core\Types\Decimal;
 
 /**
  * @package Samsara\Fermat\Core

@@ -2,7 +2,6 @@
 
 namespace Samsara\Fermat\Expressions\Values\Algebra;
 
-use Samsara\Fermat\Core\Provider\ConstantProvider;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Expressions\Enums\Functions;

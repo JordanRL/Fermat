@@ -10,16 +10,15 @@ use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Provider\BaseConversionProvider;
 use Samsara\Fermat\Core\Provider\RoundingProvider;
 use Samsara\Fermat\Core\Types\Base\Number;
-use Samsara\Fermat\Core\Types\Traits\SimpleArithmeticTrait;
 use Samsara\Fermat\Core\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Core\Types\Traits\Decimal\FormatterTrait;
-use Samsara\Fermat\Core\Types\Traits\IntegerMathTrait;
 use Samsara\Fermat\Core\Types\Traits\Decimal\ScaleTrait;
+use Samsara\Fermat\Core\Types\Traits\IntegerMathTrait;
+use Samsara\Fermat\Core\Types\Traits\SimpleArithmeticTrait;
 use Samsara\Fermat\Core\Types\Traits\SimpleInverseTrigonometryTrait;
 use Samsara\Fermat\Core\Types\Traits\SimpleLogTrait;
 use Samsara\Fermat\Core\Types\Traits\SimpleTrigonometryTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
-use Samsara\Fermat\Core\Values\ImmutableFraction;
 use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**

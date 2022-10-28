@@ -2,12 +2,12 @@
 
 namespace Samsara\Fermat\LinearAlgebra;
 
+use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\SequenceProvider;
-use Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups\MatrixInterface;
 use Samsara\Fermat\Core\Types\NumberCollection;
+use Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups\MatrixInterface;
 use Samsara\Fermat\LinearAlgebra\Values\ImmutableMatrix;
 use Samsara\Fermat\LinearAlgebra\Values\MutableMatrix;
-use Samsara\Fermat\Core\Numbers;
 
 /**
  * @package Samsara\Fermat\LinearAlgebra

@@ -4,9 +4,9 @@ namespace Samsara\Fermat\Complex;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
-use Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Complex\Values\MutableComplexNumber;
+use Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface;
 
 /**
  * @package Samsara\Fermat\Complex

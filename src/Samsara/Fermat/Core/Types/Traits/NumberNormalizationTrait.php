@@ -2,10 +2,7 @@
 
 namespace Samsara\Fermat\Core\Types\Traits;
 
-use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
-use Samsara\Exceptions\UsageError\OptionalExit;
-use Samsara\Fermat\Complex\ComplexNumbers;
 use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcMode;

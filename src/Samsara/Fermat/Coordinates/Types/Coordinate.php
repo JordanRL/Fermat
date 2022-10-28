@@ -5,8 +5,8 @@ namespace Samsara\Fermat\Coordinates\Types;
 use Samsara\Fermat\Coordinates\Types\Base\Interfaces\Coordinates\CoordinateInterface;
 use Samsara\Fermat\Coordinates\Values\CartesianCoordinate;
 use Samsara\Fermat\Core\Types\Decimal;
-use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Types\Tuple;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
  * @package Samsara\Fermat\Coordinates

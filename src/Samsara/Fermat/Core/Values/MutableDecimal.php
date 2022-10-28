@@ -5,9 +5,9 @@ namespace Samsara\Fermat\Core\Values;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
+use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\BaseConversionProvider;
 use Samsara\Fermat\Core\Types\Decimal;
-use Samsara\Fermat\Core\Numbers;
 
 /**
  * @package Samsara\Fermat\Core

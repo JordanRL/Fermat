@@ -6,7 +6,6 @@ use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Number;
 use Samsara\Fermat\Core\Types\Decimal;
-use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 
@@ -42,7 +41,7 @@ trait ComparisonTrait
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
 
             if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-                list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
+                [$thisNumerator, $thatNumerator] = $this->getNumeratorsWithSameDenominator($number);
             } else {
                 $thisNumerator = $this->getNumerator();
                 $thatNumerator = $number->getNumerator();
@@ -75,7 +74,7 @@ trait ComparisonTrait
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
 
             if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-                list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
+                [$thisNumerator, $thatNumerator] = $this->getNumeratorsWithSameDenominator($number);
             } else {
                 $thisNumerator = $this->getNumerator();
                 $thatNumerator = $number->getNumerator();
@@ -108,7 +107,7 @@ trait ComparisonTrait
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
 
             if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-                list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
+                [$thisNumerator, $thatNumerator] = $this->getNumeratorsWithSameDenominator($number);
             } else {
                 $thisNumerator = $this->getNumerator();
                 $thatNumerator = $number->getNumerator();
@@ -141,7 +140,7 @@ trait ComparisonTrait
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
 
             if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-                list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
+                [$thisNumerator, $thatNumerator] = $this->getNumeratorsWithSameDenominator($number);
             } else {
                 $thisNumerator = $this->getNumerator();
                 $thatNumerator = $number->getNumerator();
@@ -175,7 +174,7 @@ trait ComparisonTrait
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
 
             if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-                list($thisNumerator, $thatNumerator) = $this->getNumeratorsWithSameDenominator($number);
+                [$thisNumerator, $thatNumerator] = $this->getNumeratorsWithSameDenominator($number);
             } else {
                 $thisNumerator = $this->getNumerator();
                 $thatNumerator = $number->getNumerator();

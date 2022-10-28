@@ -3,13 +3,13 @@
 namespace Samsara\Fermat\Expressions\Values\Algebra;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\NumberCollection;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Expressions\Enums\Functions;
 use Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables\FunctionInterface;
 use Samsara\Fermat\Expressions\Types\Expression;
-use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Values\ImmutableDecimal;
 
 /**
  * @package Samsara\Fermat\Expressions

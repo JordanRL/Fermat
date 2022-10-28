@@ -7,12 +7,12 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Numbers;
-use Samsara\Fermat\Core\Types\Decimal;
-use Samsara\Fermat\Stats\Types\Distribution;
 use Samsara\Fermat\Core\Provider\RandomProvider;
-use Samsara\Fermat\Stats\Provider\StatsProvider;
+use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Stats\Provider\StatsProvider;
+use Samsara\Fermat\Stats\Types\Distribution;
 
 /**
  * @package Samsara\Fermat\Stats

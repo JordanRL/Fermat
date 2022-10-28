@@ -4,7 +4,6 @@
 namespace Samsara\Fermat\LinearAlgebra\Types\Traits\Matrix;
 
 
-use Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups\MatrixInterface;
 use Samsara\Fermat\Core\Types\NumberCollection;
 
 /**

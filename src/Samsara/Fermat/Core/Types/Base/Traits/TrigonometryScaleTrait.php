@@ -2,6 +2,7 @@
 
 namespace Samsara\Fermat\Core\Types\Base\Traits;
 
+use ReflectionException;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
@@ -39,7 +40,7 @@ trait TrigonometryScaleTrait
      * @param int|null $scale
      * @return string
      * @throws IntegrityConstraint
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function cosScale(?int $scale = null): string
     {

@@ -2,7 +2,6 @@
 
 namespace Samsara\Fermat\LinearAlgebra\Values;
 
-use Samsara\Fermat\LinearAlgebra\Types\Base\Interfaces\Groups\MatrixInterface;
 use Samsara\Fermat\LinearAlgebra\Types\Matrix;
 
 /**

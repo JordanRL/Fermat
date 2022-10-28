@@ -30,7 +30,7 @@ orbs:
           - XDEBUG_MODE: coverage
       php-with-cc-reporter:
         docker:
-          - image: jordanledoux/fermat-base:0.0.2
+          - image: jordanledoux/fermat-base:0.0.3-bcmath
         resource_class: small
         environment:
           - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
@@ -117,7 +117,7 @@ orbs:
           with-parallel:
             type: boolean
             default: false
-        description: "Run all tasks prior to executing tests"
+        description: "Execute tests"
         steps:
           - when:
               condition: <<parameters.decimal>>

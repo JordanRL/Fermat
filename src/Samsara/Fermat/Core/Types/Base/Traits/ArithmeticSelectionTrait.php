@@ -2,7 +2,6 @@
 
 namespace Samsara\Fermat\Core\Types\Base\Traits;
 
-use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\CalcOperation;
