@@ -202,7 +202,6 @@ jobs:
     executor: fermat-unit-testing/php-decimal
     steps:
       - fermat-unit-testing/setup-project:
-          decimal: false
           for-tests: false
       - run:
           name: Generate Docs Using Samsara/Roster
