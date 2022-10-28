@@ -11,12 +11,12 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
  */
 interface FunctionInterface extends ExpressionInterface
 {
-    public function evaluateAt(int|float|string|Decimal $x): ImmutableDecimal;
-
     public function derivativeExpression(): FunctionInterface;
 
-    public function integralExpression(): FunctionInterface;
-
     public function describeShape(): array;
+
+    public function evaluateAt(int|float|string|Decimal $x): ImmutableDecimal;
+
+    public function integralExpression(): FunctionInterface;
 
 }

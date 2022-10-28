@@ -33,32 +33,13 @@ abstract class Matrix implements MatrixInterface
      * Matrix constructor. The array of number collections can be an array of rows, or an array of columns. Default is rows.
      *
      * @param NumberCollection[] $data
-     * @param string $mode
+     * @param string             $mode
      */
     final public function __construct(array $data, string $mode = Matrix::MODE_ROWS_INPUT)
     {
 
         $this->normalizeInputData($data, $mode);
 
-    }
-
-    /**
-     * @param array $data
-     * @param string $mode
-     */
-    protected function normalizeInputData(array $data, string $mode): void
-    {
-        if ($mode === self::MODE_ROWS_INPUT) {
-            $this->rows = $data;
-            $this->columns = self::swapArrayHierarchy($data);
-            $this->numRows = count($this->rows);
-            $this->numColumns = count($this->columns);
-        } elseif ($mode === self::MODE_COLUMNS_INPUT) {
-            $this->columns = $data;
-            $this->rows = self::swapArrayHierarchy($data);
-            $this->numRows = count($this->rows);
-            $this->numColumns = count($this->columns);
-        }
     }
 
     /**
@@ -91,7 +72,40 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
+     * @return static
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public function getInverseMatrix(): static
+    {
+        $determinant = $this->getDeterminant();
+        $inverseDeterminant = new ImmutableFraction(Numbers::makeOne(), $determinant);
+
+        // TODO: Implement minors & cofactors method https://www.mathsisfun.com/algebra/matrix-inverse-minors-cofactors-adjugate.html
+        if ($this->getRowCount() > 2) {
+            $minors = $this->getMatrixOfMinors();
+            $cofactors = $minors->applyAlternatingSigns();
+            $cofactorsAdjoint = $cofactors->getAdjoint();
+        } else {
+            $cofactorsAdjoint = $this->applyAlternatingSigns();
+        }
+
+        return $cofactorsAdjoint->multiply($inverseDeterminant);
+    }
+
+    public function getMatrixOfMinors(): static
+    {
+        $fn = function (Decimal|Fraction|ComplexNumber $value, int $rowIndex, int $columnIndex) {
+            $minorOf = $this->childMatrix($rowIndex, $columnIndex, true);
+            return $minorOf->getDeterminant();
+        };
+
+        return $this->mapFuction($fn);
+    }
+
+    /**
      * @param MatrixInterface $value
+     *
      * @return static
      * @throws IntegrityConstraint
      */
@@ -110,7 +124,7 @@ abstract class Matrix implements MatrixInterface
         foreach ($this->rows as $rowKey => $row) {
             $resultArray[$rowKey] = new NumberCollection();
             /**
-             * @var int $columnKey
+             * @var int     $columnKey
              * @var Decimal $num
              */
             foreach ($row->toArray() as $columnKey => $num) {
@@ -126,6 +140,7 @@ abstract class Matrix implements MatrixInterface
      * addition with the resulting matrix.
      *
      * @param Number $value
+     *
      * @return static
      * @throws IntegrityConstraint
      */
@@ -149,6 +164,7 @@ abstract class Matrix implements MatrixInterface
      * This function takes a scalar input value and adds that value to each position in the matrix directly.
      *
      * @param Number $value
+     *
      * @return static
      * @throws IntegrityConstraint
      */
@@ -161,7 +177,125 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
+     * @return static
+     * @throws IntegrityConstraint
+     */
+    public function applyAlternatingSigns(): static
+    {
+        $fn = function (Decimal|Fraction|ComplexNumber $value, int $rowIndex, int $columnIndex) {
+            if (($rowIndex + $columnIndex) % 2 == 1) {
+                return $value->multiply(-1);
+            }
+
+            return $value;
+        };
+
+        return $this->mapFuction($fn);
+    }
+
+    /**
+     * This function returns a subset of the current matrix as a new matrix with one row and one column removed
+     * from the dataset.
+     *
+     * @param int  $excludeRow
+     * @param int  $excludeColumn
+     * @param bool $forceNewMatrix
+     *
+     * @return static
+     */
+    public function childMatrix(int $excludeRow, int $excludeColumn, bool $forceNewMatrix = false): static
+    {
+
+        $newRows = [];
+
+        for ($i = 0; $i < $this->getRowCount(); $i++) {
+            if ($i === $excludeRow) {
+                continue;
+            }
+
+            $newRows[] = $this->getRow($i)->filterByKeys([$excludeColumn]);
+        }
+
+        return $forceNewMatrix ? new static($newRows) : $this->setValue($newRows);
+
+    }
+
+    /**
+     * @param callable $fn
+     *
+     * @return static
+     */
+    public function mapFuction(callable $fn): static
+    {
+        $rows = [];
+        foreach ($this->rows as $rowIndex => $row) {
+            $rowValues = new NumberCollection();
+            foreach ($row as $columnIndex => $value) {
+                $newValue = $fn($value, $rowIndex, $columnIndex);
+                if (is_null($newValue)) {
+                    continue;
+                }
+                $rowValues->push($newValue);
+            }
+            if ($rowValues->count() == 0) {
+                continue;
+            }
+            $rows[] = $rowValues;
+        }
+
+        return $this->setValue($rows);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return static
+     * @throws IntegrityConstraint
+     */
+    public function multiply($value): static
+    {
+        if ($value instanceof MatrixInterface) {
+            if ($this->getColumnCount() !== $value->getRowCount()) {
+                throw new IntegrityConstraint(
+                    'The columns of matrix A must equal the columns of matrix B.',
+                    'Ensure that compatible matrices are multiplied.',
+                    'Attempted to multiply two matrices that do not have the needed row and column correspondence.'
+                );
+            }
+
+            $resultArray = [];
+
+            foreach ($this->rows as $rowKey => $row) {
+                $resultArray[$rowKey] = new NumberCollection();
+                for ($i = 0; $i < $value->getColumnCount(); $i++) {
+                    $cellVal = Numbers::makeZero();
+                    /** @var Decimal $num */
+                    foreach ($row->toArray() as $index => $num) {
+                        $cellVal = $cellVal->add($num->multiply($value->getColumn($i)->get($index)));
+                    }
+
+                    $resultArray[$rowKey]->push($cellVal);
+                }
+            }
+        } else {
+            $value = $value instanceof Fraction ? $value->asDecimal() : Numbers::makeOrDont(Numbers::IMMUTABLE, $value);
+
+            $resultArray = [];
+
+            foreach ($this->rows as $row) {
+                $newRow = clone $row;
+                $newRow->multiply($value);
+
+                $resultArray[] = $newRow;
+            }
+        }
+
+        return $this->setValue($resultArray, self::MODE_ROWS_INPUT);
+    }
+
+    /**
      * @param MatrixInterface $value
+     *
      * @return static
      * @throws IntegrityConstraint
      */
@@ -180,7 +314,7 @@ abstract class Matrix implements MatrixInterface
         foreach ($this->rows as $rowKey => $row) {
             $resultArray[$rowKey] = new NumberCollection();
             /**
-             * @var int $columnKey
+             * @var int     $columnKey
              * @var Decimal $num
              */
             foreach ($row->toArray() as $columnKey => $num) {
@@ -218,154 +352,6 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @param $value
-     *
-     * @return static
-     * @throws IntegrityConstraint
-     */
-    public function multiply($value): static
-    {
-        if ($value instanceof MatrixInterface) {
-            if ($this->getColumnCount() !== $value->getRowCount()) {
-                throw new IntegrityConstraint(
-                    'The columns of matrix A must equal the columns of matrix B.',
-                    'Ensure that compatible matrices are multiplied.',
-                    'Attempted to multiply two matrices that do not have the needed row and column correspondence.'
-                );
-            }
-
-            $resultArray = [];
-
-            foreach ($this->rows as $rowKey => $row) {
-                $resultArray[$rowKey] = new NumberCollection();
-                for ($i = 0;$i < $value->getColumnCount();$i++) {
-                    $cellVal = Numbers::makeZero();
-                    /** @var Decimal $num */
-                    foreach ($row->toArray() as $index => $num) {
-                        $cellVal = $cellVal->add($num->multiply($value->getColumn($i)->get($index)));
-                    }
-
-                    $resultArray[$rowKey]->push($cellVal);
-                }
-            }
-        } else {
-            $value = $value instanceof Fraction ? $value->asDecimal() : Numbers::makeOrDont(Numbers::IMMUTABLE, $value);
-
-            $resultArray = [];
-
-            foreach ($this->rows as $row) {
-                $newRow = clone $row;
-                $newRow->multiply($value);
-
-                $resultArray[] = $newRow;
-            }
-        }
-
-        return $this->setValue($resultArray, self::MODE_ROWS_INPUT);
-    }
-
-    /**
-     * @return static
-     * @throws IncompatibleObjectState
-     * @throws IntegrityConstraint
-     */
-    public function getInverseMatrix(): static
-    {
-        $determinant = $this->getDeterminant();
-        $inverseDeterminant = new ImmutableFraction(Numbers::makeOne(), $determinant);
-
-        // TODO: Implement minors & cofactors method https://www.mathsisfun.com/algebra/matrix-inverse-minors-cofactors-adjugate.html
-        if ($this->getRowCount() > 2) {
-            $minors = $this->getMatrixOfMinors();
-            $cofactors = $minors->applyAlternatingSigns();
-            $cofactorsAdjoint = $cofactors->getAdjoint();
-        } else {
-            $cofactorsAdjoint = $this->applyAlternatingSigns();
-        }
-
-        return $cofactorsAdjoint->multiply($inverseDeterminant);
-    }
-
-    public function getMatrixOfMinors(): static
-    {
-        $fn = function(Decimal|Fraction|ComplexNumber $value, int $rowIndex, int $columnIndex) {
-            $minorOf = $this->childMatrix($rowIndex, $columnIndex, true);
-            return $minorOf->getDeterminant();
-        };
-
-        return $this->mapFuction($fn);
-    }
-
-    /**
-     * @return static
-     * @throws IntegrityConstraint
-     */
-    public function applyAlternatingSigns(): static
-    {
-        $fn = function(Decimal|Fraction|ComplexNumber $value, int $rowIndex, int $columnIndex){
-            if (($rowIndex+$columnIndex) % 2 == 1) {
-                return $value->multiply(-1);
-            }
-
-            return $value;
-        };
-
-        return $this->mapFuction($fn);
-    }
-
-    /**
-     * @param callable $fn
-     * @return static
-     */
-    public function mapFuction(callable $fn): static
-    {
-        $rows = [];
-        foreach ($this->rows as $rowIndex => $row) {
-            $rowValues = new NumberCollection();
-            foreach ($row as $columnIndex => $value) {
-                $newValue = $fn($value, $rowIndex, $columnIndex);
-                if (is_null($newValue)) {
-                    continue;
-                }
-                $rowValues->push($newValue);
-            }
-            if ($rowValues->count() == 0) {
-                continue;
-            }
-            $rows[] = $rowValues;
-        }
-
-        return $this->setValue($rows);
-    }
-
-    /**
-     * This function returns a subset of the current matrix as a new matrix with one row and one column removed
-     * from the dataset.
-     *
-     * @param int $excludeRow
-     * @param int $excludeColumn
-     * @param bool $forceNewMatrix
-     *
-     * @return static
-     */
-    public function childMatrix(int $excludeRow, int $excludeColumn, bool $forceNewMatrix = false): static
-    {
-
-        $newRows = [];
-
-        for ($i = 0;$i < $this->getRowCount();$i++) {
-            if ($i === $excludeRow) {
-                continue;
-            }
-
-            $newRows[] = $this->getRow($i)->filterByKeys([$excludeColumn]);
-        }
-
-        return $forceNewMatrix ? new static($newRows) : $this->setValue($newRows);
-
-    }
-
-    /**
      * This function takes an input of rows or columns and returns the dataset formatted in the opposite type
      * of input.
      *
@@ -388,6 +374,25 @@ abstract class Matrix implements MatrixInterface
         }
 
         return $swappedArray;
+    }
+
+    /**
+     * @param array  $data
+     * @param string $mode
+     */
+    protected function normalizeInputData(array $data, string $mode): void
+    {
+        if ($mode === self::MODE_ROWS_INPUT) {
+            $this->rows = $data;
+            $this->columns = self::swapArrayHierarchy($data);
+            $this->numRows = count($this->rows);
+            $this->numColumns = count($this->columns);
+        } elseif ($mode === self::MODE_COLUMNS_INPUT) {
+            $this->columns = $data;
+            $this->rows = self::swapArrayHierarchy($data);
+            $this->numRows = count($this->rows);
+            $this->numColumns = count($this->columns);
+        }
     }
 
     abstract protected function setValue(array $data, $mode = Matrix::MODE_ROWS_INPUT): static;

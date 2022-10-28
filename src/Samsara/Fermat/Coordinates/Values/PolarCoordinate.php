@@ -28,7 +28,7 @@ class PolarCoordinate extends Coordinate implements TwoDCoordinateInterface
 
         $data = [
             'rho' => $rho,
-            'theta' => $theta
+            'theta' => $theta,
         ];
 
         parent::__construct($data);
@@ -39,9 +39,9 @@ class PolarCoordinate extends Coordinate implements TwoDCoordinateInterface
         return $this->getAxis('rho');
     }
 
-    public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal
+    public function getPolarAngle(): ImmutableDecimal
     {
-        return $this->asCartesian()->distanceTo($coordinate);
+        return $this->getAxis('theta');
     }
 
     public function asCartesian(?int $scale = null): CartesianCoordinate
@@ -59,14 +59,14 @@ class PolarCoordinate extends Coordinate implements TwoDCoordinateInterface
         return $this->cachedCartesian;
     }
 
-    public function getPolarAngle(): ImmutableDecimal
-    {
-        return $this->getAxis('theta');
-    }
-
     public function asPolar(): PolarCoordinate
     {
         return $this;
+    }
+
+    public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal
+    {
+        return $this->asCartesian()->distanceTo($coordinate);
     }
 
 }

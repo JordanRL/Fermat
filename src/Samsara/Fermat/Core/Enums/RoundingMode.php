@@ -6,7 +6,8 @@ namespace Samsara\Fermat\Core\Enums;
  * @codeCoverageIgnore
  * @package Samsara\Fermat\Core
  */
-enum RoundingMode {
+enum RoundingMode
+{
     // Tie-break modes
     case HalfUp;
     case HalfDown;

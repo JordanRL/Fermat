@@ -16,12 +16,12 @@ interface ComplexNumberInterface
     /**
      * @return ImmutableDecimal|ImmutableFraction
      */
-    public function getRealPart(): ImmutableDecimal|ImmutableFraction;
+    public function getImaginaryPart(): ImmutableDecimal|ImmutableFraction;
 
     /**
      * @return ImmutableDecimal|ImmutableFraction
      */
-    public function getImaginaryPart(): ImmutableDecimal|ImmutableFraction;
+    public function getRealPart(): ImmutableDecimal|ImmutableFraction;
 
     /**
      * @return string

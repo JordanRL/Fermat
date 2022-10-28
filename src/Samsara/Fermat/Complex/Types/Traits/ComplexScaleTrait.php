@@ -23,6 +23,56 @@ trait ComplexScaleTrait
     }
 
     /**
+     * @return ImmutableComplexNumber|MutableComplexNumber|static
+     */
+    public function ceil(): ImmutableComplexNumber|MutableComplexNumber|static
+    {
+        return $this->round(0, RoundingMode::Ceil);
+    }
+
+    /**
+     * @return ImmutableComplexNumber|MutableComplexNumber|static
+     */
+    public function floor(): ImmutableComplexNumber|MutableComplexNumber|static
+    {
+        return $this->round(0, RoundingMode::Floor);
+    }
+
+    /**
+     * @param int               $decimals
+     * @param RoundingMode|null $mode
+     *
+     * @return ImmutableComplexNumber|MutableComplexNumber|static
+     */
+    public function round(
+        int           $decimals = 0,
+        ?RoundingMode $mode = null
+    ): ImmutableComplexNumber|MutableComplexNumber|static
+    {
+        $roundedReal = $this->realPart->round($decimals, $mode);
+        $roundedImaginary = $this->imaginaryPart->round($decimals, $mode);
+
+        return $this->setValue($roundedReal, $roundedImaginary);
+    }
+
+    /**
+     * @param int               $scale
+     * @param RoundingMode|null $mode
+     *
+     * @return ImmutableComplexNumber|MutableComplexNumber|static
+     */
+    public function roundToScale(
+        int           $scale,
+        ?RoundingMode $mode = null
+    ): ImmutableComplexNumber|MutableComplexNumber|static
+    {
+        $roundedReal = $this->realPart->roundToScale($scale, $mode);
+        $roundedImaginary = $this->imaginaryPart->roundToScale($scale, $mode);
+
+        return $this->setValue($roundedReal, $roundedImaginary, $scale);
+    }
+
+    /**
      * @param int $decimals
      *
      * @return ImmutableComplexNumber|MutableComplexNumber|static
@@ -35,22 +85,6 @@ trait ComplexScaleTrait
         $roundedImaginary = $this->imaginaryPart->truncate($decimals);
 
         return $this->setValue($roundedReal, $roundedImaginary);
-    }
-
-    /**
-     * @return ImmutableComplexNumber|MutableComplexNumber|static
-     */
-    public function floor(): ImmutableComplexNumber|MutableComplexNumber|static
-    {
-        return $this->round(0, RoundingMode::Floor);
-    }
-
-    /**
-     * @return ImmutableComplexNumber|MutableComplexNumber|static
-     */
-    public function ceil(): ImmutableComplexNumber|MutableComplexNumber|static
-    {
-        return $this->round(0, RoundingMode::Ceil);
     }
 
     /**
@@ -69,47 +103,16 @@ trait ComplexScaleTrait
     }
 
     /**
-     * @param int $decimals
-     * @param RoundingMode|null $mode
-     * @return ImmutableComplexNumber|MutableComplexNumber|static
-     */
-    public function round(
-        int           $decimals = 0,
-        ?RoundingMode $mode = null
-    ): ImmutableComplexNumber|MutableComplexNumber|static
-    {
-        $roundedReal = $this->realPart->round($decimals, $mode);
-        $roundedImaginary = $this->imaginaryPart->round($decimals, $mode);
-
-        return $this->setValue($roundedReal, $roundedImaginary);
-    }
-
-    /**
-     * @param int $scale
-     * @param RoundingMode|null $mode
-     * @return ImmutableComplexNumber|MutableComplexNumber|static
-     */
-    public function roundToScale(
-        int           $scale,
-        ?RoundingMode $mode = null
-    ): ImmutableComplexNumber|MutableComplexNumber|static
-    {
-        $roundedReal = $this->realPart->roundToScale($scale, $mode);
-        $roundedImaginary = $this->imaginaryPart->roundToScale($scale, $mode);
-
-        return $this->setValue($roundedReal, $roundedImaginary, $scale);
-    }
-
-    /**
      * @param ImmutableDecimal|ImmutableFraction $realPart
      * @param ImmutableDecimal|ImmutableFraction $imaginaryPart
-     * @param int|null $scale
+     * @param int|null                           $scale
+     *
      * @return ImmutableComplexNumber|MutableComplexNumber|static
      */
     abstract protected function setValue(
         ImmutableDecimal|ImmutableFraction $realPart,
         ImmutableDecimal|ImmutableFraction $imaginaryPart,
-        ?int $scale = null
+        ?int                               $scale = null
     ): ImmutableComplexNumber|MutableComplexNumber|static;
 
 }

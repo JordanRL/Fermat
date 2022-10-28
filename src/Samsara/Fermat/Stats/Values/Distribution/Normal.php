@@ -42,7 +42,7 @@ class Normal extends Distribution
     {
         /** @var ImmutableDecimal $mean */
         $mean = Numbers::makeOrDont(Numbers::IMMUTABLE, $mean);
-        /** @var ImmutableDecimal $sd   */
+        /** @var ImmutableDecimal $sd */
         $sd = Numbers::makeOrDont(Numbers::IMMUTABLE, $sd);
 
         $this->mean = $mean;
@@ -72,7 +72,7 @@ class Normal extends Distribution
                 $z,
                 $z->getScale()
             )->abs()
-            ->truncateToScale($z->getScale()-2-$mean->numberOfIntDigits());
+            ->truncateToScale($z->getScale() - 2 - $mean->numberOfIntDigits());
 
         return new Normal($mean, $sd);
     }
@@ -97,17 +97,9 @@ class Normal extends Distribution
 
         $mean = $x->add(
             $z->multiply($sd)
-        )->truncateToScale($z->getScale()-3);
+        )->truncateToScale($z->getScale() - 3);
 
         return new Normal($mean, $sd);
-    }
-
-    /**
-     * @return ImmutableDecimal
-     */
-    public function getSD(): ImmutableDecimal
-    {
-        return $this->sd;
     }
 
     /**
@@ -119,8 +111,49 @@ class Normal extends Distribution
     }
 
     /**
+     * @return ImmutableDecimal
+     */
+    public function getSD(): ImmutableDecimal
+    {
+        return $this->sd;
+    }
+
+    /**
      * @param int|float|string|Decimal $x
-     * @param int $scale
+     * @param int                      $scale
+     *
+     * @return ImmutableDecimal
+     */
+    public function cdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
+    {
+        $internalScale = $scale + 2;
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x, $internalScale);
+
+        $oneHalf = Numbers::make(Numbers::IMMUTABLE, '0.5', $internalScale);
+        $one = Numbers::makeOne();
+        $sqrtTwo = Numbers::make(Numbers::IMMUTABLE, 2, $internalScale)->sqrt();
+
+        /** @var ImmutableDecimal $cdf */
+        $cdf = $oneHalf->multiply(
+            $one->add(
+                StatsProvider::gaussErrorFunction(
+                    $x->subtract($this->mean)
+                        ->divide(
+                            $this->sd->multiply($sqrtTwo),
+                            $internalScale
+                        ),
+                    $internalScale
+                )
+            )
+        );
+
+        return $cdf->roundToScale($scale);
+    }
+
+    /**
+     * @param int|float|string|Decimal $x
+     * @param int                      $scale
+     *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
@@ -150,12 +183,12 @@ class Normal extends Distribution
                 $x->subtract(
                     $this->getMean()
                 )->pow(2)
-                ->divide(
-                    $this->getSD()
-                        ->pow(2)
-                        ->multiply(2),
-                    $internalScale
-                )->multiply(-1)
+                    ->divide(
+                        $this->getSD()
+                            ->pow(2)
+                            ->multiply(2),
+                        $internalScale
+                    )->multiply(-1)
             );
 
         // Return value is not inlined to ensure proper return type for IDE
@@ -164,69 +197,6 @@ class Normal extends Distribution
 
         return $value;
 
-    }
-
-    /**
-     * @param int|float|string|Decimal $x
-     * @param int $scale
-     * @return ImmutableDecimal
-     */
-    public function cdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
-    {
-        $internalScale = $scale + 2;
-        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x, $internalScale);
-
-        $oneHalf = Numbers::make(Numbers::IMMUTABLE, '0.5', $internalScale);
-        $one = Numbers::makeOne();
-        $sqrtTwo = Numbers::make(Numbers::IMMUTABLE, 2, $internalScale)->sqrt();
-
-        /** @var ImmutableDecimal $cdf */
-        $cdf = $oneHalf->multiply(
-                $one->add(
-                    StatsProvider::gaussErrorFunction(
-                        $x->subtract($this->mean)
-                            ->divide(
-                                $this->sd->multiply($sqrtTwo),
-                                $internalScale
-                            ),
-                        $internalScale
-                    )
-                )
-            );
-
-        return $cdf->roundToScale($scale);
-    }
-
-    /**
-     * @param int|float|string|Decimal $x1
-     * @param int|float|string|Decimal $x2
-     *
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     */
-    public function percentBetween(int|float|string|Decimal $x1, int|float|string|Decimal $x2): ImmutableDecimal
-    {
-
-        $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
-
-        /** @var ImmutableDecimal $pdf */
-        $pdf =
-            $this->cdf($x1)
-                ->subtract(
-                    $this->cdf($x2)
-                )->abs();
-
-        return $pdf;
-    }
-
-    /**
-     * @param int|float|string|Decimal $x
-     *
-     * @return ImmutableDecimal
-     */
-    public function percentBelowX(int|float|string|Decimal $x): ImmutableDecimal
-    {
-        return $this->cdf($x);
     }
 
     /**
@@ -249,33 +219,32 @@ class Normal extends Distribution
      * @param int|float|string|Decimal $x
      *
      * @return ImmutableDecimal
-     * @throws IntegrityConstraint
      */
-    public function zScoreOfX(int|float|string|Decimal $x): ImmutableDecimal
+    public function percentBelowX(int|float|string|Decimal $x): ImmutableDecimal
     {
-        /** @var ImmutableDecimal $x */
-        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
-
-        /** @var ImmutableDecimal $z */
-        $z = $x->subtract($this->mean)->divide($this->sd);
-
-        return $z;
+        return $this->cdf($x);
     }
 
     /**
-     * @param int|float|string|Decimal $z
+     * @param int|float|string|Decimal $x1
+     * @param int|float|string|Decimal $x2
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function xFromZScore(int|float|string|Decimal $z): ImmutableDecimal
+    public function percentBetween(int|float|string|Decimal $x1, int|float|string|Decimal $x2): ImmutableDecimal
     {
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
 
-        /** @var ImmutableDecimal $x */
-        $x = $z->multiply($this->sd)->add($this->mean);
+        $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
 
-        return $x->roundToScale(10);
+        /** @var ImmutableDecimal $pdf */
+        $pdf =
+            $this->cdf($x1)
+                ->subtract(
+                    $this->cdf($x2)
+                )->abs();
+
+        return $pdf;
     }
 
     /**
@@ -306,7 +275,7 @@ class Normal extends Distribution
     /**
      * @param int|float|Decimal $min
      * @param int|float|Decimal $max
-     * @param int $maxIterations
+     * @param int               $maxIterations
      *
      * @return ImmutableDecimal
      * @throws OptionalExit
@@ -327,7 +296,7 @@ class Normal extends Distribution
             throw new OptionalExit(
                 'All random numbers generated were outside of the requested range',
                 'Widen the acceptable range of random values, or allow the function to perform mor iterations',
-                'A suitable random number, restricted by the $max ('.$max.') and $min ('.$min.'), could not be found within '.$maxIterations.' iterations'
+                'A suitable random number, restricted by the $max (' . $max . ') and $min (' . $min . '), could not be found within ' . $maxIterations . ' iterations'
             );
         }
 
@@ -335,9 +304,43 @@ class Normal extends Distribution
     }
 
     /**
+     * @param int|float|string|Decimal $z
+     *
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     */
+    public function xFromZScore(int|float|string|Decimal $z): ImmutableDecimal
+    {
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $z);
+
+        /** @var ImmutableDecimal $x */
+        $x = $z->multiply($this->sd)->add($this->mean);
+
+        return $x->roundToScale(10);
+    }
+
+    /**
+     * @param int|float|string|Decimal $x
+     *
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     */
+    public function zScoreOfX(int|float|string|Decimal $x): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $x */
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+
+        /** @var ImmutableDecimal $z */
+        $z = $x->subtract($this->mean)->divide($this->sd);
+
+        return $z;
+    }
+
+    /**
      * @param int|float|string|Decimal $p
      * @param int|float|string|Decimal $x
      * @param int|float|string|Decimal $input
+     *
      * @return ImmutableDecimal[]
      * @throws IntegrityConstraint
      * @throws OptionalExit
@@ -366,7 +369,7 @@ class Normal extends Distribution
         return [
             $x,
             $input,
-            $z
+            $z,
         ];
     }
 

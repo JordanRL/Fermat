@@ -21,15 +21,10 @@ class CylindricalCoordinate extends Coordinate implements ThreeDCoordinateInterf
         $data = [
             'r' => $r,
             'theta' => $theta,
-            'z' => $z
+            'z' => $z,
         ];
 
         parent::__construct($data);
-    }
-
-    public function getRho(): ImmutableDecimal
-    {
-        return $this->getAxis('r');
     }
 
     public function getDistanceFromOrigin(): ImmutableDecimal
@@ -37,9 +32,9 @@ class CylindricalCoordinate extends Coordinate implements ThreeDCoordinateInterf
         return $this->getAxis('r')->pow(2)->add($this->getAxis('z')->pow(2))->sqrt();
     }
 
-    public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal
+    public function getPlanarAngle(): ImmutableDecimal
     {
-        return $this->asCartesian()->distanceTo($coordinate);
+        return $this->getAxis('theta');
     }
 
     public function getPolarAngle(): ImmutableDecimal
@@ -47,9 +42,9 @@ class CylindricalCoordinate extends Coordinate implements ThreeDCoordinateInterf
         return Numbers::makeZero();
     }
 
-    public function getPlanarAngle(): ImmutableDecimal
+    public function getRho(): ImmutableDecimal
     {
-        return $this->getAxis('theta');
+        return $this->getAxis('r');
     }
 
     public function asCartesian(): CartesianCoordinate
@@ -65,6 +60,11 @@ class CylindricalCoordinate extends Coordinate implements ThreeDCoordinateInterf
         return $this->cachedCartesian;
     }
 
+    public function asCylindrical(): CylindricalCoordinate
+    {
+        return $this;
+    }
+
     public function asSpherical(): SphericalCoordinate
     {
         if (is_null($this->cachedSpherical)) {
@@ -78,8 +78,8 @@ class CylindricalCoordinate extends Coordinate implements ThreeDCoordinateInterf
         return $this->cachedSpherical;
     }
 
-    public function asCylindrical(): CylindricalCoordinate
+    public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal
     {
-        return $this;
+        return $this->asCartesian()->distanceTo($coordinate);
     }
 }

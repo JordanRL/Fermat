@@ -20,20 +20,98 @@ trait NumberNormalizationTrait
 {
 
     /**
+     * @param string                 $inputClass
+     * @param Fraction|ComplexNumber $inputObject
+     * @param CalcMode|null          $mode
+     * @param int|null               $scale
+     *
+     * @return ImmutableFraction|ImmutableComplexNumber
+     * @throws IntegrityConstraint
+     */
+    protected static function buildTwoPartNumber(
+        string                 $inputClass,
+        Fraction|ComplexNumber $inputObject,
+        ?CalcMode              $mode,
+        ?int                   $scale
+    ): ImmutableFraction|ImmutableComplexNumber
+    {
+        $inputA = match ($inputClass) {
+            ImmutableFraction::class => $inputObject->getNumerator(),
+            ImmutableComplexNumber::class => $inputObject->getRealPart()
+        };
+        $inputB = match ($inputClass) {
+            ImmutableFraction::class => $inputObject->getDenominator(),
+            ImmutableComplexNumber::class => $inputObject->getImaginaryPart()
+        };
+
+        return (new $inputClass(
+            new ImmutableDecimal(
+                $inputA->getValue(NumberBase::Ten),
+                $scale ?? $inputA->getScale()
+            ),
+            new ImmutableDecimal(
+                $inputB->getValue(NumberBase::Ten),
+                $scale ?? $inputB->getScale()
+            ),
+            $inputClass === ImmutableComplexNumber::class ? $inputObject->getScale() : NumberBase::Ten
+        ))->setMode($mode);
+    }
+
+    /**
+     * @param Fraction|Decimal|ComplexNumber $object
+     * @param CalcMode|null                  $mode
+     * @param int|null                       $scale
+     *
+     * @return ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber
+     * @throws IntegrityConstraint
+     */
+    protected static function normalizeObject(
+        Fraction|Decimal|ComplexNumber $object,
+        ?CalcMode                      $mode,
+        ?int                           $scale = null
+    ): ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber
+    {
+        return match (true) {
+            $object instanceof Fraction => self::buildTwoPartNumber(
+                ImmutableFraction::class,
+                $object,
+                $mode,
+                $scale
+            ),
+            $object instanceof Decimal => (new ImmutableDecimal(
+                $object->getValue(NumberBase::Ten),
+                $scale ?? $object->getScale(),
+                $object->getBase()
+            ))->setMode($mode),
+            $object instanceof ComplexNumber => self::buildTwoPartNumber(
+                ImmutableComplexNumber::class,
+                $object,
+                $mode,
+                $scale
+            ),
+            default => throw new IntegrityConstraint(
+                'Cannot normalize provided object.',
+                'When providing custom value classes, extend the abstract classes.'
+            )
+        };
+    }
+
+    /**
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $partThis
      * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $compareTo
-     * @param int $identity
-     * @param CalcMode|null $mode
-     * @param int|null $scale
+     * @param int                                                       $identity
+     * @param CalcMode|null                                             $mode
+     * @param int|null                                                  $scale
+     *
      * @return ImmutableDecimal[]
      * @throws IntegrityConstraint
      */
     protected static function partSelector(
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $partThis,
         ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $compareTo,
-        int $identity,
-        ?CalcMode $mode,
-        ?int $scale = null
+        int                                                       $identity,
+        ?CalcMode                                                 $mode,
+        ?int                                                      $scale = null
     ): array
     {
 
@@ -51,7 +129,7 @@ trait NumberNormalizationTrait
             $imaginaryPart = match (true) {
                 $compareTo instanceof Fraction => (new ImmutableFraction(
                     new ImmutableDecimal(
-                        $identity.'i',
+                        $identity . 'i',
                         $scale ?? $compareTo->getNumerator()->getScale()
                     ),
                     new ImmutableDecimal(
@@ -61,7 +139,7 @@ trait NumberNormalizationTrait
                     $compareTo->getBase()
                 ))->setMode($mode),
                 default => (new ImmutableDecimal(
-                    $identity.'i',
+                    $identity . 'i',
                     $scale ?? $compareTo->getScale()
                 ))->setMode($mode)
             };
@@ -97,8 +175,9 @@ trait NumberNormalizationTrait
     }
 
     /**
-     * @param string $input
+     * @param string        $input
      * @param CalcMode|null $mode
+     *
      * @return ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction
      * @throws IntegrityConstraint
      */
@@ -119,82 +198,8 @@ trait NumberNormalizationTrait
     }
 
     /**
-     * @param Fraction|Decimal|ComplexNumber $object
-     * @param CalcMode|null $mode
-     * @param int|null $scale
-     * @return ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber
-     * @throws IntegrityConstraint
-     */
-    protected static function normalizeObject(
-        Fraction|Decimal|ComplexNumber $object,
-        ?CalcMode $mode,
-        ?int $scale = null
-    ): ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber
-    {
-        return match (true) {
-            $object instanceof Fraction => self::buildTwoPartNumber(
-                ImmutableFraction::class,
-                $object,
-                $mode,
-                $scale
-            ),
-            $object instanceof Decimal => (new ImmutableDecimal(
-                $object->getValue(NumberBase::Ten),
-                $scale ?? $object->getScale(),
-                $object->getBase()
-            ))->setMode($mode),
-            $object instanceof ComplexNumber => self::buildTwoPartNumber(
-                ImmutableComplexNumber::class,
-                $object,
-                $mode,
-                $scale
-            ),
-            default => throw new IntegrityConstraint(
-                'Cannot normalize provided object.',
-                'When providing custom value classes, extend the abstract classes.'
-            )
-        };
-    }
-
-    /**
-     * @param string $inputClass
-     * @param Fraction|ComplexNumber $inputObject
-     * @param CalcMode|null $mode
-     * @param int|null $scale
-     * @return ImmutableFraction|ImmutableComplexNumber
-     * @throws IntegrityConstraint
-     */
-    protected static function buildTwoPartNumber(
-        string $inputClass,
-        Fraction|ComplexNumber $inputObject,
-        ?CalcMode $mode,
-        ?int $scale
-    ): ImmutableFraction|ImmutableComplexNumber
-    {
-        $inputA = match ($inputClass) {
-            ImmutableFraction::class => $inputObject->getNumerator(),
-            ImmutableComplexNumber::class => $inputObject->getRealPart()
-        };
-        $inputB = match ($inputClass) {
-            ImmutableFraction::class => $inputObject->getDenominator(),
-            ImmutableComplexNumber::class => $inputObject->getImaginaryPart()
-        };
-
-        return (new $inputClass(
-                new ImmutableDecimal(
-                    $inputA->getValue(NumberBase::Ten),
-                    $scale ?? $inputA->getScale()
-                ),
-                new ImmutableDecimal(
-                    $inputB->getValue(NumberBase::Ten),
-                    $scale ?? $inputB->getScale()
-                ),
-                $inputClass === ImmutableComplexNumber::class ? $inputObject->getScale() : NumberBase::Ten
-            ))->setMode($mode);
-    }
-
-    /**
      * @param string|int|float|Decimal|Fraction|ComplexNumber $right
+     *
      * @return ImmutableFraction[]|ImmutableDecimal[]|ImmutableComplexNumber[]
      * @throws IntegrityConstraint
      */

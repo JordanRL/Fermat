@@ -26,48 +26,41 @@ class StatsProvider
     protected static ?DsVector $inverseErrorCoefs = null;
 
     /**
-     * @param $x
+     * @param $n
+     * @param $k
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
-     * @throws OptionalExit
-     * @throws ReflectionException
+     * @throws IncompatibleObjectState
      */
-    public static function normalCDF($x): ImmutableDecimal
+    public static function binomialCoefficient($n, $k): ImmutableDecimal
     {
-        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        $scale = $x->getScale();
-        $internalScale = $scale+2;
+        /** @var ImmutableDecimal $n */
+        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
+        /** @var ImmutableDecimal $k */
+        $k = Numbers::makeOrDont(Numbers::IMMUTABLE, $k);
 
-        $pi = Numbers::makePi($internalScale);
-        $e = Numbers::makeE($internalScale);
-        $one = Numbers::makeOne($internalScale);
+        if ($k->isLessThan(0) || $n->isLessThan($k)) {
+            throw new IntegrityConstraint(
+                '$k must be larger or equal to 0 and less than or equal to $n',
+                'Provide valid $n and $k values such that 0 <= $k <= $n',
+                'For $n choose $k, the values of $n and $k must satisfy the inequality 0 <= $k <= $n'
+            );
+        }
 
-        $eExponent = Numbers::make(Numbers::IMMUTABLE, $x->getValue());
-        $eExponent = $eExponent->pow(2)->divide(2)->multiply(-1);
+        if (!$n->isInt() || !$k->isInt()) {
+            throw new IntegrityConstraint(
+                '$k and $n must be whole numbers',
+                'Provide whole numbers for $n and $k',
+                'For $n choose $k, the values $n and $k must be whole numbers'
+            );
+        }
 
-        $answer = new ImmutableDecimal(0.5);
-        $answer = $answer->add(
-            $one->divide($pi->multiply(2)->sqrt())
-                ->multiply($e->pow($eExponent))
-                ->multiply(SeriesProvider::maclaurinSeries(
-                    $x,
-                    function () {
-                        return Numbers::makeOne();
-                    },
-                    function ($n) {
-                        return SequenceProvider::nthOddNumber($n);
-                    },
-                    function ($n) {
-                        return SequenceProvider::nthOddNumber($n)->doubleFactorial();
-                    },
-                    0,
-                    $internalScale
-                ))
-        );
+        /** @var ImmutableDecimal $return */
+        $return = $n->factorial()->divide($k->factorial()->multiply($n->subtract($k)->factorial()));
 
-        return $answer->truncateToScale($scale);
+        return $return;
 
     }
 
@@ -88,8 +81,9 @@ class StatsProvider
     }
 
     /**
-     * @param $x
+     * @param          $x
      * @param int|null $scale
+     *
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
@@ -134,68 +128,6 @@ class StatsProvider
 
     }
 
-    /**
-     * @param float|int|string|Decimal $p
-     * @param int|null $scale
-     *
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     * @throws OptionalExit
-     * @throws ReflectionException
-     */
-    public static function inverseNormalCDF(float|int|string|Decimal $p, ?int $scale = null): ImmutableDecimal
-    {
-        /** @var ImmutableDecimal $p */
-        $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
-
-        $scale = $scale ?? $p->getScale();
-        $internalScale = $scale + $p->numberOfDecimalDigits();
-
-        $two = Numbers::make(Numbers::IMMUTABLE, 2, $internalScale);
-        $invErfArg = $two->multiply($p)->subtract(1);
-
-        return StatsProvider::inverseGaussErrorFunction($invErfArg, $internalScale)->multiply($two->sqrt($internalScale))->roundToScale($scale);
-    }
-
-    /**
-     * @param $n
-     * @param $k
-     *
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     * @throws IncompatibleObjectState
-     */
-    public static function binomialCoefficient($n, $k): ImmutableDecimal
-    {
-
-        /** @var ImmutableDecimal $n */
-        $n = Numbers::makeOrDont(Numbers::IMMUTABLE, $n);
-        /** @var ImmutableDecimal $k */
-        $k = Numbers::makeOrDont(Numbers::IMMUTABLE, $k);
-
-        if ($k->isLessThan(0) || $n->isLessThan($k)) {
-            throw new IntegrityConstraint(
-                '$k must be larger or equal to 0 and less than or equal to $n',
-                'Provide valid $n and $k values such that 0 <= $k <= $n',
-                'For $n choose $k, the values of $n and $k must satisfy the inequality 0 <= $k <= $n'
-            );
-        }
-
-        if (!$n->isInt() || !$k->isInt()) {
-            throw new IntegrityConstraint(
-                '$k and $n must be whole numbers',
-                'Provide whole numbers for $n and $k',
-                'For $n choose $k, the values $n and $k must be whole numbers'
-            );
-        }
-
-        /** @var ImmutableDecimal $return */
-        $return = $n->factorial()->divide($k->factorial()->multiply($n->subtract($k)->factorial()));
-
-        return $return;
-
-    }
-
     public static function inverseErrorCoefficients(int $termIndex): ImmutableFraction
     {
 
@@ -213,13 +145,13 @@ class StatsProvider
 
         $nextTerm = $terms->count();
 
-        for ($k = $nextTerm;$k <= $termIndex;$k++) {
+        for ($k = $nextTerm; $k <= $termIndex; $k++) {
             $termValue = new ImmutableFraction(new ImmutableDecimal('0'), new ImmutableDecimal('1'));
-            for ($m = 0;$m <= ($k - 1);$m++) {
+            for ($m = 0; $m <= ($k - 1); $m++) {
                 $part1 = $terms->get($m);
                 $part2 = $terms->get($k - 1 - $m);
                 $part3 = $part1->multiply($part2);
-                $part4 = ($m + 1)*($m*2 + 1);
+                $part4 = ($m + 1) * ($m * 2 + 1);
                 $part5 = $part3->divide($part4);
                 $termValue = $termValue->add($part5);
             }
@@ -234,7 +166,7 @@ class StatsProvider
     }
 
     /**
-     * @param $z
+     * @param          $z
      * @param int|null $scale
      *
      * @return ImmutableDecimal
@@ -280,6 +212,75 @@ class StatsProvider
         $answer = $answer->multiply($pi->sqrt($internalScale)->divide(2, $internalScale));
 
         return $answer->roundToScale($scale);
+
+    }
+
+    /**
+     * @param float|int|string|Decimal $p
+     * @param int|null                 $scale
+     *
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws ReflectionException
+     */
+    public static function inverseNormalCDF(float|int|string|Decimal $p, ?int $scale = null): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $p */
+        $p = Numbers::makeOrDont(Numbers::IMMUTABLE, $p);
+
+        $scale = $scale ?? $p->getScale();
+        $internalScale = $scale + $p->numberOfDecimalDigits();
+
+        $two = Numbers::make(Numbers::IMMUTABLE, 2, $internalScale);
+        $invErfArg = $two->multiply($p)->subtract(1);
+
+        return StatsProvider::inverseGaussErrorFunction($invErfArg, $internalScale)->multiply($two->sqrt($internalScale))->roundToScale($scale);
+    }
+
+    /**
+     * @param $x
+     *
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     * @throws OptionalExit
+     * @throws ReflectionException
+     */
+    public static function normalCDF($x): ImmutableDecimal
+    {
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+
+        $scale = $x->getScale();
+        $internalScale = $scale + 2;
+
+        $pi = Numbers::makePi($internalScale);
+        $e = Numbers::makeE($internalScale);
+        $one = Numbers::makeOne($internalScale);
+
+        $eExponent = Numbers::make(Numbers::IMMUTABLE, $x->getValue());
+        $eExponent = $eExponent->pow(2)->divide(2)->multiply(-1);
+
+        $answer = new ImmutableDecimal(0.5);
+        $answer = $answer->add(
+            $one->divide($pi->multiply(2)->sqrt())
+                ->multiply($e->pow($eExponent))
+                ->multiply(SeriesProvider::maclaurinSeries(
+                    $x,
+                    function () {
+                        return Numbers::makeOne();
+                    },
+                    function ($n) {
+                        return SequenceProvider::nthOddNumber($n);
+                    },
+                    function ($n) {
+                        return SequenceProvider::nthOddNumber($n)->doubleFactorial();
+                    },
+                    0,
+                    $internalScale
+                ))
+        );
+
+        return $answer->truncateToScale($scale);
 
     }
 

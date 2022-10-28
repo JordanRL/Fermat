@@ -14,18 +14,17 @@ class Tuple
 {
 
     /**
+     * @var ImmutableDecimal[]
+     */
+    private array $data;
+    /**
      * @var int
      */
     private int $size;
 
     /**
-     * @var ImmutableDecimal[]
-     */
-    private array $data;
-
-
-    /**
      * @param ...$data
+     *
      * @throws IntegrityConstraint
      */
     public function __construct(...$data)
@@ -54,12 +53,12 @@ class Tuple
         throw new IncompatibleObjectState(
             'An index must be set on a tuple before it can be retrieved.',
             'Only request indexes that exist on the tuple you are using.',
-            'Requested index '.$index.' is unset in tuple.'
+            'Requested index ' . $index . ' is unset in tuple.'
         );
     }
 
     /**
-     * @param int $index
+     * @param int              $index
      * @param ImmutableDecimal $value
      *
      * @return $this
@@ -76,7 +75,7 @@ class Tuple
         throw new IncompatibleObjectState(
             'Tuples cannot create new indexes after construction.',
             'Only set values for indexes that already exist. To add an index, create a new tuple.',
-            'Cannot set value for index '.$index.' that does not exist in tuple.'
+            'Cannot set value for index ' . $index . ' that does not exist in tuple.'
         );
     }
 
@@ -89,20 +88,21 @@ class Tuple
     }
 
     /**
-     * @return int
-     */
-    public function size(): int
-    {
-        return $this->size;
-    }
-
-    /**
      * @param int $index
+     *
      * @return bool
      */
     public function hasIndex(int $index): bool
     {
         return array_key_exists($index, $this->data);
+    }
+
+    /**
+     * @return int
+     */
+    public function size(): int
+    {
+        return $this->size;
     }
 
 }

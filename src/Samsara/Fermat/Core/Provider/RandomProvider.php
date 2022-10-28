@@ -24,10 +24,33 @@ class RandomProvider
 {
 
     /**
+     * @param int        $scale
+     * @param RandomMode $mode
+     *
+     * @return ImmutableDecimal
+     * @throws RandomException
+     */
+    public static function randomDecimal(
+        int        $scale = 10,
+        RandomMode $mode = RandomMode::Entropy
+    ): ImmutableDecimal
+    {
+        $randomizer = self::getRandomizer($mode);
+
+        $result = '0.';
+        for ($i = 0; $i < $scale; $i++) {
+            $result .= $randomizer->getInt(0, 9);
+        }
+
+        return new ImmutableDecimal($result, $scale);
+    }
+
+    /**
      * @param int|float|string|Decimal $min
      * @param int|float|string|Decimal $max
-     * @param RandomMode $mode
-     * @param int|null $seed
+     * @param RandomMode               $mode
+     * @param int|null                 $seed
+     *
      * @return ImmutableDecimal
      * @throws RandomException
      * @throws IntegrityConstraint
@@ -37,8 +60,8 @@ class RandomProvider
     public static function randomInt(
         int|float|string|Decimal $min,
         int|float|string|Decimal $max,
-        RandomMode $mode = RandomMode::Entropy,
-        ?int $seed = null
+        RandomMode               $mode = RandomMode::Entropy,
+        ?int                     $seed = null
     ): ImmutableDecimal
     {
         /** @var ImmutableDecimal $minDecimal */
@@ -54,7 +77,7 @@ class RandomProvider
             throw new IntegrityConstraint(
                 'Random integers cannot be generated with boundaries which are floats',
                 'Provide only whole number, integer values for min and max.',
-                'An attempt was made to generate a random integer with boundaries which are non-integers. Min Provided: '.$min->getValue(NumberBase::Ten).' -- Max Provided: '.$max->getValue(NumberBase::Ten)
+                'An attempt was made to generate a random integer with boundaries which are non-integers. Min Provided: ' . $min->getValue(NumberBase::Ten) . ' -- Max Provided: ' . $max->getValue(NumberBase::Ten)
             );
         }
 
@@ -79,11 +102,11 @@ class RandomProvider
          */
         if ($minDecimal->isEqual($maxDecimal)) {
             trigger_error(
-                'Attempted to get a random value for a range of no size, with minimum of '.$minDecimal->getValue(NumberBase::Ten).' and maximum of '.$maxDecimal->getValue(NumberBase::Ten),
+                'Attempted to get a random value for a range of no size, with minimum of ' . $minDecimal->getValue(NumberBase::Ten) . ' and maximum of ' . $maxDecimal->getValue(NumberBase::Ten),
                 E_USER_WARNING
             );
 
-            /** @codeCoverageIgnore  */
+            /** @codeCoverageIgnore */
             return $minDecimal;
         }
 
@@ -114,13 +137,13 @@ class RandomProvider
                 try {
                     $randomValue = '';
 
-                    for ($i = 0; $i < $max->numberOfIntDigits();$i++) {
+                    for ($i = 0; $i < $max->numberOfIntDigits(); $i++) {
                         $randomValue .= $randomizer->getInt(0, 9);
                     }
 
-                /** @codeCoverageIgnore  */
+                    /** @codeCoverageIgnore */
                 } catch (Exception $e) {
-                    /** @codeCoverageIgnore  */
+                    /** @codeCoverageIgnore */
                     throw new OptionalExit(
                         'System error from random_bytes().',
                         'Ensure your system is configured correctly.',
@@ -158,39 +181,19 @@ class RandomProvider
     }
 
     /**
-     * @param int $scale
-     * @param RandomMode $mode
-     * @return ImmutableDecimal
-     * @throws RandomException
-     */
-    public static function randomDecimal(
-        int $scale = 10,
-        RandomMode $mode = RandomMode::Entropy
-    ): ImmutableDecimal
-    {
-        $randomizer = self::getRandomizer($mode);
-
-        $result = '0.';
-        for ($i = 0; $i < $scale; $i++) {
-            $result .= $randomizer->getInt(0, 9);
-        }
-
-        return new ImmutableDecimal($result, $scale);
-    }
-
-    /**
      * @param int|float|string|Decimal $min
      * @param int|float|string|Decimal $max
-     * @param int $scale
-     * @param RandomMode $mode
+     * @param int                      $scale
+     * @param RandomMode               $mode
+     *
      * @return ImmutableDecimal
      * @throws RandomException
      */
     public static function randomReal(
         int|float|string|Decimal $min,
         int|float|string|Decimal $max,
-        int $scale,
-        RandomMode $mode = RandomMode::Entropy
+        int                      $scale,
+        RandomMode               $mode = RandomMode::Entropy
     ): ImmutableDecimal
     {
         $min = new ImmutableDecimal($min);
@@ -198,11 +201,11 @@ class RandomProvider
 
         if ($min->isEqual($max)) {
             trigger_error(
-                'Attempted to get a random value for a range of no size, with minimum of '.$min->getValue(NumberBase::Ten).' and maximum of '.$max->getValue(NumberBase::Ten),
+                'Attempted to get a random value for a range of no size, with minimum of ' . $min->getValue(NumberBase::Ten) . ' and maximum of ' . $max->getValue(NumberBase::Ten),
                 E_USER_WARNING
             );
 
-            /** @codeCoverageIgnore  */
+            /** @codeCoverageIgnore */
             return $min;
         }
 
@@ -219,7 +222,8 @@ class RandomProvider
 
     /**
      * @param RandomMode $mode
-     * @param int|null $seed
+     * @param int|null   $seed
+     *
      * @return Randomizer
      * @throws RandomException
      */

@@ -71,142 +71,13 @@ class SequenceProvider
     ];
 
     /**
-     * OEIS: A005408
-     *
-     * @param int $n
-     * @param int|null $scale
-     * @param bool $asCollection
-     * @param int $collectionSize
-     *
-     * @return ImmutableDecimal|NumberCollection
-     * @throws IntegrityConstraint
-     */
-    public static function nthOddNumber(int $n, int $scale = null, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
-    {
-        if ($asCollection) {
-            $sequence = new NumberCollection();
-
-            for ($i = 0;$i < $collectionSize;$i++) {
-                $sequence->push(self::nthOddNumber($n + $i));
-            }
-
-            return $sequence;
-        }
-
-        if ($n >= (PHP_INT_MAX/2)) {
-            $n = new ImmutableDecimal($n, $scale);
-
-            return $n->multiply(2)->add(1);
-        } else {
-            return new ImmutableDecimal(($n*2)+1, $scale);
-        }
-
-    }
-
-    /**
-     * OEIS: A005843
-     *
-     * @param int $n
-     * @param int|null $scale
-     * @param bool $asCollection
-     * @param int $collectionSize
-     *
-     * @return ImmutableDecimal|NumberCollection
-     * @throws IntegrityConstraint
-     */
-    public static function nthEvenNumber(int $n, int $scale = null, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
-    {
-
-        if ($asCollection) {
-            $sequence = new NumberCollection();
-
-            for ($i = 0;$i < $collectionSize;$i++) {
-                $sequence->push(self::nthEvenNumber($n + $i));
-            }
-
-            return $sequence;
-        }
-        if ($n >= (PHP_INT_MAX/2)) {
-            $n = new ImmutableDecimal($n, $scale);
-
-            return $n->multiply(2);
-        } else {
-            return new ImmutableDecimal(($n*2), $scale);
-        }
-
-    }
-
-    /**
-     * OEIS: A033999
-     *
-     * @param int $n
-     * @param bool $asCollection
-     * @param int $collectionSize
-     *
-     * @return ImmutableDecimal|NumberCollection
-     * @throws IntegrityConstraint
-     */
-    public static function nthPowerNegativeOne(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
-    {
-
-        if ($asCollection) {
-            $sequence = new NumberCollection();
-
-            for ($i = 0;$i < $collectionSize;$i++) {
-                $sequence->push(self::nthPowerNegativeOne($n + $i));
-            }
-
-            return $sequence;
-        }
-
-        return ($n % 2 ? new ImmutableDecimal(-1) : new ImmutableDecimal(1));
-
-    }
-
-    /**
-     * OEIS: A000111
-     *
-     * @param int $n
-     * @param bool $asCollection
-     * @param int $collectionSize
-     *
-     * @return ImmutableDecimal|NumberCollection
-     * @throws IntegrityConstraint
-     */
-    public static function nthEulerZigzag(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
-    {
-
-        self::_validateTerm(new ImmutableDecimal($n));
-
-        if ($asCollection) {
-            $sequence = new NumberCollection();
-
-            for ($i = 0;$i < $collectionSize;$i++) {
-                $sequence->push(self::nthEulerZigzag($n + $i));
-            }
-
-            return $sequence;
-        }
-
-        if ($n > 50) {
-            throw new IntegrityConstraint(
-                '$n cannot be larger than 50',
-                'Limit your use of the Euler Zigzag Sequence to the 50th index',
-                'This library does not support the Euler Zigzag Sequence (OEIS: A000111) beyond E(50)'
-            );
-        }
-
-        return new ImmutableDecimal(static::EULER_ZIGZAG[$n], 100);
-
-    }
-
-    /**
      * Returns the nth Bernoulli Number, where odd indexes return zero, and B1() is -1/2.
      *
      * This function gets very slow if you demand large precision.
      *
-     * @param int $n
+     * @param int      $n
      * @param int|null $scale
+     *
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
@@ -216,7 +87,7 @@ class SequenceProvider
 
         $scale = $scale ?? 5;
 
-        $internalScale = (int)ceil($scale*(log10($scale)+1));
+        $internalScale = (int)ceil($scale * (log10($scale) + 1));
 
         $n = (new ImmutableDecimal($n, $internalScale))->setMode(CalcMode::Precision);
 
@@ -290,28 +161,73 @@ class SequenceProvider
     }
 
     /**
-     * @param int $n
-     * @return NumberCollection
+     * OEIS: A000111
+     *
+     * @param int  $n
+     * @param bool $asCollection
+     * @param int  $collectionSize
+     *
+     * @return ImmutableDecimal|NumberCollection
      * @throws IntegrityConstraint
      */
-    public static function nthPrimeNumbers(int $n): NumberCollection
+    public static function nthEulerZigzag(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
     {
+
         self::_validateTerm(new ImmutableDecimal($n));
 
-        $collection = new NumberCollection();
+        if ($asCollection) {
+            $sequence = new NumberCollection();
 
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $collection->push(new ImmutableDecimal(2));
+            for ($i = 0; $i < $collectionSize; $i++) {
+                $sequence->push(self::nthEulerZigzag($n + $i));
+            }
 
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $currentPrime = new ImmutableDecimal(3);
-
-        for ($i = 1;$i < $n;$i++) {
-            $collection->push($currentPrime);
-            $currentPrime = self::_nextprime($currentPrime);
+            return $sequence;
         }
 
-        return $collection;
+        if ($n > 50) {
+            throw new IntegrityConstraint(
+                '$n cannot be larger than 50',
+                'Limit your use of the Euler Zigzag Sequence to the 50th index',
+                'This library does not support the Euler Zigzag Sequence (OEIS: A000111) beyond E(50)'
+            );
+        }
+
+        return new ImmutableDecimal(static::EULER_ZIGZAG[$n], 100);
+
+    }
+
+    /**
+     * OEIS: A005843
+     *
+     * @param int      $n
+     * @param int|null $scale
+     * @param bool     $asCollection
+     * @param int      $collectionSize
+     *
+     * @return ImmutableDecimal|NumberCollection
+     * @throws IntegrityConstraint
+     */
+    public static function nthEvenNumber(int $n, int $scale = null, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
+    {
+
+        if ($asCollection) {
+            $sequence = new NumberCollection();
+
+            for ($i = 0; $i < $collectionSize; $i++) {
+                $sequence->push(self::nthEvenNumber($n + $i));
+            }
+
+            return $sequence;
+        }
+        if ($n >= (PHP_INT_MAX / 2)) {
+            $n = new ImmutableDecimal($n, $scale);
+
+            return $n->multiply(2);
+        } else {
+            return new ImmutableDecimal(($n * 2), $scale);
+        }
+
     }
 
     /**
@@ -321,9 +237,9 @@ class SequenceProvider
      *
      * https://www.nayuki.io/page/fast-fibonacci-algorithms
      *
-     * @param int $n
+     * @param int  $n
      * @param bool $asCollection
-     * @param int $collectionSize
+     * @param int  $collectionSize
      *
      * @return ImmutableDecimal|NumberCollection
      * @throws IntegrityConstraint
@@ -340,8 +256,8 @@ class SequenceProvider
             $sequence = new NumberCollection();
             $sequence->push($fastFib[0]);
             $sequence->push($fastFib[1]);
-            for ($i = 0;$i < ($collectionSize-2);$i++) {
-                $sequence->push($sequence->get($i)->add($sequence[$i+1]));
+            for ($i = 0; $i < ($collectionSize - 2); $i++) {
+                $sequence->push($sequence->get($i)->add($sequence[$i + 1]));
             }
 
             return $sequence;
@@ -358,6 +274,7 @@ class SequenceProvider
      * https://www.nayuki.io/page/fast-fibonacci-algorithms
      *
      * @param int $n
+     *
      * @return ImmutableDecimal[]
      * @throws IntegrityConstraint
      */
@@ -374,6 +291,7 @@ class SequenceProvider
      * OEIS: A000032
      *
      * @param int $n
+     *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
@@ -390,16 +308,103 @@ class SequenceProvider
         }
 
         [$F1,] = self::_fib($n->subtract(1));
-        [,$F2] = self::_fib($n);
+        [, $F2] = self::_fib($n);
 
         return $F1->add($F2);
 
     }
 
     /**
+     * OEIS: A005408
+     *
+     * @param int      $n
+     * @param int|null $scale
+     * @param bool     $asCollection
+     * @param int      $collectionSize
+     *
+     * @return ImmutableDecimal|NumberCollection
+     * @throws IntegrityConstraint
+     */
+    public static function nthOddNumber(int $n, int $scale = null, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
+    {
+        if ($asCollection) {
+            $sequence = new NumberCollection();
+
+            for ($i = 0; $i < $collectionSize; $i++) {
+                $sequence->push(self::nthOddNumber($n + $i));
+            }
+
+            return $sequence;
+        }
+
+        if ($n >= (PHP_INT_MAX / 2)) {
+            $n = new ImmutableDecimal($n, $scale);
+
+            return $n->multiply(2)->add(1);
+        } else {
+            return new ImmutableDecimal(($n * 2) + 1, $scale);
+        }
+
+    }
+
+    /**
+     * OEIS: A033999
+     *
+     * @param int  $n
+     * @param bool $asCollection
+     * @param int  $collectionSize
+     *
+     * @return ImmutableDecimal|NumberCollection
+     * @throws IntegrityConstraint
+     */
+    public static function nthPowerNegativeOne(int $n, bool $asCollection = false, int $collectionSize = 10): ImmutableDecimal|NumberCollection
+    {
+
+        if ($asCollection) {
+            $sequence = new NumberCollection();
+
+            for ($i = 0; $i < $collectionSize; $i++) {
+                $sequence->push(self::nthPowerNegativeOne($n + $i));
+            }
+
+            return $sequence;
+        }
+
+        return ($n % 2 ? new ImmutableDecimal(-1) : new ImmutableDecimal(1));
+
+    }
+
+    /**
+     * @param int $n
+     *
+     * @return NumberCollection
+     * @throws IntegrityConstraint
+     */
+    public static function nthPrimeNumbers(int $n): NumberCollection
+    {
+        self::_validateTerm(new ImmutableDecimal($n));
+
+        $collection = new NumberCollection();
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $collection->push(new ImmutableDecimal(2));
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $currentPrime = new ImmutableDecimal(3);
+
+        for ($i = 1; $i < $n; $i++) {
+            $collection->push($currentPrime);
+            $currentPrime = self::_nextprime($currentPrime);
+        }
+
+        return $collection;
+    }
+
+    /**
      * OEIS: A000217
      *
      * @param int $n
+     *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
@@ -414,23 +419,8 @@ class SequenceProvider
     }
 
     /**
-     * @param ImmutableDecimal $n
-     * @return void
-     * @throws IntegrityConstraint
-     */
-    private static function _validateTerm(ImmutableDecimal $n): void
-    {
-        if ($n->isLessThan(0)) {
-            throw new IntegrityConstraint(
-                'Index must be non-negative',
-                'Provide only non-negative indexes for sequence generation',
-                'An attempt was made to get a sequence with a negative index'
-            );
-        }
-    }
-
-    /**
      * @param ImmutableDecimal $number
+     *
      * @return ImmutableDecimal[]
      */
     private static function _fib(ImmutableDecimal $number): array
@@ -454,6 +444,23 @@ class SequenceProvider
     private static function _nextprime(ImmutableDecimal $number): ImmutableDecimal
     {
         return new ImmutableDecimal(gmp_strval(gmp_nextprime($number->getValue(NumberBase::Ten))));
+    }
+
+    /**
+     * @param ImmutableDecimal $n
+     *
+     * @return void
+     * @throws IntegrityConstraint
+     */
+    private static function _validateTerm(ImmutableDecimal $n): void
+    {
+        if ($n->isLessThan(0)) {
+            throw new IntegrityConstraint(
+                'Index must be non-negative',
+                'Provide only non-negative indexes for sequence generation',
+                'An attempt was made to get a sequence with a negative index'
+            );
+        }
     }
 
 }

@@ -19,6 +19,7 @@ trait ComparisonTrait
      * Compares this number to another number and returns whether or not they are equal.
      *
      * @param Number|int|string|float $value The value to compare against
+     *
      * @return bool
      * @throws IntegrityConstraint
      */
@@ -56,6 +57,7 @@ trait ComparisonTrait
      * Compares this number to another number and returns true if this number is closer to positive infinity.
      *
      * @param Number|int|string|float $value The value to compare against
+     *
      * @return bool
      * @throws IntegrityConstraint
      */
@@ -86,42 +88,10 @@ trait ComparisonTrait
     }
 
     /**
-     * Compares this number to another number and returns true if this number is closer to negative infinity.
-     *
-     * @param Number|int|string|float $value The value to compare against
-     * @return bool
-     * @throws IntegrityConstraint
-     */
-    public function isLessThan(Number|int|string|float $value): bool
-    {
-        if ($this instanceof Decimal) {
-            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
-
-            if ($this->compare($value) === -1) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            /** @var ImmutableFraction $number */
-            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
-
-            if (!$this->getDenominator()->isEqual($number->getDenominator())) {
-                [$thisNumerator, $thatNumerator] = $this->getNumeratorsWithSameDenominator($number);
-            } else {
-                $thisNumerator = $this->getNumerator();
-                $thatNumerator = $number->getNumerator();
-            }
-
-            return $thisNumerator->isLessThan($thatNumerator);
-        }
-
-    }
-
-    /**
      * Compares this number to another number and returns true if this number is closer to positive infinity or equal.
      *
      * @param Number|int|string|float $value The value to compare against
+     *
      * @return bool
      * @throws IntegrityConstraint
      */
@@ -152,9 +122,62 @@ trait ComparisonTrait
     }
 
     /**
+     * Returns true if this number has no non-zero digits in the decimal part.
+     *
+     * @return bool
+     * @throws IntegrityConstraint
+     */
+    public function isInt(): bool
+    {
+        if ($this instanceof Decimal) {
+            $checkVal = $this->getDecimalPart();
+            $checkVal = trim($checkVal, '0');
+
+            return !($checkVal !== '');
+        }
+
+        return $this->getDenominator()->isEqual(1);
+    }
+
+    /**
+     * Compares this number to another number and returns true if this number is closer to negative infinity.
+     *
+     * @param Number|int|string|float $value The value to compare against
+     *
+     * @return bool
+     * @throws IntegrityConstraint
+     */
+    public function isLessThan(Number|int|string|float $value): bool
+    {
+        if ($this instanceof Decimal) {
+            $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
+
+            if ($this->compare($value) === -1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            /** @var ImmutableFraction $number */
+            $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
+
+            if (!$this->getDenominator()->isEqual($number->getDenominator())) {
+                [$thisNumerator, $thatNumerator] = $this->getNumeratorsWithSameDenominator($number);
+            } else {
+                $thisNumerator = $this->getNumerator();
+                $thatNumerator = $number->getNumerator();
+            }
+
+            return $thisNumerator->isLessThan($thatNumerator);
+        }
+
+    }
+
+    /**
      * Compares this number to another number and returns true if this number is closer to negative infinity or equal.
      *
      * @param Number|int|string|float $value The value to compare against
+     *
      * @return bool
      * @throws IntegrityConstraint
      */
@@ -183,6 +206,17 @@ trait ComparisonTrait
             return $thisNumerator->isLessThanOrEqualTo($thatNumerator);
         }
 
+    }
+
+    /**
+     * Alias for isInt(). Returns true if this number has no non-zero digits in the decimal part.
+     *
+     * @return bool
+     * @throws IntegrityConstraint
+     */
+    public function isNatural(): bool
+    {
+        return $this->isInt();
     }
 
     /**
@@ -229,38 +263,9 @@ trait ComparisonTrait
      * @return bool
      * @throws IntegrityConstraint
      */
-    public function isNatural(): bool
-    {
-        return $this->isInt();
-    }
-
-    /**
-     * Alias for isInt(). Returns true if this number has no non-zero digits in the decimal part.
-     *
-     * @return bool
-     * @throws IntegrityConstraint
-     */
     public function isWhole(): bool
     {
         return $this->isInt();
-    }
-
-    /**
-     * Returns true if this number has no non-zero digits in the decimal part.
-     *
-     * @return bool
-     * @throws IntegrityConstraint
-     */
-    public function isInt(): bool
-    {
-        if ($this instanceof Decimal) {
-            $checkVal = $this->getDecimalPart();
-            $checkVal = trim($checkVal, '0');
-
-            return !($checkVal !== '');
-        }
-
-        return $this->getDenominator()->isEqual(1);
     }
 
 }

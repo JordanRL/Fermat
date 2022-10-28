@@ -17,29 +17,16 @@ class Matrices
     const IMMUTABLE_MATRIX = ImmutableMatrix::class;
     const MUTABLE_MATRIX = MutableMatrix::class;
 
-    public static function zeroMatrix(string $type, int $rows, int $columns): MatrixInterface
+    public static function cofactorMatrix(string $type, int $size)
     {
+
         $matrixData = [];
 
-        for ($i = 0;$i < $rows;$i++) {
-            $matrixData[$i] = new NumberCollection();
-            for ($n = 0;$n < $columns;$n++) {
-                $matrixData[$i]->push(Numbers::makeZero());
-            }
-        }
+        $p = 0;
 
-        return ($type === Matrices::IMMUTABLE_MATRIX) ? new ImmutableMatrix($matrixData) : new MutableMatrix($matrixData);
-    }
-
-    public static function onesMatrix(string $type, int $rows, int $columns): MatrixInterface
-    {
-        $matrixData = [];
-
-        for ($i = 0;$i < $rows;$i++) {
-            $matrixData[$i] = new NumberCollection();
-            for ($n = 0;$n < $columns;$n++) {
-                $matrixData[$i]->push(Numbers::makeOne());
-            }
+        for ($i = 0; $i < $size; $i++) {
+            $matrixData[$i] = SequenceProvider::nthPowerNegativeOne($p, true, $size);
+            $p = ($p === 0 ? 1 : 0);
         }
 
         return ($type === Matrices::IMMUTABLE_MATRIX) ? new ImmutableMatrix($matrixData) : new MutableMatrix($matrixData);
@@ -49,9 +36,9 @@ class Matrices
     {
         $matrixData = [];
 
-        for ($i = 0;$i < $size;$i++) {
+        for ($i = 0; $i < $size; $i++) {
             $matrixData[$i] = new NumberCollection();
-            for ($n = 0;$n < $size;$n++) {
+            for ($n = 0; $n < $size; $n++) {
                 if ($n === $i) {
                     $matrixData[$i]->push(Numbers::makeOne());
                 } else {
@@ -63,16 +50,29 @@ class Matrices
         return ($type === Matrices::IMMUTABLE_MATRIX) ? new ImmutableMatrix($matrixData) : new MutableMatrix($matrixData);
     }
 
-    public static function cofactorMatrix(string $type, int $size)
+    public static function onesMatrix(string $type, int $rows, int $columns): MatrixInterface
     {
-
         $matrixData = [];
 
-        $p = 0;
+        for ($i = 0; $i < $rows; $i++) {
+            $matrixData[$i] = new NumberCollection();
+            for ($n = 0; $n < $columns; $n++) {
+                $matrixData[$i]->push(Numbers::makeOne());
+            }
+        }
 
-        for ($i = 0;$i < $size;$i++) {
-            $matrixData[$i] = SequenceProvider::nthPowerNegativeOne($p, true, $size);
-            $p = ($p === 0 ? 1 : 0);
+        return ($type === Matrices::IMMUTABLE_MATRIX) ? new ImmutableMatrix($matrixData) : new MutableMatrix($matrixData);
+    }
+
+    public static function zeroMatrix(string $type, int $rows, int $columns): MatrixInterface
+    {
+        $matrixData = [];
+
+        for ($i = 0; $i < $rows; $i++) {
+            $matrixData[$i] = new NumberCollection();
+            for ($n = 0; $n < $columns; $n++) {
+                $matrixData[$i]->push(Numbers::makeZero());
+            }
         }
 
         return ($type === Matrices::IMMUTABLE_MATRIX) ? new ImmutableMatrix($matrixData) : new MutableMatrix($matrixData);

@@ -30,14 +30,14 @@ abstract class Fraction extends Number
     /**
      * @param Decimal|string|int|float $numerator The numerator of the fraction
      * @param Decimal|string|int|float $denominator The denominator of the fraction
-     * @param NumberBase $base The base you want this number to have any time the value is retrieved.
+     * @param NumberBase               $base The base you want this number to have any time the value is retrieved.
      *
      * @throws IntegrityConstraint
      */
     final public function __construct(
         Decimal|string|int|float $numerator,
         Decimal|string|int|float $denominator,
-        NumberBase $base = NumberBase::Ten
+        NumberBase               $base = NumberBase::Ten
     )
     {
 
@@ -75,7 +75,7 @@ abstract class Fraction extends Number
 
         $this->value = [
             $numerator,
-            $denominator
+            $denominator,
         ];
 
         $this->base = $base;
@@ -89,20 +89,24 @@ abstract class Fraction extends Number
     }
 
     /**
-     * Allows you to set a mode on a number to select the calculation methods. If this is null, then the default mode in the
-     * CalculationModeProvider at the time a calculation is performed will be used.
+     * Returns the current value as a string in base 10, converted to a real number. If the number is imaginary, the i is
+     * simply not printed. If the number is complex, then the absolute value is returned.
      *
-     * @param CalcMode|null $mode
-     * @return static
+     * @return string
      */
-    public function setMode(?CalcMode $mode): static
+    public function getAsBaseTenRealNumber(): string
     {
-        $this->calcMode = $mode;
+        return $this->getNumerator()->getAsBaseTenRealNumber() . '/' . $this->getDenominator()->getAsBaseTenRealNumber();
+    }
 
-        $this->value[0]->setMode($mode);
-        $this->value[1]->setMode($mode);
-
-        return $this;
+    /**
+     * Returns the ImmutableDecimal instance for the denominator
+     *
+     * @return ImmutableDecimal
+     */
+    public function getDenominator(): ImmutableDecimal
+    {
+        return $this->value[1];
     }
 
     /**
@@ -112,19 +116,54 @@ abstract class Fraction extends Number
      */
     public function getFormattedValue(): string
     {
-        return $this->getNumerator()->getFormattedValue().'/'.$this->getDenominator()->getFormattedValue();
+        return $this->getNumerator()->getFormattedValue() . '/' . $this->getDenominator()->getFormattedValue();
     }
 
     /**
-     * Returns the current value as a string.
+     * Returns the greatest common divisor for the numerator and denominator.
      *
-     * @param NumberBase|null $base If provided, will return the value in the provided base, regardless of the object's base setting.
-     * @return string
+     * @return Decimal
      * @throws IntegrityConstraint
      */
-    public function getValue(?NumberBase $base = null): string
+    public function getGreatestCommonDivisor(): Decimal
     {
-        return $this->getNumerator()->getValue($base).'/'.$this->getDenominator()->getValue($base);
+        return $this->getNumerator()->getGreatestCommonDivisor($this->getDenominator());
+    }
+
+    /**
+     * Returns the ImmutableDecimal instance for the numerator
+     *
+     * @return ImmutableDecimal
+     */
+    public function getNumerator(): ImmutableDecimal
+    {
+        return $this->value[0];
+    }
+
+    /**
+     * Gets the new numerators for two fractions after they have been converted to have the same denominator. The denominator
+     * used is determined by the output of getSmallestCommonDenominator().
+     *
+     * @param Fraction     $fraction The fraction to compare this fraction against.
+     * @param Decimal|null $lcm The common multiple to use. If left null, will use the least common multiple.
+     *
+     * @return ImmutableDecimal[]
+     */
+    public function getNumeratorsWithSameDenominator(Fraction $fraction, Decimal $lcm = null): array
+    {
+
+        $thisNumerator = $this->getNumerator();
+        $thatNumerator = $fraction->getNumerator();
+
+        if (is_null($lcm)) {
+            $lcm = $this->getSmallestCommonDenominator($fraction);
+        }
+
+        $thisNumerator = $thisNumerator->multiply($lcm->divide($this->getDenominator()));
+        $thatNumerator = $thatNumerator->multiply($lcm->divide($fraction->getDenominator()));
+
+        return [$thisNumerator, $thatNumerator];
+
     }
 
     /**
@@ -141,23 +180,61 @@ abstract class Fraction extends Number
     }
 
     /**
-     * Returns the ImmutableDecimal instance for the numerator
+     * Returns the smallest common denominator between two fractions.
+     *
+     * @param Fraction $fraction The fraction to compare this fraction against
      *
      * @return ImmutableDecimal
+     * @throws IntegrityConstraint
      */
-    public function getNumerator(): ImmutableDecimal
+    public function getSmallestCommonDenominator(Fraction $fraction): ImmutableDecimal
     {
-        return $this->value[0];
+        $thisDenominator = $this->getDenominator();
+        $thatDenominator = $fraction->getDenominator();
+
+        return $thisDenominator->getLeastCommonMultiple($thatDenominator);
     }
 
     /**
-     * Returns the ImmutableDecimal instance for the denominator
+     * Returns the current value as a string.
      *
-     * @return ImmutableDecimal
+     * @param NumberBase|null $base If provided, will return the value in the provided base, regardless of the object's base setting.
+     *
+     * @return string
+     * @throws IntegrityConstraint
      */
-    public function getDenominator(): ImmutableDecimal
+    public function getValue(?NumberBase $base = null): string
     {
-        return $this->value[1];
+        return $this->getNumerator()->getValue($base) . '/' . $this->getDenominator()->getValue($base);
+    }
+
+    /**
+     * @param ImmutableDecimal $numerator
+     * @param ImmutableDecimal $denominator
+     *
+     * @return static
+     */
+    abstract protected function setValue(
+        ImmutableDecimal $numerator,
+        ImmutableDecimal $denominator
+    ): static;
+
+    /**
+     * Allows you to set a mode on a number to select the calculation methods. If this is null, then the default mode in the
+     * CalculationModeProvider at the time a calculation is performed will be used.
+     *
+     * @param CalcMode|null $mode
+     *
+     * @return static
+     */
+    public function setMode(?CalcMode $mode): static
+    {
+        $this->calcMode = $mode;
+
+        $this->value[0]->setMode($mode);
+        $this->value[1]->setMode($mode);
+
+        return $this;
     }
 
     /**
@@ -171,22 +248,59 @@ abstract class Fraction extends Number
     }
 
     /**
-     * Simplifies the current fraction to its reduced form.
-     *
-     * @return static
+     * @return ImmutableComplexNumber
      * @throws IntegrityConstraint
-     * @throws IncompatibleObjectState
      */
-    public function simplify(): static
+    public function asComplex(): ImmutableComplexNumber
+    {
+        if ($this->isReal()) {
+            return new ImmutableComplexNumber($this->asReal(), Numbers::makeZero());
+        }
+
+        return new ImmutableComplexNumber(Numbers::makeZero(), $this->asImaginary());
+    }
+
+    /**
+     * Converts the fraction to an ImmutableDecimal by performing the division that the fraction implies.
+     *
+     * @param int $scale
+     *
+     * @return ImmutableDecimal
+     */
+    public function asDecimal(int $scale = 10): ImmutableDecimal
     {
 
-        $gcd = $this->getGreatestCommonDivisor();
+        /** @var ImmutableDecimal $decimal */
+        $decimal = $this->getNumerator()->divide($this->getDenominator(), $scale);
 
-        $numerator = $this->getNumerator()->divide($gcd);
-        $denominator = $this->getDenominator()->divide($gcd);
+        return $decimal;
 
-        return $this->setValue($numerator, $denominator);
+    }
 
+    /**
+     * Returns a new instance of this object with a base ten imaginary number.
+     *
+     * @return ImmutableFraction
+     */
+    public function asImaginary(): ImmutableFraction
+    {
+        return (new ImmutableFraction(
+            $this->getNumerator()->getAsBaseTenRealNumber() . 'i',
+            $this->getDenominator()->getAsBaseTenRealNumber()
+        ))->setMode($this->getMode());
+    }
+
+    /**
+     * Returns a new instance of this object with a base ten real number.
+     *
+     * @return ImmutableFraction
+     */
+    public function asReal(): ImmutableFraction
+    {
+        return (new ImmutableFraction(
+            $this->getNumerator()->getAsBaseTenRealNumber(),
+            $this->getDenominator()->getAsBaseTenRealNumber()
+        ))->setMode($this->getMode());
     }
 
     /**
@@ -215,13 +329,14 @@ abstract class Fraction extends Number
      */
     public function absValue(): string
     {
-        return $this->getNumerator()->absValue().'/'.$this->getDenominator()->absValue();
+        return $this->getNumerator()->absValue() . '/' . $this->getDenominator()->absValue();
     }
 
     /**
      * Returns the sort compare integer (signum) (-1, 0, 1) for the two numbers.
      *
      * @param Number|int|float|string $value
+     *
      * @return int
      */
     public function compare(Number|int|float|string $value): int
@@ -236,130 +351,22 @@ abstract class Fraction extends Number
     }
 
     /**
-     * Converts the fraction to an ImmutableDecimal by performing the division that the fraction implies.
+     * Simplifies the current fraction to its reduced form.
      *
-     * @param int $scale
-     * @return ImmutableDecimal
-     */
-    public function asDecimal(int $scale = 10): ImmutableDecimal
-    {
-
-        /** @var ImmutableDecimal $decimal */
-        $decimal = $this->getNumerator()->divide($this->getDenominator(), $scale);
-
-        return $decimal;
-
-    }
-
-    /**
-     * Returns the greatest common divisor for the numerator and denominator.
-     *
-     * @return Decimal
-     * @throws IntegrityConstraint
-     */
-    public function getGreatestCommonDivisor(): Decimal
-    {
-        return $this->getNumerator()->getGreatestCommonDivisor($this->getDenominator());
-    }
-
-    /**
-     * Returns the smallest common denominator between two fractions.
-     *
-     * @param Fraction $fraction The fraction to compare this fraction against
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     */
-    public function getSmallestCommonDenominator(Fraction $fraction): ImmutableDecimal
-    {
-        $thisDenominator = $this->getDenominator();
-        $thatDenominator = $fraction->getDenominator();
-
-        return $thisDenominator->getLeastCommonMultiple($thatDenominator);
-    }
-
-    /**
-     * Returns the current value as a string in base 10, converted to a real number. If the number is imaginary, the i is
-     * simply not printed. If the number is complex, then the absolute value is returned.
-     *
-     * @return string
-     */
-    public function getAsBaseTenRealNumber(): string
-    {
-        return $this->getNumerator()->getAsBaseTenRealNumber().'/'.$this->getDenominator()->getAsBaseTenRealNumber();
-    }
-
-    /**
-     * Returns a new instance of this object with a base ten real number.
-     *
-     * @return ImmutableFraction
-     */
-    public function asReal(): ImmutableFraction
-    {
-        return (new ImmutableFraction(
-            $this->getNumerator()->getAsBaseTenRealNumber(),
-            $this->getDenominator()->getAsBaseTenRealNumber()
-        ))->setMode($this->getMode());
-    }
-
-    /**
-     * Returns a new instance of this object with a base ten imaginary number.
-     *
-     * @return ImmutableFraction
-     */
-    public function asImaginary(): ImmutableFraction
-    {
-        return (new ImmutableFraction(
-            $this->getNumerator()->getAsBaseTenRealNumber().'i',
-            $this->getDenominator()->getAsBaseTenRealNumber()
-        ))->setMode($this->getMode());
-    }
-
-    /**
-     * Gets the new numerators for two fractions after they have been converted to have the same denominator. The denominator
-     * used is determined by the output of getSmallestCommonDenominator().
-     *
-     * @param Fraction $fraction The fraction to compare this fraction against.
-     * @param Decimal|null $lcm The common multiple to use. If left null, will use the least common multiple.
-     * @return ImmutableDecimal[]
-     */
-    public function getNumeratorsWithSameDenominator(Fraction $fraction, Decimal $lcm = null): array
-    {
-
-        $thisNumerator = $this->getNumerator();
-        $thatNumerator = $fraction->getNumerator();
-
-        if (is_null($lcm)) {
-            $lcm = $this->getSmallestCommonDenominator($fraction);
-        }
-
-        $thisNumerator = $thisNumerator->multiply($lcm->divide($this->getDenominator()));
-        $thatNumerator = $thatNumerator->multiply($lcm->divide($fraction->getDenominator()));
-
-        return [$thisNumerator, $thatNumerator];
-
-    }
-
-    /**
-     * @return ImmutableComplexNumber
-     * @throws IntegrityConstraint
-     */
-    public function asComplex(): ImmutableComplexNumber
-    {
-        if ($this->isReal()) {
-            return new ImmutableComplexNumber($this->asReal(), Numbers::makeZero());
-        }
-
-        return new ImmutableComplexNumber(Numbers::makeZero(), $this->asImaginary());
-    }
-
-    /**
-     * @param ImmutableDecimal $numerator
-     * @param ImmutableDecimal $denominator
      * @return static
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    abstract protected function setValue(
-        ImmutableDecimal $numerator,
-        ImmutableDecimal $denominator
-    ): static;
+    public function simplify(): static
+    {
+
+        $gcd = $this->getGreatestCommonDivisor();
+
+        $numerator = $this->getNumerator()->divide($gcd);
+        $denominator = $this->getDenominator()->divide($gcd);
+
+        return $this->setValue($numerator, $denominator);
+
+    }
 
 }

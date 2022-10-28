@@ -27,8 +27,9 @@ class ModeAdapterFactory
 
     /**
      * @param RoundingMode $mode
-     * @param bool $isNegative
-     * @param string|null $remainder
+     * @param bool         $isNegative
+     * @param string|null  $remainder
+     *
      * @return BaseAdapter
      */
     public static function getAdapter(RoundingMode $mode, bool $isNegative, ?string $remainder): BaseAdapter

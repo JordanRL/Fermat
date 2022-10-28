@@ -14,6 +14,7 @@ class MutableFraction extends Fraction
     /**
      * @param ImmutableDecimal $numerator
      * @param ImmutableDecimal $denominator
+     *
      * @return static
      * @throws IntegrityConstraint
      */
@@ -28,7 +29,7 @@ class MutableFraction extends Fraction
 
         $this->value = [
             $numerator,
-            $denominator
+            $denominator,
         ];
 
         if ($numerator->isNegative() xor $denominator->isNegative()) {

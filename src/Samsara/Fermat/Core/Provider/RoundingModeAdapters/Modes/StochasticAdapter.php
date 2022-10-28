@@ -24,7 +24,7 @@ class StochasticAdapter extends BaseAdapter
             $rangeMax = 9;
         } else {
             $remainder = substr($remainder, 0, 3);
-            $target = (int)($digit.$remainder);
+            $target = (int)($digit . $remainder);
             $rangeMin = 0;
             $rangeMax = (int)str_repeat('9', strlen($remainder) + 1);
         }

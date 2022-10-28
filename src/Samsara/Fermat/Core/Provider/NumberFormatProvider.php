@@ -13,25 +13,64 @@ class NumberFormatProvider
 {
 
     /**
-     * @param string $number
-     * @param Currency $currency
-     * @param NumberFormat|null $format
+     * @param string         $number
+     * @param NumberFormat   $format
+     * @param NumberGrouping $grouping
+     *
+     * @return string
+     */
+    public static function addDelimiter(
+        string         $number,
+        NumberFormat   $format = NumberFormat::English,
+        NumberGrouping $grouping = NumberGrouping::Standard
+    ): string
+    {
+        $numberArr = str_split($number);
+        $numberArr = array_reverse($numberArr);
+        $formatted = '';
+
+        for ($i = 0; $i < count($numberArr); $i++) {
+            $j = $i + 1;
+
+            $formatted = $numberArr[$i] . $formatted;
+
+            if ($grouping == NumberGrouping::Standard) {
+                if ($j % 3 == 0 && array_key_exists($i + 1, $numberArr)) {
+                    $formatted = self::getDelimiterCharacter($format) . $formatted;
+                }
+            } elseif ($grouping == NumberGrouping::Indian) {
+                if ($j == 3 && array_key_exists($i + 1, $numberArr)) {
+                    $formatted = self::getDelimiterCharacter($format) . $formatted;
+                } elseif (($j - 3) % 2 == 0 && ($j - 3) > 0 && array_key_exists($i + 1, $numberArr)) {
+                    $formatted = self::getDelimiterCharacter($format) . $formatted;
+                }
+            }
+        }
+
+        return $formatted;
+    }
+
+    /**
+     * @param string              $number
+     * @param Currency            $currency
+     * @param NumberFormat|null   $format
      * @param NumberGrouping|null $grouping
+     *
      * @return string
      */
     public static function formatCurrency(
-        string $number,
-        Currency $currency,
-        ?NumberFormat $format = null,
+        string          $number,
+        Currency        $currency,
+        ?NumberFormat   $format = null,
         ?NumberGrouping $grouping = null
     ): string
     {
         $number = self::formatNumber($number, $format, $grouping);
 
         if (str_starts_with($number, '(') || str_starts_with($number, '-') || str_starts_with($number, '+')) {
-            $number = str_replace('(', '('.$currency->value, $number);
-            $number = str_replace('-', '-'.$currency->value, $number);
-            $number = str_replace('+', '+'.$currency->value, $number);
+            $number = str_replace('(', '(' . $currency->value, $number);
+            $number = str_replace('-', '-' . $currency->value, $number);
+            $number = str_replace('+', '+' . $currency->value, $number);
         } else {
             $number = $currency->value . $number;
         }
@@ -40,14 +79,15 @@ class NumberFormatProvider
     }
 
     /**
-     * @param string $number
-     * @param NumberFormat|null $format
+     * @param string              $number
+     * @param NumberFormat|null   $format
      * @param NumberGrouping|null $grouping
+     *
      * @return string
      */
     public static function formatNumber(
-        string $number,
-        ?NumberFormat $format = null,
+        string          $number,
+        ?NumberFormat   $format = null,
         ?NumberGrouping $grouping = null
     ): string
     {
@@ -86,6 +126,7 @@ class NumberFormatProvider
 
     /**
      * @param string $number
+     *
      * @return string
      */
     public static function formatScientific(string $number): string
@@ -111,7 +152,7 @@ class NumberFormatProvider
         } else {
             $exponent = strlen($decimalPart) - $decimalSizeNonZero;
             $exponent += 1;
-            $mantissa = substr($decimalPart, $exponent-1, 1) . '.' . substr($decimalPart, $exponent);
+            $mantissa = substr($decimalPart, $exponent - 1, 1) . '.' . substr($decimalPart, $exponent);
             $exponent *= -1;
         }
 
@@ -121,58 +162,25 @@ class NumberFormatProvider
     }
 
     /**
-     * @param string $number
      * @param NumberFormat $format
-     * @param NumberGrouping $grouping
+     *
      * @return string
      */
-    public static function addDelimiter(
-        string $number,
-        NumberFormat $format = NumberFormat::English,
-        NumberGrouping $grouping = NumberGrouping::Standard
-    ): string
-    {
-        $numberArr = str_split($number);
-        $numberArr = array_reverse($numberArr);
-        $formatted = '';
-
-        for ($i = 0;$i < count($numberArr);$i++) {
-            $j = $i + 1;
-
-            $formatted = $numberArr[$i].$formatted;
-
-            if ($grouping == NumberGrouping::Standard) {
-                if ($j % 3 == 0 && array_key_exists($i+1, $numberArr)) {
-                    $formatted = self::getDelimiterCharacter($format).$formatted;
-                }
-            } elseif ($grouping == NumberGrouping::Indian) {
-                if ($j == 3 && array_key_exists($i+1, $numberArr)) {
-                    $formatted = self::getDelimiterCharacter($format).$formatted;
-                } elseif (($j - 3) % 2 == 0 && ($j - 3) > 0 && array_key_exists($i+1, $numberArr)) {
-                    $formatted = self::getDelimiterCharacter($format).$formatted;
-                }
-            }
-        }
-
-        return $formatted;
-    }
-
-    /**
-     * @param NumberFormat $format
-     * @return string
-     */
-    public static function getPositiveCharacter(NumberFormat $format): string
+    public static function getDelimiterCharacter(NumberFormat $format): string
     {
         return match ($format) {
             NumberFormat::EnglishFinance,
+            NumberFormat::English => ',',
             NumberFormat::EuropeanFinance,
-            NumberFormat::TechnicalFinance => '+',
-            default => ''
+            NumberFormat::European => '.',
+            NumberFormat::TechnicalFinance,
+            NumberFormat::Technical => ' ',
         };
     }
 
     /**
      * @param NumberFormat $format
+     *
      * @return string
      */
     public static function getNegativeCharacter(NumberFormat $format): string
@@ -187,6 +195,22 @@ class NumberFormatProvider
 
     /**
      * @param NumberFormat $format
+     *
+     * @return string
+     */
+    public static function getPositiveCharacter(NumberFormat $format): string
+    {
+        return match ($format) {
+            NumberFormat::EnglishFinance,
+            NumberFormat::EuropeanFinance,
+            NumberFormat::TechnicalFinance => '+',
+            default => ''
+        };
+    }
+
+    /**
+     * @param NumberFormat $format
+     *
      * @return string
      */
     public static function getRadixCharacter(NumberFormat $format): string
@@ -195,22 +219,6 @@ class NumberFormatProvider
             NumberFormat::EuropeanFinance,
             NumberFormat::European => ',',
             default => '.'
-        };
-    }
-
-    /**
-     * @param NumberFormat $format
-     * @return string
-     */
-    public static function getDelimiterCharacter(NumberFormat $format): string
-    {
-        return match ($format) {
-            NumberFormat::EnglishFinance,
-            NumberFormat::English => ',',
-            NumberFormat::EuropeanFinance,
-            NumberFormat::European => '.',
-            NumberFormat::TechnicalFinance,
-            NumberFormat::Technical => ' ',
         };
     }
 

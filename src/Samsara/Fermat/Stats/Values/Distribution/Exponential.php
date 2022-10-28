@@ -44,7 +44,8 @@ class Exponential extends Distribution
 
     /**
      * @param int|float|string|Decimal $x
-     * @param int $scale
+     * @param int                      $scale
+     *
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
@@ -82,7 +83,8 @@ class Exponential extends Distribution
 
     /**
      * @param int|float|string|Decimal $x
-     * @param int $scale
+     * @param int                      $scale
+     *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
@@ -122,7 +124,8 @@ class Exponential extends Distribution
     /**
      * @param int|float|string|Decimal $x1
      * @param int|float|string|Decimal $x2
-     * @param int $scale
+     * @param int                      $scale
+     *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
@@ -151,7 +154,7 @@ class Exponential extends Distribution
                     $x1,
                     $internalScale)
             )->abs()
-            ->truncateToScale($scale);
+                ->truncateToScale($scale);
 
         return $rangePdf;
     }
@@ -183,7 +186,7 @@ class Exponential extends Distribution
     /**
      * @param int|float|Decimal $min
      * @param int|float|Decimal $max
-     * @param int $maxIterations
+     * @param int               $maxIterations
      *
      * @return ImmutableDecimal
      * @throws OptionalExit
@@ -203,7 +206,7 @@ class Exponential extends Distribution
         if ($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) {
             throw new OptionalExit(
                 'All random numbers generated were outside of the requested range',
-                'A suitable random number, restricted by the $max ('.$max.') and $min ('.$min.'), could not be found within '.$maxIterations.' iterations'
+                'A suitable random number, restricted by the $max (' . $max . ') and $min (' . $min . '), could not be found within ' . $maxIterations . ' iterations'
             );
         }
 

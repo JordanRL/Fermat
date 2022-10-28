@@ -29,12 +29,31 @@ class BaseConversionProvider
         'C',
         'D',
         'E',
-        'F'
+        'F',
     ];
 
+    public static function _toBasePart(ImmutableDecimal $baseNum, ImmutableDecimal $startVal): string
+    {
+        if ($startVal->isGreaterThan(0)) {
+            $stringVal = '';
+            $runningTotal = Numbers::make(Numbers::IMMUTABLE, $startVal->getAsBaseTenRealNumber());
+            while ($runningTotal->isGreaterThan(0)) {
+                $current = gmp_div_qr($runningTotal->getAsBaseTenRealNumber(), $baseNum->getAsBaseTenRealNumber());
+                $mod = (int)$current[1];
+                $stringVal = self::$chars[$mod] . $stringVal;
+                $runningTotal = Numbers::make(Numbers::IMMUTABLE, $current[0]);
+            }
+        } else {
+            $stringVal = '0';
+        }
+
+        return $stringVal;
+    }
+
     /**
-     * @param Decimal $number
+     * @param Decimal         $number
      * @param NumberBase|null $toBase
+     *
      * @return string
      */
     public static function convertFromBaseTen(Decimal $number, ?NumberBase $toBase = null): string
@@ -45,8 +64,9 @@ class BaseConversionProvider
     }
 
     /**
-     * @param string $number
+     * @param string     $number
      * @param NumberBase $fromBase
+     *
      * @return string
      */
     public static function convertStringToBaseTen(string $number, NumberBase $fromBase): string
@@ -57,25 +77,11 @@ class BaseConversionProvider
             $intPart = self::_fromBase($intPart, $fromBase->value);
             $decPart = strrev(self::_fromBase(strrev($decPart), $fromBase->value));
 
-            return $sign.$intPart.'.'.$decPart;
+            return $sign . $intPart . '.' . $decPart;
         } else {
             $sign = str_starts_with($number, '-') ? '-' : '';
-            return $sign.self::_fromBase($number, $fromBase->value);
+            return $sign . self::_fromBase($number, $fromBase->value);
         }
-    }
-
-    private static function _toBase(Decimal $input, int $base): string
-    {
-        $baseNum = Numbers::make(Numbers::IMMUTABLE, $base, $input->getScale());
-        $inputInt = Numbers::make(Numbers::IMMUTABLE, $input->getWholePart());
-        $inputDec = Numbers::make(Numbers::IMMUTABLE, strrev($input->getDecimalPart()));
-
-        $intPart = self::_toBasePart($baseNum, $inputInt);
-        $decPart = self::_toBasePart($baseNum, $inputDec);
-
-        $sign = $input->isNegative() ? '-' : '';
-
-        return $sign.$intPart.'.'.strrev($decPart);
     }
 
     private static function _fromBase(string $number, int $base): string
@@ -98,22 +104,18 @@ class BaseConversionProvider
         return $output->getAsBaseTenRealNumber();
     }
 
-    public static function _toBasePart(ImmutableDecimal $baseNum, ImmutableDecimal $startVal): string
+    private static function _toBase(Decimal $input, int $base): string
     {
-        if ($startVal->isGreaterThan(0)) {
-            $stringVal = '';
-            $runningTotal = Numbers::make(Numbers::IMMUTABLE, $startVal->getAsBaseTenRealNumber());
-            while ($runningTotal->isGreaterThan(0)) {
-                $current = gmp_div_qr($runningTotal->getAsBaseTenRealNumber(), $baseNum->getAsBaseTenRealNumber());
-                $mod = (int)$current[1];
-                $stringVal = self::$chars[$mod] . $stringVal;
-                $runningTotal = Numbers::make(Numbers::IMMUTABLE, $current[0]);
-            }
-        } else {
-            $stringVal = '0';
-        }
+        $baseNum = Numbers::make(Numbers::IMMUTABLE, $base, $input->getScale());
+        $inputInt = Numbers::make(Numbers::IMMUTABLE, $input->getWholePart());
+        $inputDec = Numbers::make(Numbers::IMMUTABLE, strrev($input->getDecimalPart()));
 
-        return $stringVal;
+        $intPart = self::_toBasePart($baseNum, $inputInt);
+        $decPart = self::_toBasePart($baseNum, $inputDec);
+
+        $sign = $input->isNegative() ? '-' : '';
+
+        return $sign . $intPart . '.' . strrev($decPart);
     }
 
 }

@@ -15,20 +15,20 @@ interface VectorInterface
 
     public function add(VectorInterface $vector): VectorInterface;
 
-    public function subtract(VectorInterface $vector): VectorInterface;
+    public function asMatrix(): MatrixInterface;
+
+    public function asNumberCollection(): NumberCollectionInterface;
+
+    public function asTuple(): Tuple;
 
     public function multiply(int|float|string|Decimal|VectorInterface $value): Decimal|VectorInterface;
 
     public function multiplyScalar(Decimal $number): VectorInterface;
 
-    public function multiplyVectorProduct(VectorInterface $vector): VectorInterface;
-
     public function multiplyScalarProduct(VectorInterface $vector): Decimal;
 
-    public function asTuple(): Tuple;
+    public function multiplyVectorProduct(VectorInterface $vector): VectorInterface;
 
-    public function asMatrix(): MatrixInterface;
-
-    public function asNumberCollection(): NumberCollectionInterface;
+    public function subtract(VectorInterface $vector): VectorInterface;
 
 }

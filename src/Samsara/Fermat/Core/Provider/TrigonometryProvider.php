@@ -13,20 +13,6 @@ class TrigonometryProvider
 {
 
     /**
-     * @param $radians
-     *
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    public static function radiansToDegrees($radians)
-    {
-        $radians = Numbers::makeOrDont(Numbers::IMMUTABLE, $radians);
-        $pi = Numbers::makePi($radians->getScale() + 2);
-        
-        return $radians->multiply(180)->divide($pi, $radians->getScale() + 2)->round($radians->getScale() - 2)->getValue(NumberBase::Ten);
-    }
-
-    /**
      * @param $degrees
      *
      * @return string
@@ -38,6 +24,20 @@ class TrigonometryProvider
         $pi = Numbers::makePi($degrees->getScale() + 1);
 
         return $degrees->multiply($pi)->divide(180)->round($degrees->getScale())->getValue(NumberBase::Ten);
+    }
+
+    /**
+     * @param $radians
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    public static function radiansToDegrees($radians)
+    {
+        $radians = Numbers::makeOrDont(Numbers::IMMUTABLE, $radians);
+        $pi = Numbers::makePi($radians->getScale() + 2);
+
+        return $radians->multiply(180)->divide($pi, $radians->getScale() + 2)->round($radians->getScale() - 2)->getValue(NumberBase::Ten);
     }
 
 }

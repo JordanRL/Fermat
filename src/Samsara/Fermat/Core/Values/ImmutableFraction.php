@@ -14,6 +14,7 @@ class ImmutableFraction extends Fraction
     /**
      * @param ImmutableDecimal $numerator
      * @param ImmutableDecimal $denominator
+     *
      * @return static
      * @throws IntegrityConstraint
      */

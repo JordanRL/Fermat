@@ -21,7 +21,8 @@ class ArithmeticProvider
     /**
      * @param string $number1
      * @param string $number2
-     * @param int $scale
+     * @param int    $scale
+     *
      * @return string
      */
     public static function add(string $number1, string $number2, int $scale = 100): string
@@ -32,29 +33,20 @@ class ArithmeticProvider
     /**
      * @param string $left
      * @param string $right
-     * @param int $scale
-     * @return string
+     * @param int    $scale
+     *
+     * @return int
      */
-    public static function subtract(string $left, string $right, int $scale = 100): string
+    public static function compare(string $left, string $right, int $scale = 100): int
     {
-        return self::performBaseArithmetic($left, $right, $scale, CalcOperation::Subtraction);
-    }
-
-    /**
-     * @param string $number1
-     * @param string $number2
-     * @param int $scale
-     * @return string
-     */
-    public static function multiply(string $number1, string $number2, int $scale = 100): string
-    {
-        return self::performBaseArithmetic($number1, $number2, $scale, CalcOperation::Multiplication);
+        return self::performBaseArithmetic($left, $right, $scale, CalcOperation::Compare);
     }
 
     /**
      * @param string $numerator
      * @param string $denominator
-     * @param int $scale
+     * @param int    $scale
+     *
      * @return string
      */
     public static function divide(string $numerator, string $denominator, int $scale = 100): string
@@ -63,9 +55,22 @@ class ArithmeticProvider
     }
 
     /**
+     * @param string $number1
+     * @param string $number2
+     * @param int    $scale
+     *
+     * @return string
+     */
+    public static function multiply(string $number1, string $number2, int $scale = 100): string
+    {
+        return self::performBaseArithmetic($number1, $number2, $scale, CalcOperation::Multiplication);
+    }
+
+    /**
      * @param string $base
      * @param string $exponent
-     * @param int $scale
+     * @param int    $scale
+     *
      * @return string
      */
     public static function pow(string $base, string $exponent, int $scale = 100): string
@@ -75,15 +80,16 @@ class ArithmeticProvider
 
     /**
      * @param string $number
-     * @param int $scale
+     * @param int    $scale
+     *
      * @return string
      */
     public static function squareRoot(string $number, int $scale = 100): string
     {
         if (extension_loaded('decimal')) {
             $intDigits1 = self::integerDigits($number);
-            $decimalScale = $intDigits1+$scale+1;
-            $decimalScale = max($decimalScale, strlen($number)+1);
+            $decimalScale = $intDigits1 + $scale + 1;
+            $decimalScale = max($decimalScale, strlen($number) + 1);
             $number = new Decimal($number, $decimalScale);
 
             $result = $number->sqrt();
@@ -98,18 +104,24 @@ class ArithmeticProvider
     /**
      * @param string $left
      * @param string $right
-     * @param int $scale
-     * @return int
+     * @param int    $scale
+     *
+     * @return string
      */
-    public static function compare(string $left, string $right, int $scale = 100): int
+    public static function subtract(string $left, string $right, int $scale = 100): string
     {
-        return self::performBaseArithmetic($left, $right, $scale, CalcOperation::Compare);
+        return self::performBaseArithmetic($left, $right, $scale, CalcOperation::Subtraction);
+    }
+
+    private static function integerDigits(string $number): int
+    {
+        return strlen($number);
     }
 
     private static function performBaseArithmetic(
-        string $left,
-        string $right,
-        int $scale,
+        string        $left,
+        string        $right,
+        int           $scale,
         CalcOperation $operation
     ): string|int
     {
@@ -117,8 +129,8 @@ class ArithmeticProvider
             $intDigits1 = self::integerDigits($left);
             $intDigits2 = self::integerDigits($right);
             $decimalScale = max($intDigits1, $intDigits2);
-            $decimalScale = $decimalScale+$scale+1;
-            $decimalScale = max($decimalScale, strlen($left)+1, strlen($right)+1);
+            $decimalScale = $decimalScale + $scale + 1;
+            $decimalScale = max($decimalScale, strlen($left) + 1, strlen($right) + 1);
             $number1 = new Decimal($left, $decimalScale);
             $number2 = new Decimal($right, $decimalScale);
 
@@ -143,11 +155,6 @@ class ArithmeticProvider
             };
         }
         return $result;
-    }
-
-    private static function integerDigits(string $number): int
-    {
-        return strlen($number);
     }
 
 }

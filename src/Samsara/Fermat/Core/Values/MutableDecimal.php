@@ -17,6 +17,7 @@ class MutableDecimal extends Decimal
 
     /**
      * @param Decimal|string|int|float $mod
+     *
      * @return static
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
@@ -24,8 +25,8 @@ class MutableDecimal extends Decimal
     public function continuousModulo(Decimal|string|int|float $mod): static
     {
 
-        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, $this->scale+1);
-        $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $this->scale+1);
+        $mod = Numbers::makeOrDont(Numbers::IMMUTABLE, $mod, $this->scale + 1);
+        $oldNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $this->scale + 1);
 
         $multiple = $oldNum->divide($mod)->floor();
         $multipleCeil = $multiple->ceil();
@@ -39,15 +40,16 @@ class MutableDecimal extends Decimal
 
         $remainder = $oldNum->subtract($mod->multiply($multiple));
 
-        return new static($remainder->truncate($this->scale-1)->getValue(NumberBase::Ten), $this->scale-1, $this->getBase());
+        return new static($remainder->truncate($this->scale - 1)->getValue(NumberBase::Ten), $this->scale - 1, $this->getBase());
 
     }
 
     /**
-     * @param string $value
-     * @param int|null $scale
+     * @param string          $value
+     * @param int|null        $scale
      * @param NumberBase|null $base
-     * @param bool $setToNewBase
+     * @param bool            $setToNewBase
+     *
      * @return MutableDecimal
      */
     protected function setValue(string $value, ?int $scale = null, ?NumberBase $base = null, bool $setToNewBase = false): self

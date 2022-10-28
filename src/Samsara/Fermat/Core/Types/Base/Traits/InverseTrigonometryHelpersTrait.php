@@ -19,155 +19,187 @@ trait InverseTrigonometryHelpersTrait
 {
 
     /**
-     * @param ImmutableDecimal $num
-     * @param int|null $scale
-     * @return ImmutableDecimal
+     * @param CalcOperation $operation
+     * @param int|null      $scale
+     * @param bool          $round
+     *
+     * @return static|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      */
-    protected function helperArctanGCF(ImmutableDecimal $num, ?int $scale): ImmutableDecimal
+    protected function helperArcBasicSimple(
+        CalcOperation $operation,
+        ?int          $scale,
+        bool          $round
+    ): static|ImmutableDecimal|MutableDecimal
     {
-        $scale = $scale ?? $this->getScale();
-        $intScale = $scale + 3;
-        $terms = $intScale * 2;
-        $x = new ImmutableDecimal($num, $intScale);
+        $finalScale = $scale ?? $this->getScale();
+
+        /** @noinspection PhpUncoveredEnumCasesInspection */
+        $answer = match ($operation) {
+            CalcOperation::ArcTan => $this->arctanSelector($scale),
+            CalcOperation::ArcCot => $this->arccotSelector($scale),
+            CalcOperation::ArcSin => $this->arcsinSelector($scale),
+            CalcOperation::ArcCos => $this->arccosSelector($scale),
+        };
+
+        if ($round) {
+            $result = $this->setValue($answer)->roundToScale($finalScale);
+        } else {
+            $result = $this->setValue($answer)->truncateToScale($finalScale);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param ImmutableDecimal $one
+     * @param ImmutableDecimal $z
+     * @param int|null         $intScale
+     *
+     * @return callable|ContinuedFractionTermInterface
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    protected function helperArcsecArccscAPart(
+        ImmutableDecimal $one,
+        ImmutableDecimal $z,
+        ?int             $intScale): callable|ContinuedFractionTermInterface
+    {
+        $oneDivZSquared = $one->divide($z->pow(2));
+        $oneDivZ = $one->divide($z, $intScale);
+
         /**
          * @package Samsara\Fermat\Core
          */
-        $aPart = new class($x) implements ContinuedFractionTermInterface {
-            private ImmutableDecimal $x;
+        return new class($oneDivZSquared, $oneDivZ, $one) implements ContinuedFractionTermInterface {
+            private ImmutableDecimal $oneDivZSq;
+            private ImmutableDecimal $oneDivZ;
+            private ImmutableDecimal $one;
 
             /**
-             * @param ImmutableDecimal $x
+             * @param ImmutableDecimal $oneDivZSq
+             * @param ImmutableDecimal $oneDivZ
+             * @param ImmutableDecimal $one
              */
-            public function __construct(ImmutableDecimal $x)
+            public function __construct(ImmutableDecimal $oneDivZSq, ImmutableDecimal $oneDivZ, ImmutableDecimal $one)
             {
-                $this->x = $x;
+                $this->oneDivZSq = $oneDivZSq;
+                $this->oneDivZ = $oneDivZ;
+                $this->one = $one;
             }
 
             /**
              * @param int $n
+             *
              * @return ImmutableDecimal
              */
             public function __invoke(int $n): ImmutableDecimal
             {
                 if ($n == 1) {
-                    return $this->x;
+                    return $this->oneDivZ->multiply($this->one->subtract($this->oneDivZSq)->sqrt());
                 }
 
-                return $this->x->multiply($n-1)->pow(2);
+                $subterm = floor($n / 2);
+
+                return $this->oneDivZSq->multiply(
+                    2 * $subterm - 1
+                )->multiply(2 * $subterm);
             }
         };
+    }
 
+    /**
+     * @param int              $intScale
+     * @param ImmutableDecimal $zeroTerm
+     *
+     * @return callable|ContinuedFractionTermInterface
+     */
+    protected function helperArcsecArccscBPart(
+        int              $intScale,
+        ImmutableDecimal $zeroTerm
+    ): callable|ContinuedFractionTermInterface
+    {
         /**
          * @package Samsara\Fermat\Core
          */
-        $bPart = new class($intScale) implements ContinuedFractionTermInterface {
-            private int $intScale;
+        return new class($intScale, $zeroTerm) implements ContinuedFractionTermInterface {
+            private ImmutableDecimal $zeroTerm;
+            private int $scale;
 
             /**
-             * @param int $intScale
+             * @param int              $scale
+             * @param ImmutableDecimal $zeroTerm
              */
-            public function __construct(int $intScale)
+            public function __construct(int $scale, ImmutableDecimal $zeroTerm)
             {
-                $this->intScale = $intScale;
+                $this->zeroTerm = $zeroTerm;
+                $this->scale = $scale;
             }
 
             /**
              * @param int $n
+             *
              * @return ImmutableDecimal
              */
             public function __invoke(int $n): ImmutableDecimal
             {
                 if ($n == 0) {
-                    return Numbers::makeZero($this->intScale);
+                    return $this->zeroTerm;
                 }
 
-                return SequenceProvider::nthOddNumber($n - 1, $this->intScale);
+                return new ImmutableDecimal(($n * 2) - 1, $this->scale);
             }
         };
-
-        return SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $terms, $intScale);
     }
 
     /**
-     * @param ImmutableDecimal $num
-     * @param int $scale
-     * @return ImmutableDecimal
+     * @param ImmutableDecimal $zeroTerm
+     * @param CalcOperation    $operation
+     * @param int              $scale
+     *
+     * @return string
+     * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    protected function helperArcsinGCF(ImmutableDecimal $num, int $scale): ImmutableDecimal
+    protected function helperArcsecArccscScale(ImmutableDecimal $zeroTerm, CalcOperation $operation, int $scale): string
     {
+        $one = Numbers::makeOne($scale);
+        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
+        $aPart = $this->helperArcsecArccscAPart($one, $z, $scale);
 
-        $x = $num;
-        $x2 = $x->pow(2);
-        $one = new ImmutableDecimal(1, $scale);
+        $bPart = $this->helperArcsecArccscBPart($scale, $zeroTerm);
 
-        /**
-         * @package Samsara\Fermat\Core
-         */
-        $aPart = new class($x2, $scale) implements ContinuedFractionTermInterface{
-            private ImmutableDecimal $x2;
-            private ImmutableDecimal $negTwo;
-
-            /**
-             * @param ImmutableDecimal $x2
-             * @param int $scale
-             */
-            public function __construct(ImmutableDecimal $x2, int $scale)
-            {
-                $this->x2 = $x2;
-                $this->negTwo = new ImmutableDecimal(-2, $scale);
+        /** @noinspection PhpUncoveredEnumCasesInspection */
+        $answer = SeriesProvider::generalizedContinuedFraction(
+            $aPart,
+            $bPart,
+            $scale * 2,
+            $scale,
+            match ($operation) {
+                CalcOperation::ArcCsc => SeriesProvider::SUM_MODE_ALT_FIRST_ADD,
+                CalcOperation::ArcSec => SeriesProvider::SUM_MODE_SUB,
             }
+        );
 
-            /**
-             * @param int $n
-             * @return ImmutableDecimal
-             */
-            public function __invoke(int $n): ImmutableDecimal
-            {
-                $subterm = floor(($n+1)/2);
-
-                return $this->negTwo->multiply(
-                    2*$subterm-1
-                )->multiply($subterm)->multiply($this->x2);
-            }
-        };
-
-        /**
-         * @package Samsara\Fermat\Core
-         */
-        $bPart = new class() implements ContinuedFractionTermInterface{
-            /**
-             * @param int $n
-             * @return ImmutableDecimal
-             */
-            public function __invoke(int $n): ImmutableDecimal
-            {
-                return SequenceProvider::nthOddNumber($n);
-            }
-        };
-
-        $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $scale, $scale);
-
-        return $x->multiply($one->subtract($x2)->sqrt($scale))->divide($answer, $scale);
-
+        return $answer->getAsBaseTenRealNumber();
     }
 
     /**
      * @param CalcOperation $operation
-     * @param int|null $scale
-     * @param string $oneInputVal
-     * @param string $negOneInputVal
-     * @param bool $round
+     * @param int|null      $scale
+     * @param string        $oneInputVal
+     * @param string        $negOneInputVal
+     * @param bool          $round
+     *
      * @return static|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      */
     protected function helperArcsecArccscSimple(
         CalcOperation $operation,
-        ?int $scale,
-        string $oneInputVal,
-        string $negOneInputVal,
-        bool $round
+        ?int          $scale,
+        string        $oneInputVal,
+        string        $negOneInputVal,
+        bool          $round
     ): static|ImmutableDecimal|MutableDecimal
     {
         $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
@@ -204,15 +236,16 @@ trait InverseTrigonometryHelpersTrait
 
     /**
      * @param CalcOperation $operation
-     * @param int|null $scale
-     * @param bool $round
+     * @param int|null      $scale
+     * @param bool          $round
+     *
      * @return ImmutableDecimal|MutableDecimal|static
      * @throws IntegrityConstraint
      */
     protected function helperArcsinArccosSimple(
         CalcOperation $operation,
-        ?int $scale = null,
-        bool $round = true
+        ?int          $scale = null,
+        bool          $round = true
     ): ImmutableDecimal|MutableDecimal|static
     {
         $abs = $this instanceof ImmutableDecimal ? $this->abs() : new ImmutableDecimal($this->absValue());
@@ -228,163 +261,144 @@ trait InverseTrigonometryHelpersTrait
     }
 
     /**
-     * @param CalcOperation $operation
-     * @param int|null $scale
-     * @param bool $round
-     * @return static|ImmutableDecimal|MutableDecimal
+     * @param ImmutableDecimal $num
+     * @param int              $scale
+     *
+     * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    protected function helperArcBasicSimple(
-        CalcOperation $operation,
-        ?int $scale,
-        bool $round
-    ): static|ImmutableDecimal|MutableDecimal
+    protected function helperArcsinGCF(ImmutableDecimal $num, int $scale): ImmutableDecimal
     {
-        $finalScale = $scale ?? $this->getScale();
 
-        /** @noinspection PhpUncoveredEnumCasesInspection */
-        $answer = match ($operation) {
-            CalcOperation::ArcTan => $this->arctanSelector($scale),
-            CalcOperation::ArcCot => $this->arccotSelector($scale),
-            CalcOperation::ArcSin => $this->arcsinSelector($scale),
-            CalcOperation::ArcCos => $this->arccosSelector($scale),
-        };
-
-        if ($round) {
-            $result = $this->setValue($answer)->roundToScale($finalScale);
-        } else {
-            $result = $this->setValue($answer)->truncateToScale($finalScale);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param ImmutableDecimal $zeroTerm
-     * @param CalcOperation $operation
-     * @param int $scale
-     * @return string
-     * @throws IncompatibleObjectState
-     * @throws IntegrityConstraint
-     */
-    protected function helperArcsecArccscScale(ImmutableDecimal $zeroTerm, CalcOperation $operation, int $scale): string
-    {
-        $one = Numbers::makeOne($scale);
-        $z = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
-        $aPart = $this->helperArcsecArccscAPart($one, $z, $scale);
-
-        $bPart = $this->helperArcsecArccscBPart($scale, $zeroTerm);
-
-        /** @noinspection PhpUncoveredEnumCasesInspection */
-        $answer = SeriesProvider::generalizedContinuedFraction(
-            $aPart,
-            $bPart,
-            $scale * 2,
-            $scale,
-            match ($operation) {
-                CalcOperation::ArcCsc => SeriesProvider::SUM_MODE_ALT_FIRST_ADD,
-                CalcOperation::ArcSec => SeriesProvider::SUM_MODE_SUB,
-            }
-        );
-
-        return $answer->getAsBaseTenRealNumber();
-    }
-
-    /**
-     * @param ImmutableDecimal $one
-     * @param ImmutableDecimal $z
-     * @param int|null $intScale
-     * @return callable|ContinuedFractionTermInterface
-     * @throws IncompatibleObjectState
-     * @throws IntegrityConstraint
-     */
-    protected function helperArcsecArccscAPart(
-        ImmutableDecimal $one,
-        ImmutableDecimal $z,
-        ?int $intScale): callable|ContinuedFractionTermInterface
-    {
-        $oneDivZSquared = $one->divide($z->pow(2));
-        $oneDivZ = $one->divide($z, $intScale);
+        $x = $num;
+        $x2 = $x->pow(2);
+        $one = new ImmutableDecimal(1, $scale);
 
         /**
          * @package Samsara\Fermat\Core
          */
-        return new class($oneDivZSquared, $oneDivZ, $one) implements ContinuedFractionTermInterface {
-            private ImmutableDecimal $oneDivZSq;
-            private ImmutableDecimal $oneDivZ;
-            private ImmutableDecimal $one;
+        $aPart = new class($x2, $scale) implements ContinuedFractionTermInterface {
+            private ImmutableDecimal $x2;
+            private ImmutableDecimal $negTwo;
 
             /**
-             * @param ImmutableDecimal $oneDivZSq
-             * @param ImmutableDecimal $oneDivZ
-             * @param ImmutableDecimal $one
+             * @param ImmutableDecimal $x2
+             * @param int              $scale
              */
-            public function __construct(ImmutableDecimal $oneDivZSq, ImmutableDecimal $oneDivZ, ImmutableDecimal $one)
+            public function __construct(ImmutableDecimal $x2, int $scale)
             {
-                $this->oneDivZSq = $oneDivZSq;
-                $this->oneDivZ = $oneDivZ;
-                $this->one = $one;
+                $this->x2 = $x2;
+                $this->negTwo = new ImmutableDecimal(-2, $scale);
             }
 
             /**
              * @param int $n
+             *
+             * @return ImmutableDecimal
+             */
+            public function __invoke(int $n): ImmutableDecimal
+            {
+                $subterm = floor(($n + 1) / 2);
+
+                return $this->negTwo->multiply(
+                    2 * $subterm - 1
+                )->multiply($subterm)->multiply($this->x2);
+            }
+        };
+
+        /**
+         * @package Samsara\Fermat\Core
+         */
+        $bPart = new class() implements ContinuedFractionTermInterface {
+            /**
+             * @param int $n
+             *
+             * @return ImmutableDecimal
+             */
+            public function __invoke(int $n): ImmutableDecimal
+            {
+                return SequenceProvider::nthOddNumber($n);
+            }
+        };
+
+        $answer = SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $scale, $scale);
+
+        return $x->multiply($one->subtract($x2)->sqrt($scale))->divide($answer, $scale);
+
+    }
+
+    /**
+     * @param ImmutableDecimal $num
+     * @param int|null         $scale
+     *
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     */
+    protected function helperArctanGCF(ImmutableDecimal $num, ?int $scale): ImmutableDecimal
+    {
+        $scale = $scale ?? $this->getScale();
+        $intScale = $scale + 3;
+        $terms = $intScale * 2;
+        $x = new ImmutableDecimal($num, $intScale);
+        /**
+         * @package Samsara\Fermat\Core
+         */
+        $aPart = new class($x) implements ContinuedFractionTermInterface {
+            private ImmutableDecimal $x;
+
+            /**
+             * @param ImmutableDecimal $x
+             */
+            public function __construct(ImmutableDecimal $x)
+            {
+                $this->x = $x;
+            }
+
+            /**
+             * @param int $n
+             *
              * @return ImmutableDecimal
              */
             public function __invoke(int $n): ImmutableDecimal
             {
                 if ($n == 1) {
-                    return $this->oneDivZ->multiply($this->one->subtract($this->oneDivZSq)->sqrt());
+                    return $this->x;
                 }
 
-                $subterm = floor($n / 2);
-
-                return $this->oneDivZSq->multiply(
-                    2 * $subterm - 1
-                )->multiply(2 * $subterm);
+                return $this->x->multiply($n - 1)->pow(2);
             }
         };
-    }
 
-    /**
-     * @param int $intScale
-     * @param ImmutableDecimal $zeroTerm
-     * @return callable|ContinuedFractionTermInterface
-     */
-    protected function helperArcsecArccscBPart(
-        int $intScale,
-        ImmutableDecimal $zeroTerm
-    ): callable|ContinuedFractionTermInterface
-    {
         /**
          * @package Samsara\Fermat\Core
          */
-        return new class($intScale, $zeroTerm) implements ContinuedFractionTermInterface {
-            private ImmutableDecimal $zeroTerm;
-            private int $scale;
+        $bPart = new class($intScale) implements ContinuedFractionTermInterface {
+            private int $intScale;
 
             /**
-             * @param int $scale
-             * @param ImmutableDecimal $zeroTerm
+             * @param int $intScale
              */
-            public function __construct(int $scale, ImmutableDecimal $zeroTerm)
+            public function __construct(int $intScale)
             {
-                $this->zeroTerm = $zeroTerm;
-                $this->scale = $scale;
+                $this->intScale = $intScale;
             }
 
             /**
              * @param int $n
+             *
              * @return ImmutableDecimal
              */
             public function __invoke(int $n): ImmutableDecimal
             {
                 if ($n == 0) {
-                    return $this->zeroTerm;
+                    return Numbers::makeZero($this->intScale);
                 }
 
-                return new ImmutableDecimal(($n * 2) - 1, $this->scale);
+                return SequenceProvider::nthOddNumber($n - 1, $this->intScale);
             }
         };
+
+        return SeriesProvider::generalizedContinuedFraction($aPart, $bPart, $terms, $intScale);
     }
 
 }

@@ -15,7 +15,7 @@ class ImmutableComplexNumber extends ComplexNumber
     protected function setValue(
         ImmutableDecimal|ImmutableFraction $realPart,
         ImmutableDecimal|ImmutableFraction $imaginaryPart,
-        ?int $scale = null
+        ?int                               $scale = null
     ): static|ImmutableComplexNumber
     {
         $scale = $scale ?? $this->getScale();

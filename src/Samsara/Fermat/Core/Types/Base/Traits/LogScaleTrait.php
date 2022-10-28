@@ -19,6 +19,7 @@ trait LogScaleTrait
 
     /**
      * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -27,12 +28,12 @@ trait LogScaleTrait
         $scale = $scale ?? $this->getScale();
 
         if (extension_loaded('decimal')) {
-            $decimalScale = max($scale*2, $this->numberOfTotalDigits()*2);
+            $decimalScale = max($scale * 2, $this->numberOfTotalDigits() * 2);
             $num = new Decimal($this->getValue(NumberBase::Ten), $decimalScale);
 
             $num = $num->exp();
 
-            return $num->toFixed($scale+2);
+            return $num->toFixed($scale + 2);
         }
 
         if ($this->isInt()) {
@@ -43,7 +44,7 @@ trait LogScaleTrait
                 $addScale *= 1.3;
             } while ($addScale <= $this->asInt());
             $addScale = ceil($addScale);
-            $e = Numbers::makeE($scale+$addScale);
+            $e = Numbers::makeE($scale + $addScale);
             $value = $e->pow($this);
         } else {
             $intScale = ($this->numberOfIntDigits()) ? ($scale + 2) * $this->numberOfIntDigits() : ($scale + 2);
@@ -56,7 +57,7 @@ trait LogScaleTrait
             /**
              * @package Samsara\Fermat\Core
              */
-            $aPart = new class($x2, $x) implements ContinuedFractionTermInterface{
+            $aPart = new class($x2, $x) implements ContinuedFractionTermInterface {
                 private ImmutableDecimal $x2;
                 private ImmutableDecimal $x;
 
@@ -72,6 +73,7 @@ trait LogScaleTrait
 
                 /**
                  * @param int $n
+                 *
                  * @return ImmutableDecimal
                  */
                 public function __invoke(int $n): ImmutableDecimal
@@ -87,7 +89,7 @@ trait LogScaleTrait
             /**
              * @package Samsara\Fermat\Core
              */
-            $bPart = new class($x, $six, $intScale) implements ContinuedFractionTermInterface{
+            $bPart = new class($x, $six, $intScale) implements ContinuedFractionTermInterface {
                 private ImmutableDecimal $x;
                 private ImmutableDecimal $six;
                 private int $intScale;
@@ -105,6 +107,7 @@ trait LogScaleTrait
 
                 /**
                  * @param int $n
+                 *
                  * @return ImmutableDecimal
                  */
                 public function __invoke(int $n): ImmutableDecimal
@@ -117,7 +120,7 @@ trait LogScaleTrait
                         return $this->six;
                     }
 
-                    return $this->six->add(4*($n-2));
+                    return $this->six->add(4 * ($n - 2));
                 }
             };
 
@@ -139,7 +142,7 @@ trait LogScaleTrait
         $internalScale += 3 + $this->numberOfLeadingZeros();
 
         if (extension_loaded('decimal')) {
-            $decimalScale = max($internalScale*2, $this->numberOfTotalDigits()*2);
+            $decimalScale = max($internalScale * 2, $this->numberOfTotalDigits() * 2);
             $num = new Decimal($this->getValue(NumberBase::Ten), $decimalScale);
             $num = $num->ln();
             return $num->toFixed($internalScale);
@@ -181,17 +184,16 @@ trait LogScaleTrait
         }
 
 
-
         $right = $num->subtract(1)->divide($num->add(1), $internalScale);
         $k = 0;
         do {
             $left = $two->divide($two->multiply($k)->add(1), $internalScale);
-            $diff = $left->multiply($right->pow(2*$k+1));
+            $diff = $left->multiply($right->pow(2 * $k + 1));
 
             $adjustedNum = $adjustedNum->add($diff);
 
             $k++;
-        } while ($diff->numberOfLeadingZeros() < $internalScale-1 && !$diff->isEqual(0));
+        } while ($diff->numberOfLeadingZeros() < $internalScale - 1 && !$diff->isEqual(0));
 
         $answer = $adjustedNum;
 
@@ -201,8 +203,8 @@ trait LogScaleTrait
 
         if ($exp1p1) {
             $answer = $answer->add(
-                Numbers::make(Numbers::IMMUTABLE, ConstantProvider::makeLn1p1($internalScale+$exp1p1), $internalScale+$exp1p1)
-                ->multiply($exp1p1)
+                Numbers::make(Numbers::IMMUTABLE, ConstantProvider::makeLn1p1($internalScale + $exp1p1), $internalScale + $exp1p1)
+                    ->multiply($exp1p1)
             );
         }
 
@@ -211,6 +213,7 @@ trait LogScaleTrait
 
     /**
      * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -221,13 +224,13 @@ trait LogScaleTrait
         $internalScale += 1;
 
         if (extension_loaded('decimal')) {
-            $decimalScale = max($internalScale*2, $this->numberOfTotalDigits()*2);
+            $decimalScale = max($internalScale * 2, $this->numberOfTotalDigits() * 2);
             $num = new Decimal($this->getValue(NumberBase::Ten), $decimalScale);
             $num = $num->log10();
             return $num->toFixed($internalScale);
         }
 
-        $log10 = Numbers::makeNaturalLog10($internalScale+1);
+        $log10 = Numbers::makeNaturalLog10($internalScale + 1);
 
         $value = $this->ln($internalScale)->divide($log10);
 

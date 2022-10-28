@@ -13,10 +13,10 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 interface ThreeDCoordinateInterface extends CoordinateInterface
 {
 
-    public function getPlanarAngle(): ImmutableDecimal;
+    public function asCylindrical(): CylindricalCoordinate;
 
     public function asSpherical(): SphericalCoordinate;
 
-    public function asCylindrical(): CylindricalCoordinate;
+    public function getPlanarAngle(): ImmutableDecimal;
 
 }

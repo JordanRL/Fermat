@@ -13,6 +13,7 @@ trait ArithmeticGMPTrait
 
     /**
      * @param Decimal $num
+     *
      * @return string|false
      */
     protected function addGMP(Decimal $num): string|false
@@ -28,36 +29,7 @@ trait ArithmeticGMPTrait
 
     /**
      * @param Decimal $num
-     * @return string|false
-     */
-    protected function subtractGMP(Decimal $num): string|false
-    {
-        if ($this->isInt() && $num->isInt()) {
-            $result = gmp_sub($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
-
-            return gmp_strval($result);
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Decimal $num
-     * @return string|false
-     */
-    protected function multiplyGMP(Decimal $num): string|false
-    {
-        if ($this->isInt() && $num->isInt()) {
-            $result = gmp_mul($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
-
-            return gmp_strval($result);
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Decimal $num
+     *
      * @return string|false
      */
     protected function divideGMP(Decimal $num): string|false
@@ -75,6 +47,23 @@ trait ArithmeticGMPTrait
 
     /**
      * @param Decimal $num
+     *
+     * @return string|false
+     */
+    protected function multiplyGMP(Decimal $num): string|false
+    {
+        if ($this->isInt() && $num->isInt()) {
+            $result = gmp_mul($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
+
+            return gmp_strval($result);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Decimal $num
+     *
      * @return string|false
      */
     protected function powGMP(Decimal $num): string|false
@@ -99,6 +88,22 @@ trait ArithmeticGMPTrait
             if ($result[1] == '0') {
                 return gmp_strval($result[0]);
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Decimal $num
+     *
+     * @return string|false
+     */
+    protected function subtractGMP(Decimal $num): string|false
+    {
+        if ($this->isInt() && $num->isInt()) {
+            $result = gmp_sub($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber());
+
+            return gmp_strval($result);
         }
 
         return false;

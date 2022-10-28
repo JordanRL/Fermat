@@ -19,67 +19,26 @@ abstract class Number implements Hashable
 
     public const INFINITY = 'INF';
     public const NEG_INFINITY = '-INF';
-
-    /** @var array */
-    protected array $value;
-    /** @var bool  */
-    protected bool $imaginary;
+    protected NumberBase $base;
     /** @var bool */
-    protected bool $sign;
+    protected bool $imaginary;
     /** @var int */
     protected int $scale;
-    protected NumberBase $base;
+    /** @var bool */
+    protected bool $sign;
+    /** @var array */
+    protected array $value;
 
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     /**
-     * Returns the current value as a string.
+     * Returns the current base that the value is in.
      *
-     * @return string
+     * @return NumberBase
      */
-    abstract public function getValue(): string;
-
-    /**
-     * Returns the string of the absolute value of the current object.
-     *
-     * @return string
-     */
-    abstract public function absValue(): string;
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
+    public function getBase(): NumberBase
     {
-        return $this->getValue();
-    }
-
-    /**
-     * Implemented to satisfy Hashable implementation
-     *
-     * @return string
-     */
-    public function hash(): string
-    {
-        return get_class($this).$this->getValue();
-    }
-
-    /**
-     * Implemented to satisfy Hashable implementation
-     *
-     * @param mixed $obj
-     * @return bool
-     */
-    public function equals(mixed $obj): bool
-    {
-        if ($obj instanceof Number || is_numeric($obj)) {
-            return $this->isEqual($obj);
-        } else {
-            return false;
-        }
+        return $this->base;
     }
 
     /**
@@ -103,11 +62,51 @@ abstract class Number implements Hashable
     }
 
     /**
-     * Returns a new instance of this object with a base ten real number.
+     * Implemented to satisfy Hashable implementation
      *
-     * @return ImmutableDecimal|ImmutableFraction
+     * @param mixed $obj
+     *
+     * @return bool
      */
-    abstract public function asReal(): ImmutableDecimal|ImmutableFraction;
+    public function equals(mixed $obj): bool
+    {
+        if ($obj instanceof Number || is_numeric($obj)) {
+            return $this->isEqual($obj);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Implemented to satisfy Hashable implementation
+     *
+     * @return string
+     */
+    public function hash(): string
+    {
+        return get_class($this) . $this->getValue();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getValue();
+    }
+
+    /**
+     * Returns the string of the absolute value of the current object.
+     *
+     * @return string
+     */
+    abstract public function absValue(): string;
+
+    /**
+     * @return ImmutableComplexNumber
+     * @throws IntegrityConstraint
+     */
+    abstract public function asComplex(): ImmutableComplexNumber;
 
     /**
      * Returns a new instance of this object with a base ten imaginary number.
@@ -117,12 +116,26 @@ abstract class Number implements Hashable
     abstract public function asImaginary(): ImmutableDecimal|ImmutableFraction;
 
     /**
+     * Returns a new instance of this object with a base ten real number.
+     *
+     * @return ImmutableDecimal|ImmutableFraction
+     */
+    abstract public function asReal(): ImmutableDecimal|ImmutableFraction;
+
+    /**
      * Returns the current value as a string in base 10, converted to a real number. If the number is imaginary, the i is
      * simply not printed. If the number is complex, then the absolute value is returned.
      *
      * @return string
      */
     abstract public function getAsBaseTenRealNumber(): string;
+
+    /**
+     * Returns the current value as a string.
+     *
+     * @return string
+     */
+    abstract public function getValue(): string;
 
     /**
      * Returns true if the number is complex, false if the number is real or imaginary.
@@ -135,59 +148,45 @@ abstract class Number implements Hashable
      * Compares this number to another number and returns whether or not they are equal.
      *
      * @param Number|int|string|float $value The value to compare against
+     *
      * @return bool
      */
     abstract public function isEqual(Number|int|string|float $value): bool;
-
 
     /**
      * Compares this number to another number and returns true if this number is closer to positive infinity.
      *
      * @param Number|int|string|float $value The value to compare against
+     *
      * @return bool|null
      */
     abstract public function isGreaterThan(Number|int|string|float $value): bool|null;
-
-
-    /**
-     * Compares this number to another number and returns true if this number is closer to negative infinity.
-     *
-     * @param Number|int|string|float $value The value to compare against
-     * @return bool|null
-     */
-    abstract public function isLessThan(Number|int|string|float $value): bool|null;
-
 
     /**
      * Compares this number to another number and returns true if this number is closer to positive infinity or equal.
      *
      * @param Number|int|string|float $value The value to compare against
+     *
      * @return bool|null
      */
     abstract public function isGreaterThanOrEqualTo(Number|int|string|float $value): bool|null;
 
     /**
+     * Compares this number to another number and returns true if this number is closer to negative infinity.
+     *
+     * @param Number|int|string|float $value The value to compare against
+     *
+     * @return bool|null
+     */
+    abstract public function isLessThan(Number|int|string|float $value): bool|null;
+
+    /**
      * Compares this number to another number and returns true if this number is closer to negative infinity or equal.
      *
      * @param Number|int|string|float $value The value to compare against
+     *
      * @return bool|null
      */
     abstract public function isLessThanOrEqualTo(Number|int|string|float $value): bool|null;
-
-    /**
-     * @return ImmutableComplexNumber
-     * @throws IntegrityConstraint
-     */
-    abstract public function asComplex(): ImmutableComplexNumber;
-
-    /**
-     * Returns the current base that the value is in.
-     *
-     * @return NumberBase
-     */
-    public function getBase(): NumberBase
-    {
-        return $this->base;
-    }
 
 }

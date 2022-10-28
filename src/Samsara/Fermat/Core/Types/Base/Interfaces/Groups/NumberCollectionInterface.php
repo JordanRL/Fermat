@@ -16,6 +16,13 @@ interface NumberCollectionInterface
 {
 
     /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function add($number): NumberCollectionInterface;
+
+    /**
      * @param array $numbers
      *
      * @return NumberCollectionInterface
@@ -28,78 +35,11 @@ interface NumberCollectionInterface
     public function count(): int;
 
     /**
-     * @return array
-     */
-    public function toArray(): array;
-
-    /**
-     * @param ImmutableDecimal $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function push(ImmutableDecimal $number): NumberCollectionInterface;
-
-    /**
-     * @return ImmutableDecimal
-     */
-    public function pop(): ImmutableDecimal;
-
-    /**
-     * @param ImmutableDecimal $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function unshift(ImmutableDecimal $number): NumberCollectionInterface;
-
-    /**
-     * @return ImmutableDecimal
-     */
-    public function shift(): ImmutableDecimal;
-
-    /**
-     * @return NumberCollectionInterface
-     */
-    public function sort(): NumberCollectionInterface;
-
-    /**
-     * @return NumberCollectionInterface
-     */
-    public function reverse(): NumberCollectionInterface;
-
-    /**
-     * @param $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function multiply($number): NumberCollectionInterface;
-
-    /**
      * @param $number
      *
      * @return NumberCollectionInterface
      */
     public function divide($number): NumberCollectionInterface;
-
-    /**
-     * @param $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function add($number): NumberCollectionInterface;
-
-    /**
-     * @param $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function subtract($number): NumberCollectionInterface;
-
-    /**
-     * @param $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function pow($number): NumberCollectionInterface;
 
     /**
      * @param $number
@@ -121,14 +61,9 @@ interface NumberCollectionInterface
     public function getRandom(): ImmutableDecimal;
 
     /**
-     * @return ImmutableDecimal
+     * @return Exponential
      */
-    public function sum(): ImmutableDecimal;
-
-    /**
-     * @return ImmutableDecimal
-     */
-    public function mean(): ImmutableDecimal;
+    public function makeExponentialDistribution(): Exponential;
 
     /**
      * @return Normal
@@ -141,13 +76,78 @@ interface NumberCollectionInterface
     public function makePoissonDistribution(): Poisson;
 
     /**
-     * @return Exponential
-     */
-    public function makeExponentialDistribution(): Exponential;
-
-    /**
      * @return PolynomialFunction
      */
     public function makePolynomialFunction(): PolynomialFunction;
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function mean(): ImmutableDecimal;
+
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function multiply($number): NumberCollectionInterface;
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function pop(): ImmutableDecimal;
+
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function pow($number): NumberCollectionInterface;
+
+    /**
+     * @param ImmutableDecimal $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function push(ImmutableDecimal $number): NumberCollectionInterface;
+
+    /**
+     * @return NumberCollectionInterface
+     */
+    public function reverse(): NumberCollectionInterface;
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function shift(): ImmutableDecimal;
+
+    /**
+     * @return NumberCollectionInterface
+     */
+    public function sort(): NumberCollectionInterface;
+
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function subtract($number): NumberCollectionInterface;
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function sum(): ImmutableDecimal;
+
+    /**
+     * @return array
+     */
+    public function toArray(): array;
+
+    /**
+     * @param ImmutableDecimal $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function unshift(ImmutableDecimal $number): NumberCollectionInterface;
 
 }

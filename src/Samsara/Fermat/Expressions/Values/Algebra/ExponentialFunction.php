@@ -18,7 +18,7 @@ class ExponentialFunction extends Expression implements FunctionInterface
         $this->terms['exponent'] = $exponent;
         $this->terms['coefficient'] = $coefficient;
 
-        $this->expression = function(ImmutableDecimal $x): ImmutableDecimal {
+        $this->expression = function (ImmutableDecimal $x): ImmutableDecimal {
             $exponent = $x->multiply($this->terms['exponent']);
 
             /** @var ImmutableDecimal $result */
@@ -28,25 +28,10 @@ class ExponentialFunction extends Expression implements FunctionInterface
         };
     }
 
-    function evaluateAt(int|float|string|Decimal $x): ImmutableDecimal
-    {
-        $answer = $this->expression;
-
-        return $answer($x);
-    }
-
     public function derivativeExpression(): FunctionInterface
     {
         $exponent = $this->terms['exponent'];
         $coefficient = $this->terms['coefficient']->multiply($exponent);
-
-        return new static($exponent, $coefficient);
-    }
-
-    public function integralExpression(): FunctionInterface
-    {
-        $exponent = $this->terms['exponent'];
-        $coefficient = $this->terms['coefficient']->divide($exponent);
 
         return new static($exponent, $coefficient);
     }
@@ -60,5 +45,20 @@ class ExponentialFunction extends Expression implements FunctionInterface
         }
 
         return $terms;
+    }
+
+    function evaluateAt(int|float|string|Decimal $x): ImmutableDecimal
+    {
+        $answer = $this->expression;
+
+        return $answer($x);
+    }
+
+    public function integralExpression(): FunctionInterface
+    {
+        $exponent = $this->terms['exponent'];
+        $coefficient = $this->terms['coefficient']->divide($exponent);
+
+        return new static($exponent, $coefficient);
     }
 }

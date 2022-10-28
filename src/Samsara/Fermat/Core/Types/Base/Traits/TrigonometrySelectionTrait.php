@@ -13,20 +13,7 @@ trait TrigonometrySelectionTrait
 
     /**
      * @param int|null $scale
-     * @return string
-     */
-    protected function sinSelector(?int $scale = null): string
-    {
-        $calcMode = $this->getResolvedMode();
-
-        return match ($calcMode) {
-            CalcMode::Native => (string)$this->sinNative(),
-            default => $this->sinScale($scale)
-        };
-    }
-
-    /**
-     * @param int|null $scale
+     *
      * @return string
      */
     protected function cosSelector(?int $scale = null): string
@@ -41,35 +28,54 @@ trait TrigonometrySelectionTrait
 
     /**
      * @param int|null $scale
+     *
      * @return string
      */
-    protected function tanSelector(?int $scale = null): string
+    protected function coshSelector(?int $scale = null): string
     {
         $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
-            CalcMode::Native => (string)$this->tanNative(),
-            default => $this->tanScale($scale)
+            CalcMode::Native => (string)$this->coshNative(),
+            default => $this->coshScale($scale)
         };
     }
 
     /**
      * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
-    protected function secSelector(?int $scale = null): string
+    protected function cotSelector(?int $scale = null): string
     {
         $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
-            CalcMode::Native => (string)$this->secNative(),
-            default => $this->secScale($scale)
+            CalcMode::Native => (string)$this->cotNative(),
+            default => $this->cotScale($scale)
         };
     }
 
     /**
      * @param int|null $scale
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function cothSelector(?int $scale = null): string
+    {
+        $calcMode = $this->getResolvedMode();
+
+        return match ($calcMode) {
+            CalcMode::Native => (string)$this->cothNative(),
+            default => $this->cothScale($scale)
+        };
+    }
+
+    /**
+     * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -89,63 +95,38 @@ trait TrigonometrySelectionTrait
 
     /**
      * @param int|null $scale
+     *
+     * @return string
+     */
+    protected function cschSelector(?int $scale = null): string
+    {
+        $calcMode = $this->getResolvedMode();
+
+        return match ($calcMode) {
+            CalcMode::Native => (string)$this->cschNative(),
+            default => $this->cschScale($scale)
+        };
+    }
+
+    /**
+     * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
-    protected function cotSelector(?int $scale = null): string
+    protected function secSelector(?int $scale = null): string
     {
         $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
-            CalcMode::Native => (string)$this->cotNative(),
-            default => $this->cotScale($scale)
+            CalcMode::Native => (string)$this->secNative(),
+            default => $this->secScale($scale)
         };
     }
 
     /**
      * @param int|null $scale
-     * @return string
-     */
-    protected function sinhSelector(?int $scale = null): string
-    {
-        $calcMode = $this->getResolvedMode();
-
-        return match ($calcMode) {
-            CalcMode::Native => (string)$this->sinhNative(),
-            default => $this->sinhScale($scale)
-        };
-    }
-
-    /**
-     * @param int|null $scale
-     * @return string
-     */
-    protected function coshSelector(?int $scale = null): string
-    {
-        $calcMode = $this->getResolvedMode();
-
-        return match ($calcMode) {
-            CalcMode::Native => (string)$this->coshNative(),
-            default => $this->coshScale($scale)
-        };
-    }
-
-    /**
-     * @param int|null $scale
-     * @return string
-     */
-    protected function tanhSelector(?int $scale = null): string
-    {
-        $calcMode = $this->getResolvedMode();
-
-        return match ($calcMode) {
-            CalcMode::Native => (string)$this->tanhNative(),
-            default => $this->tanhScale($scale)
-        };
-    }
-
-    /**
-     * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -161,30 +142,61 @@ trait TrigonometrySelectionTrait
 
     /**
      * @param int|null $scale
+     *
      * @return string
      */
-    protected function cschSelector(?int $scale = null): string
+    protected function sinSelector(?int $scale = null): string
     {
         $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
-            CalcMode::Native => (string)$this->cschNative(),
-            default => $this->cschScale($scale)
+            CalcMode::Native => (string)$this->sinNative(),
+            default => $this->sinScale($scale)
         };
     }
 
     /**
      * @param int|null $scale
+     *
      * @return string
-     * @throws IntegrityConstraint
      */
-    protected function cothSelector(?int $scale = null): string
+    protected function sinhSelector(?int $scale = null): string
     {
         $calcMode = $this->getResolvedMode();
 
         return match ($calcMode) {
-            CalcMode::Native => (string)$this->cothNative(),
-            default => $this->cothScale($scale)
+            CalcMode::Native => (string)$this->sinhNative(),
+            default => $this->sinhScale($scale)
+        };
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return string
+     */
+    protected function tanSelector(?int $scale = null): string
+    {
+        $calcMode = $this->getResolvedMode();
+
+        return match ($calcMode) {
+            CalcMode::Native => (string)$this->tanNative(),
+            default => $this->tanScale($scale)
+        };
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return string
+     */
+    protected function tanhSelector(?int $scale = null): string
+    {
+        $calcMode = $this->getResolvedMode();
+
+        return match ($calcMode) {
+            CalcMode::Native => (string)$this->tanhNative(),
+            default => $this->tanhScale($scale)
         };
     }
 

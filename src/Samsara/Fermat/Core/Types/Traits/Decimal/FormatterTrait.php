@@ -20,12 +20,13 @@ trait FormatterTrait
     /**
      * Creates an instance of this class from a number string that has been formatted by the Fermat formatter.
      *
-     * @param NumberFormat $format
+     * @param NumberFormat   $format
      * @param NumberGrouping $grouping
-     * @param string $value
-     * @param int|null $scale
-     * @param NumberBase $base
-     * @param bool $baseTenInput
+     * @param string         $value
+     * @param int|null       $scale
+     * @param NumberBase     $base
+     * @param bool           $baseTenInput
+     *
      * @return static
      */
     public static function createFromFormat(
@@ -45,55 +46,10 @@ trait FormatterTrait
     }
 
     /**
-     * Sets the format of this number for when a format export function is used.
-     *
-     * @param NumberFormat $format
-     * @return static
-     */
-    public function setFormat(NumberFormat $format): static
-    {
-        $this->format = $format;
-
-        return $this;
-    }
-
-    /**
-     * Gets the current format setting of this number.
-     *
-     * @return NumberFormat
-     */
-    public function getFormat(): NumberFormat
-    {
-        return $this->format;
-    }
-
-    /**
-     * Sets the number grouping of this number for when a format export function is used.
-     *
-     * @param NumberGrouping $grouping
-     * @return static
-     */
-    public function setGrouping(NumberGrouping $grouping): static
-    {
-        $this->grouping = $grouping;
-
-        return $this;
-    }
-
-    /**
-     * Gets the current number grouping setting of this number.
-     *
-     * @return NumberGrouping
-     */
-    public function getGrouping(): NumberGrouping
-    {
-        return $this->grouping;
-    }
-
-    /**
      * Returns a formatting string according to this number's current settings as a currency.
      *
      * @param Currency $currency The currency you want this number to appear in.
+     *
      * @return string
      */
     public function getCurrencyValue(Currency $currency): string
@@ -107,9 +63,34 @@ trait FormatterTrait
     }
 
     /**
+     * Gets the current format setting of this number.
+     *
+     * @return NumberFormat
+     */
+    public function getFormat(): NumberFormat
+    {
+        return $this->format;
+    }
+
+    /**
+     * Sets the format of this number for when a format export function is used.
+     *
+     * @param NumberFormat $format
+     *
+     * @return static
+     */
+    public function setFormat(NumberFormat $format): static
+    {
+        $this->format = $format;
+
+        return $this;
+    }
+
+    /**
      * Returns the current value formatted according to the settings in getGrouping() and getFormat()
      *
      * @param NumberBase|null $base The base you want the formatted number to be in.
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -123,9 +104,34 @@ trait FormatterTrait
     }
 
     /**
+     * Gets the current number grouping setting of this number.
+     *
+     * @return NumberGrouping
+     */
+    public function getGrouping(): NumberGrouping
+    {
+        return $this->grouping;
+    }
+
+    /**
+     * Sets the number grouping of this number for when a format export function is used.
+     *
+     * @param NumberGrouping $grouping
+     *
+     * @return static
+     */
+    public function setGrouping(NumberGrouping $grouping): static
+    {
+        $this->grouping = $grouping;
+
+        return $this;
+    }
+
+    /**
      * Returns the current value in scientific notation compatible with the way PHP coerces float values into strings.
      *
      * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     *
      * @return string
      */
     public function getScientificValue(?int $scale = null): string
@@ -148,8 +154,9 @@ trait FormatterTrait
     }
 
     /**
-     * @param int $scale
+     * @param int    $scale
      * @param string $baseValue
+     *
      * @return string
      */
     private function trimmedScientificString(int $scale, string $baseValue): string
@@ -172,20 +179,31 @@ trait FormatterTrait
     }
 
     /**
+     * @return string
+     */
+    abstract public function getDecimalPart(): string;
+
+    /**
      * @param NumberBase $base
+     *
      * @return string
      */
     abstract public function getValue(NumberBase $base): string;
 
     /**
-     * @return int
+     * @return string
      */
-    abstract public function numberOfTotalDigits(): int;
+    abstract public function getWholePart(): string;
 
     /**
-     * @return int
+     * @return bool
      */
-    abstract public function numberOfIntDigits(): int;
+    abstract public function isImaginary(): bool;
+
+    /**
+     * @return bool
+     */
+    abstract public function isNegative(): bool;
 
     /**
      * @return int
@@ -195,7 +213,7 @@ trait FormatterTrait
     /**
      * @return int
      */
-    abstract public function numberOfSigDecimalDigits(): int;
+    abstract public function numberOfIntDigits(): int;
 
     /**
      * @return int
@@ -203,22 +221,12 @@ trait FormatterTrait
     abstract public function numberOfLeadingZeros(): int;
 
     /**
-     * @return string
+     * @return int
      */
-    abstract public function getWholePart(): string;
+    abstract public function numberOfSigDecimalDigits(): int;
 
     /**
-     * @return string
+     * @return int
      */
-    abstract public function getDecimalPart(): string;
-
-    /**
-     * @return bool
-     */
-    abstract public function isNegative(): bool;
-
-    /**
-     * @return bool
-     */
-    abstract public function isImaginary(): bool;
+    abstract public function numberOfTotalDigits(): int;
 }

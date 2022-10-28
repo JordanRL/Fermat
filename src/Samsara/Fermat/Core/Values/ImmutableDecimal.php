@@ -16,6 +16,7 @@ class ImmutableDecimal extends Decimal
 
     /**
      * @param Decimal|string|int|float $mod
+     *
      * @return static
      * @throws IntegrityConstraint
      */
@@ -27,7 +28,7 @@ class ImmutableDecimal extends Decimal
 
         $scale = ($this->getScale() < $mod->getScale()) ? $mod->getScale() : $this->getScale();
 
-        $newScale = $scale+2;
+        $newScale = $scale + 2;
         $thisNum = new ImmutableDecimal($this->getValue(NumberBase::Ten), $newScale);
 
         $mod = $mod->truncateToScale($newScale);
@@ -47,15 +48,16 @@ class ImmutableDecimal extends Decimal
         /** @var static $remainder */
         $remainder = $thisNum->subtract($subtract);
 
-        return $remainder->truncateToScale($this->getScale()-1);
+        return $remainder->truncateToScale($this->getScale() - 1);
 
     }
 
     /**
-     * @param string $value
-     * @param int|null $scale
+     * @param string          $value
+     * @param int|null        $scale
      * @param NumberBase|null $base
-     * @param bool $setToNewBase
+     * @param bool            $setToNewBase
+     *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */

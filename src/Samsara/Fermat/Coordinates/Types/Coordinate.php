@@ -16,7 +16,7 @@ abstract class Coordinate implements CoordinateInterface
 
     /** @var array */
     protected $parameters;
-    /** @var Tuple  */
+    /** @var Tuple */
     protected $values;
 
     public function __construct(array $data)
@@ -45,14 +45,14 @@ abstract class Coordinate implements CoordinateInterface
         return $this->values->get($this->parameters[$axis]);
     }
 
-    public function numberOfDimensions(): int
-    {
-        return $this->values->size();
-    }
-
     public function axesValues(): array
     {
         return $this->values->all();
+    }
+
+    public function numberOfDimensions(): int
+    {
+        return $this->values->size();
     }
 
     protected function getAxisByIndex($axis): ImmutableDecimal
@@ -60,10 +60,10 @@ abstract class Coordinate implements CoordinateInterface
         return $this->values->get($axis);
     }
 
-    abstract public function getDistanceFromOrigin(): ImmutableDecimal;
+    abstract public function asCartesian(): CartesianCoordinate;
 
     abstract public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal;
 
-    abstract public function asCartesian(): CartesianCoordinate;
+    abstract public function getDistanceFromOrigin(): ImmutableDecimal;
 
 }

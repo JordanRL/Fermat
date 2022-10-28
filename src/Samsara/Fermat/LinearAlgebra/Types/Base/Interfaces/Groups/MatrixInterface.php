@@ -13,41 +13,41 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 interface MatrixInterface
 {
 
-    public function isSquare(): bool;
-
-    public function getRowCount(): int;
-
-    public function getRow(int $row): NumberCollection;
-
-    public function getColumnCount(): int;
-
-    public function getColumn(int $column): NumberCollection;
-
-    public function getDeterminant(): ImmutableDecimal;
-
-    public function pushRow(NumberCollection $row): static;
-
-    public function pushColumn(NumberCollection $column): static;
-
-    public function popRow(): NumberCollection;
-
-    public function popColumn(): NumberCollection;
-
-    public function unshiftRow(NumberCollection $row): static;
-
-    public function unshiftColumn(NumberCollection $column): static;
-
-    public function shiftRow(): NumberCollection;
-
-    public function shiftColumn(): NumberCollection;
-
-    public function rotate(bool $clockwise = true): static;
-
     public function add(MatrixInterface $value): static;
 
     public function addScalarAsI(Decimal $value): static;
 
     public function addScalarAsJ(Decimal $value): static;
+
+    public function getColumn(int $column): NumberCollection;
+
+    public function getColumnCount(): int;
+
+    public function getDeterminant(): ImmutableDecimal;
+
+    public function getInverseMatrix(): static;
+
+    public function getRow(int $row): NumberCollection;
+
+    public function getRowCount(): int;
+
+    public function isSquare(): bool;
+
+    public function multiply($value): static;
+
+    public function popColumn(): NumberCollection;
+
+    public function popRow(): NumberCollection;
+
+    public function pushColumn(NumberCollection $column): static;
+
+    public function pushRow(NumberCollection $row): static;
+
+    public function rotate(bool $clockwise = true): static;
+
+    public function shiftColumn(): NumberCollection;
+
+    public function shiftRow(): NumberCollection;
 
     public function subtract(MatrixInterface $value): static;
 
@@ -55,8 +55,8 @@ interface MatrixInterface
 
     public function subtractScalarAsJ(Decimal $value): static;
 
-    public function multiply($value): static;
+    public function unshiftColumn(NumberCollection $column): static;
 
-    public function getInverseMatrix(): static;
+    public function unshiftRow(NumberCollection $row): static;
 
 }

@@ -15,33 +15,28 @@ trait DirectAccessTrait
 {
 
     /**
-     * @param NumberCollection $row
-     * @return static
-     * @throws IntegrityConstraint
+     * @return NumberCollection
      */
-    public function pushRow(NumberCollection $row): static
+    public function popColumn(): NumberCollection
     {
-        if ($row->count() !== $this->numColumns) {
-            throw new IntegrityConstraint(
-                'The members of a new row must match the number of columns in a matrix.',
-                'Provide a NumberCollection that has the right number of members.',
-                'The provided row did not have the correct number of members. Expected '.$this->numColumns.', found '.$row->count()
-            );
-        }
+        --$this->numColumns;
 
-        $this->rows[] = $row;
+        return array_pop($this->columns);
+    }
 
-        foreach ($row->toArray() as $key => $value) {
-            $this->columns[$key]->push($value);
-        }
+    /**
+     * @return NumberCollection
+     */
+    public function popRow(): NumberCollection
+    {
+        --$this->numRows;
 
-        ++$this->numRows;
-
-        return $this;
+        return array_pop($this->rows);
     }
 
     /**
      * @param NumberCollection $column
+     *
      * @return static
      * @throws IntegrityConstraint
      */
@@ -51,7 +46,7 @@ trait DirectAccessTrait
             throw new IntegrityConstraint(
                 'The members of a new column must match the number of rows in a matrix.',
                 'Provide a NumberCollection that has the right number of members.',
-                'The provided column did not have the correct number of members. Expected '.$this->numColumns.', found '.$column->count()
+                'The provided column did not have the correct number of members. Expected ' . $this->numColumns . ', found ' . $column->count()
             );
         }
 
@@ -67,44 +62,25 @@ trait DirectAccessTrait
     }
 
     /**
-     * @return NumberCollection
-     */
-    public function popRow(): NumberCollection
-    {
-        --$this->numRows;
-
-        return array_pop($this->rows);
-    }
-
-    /**
-     * @return NumberCollection
-     */
-    public function popColumn(): NumberCollection
-    {
-        --$this->numColumns;
-
-        return array_pop($this->columns);
-    }
-
-    /**
      * @param NumberCollection $row
+     *
      * @return static
      * @throws IntegrityConstraint
      */
-    public function unshiftRow(NumberCollection $row): static
+    public function pushRow(NumberCollection $row): static
     {
         if ($row->count() !== $this->numColumns) {
             throw new IntegrityConstraint(
                 'The members of a new row must match the number of columns in a matrix.',
                 'Provide a NumberCollection that has the right number of members.',
-                'The provided row did not have the correct number of members. Expected '.$this->numColumns.', found '.$row->count()
+                'The provided row did not have the correct number of members. Expected ' . $this->numColumns . ', found ' . $row->count()
             );
         }
 
-        array_unshift($this->rows, $row);
+        $this->rows[] = $row;
 
         foreach ($row->toArray() as $key => $value) {
-            $this->columns[$key]->unshift($value);
+            $this->columns[$key]->push($value);
         }
 
         ++$this->numRows;
@@ -113,29 +89,15 @@ trait DirectAccessTrait
     }
 
     /**
-     * @param NumberCollection $column
-     * @return static
-     * @throws IntegrityConstraint
+     * @return NumberCollection
      */
-    public function unshiftColumn(NumberCollection $column): static
+    public function shiftColumn(): NumberCollection
     {
-        if ($column->count() !== $this->numRows) {
-            throw new IntegrityConstraint(
-                'The members of a new column must match the number of rows in a matrix.',
-                'Provide a NumberCollection that has the right number of members.',
-                'The provided column did not have the correct number of members. Expected '.$this->numColumns.', found '.$column->count()
-            );
-        }
+        $column = array_shift($this->columns);
 
-        array_unshift($this->columns, $column);
+        $this->normalizeInputData($this->columns, Matrix::MODE_COLUMNS_INPUT);
 
-        foreach ($column->toArray() as $key => $value) {
-            $this->rows[$key]->unshift($value);
-        }
-
-        ++$this->numColumns;
-
-        return $this;
+        return $column;
     }
 
     /**
@@ -151,15 +113,57 @@ trait DirectAccessTrait
     }
 
     /**
-     * @return NumberCollection
+     * @param NumberCollection $column
+     *
+     * @return static
+     * @throws IntegrityConstraint
      */
-    public function shiftColumn(): NumberCollection
+    public function unshiftColumn(NumberCollection $column): static
     {
-        $column = array_shift($this->columns);
+        if ($column->count() !== $this->numRows) {
+            throw new IntegrityConstraint(
+                'The members of a new column must match the number of rows in a matrix.',
+                'Provide a NumberCollection that has the right number of members.',
+                'The provided column did not have the correct number of members. Expected ' . $this->numColumns . ', found ' . $column->count()
+            );
+        }
 
-        $this->normalizeInputData($this->columns, Matrix::MODE_COLUMNS_INPUT);
+        array_unshift($this->columns, $column);
 
-        return $column;
+        foreach ($column->toArray() as $key => $value) {
+            $this->rows[$key]->unshift($value);
+        }
+
+        ++$this->numColumns;
+
+        return $this;
+    }
+
+    /**
+     * @param NumberCollection $row
+     *
+     * @return static
+     * @throws IntegrityConstraint
+     */
+    public function unshiftRow(NumberCollection $row): static
+    {
+        if ($row->count() !== $this->numColumns) {
+            throw new IntegrityConstraint(
+                'The members of a new row must match the number of columns in a matrix.',
+                'Provide a NumberCollection that has the right number of members.',
+                'The provided row did not have the correct number of members. Expected ' . $this->numColumns . ', found ' . $row->count()
+            );
+        }
+
+        array_unshift($this->rows, $row);
+
+        foreach ($row->toArray() as $key => $value) {
+            $this->columns[$key]->unshift($value);
+        }
+
+        ++$this->numRows;
+
+        return $this;
     }
 
     abstract protected function normalizeInputData(array $data, string $mode): void;

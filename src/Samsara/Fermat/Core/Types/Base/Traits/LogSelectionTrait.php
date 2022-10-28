@@ -13,6 +13,7 @@ trait LogSelectionTrait
 
     /**
      * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -28,6 +29,7 @@ trait LogSelectionTrait
 
     /**
      * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -43,6 +45,7 @@ trait LogSelectionTrait
 
     /**
      * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */

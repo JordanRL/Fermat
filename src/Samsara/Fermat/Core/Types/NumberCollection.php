@@ -33,6 +33,7 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
      * NumberCollection constructor.
      *
      * @param array $numbers
+     *
      * @throws IntegrityConstraint
      */
     public function __construct(array $numbers = [])
@@ -45,11 +46,56 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
     }
 
     /**
-     * @return Vector
+     * @param int $key
+     *
+     * @return ImmutableDecimal
      */
-    private function getCollection(): Vector
+    public function get(int $key): ImmutableDecimal
     {
-        return $this->collection;
+        return $this->getCollection()->get($key);
+    }
+
+    /**
+     * @return Traversable
+     */
+    public function getIterator(): Traversable
+    {
+        return $this->getCollection()->getIterator();
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getRandom(): ImmutableDecimal
+    {
+        $maxKey = $this->getCollection()->count() - 1;
+
+        $key = RandomProvider::randomInt(0, $maxKey, RandomMode::Speed)->asInt();
+
+        return $this->get($key);
+    }
+
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function add($number): NumberCollectionInterface
+    {
+        $this->getCollection()->apply(function ($value) use ($number) {
+            /** @var ImmutableDecimal $value */
+            return $value->add($number);
+        });
+
+        return $this;
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function average(): ImmutableDecimal
+    {
+        return $this->mean();
     }
 
     /**
@@ -87,184 +133,15 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
     }
 
     /**
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return $this->collection->toArray();
-    }
-
-    /**
-     * @return int
-     */
-    public function selectScale(): int
-    {
-        $scale = 0;
-
-        foreach ($this->collection as $value) {
-            if ($value->getScale() > $scale) {
-                $scale = $value->getScale();
-            }
-        }
-
-        return $scale;
-    }
-
-    /**
-     * @param ImmutableDecimal $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function push(ImmutableDecimal $number): NumberCollectionInterface
-    {
-        $this->getCollection()->push($number);
-
-        return $this;
-    }
-
-    /**
-     * @return ImmutableDecimal
-     */
-    public function pop(): ImmutableDecimal
-    {
-        return $this->getCollection()->pop();
-    }
-
-    /**
-     * @param ImmutableDecimal $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function unshift(ImmutableDecimal $number): NumberCollectionInterface
-    {
-        $this->getCollection()->unshift($number);
-
-        return $this;
-    }
-
-    /**
-     * @return ImmutableDecimal
-     */
-    public function shift(): ImmutableDecimal
-    {
-        return $this->getCollection()->shift();
-    }
-
-    /**
-     * @param array $filters
-     * @return NumberCollection
-     */
-    public function filterByKeys(array $filters): NumberCollection
-    {
-
-        $filteredCollection = new NumberCollection();
-
-        foreach ($this->collection as $key => $value) {
-            if (in_array($key, $filters)) {
-                continue;
-            }
-
-            $filteredCollection->push($value);
-        }
-
-        return $filteredCollection;
-
-    }
-
-    /**
-     * @return NumberCollectionInterface
-     */
-    public function sort(): NumberCollectionInterface
-    {
-        $this->getCollection()->sort(function($left, $right){
-            return ArithmeticProvider::compare($left->getAsBaseTenRealNumber(), $right->getAsBaseTenRealNumber());
-        });
-
-        return $this;
-    }
-
-    /**
-     * @return NumberCollectionInterface
-     */
-    public function reverse(): NumberCollectionInterface
-    {
-        $this->getCollection()->reverse();
-
-        return $this;
-    }
-
-    /**
-     * @param $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function add($number): NumberCollectionInterface
-    {
-        $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableDecimal $value */
-            return $value->add($number);
-        });
-
-        return $this;
-    }
-
-    /**
-     * @param $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function subtract($number): NumberCollectionInterface
-    {
-        $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableDecimal $value */
-            return $value->subtract($number);
-        });
-
-        return $this;
-    }
-
-    /**
-     * @param $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function multiply($number): NumberCollectionInterface
-    {
-        $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableDecimal $value */
-            return $value->multiply($number);
-        });
-
-        return $this;
-    }
-
-    /**
      * @param $number
      *
      * @return NumberCollectionInterface
      */
     public function divide($number): NumberCollectionInterface
     {
-        $this->getCollection()->apply(function($value) use ($number){
+        $this->getCollection()->apply(function ($value) use ($number) {
             /** @var ImmutableDecimal $value */
             return $value->divide($number);
-        });
-
-        return $this;
-    }
-
-    /**
-     * Raises each element in the collection to the exponent $number
-     *
-     * @param $number
-     *
-     * @return NumberCollectionInterface
-     */
-    public function pow($number): NumberCollectionInterface
-    {
-        $this->getCollection()->apply(function($value) use ($number){
-            /** @var ImmutableDecimal $value */
-            return $value->pow($number);
         });
 
         return $this;
@@ -286,7 +163,7 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
         } else {
             $base = Numbers::makeOrDont(Numbers::IMMUTABLE, $base);
         }
-        $this->getCollection()->apply(function($value) use ($base){
+        $this->getCollection()->apply(function ($value) use ($base) {
             /** @var ImmutableDecimal $value */
             return $base->pow($value);
         });
@@ -295,55 +172,40 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
     }
 
     /**
-     * @param int $key
+     * @param array $filters
      *
-     * @return ImmutableDecimal
+     * @return NumberCollection
      */
-    public function get(int $key): ImmutableDecimal
+    public function filterByKeys(array $filters): NumberCollection
     {
-        return $this->getCollection()->get($key);
-    }
 
-    /**
-     * @return ImmutableDecimal
-     */
-    public function getRandom(): ImmutableDecimal
-    {
-        $maxKey = $this->getCollection()->count() - 1;
+        $filteredCollection = new NumberCollection();
 
-        $key = RandomProvider::randomInt(0, $maxKey, RandomMode::Speed)->asInt();
+        foreach ($this->collection as $key => $value) {
+            if (in_array($key, $filters)) {
+                continue;
+            }
 
-        return $this->get($key);
-    }
-
-    /**
-     * @return ImmutableDecimal
-     */
-    public function sum(): ImmutableDecimal
-    {
-        $sum = Numbers::makeZero();
-
-        foreach ($this->getCollection() as $number) {
-            $sum = $sum->add($number);
+            $filteredCollection->push($value);
         }
 
-        return $sum;
+        return $filteredCollection;
+
     }
 
     /**
-     * @return ImmutableDecimal
+     * @return Exponential
+     * @throws IntegrityConstraint
      */
-    public function mean(): ImmutableDecimal
+    public function makeExponentialDistribution(): Exponential
     {
-        return $this->sum()->divide($this->getCollection()->count());
-    }
+        $average = $this->mean();
 
-    /**
-     * @return ImmutableDecimal
-     */
-    public function average(): ImmutableDecimal
-    {
-        return $this->mean();
+        $one = Numbers::makeOne();
+
+        $lambda = $one->divide($average);
+
+        return new Exponential($lambda);
     }
 
     /**
@@ -388,21 +250,6 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
     }
 
     /**
-     * @return Exponential
-     * @throws IntegrityConstraint
-     */
-    public function makeExponentialDistribution(): Exponential
-    {
-        $average = $this->mean();
-
-        $one = Numbers::makeOne();
-
-        $lambda = $one->divide($average);
-
-        return new Exponential($lambda);
-    }
-
-    /**
      * @return PolynomialFunction
      */
     public function makePolynomialFunction(): PolynomialFunction
@@ -415,7 +262,31 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
     }
 
     /**
+     * @return ImmutableDecimal
+     */
+    public function mean(): ImmutableDecimal
+    {
+        return $this->sum()->divide($this->getCollection()->count());
+    }
+
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function multiply($number): NumberCollectionInterface
+    {
+        $this->getCollection()->apply(function ($value) use ($number) {
+            /** @var ImmutableDecimal $value */
+            return $value->multiply($number);
+        });
+
+        return $this;
+    }
+
+    /**
      * @param $offset
+     *
      * @return bool
      */
     public function offsetExists($offset): bool
@@ -425,6 +296,7 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
 
     /**
      * @param $offset
+     *
      * @return mixed
      */
     public function offsetGet($offset): mixed
@@ -435,6 +307,7 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
     /**
      * @param $offset
      * @param $value
+     *
      * @return void
      */
     public function offsetSet($offset, $value): void
@@ -444,6 +317,7 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
 
     /**
      * @param $offset
+     *
      * @return void
      */
     public function offsetUnset($offset): void
@@ -452,10 +326,142 @@ class NumberCollection implements NumberCollectionInterface, ArrayAccess, Iterat
     }
 
     /**
-     * @return Traversable
+     * @return ImmutableDecimal
      */
-    public function getIterator(): Traversable
+    public function pop(): ImmutableDecimal
     {
-        return $this->getCollection()->getIterator();
+        return $this->getCollection()->pop();
+    }
+
+    /**
+     * Raises each element in the collection to the exponent $number
+     *
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function pow($number): NumberCollectionInterface
+    {
+        $this->getCollection()->apply(function ($value) use ($number) {
+            /** @var ImmutableDecimal $value */
+            return $value->pow($number);
+        });
+
+        return $this;
+    }
+
+    /**
+     * @param ImmutableDecimal $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function push(ImmutableDecimal $number): NumberCollectionInterface
+    {
+        $this->getCollection()->push($number);
+
+        return $this;
+    }
+
+    /**
+     * @return NumberCollectionInterface
+     */
+    public function reverse(): NumberCollectionInterface
+    {
+        $this->getCollection()->reverse();
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function selectScale(): int
+    {
+        $scale = 0;
+
+        foreach ($this->collection as $value) {
+            if ($value->getScale() > $scale) {
+                $scale = $value->getScale();
+            }
+        }
+
+        return $scale;
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function shift(): ImmutableDecimal
+    {
+        return $this->getCollection()->shift();
+    }
+
+    /**
+     * @return NumberCollectionInterface
+     */
+    public function sort(): NumberCollectionInterface
+    {
+        $this->getCollection()->sort(function ($left, $right) {
+            return ArithmeticProvider::compare($left->getAsBaseTenRealNumber(), $right->getAsBaseTenRealNumber());
+        });
+
+        return $this;
+    }
+
+    /**
+     * @param $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function subtract($number): NumberCollectionInterface
+    {
+        $this->getCollection()->apply(function ($value) use ($number) {
+            /** @var ImmutableDecimal $value */
+            return $value->subtract($number);
+        });
+
+        return $this;
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function sum(): ImmutableDecimal
+    {
+        $sum = Numbers::makeZero();
+
+        foreach ($this->getCollection() as $number) {
+            $sum = $sum->add($number);
+        }
+
+        return $sum;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->collection->toArray();
+    }
+
+    /**
+     * @param ImmutableDecimal $number
+     *
+     * @return NumberCollectionInterface
+     */
+    public function unshift(ImmutableDecimal $number): NumberCollectionInterface
+    {
+        $this->getCollection()->unshift($number);
+
+        return $this;
+    }
+
+    /**
+     * @return Vector
+     */
+    private function getCollection(): Vector
+    {
+        return $this->collection;
     }
 }

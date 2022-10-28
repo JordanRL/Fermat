@@ -16,7 +16,7 @@ abstract class Expression implements ExpressionInterface
 
     /** @var callable */
     protected $expression;
-    /** @var ImmutableDecimal[]  */
+    /** @var ImmutableDecimal[] */
     protected array $terms = [];
     private Functions $type;
 

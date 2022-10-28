@@ -52,28 +52,47 @@ trait ArithmeticComplexTrait
 
     /**
      * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     * @param int|null                                        $scale
      *
-     * @return MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
+     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
+     * @throws IntegrityConstraint
+     * @throws IncompatibleObjectState
      */
-    public function subtract(
-        string|int|float|Decimal|Fraction|ComplexNumber $num
+    public function divide(
+        string|int|float|Decimal|Fraction|ComplexNumber $num,
+        ?int                                            $scale = null
     ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
-        $scale = $this->getScale();
+
+        $scale = $scale ?? $this->getScale();
 
         [$thisNum, $thatNum] = $this->translateToObjects($num);
-        [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
-        [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thisNum, 0, $this->getMode());
+        [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 1, $this->getMode());
+        [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thisNum, 1, $this->getMode());
 
-        $newRealPart = $thisRealPart->subtract($thatRealPart);
-        $newImaginaryPart = $thisImaginaryPart->subtract($thatImaginaryPart);
+        if ($thatNum->isComplex()) {
+            $intScale = $scale + 2;
+            $denominator = $thatRealPart->roundToScale($intScale)->pow(2)->add($thatImaginaryPart->asReal()->roundToScale($intScale)->pow(2));
 
-        return $this->helperComplexAddSub($newRealPart, $newImaginaryPart, $scale);
+            $partA = $thisRealPart->roundToScale($intScale)->multiply($thatRealPart->roundToScale($intScale))
+                ->add($thisImaginaryPart->asReal()->roundToScale($intScale)->multiply($thatImaginaryPart->asReal()->roundToScale($intScale)))
+                ->divide($denominator, $intScale);
+            $partB = $thisImaginaryPart->asReal()->roundToScale($intScale)->multiply($thatRealPart->roundToScale($intScale))
+                ->subtract($thisRealPart->roundToScale($intScale)->multiply($thatImaginaryPart->asReal()->roundToScale($intScale)))
+                ->divide($denominator, $intScale)
+                ->multiply('1i');
+        } else {
+            $partA = $thisRealPart->divide($thatNum, $scale + 2);
+            $partB = $thisImaginaryPart->divide($thatNum, $scale + 2);
+        }
+
+        return $this->helperMulDivPowReturn($partA, $partB, $scale);
 
     }
 
     /**
      * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     *
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      */
     public function multiply(
@@ -97,53 +116,49 @@ trait ArithmeticComplexTrait
     }
 
     /**
-     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
-     * @param int|null $scale
-     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
-     * @throws IntegrityConstraint
+     * @param int|ImmutableDecimal $root
+     * @param int|null             $scale
+     *
+     * @return ImmutableComplexNumber[]
      * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     * @throws OptionalExit
      */
-    public function divide(
-        string|int|float|Decimal|Fraction|ComplexNumber $num,
-        ?int $scale = null
-    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
+    public function nthRoots(int|ImmutableDecimal $root, ?int $scale = null): array
     {
 
+        [$thisNum, $root] = $this->translateToObjects($root);
         $scale = $scale ?? $this->getScale();
 
-        [$thisNum, $thatNum] = $this->translateToObjects($num);
-        [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 1, $this->getMode());
-        [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thisNum, 1, $this->getMode());
-
-        if ($thatNum->isComplex()) {
-            $intScale = $scale + 2;
-            $denominator = $thatRealPart->roundToScale($intScale)->pow(2)->add($thatImaginaryPart->asReal()->roundToScale($intScale)->pow(2));
-
-            $partA = $thisRealPart->roundToScale($intScale)->multiply($thatRealPart->roundToScale($intScale))
-                ->add($thisImaginaryPart->asReal()->roundToScale($intScale)->multiply($thatImaginaryPart->asReal()->roundToScale($intScale)))
-                ->divide($denominator, $intScale);
-            $partB = $thisImaginaryPart->asReal()->roundToScale($intScale)->multiply($thatRealPart->roundToScale($intScale))
-                ->subtract($thisRealPart->roundToScale($intScale)->multiply($thatImaginaryPart->asReal()->roundToScale($intScale)))
-                ->divide($denominator, $intScale)
-                ->multiply('1i');
-        } else {
-            $partA = $thisRealPart->divide($thatNum, $scale+2);
-            $partB = $thisImaginaryPart->divide($thatNum, $scale+2);
+        if (!$root->isNatural() || $root->isNegative()) {
+            throw new IntegrityConstraint(
+                'You may only provide positive integer inputs for the root index',
+                'None'
+            );
         }
 
-        return $this->helperMulDivPowReturn($partA, $partB, $scale);
+        $roots = [];
+
+        for ($i = 0; $root->isGreaterThan($i); $i++) {
+            [$newRealPart, $newImaginaryPart] = $this->helperRootsPolarRotate($thisNum, $root, $i, $scale);
+
+            $roots[] = (new ImmutableComplexNumber($newRealPart, $newImaginaryPart))->setMode($this->getMode())->roundToScale($scale);
+        }
+
+        return $roots;
 
     }
 
     /**
      * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     *
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
     public function pow(
         string|int|float|Decimal|Fraction|ComplexNumber $num,
-        ?int $scale = null
+        ?int                                            $scale = null
     ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
         $scale = $scale ?? $this->getScale();
@@ -172,6 +187,7 @@ trait ArithmeticComplexTrait
 
     /**
      * @param int|null $scale
+     *
      * @return static|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
@@ -201,35 +217,24 @@ trait ArithmeticComplexTrait
     }
 
     /**
-     * @param int|ImmutableDecimal $root
-     * @param int|null $scale
-     * @return ImmutableComplexNumber[]
-     * @throws IncompatibleObjectState
-     * @throws IntegrityConstraint
-     * @throws OptionalExit
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num
+     *
+     * @return MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
      */
-    public function nthRoots(int|ImmutableDecimal $root, ?int $scale = null): array
+    public function subtract(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
+        $scale = $this->getScale();
 
-        [$thisNum, $root] = $this->translateToObjects($root);
-        $scale = $scale ?? $this->getScale();
+        [$thisNum, $thatNum] = $this->translateToObjects($num);
+        [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
+        [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thisNum, 0, $this->getMode());
 
-        if (!$root->isNatural() || $root->isNegative()) {
-            throw new IntegrityConstraint(
-                'You may only provide positive integer inputs for the root index',
-                'None'
-            );
-        }
+        $newRealPart = $thisRealPart->subtract($thatRealPart);
+        $newImaginaryPart = $thisImaginaryPart->subtract($thatImaginaryPart);
 
-        $roots = [];
-
-        for ($i=0;$root->isGreaterThan($i);$i++) {
-            [$newRealPart, $newImaginaryPart] = $this->helperRootsPolarRotate($thisNum, $root, $i, $scale);
-
-            $roots[] = (new ImmutableComplexNumber($newRealPart, $newImaginaryPart))->setMode($this->getMode())->roundToScale($scale);
-        }
-
-        return $roots;
+        return $this->helperComplexAddSub($newRealPart, $newImaginaryPart, $scale);
 
     }
 

@@ -20,7 +20,7 @@ class SphericalCoordinate extends Coordinate implements ThreeDCoordinateInterfac
         $data = [
             'rho' => $rho,
             'theta' => $theta,
-            'phi' => $phi
+            'phi' => $phi,
         ];
 
         parent::__construct($data);
@@ -31,19 +31,14 @@ class SphericalCoordinate extends Coordinate implements ThreeDCoordinateInterfac
         return $this->getAxis('rho');
     }
 
-    public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal
+    public function getPlanarAngle(): ImmutableDecimal
     {
-        return $this->asCartesian()->distanceTo($coordinate);
+        return $this->getAxis('theta');
     }
 
     public function getPolarAngle(): ImmutableDecimal
     {
         return $this->getAxis('phi');
-    }
-
-    public function getPlanarAngle(): ImmutableDecimal
-    {
-        return $this->getAxis('theta');
     }
 
     public function asCartesian(): CartesianCoordinate
@@ -64,11 +59,6 @@ class SphericalCoordinate extends Coordinate implements ThreeDCoordinateInterfac
         return $this->cachedCartesian;
     }
 
-    public function asSpherical(): SphericalCoordinate
-    {
-        return $this;
-    }
-
     public function asCylindrical(): CylindricalCoordinate
     {
         if (is_null($this->cachedCylindrical)) {
@@ -83,5 +73,15 @@ class SphericalCoordinate extends Coordinate implements ThreeDCoordinateInterfac
         }
 
         return $this->cachedCylindrical;
+    }
+
+    public function asSpherical(): SphericalCoordinate
+    {
+        return $this;
+    }
+
+    public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal
+    {
+        return $this->asCartesian()->distanceTo($coordinate);
     }
 }

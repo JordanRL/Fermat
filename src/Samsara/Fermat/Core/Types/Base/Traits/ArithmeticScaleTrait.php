@@ -20,6 +20,7 @@ trait ArithmeticScaleTrait
 
     /**
      * @param Decimal $num
+     *
      * @return string
      */
     protected function addScale(Decimal $num): string
@@ -32,20 +33,28 @@ trait ArithmeticScaleTrait
     }
 
     /**
-     * @param Decimal $num
+     * @param Decimal  $num
+     * @param int|null $scale
+     *
      * @return string
      */
-    protected function subtractScale(Decimal $num): string
+    protected function divideScale(Decimal $num, ?int $scale): string
     {
+        /**
+         * This method is never reached from Fraction, even though it is defined on the class
+         *
+         * @var ImmutableDecimal|Decimal|MutableDecimal $this
+         */
 
-        $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
+        $scale = $scale + $this->numberOfLeadingZeros() + $num->numberOfLeadingZeros();
 
-        return ArithmeticProvider::subtract($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale);
+        return ArithmeticProvider::divide($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale + 1);
 
     }
 
     /**
      * @param Decimal $num
+     *
      * @return string
      */
     protected function multiplyScale(Decimal $num): string
@@ -59,25 +68,7 @@ trait ArithmeticScaleTrait
 
     /**
      * @param Decimal $num
-     * @param int|null $scale
-     * @return string
-     */
-    protected function divideScale(Decimal $num, ?int $scale): string
-    {
-        /**
-         * This method is never reached from Fraction, even though it is defined on the class
-         *
-         * @var ImmutableDecimal|Decimal|MutableDecimal $this
-         */
-
-        $scale = $scale + $this->numberOfLeadingZeros() + $num->numberOfLeadingZeros();
-
-        return ArithmeticProvider::divide($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale+1);
-
-    }
-
-    /**
-     * @param Decimal $num
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -103,12 +94,13 @@ trait ArithmeticScaleTrait
             return $exponent->exp($scale, false)->getValue(NumberBase::Ten);
         }
 
-        return ArithmeticProvider::pow($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale+1);
+        return ArithmeticProvider::pow($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale + 1);
 
     }
 
     /**
      * @param int|null $scale
+     *
      * @return string
      */
     protected function sqrtScale(?int $scale): string
@@ -117,6 +109,20 @@ trait ArithmeticScaleTrait
         $scale = $scale ?? $this->getScale();
 
         return ArithmeticProvider::squareRoot($this->abs()->getAsBaseTenRealNumber(), $scale);
+
+    }
+
+    /**
+     * @param Decimal $num
+     *
+     * @return string
+     */
+    protected function subtractScale(Decimal $num): string
+    {
+
+        $scale = ($this->getScale() > $num->getScale()) ? $this->getScale() : $num->getScale();
+
+        return ArithmeticProvider::subtract($this->getAsBaseTenRealNumber(), $num->getAsBaseTenRealNumber(), $scale);
 
     }
 

@@ -21,9 +21,10 @@ trait TrigonometryHelpersTrait
 {
 
     /**
-     * @param int|null $scale
-     * @param bool $round
+     * @param int|null      $scale
+     * @param bool          $round
      * @param CalcOperation $operation
+     *
      * @return static|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      */
@@ -58,11 +59,12 @@ trait TrigonometryHelpersTrait
 
     /**
      * @param CalcOperation $operation
-     * @param string $piDivTwoReturn
-     * @param string $piReturn
-     * @param string $threePiDivTwoReturn
-     * @param string $twoPiReturn
-     * @param int|null $scale
+     * @param string        $piDivTwoReturn
+     * @param string        $piReturn
+     * @param string        $threePiDivTwoReturn
+     * @param string        $twoPiReturn
+     * @param int|null      $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      * @throws ReflectionException
@@ -71,17 +73,17 @@ trait TrigonometryHelpersTrait
      */
     protected function helperSinCosScale(
         CalcOperation $operation,
-        string $piDivTwoReturn,
-        string $piReturn,
-        string $threePiDivTwoReturn,
-        string $twoPiReturn,
-        ?int $scale
+        string        $piDivTwoReturn,
+        string        $piReturn,
+        string        $threePiDivTwoReturn,
+        string        $twoPiReturn,
+        ?int          $scale
     )
     {
         $scale = $scale ?? $this->getScale();
         $modScale = ($scale > $this->getScale()) ? $scale : $this->getScale();
-        $intScale = $scale+3;
-        $modScale = $modScale+$this->numberOfIntDigits()+2;
+        $intScale = $scale + 3;
+        $modScale = $modScale + $this->numberOfIntDigits() + 2;
 
         $thisNum = Numbers::make(
             Numbers::IMMUTABLE,
@@ -90,7 +92,7 @@ trait TrigonometryHelpersTrait
         );
 
         $twoPi = Numbers::make2Pi($modScale + 2);
-        $pi = Numbers::makePi( $modScale + 2);
+        $pi = Numbers::makePi($modScale + 2);
         $piDivTwo = $pi->divide(2);
         $threePiDivTwo = $piDivTwo->multiply(3);
         $modulo = $thisNum->continuousModulo($twoPi);
@@ -132,7 +134,7 @@ trait TrigonometryHelpersTrait
                 };
             },
             0,
-            $scale+2
+            $scale + 2
         );
 
         return $answer->getAsBaseTenRealNumber();

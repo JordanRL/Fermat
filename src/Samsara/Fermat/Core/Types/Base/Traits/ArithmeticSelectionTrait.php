@@ -19,6 +19,63 @@ trait ArithmeticSelectionTrait
 
     /**
      * @param Decimal $num
+     *
+     * @return string
+     */
+    protected function addSelector(Decimal $num): string
+    {
+        $calcMode = $this->getResolvedMode();
+        if ($calcMode == CalcMode::Auto) {
+            $value = $this->addGMP($num);
+
+            if ($value !== false) {
+                return $value;
+            }
+
+            $calcMode = $this->modeSelectorForArithmetic($num, CalcOperation::Addition);
+        }
+
+        return match ($calcMode) {
+            CalcMode::Native => $this->addNative($num),
+            default => $this->addScale($num),
+        };
+    }
+
+    /**
+     * @param Decimal|ImmutableDecimal|MutableDecimal $thisNum
+     * @param Decimal|ImmutableDecimal|MutableDecimal $thatNum
+     * @param int                                     $scale
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function divideSelector(
+        Decimal|ImmutableDecimal|MutableDecimal $thisNum,
+        Decimal|ImmutableDecimal|MutableDecimal $thatNum,
+        int                                     $scale
+    ): string
+    {
+
+        $calcMode = $this->getResolvedMode();
+        if ($calcMode == CalcMode::Auto) {
+            $value = $this->divideGMP($thatNum);
+
+            if ($value !== false) {
+                return $value;
+            }
+
+            $calcMode = $this->modeSelectorForArithmetic($thatNum, CalcOperation::Division);
+        }
+
+        return match ($calcMode) {
+            CalcMode::Native => $this->divideNative($thatNum),
+            default => $this->divideScale($thatNum, $scale),
+        };
+    }
+
+    /**
+     * @param Decimal $num
+     *
      * @return CalcMode
      * @throws IntegrityConstraint
      */
@@ -66,52 +123,7 @@ trait ArithmeticSelectionTrait
 
     /**
      * @param Decimal $num
-     * @return string
-     */
-    protected function addSelector(Decimal $num): string
-    {
-        $calcMode = $this->getResolvedMode();
-        if ($calcMode == CalcMode::Auto) {
-            $value = $this->addGMP($num);
-
-            if ($value !== false) {
-                return $value;
-            }
-
-            $calcMode = $this->modeSelectorForArithmetic($num, CalcOperation::Addition);
-        }
-
-        return match ($calcMode) {
-            CalcMode::Native => $this->addNative($num),
-            default => $this->addScale($num),
-        };
-    }
-
-    /**
-     * @param Decimal $num
-     * @return string
-     */
-    protected function subtractSelector(Decimal $num): string
-    {
-        $calcMode = $this->getResolvedMode();
-        if ($calcMode == CalcMode::Auto) {
-            $value = $this->subtractGMP($num);
-
-            if ($value !== false) {
-                return $value;
-            }
-
-            $calcMode = $this->modeSelectorForArithmetic($num, CalcOperation::SquareRoot);
-        }
-
-        return match ($calcMode) {
-            CalcMode::Native => $this->subtractNative($num),
-            default => $this->subtractScale($num),
-        };
-    }
-
-    /**
-     * @param Decimal $num
+     *
      * @return string
      */
     protected function multiplySelector(Decimal $num): string
@@ -134,38 +146,8 @@ trait ArithmeticSelectionTrait
     }
 
     /**
-     * @param Decimal|ImmutableDecimal|MutableDecimal $thisNum
-     * @param Decimal|ImmutableDecimal|MutableDecimal $thatNum
-     * @param int $scale
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    protected function divideSelector(
-        Decimal|ImmutableDecimal|MutableDecimal $thisNum,
-        Decimal|ImmutableDecimal|MutableDecimal $thatNum,
-        int $scale
-    ): string
-    {
-
-        $calcMode = $this->getResolvedMode();
-        if ($calcMode == CalcMode::Auto) {
-            $value = $this->divideGMP($thatNum);
-
-            if ($value !== false) {
-                return $value;
-            }
-
-            $calcMode = $this->modeSelectorForArithmetic($thatNum, CalcOperation::Division);
-        }
-
-        return match ($calcMode) {
-            CalcMode::Native => $this->divideNative($thatNum),
-            default => $this->divideScale($thatNum, $scale),
-        };
-    }
-
-    /**
      * @param Decimal $num
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -194,6 +176,7 @@ trait ArithmeticSelectionTrait
 
     /**
      * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -221,6 +204,30 @@ trait ArithmeticSelectionTrait
         return match ($calcMode) {
             CalcMode::Native => $this->sqrtNative(),
             default => $this->sqrtScale($scale),
+        };
+    }
+
+    /**
+     * @param Decimal $num
+     *
+     * @return string
+     */
+    protected function subtractSelector(Decimal $num): string
+    {
+        $calcMode = $this->getResolvedMode();
+        if ($calcMode == CalcMode::Auto) {
+            $value = $this->subtractGMP($num);
+
+            if ($value !== false) {
+                return $value;
+            }
+
+            $calcMode = $this->modeSelectorForArithmetic($num, CalcOperation::SquareRoot);
+        }
+
+        return match ($calcMode) {
+            CalcMode::Native => $this->subtractNative($num),
+            default => $this->subtractScale($num),
         };
     }
 

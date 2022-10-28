@@ -12,18 +12,18 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 interface CoordinateInterface
 {
 
-    public function getAxis($axis): ImmutableDecimal;
+    public function asCartesian(): CartesianCoordinate;
 
     public function axesValues(): array;
 
-    public function getDistanceFromOrigin(): ImmutableDecimal;
-
-    public function numberOfDimensions(): int;
-
     public function distanceTo(CoordinateInterface $coordinate): ImmutableDecimal;
 
-    public function asCartesian(): CartesianCoordinate;
+    public function getAxis($axis): ImmutableDecimal;
+
+    public function getDistanceFromOrigin(): ImmutableDecimal;
 
     public function getPolarAngle(): ImmutableDecimal;
+
+    public function numberOfDimensions(): int;
 
 }

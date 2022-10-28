@@ -37,6 +37,7 @@ trait SimpleArithmeticTrait
      * Number abstract class.
      *
      * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you are adding to this number
+     *
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      */
@@ -54,60 +55,19 @@ trait SimpleArithmeticTrait
     }
 
     /**
-     * Subtracts a number from this number. Works (to the degree that math allows it to work) for all classes that extend the
-     * Number abstract class.
-     *
-     * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you are subtracting from this number
-     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
-     * @throws IntegrityConstraint
-     */
-    public function subtract(
-        string|int|float|Decimal|Fraction|ComplexNumber $num
-    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
-    {
-        [$thisNum, $thatNum] = $this->translateToObjects($num);
-
-        if ($thatNum->isComplex()) {
-            return $thatNum->multiply(-1)->add($thisNum);
-        }
-
-        return $this->helperAddSub($thisNum, $thatNum, CalcOperation::Subtraction);
-    }
-
-    /**
-     * Multiplies a number with this number. Works (to the degree that math allows it to work) for all classes that extend the
-     * Number abstract class.
-     *
-     * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you are multiplying with this number
-     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
-     * @throws IntegrityConstraint
-     */
-    public function multiply(
-        string|int|float|Decimal|Fraction|ComplexNumber $num
-    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
-    {
-        [$thisNum, $thatNum] = $this->translateToObjects($num);
-
-        if ($thatNum->isComplex()) {
-            return $thatNum->multiply($thisNum);
-        }
-
-        return $this->helperMulDiv($thisNum, $thatNum, CalcOperation::Multiplication, $this->getScale());
-    }
-
-    /**
      * Divides this number by a number. Works (to the degree that math allows it to work) for all classes that extend the
      * Number abstract class.
      *
      * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you dividing this number by
-     * @param int|null $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     * @param int|null                                        $scale The number of digits you want to return from the division. Leave null to use this object's scale.
+     *
      * @return static|ImmutableFraction|ImmutableComplexNumber|ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
     public function divide(
         string|int|float|Decimal|Fraction|ComplexNumber $num,
-        ?int $scale = null
+        ?int                                            $scale = null
     ): ImmutableDecimal|ImmutableComplexNumber|ImmutableFraction|static
     {
 
@@ -134,10 +94,33 @@ trait SimpleArithmeticTrait
     }
 
     /**
+     * Multiplies a number with this number. Works (to the degree that math allows it to work) for all classes that extend the
+     * Number abstract class.
+     *
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you are multiplying with this number
+     *
+     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
+     * @throws IntegrityConstraint
+     */
+    public function multiply(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
+    {
+        [$thisNum, $thatNum] = $this->translateToObjects($num);
+
+        if ($thatNum->isComplex()) {
+            return $thatNum->multiply($thisNum);
+        }
+
+        return $this->helperMulDiv($thisNum, $thatNum, CalcOperation::Multiplication, $this->getScale());
+    }
+
+    /**
      * Raises this number to the power of a number. Works (to the degree that math allows it to work) for all classes
      * that extend the Number abstract class.
      *
      * @param string|int|float|Decimal|Fraction|ComplexNumber $num The exponent to raise the number to
+     *
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
@@ -201,6 +184,7 @@ trait SimpleArithmeticTrait
      * that extend the Number abstract class.
      *
      * @param int|null $scale The number of digits you want to return from the operation. Leave null to use this object's scale.
+     *
      * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
      * @throws IntegrityConstraint
      */
@@ -228,6 +212,28 @@ trait SimpleArithmeticTrait
         }
 
         return ($this instanceof Decimal) ? $this->setValue($value)->roundToScale($scale) : (new ImmutableDecimal($value, $scale))->roundToScale($scale);
+    }
+
+    /**
+     * Subtracts a number from this number. Works (to the degree that math allows it to work) for all classes that extend the
+     * Number abstract class.
+     *
+     * @param string|int|float|Decimal|Fraction|ComplexNumber $num The number you are subtracting from this number
+     *
+     * @return static|ImmutableFraction|MutableFraction|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|MutableDecimal
+     * @throws IntegrityConstraint
+     */
+    public function subtract(
+        string|int|float|Decimal|Fraction|ComplexNumber $num
+    ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
+    {
+        [$thisNum, $thatNum] = $this->translateToObjects($num);
+
+        if ($thatNum->isComplex()) {
+            return $thatNum->multiply(-1)->add($thisNum);
+        }
+
+        return $this->helperAddSub($thisNum, $thatNum, CalcOperation::Subtraction);
     }
 
 }

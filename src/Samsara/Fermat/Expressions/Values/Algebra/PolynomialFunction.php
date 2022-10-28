@@ -35,7 +35,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
                 throw new IntegrityConstraint(
                     'Keys in the $coefficients array must be integers',
                     'Only use integer keys for the $coefficients array',
-                    'The key '.$exponent.' was found in the $coefficients array; an integer was expected'
+                    'The key ' . $exponent . ' was found in the $coefficients array; an integer was expected'
                 );
             }
 
@@ -48,7 +48,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
 
         $this->terms = $sanitizedCoefficients;
 
-        $this->expression = function($x): ImmutableDecimal {
+        $this->expression = function ($x): ImmutableDecimal {
             $value = Numbers::makeZero();
 
             /** @var ImmutableDecimal $xPart */
@@ -69,87 +69,6 @@ class PolynomialFunction extends Expression implements FunctionInterface
 
             return $value;
         };
-    }
-
-    /**
-     * @param int|float|string|Decimal $x
-     *
-     * @return ImmutableDecimal
-     */
-    public function evaluateAt(int|float|string|Decimal $x): ImmutableDecimal
-    {
-        $answer = $this->expression;
-
-        return $answer($x);
-    }
-
-    /**
-     * @return FunctionInterface
-     * @throws IntegrityConstraint
-     */
-    public function derivativeExpression(): FunctionInterface
-    {
-        $newCoefficients = [];
-
-        /**
-         * @var int              $exponent
-         * @var ImmutableDecimal $coefficient
-         */
-        foreach ($this->terms as $exponent => $coefficient) {
-            if ($exponent == 0) {
-                continue;
-            }
-
-            $newCoefficients[$exponent-1] = $coefficient->multiply($exponent);
-        }
-
-        return new PolynomialFunction($newCoefficients);
-    }
-
-    /**
-     * @param float|int|string|Decimal $C
-     *
-     * @return FunctionInterface
-     * @throws IntegrityConstraint
-     */
-    public function integralExpression(float|int|string|Decimal $C = 0): FunctionInterface
-    {
-        $C = Numbers::make(Numbers::IMMUTABLE, $C);
-
-        $newCoefficients = [];
-
-        if (!$C->isEqual(0)) {
-            $newCoefficients[0] = $C;
-        }
-
-        /**
-         * @var int             $exponent
-         * @var ImmutableDecimal $coefficient
-         */
-        foreach ($this->terms as $exponent => $coefficient) {
-            $newExponent = $exponent+1;
-
-            $newCoefficients[$newExponent] = $coefficient->divide($newExponent);
-        }
-
-        return new PolynomialFunction($newCoefficients);
-    }
-
-    public function describeShape(): array
-    {
-
-        $shape = [];
-
-        /**
-         * @var int             $exponent
-         * @var ImmutableDecimal $coefficient
-         */
-        foreach ($this->terms as $exponent => $coefficient) {
-            $shape[$exponent] = $coefficient->getValue();
-        }
-
-        return $shape;
-
     }
 
     /**
@@ -193,14 +112,14 @@ class PolynomialFunction extends Expression implements FunctionInterface
         }
 
         /**
-         * @var int $key1
+         * @var int              $key1
          * @var ImmutableDecimal $value1
          */
         foreach ($largerGroup as $key1 => $value1) {
             $largerKey = $largerExp - $key1;
 
             /**
-             * @var int             $key2
+             * @var int              $key2
              * @var ImmutableDecimal $value2
              */
             foreach ($smallerGroup as $key2 => $value2) {
@@ -217,6 +136,87 @@ class PolynomialFunction extends Expression implements FunctionInterface
         }
 
         return new PolynomialFunction($finalCoefs);
+    }
+
+    /**
+     * @return FunctionInterface
+     * @throws IntegrityConstraint
+     */
+    public function derivativeExpression(): FunctionInterface
+    {
+        $newCoefficients = [];
+
+        /**
+         * @var int              $exponent
+         * @var ImmutableDecimal $coefficient
+         */
+        foreach ($this->terms as $exponent => $coefficient) {
+            if ($exponent == 0) {
+                continue;
+            }
+
+            $newCoefficients[$exponent - 1] = $coefficient->multiply($exponent);
+        }
+
+        return new PolynomialFunction($newCoefficients);
+    }
+
+    public function describeShape(): array
+    {
+
+        $shape = [];
+
+        /**
+         * @var int              $exponent
+         * @var ImmutableDecimal $coefficient
+         */
+        foreach ($this->terms as $exponent => $coefficient) {
+            $shape[$exponent] = $coefficient->getValue();
+        }
+
+        return $shape;
+
+    }
+
+    /**
+     * @param int|float|string|Decimal $x
+     *
+     * @return ImmutableDecimal
+     */
+    public function evaluateAt(int|float|string|Decimal $x): ImmutableDecimal
+    {
+        $answer = $this->expression;
+
+        return $answer($x);
+    }
+
+    /**
+     * @param float|int|string|Decimal $C
+     *
+     * @return FunctionInterface
+     * @throws IntegrityConstraint
+     */
+    public function integralExpression(float|int|string|Decimal $C = 0): FunctionInterface
+    {
+        $C = Numbers::make(Numbers::IMMUTABLE, $C);
+
+        $newCoefficients = [];
+
+        if (!$C->isEqual(0)) {
+            $newCoefficients[0] = $C;
+        }
+
+        /**
+         * @var int              $exponent
+         * @var ImmutableDecimal $coefficient
+         */
+        foreach ($this->terms as $exponent => $coefficient) {
+            $newExponent = $exponent + 1;
+
+            $newCoefficients[$newExponent] = $coefficient->divide($newExponent);
+        }
+
+        return new PolynomialFunction($newCoefficients);
     }
 
 }

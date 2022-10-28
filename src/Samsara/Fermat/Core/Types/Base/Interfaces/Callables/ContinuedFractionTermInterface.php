@@ -15,6 +15,7 @@ interface ContinuedFractionTermInterface
 
     /**
      * @param int $n
+     *
      * @return ImmutableDecimal
      */
     public function __invoke(int $n): ImmutableDecimal;

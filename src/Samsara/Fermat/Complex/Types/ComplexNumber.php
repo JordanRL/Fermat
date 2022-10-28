@@ -20,7 +20,7 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
- *@package Samsara\Fermat\Complex
+ * @package Samsara\Fermat\Complex
  */
 abstract class ComplexNumber extends Number implements ComplexNumberInterface
 {
@@ -38,15 +38,16 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
     /**
      * @param ImmutableDecimal|ImmutableFraction $realPart
      * @param ImmutableDecimal|ImmutableFraction $imaginaryPart
-     * @param int|null $scale
-     * @param NumberBase $base
+     * @param int|null                           $scale
+     * @param NumberBase                         $base
+     *
      * @throws IntegrityConstraint
      */
     final public function __construct(
         ImmutableDecimal|ImmutableFraction $realPart,
         ImmutableDecimal|ImmutableFraction $imaginaryPart,
-        ?int $scale = null,
-        NumberBase $base = NumberBase::Ten
+        ?int                               $scale = null,
+        NumberBase                         $base = NumberBase::Ten
     )
     {
         $partsScale = ($realPart->getScale() > $imaginaryPart->getScale()) ? $realPart->getScale() : $imaginaryPart->getScale();
@@ -67,9 +68,10 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
     }
 
     /**
-     * @param array $number
-     * @param int|null $scale
+     * @param array      $number
+     * @param int|null   $scale
      * @param NumberBase $base
+     *
      * @return static
      * @throws IntegrityConstraint
      * @throws OptionalExit
@@ -106,9 +108,10 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
     }
 
     /**
-     * @param string $expression
-     * @param int|null $scale
+     * @param string     $expression
+     * @param int|null   $scale
      * @param NumberBase $base
+     *
      * @return static
      * @throws IntegrityConstraint
      * @throws OptionalExit
@@ -123,7 +126,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
                 if ($key === 0) {
                     continue;
                 }
-                $value = '-'.$value;
+                $value = '-' . $value;
             }
         } else {
             throw new IntegrityConstraint(
@@ -134,80 +137,6 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
         }
 
         return static::makeFromArray($parts, $scale, $base);
-    }
-
-    /**
-     * @throws IncompatibleObjectState
-     */
-    protected static function throwForComparison()
-    {
-        throw new IncompatibleObjectState(
-            'Inequality comparisons are not defined for complex numbers.',
-            'Check whether an object is a complex number before calling inequalities.'
-        );
-    }
-
-    /**
-     * @return ImmutableDecimal
-     */
-    public function abs(): ImmutableDecimal
-    {
-        return $this->getDistanceFromOrigin()->roundToScale($this->getScale());
-    }
-
-    /**
-     * @return string
-     */
-    public function absValue(): string
-    {
-        return $this->abs()->getValue();
-    }
-
-    /**
-     * @return ImmutableComplexNumber
-     */
-    public function asComplex(): ImmutableComplexNumber
-    {
-        return new ImmutableComplexNumber($this->getRealPart(), $this->getImaginaryPart());
-    }
-
-    /**
-     * @return ImmutableDecimal
-     */
-    public function asImaginary(): ImmutableDecimal
-    {
-        return (new ImmutableDecimal(
-            $this->getAsBaseTenRealNumber().'i',
-            $this->getScale()
-        ))->setMode($this->getMode());
-    }
-
-    /**
-     * @return PolarCoordinate
-     * @throws OptionalExit
-     * @throws IncompatibleObjectState
-     * @throws IntegrityConstraint
-     */
-    public function asPolar(): PolarCoordinate
-    {
-        if (is_null($this->cachedPolar)) {
-            $this->cachedPolar = $this->cachedCartesian->asPolar(
-                $this->scale + $this->realPart->numberOfTotalDigits() + $this->imaginaryPart->numberOfTotalDigits()
-            );
-        }
-
-        return $this->cachedPolar;
-    }
-
-    /**
-     * @return ImmutableDecimal
-     */
-    public function asReal(): ImmutableDecimal
-    {
-        return (new ImmutableDecimal(
-            $this->getAsBaseTenRealNumber(),
-            $this->getScale()
-        ))->setMode($this->getMode());
     }
 
     /**
@@ -252,6 +181,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
     /**
      * @param NumberBase $base
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -263,7 +193,25 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
             $joiner = '';
         }
 
-        return $this->getRealPart()->getValue($base).$joiner.$this->getImaginaryPart()->getValue($base);
+        return $this->getRealPart()->getValue($base) . $joiner . $this->getImaginaryPart()->getValue($base);
+    }
+
+    /**
+     * Allows you to set a mode on a number to select the calculation methods. If this is null, then the default mode in the
+     * CalculationModeProvider at the time a calculation is performed will be used.
+     *
+     * @param CalcMode|null $mode
+     *
+     * @return static
+     */
+    public function setMode(?CalcMode $mode): static
+    {
+        $this->calcMode = $mode;
+
+        $this->realPart->setMode($mode);
+        $this->imaginaryPart->setMode($mode);
+
+        return $this;
     }
 
     /**
@@ -306,6 +254,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
     /**
      * @param $value
+     *
      * @return bool|null
      * @throws IncompatibleObjectState
      */
@@ -316,6 +265,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
     /**
      * @param $value
+     *
      * @return bool|null
      * @throws IncompatibleObjectState
      */
@@ -334,6 +284,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
     /**
      * @param $value
+     *
      * @return bool|null
      * @throws IncompatibleObjectState
      */
@@ -344,6 +295,7 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
 
     /**
      * @param $value
+     *
      * @return bool|null
      * @throws IncompatibleObjectState
      */
@@ -361,20 +313,77 @@ abstract class ComplexNumber extends Number implements ComplexNumberInterface
     }
 
     /**
-     * Allows you to set a mode on a number to select the calculation methods. If this is null, then the default mode in the
-     * CalculationModeProvider at the time a calculation is performed will be used.
-     *
-     * @param CalcMode|null $mode
-     * @return static
+     * @return ImmutableComplexNumber
      */
-    public function setMode(?CalcMode $mode): static
+    public function asComplex(): ImmutableComplexNumber
     {
-        $this->calcMode = $mode;
+        return new ImmutableComplexNumber($this->getRealPart(), $this->getImaginaryPart());
+    }
 
-        $this->realPart->setMode($mode);
-        $this->imaginaryPart->setMode($mode);
+    /**
+     * @return ImmutableDecimal
+     */
+    public function asImaginary(): ImmutableDecimal
+    {
+        return (new ImmutableDecimal(
+            $this->getAsBaseTenRealNumber() . 'i',
+            $this->getScale()
+        ))->setMode($this->getMode());
+    }
 
-        return $this;
+    /**
+     * @return PolarCoordinate
+     * @throws OptionalExit
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public function asPolar(): PolarCoordinate
+    {
+        if (is_null($this->cachedPolar)) {
+            $this->cachedPolar = $this->cachedCartesian->asPolar(
+                $this->scale + $this->realPart->numberOfTotalDigits() + $this->imaginaryPart->numberOfTotalDigits()
+            );
+        }
+
+        return $this->cachedPolar;
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function asReal(): ImmutableDecimal
+    {
+        return (new ImmutableDecimal(
+            $this->getAsBaseTenRealNumber(),
+            $this->getScale()
+        ))->setMode($this->getMode());
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function abs(): ImmutableDecimal
+    {
+        return $this->getDistanceFromOrigin()->roundToScale($this->getScale());
+    }
+
+    /**
+     * @return string
+     */
+    public function absValue(): string
+    {
+        return $this->abs()->getValue();
+    }
+
+    /**
+     * @throws IncompatibleObjectState
+     */
+    protected static function throwForComparison()
+    {
+        throw new IncompatibleObjectState(
+            'Inequality comparisons are not defined for complex numbers.',
+            'Check whether an object is a complex number before calling inequalities.'
+        );
     }
 
 }

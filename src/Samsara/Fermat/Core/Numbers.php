@@ -48,10 +48,10 @@ class Numbers
      * The main reason for this class is that you can pass an unknown value instance as the
      * $type parameter and it will behave as if you passed the FQCN.
      *
-     * @param mixed         $type   An instance of FQCN for any Fermat value class.
-     * @param mixed         $value  Any value which is valid for the constructor which will be called.
-     * @param int|null      $scale  The scale setting the created instance should have.
-     * @param NumberBase    $base   The base to create the number in. Note, this is not the same as the base of $value, which is always base-10
+     * @param mixed      $type An instance of FQCN for any Fermat value class.
+     * @param mixed      $value Any value which is valid for the constructor which will be called.
+     * @param int|null   $scale The scale setting the created instance should have.
+     * @param NumberBase $base The base to create the number in. Note, this is not the same as the base of $value, which is always base-10
      *
      * @return ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction|Fraction|Decimal
      * @throws IntegrityConstraint
@@ -87,149 +87,6 @@ class Numbers
     }
 
     /**
-     * @param $type
-     * @param $value
-     * @param int|null $scale
-     * @param NumberBase $base
-     *
-     * @return Decimal
-     * @throws IntegrityConstraint
-     */
-    public static function makeFromBase10($type, $value, ?int $scale = null, NumberBase $base = NumberBase::Ten): Decimal
-    {
-        /**
-         * @var ImmutableDecimal|MutableDecimal $number
-         */
-        $number = self::make($type, $value, $scale);
-
-        return $number->setBase($base);
-    }
-
-    /**
-     * @param string|object $type
-     * @param int|float|string|array|Decimal|Fraction $value
-     * @param int|null $scale
-     * @param NumberBase $base
-     *
-     * @return ImmutableDecimal|MutableDecimal|Decimal|ImmutableDecimal[]|MutableDecimal[]|Decimal[]
-     * @throws IntegrityConstraint
-     */
-    public static function makeOrDont(string|object $type, mixed $value, ?int $scale = null, NumberBase $base = NumberBase::Ten)
-    {
-
-        if (is_object($value)) {
-            if ($value instanceof $type) {
-                return $value;
-            }
-
-            if ($value instanceof Number) {
-                return static::make($type, $value->getValue(NumberBase::Ten), $scale, $base);
-            }
-        } elseif (is_array($value)) {
-            $newInput = [];
-
-            foreach ($value as $key => $item) {
-                $newInput[$key] = static::makeOrDont($type, $item, $scale, $base);
-            }
-
-            return $newInput;
-        } elseif (is_string($value) || is_int($value) || is_float($value)) {
-            $isImaginary = str_contains($value, 'i');
-
-            if (is_numeric($value) || $isImaginary) {
-                return static::make($type, $value, $scale, $base);
-            }
-        }
-
-        throw new IntegrityConstraint(
-            '$input must be an int, float, numeric string, or an implementation of Decimal',
-            'Provide any of the MANY valid inputs',
-            'The $input argument was not numeric or an implementation of Decimal. Given value: '.$value
-        );
-
-    }
-
-    /**
-     * @param string $type
-     * @param string $value
-     * @param NumberBase $base
-     *
-     * @return ImmutableFraction|MutableFraction|Fraction
-     * @throws IntegrityConstraint
-     */
-    public static function makeFractionFromString(string $type, string $value, NumberBase $base = NumberBase::Ten): ImmutableFraction|MutableFraction|Fraction
-    {
-        $parts = explode('/', $value);
-
-        if (count($parts) > 2) {
-            throw new IntegrityConstraint(
-                'Only one division symbol (/) can be used',
-                'Change the calling code to not provide more than one division symbol',
-                'makeFractionFromString needs either one or zero division symbols in the $value argument; '.$value.' given'
-            );
-        }
-
-        /** @var ImmutableDecimal $numerator */
-        $numerator = self::make(self::IMMUTABLE, trim($parts[0]));
-        /** @var ImmutableDecimal $denominator */
-        $denominator = isset($parts[1]) ? self::make(self::IMMUTABLE, trim($parts[1])) : self::makeOne();
-
-        if ($type === self::IMMUTABLE_FRACTION) {
-            return new ImmutableFraction($numerator, $denominator, $base);
-        }
-
-        if ($type === self::MUTABLE_FRACTION) {
-            return new MutableFraction($numerator, $denominator, $base);
-        }
-
-        throw new IntegrityConstraint(
-            'Type must be an implementation of Fraction',
-            'Alter to calling code to use the correct type',
-            'makeFractionFromString can only make objects which implement the Fraction; '.$type.' given'
-        );
-    }
-
-    /**
-     * @param int|null $scale
-     *
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     */
-    public static function makePi(int $scale = null): ImmutableDecimal
-    {
-        return self::makeConstant(self::PI, $scale);
-    }
-
-    /**
-     * @param null $scale
-     *
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     */
-    public static function makeTau($scale = null): ImmutableDecimal
-    {
-        if (!is_null($scale)) {
-            if ($scale < 1) {
-                throw new IntegrityConstraint(
-                    '$scale must be at least 1',
-                    'Provide a scale within range',
-                    'The E constant cannot have a scale less than 1'
-                );
-            }
-
-            if ($scale > 100) {
-                $pi = new ImmutableDecimal(ConstantProvider::makePi($scale+2), $scale + 2);
-                /** @var ImmutableDecimal */
-                return $pi->multiply(2)->truncateToScale($scale);
-            }
-
-            return (new ImmutableDecimal(self::TAU, $scale+1))->truncateToScale($scale);
-        }
-
-        return new ImmutableDecimal(self::TAU, 100);
-    }
-
-    /**
      * @param int|null $scale
      *
      * @return ImmutableDecimal
@@ -249,6 +106,65 @@ class Numbers
     public static function makeE(int $scale = null): ImmutableDecimal
     {
         return self::makeConstant(self::E, $scale);
+    }
+
+    /**
+     * @param string     $type
+     * @param string     $value
+     * @param NumberBase $base
+     *
+     * @return ImmutableFraction|MutableFraction|Fraction
+     * @throws IntegrityConstraint
+     */
+    public static function makeFractionFromString(string $type, string $value, NumberBase $base = NumberBase::Ten): ImmutableFraction|MutableFraction|Fraction
+    {
+        $parts = explode('/', $value);
+
+        if (count($parts) > 2) {
+            throw new IntegrityConstraint(
+                'Only one division symbol (/) can be used',
+                'Change the calling code to not provide more than one division symbol',
+                'makeFractionFromString needs either one or zero division symbols in the $value argument; ' . $value . ' given'
+            );
+        }
+
+        /** @var ImmutableDecimal $numerator */
+        $numerator = self::make(self::IMMUTABLE, trim($parts[0]));
+        /** @var ImmutableDecimal $denominator */
+        $denominator = isset($parts[1]) ? self::make(self::IMMUTABLE, trim($parts[1])) : self::makeOne();
+
+        if ($type === self::IMMUTABLE_FRACTION) {
+            return new ImmutableFraction($numerator, $denominator, $base);
+        }
+
+        if ($type === self::MUTABLE_FRACTION) {
+            return new MutableFraction($numerator, $denominator, $base);
+        }
+
+        throw new IntegrityConstraint(
+            'Type must be an implementation of Fraction',
+            'Alter to calling code to use the correct type',
+            'makeFractionFromString can only make objects which implement the Fraction; ' . $type . ' given'
+        );
+    }
+
+    /**
+     * @param            $type
+     * @param            $value
+     * @param int|null   $scale
+     * @param NumberBase $base
+     *
+     * @return Decimal
+     * @throws IntegrityConstraint
+     */
+    public static function makeFromBase10($type, $value, ?int $scale = null, NumberBase $base = NumberBase::Ten): Decimal
+    {
+        /**
+         * @var ImmutableDecimal|MutableDecimal $number
+         */
+        $number = self::make($type, $value, $scale);
+
+        return $number->setBase($base);
     }
 
     /**
@@ -298,6 +214,90 @@ class Numbers
     }
 
     /**
+     * @param string|object                           $type
+     * @param int|float|string|array|Decimal|Fraction $value
+     * @param int|null                                $scale
+     * @param NumberBase                              $base
+     *
+     * @return ImmutableDecimal|MutableDecimal|Decimal|ImmutableDecimal[]|MutableDecimal[]|Decimal[]
+     * @throws IntegrityConstraint
+     */
+    public static function makeOrDont(string|object $type, mixed $value, ?int $scale = null, NumberBase $base = NumberBase::Ten)
+    {
+
+        if (is_object($value)) {
+            if ($value instanceof $type) {
+                return $value;
+            }
+
+            if ($value instanceof Number) {
+                return static::make($type, $value->getValue(NumberBase::Ten), $scale, $base);
+            }
+        } elseif (is_array($value)) {
+            $newInput = [];
+
+            foreach ($value as $key => $item) {
+                $newInput[$key] = static::makeOrDont($type, $item, $scale, $base);
+            }
+
+            return $newInput;
+        } elseif (is_string($value) || is_int($value) || is_float($value)) {
+            $isImaginary = str_contains($value, 'i');
+
+            if (is_numeric($value) || $isImaginary) {
+                return static::make($type, $value, $scale, $base);
+            }
+        }
+
+        throw new IntegrityConstraint(
+            '$input must be an int, float, numeric string, or an implementation of Decimal',
+            'Provide any of the MANY valid inputs',
+            'The $input argument was not numeric or an implementation of Decimal. Given value: ' . $value
+        );
+
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     */
+    public static function makePi(int $scale = null): ImmutableDecimal
+    {
+        return self::makeConstant(self::PI, $scale);
+    }
+
+    /**
+     * @param null $scale
+     *
+     * @return ImmutableDecimal
+     * @throws IntegrityConstraint
+     */
+    public static function makeTau($scale = null): ImmutableDecimal
+    {
+        if (!is_null($scale)) {
+            if ($scale < 1) {
+                throw new IntegrityConstraint(
+                    '$scale must be at least 1',
+                    'Provide a scale within range',
+                    'The E constant cannot have a scale less than 1'
+                );
+            }
+
+            if ($scale > 100) {
+                $pi = new ImmutableDecimal(ConstantProvider::makePi($scale + 2), $scale + 2);
+                /** @var ImmutableDecimal */
+                return $pi->multiply(2)->truncateToScale($scale);
+            }
+
+            return (new ImmutableDecimal(self::TAU, $scale + 1))->truncateToScale($scale);
+        }
+
+        return new ImmutableDecimal(self::TAU, 100);
+    }
+
+    /**
      * @param int|null $scale
      *
      * @return ImmutableDecimal
@@ -335,7 +335,7 @@ class Numbers
 
             return (new ImmutableDecimal(
                 $constant,
-                $scale+1
+                $scale + 1
             ))->truncateToScale($scale);
         }
 

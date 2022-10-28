@@ -12,5 +12,4 @@ abstract class Vector extends Tuple implements VectorInterface
 {
 
 
-
 }

@@ -8,7 +8,7 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Core\Values\ImmutableFraction;
 
 /**
- *@package Samsara\Fermat\Complex
+ * @package Samsara\Fermat\Complex
  */
 class MutableComplexNumber extends ComplexNumber
 {
@@ -16,7 +16,7 @@ class MutableComplexNumber extends ComplexNumber
     protected function setValue(
         ImmutableDecimal|ImmutableFraction $realPart,
         ImmutableDecimal|ImmutableFraction $imaginaryPart,
-        ?int $scale = null
+        ?int                               $scale = null
     ): static|MutableComplexNumber
     {
         $scale = $scale ?? $this->getScale();

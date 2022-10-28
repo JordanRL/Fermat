@@ -22,22 +22,7 @@ trait TrigonometryScaleTrait
 
     /**
      * @param int|null $scale
-     * @return string
-     */
-    protected function sinScale(int $scale = null): string
-    {
-        return $this->helperSinCosScale(
-            CalcOperation::Sin,
-            '1',
-            '0',
-            '-1',
-            '0',
-            $scale
-        );
-    }
-
-    /**
-     * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      * @throws ReflectionException
@@ -56,6 +41,225 @@ trait TrigonometryScaleTrait
 
     /**
      * @param int|null $scale
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function coshScale(int $scale = null): string
+    {
+
+        $two = Numbers::make(Numbers::IMMUTABLE, 2);
+
+        $scale = $scale ?? $this->getScale();
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
+
+        $answer = $num->multiply(2)->exp()->add(1)->divide($two->multiply($num->exp()));
+
+        return $answer->getAsBaseTenRealNumber();
+
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function cotScale(int $scale = null): string
+    {
+
+        $pi = Numbers::makePi();
+        $twoPi = Numbers::make2Pi();
+        $one = Numbers::makeOne();
+        $piDivTwo = $pi->divide(2);
+
+        $scale = $scale ?? $this->getScale();
+
+        $num = Numbers::make(Numbers::IMMUTABLE, $this, $scale + 1);
+        $numNonScaled = Numbers::make(Numbers::IMMUTABLE, $this, $scale);
+
+        $modPi = $numNonScaled->continuousModulo($pi)->truncate($scale);
+        $mod2Pi = $numNonScaled->continuousModulo($twoPi)->truncate($scale);
+
+        if ($mod2Pi->isEqual(0)) {
+            return static::INFINITY;
+        } elseif ($modPi->isEqual(0)) {
+            return static::NEG_INFINITY;
+        }
+
+        $modPiDiv2 = $numNonScaled->continuousModulo($piDivTwo)->truncate($scale);
+
+        if ($modPiDiv2->isEqual(0)) {
+            return '0';
+        }
+
+        $tan = $num->tanScale($scale);
+
+        $answer = $one->divide($tan, $scale + 2);
+
+        return $answer->getAsBaseTenRealNumber();
+
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function cothScale(int $scale = null): string
+    {
+
+        $scale = $scale ?? $this->getScale();
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale + 2);
+
+        $answer = Numbers::make(Numbers::IMMUTABLE, $num->coshScale($scale + 1))->divide($num->sinh($scale + 1), $scale + 2);
+
+        return $answer->getAsBaseTenRealNumber();
+
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function cscScale(int $scale = null): string
+    {
+
+        $one = Numbers::makeOne();
+
+        $scale = $scale ?? $this->getScale();
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
+
+        $sin = $num->sin($scale + 2);
+
+        if ($sin->isPositive() && $sin->numberOfLeadingZeros() >= $scale) {
+            return static::INFINITY;
+        } elseif ($sin->isNegative() && $sin->numberOfLeadingZeros() >= $scale) {
+            return static::NEG_INFINITY;
+        }
+
+        $answer = $one->divide($sin, $scale + 2);
+
+        return $answer->getAsBaseTenRealNumber();
+
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function cschScale(int $scale = null): string
+    {
+
+        $scale = $scale ?? $this->getScale();
+
+        $one = Numbers::makeOne();
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
+
+        $answer = $one->divide($num->sinhScale($scale + 2), $scale + 2);
+
+        return $answer->getAsBaseTenRealNumber();
+
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function secScale(int $scale = null): string
+    {
+
+        $one = Numbers::makeOne();
+
+        $scale = $scale ?? $this->getScale();
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale + 1);
+
+        $cos = $num->cos($scale + 2);
+
+        if ($cos->isPositive() && $cos->numberOfLeadingZeros() >= $scale) {
+            return static::INFINITY;
+        } elseif ($cos->isNegative() && $cos->numberOfLeadingZeros() >= $scale) {
+            return static::NEG_INFINITY;
+        }
+
+        $answer = $one->divide($cos, $scale + 2);
+
+        return $answer->getAsBaseTenRealNumber();
+
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function sechScale(int $scale = null): string
+    {
+
+        $scale = $scale ?? $this->getScale();
+
+        $one = Numbers::makeOne();
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
+
+        $answer = $one->divide($num->coshScale($scale + 2), $scale + 2);
+
+        return $answer->getAsBaseTenRealNumber();
+
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return string
+     */
+    protected function sinScale(int $scale = null): string
+    {
+        return $this->helperSinCosScale(
+            CalcOperation::Sin,
+            '1',
+            '0',
+            '-1',
+            '0',
+            $scale
+        );
+    }
+
+    /**
+     * @param int|null $scale
+     *
+     * @return string
+     * @throws IntegrityConstraint
+     */
+    protected function sinhScale(int $scale = null): string
+    {
+
+        $two = Numbers::make(Numbers::IMMUTABLE, 2);
+
+        $scale = $scale ?? $this->getScale();
+
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale + 2);
+
+        $answer = $num->multiply(2)->exp($scale + 2)->subtract(1)->divide($two->multiply($num->exp($scale + 2)), $scale + 2);
+
+        return $answer->getAsBaseTenRealNumber();
+
+    }
+
+    /**
+     * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -63,7 +267,7 @@ trait TrigonometryScaleTrait
     {
         $scale = $scale ?? $this->getScale();
         $intScale = $scale + 4;
-        $intScale = $intScale+$this->numberOfIntDigits()+$this->numberOfLeadingZeros();
+        $intScale = $intScale + $this->numberOfIntDigits() + $this->numberOfLeadingZeros();
 
         $thisNum = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $intScale);
         $thisNumNonScaled = Numbers::make(Numbers::IMMUTABLE, $this->getValue(NumberBase::Ten), $scale);
@@ -124,7 +328,7 @@ trait TrigonometryScaleTrait
 
         if ($modulo->abs()->isGreaterThan($piDivEight)) {
             /** @var ImmutableDecimal $halfModTan */
-            $halfModTan = Numbers::make(Numbers::IMMUTABLE, $modulo->divide(2)->tanScale($intScale+1));
+            $halfModTan = Numbers::make(Numbers::IMMUTABLE, $modulo->divide(2)->tanScale($intScale + 1));
             $answer = $two->multiply($halfModTan)->divide($one->subtract($halfModTan->pow(2)));
         } else {
             /**
@@ -136,12 +340,14 @@ trait TrigonometryScaleTrait
                 /**
                  * @param ImmutableDecimal $modulo
                  */
-                public function __construct(ImmutableDecimal $modulo) {
+                public function __construct(ImmutableDecimal $modulo)
+                {
                     $this->modulo = $modulo;
                 }
 
                 /**
                  * @param int $n
+                 *
                  * @return ImmutableDecimal
                  */
                 public function __invoke(int $n): ImmutableDecimal
@@ -163,12 +369,14 @@ trait TrigonometryScaleTrait
                 /**
                  * @param int $intScale
                  */
-                public function __construct(int $intScale) {
+                public function __construct(int $intScale)
+                {
                     $this->intScale = $intScale;
                 }
 
                 /**
                  * @param int $n
+                 *
                  * @return ImmutableDecimal
                  */
                 public function __invoke(int $n): ImmutableDecimal
@@ -176,7 +384,7 @@ trait TrigonometryScaleTrait
                     if ($n == 0) {
                         return Numbers::makeZero($this->intScale);
                     } else {
-                        return SequenceProvider::nthOddNumber($n-1, $this->intScale);
+                        return SequenceProvider::nthOddNumber($n - 1, $this->intScale);
                     }
                 }
             };
@@ -194,143 +402,7 @@ trait TrigonometryScaleTrait
 
     /**
      * @param int|null $scale
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    protected function cotScale(int $scale = null): string
-    {
-
-        $pi = Numbers::makePi();
-        $twoPi = Numbers::make2Pi();
-        $one = Numbers::makeOne();
-        $piDivTwo = $pi->divide(2);
-
-        $scale = $scale ?? $this->getScale();
-
-        $num = Numbers::make(Numbers::IMMUTABLE, $this, $scale+1);
-        $numNonScaled = Numbers::make(Numbers::IMMUTABLE, $this, $scale);
-
-        $modPi = $numNonScaled->continuousModulo($pi)->truncate($scale);
-        $mod2Pi = $numNonScaled->continuousModulo($twoPi)->truncate($scale);
-
-        if ($mod2Pi->isEqual(0)) {
-            return static::INFINITY;
-        } elseif($modPi->isEqual(0)) {
-            return static::NEG_INFINITY;
-        }
-
-        $modPiDiv2 = $numNonScaled->continuousModulo($piDivTwo)->truncate($scale);
-
-        if ($modPiDiv2->isEqual(0)) {
-            return '0';
-        }
-
-        $tan = $num->tanScale($scale);
-
-        $answer = $one->divide($tan, $scale+2);
-
-        return $answer->getAsBaseTenRealNumber();
-
-    }
-
-    /**
-     * @param int|null $scale
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    protected function secScale(int $scale = null): string
-    {
-
-        $one = Numbers::makeOne();
-
-        $scale = $scale ?? $this->getScale();
-
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+1);
-
-        $cos = $num->cos($scale+2);
-
-        if ($cos->isPositive() && $cos->numberOfLeadingZeros() >= $scale) {
-            return static::INFINITY;
-        } elseif ($cos->isNegative() && $cos->numberOfLeadingZeros() >= $scale) {
-            return static::NEG_INFINITY;
-        }
-
-        $answer = $one->divide($cos, $scale+2);
-
-        return $answer->getAsBaseTenRealNumber();
-
-    }
-
-    /**
-     * @param int|null $scale
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    protected function cscScale(int $scale = null): string
-    {
-
-        $one = Numbers::makeOne();
-
-        $scale = $scale ?? $this->getScale();
-
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
-
-        $sin = $num->sin($scale+2);
-
-        if ($sin->isPositive() && $sin->numberOfLeadingZeros() >= $scale) {
-            return static::INFINITY;
-        } elseif ($sin->isNegative() && $sin->numberOfLeadingZeros() >= $scale) {
-            return static::NEG_INFINITY;
-        }
-
-        $answer = $one->divide($sin, $scale+2);
-
-        return $answer->getAsBaseTenRealNumber();
-
-    }
-
-    /**
-     * @param int|null $scale
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    protected function sinhScale(int $scale = null): string
-    {
-
-        $two = Numbers::make(Numbers::IMMUTABLE, 2);
-
-        $scale = $scale ?? $this->getScale();
-
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
-
-        $answer = $num->multiply(2)->exp($scale+2)->subtract(1)->divide($two->multiply($num->exp($scale+2)), $scale+2);
-
-        return $answer->getAsBaseTenRealNumber();
-
-    }
-
-    /**
-     * @param int|null $scale
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    protected function coshScale(int $scale = null): string
-    {
-
-        $two = Numbers::make(Numbers::IMMUTABLE, 2);
-
-        $scale = $scale ?? $this->getScale();
-
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
-
-        $answer = $num->multiply(2)->exp()->add(1)->divide($two->multiply($num->exp()));
-
-        return $answer->getAsBaseTenRealNumber();
-
-    }
-
-    /**
-     * @param int|null $scale
+     *
      * @return string
      * @throws IntegrityConstraint
      */
@@ -341,63 +413,7 @@ trait TrigonometryScaleTrait
 
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
 
-        $answer = Numbers::make(Numbers::IMMUTABLE, $num->sinhScale($scale+2))->divide($num->coshScale($scale+2), $scale+2);
-
-        return $answer->getAsBaseTenRealNumber();
-
-    }
-
-    /**
-     * @param int|null $scale
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    protected function cothScale(int $scale = null): string
-    {
-
-        $scale = $scale ?? $this->getScale();
-
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale+2);
-
-        $answer = Numbers::make(Numbers::IMMUTABLE, $num->coshScale($scale+1))->divide($num->sinh($scale+1), $scale+2);
-
-        return $answer->getAsBaseTenRealNumber();
-
-    }
-
-    /**
-     * @param int|null $scale
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    protected function sechScale(int $scale = null): string
-    {
-
-        $scale = $scale ?? $this->getScale();
-
-        $one = Numbers::makeOne();
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
-
-        $answer = $one->divide($num->coshScale($scale+2), $scale+2);
-
-        return $answer->getAsBaseTenRealNumber();
-
-    }
-
-    /**
-     * @param int|null $scale
-     * @return string
-     * @throws IntegrityConstraint
-     */
-    protected function cschScale(int $scale = null): string
-    {
-
-        $scale = $scale ?? $this->getScale();
-
-        $one = Numbers::makeOne();
-        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $this, $scale);
-
-        $answer = $one->divide($num->sinhScale($scale+2), $scale+2);
+        $answer = Numbers::make(Numbers::IMMUTABLE, $num->sinhScale($scale + 2))->divide($num->coshScale($scale + 2), $scale + 2);
 
         return $answer->getAsBaseTenRealNumber();
 

@@ -28,14 +28,15 @@ trait ArithmeticComplexHelperTrait
     /**
      * @param MutableDecimal|ImmutableDecimal|MutableFraction|ImmutableFraction $newRealPart
      * @param MutableDecimal|ImmutableDecimal|MutableFraction|ImmutableFraction $newImaginaryPart
-     * @param int $scale
+     * @param int                                                               $scale
+     *
      * @return static|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal
      * @throws IntegrityConstraint
      */
     protected function helperComplexAddSub(
         MutableDecimal|ImmutableDecimal|MutableFraction|ImmutableFraction $newRealPart,
         MutableDecimal|ImmutableDecimal|MutableFraction|ImmutableFraction $newImaginaryPart,
-        int $scale
+        int                                                               $scale
     ): MutableComplexNumber|ImmutableDecimal|ImmutableComplexNumber|static
     {
         if ($newRealPart->isEqual(0) xor $newImaginaryPart->isEqual(0)) {
@@ -56,7 +57,8 @@ trait ArithmeticComplexHelperTrait
      * @param ImmutableDecimal|ImmutableFraction $thisImaginaryPart
      * @param ImmutableDecimal|ImmutableFraction $thatRealPart
      * @param ImmutableDecimal|ImmutableFraction $thatImaginaryPart
-     * @param int $scale
+     * @param int                                $scale
+     *
      * @return static|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|ImmutableFraction|MutableDecimal|MutableFraction
      * @throws IntegrityConstraint
      */
@@ -65,15 +67,15 @@ trait ArithmeticComplexHelperTrait
         ImmutableDecimal|ImmutableFraction $thisImaginaryPart,
         ImmutableDecimal|ImmutableFraction $thatRealPart,
         ImmutableDecimal|ImmutableFraction $thatImaginaryPart,
-        int $scale
+        int                                $scale
     ): ImmutableFraction|MutableComplexNumber|ImmutableDecimal|MutableFraction|ImmutableComplexNumber|MutableDecimal|static
     {
         $foiled = PolynomialFunction::createFromFoil([
             $thisRealPart,
-            $thisImaginaryPart
+            $thisImaginaryPart,
         ], [
             $thatRealPart,
-            $thatImaginaryPart
+            $thatImaginaryPart,
         ]);
 
         $parts = $foiled->describeShape();
@@ -94,14 +96,15 @@ trait ArithmeticComplexHelperTrait
     /**
      * @param MutableDecimal|ImmutableDecimal|MutableFraction|ImmutableFraction $partA
      * @param MutableDecimal|ImmutableDecimal|MutableFraction|ImmutableFraction $partB
-     * @param int $scale
+     * @param int                                                               $scale
+     *
      * @return static|ImmutableComplexNumber|MutableComplexNumber|ImmutableDecimal|ImmutableFraction|MutableDecimal|MutableFraction
      * @throws IntegrityConstraint
      */
     protected function helperMulDivPowReturn(
         MutableDecimal|ImmutableDecimal|MutableFraction|ImmutableFraction $partA,
         MutableDecimal|ImmutableDecimal|MutableFraction|ImmutableFraction $partB,
-        int $scale
+        int                                                               $scale
     ): ImmutableFraction|MutableComplexNumber|ImmutableDecimal|MutableFraction|ImmutableComplexNumber|MutableDecimal|static
     {
         $newRealPart = $partA->isReal() ? $partA : $partB;
@@ -125,7 +128,8 @@ trait ArithmeticComplexHelperTrait
     /**
      * @param ImmutableDecimal|ImmutableFraction $thatRealPart
      * @param ImmutableDecimal|ImmutableFraction $thatImaginaryPart
-     * @param int $scale
+     * @param int                                $scale
+     *
      * @return ImmutableDecimal[]
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
@@ -134,7 +138,7 @@ trait ArithmeticComplexHelperTrait
     protected function helperPowPolar(
         ImmutableDecimal|ImmutableFraction $thatRealPart,
         ImmutableDecimal|ImmutableFraction $thatImaginaryPart,
-        int $scale
+        int                                $scale
     ): array
     {
         $internalScale = $scale;
@@ -168,13 +172,14 @@ trait ArithmeticComplexHelperTrait
 
     /**
      * @param ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction $thisNum
-     * @param ImmutableDecimal $rotation
+     * @param ImmutableDecimal                                          $rotation
+     *
      * @return ImmutableDecimal[]
      * @throws IntegrityConstraint
      */
     protected function helperPowPolarRotate(
         ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction $thisNum,
-        ImmutableDecimal $rotation
+        ImmutableDecimal                                          $rotation
     ): array
     {
         $rho = $thisNum->getDistanceFromOrigin();
@@ -193,18 +198,19 @@ trait ArithmeticComplexHelperTrait
 
     /**
      * @param ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction $thisNum
-     * @param ImmutableDecimal $roots
-     * @param int $period
-     * @param int $scale
+     * @param ImmutableDecimal                                          $roots
+     * @param int                                                       $period
+     * @param int                                                       $scale
+     *
      * @return ImmutableDecimal[]
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
     protected function helperRootsPolarRotate(
         ImmutableComplexNumber|ImmutableDecimal|ImmutableFraction $thisNum,
-        ImmutableDecimal $roots,
-        int $period,
-        int $scale
+        ImmutableDecimal                                          $roots,
+        int                                                       $period,
+        int                                                       $scale
     ): array
     {
         $intScale = $scale + $roots->asInt();
@@ -233,14 +239,15 @@ trait ArithmeticComplexHelperTrait
 
     /**
      * @param ImmutableComplexNumber $thisNum
-     * @param int $scale
+     * @param int                    $scale
+     *
      * @return ImmutableDecimal[]
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
     protected function helperSquareRoot(
         ImmutableComplexNumber $thisNum,
-        int $scale
+        int                    $scale
     ): array
     {
         $intScale = $scale + 2;
