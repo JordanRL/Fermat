@@ -199,11 +199,10 @@ orbs:
 
 jobs:
   generate-docs:
-    executor: fermat-unit-testing/php-base
+    executor: fermat-unit-testing/php-decimal
     steps:
       - fermat-unit-testing/setup-project:
           decimal: false
-          xdebug: false
           for-tests: false
       - run:
           name: Generate Docs Using Samsara/Roster
