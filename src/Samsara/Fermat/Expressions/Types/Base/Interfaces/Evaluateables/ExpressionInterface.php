@@ -2,6 +2,9 @@
 
 namespace Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables;
 
+use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+
 /**
  * @codeCoverageIgnore
  * @package Samsara\Fermat\Expressions
@@ -9,6 +12,6 @@ namespace Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables;
 interface ExpressionInterface
 {
 
-    public function evaluateAt($x);
+    public function evaluateAt(int|float|string|Decimal $x): ImmutableDecimal;
 
 }

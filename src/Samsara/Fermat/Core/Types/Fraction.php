@@ -9,6 +9,7 @@ use Samsara\Fermat\Core\Enums\CalcMode;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Number;
+use Samsara\Fermat\Core\Types\Traits\Decimal\FormatterTrait;
 use Samsara\Fermat\Core\Types\Traits\SimpleArithmeticTrait;
 use Samsara\Fermat\Core\Types\Traits\ComparisonTrait;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
@@ -302,7 +303,7 @@ abstract class Fraction extends Number
     }
 
     /**
-     * Returns a new instance of this object with a base ten real number.
+     * Returns a new instance of this object with a base ten imaginary number.
      *
      * @return ImmutableFraction
      */
@@ -310,7 +311,7 @@ abstract class Fraction extends Number
     {
         return (new ImmutableFraction(
             $this->getNumerator()->getAsBaseTenRealNumber().'i',
-            $this->getDenominator()->getAsBaseTenRealNumber().'i'
+            $this->getDenominator()->getAsBaseTenRealNumber()
         ))->setMode($this->getMode());
     }
 

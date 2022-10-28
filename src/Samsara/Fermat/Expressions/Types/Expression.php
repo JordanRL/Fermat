@@ -2,6 +2,9 @@
 
 namespace Samsara\Fermat\Expressions\Types;
 
+use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Expressions\Enums\Functions;
 use Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables\ExpressionInterface;
 
 /**
@@ -9,21 +12,19 @@ use Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables\ExpressionInt
  */
 abstract class Expression implements ExpressionInterface
 {
-    const POLYNOMIAL = 1;
-    const EXPONENTIAL = 2;
-    const LOGARITHMIC = 3;
+
 
     /** @var callable */
     protected $expression;
+    /** @var ImmutableDecimal[]  */
+    protected array $terms = [];
+    private Functions $type;
 
-    /** @var int */
-    private $type;
-
-    public function __construct(int $type)
+    public function __construct(Functions $type)
     {
         $this->type = $type;
     }
 
-    abstract function evaluateAt($x);
+    abstract function evaluateAt(int|float|string|Decimal $x): ImmutableDecimal;
 
 }

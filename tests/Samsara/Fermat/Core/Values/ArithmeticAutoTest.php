@@ -237,10 +237,35 @@ class ArithmeticAutoTest extends TestCase
         ];
     }
 
+    public function subtractionMutableFractionProvider(): array
+    {
+        $a = new MutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(4));
+        $b = new MutableFraction(new ImmutableDecimal(1), new ImmutableDecimal(5));
+        $c = new MutableFraction(new ImmutableDecimal(3), new ImmutableDecimal(4));
+        $d = new MutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(5));
+        $e = new MutableFraction(new ImmutableDecimal(4), new ImmutableDecimal(8));
+        $f = new MutableFraction(new ImmutableDecimal(3), new ImmutableDecimal('10000000000000000000000000'));
+        $g = new MutableFraction(new ImmutableDecimal('1i'), new ImmutableDecimal(5));
+        $h = new MutableFraction(new ImmutableDecimal('1i'), new ImmutableDecimal(4));
+
+        return [
+            'IFraction 1/4-1/5' =>[$a, $b, '1/20', NumberBase::Ten, 10],
+            'IFraction 1/4-3/4' =>[$a, $c, '-7/10', NumberBase::Ten, 10],
+            'IFraction 1/5-4/5' =>[$b, $d, '-3/5', NumberBase::Ten, 10],
+            'IFraction 1/5-3/4' =>[$b, $c, '-27/20', NumberBase::Ten, 10],
+            'IFraction 1/4-4/5' =>[$a, $d, '-3/2', NumberBase::Ten, 10],
+            'IFraction 1/4-4/8' =>[$a, $e, '-2/1', NumberBase::Ten, 10],
+            'IFraction 4/8-1/4' =>[$e, $a, '5/2', NumberBase::Ten, 10],
+            'IFraction 1/4i-1/5i' =>[$h, $g, '1i/20', NumberBase::Ten, 10],
+            'IFraction 1/4-3/10000000000000000000000000' =>[$a, $f, '-20000000000000000000000003/10000000000000000000000000', NumberBase::Ten, 10]
+        ];
+    }
+
     /**
      * @dataProvider subtractionImmutableDecimalProvider
      * @dataProvider subtractionMutableDecimalProvider
      * @dataProvider subtractionImmutableFractionProvider
+     * @dataProvider subtractionMutableFractionProvider
      */
     public function testSubtraction(Decimal|Fraction $a, Decimal|Fraction $b, string $expected, NumberBase $base, int $scale)
     {

@@ -4,6 +4,8 @@ namespace Samsara\Fermat\Expressions\Values\Algebra;
 
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Types\Decimal;
+use Samsara\Fermat\Core\Types\NumberCollection;
+use Samsara\Fermat\Expressions\Enums\Functions;
 use Samsara\Fermat\Expressions\Types\Base\Interfaces\Evaluateables\FunctionInterface;
 use Samsara\Fermat\Expressions\Types\Expression;
 use Samsara\Fermat\Core\Numbers;
@@ -14,19 +16,17 @@ use Samsara\Fermat\Core\Values\ImmutableDecimal;
  */
 class PolynomialFunction extends Expression implements FunctionInterface
 {
-    /** @var array  */
-    protected array $coefficients = [];
 
     /**
      * PolynomialFunction constructor.
      *
-     * @param array $coefficients
+     * @param array|NumberCollection $coefficients
      *
      * @throws IntegrityConstraint
      */
-    public function __construct(array $coefficients)
+    public function __construct(array|NumberCollection $coefficients)
     {
-        parent::__construct(Expression::POLYNOMIAL);
+        parent::__construct(Functions::Polynomial);
 
         $sanitizedCoefficients = [];
 
@@ -39,15 +39,14 @@ class PolynomialFunction extends Expression implements FunctionInterface
                 );
             }
 
-            /** @var ImmutableDecimal $fermatCoefficient */
-            $fermatCoefficient = Numbers::make(Numbers::IMMUTABLE, $coefficient);
+            $fermatCoefficient = new ImmutableDecimal($coefficient);
 
             if (!$fermatCoefficient->isEqual(0)) {
                 $sanitizedCoefficients[$exponent] = $fermatCoefficient;
             }
         }
 
-        $this->coefficients = $sanitizedCoefficients;
+        $this->terms = $sanitizedCoefficients;
 
         $this->expression = function($x): ImmutableDecimal {
             $value = Numbers::makeZero();
@@ -55,7 +54,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
             /** @var ImmutableDecimal $xPart */
             $xPart = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-            foreach ($this->coefficients as $exponent => $coefficient) {
+            foreach ($this->terms as $exponent => $coefficient) {
                 if ($exponent == 0) {
                     $value = $value->add($coefficient);
                 } else {
@@ -77,7 +76,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
      *
      * @return ImmutableDecimal
      */
-    public function evaluateAt($x): ImmutableDecimal
+    public function evaluateAt(int|float|string|Decimal $x): ImmutableDecimal
     {
         $answer = $this->expression;
 
@@ -93,10 +92,10 @@ class PolynomialFunction extends Expression implements FunctionInterface
         $newCoefficients = [];
 
         /**
-         * @var int             $exponent
+         * @var int              $exponent
          * @var ImmutableDecimal $coefficient
          */
-        foreach ($this->coefficients as $exponent => $coefficient) {
+        foreach ($this->terms as $exponent => $coefficient) {
             if ($exponent == 0) {
                 continue;
             }
@@ -127,7 +126,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
          * @var int             $exponent
          * @var ImmutableDecimal $coefficient
          */
-        foreach ($this->coefficients as $exponent => $coefficient) {
+        foreach ($this->terms as $exponent => $coefficient) {
             $newExponent = $exponent+1;
 
             $newCoefficients[$newExponent] = $coefficient->divide($newExponent);
@@ -145,7 +144,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
          * @var int             $exponent
          * @var ImmutableDecimal $coefficient
          */
-        foreach ($this->coefficients as $exponent => $coefficient) {
+        foreach ($this->terms as $exponent => $coefficient) {
             $shape[$exponent] = $coefficient->getValue();
         }
 

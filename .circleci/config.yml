@@ -16,20 +16,21 @@ parameters:
 orbs:
   fermat-unit-testing:
     executors:
-      php-base:
-        parameters:
-          version:
-            description: "The version of PHP to load"
-            default: "8.1"
-            type: string
+      php-decimal:
         docker:
-          - image: cimg/php:<<parameters.version>>
+          - image: jordanledoux/fermat-base:0.0.3-decimal
+        resource_class: medium
+        environment:
+          - XDEBUG_MODE: coverage
+      php-bcmath:
+        docker:
+          - image: jordanledoux/fermat-base:0.0.3-bcmath
         resource_class: medium
         environment:
           - XDEBUG_MODE: coverage
       php-with-cc-reporter:
         docker:
-          - image: cimg/php:8.1
+          - image: jordanledoux/fermat-base:0.0.2
         resource_class: small
         environment:
           - CC_TEST_REPORTER_ID: b445f8e454cd84763818d6b8aad719678e28fd671ce389e404e2851a78c6550f
@@ -93,40 +94,8 @@ orbs:
                     name: Running Unit Tests
                     command: |
                       vendor/bin/phpunit --exclude-group large --log-junit ~/phpunit/junit.xml
-      xdebug-enable:
-        description: "Enabling XDebug Extension"
-        steps:
-          - run:
-              name: Enabling XDebug Extension
-              command: |
-                sudo -E install-php-extensions xdebug
-                sudo docker-php-ext-enable xdebug
-      gmp-enable:
-        description: "Enabling GMP Extension"
-        steps:
-          - run:
-              name: Enabling GMP Extension
-              command: |
-                sudo apt update 
-                sudo apt install libgmp-dev
-                sudo -E install-php-extensions gmp
-      decimal-install:
-        description: "Installing Decimal Extension"
-        steps:
-          - run:
-              name: Installing Decimal Extension
-              command: |
-                sudo apt update
-                sudo apt install libmpdec-dev
-                sudo pecl install decimal
       setup-project:
         parameters:
-          decimal:
-            type: boolean
-            default: false
-          xdebug:
-            type: boolean
-            default: true
           for-tests:
             type: boolean
             default: true
@@ -135,15 +104,6 @@ orbs:
           - checkout
           - attach_workspace:
               at: ./tmp
-          - gmp-enable
-          - when:
-              condition: <<parameters.xdebug>>
-              steps:
-                - xdebug-enable
-          - when:
-              condition: <<parameters.decimal>>
-              steps:
-                - decimal-install
           - composer-update
           - when:
               condition: <<parameters.for-tests>>
@@ -202,12 +162,10 @@ orbs:
               paths:
                 - cc-test-reporter
       tests-bcmath:
-        executor: php-base
+        executor: php-bcmath
         parallelism: 6
         steps:
           - setup-project:
-              decimal: false
-              xdebug: true
               for-tests: true
           - run-tests:
               decimal: false
@@ -215,12 +173,10 @@ orbs:
           - wrap-up-tests:
               cc-file: "bcmath"
       tests-decimal:
-        executor: php-base
+        executor: php-decimal
         parallelism: 6
         steps:
           - setup-project:
-              decimal: true
-              xdebug: true
               for-tests: true
           - run-tests:
               decimal: true
