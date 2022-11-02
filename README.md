@@ -24,29 +24,15 @@ The project namespace is `Samsara\Fermat\Core\*`. You can view the project on [P
 
 ### Modules
 
-**NOTE:** For the upcoming 3.0 release, modules will once again be bundled.
+Modules are the namespaces outside of `Samsara\Fermat\Core` and provide functionality beyond integer, decimal, and rational numbers.
 
-Modules for Fermat provide additional functionality, as many of these features would be unused by most people.
+All of these modules depend on the Core namespace, while some depend on each other to various degrees.
 
-- [Algebra Expressions](https://github.com/SamsaraLabs/FermatAlgebraExpressions): Provides support for algebraic expressions such as polynomials and functions.
-- [Complex Numbers](https://github.com/SamsaraLabs/FermatComplexNumbers): Provides complex numbers and enables additional features in Decimal instances.
-- [Coordinate Systems](https://github.com/SamsaraLabs/FermatCoordinateSystems): Provides coordinate systems for cartesian, spherical, polar, and cylindrical coordinates.
-- [Matrices & Vectors](https://github.com/SamsaraLabs/FermatMatricesAndVectors): Provides support for matrix math and vector math.
-- [Statistics](https://github.com/SamsaraLabs/FermatStats): Provides support for statistical operations and distributions.
-
-To require the entire library, including all available modules, use:
-
-    composer require samsara/fermat-all "^1.0"
-
-Or in your `composer.json` file:
-
-```json
-{
-    "require": {
-        "samsara/fermat-all": "^1.0"
-    }
-}
-```
+- `Samsara\Fermat\Complex`: Provides complex number functionality. **NOTE:** Imaginary numbers are directly supported by `Core`. Complex numbers are numbers that have both a real part and an imaginary part.
+- `Samsara\Fermat\Coordinates`: Provides different coordinate systems that can be used to characterize points and their relations to each other.
+- `Samsara\Fermat\Expressions`: Provides various expressions, generally algebraic, that can be handled as a function instead of as a value.
+- `Samsara\Fermat\LinearAlgebra`: Provides for math involving matrices and vectors.
+- `Samsara\Fermat\Stats`: Provides for math involving statistics *and* probabilities.
 
 ## Documentation
 
