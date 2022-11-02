@@ -26,6 +26,42 @@ class StatsProvider
     protected static ?DsVector $inverseErrorCoefs = null;
 
     /**
+     * The beta function:
+     *
+     * B(a, b) = (a - 1)! (b - 1)!
+     *           -----------------
+     *              (a + b - 1)!
+     *
+     * @param int|float|string|Decimal $a
+     * @param int|float|string|Decimal $b
+     *
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public static function beta(
+        int|float|string|Decimal $a,
+        int|float|string|Decimal $b
+    ): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $a */
+        $a = Numbers::makeOrDont(Numbers::IMMUTABLE, $a);
+        /** @var ImmutableDecimal $b */
+        $b = Numbers::makeOrDont(Numbers::IMMUTABLE, $b);
+
+        if (!$a->isInt() || !$b->isInt()) {
+            throw new IntegrityConstraint(
+                'The beta function requires integer arguments.',
+                'Provide integer inputs'
+            );
+        }
+
+        return $a->subtract(1)->factorial()->multiply($b->subtract(1))->factorial()->divide(
+            $a->add($b)->subtract(1)->factorial()
+        );
+    }
+
+    /**
      * @param $n
      * @param $k
      *
@@ -88,7 +124,6 @@ class StatsProvider
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      * @throws OptionalExit
-     * @throws ReflectionException
      */
     public static function gaussErrorFunction($x, ?int $scale = null): ImmutableDecimal
     {
@@ -126,6 +161,24 @@ class StatsProvider
 
         return $answer->truncateToScale($scale);
 
+    }
+
+    public static function incompleteBeta(
+        int|float|string|Decimal $x,
+        int|float|string|Decimal $a,
+        int|float|string|Decimal $b
+    ): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $x */
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+        /** @var ImmutableDecimal $a */
+        $a = Numbers::makeOrDont(Numbers::IMMUTABLE, $a);
+        /** @var ImmutableDecimal $b */
+        $b = Numbers::makeOrDont(Numbers::IMMUTABLE, $b);
+
+        //if ($a->isLessThan())
+
+        return new ImmutableDecimal(1);
     }
 
     public static function inverseErrorCoefficients(int $termIndex): ImmutableFraction

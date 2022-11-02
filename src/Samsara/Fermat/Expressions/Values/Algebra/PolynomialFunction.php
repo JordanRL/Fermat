@@ -219,4 +219,32 @@ class PolynomialFunction extends Expression implements FunctionInterface
         return new PolynomialFunction($newCoefficients);
     }
 
+    public function multiplyByPolynomial(PolynomialFunction $polynomialFunction)
+    {
+        $thisShape = $this->describeShape();
+        $thatShape = $polynomialFunction->describeShape();
+
+        /** @var ImmutableDecimal[] $newCoefs */
+        $newCoefs = [];
+
+        foreach ($thisShape as $thisExp => $thisVal) {
+            /** @var ImmutableDecimal $thisVal */
+            $thisVal = Numbers::makeOrDont(Numbers::IMMUTABLE, $thisVal);
+            foreach ($thatShape as $thatExp => $thatVal) {
+                $newExp = $thisExp + $thatExp;
+                /** @var ImmutableDecimal $thatVal */
+                $thatVal = Numbers::makeOrDont(Numbers::IMMUTABLE, $thatVal);
+                $newVal = $thisVal->multiply($thatVal);
+
+                if (isset($newCoefs[$newExp])) {
+                    $newCoefs[$newExp] = $newCoefs[$newExp]->add($newVal);
+                } else {
+                    $newCoefs[$newExp] = $newVal;
+                }
+            }
+        }
+
+        return new PolynomialFunction($newCoefs);
+    }
+
 }

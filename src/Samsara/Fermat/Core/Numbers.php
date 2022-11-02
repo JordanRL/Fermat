@@ -41,6 +41,8 @@ class Numbers
     public const LN_2 = '0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687';
     /* The value of i^i */
     public const I_POW_I = '0.2078795763507619085469556198349787700338778416317696080751358830554198772854821397886002778654260353';
+    /* Euler-Mascheroni Constant */
+    public const E_M = '0.5772156649015328606065120900824024310421593359399235988057672348848677267776646709369470632917467495';
 
     /**
      * This class will make and return an instance of a concrete value.
@@ -106,6 +108,11 @@ class Numbers
     public static function makeE(int $scale = null): ImmutableDecimal
     {
         return self::makeConstant(self::E, $scale);
+    }
+
+    public static function makeEulerMascheroni(?int $scale = null): ImmutableDecimal
+    {
+        return self::makeConstant(self::E_M, $scale);
     }
 
     /**
@@ -328,6 +335,7 @@ class Numbers
                         self::GOLDEN_RATIO => ConstantProvider::makeGoldenRatio($scale),
                         self::E => ConstantProvider::makeE($scale),
                         self::PI => ConstantProvider::makePi($scale),
+                        self::E_M => self::E_M
                     },
                     $scale
                 );

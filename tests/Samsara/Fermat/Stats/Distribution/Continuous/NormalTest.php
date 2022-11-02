@@ -1,9 +1,8 @@
 <?php
 
-namespace Samsara\Fermat\Stats\Values;
+namespace Samsara\Fermat\Stats\Distribution\Continuous;
 
 use PHPUnit\Framework\TestCase;
-use Samsara\Fermat\Stats\Values\Distribution\Normal;
 
 class NormalTest extends TestCase
 {
@@ -55,7 +54,7 @@ class NormalTest extends TestCase
      */
     public function testEvaluateAt(Normal $a, string $z, string $expected)
     {
-        $this->assertEquals($expected, $a->evaluateAt($z)->getValue());
+        $this->assertEquals($expected, $a->pdf($z)->getValue());
     }
 
     public function CDFProvider(): array
@@ -95,7 +94,7 @@ class NormalTest extends TestCase
             'P(x1<=X<=2): mean 0 | sd 1' => [$a, '1', '2', '0.135905122'],
             'P(x1<=X<=2): mean 5 | sd 2' => [$b, '6', '7', '0.1498822848'],
             'P(x1<=X<=2): mean 20 | sd 6' => [$c, '21', '22', '0.0643748272'],
-            'P(x1<=X<=2): mean 12000 | sd 125' => [$d, '12001', '12002', '0.0031913']
+            'P(x1<=X<=2): mean 12000 | sd 125' => [$d, '12001', '12002', '0.0031912999']
         ];
     }
 

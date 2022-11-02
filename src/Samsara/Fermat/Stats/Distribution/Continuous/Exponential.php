@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Stats\Values\Distribution;
+namespace Samsara\Fermat\Stats\Distribution\Continuous;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
@@ -9,12 +9,12 @@ use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\RandomProvider;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
-use Samsara\Fermat\Stats\Types\Distribution;
+use Samsara\Fermat\Stats\Types\ContinuousDistribution;
 
 /**
  * @package Samsara\Fermat\Stats
  */
-class Exponential extends Distribution
+class Exponential extends ContinuousDistribution
 {
 
     private ImmutableDecimal $lambda;
@@ -43,14 +43,46 @@ class Exponential extends Distribution
     }
 
     /**
+     * @return ImmutableDecimal
+     */
+    public function getMean(): ImmutableDecimal
+    {
+        return Numbers::makeOne($this->lambda->getScale())->divide($this->lambda);
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getMedian(): ImmutableDecimal
+    {
+        return Numbers::makeNaturalLog2($this->lambda->getScale())->divide($this->lambda);
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getMode(): ImmutableDecimal
+    {
+        return Numbers::makeZero($this->lambda->getScale());
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getVariance(): ImmutableDecimal
+    {
+        return Numbers::makeOne($this->lambda->getScale())->divide($this->lambda->pow(2));
+    }
+
+    /**
      * @param int|float|string|Decimal $x
-     * @param int                      $scale
+     * @param int|null                 $scale
      *
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function cdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
+    public function cdf(int|float|string|Decimal $x, ?int $scale = null): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -64,6 +96,7 @@ class Exponential extends Distribution
             );
         }
 
+        $scale = $scale ?? $x->getScale();
         $internalScale = $scale + 2;
 
         $e = Numbers::makeE($internalScale);
@@ -83,13 +116,13 @@ class Exponential extends Distribution
 
     /**
      * @param int|float|string|Decimal $x
-     * @param int                      $scale
+     * @param int|null                 $scale
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
      */
-    public function pdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
+    public function pdf(int|float|string|Decimal $x, ?int $scale = null): ImmutableDecimal
     {
 
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
@@ -102,6 +135,7 @@ class Exponential extends Distribution
             );
         }
 
+        $scale = $scale ?? $x->getScale();
         $internalScale = $scale + 2;
 
         $e = Numbers::makeE($internalScale);
@@ -121,15 +155,7 @@ class Exponential extends Distribution
 
     }
 
-    /**
-     * @param int|float|string|Decimal $x1
-     * @param int|float|string|Decimal $x2
-     * @param int                      $scale
-     *
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     */
-    public function percentBetween(int|float|string|Decimal $x1, int|float|string|Decimal $x2, int $scale = 10): ImmutableDecimal
+    public function percentBetween(int|float|string|Decimal $x1, int|float|string|Decimal $x2, ?int $scale = null): ImmutableDecimal
     {
         $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
         $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
@@ -142,21 +168,7 @@ class Exponential extends Distribution
             );
         }
 
-        $internalScale = $scale + 2;
-
-        /** @var ImmutableDecimal $rangePdf */
-        $rangePdf =
-            $this->cdf(
-                $x2,
-                $internalScale
-            )->subtract(
-                $this->cdf(
-                    $x1,
-                    $internalScale)
-            )->abs()
-                ->truncateToScale($scale);
-
-        return $rangePdf;
+        return parent::percentBetween($x1, $x2, $scale);
     }
 
     /**
@@ -212,5 +224,4 @@ class Exponential extends Distribution
 
         return $randomNumber;
     }
-
 }

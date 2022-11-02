@@ -6,6 +6,7 @@ use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Core\Provider\SequenceProvider;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
@@ -46,10 +47,10 @@ trait IntegerMathTrait
      *
      * @param $num
      *
-     * @return Decimal
+     * @return static
      * @throws IntegrityConstraint
      */
-    public function getGreatestCommonDivisor($num): Decimal
+    public function getGreatestCommonDivisor($num): static
     {
         /** @var ImmutableDecimal $num */
         $num = Numbers::make(Numbers::IMMUTABLE, $num)->abs();
@@ -99,6 +100,30 @@ trait IntegerMathTrait
     }
 
     /**
+     * TODO: Implement
+     *
+     * @return NumberCollection
+     */
+    public function getPrimeFactors(): NumberCollection
+    {
+        $factor = (new ImmutableDecimal(2))->setMode($this->getMode());
+        $thisNum = (new ImmutableDecimal($this, $this->getScale()))->setMode($this->getMode());
+
+        $primeFactors = new NumberCollection();
+
+        while ($thisNum->isGreaterThan(1)) {
+            if ($thisNum->modulo($factor)->isEqual(0)) {
+                $primeFactors->push($factor);
+                $thisNum = $thisNum->divide($factor);
+            } else {
+                $factor = SequenceProvider::nextPrimeNumber($factor);
+            }
+        }
+
+        return $primeFactors;
+    }
+
+    /**
      * Only valid for integer numbers. Uses the Miller-Rabin probabilistic primality test. The default "certainty" value of 20
      * results in a false-positive rate of 1 in 1.10 x 10^12.
      *
@@ -121,29 +146,17 @@ trait IntegerMathTrait
     }
 
     /**
-     * TODO: Implement
-     *
-     * @return NumberCollection
-     */
-    public function asPrimeFactors(): NumberCollection
-    {
-
-        return new NumberCollection();
-
-    }
-
-    /**
      * Only valid for integer numbers. Takes the double factorial of this number. Not to be confused with taking the
      * factorial twice which is (n!)!, the double factorial n!! multiplies all the numbers between 1 and n that share
      * the same parity (odd or even).
      *
      * For more information, see: https://mathworld.wolfram.com/DoubleFactorial.html
      *
-     * @return Decimal
+     * @return static
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function doubleFactorial(): Decimal
+    public function doubleFactorial(): static
     {
         if ($this->isWhole() && $this->isLessThanOrEqualTo(1)) {
             return $this->setValue('1');
@@ -178,11 +191,11 @@ trait IntegerMathTrait
      * Only valid for integer numbers. Takes the factorial of this number. The factorial is every number between 1 and
      * this number multiplied together.
      *
-     * @return Decimal
+     * @return static
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function factorial(): Decimal
+    public function factorial(): static
     {
         if ($this->isLessThan(1)) {
             if ($this->isEqual(0)) {
@@ -206,13 +219,27 @@ trait IntegerMathTrait
         return $this->setValue(gmp_strval(gmp_fact($this->getValue(NumberBase::Ten))));
     }
 
+    public function fallingFactorial(int|float|string|Decimal $num): static
+    {
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num);
+
+        return $this->risingFallingFactorialHelper($num, -1);
+    }
+
+    public function risingFactorial(int|float|string|Decimal $num): static
+    {
+        $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num);
+
+        return $this->risingFallingFactorialHelper($num, 1);
+    }
+
     /**
      * Alias for doubleFactorial().
      *
-     * @return Decimal
+     * @return static
      * @throws IncompatibleObjectState
      */
-    public function semiFactorial(): Decimal
+    public function semiFactorial(): static
     {
         return $this->doubleFactorial();
     }
@@ -223,11 +250,11 @@ trait IntegerMathTrait
      *
      * For more information, see: https://mathworld.wolfram.com/Subfactorial.html
      *
-     * @return Decimal
+     * @return static
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function subFactorial(): Decimal
+    public function subFactorial(): static
     {
         if ($this->isLessThan(1)) {
             if ($this->isEqual(0)) {
@@ -255,6 +282,29 @@ trait IntegerMathTrait
         $num = $num->divide($e, 3)->add('0.5');
 
         return $num->floor();
+    }
+
+    protected function risingFallingFactorialHelper(ImmutableDecimal $num, int $signum): static
+    {
+        if (!$this->isWhole()) {
+            throw new IncompatibleObjectState(
+                '',
+                ''
+            );
+        }
+
+        if ($num->isEqual(0)) {
+            return $this->setValue('0');
+        }
+
+        $thisNum = (new ImmutableDecimal($this, $this->getScale()))->setMode($this->getMode());
+        $answer = Numbers::makeOne($this->getScale());
+
+        for ($i = 0; $num->isGreaterThan($i); $i++) {
+            $answer = $answer->multiply($thisNum->add($i * $signum));
+        }
+
+        return $this->setValue($answer);
     }
 
     private function _primeEarlyExit(): int

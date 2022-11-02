@@ -70,6 +70,11 @@ class SequenceProvider
         '6053285248188621896314383785111649088103498225146815121',  // 50
     ];
 
+    public static function nextPrimeNumber(ImmutableDecimal $number): ImmutableDecimal
+    {
+        return (new ImmutableDecimal(gmp_strval(gmp_nextprime($number->getValue(NumberBase::Ten)))))->setMode($number->getMode());
+    }
+
     /**
      * Returns the nth Bernoulli Number, where odd indexes return zero, and B1() is -1/2.
      *
@@ -129,7 +134,7 @@ class SequenceProvider
         $t2 = Numbers::makeOne($internalScale)->setMode(CalcMode::Precision);
 
         while ($p->isLessThanOrEqualTo($s)) {
-            $p = self::_nextprime($p);
+            $p = self::nextPrimeNumber($p);
             $pn = $p->pow($n);
             $pn1 = $pn->subtract(1);
             $t1 = $pn->multiply($t1);
@@ -141,7 +146,7 @@ class SequenceProvider
 
         while (!$oz->isEqual($z)) {
             $oz = $z;
-            $p = self::_nextprime($p);
+            $p = self::nextPrimeNumber($p);
             $pn = $p->pow($n);
             $pn1 = $z->divide($pn, $internalScale);
             $z = $z->add($pn1);
@@ -287,6 +292,32 @@ class SequenceProvider
         return self::_fib($n);
     }
 
+    public static function nthHarmonicNumber(ImmutableDecimal $n, ?int $scale = null): ImmutableDecimal
+    {
+        $scale = $scale ?? $n->getScale();
+        $result = Numbers::makeZero($scale);
+        $one = Numbers::makeOne($scale);
+        $n = $n->truncateToScale($scale);
+
+        if ($n->isInt()) {
+            for ($i = 1; $n->isGreaterThan($i); $i++) {
+                $result = $result->add($one->divide($i));
+            }
+        } else {
+            $k = 0;
+            $prevResult = $result;
+            do {
+                $result = $result->add(
+                    $n->divide($one->add($k)->multiply($one->add($n)->add($k)))
+                );
+                $diffResult = $result->subtract($prevResult);
+                $prevResult = $result;
+            } while (!$diffResult->isEqual(0));
+        }
+
+        return $result;
+    }
+
     /**
      * OEIS: A000032
      *
@@ -394,7 +425,7 @@ class SequenceProvider
 
         for ($i = 1; $i < $n; $i++) {
             $collection->push($currentPrime);
-            $currentPrime = self::_nextprime($currentPrime);
+            $currentPrime = self::nextPrimeNumber($currentPrime);
         }
 
         return $collection;
@@ -439,11 +470,6 @@ class SequenceProvider
         }
 
         return [$d, $c->add($d)];
-    }
-
-    private static function _nextprime(ImmutableDecimal $number): ImmutableDecimal
-    {
-        return new ImmutableDecimal(gmp_strval(gmp_nextprime($number->getValue(NumberBase::Ten))));
     }
 
     /**

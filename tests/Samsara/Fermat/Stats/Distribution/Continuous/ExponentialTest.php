@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Stats\Values\Distribution;
+namespace Samsara\Fermat\Stats\Distribution\Continuous;
 
 use PHPUnit\Framework\TestCase;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;

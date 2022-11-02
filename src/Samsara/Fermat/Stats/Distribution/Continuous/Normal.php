@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Stats\Values\Distribution;
+namespace Samsara\Fermat\Stats\Distribution\Continuous;
 
 use ReflectionException;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
@@ -12,41 +12,34 @@ use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\NumberCollection;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Stats\Provider\StatsProvider;
-use Samsara\Fermat\Stats\Types\Distribution;
+use Samsara\Fermat\Stats\Types\ContinuousDistribution;
 
 /**
  * @package Samsara\Fermat\Stats
  */
-class Normal extends Distribution
+class Normal extends ContinuousDistribution
 {
 
-    /**
-     * @var ImmutableDecimal
-     */
-    private $mean;
-
-    /**
-     * @var ImmutableDecimal
-     */
-    private $sd;
+    private ImmutableDecimal $mean;
+    private ImmutableDecimal $sd;
 
     /**
      * Normal constructor.
      *
      * @param int|float|string|Decimal $mean
-     * @param int|float|string|Decimal $sd
+     * @param int|float|string|Decimal $standardDeviation
      *
      * @throws IntegrityConstraint
      */
-    public function __construct(int|float|string|Decimal $mean, int|float|string|Decimal $sd)
+    public function __construct(int|float|string|Decimal $mean, int|float|string|Decimal $standardDeviation)
     {
         /** @var ImmutableDecimal $mean */
         $mean = Numbers::makeOrDont(Numbers::IMMUTABLE, $mean);
-        /** @var ImmutableDecimal $sd */
-        $sd = Numbers::makeOrDont(Numbers::IMMUTABLE, $sd);
+        /** @var ImmutableDecimal $standardDeviation */
+        $standardDeviation = Numbers::makeOrDont(Numbers::IMMUTABLE, $standardDeviation);
 
         $this->mean = $mean;
-        $this->sd = $sd;
+        $this->sd = $standardDeviation;
     }
 
     /**
@@ -113,21 +106,50 @@ class Normal extends Distribution
     /**
      * @return ImmutableDecimal
      */
+    public function getMedian(): ImmutableDecimal
+    {
+        return $this->getMean();
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getMode(): ImmutableDecimal
+    {
+        return $this->getMean();
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
     public function getSD(): ImmutableDecimal
     {
         return $this->sd;
     }
 
     /**
-     * @param int|float|string|Decimal $x
-     * @param int                      $scale
-     *
      * @return ImmutableDecimal
      */
-    public function cdf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
+    public function getVariance(): ImmutableDecimal
     {
+        return $this->getSD()->pow(2);
+    }
+
+    /**
+     * @param int|float|string|Decimal $x
+     * @param int|null                 $scale
+     *
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     * @throws OptionalExit
+     */
+    public function cdf(int|float|string|Decimal $x, ?int $scale = null): ImmutableDecimal
+    {
+        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
+
+        $scale = $scale ?? $x->getScale();
         $internalScale = $scale + 2;
-        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x, $internalScale);
 
         $oneHalf = Numbers::make(Numbers::IMMUTABLE, '0.5', $internalScale);
         $one = Numbers::makeOne();
@@ -152,13 +174,13 @@ class Normal extends Distribution
 
     /**
      * @param int|float|string|Decimal $x
-     * @param int                      $scale
+     * @param int|null                 $scale
      *
      * @return ImmutableDecimal
-     * @throws IntegrityConstraint
      * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
      */
-    public function evaluateAt(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
+    public function pdf(int|float|string|Decimal $x, ?int $scale = null): ImmutableDecimal
     {
 
         $one = Numbers::makeOne($scale);
@@ -166,7 +188,8 @@ class Normal extends Distribution
         $e = Numbers::makeE($scale);
         $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x);
 
-        $internalScale = (new NumberCollection([$scale, $x]))->selectScale() + 2;
+        $scale = $scale ?? $x->getScale();
+        $internalScale = $scale + 2;
 
         // $left = 1 / ( sqrt(2pi * SD^2) )
         $left =
@@ -226,28 +249,6 @@ class Normal extends Distribution
     }
 
     /**
-     * @param int|float|string|Decimal $x1
-     * @param int|float|string|Decimal $x2
-     *
-     * @return ImmutableDecimal
-     * @throws IntegrityConstraint
-     */
-    public function percentBetween(int|float|string|Decimal $x1, int|float|string|Decimal $x2): ImmutableDecimal
-    {
-
-        $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
-
-        /** @var ImmutableDecimal $pdf */
-        $pdf =
-            $this->cdf($x1)
-                ->subtract(
-                    $this->cdf($x2)
-                )->abs();
-
-        return $pdf;
-    }
-
-    /**
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      *
@@ -268,37 +269,6 @@ class Normal extends Distribution
                 );
         /** @var ImmutableDecimal $randomNumber */
         $randomNumber = $randomNumber->multiply($this->sd)->add($this->mean);
-
-        return $randomNumber;
-    }
-
-    /**
-     * @param int|float|Decimal $min
-     * @param int|float|Decimal $max
-     * @param int               $maxIterations
-     *
-     * @return ImmutableDecimal
-     * @throws OptionalExit
-     * @throws IntegrityConstraint
-     *
-     * @codeCoverageIgnore
-     */
-    public function rangeRandom($min = 0, $max = PHP_INT_MAX, int $maxIterations = 20): ImmutableDecimal
-    {
-        $i = 0;
-
-        do {
-            $randomNumber = $this->random();
-            $i++;
-        } while (($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) && $i < $maxIterations);
-
-        if ($randomNumber->isGreaterThan($max) || $randomNumber->isLessThan($min)) {
-            throw new OptionalExit(
-                'All random numbers generated were outside of the requested range',
-                'Widen the acceptable range of random values, or allow the function to perform mor iterations',
-                'A suitable random number, restricted by the $max (' . $max . ') and $min (' . $min . '), could not be found within ' . $maxIterations . ' iterations'
-            );
-        }
 
         return $randomNumber;
     }
@@ -372,5 +342,4 @@ class Normal extends Distribution
             $z,
         ];
     }
-
 }

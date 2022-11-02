@@ -2,7 +2,7 @@
 
 namespace Samsara\Fermat\Core\Provider;
 
-use ReflectionException;
+use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
 use Samsara\Fermat\Core\Enums\NumberBase;
@@ -95,6 +95,50 @@ class SeriesProvider
 
     }
 
+    public static function genericInfiniteProduct(
+        callable $termFunction,
+        int      $scale,
+        int      $startAt = 0
+    ): ImmutableDecimal
+    {
+
+        $intScale = $scale * 2;
+
+        $prevProduct = Numbers::makeOne($intScale);
+
+        do {
+            $nextProduct = $prevProduct->multiply($termFunction($startAt, $intScale));
+            $startAt++;
+            $productDiff = $nextProduct->subtract($prevProduct);
+            $prevProduct = $nextProduct;
+        } while (!$productDiff->isEqual(0));
+
+        return $nextProduct->roundToScale($scale);
+
+    }
+
+    public static function genericInfiniteSum(
+        callable $termFunction,
+        int      $scale,
+        int      $startAt = 0
+    ): ImmutableDecimal
+    {
+
+        $intScale = $scale + 2;
+
+        $sum = Numbers::makeZero($intScale);
+
+        do {
+            /** @var ImmutableDecimal $term */
+            $term = $termFunction($startAt, $intScale);
+            $startAt++;
+            $sum = $sum->add($term);
+        } while ($term->numberOfLeadingZeros() < $intScale - 1);
+
+        return $sum;
+
+    }
+
     /**
      * Creates a series that evaluates the following:
      *
@@ -123,7 +167,7 @@ class SeriesProvider
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      * @throws OptionalExit
-     * @throws ReflectionException
+     * @throws IncompatibleObjectState
      */
     public static function maclaurinSeries(
         Decimal  $input, // x value in series
@@ -159,7 +203,7 @@ class SeriesProvider
                 $term = $term->multiply($exTerm);
                 $term = $term->divide($denominator($termNumber), $scale);
                 $term = $term->multiply($numerator($termNumber));
-            } catch (IntegrityConstraint $constraint) {
+            } catch (IntegrityConstraint) {
                 return $sum->truncateToScale($currentScale + 1);
             }
 

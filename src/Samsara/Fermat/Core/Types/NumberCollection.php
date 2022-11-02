@@ -13,9 +13,9 @@ use Samsara\Fermat\Core\Provider\RandomProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
 use Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction;
-use Samsara\Fermat\Stats\Values\Distribution\Exponential;
-use Samsara\Fermat\Stats\Values\Distribution\Normal;
-use Samsara\Fermat\Stats\Values\Distribution\Poisson;
+use Samsara\Fermat\Stats\Distribution\Continuous\Exponential;
+use Samsara\Fermat\Stats\Distribution\Continuous\Normal;
+use Samsara\Fermat\Stats\Distribution\Discrete\Poisson;
 use Traversable;
 
 /**

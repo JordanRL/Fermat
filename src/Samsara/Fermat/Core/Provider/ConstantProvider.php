@@ -18,6 +18,7 @@ class ConstantProvider
 {
 
     private static Decimal $e;
+    private static Decimal $em;
     private static Decimal $ipowi;
     private static Decimal $ln10;
     private static Decimal $ln1p1;

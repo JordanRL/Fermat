@@ -3,12 +3,11 @@
 namespace Samsara\Fermat\Core\Types;
 
 use PHPUnit\Framework\TestCase;
-use Samsara\Exceptions\SystemError\PlatformError\MissingPackage;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
-use Samsara\Fermat\Stats\Values\Distribution\Exponential;
-use Samsara\Fermat\Stats\Values\Distribution\Poisson;
+use Samsara\Fermat\Stats\Distribution\Continuous\Exponential;
+use Samsara\Fermat\Stats\Distribution\Discrete\Poisson;
 
 /**
  * @group Types

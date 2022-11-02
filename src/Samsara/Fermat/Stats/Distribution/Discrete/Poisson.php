@@ -1,6 +1,6 @@
 <?php
 
-namespace Samsara\Fermat\Stats\Values\Distribution;
+namespace Samsara\Fermat\Stats\Distribution\Discrete;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
@@ -10,12 +10,12 @@ use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\RandomProvider;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
-use Samsara\Fermat\Stats\Types\Distribution;
+use Samsara\Fermat\Stats\Types\DiscreteDistribution;
 
 /**
  * @package Samsara\Fermat\Stats
  */
-class Poisson extends Distribution
+class Poisson extends DiscreteDistribution
 {
 
     private ImmutableDecimal $lambda;
@@ -41,6 +41,40 @@ class Poisson extends Distribution
         }
 
         $this->lambda = $lambda;
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getMean(): ImmutableDecimal
+    {
+        return $this->lambda;
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getMedian(): ImmutableDecimal
+    {
+        return $this->lambda->add('0.33333')->subtract(
+            Numbers::makeOne($this->lambda->getScale())->divide($this->lambda->multiply(50))
+        )->floor();
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getMode(): ImmutableDecimal
+    {
+        return $this->lambda->floor();
+    }
+
+    /**
+     * @return ImmutableDecimal
+     */
+    public function getVariance(): ImmutableDecimal
+    {
+        return $this->lambda;
     }
 
     /**
@@ -81,20 +115,20 @@ class Poisson extends Distribution
     }
 
     /**
-     * @param int|float|string|Decimal $x
+     * @param int|float|string|Decimal $k
      * @param int                      $scale
      *
      * @return ImmutableDecimal
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
-    public function pmf(int|float|string|Decimal $x, int $scale = 10): ImmutableDecimal
+    public function pmf(int|float|string|Decimal $k, int $scale = 10): ImmutableDecimal
     {
 
         $internalScale = $scale + 2 + $this->lambda->numberOfIntDigits();
-        $x = Numbers::makeOrDont(Numbers::IMMUTABLE, $x, $internalScale);
+        $k = Numbers::makeOrDont(Numbers::IMMUTABLE, $k, $internalScale);
 
-        if (!$x->isNatural() || $x->isNegative()) {
+        if (!$k->isNatural() || $k->isNegative()) {
             throw new IntegrityConstraint(
                 'Only positive integers are valid x values for Poisson distributions',
                 'Provide a positive integer value to calculate the PMF',
@@ -107,7 +141,7 @@ class Poisson extends Distribution
         /** @var ImmutableDecimal $pmf */
         $pmf =
             $this->lambda
-                ->pow($x)
+                ->pow($k)
                 ->multiply(
                     $e->pow(
                         $this
@@ -115,7 +149,7 @@ class Poisson extends Distribution
                             ->multiply(-1)
                     )
                 )->divide(
-                    $x->factorial(),
+                    $k->factorial(),
                     $internalScale
                 );
 
@@ -154,25 +188,25 @@ class Poisson extends Distribution
     }
 
     /**
-     * @param int|float|string|Decimal $x1
-     * @param int|float|string|Decimal $x2
+     * @param int|float|string|Decimal $k1
+     * @param int|float|string|Decimal $k2
      *
      * @return ImmutableDecimal
      * @throws IntegrityConstraint
      */
-    public function rangePmf(int|float|string|Decimal $x1, int|float|string|Decimal $x2): ImmutableDecimal
+    public function rangePmf(int|float|string|Decimal $k1, int|float|string|Decimal $k2): ImmutableDecimal
     {
-        $x1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x1);
-        $x2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $x2);
+        $k1 = Numbers::makeOrDont(Numbers::IMMUTABLE, $k1);
+        $k2 = Numbers::makeOrDont(Numbers::IMMUTABLE, $k2);
 
-        if ($x1->equals($x2)) {
-            return $this->pmf($x1);
-        } elseif ($x1->isGreaterThan($x2)) {
-            $larger = $x1;
-            $smaller = $x2;
+        if ($k1->equals($k2)) {
+            return $this->pmf($k1);
+        } elseif ($k1->isGreaterThan($k2)) {
+            $larger = $k1;
+            $smaller = $k2;
         } else {
-            $larger = $x2;
-            $smaller = $x1;
+            $larger = $k2;
+            $smaller = $k1;
         }
 
         if (!$larger->isNatural() || !$smaller->isNatural() || $larger->isNegative() || $smaller->isNegative()) {
@@ -318,5 +352,4 @@ class Poisson extends Distribution
             unset($rhs);
         }
     }
-
 }
