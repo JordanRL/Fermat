@@ -8,11 +8,10 @@
       
       
       
-      
         <link rel="canonical" href="https://jordanrl.github.io/Fermat/performance/logarithms/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.7">
     
     
       
@@ -20,32 +19,35 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ca7ac06f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.f1a3b89f.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
         
       
+      
+
     
     
     
       
+        
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
-        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
-    
     
     
       <link rel="stylesheet" href="../../css/md-theme.css">
     
       <link rel="stylesheet" href="../../css/custom.css">
     
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
-
+    
     
     
   </head>
@@ -61,9 +63,8 @@
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
-    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
-      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -80,16 +81,19 @@
       
     </div>
     
-      <header class="md-header" data-md-component="header">
+    
+      
+
+<header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Fermat - PHP Math Library" class="md-header__button md-logo" aria-label="Fermat - PHP Math Library" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -115,7 +119,7 @@
           <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m10-3a5 5 0 0 1 5 5 5 5 0 0 1-5 5H7a5 5 0 0 1-5-5 5 5 0 0 1 5-5h10M7 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3h10a3 3 0 0 0 3-3 3 3 0 0 0-3-3H7z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
             </label>
           
         
@@ -124,7 +128,7 @@
           <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
             </label>
           
         
@@ -133,21 +137,24 @@
     
     
       <label class="md-header__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
       </label>
-      
-<div class="md-search" data-md-component="search" role="dialog">
+      <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
       </label>
-      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
-      </button>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
@@ -164,11 +171,10 @@
     
     
       <div class="md-header__source">
-        
-<a href="https://github.com/JordanRL/Fermat/" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/JordanRL/Fermat/" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -177,6 +183,7 @@
       </div>
     
   </nav>
+  
 </header>
     
     <div class="md-container" data-md-component="container">
@@ -184,6 +191,7 @@
       
         
           
+            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-tabs__inner md-grid">
     <ul class="md-tabs__list">
@@ -290,11 +298,18 @@
   
   
   
+    
+
+  
+  
+  
     <li class="md-tabs__item">
-      <a href="../../roster/latest/Fermat%20Core/Numbers/" class="md-tabs__link">
+      <a href="../../roster/latest/Fermat%20Complex/ComplexNumbers/" class="md-tabs__link">
         Source Reference
       </a>
     </li>
+  
+
   
 
   
@@ -303,6 +318,7 @@
     </ul>
   </div>
 </nav>
+          
         
       
       <main class="md-main" data-md-component="main">
@@ -323,18 +339,17 @@
     <a href="../.." title="Fermat - PHP Math Library" class="md-nav__button md-logo" aria-label="Fermat - PHP Math Library" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
     Fermat - PHP Math Library
   </label>
   
     <div class="md-nav__source">
-      
-<a href="https://github.com/JordanRL/Fermat/" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/JordanRL/Fermat/" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -357,10 +372,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
       
-      <label class="md-nav__link" for="__nav_1">
-        Introduction
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          Introduction
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Introduction" data-md-level="1">
         <label class="md-nav__title" for="__nav_1">
           <span class="md-nav__icon md-icon"></span>
@@ -369,6 +388,7 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -379,8 +399,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -391,6 +413,7 @@
     </li>
   
 
+            
           
         </ul>
       </nav>
@@ -411,10 +434,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
-      <label class="md-nav__link" for="__nav_2">
-        Getting Started
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
@@ -423,6 +450,7 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -433,8 +461,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -445,8 +475,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -457,8 +489,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -469,8 +503,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -481,8 +517,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -493,8 +531,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -505,8 +545,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -518,10 +560,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_8" type="checkbox" id="__nav_2_8" >
       
-      <label class="md-nav__link" for="__nav_2_8">
-        Use Case Guides
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_8">
+          Use Case Guides
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Use Case Guides" data-md-level="2">
         <label class="md-nav__title" for="__nav_2_8">
           <span class="md-nav__icon md-icon"></span>
@@ -530,6 +576,7 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -540,12 +587,14 @@
     </li>
   
 
+            
           
         </ul>
       </nav>
     </li>
   
 
+            
           
         </ul>
       </nav>
@@ -568,10 +617,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
-      <label class="md-nav__link" for="__nav_3">
-        Performance
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Performance
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Performance" data-md-level="1">
         <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
@@ -580,6 +633,7 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -590,8 +644,10 @@
     </li>
   
 
+            
           
             
+              
   
   
     
@@ -605,10 +661,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" checked>
       
-      <label class="md-nav__link" for="__nav_3_2">
-        Performance Stats
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_2">
+          Performance Stats
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Performance Stats" data-md-level="2">
         <label class="md-nav__title" for="__nav_3_2">
           <span class="md-nav__icon md-icon"></span>
@@ -617,6 +677,7 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -627,8 +688,10 @@
     </li>
   
 
+            
           
             
+              
   
   
     
@@ -652,6 +715,7 @@
       </a>
       
         
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -693,8 +757,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -705,12 +771,14 @@
     </li>
   
 
+            
           
         </ul>
       </nav>
     </li>
   
 
+            
           
         </ul>
       </nav>
@@ -731,10 +799,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
-      <label class="md-nav__link" for="__nav_4">
-        Configuration
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Configuration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Configuration" data-md-level="1">
         <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
@@ -743,6 +815,7 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -753,8 +826,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -765,8 +840,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -777,8 +854,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -789,6 +868,7 @@
     </li>
   
 
+            
           
         </ul>
       </nav>
@@ -809,10 +889,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
-      <label class="md-nav__link" for="__nav_5">
-        Modules
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Modules" data-md-level="1">
         <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
@@ -821,6 +905,7 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -832,10 +917,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1" type="checkbox" id="__nav_5_1" >
       
-      <label class="md-nav__link" for="__nav_5_1">
-        Stable Modules
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_1">
+          Stable Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Stable Modules" data-md-level="2">
         <label class="md-nav__title" for="__nav_5_1">
           <span class="md-nav__icon md-icon"></span>
@@ -844,6 +933,7 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -854,8 +944,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -866,14 +958,17 @@
     </li>
   
 
+            
           
         </ul>
       </nav>
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -885,10 +980,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_2" type="checkbox" id="__nav_5_2" >
       
-      <label class="md-nav__link" for="__nav_5_2">
-        Unstable Modules
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_2">
+          Unstable Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Unstable Modules" data-md-level="2">
         <label class="md-nav__title" for="__nav_5_2">
           <span class="md-nav__icon md-icon"></span>
@@ -897,6 +996,7 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -907,8 +1007,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -919,8 +1021,10 @@
     </li>
   
 
+            
           
             
+              
   
   
   
@@ -931,12 +1035,14 @@
     </li>
   
 
+            
           
         </ul>
       </nav>
     </li>
   
 
+            
           
         </ul>
       </nav>
@@ -957,10 +1063,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
-      <label class="md-nav__link" for="__nav_6">
-        Source Reference
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Source Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Source Reference" data-md-level="1">
         <label class="md-nav__title" for="__nav_6">
           <span class="md-nav__icon md-icon"></span>
@@ -969,6 +1079,7 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -980,42 +1091,23 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1" type="checkbox" id="__nav_6_1" >
       
-      <label class="md-nav__link" for="__nav_6_1">
-        Fermat Core
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Fermat Core" data-md-level="2">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1">
+          Fermat Complex
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Fermat Complex" data-md-level="2">
         <label class="md-nav__title" for="__nav_6_1">
           <span class="md-nav__icon md-icon"></span>
-          Fermat Core
+          Fermat Complex
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Numbers/" class="md-nav__link">
-        Numbers
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Collections/" class="md-nav__link">
-        Collections
-      </a>
-    </li>
-  
-
-          
-            
+              
   
   
   
@@ -1023,74 +1115,39 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_3" type="checkbox" id="__nav_6_1_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_1" type="checkbox" id="__nav_6_1_1" >
       
-      <label class="md-nav__link" for="__nav_6_1_3">
-        Values
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Values" data-md-level="3">
-        <label class="md-nav__title" for="__nav_6_1_3">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1_1">
+          
           <span class="md-nav__icon md-icon"></span>
-          Values
+        </label>
+      
+      <nav class="md-nav" aria-label="" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Values/MutableDecimal/" class="md-nav__link">
-        MutableDecimal
+      <a href="../../roster/latest/Fermat%20Complex/ComplexNumbers/" class="md-nav__link">
+        ComplexNumbers
       </a>
     </li>
   
 
+            
           
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Values/ImmutableDecimal/" class="md-nav__link">
-        ImmutableDecimal
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Values/ImmutableFraction/" class="md-nav__link">
-        ImmutableFraction
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Values/MutableFraction/" class="md-nav__link">
-        MutableFraction
-      </a>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-            
+              
   
   
   
@@ -1098,68 +1155,39 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_4" type="checkbox" id="__nav_6_1_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_1_2" type="checkbox" id="__nav_6_1_1_2" >
       
-      <label class="md-nav__link" for="__nav_6_1_4">
-        Types
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Types" data-md-level="3">
-        <label class="md-nav__title" for="__nav_6_1_4">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1_1_2">
+          Types
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Types" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_1_1_2">
           <span class="md-nav__icon md-icon"></span>
           Types
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Fraction/" class="md-nav__link">
-        Fraction
+      <a href="../../roster/latest/Fermat%20Complex/Types/ComplexNumber/" class="md-nav__link">
+        ComplexNumber
       </a>
     </li>
   
 
+            
           
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/NumberCollection/" class="md-nav__link">
-        NumberCollection
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Decimal/" class="md-nav__link">
-        Decimal
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Tuple/" class="md-nav__link">
-        Tuple
-      </a>
-    </li>
-  
-
-          
-            
+              
   
   
   
@@ -1167,32 +1195,25 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_4_5" type="checkbox" id="__nav_6_1_4_5" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_1_2_2" type="checkbox" id="__nav_6_1_1_2_2" >
       
-      <label class="md-nav__link" for="__nav_6_1_4_5">
-        Base
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Base" data-md-level="4">
-        <label class="md-nav__title" for="__nav_6_1_4_5">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1_1_2_2">
+          Base
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Base" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_1_1_2_2">
           <span class="md-nav__icon md-icon"></span>
           Base
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Base/Number/" class="md-nav__link">
-        Number
-      </a>
-    </li>
-  
-
-          
-            
+              
   
   
   
@@ -1200,20 +1221,25 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_4_5_2" type="checkbox" id="__nav_6_1_4_5_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_1_2_2_1" type="checkbox" id="__nav_6_1_1_2_2_1" >
       
-      <label class="md-nav__link" for="__nav_6_1_4_5_2">
-        Interfaces
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Interfaces" data-md-level="5">
-        <label class="md-nav__title" for="__nav_6_1_4_5_2">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1_1_2_2_1">
+          Interfaces
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Interfaces" data-md-level="6">
+        <label class="md-nav__title" for="__nav_6_1_1_2_2_1">
           <span class="md-nav__icon md-icon"></span>
           Interfaces
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -1221,74 +1247,60 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_4_5_2_1" type="checkbox" id="__nav_6_1_4_5_2_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_1_2_2_1_1" type="checkbox" id="__nav_6_1_1_2_2_1_1" >
       
-      <label class="md-nav__link" for="__nav_6_1_4_5_2_1">
-        Numbers
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Numbers" data-md-level="6">
-        <label class="md-nav__title" for="__nav_6_1_4_5_2_1">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1_1_2_2_1_1">
+          Numbers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Numbers" data-md-level="7">
+        <label class="md-nav__title" for="__nav_6_1_1_2_2_1_1">
           <span class="md-nav__icon md-icon"></span>
           Numbers
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/NumberInterface/" class="md-nav__link">
-        NumberInterface
+      <a href="../../roster/latest/Fermat%20Complex/Types/Base/Interfaces/Numbers/ComplexNumberInterface/" class="md-nav__link">
+        ComplexNumberInterface
       </a>
     </li>
   
 
-          
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/DecimalInterface/" class="md-nav__link">
-        DecimalInterface
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/FractionInterface/" class="md-nav__link">
-        FractionInterface
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface/" class="md-nav__link">
-        SimpleNumberInterface
-      </a>
-    </li>
-  
-
           
         </ul>
       </nav>
     </li>
   
 
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
           
             
+              
   
   
   
@@ -1296,182 +1308,81 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_4_5_2_2" type="checkbox" id="__nav_6_1_4_5_2_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_1_2_3" type="checkbox" id="__nav_6_1_1_2_3" >
       
-      <label class="md-nav__link" for="__nav_6_1_4_5_2_2">
-        Callables
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Callables" data-md-level="6">
-        <label class="md-nav__title" for="__nav_6_1_4_5_2_2">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1_1_2_3">
+          Traits
           <span class="md-nav__icon md-icon"></span>
-          Callables
         </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Callables/ContinuedFractionTermInterface/" class="md-nav__link">
-        ContinuedFractionTermInterface
-      </a>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_4_5_2_3" type="checkbox" id="__nav_6_1_4_5_2_3" >
-      
-      <label class="md-nav__link" for="__nav_6_1_4_5_2_3">
-        Groups
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Groups" data-md-level="6">
-        <label class="md-nav__title" for="__nav_6_1_4_5_2_3">
-          <span class="md-nav__icon md-icon"></span>
-          Groups
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Groups/NumberCollectionInterface/" class="md-nav__link">
-        NumberCollectionInterface
-      </a>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_4_6" type="checkbox" id="__nav_6_1_4_6" >
-      
-      <label class="md-nav__link" for="__nav_6_1_4_6">
-        Traits
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Traits" data-md-level="4">
-        <label class="md-nav__title" for="__nav_6_1_4_6">
+      <nav class="md-nav" aria-label="Traits" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_1_1_2_3">
           <span class="md-nav__icon md-icon"></span>
           Traits
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/ComparisonTrait/" class="md-nav__link">
-        ComparisonTrait
+      <a href="../../roster/latest/Fermat%20Complex/Types/Traits/ArithmeticComplexHelperTrait/" class="md-nav__link">
+        ArithmeticComplexHelperTrait
       </a>
     </li>
   
 
+            
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/ArithmeticSimpleTrait/" class="md-nav__link">
-        ArithmeticSimpleTrait
+      <a href="../../roster/latest/Fermat%20Complex/Types/Traits/ArithmeticComplexTrait/" class="md-nav__link">
+        ArithmeticComplexTrait
       </a>
     </li>
   
 
+            
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/InverseTrigonometrySimpleTrait/" class="md-nav__link">
-        InverseTrigonometrySimpleTrait
+      <a href="../../roster/latest/Fermat%20Complex/Types/Traits/ComplexScaleTrait/" class="md-nav__link">
+        ComplexScaleTrait
       </a>
     </li>
   
 
-          
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/IntegerMathTrait/" class="md-nav__link">
-        IntegerMathTrait
-      </a>
+          
+        </ul>
+      </nav>
     </li>
   
 
-          
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/TrigonometrySimpleTrait/" class="md-nav__link">
-        TrigonometrySimpleTrait
-      </a>
+          
+        </ul>
+      </nav>
     </li>
   
 
+            
           
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/LogSimpleTrait/" class="md-nav__link">
-        LogSimpleTrait
-      </a>
-    </li>
-  
-
-          
-            
+              
   
   
   
@@ -1479,401 +1390,74 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_4_6_7" type="checkbox" id="__nav_6_1_4_6_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_1_3" type="checkbox" id="__nav_6_1_1_3" >
       
-      <label class="md-nav__link" for="__nav_6_1_4_6_7">
-        Trigonometry
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Trigonometry" data-md-level="5">
-        <label class="md-nav__title" for="__nav_6_1_4_6_7">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1_1_3">
+          Values
           <span class="md-nav__icon md-icon"></span>
-          Trigonometry
+        </label>
+      
+      <nav class="md-nav" aria-label="Values" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_1_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Values
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/TrigonometrySelectionTrait/" class="md-nav__link">
-        TrigonometrySelectionTrait
+      <a href="../../roster/latest/Fermat%20Complex/Values/MutableComplexNumber/" class="md-nav__link">
+        MutableComplexNumber
       </a>
     </li>
   
 
+            
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/InverseTrigonometryNativeTrait/" class="md-nav__link">
-        InverseTrigonometryNativeTrait
+      <a href="../../roster/latest/Fermat%20Complex/Values/ImmutableComplexNumber/" class="md-nav__link">
+        ImmutableComplexNumber
       </a>
     </li>
   
 
-          
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/InverseTrigonometrySelectionTrait/" class="md-nav__link">
-        InverseTrigonometrySelectionTrait
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/TrigonometryScaleTrait/" class="md-nav__link">
-        TrigonometryScaleTrait
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/InverseTrigonometryScaleTrait/" class="md-nav__link">
-        InverseTrigonometryScaleTrait
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Trigonometry/TrigonometryNativeTrait/" class="md-nav__link">
-        TrigonometryNativeTrait
-      </a>
-    </li>
-  
-
           
         </ul>
       </nav>
     </li>
   
 
-          
             
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_4_6_8" type="checkbox" id="__nav_6_1_4_6_8" >
-      
-      <label class="md-nav__link" for="__nav_6_1_4_6_8">
-        Arithmetic
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Arithmetic" data-md-level="5">
-        <label class="md-nav__title" for="__nav_6_1_4_6_8">
-          <span class="md-nav__icon md-icon"></span>
-          Arithmetic
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticGMPTrait/" class="md-nav__link">
-        ArithmeticGMPTrait
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticSelectionTrait/" class="md-nav__link">
-        ArithmeticSelectionTrait
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticScaleTrait/" class="md-nav__link">
-        ArithmeticScaleTrait
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Arithmetic/ArithmeticNativeTrait/" class="md-nav__link">
-        ArithmeticNativeTrait
-      </a>
-    </li>
-  
-
           
         </ul>
       </nav>
     </li>
   
 
-          
             
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_4_6_9" type="checkbox" id="__nav_6_1_4_6_9" >
-      
-      <label class="md-nav__link" for="__nav_6_1_4_6_9">
-        Decimal
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Decimal" data-md-level="5">
-        <label class="md-nav__title" for="__nav_6_1_4_6_9">
-          <span class="md-nav__icon md-icon"></span>
-          Decimal
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Decimal/LogScaleTrait/" class="md-nav__link">
-        LogScaleTrait
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Decimal/ScaleTrait/" class="md-nav__link">
-        ScaleTrait
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Decimal/LogNativeTrait/" class="md-nav__link">
-        LogNativeTrait
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Decimal/LogSelectionTrait/" class="md-nav__link">
-        LogSelectionTrait
-      </a>
-    </li>
-  
-
           
         </ul>
       </nav>
     </li>
   
 
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
+            
           
             
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1_5" type="checkbox" id="__nav_6_1_5" >
-      
-      <label class="md-nav__link" for="__nav_6_1_5">
-        Provider
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Provider" data-md-level="3">
-        <label class="md-nav__title" for="__nav_6_1_5">
-          <span class="md-nav__icon md-icon"></span>
-          Provider
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Provider/TrigonometryProvider/" class="md-nav__link">
-        TrigonometryProvider
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Provider/SeriesProvider/" class="md-nav__link">
-        SeriesProvider
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingProvider/" class="md-nav__link">
-        RoundingProvider
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Provider/ConstantProvider/" class="md-nav__link">
-        ConstantProvider
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Provider/SequenceProvider/" class="md-nav__link">
-        SequenceProvider
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Provider/BaseConversionProvider/" class="md-nav__link">
-        BaseConversionProvider
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Provider/ArithmeticProvider/" class="md-nav__link">
-        ArithmeticProvider
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Provider/CalculationModeProvider/" class="md-nav__link">
-        CalculationModeProvider
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Core/Provider/RandomProvider/" class="md-nav__link">
-        RandomProvider
-      </a>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-            
+              
   
   
   
@@ -1885,18 +1469,23 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2" type="checkbox" id="__nav_6_2" >
       
-      <label class="md-nav__link" for="__nav_6_2">
-        Fermat Stats
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Fermat Stats" data-md-level="2">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2">
+          Fermat Linear Algebra
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Fermat Linear Algebra" data-md-level="2">
         <label class="md-nav__title" for="__nav_6_2">
           <span class="md-nav__icon md-icon"></span>
-          Fermat Stats
+          Fermat Linear Algebra
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -1906,18 +1495,23 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_1" type="checkbox" id="__nav_6_2_1" >
       
-      <label class="md-nav__link" for="__nav_6_2_1">
-        Values
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Values" data-md-level="3">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2_1">
+          
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="" data-md-level="3">
         <label class="md-nav__title" for="__nav_6_2_1">
           <span class="md-nav__icon md-icon"></span>
-          Values
+          
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -1927,105 +1521,23 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_1_1" type="checkbox" id="__nav_6_2_1_1" >
       
-      <label class="md-nav__link" for="__nav_6_2_1_1">
-        Distribution
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Distribution" data-md-level="4">
-        <label class="md-nav__title" for="__nav_6_2_1_1">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2_1_1">
+          Types
           <span class="md-nav__icon md-icon"></span>
-          Distribution
         </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Stats/Values/Distribution/Normal/" class="md-nav__link">
-        Normal
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Stats/Values/Distribution/Exponential/" class="md-nav__link">
-        Exponential
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Stats/Values/Distribution/Poisson/" class="md-nav__link">
-        Poisson
-      </a>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_2" type="checkbox" id="__nav_6_2_2" >
-      
-      <label class="md-nav__link" for="__nav_6_2_2">
-        Types
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Types" data-md-level="3">
-        <label class="md-nav__title" for="__nav_6_2_2">
+      <nav class="md-nav" aria-label="Types" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_2_1_1">
           <span class="md-nav__icon md-icon"></span>
           Types
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Stats/Types/Distribution/" class="md-nav__link">
-        Distribution
-      </a>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-            
+              
   
   
   
@@ -2033,44 +1545,358 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_3" type="checkbox" id="__nav_6_2_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_1_1_1" type="checkbox" id="__nav_6_2_1_1_1" >
       
-      <label class="md-nav__link" for="__nav_6_2_3">
-        Provider
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Provider" data-md-level="3">
-        <label class="md-nav__title" for="__nav_6_2_3">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2_1_1_1">
+          Traits
           <span class="md-nav__icon md-icon"></span>
-          Provider
+        </label>
+      
+      <nav class="md-nav" aria-label="Traits" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_2_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Traits
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Stats/Provider/StatsProvider/" class="md-nav__link">
-        StatsProvider
+      <a href="../../roster/latest/Fermat%20Linear%20Algebra/Types/Traits/ArithmeticMatrixTrait/" class="md-nav__link">
+        ArithmeticMatrixTrait
       </a>
     </li>
   
 
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
+            
           
             
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_1_1_1_2" type="checkbox" id="__nav_6_2_1_1_1_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2_1_1_1_2">
+          Matrix
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Matrix" data-md-level="6">
+        <label class="md-nav__title" for="__nav_6_2_1_1_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          Matrix
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Linear%20Algebra/Types/Traits/Matrix/DirectAccessTrait/" class="md-nav__link">
+        DirectAccessTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Linear%20Algebra/Types/Traits/Matrix/ShapeTrait/" class="md-nav__link">
+        ShapeTrait
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Linear%20Algebra/Types/Matrix/" class="md-nav__link">
+        Matrix
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Linear%20Algebra/Types/Vector/" class="md-nav__link">
+        Vector
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_1_1_4" type="checkbox" id="__nav_6_2_1_1_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2_1_1_4">
+          Base
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Base" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_2_1_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          Base
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_1_1_4_1" type="checkbox" id="__nav_6_2_1_1_4_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2_1_1_4_1">
+          Interfaces
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Interfaces" data-md-level="6">
+        <label class="md-nav__title" for="__nav_6_2_1_1_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Interfaces
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_1_1_4_1_1" type="checkbox" id="__nav_6_2_1_1_4_1_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2_1_1_4_1_1">
+          Groups
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Groups" data-md-level="7">
+        <label class="md-nav__title" for="__nav_6_2_1_1_4_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Groups
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Linear%20Algebra/Types/Base/Interfaces/Groups/VectorInterface/" class="md-nav__link">
+        VectorInterface
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Linear%20Algebra/Types/Base/Interfaces/Groups/MatrixInterface/" class="md-nav__link">
+        MatrixInterface
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_1_2" type="checkbox" id="__nav_6_2_1_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2_1_2">
+          Values
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Values" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_2_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          Values
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Linear%20Algebra/Values/ImmutableMatrix/" class="md-nav__link">
+        ImmutableMatrix
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Linear%20Algebra/Values/MutableMatrix/" class="md-nav__link">
+        MutableMatrix
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Linear%20Algebra/Matrices/" class="md-nav__link">
+        Matrices
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
   
   
   
@@ -2082,18 +1908,23 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" type="checkbox" id="__nav_6_3" >
       
-      <label class="md-nav__link" for="__nav_6_3">
-        Fermat Coordinate Systems
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Fermat Coordinate Systems" data-md-level="2">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3">
+          Fermat Statistics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Fermat Statistics" data-md-level="2">
         <label class="md-nav__title" for="__nav_6_3">
           <span class="md-nav__icon md-icon"></span>
-          Fermat Coordinate Systems
+          Fermat Statistics
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -2103,18 +1934,23 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_1" type="checkbox" id="__nav_6_3_1" >
       
-      <label class="md-nav__link" for="__nav_6_3_1">
-        Values
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Values" data-md-level="3">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3_1">
+          
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="" data-md-level="3">
         <label class="md-nav__title" for="__nav_6_3_1">
           <span class="md-nav__icon md-icon"></span>
-          Values
+          
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -2124,18 +1960,44 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_1_1" type="checkbox" id="__nav_6_3_1_1" >
       
-      <label class="md-nav__link" for="__nav_6_3_1_1">
-        Geometry
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Geometry" data-md-level="4">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3_1_1">
+          Provider
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Provider" data-md-level="4">
         <label class="md-nav__title" for="__nav_6_3_1_1">
           <span class="md-nav__icon md-icon"></span>
-          Geometry
+          Provider
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Statistics/Provider/StatsProvider/" class="md-nav__link">
+        StatsProvider
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
   
   
   
@@ -2143,86 +2005,25 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_1_1_1" type="checkbox" id="__nav_6_3_1_1_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_1_2" type="checkbox" id="__nav_6_3_1_2" >
       
-      <label class="md-nav__link" for="__nav_6_3_1_1_1">
-        CoordinateSystems
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="CoordinateSystems" data-md-level="5">
-        <label class="md-nav__title" for="__nav_6_3_1_1_1">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3_1_2">
+          Distribution
           <span class="md-nav__icon md-icon"></span>
-          CoordinateSystems
+        </label>
+      
+      <nav class="md-nav" aria-label="Distribution" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_3_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          Distribution
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/PolarCoordinate/" class="md-nav__link">
-        PolarCoordinate
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/CylindricalCoordinate/" class="md-nav__link">
-        CylindricalCoordinate
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/SphericalCoordinate/" class="md-nav__link">
-        SphericalCoordinate
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Values/Geometry/CoordinateSystems/CartesianCoordinate/" class="md-nav__link">
-        CartesianCoordinate
-      </a>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-          
-            
+              
   
   
   
@@ -2230,32 +2031,259 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_2" type="checkbox" id="__nav_6_3_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_1_2_1" type="checkbox" id="__nav_6_3_1_2_1" >
       
-      <label class="md-nav__link" for="__nav_6_3_2">
-        Types
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Types" data-md-level="3">
-        <label class="md-nav__title" for="__nav_6_3_2">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3_1_2_1">
+          Discrete
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Discrete" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_3_1_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Discrete
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Statistics/Distribution/Discrete/Poisson/" class="md-nav__link">
+        Poisson
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Statistics/Distribution/Discrete/Bernoulli/" class="md-nav__link">
+        Bernoulli
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Statistics/Distribution/Discrete/Binomial/" class="md-nav__link">
+        Binomial
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_1_2_2" type="checkbox" id="__nav_6_3_1_2_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3_1_2_2">
+          Continuous
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Continuous" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_3_1_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Continuous
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Statistics/Distribution/Continuous/Normal/" class="md-nav__link">
+        Normal
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Statistics/Distribution/Continuous/Exponential/" class="md-nav__link">
+        Exponential
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_1_3" type="checkbox" id="__nav_6_3_1_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3_1_3">
+          Types
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Types" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_3_1_3">
           <span class="md-nav__icon md-icon"></span>
           Types
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Types/Coordinate/" class="md-nav__link">
-        Coordinate
+      <a href="../../roster/latest/Fermat%20Statistics/Types/DiscreteDistribution/" class="md-nav__link">
+        DiscreteDistribution
       </a>
     </li>
   
 
+            
           
             
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Statistics/Types/ContinuousDistribution/" class="md-nav__link">
+        ContinuousDistribution
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Statistics/Types/Distribution/" class="md-nav__link">
+        Distribution
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4">
+          Fermat Coordinates
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Fermat Coordinates" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          Fermat Coordinates
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
   
   
   
@@ -2263,20 +2291,91 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_2_2" type="checkbox" id="__nav_6_3_2_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_1" type="checkbox" id="__nav_6_4_1" >
       
-      <label class="md-nav__link" for="__nav_6_3_2_2">
-        Base
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Base" data-md-level="4">
-        <label class="md-nav__title" for="__nav_6_3_2_2">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_1">
+          
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_1_1" type="checkbox" id="__nav_6_4_1_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_1_1">
+          Types
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Types" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_4_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Types
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Coordinates/Types/Coordinate/" class="md-nav__link">
+        Coordinate
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_1_1_2" type="checkbox" id="__nav_6_4_1_1_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_1_1_2">
+          Base
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Base" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_4_1_1_2">
           <span class="md-nav__icon md-icon"></span>
           Base
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -2284,20 +2383,25 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_2_2_1" type="checkbox" id="__nav_6_3_2_2_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_1_1_2_1" type="checkbox" id="__nav_6_4_1_1_2_1" >
       
-      <label class="md-nav__link" for="__nav_6_3_2_2_1">
-        Interfaces
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Interfaces" data-md-level="5">
-        <label class="md-nav__title" for="__nav_6_3_2_2_1">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_1_1_2_1">
+          Interfaces
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Interfaces" data-md-level="6">
+        <label class="md-nav__title" for="__nav_6_4_1_1_2_1">
           <span class="md-nav__icon md-icon"></span>
           Interfaces
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
@@ -2305,84 +2409,1924 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3_2_2_1_1" type="checkbox" id="__nav_6_3_2_2_1_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_1_1_2_1_1" type="checkbox" id="__nav_6_4_1_1_2_1_1" >
       
-      <label class="md-nav__link" for="__nav_6_3_2_2_1_1">
-        Coordinates
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Coordinates" data-md-level="6">
-        <label class="md-nav__title" for="__nav_6_3_2_2_1_1">
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_1_1_2_1_1">
+          Coordinates
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Coordinates" data-md-level="7">
+        <label class="md-nav__title" for="__nav_6_4_1_1_2_1_1">
           <span class="md-nav__icon md-icon"></span>
           Coordinates
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/ThreeDCoordinateInterface/" class="md-nav__link">
-        ThreeDCoordinateInterface
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/TwoDCoordinateInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Coordinates/Types/Base/Interfaces/Coordinates/TwoDCoordinateInterface/" class="md-nav__link">
         TwoDCoordinateInterface
       </a>
     </li>
   
 
+            
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="../../roster/latest/Fermat%20Coordinate%20Systems/Types/Base/Interfaces/Coordinates/CoordinateInterface/" class="md-nav__link">
+      <a href="../../roster/latest/Fermat%20Coordinates/Types/Base/Interfaces/Coordinates/CoordinateInterface/" class="md-nav__link">
         CoordinateInterface
       </a>
     </li>
   
 
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Coordinates/Types/Base/Interfaces/Coordinates/ThreeDCoordinateInterface/" class="md-nav__link">
+        ThreeDCoordinateInterface
+      </a>
+    </li>
+  
+
+            
           
         </ul>
       </nav>
     </li>
   
 
+            
           
         </ul>
       </nav>
     </li>
   
 
+            
           
         </ul>
       </nav>
     </li>
   
 
+            
           
         </ul>
       </nav>
     </li>
   
 
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_1_2" type="checkbox" id="__nav_6_4_1_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_1_2">
+          Values
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Values" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_4_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          Values
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Coordinates/Values/CylindricalCoordinate/" class="md-nav__link">
+        CylindricalCoordinate
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Coordinates/Values/CartesianCoordinate/" class="md-nav__link">
+        CartesianCoordinate
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Coordinates/Values/SphericalCoordinate/" class="md-nav__link">
+        SphericalCoordinate
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Coordinates/Values/PolarCoordinate/" class="md-nav__link">
+        PolarCoordinate
+      </a>
+    </li>
+  
+
+            
           
         </ul>
       </nav>
     </li>
   
 
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5" type="checkbox" id="__nav_6_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5">
+          Fermat Expressions
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Fermat Expressions" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_5">
+          <span class="md-nav__icon md-icon"></span>
+          Fermat Expressions
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5_1" type="checkbox" id="__nav_6_5_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5_1">
+          
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5_1_1" type="checkbox" id="__nav_6_5_1_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5_1_1">
+          Provider
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Provider" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_5_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Provider
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Expressions/Provider/SpecialPolynomials/" class="md-nav__link">
+        SpecialPolynomials
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5_1_2" type="checkbox" id="__nav_6_5_1_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5_1_2">
+          Types
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Types" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_5_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          Types
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Expressions/Types/Expression/" class="md-nav__link">
+        Expression
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5_1_2_2" type="checkbox" id="__nav_6_5_1_2_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5_1_2_2">
+          Base
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Base" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_5_1_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Base
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5_1_2_2_1" type="checkbox" id="__nav_6_5_1_2_2_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5_1_2_2_1">
+          Interfaces
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Interfaces" data-md-level="6">
+        <label class="md-nav__title" for="__nav_6_5_1_2_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Interfaces
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5_1_2_2_1_1" type="checkbox" id="__nav_6_5_1_2_2_1_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5_1_2_2_1_1">
+          Evaluateables
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Evaluateables" data-md-level="7">
+        <label class="md-nav__title" for="__nav_6_5_1_2_2_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Evaluateables
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Expressions/Types/Base/Interfaces/Evaluateables/FunctionInterface/" class="md-nav__link">
+        FunctionInterface
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Expressions/Types/Base/Interfaces/Evaluateables/ExpressionInterface/" class="md-nav__link">
+        ExpressionInterface
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5_1_3" type="checkbox" id="__nav_6_5_1_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5_1_3">
+          Values
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Values" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_5_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Values
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5_1_3_1" type="checkbox" id="__nav_6_5_1_3_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5_1_3_1">
+          Algebra
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Algebra" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_5_1_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Algebra
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Expressions/Values/Algebra/ExponentialFunction/" class="md-nav__link">
+        ExponentialFunction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Expressions/Values/Algebra/PolynomialFunction/" class="md-nav__link">
+        PolynomialFunction
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6" type="checkbox" id="__nav_6_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6">
+          Fermat Core
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Fermat Core" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_6">
+          <span class="md-nav__icon md-icon"></span>
+          Fermat Core
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1" type="checkbox" id="__nav_6_6_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1">
+          
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_1" type="checkbox" id="__nav_6_6_1_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_1">
+          Provider
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Provider" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_6_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Provider
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/SeriesProvider/" class="md-nav__link">
+        SeriesProvider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/TrigonometryProvider/" class="md-nav__link">
+        TrigonometryProvider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/SequenceProvider/" class="md-nav__link">
+        SequenceProvider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/CalculationModeProvider/" class="md-nav__link">
+        CalculationModeProvider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/ArithmeticProvider/" class="md-nav__link">
+        ArithmeticProvider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/NumberFormatProvider/" class="md-nav__link">
+        NumberFormatProvider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingProvider/" class="md-nav__link">
+        RoundingProvider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/BaseConversionProvider/" class="md-nav__link">
+        BaseConversionProvider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/ConstantProvider/" class="md-nav__link">
+        ConstantProvider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RandomProvider/" class="md-nav__link">
+        RandomProvider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_1_11" type="checkbox" id="__nav_6_6_1_1_11" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_1_11">
+          RoundingModeAdapters
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="RoundingModeAdapters" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_6_1_1_11">
+          <span class="md-nav__icon md-icon"></span>
+          RoundingModeAdapters
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_1_11_1" type="checkbox" id="__nav_6_6_1_1_11_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_1_11_1">
+          Modes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Modes" data-md-level="6">
+        <label class="md-nav__title" for="__nav_6_6_1_1_11_1">
+          <span class="md-nav__icon md-icon"></span>
+          Modes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/StochasticAdapter/" class="md-nav__link">
+        StochasticAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/HalfUpAdapter/" class="md-nav__link">
+        HalfUpAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/HalfZeroAdapter/" class="md-nav__link">
+        HalfZeroAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/BaseAdapter/" class="md-nav__link">
+        BaseAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/HalfDownAdapter/" class="md-nav__link">
+        HalfDownAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/CeilAdapter/" class="md-nav__link">
+        CeilAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/TruncateAdapter/" class="md-nav__link">
+        TruncateAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/HalfRandomAdapter/" class="md-nav__link">
+        HalfRandomAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/HalfAlternatingAdapter/" class="md-nav__link">
+        HalfAlternatingAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/HalfInfAdapter/" class="md-nav__link">
+        HalfInfAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/FloorAdapter/" class="md-nav__link">
+        FloorAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/HalfEvenAdapter/" class="md-nav__link">
+        HalfEvenAdapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/Modes/HalfOddAdapter/" class="md-nav__link">
+        HalfOddAdapter
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Provider/RoundingModeAdapters/ModeAdapterFactory/" class="md-nav__link">
+        ModeAdapterFactory
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Collections/" class="md-nav__link">
+        Collections
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Numbers/" class="md-nav__link">
+        Numbers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_4" type="checkbox" id="__nav_6_6_1_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_4">
+          Types
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Types" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_6_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          Types
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/NumberCollection/" class="md-nav__link">
+        NumberCollection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Fraction/" class="md-nav__link">
+        Fraction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Tuple/" class="md-nav__link">
+        Tuple
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Decimal/" class="md-nav__link">
+        Decimal
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_4_5" type="checkbox" id="__nav_6_6_1_4_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_4_5">
+          Base
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Base" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_6_1_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Base
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Number/" class="md-nav__link">
+        Number
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_4_5_2" type="checkbox" id="__nav_6_6_1_4_5_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_4_5_2">
+          Interfaces
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Interfaces" data-md-level="6">
+        <label class="md-nav__title" for="__nav_6_6_1_4_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          Interfaces
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_4_5_2_1" type="checkbox" id="__nav_6_6_1_4_5_2_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_4_5_2_1">
+          Callables
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Callables" data-md-level="7">
+        <label class="md-nav__title" for="__nav_6_6_1_4_5_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Callables
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Callables/ContinuedFractionTermInterface/" class="md-nav__link">
+        ContinuedFractionTermInterface
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_4_5_2_2" type="checkbox" id="__nav_6_6_1_4_5_2_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_4_5_2_2">
+          Groups
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Groups" data-md-level="7">
+        <label class="md-nav__title" for="__nav_6_6_1_4_5_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Groups
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Interfaces/Groups/NumberCollectionInterface/" class="md-nav__link">
+        NumberCollectionInterface
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_4_5_3" type="checkbox" id="__nav_6_6_1_4_5_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_4_5_3">
+          Traits
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Traits" data-md-level="6">
+        <label class="md-nav__title" for="__nav_6_6_1_4_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Traits
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/ArithmeticGMPTrait/" class="md-nav__link">
+        ArithmeticGMPTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/LogSelectionTrait/" class="md-nav__link">
+        LogSelectionTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/InverseTrigonometrySelectionTrait/" class="md-nav__link">
+        InverseTrigonometrySelectionTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/TrigonometryNativeTrait/" class="md-nav__link">
+        TrigonometryNativeTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/TrigonometrySelectionTrait/" class="md-nav__link">
+        TrigonometrySelectionTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/TrigonometryScaleTrait/" class="md-nav__link">
+        TrigonometryScaleTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/ArithmeticHelperSimpleTrait/" class="md-nav__link">
+        ArithmeticHelperSimpleTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/TrigonometryHelpersTrait/" class="md-nav__link">
+        TrigonometryHelpersTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/InverseTrigonometryScaleTrait/" class="md-nav__link">
+        InverseTrigonometryScaleTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/LogScaleTrait/" class="md-nav__link">
+        LogScaleTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/LogNativeTrait/" class="md-nav__link">
+        LogNativeTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/ArithmeticScaleTrait/" class="md-nav__link">
+        ArithmeticScaleTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/InverseTrigonometryNativeTrait/" class="md-nav__link">
+        InverseTrigonometryNativeTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/InverseTrigonometryHelpersTrait/" class="md-nav__link">
+        InverseTrigonometryHelpersTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/ArithmeticSelectionTrait/" class="md-nav__link">
+        ArithmeticSelectionTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Base/Traits/ArithmeticNativeTrait/" class="md-nav__link">
+        ArithmeticNativeTrait
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_4_6" type="checkbox" id="__nav_6_6_1_4_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_4_6">
+          Traits
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Traits" data-md-level="5">
+        <label class="md-nav__title" for="__nav_6_6_1_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          Traits
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/IntegerMathTrait/" class="md-nav__link">
+        IntegerMathTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/NumberNormalizationTrait/" class="md-nav__link">
+        NumberNormalizationTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/SimpleArithmeticTrait/" class="md-nav__link">
+        SimpleArithmeticTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/CalculationModeTrait/" class="md-nav__link">
+        CalculationModeTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/ComparisonTrait/" class="md-nav__link">
+        ComparisonTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/SimpleLogTrait/" class="md-nav__link">
+        SimpleLogTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/SimpleInverseTrigonometryTrait/" class="md-nav__link">
+        SimpleInverseTrigonometryTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/SimpleTrigonometryTrait/" class="md-nav__link">
+        SimpleTrigonometryTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_4_6_9" type="checkbox" id="__nav_6_6_1_4_6_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_4_6_9">
+          Decimal
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Decimal" data-md-level="6">
+        <label class="md-nav__title" for="__nav_6_6_1_4_6_9">
+          <span class="md-nav__icon md-icon"></span>
+          Decimal
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Decimal/ScaleTrait/" class="md-nav__link">
+        ScaleTrait
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Types/Traits/Decimal/FormatterTrait/" class="md-nav__link">
+        FormatterTrait
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_6_1_5" type="checkbox" id="__nav_6_6_1_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6_1_5">
+          Values
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Values" data-md-level="4">
+        <label class="md-nav__title" for="__nav_6_6_1_5">
+          <span class="md-nav__icon md-icon"></span>
+          Values
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Values/ImmutableDecimal/" class="md-nav__link">
+        ImmutableDecimal
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Values/MutableFraction/" class="md-nav__link">
+        MutableFraction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Values/MutableDecimal/" class="md-nav__link">
+        MutableDecimal
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roster/latest/Fermat%20Core/Values/ImmutableFraction/" class="md-nav__link">
+        ImmutableFraction
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
           
         </ul>
       </nav>
@@ -2402,6 +4346,7 @@
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -2444,16 +4389,19 @@
               </div>
             
           
-          <div class="md-content" data-md-component="content">
-            <article class="md-content__inner md-typeset">
-              
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
                 
-                  <a href="https://github.com/JordanRL/Fermat/edit/master/docs/performance/logarithms.md" title="Edit this page" class="md-content__button md-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
-                  </a>
-                
-                
-                <h1 id="logarithms-performance">Logarithms Performance</h1>
+                  
+
+  <a href="https://github.com/JordanRL/Fermat/edit/master/docs/performance/logarithms.md" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+<h1 id="logarithms-performance">Logarithms Performance</h1>
 <p>Below are the logarithmic operations available in Fermat and performance information about using them.</p>
 <div class="admonition signature">
 <p class="admonition-title">ln()</p>
@@ -2548,32 +4496,34 @@
 </dl>
 </div>
 <p>Note: This operation suffers enormously if ext-decimal is not available.</p>
-                
-              
-              
-                
 
 
-              
-            </article>
-          </div>
+
+
+
+                
+              </article>
+            </div>
+          
+          
         </div>
         
-          <a href="#" class="md-top md-icon" title="Back to top" data-md-component="top" data-md-state="hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
           </a>
         
       </main>
       
-        
-<footer class="md-footer">
+        <footer class="md-footer">
   
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
         <a href="../arithmetic/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Arithmetic" rel="prev">
           <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
           <div class="md-footer__title">
             <div class="md-ellipsis">
@@ -2597,7 +4547,7 @@
             </div>
           </div>
           <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
           </div>
         </a>
       
@@ -2605,18 +4555,19 @@
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
-      <div class="md-footer-copyright">
-        
-          <div class="md-footer-copyright__highlight">
-            Copyright &copy; 2015-2022 Jordan LeDoux
-          </div>
-        
-        Made with
-        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-          Material for MkDocs
-        </a>
-        
-      </div>
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2015-2022 Jordan LeDoux
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
       
     </div>
   </div>
@@ -2626,10 +4577,11 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.tabs"], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      <script src="../../assets/javascripts/bundle.8492ddcf.min.js"></script>
       
     
   </body>
