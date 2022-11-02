@@ -61,7 +61,7 @@ Provides a consistent abstraction for nearly any math concept that is likely to 
 
 While Fermat has different modes that allow you to control performance to a degree, the abstraction and comprehensive nature of the library means that for certain uses, such as working with complex numbers, a large number of object instances may be created temporarily during a calculation, leading to significantly more overhead than using operands directly when doing basic math within common scale limitations.
 
-Despite the fact that performance is not a primary goal of this library, it does use built in functions wherever possible (where doing so does not affect scale), and it will utilize the GMP functions, the Decimal extension, and PHP-DS types if those extensions are present in your installation of PHP. Installing these extensions should increase performance in most use-cases.
+Despite the fact that performance is not a primary goal of this library, it does use built-in functions wherever possible (where doing so does not affect scale), and it will utilize the GMP functions, the Decimal extension, and PHP-DS types if those extensions are present in your installation of PHP. Installing these extensions should increase performance in most use-cases.
 
 Detailed information about performance can be reviewed in the [Performance](performance/overview.md) section. While performance is not the primary goal of this library, using the available [Calculation Modes](configuration/calculation-modes.md) it should be performant enough for most applications.
 
@@ -130,27 +130,3 @@ This is related to PHP's internal structure of hashtables and zvals, and how the
     
 !!! see-also "See Also"
     More information about mutable and immutable objects, as well as how they are implemented and used with this library, is available on the [Mutable vs. Immutable](getting-started/mutability.md) documentation page.
-
-### This Library Can't Be Reliably Used With Math Operators
-
-Because PHP doesn't allow operator overloading, using the native math operators on Fermat objects directly can very easily result in loss of scale, overflows and underflows, PHP fatal errors (f.e. when the object is in a non-base-10 format), and incorrect calculation (f.e. with complex and imaginary numbers).
-
-!!! fail "Non-Base-10 Values With Native Operators"
-    Using a value that is in a base larger than base-10 with math operators can result in PHP fatal errors. For instance, the value `15` in base `16` will output the string `F`. When used with the operator `/` as the value on the right of the operator, this would result in a "Division by Zero" PHP fatal error. 
-    
-    This occurs because PHP will attempt to cast the string `F` to an `integer`, which will result in the value `0`.
-
-!!! danger "Complex Numbers With Native Operators"
-    Using a `ComplexNumber` instance with native operators will throw only a notice and discard the imaginary component, making it very difficult to pin down the source of the incorrect result if notices are not turned on with the `E_NOTICE` or `E_ALL` levels in `php.ini`.
-    
-    ``` php
-    <?php
-    
-    use Samsara\Fermat\Core\Values\ImmutableComplexNumber;
-    
-    $complexNumber = ImmutableComplexNumber::makeFromString('2+2i');
-    
-    echo $complexNumber + 2;
-    // Prints: 4
-    // Issues: PHP Notice
-    ```

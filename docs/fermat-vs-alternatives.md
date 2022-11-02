@@ -28,6 +28,12 @@ By providing objects which have a fluent interface and are aware of how the rest
 
 There are other libraries that provide arbitrary precision math, or provide complex mathematical functions. This is the only PHP library that provides both.
 
+### Compared to 'markrogoyski/math-php'
+
+MathPHP does a great job with providing a large set of complex mathematical features. In fact, it currently has a more complete set of these features than Fermat does.
+
+However, it doesn't provide library-wide support for arbitrary precision, and it can therefore be easy to lose precision while using any of the advanced features.
+
 ### Compared to 'brick/math'
 
 This library does a fantastic job of providing a similarly fluent and consistent developer experience for dealing with arbitrary precision math, however it is limited to only the basic arithmetic which can be performed via the ext-bcmath extension.
