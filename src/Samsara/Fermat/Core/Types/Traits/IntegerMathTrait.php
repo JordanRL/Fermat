@@ -18,7 +18,7 @@ trait IntegerMathTrait
 {
 
     /**
-     * Only valid for integer numbers. Returns a collections of all of the integer divisors of this number.
+     * Only valid for integer numbers. Returns a collection of all the integer divisors of this number.
      *
      * @return NumberCollection
      * @throws IntegrityConstraint
@@ -67,7 +67,7 @@ trait IntegerMathTrait
 
         $val = gmp_strval(gmp_gcd($thisNum->getValue(NumberBase::Ten), $num->getValue(NumberBase::Ten)));
 
-        return Numbers::make(Numbers::IMMUTABLE, $val, $this->getScale());
+        return new static($val, $this->getScale());
 
     }
 
@@ -100,8 +100,6 @@ trait IntegerMathTrait
     }
 
     /**
-     * TODO: Implement
-     *
      * @return NumberCollection
      */
     public function getPrimeFactors(): NumberCollection
@@ -281,7 +279,7 @@ trait IntegerMathTrait
         $num = $num->factorial();
         $num = $num->divide($e, 3)->add('0.5');
 
-        return $num->floor();
+        return $this->setValue($num->floor());
     }
 
     protected function risingFallingFactorialHelper(ImmutableDecimal $num, int $signum): static
