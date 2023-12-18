@@ -63,7 +63,9 @@
     :   array
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 
@@ -82,6 +84,83 @@
 
 
 ### Instanced Methods
+
+!!! signature "public NumberCollection->get(int $key)"
+    ##### get
+    **$key**
+
+    type
+    :   int
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->getIterator()"
+    ##### getIterator
+    **return**
+
+    type
+    :   Traversable
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->getRandom()"
+    ##### getRandom
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->add($number)"
+    ##### add
+    **$number**
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->average()"
+    ##### average
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
+
+    description
+    :   *No description available*
+    
+---
 
 !!! signature "public NumberCollection->collect(array $numbers)"
     ##### collect
@@ -117,36 +196,9 @@
     
 ---
 
-!!! signature "public NumberCollection->toArray()"
-    ##### toArray
-    **return**
-
-    type
-    :   array
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->selectScale()"
-    ##### selectScale
-    **return**
-
-    type
-    :   int
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->push(NumberInterface $number)"
-    ##### push
+!!! signature "public NumberCollection->divide($number)"
+    ##### divide
     **$number**
-
-    type
-    :   NumberInterface
 
     description
     :   
@@ -163,24 +215,9 @@
     
 ---
 
-!!! signature "public NumberCollection->pop()"
-    ##### pop
-    **return**
-
-    type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->unshift(NumberInterface $number)"
-    ##### unshift
-    **$number**
-
-    type
-    :   NumberInterface
+!!! signature "public NumberCollection->exp($base)"
+    ##### exp
+    **$base**
 
     description
     :   
@@ -194,18 +231,10 @@
 
     description
     :   *No description available*
-    
----
 
-!!! signature "public NumberCollection->shift()"
-    ##### shift
-    **return**
+    ###### exp() Description:
 
-    type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
-
-    description
-    :   *No description available*
+    Replaces each element in the collection with $base to the power of that value. If no base is given, Euler's number is assumed to be the base (as is assumed in most cases where an exp() function is encountered in math)
     
 ---
 
@@ -217,7 +246,9 @@
     :   array
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 
@@ -229,62 +260,60 @@
     
 ---
 
-!!! signature "public NumberCollection->sort()"
-    ##### sort
+!!! signature "public NumberCollection->makeExponentialDistribution()"
+    ##### makeExponentialDistribution
     **return**
 
     type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Stats\Distribution\Continuous\Exponential
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public NumberCollection->reverse()"
-    ##### reverse
+!!! signature "public NumberCollection->makeNormalDistribution()"
+    ##### makeNormalDistribution
     **return**
 
     type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Stats\Distribution\Continuous\Normal
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public NumberCollection->add($number)"
-    ##### add
-    **$number**
-
-    description
-    :   
-    
-    
-
+!!! signature "public NumberCollection->makePoissonDistribution()"
+    ##### makePoissonDistribution
     **return**
 
     type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Stats\Distribution\Discrete\Poisson
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public NumberCollection->subtract($number)"
-    ##### subtract
-    **$number**
-
-    description
-    :   
-    
-    
-
+!!! signature "public NumberCollection->makePolynomialFunction()"
+    ##### makePolynomialFunction
     **return**
 
     type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   Samsara\Fermat\Expressions\Values\Algebra\PolynomialFunction
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->mean()"
+    ##### mean
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -310,9 +339,9 @@
     
 ---
 
-!!! signature "public NumberCollection->divide($number)"
-    ##### divide
-    **$number**
+!!! signature "public NumberCollection->offsetExists($offset)"
+    ##### offsetExists
+    **$offset**
 
     description
     :   
@@ -322,7 +351,81 @@
     **return**
 
     type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
+    :   bool
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->offsetGet($offset)"
+    ##### offsetGet
+    **$offset**
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   mixed
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->offsetSet($offset, $value)"
+    ##### offsetSet
+    **$offset**
+
+    description
+    :   *No description available*
+
+    **$value**
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   void
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->offsetUnset($offset)"
+    ##### offsetUnset
+    **$offset**
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   void
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->pop()"
+    ##### pop
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
@@ -352,9 +455,12 @@
     
 ---
 
-!!! signature "public NumberCollection->exp($base)"
-    ##### exp
-    **$base**
+!!! signature "public NumberCollection->push(ImmutableDecimal $number)"
+    ##### push
+    **$number**
+
+    type
+    :   ImmutableDecimal
 
     description
     :   
@@ -368,19 +474,60 @@
 
     description
     :   *No description available*
-
-    ###### exp() Description:
-
-    Replaces each element in the collection with $base to the power of that value. If no base is given, Euler's number is assumed to be the base (as is assumed in most cases where an exp() function is encountered in math)
     
 ---
 
-!!! signature "public NumberCollection->get(int $key)"
-    ##### get
-    **$key**
+!!! signature "public NumberCollection->reverse()"
+    ##### reverse
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->selectScale()"
+    ##### selectScale
+    **return**
 
     type
     :   int
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->shift()"
+    ##### shift
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->sort()"
+    ##### sort
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public NumberCollection->subtract($number)"
+    ##### subtract
+    **$number**
 
     description
     :   
@@ -390,19 +537,7 @@
     **return**
 
     type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->getRandom()"
-    ##### getRandom
-    **return**
-
-    type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*
@@ -414,164 +549,41 @@
     **return**
 
     type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\NumberInterface
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public NumberCollection->mean()"
-    ##### mean
+!!! signature "public NumberCollection->toArray()"
+    ##### toArray
     **return**
 
     type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   array
 
     description
     :   *No description available*
     
 ---
 
-!!! signature "public NumberCollection->average()"
-    ##### average
-    **return**
+!!! signature "public NumberCollection->unshift(ImmutableDecimal $number)"
+    ##### unshift
+    **$number**
 
     type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   ImmutableDecimal
 
     description
-    :   *No description available*
+    :   
     
----
-
-!!! signature "public NumberCollection->makeNormalDistribution()"
-    ##### makeNormalDistribution
-    **return**
-
-    type
-    :   Samsara\Fermat\Core\Provider\Distribution\Normal
-
-    description
-    :   *No description available*
     
----
-
-!!! signature "public NumberCollection->makePoissonDistribution()"
-    ##### makePoissonDistribution
-    **return**
-
-    type
-    :   Samsara\Fermat\Core\Provider\Distribution\Poisson
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->makeExponentialDistribution()"
-    ##### makeExponentialDistribution
-    **return**
-
-    type
-    :   Samsara\Fermat\Core\Provider\Distribution\Exponential
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->makePolynomialFunction()"
-    ##### makePolynomialFunction
-    **return**
-
-    type
-    :   Samsara\Fermat\Core\Values\Algebra\PolynomialFunction
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->offsetExists($offset)"
-    ##### offsetExists
-    **$offset**
-
-    description
-    :   *No description available*
 
     **return**
 
     type
-    :   bool
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->offsetGet($offset)"
-    ##### offsetGet
-    **$offset**
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   mixed
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->offsetSet($offset, $value)"
-    ##### offsetSet
-    **$offset**
-
-    description
-    :   *No description available*
-
-    **$value**
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   void
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->offsetUnset($offset)"
-    ##### offsetUnset
-    **$offset**
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   void
-
-    description
-    :   *No description available*
-    
----
-
-!!! signature "public NumberCollection->getIterator()"
-    ##### getIterator
-    **return**
-
-    type
-    :   Traversable
+    :   Samsara\Fermat\Core\Types\Base\Interfaces\Groups\NumberCollectionInterface
 
     description
     :   *No description available*

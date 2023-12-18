@@ -107,7 +107,6 @@ abstract class Decimal extends Number
      * @param NumberBase|null $base If provided, will return the value in the provided base, regardless of the object's base setting.
      *
      * @return string
-     * @throws IntegrityConstraint
      */
     public function getValue(?NumberBase $base = null): string
     {
@@ -244,33 +243,35 @@ abstract class Decimal extends Number
      */
     public function compare(Number|int|float|string $value): int
     {
-        $value = Numbers::makeOrDont($this, $value, $this->getScale());
+        $thisScale = $this->getScale();
+        $value = Numbers::makeOrDont($this, $value, $thisScale);
+        $thisValue = $this->getAsBaseTenRealNumber();
+        $thatValue = $value->getAsBaseTenRealNumber();
+        $thatScale = $value->getScale();
 
-        if ($this->getValue(NumberBase::Ten) == Number::INFINITY) {
-            return match ($value->getValue(NumberBase::Ten)) {
+        if ($thisValue == Number::INFINITY) {
+            return match ($thatValue) {
                 'INF' => 0,
                 default => 1
             };
-        } elseif ($this->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
-            return match ($value->getValue(NumberBase::Ten)) {
+        } elseif ($thisValue == Number::NEG_INFINITY) {
+            return match ($thatValue) {
                 '-INF' => 0,
                 default => -1
             };
         }
 
-        if ($value->getValue(NumberBase::Ten) == Number::INFINITY) {
+        if ($thatValue == Number::INFINITY) {
             return 1;
-        } elseif ($value->getValue(NumberBase::Ten) == Number::NEG_INFINITY) {
+        } elseif ($thatValue == Number::NEG_INFINITY) {
             return -1;
         }
 
         if ($value instanceof Fraction) {
-            $value = $value->asDecimal($this->getScale());
+            $thatValue = $value->asDecimal($thisScale)->getAsBaseTenRealNumber();
         }
-        $thisValue = $this->getAsBaseTenRealNumber();
-        $thatValue = $value->getAsBaseTenRealNumber();
 
-        $scale = ($this->getScale() < $value->getScale()) ? $this->getScale() : $value->getScale();
+        $scale = ($thisScale < $thatScale) ? $thisScale : $thatScale;
 
         return ArithmeticProvider::compare($thisValue, $thatValue, $scale);
     }
@@ -382,7 +383,6 @@ abstract class Decimal extends Number
 
     /**
      * @return string
-     * @throws IntegrityConstraint
      */
     protected function getAsBaseConverted(): string
     {

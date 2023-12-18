@@ -8,42 +8,6 @@
 
 ### Static Methods
 
-!!! signature "public RandomProvider::randomInt(int|string|DecimalInterface $min, int|string|DecimalInterface $max, RandomMode $mode)"
-    ##### randomInt
-    **$min**
-
-    type
-    :   int|string|DecimalInterface
-
-    description
-    :   *No description available*
-
-    **$max**
-
-    type
-    :   int|string|DecimalInterface
-
-    description
-    :   *No description available*
-
-    **$mode**
-
-    type
-    :   RandomMode
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   Samsara\Fermat\Core\Values\ImmutableDecimal
-
-    description
-    :   *No description available*
-
----
-
 !!! signature "public RandomProvider::randomDecimal(int $scale, RandomMode $mode)"
     ##### randomDecimal
     **$scale**
@@ -60,7 +24,9 @@
     :   RandomMode
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 
@@ -72,12 +38,12 @@
 
 ---
 
-!!! signature "public RandomProvider::randomReal(int|string|DecimalInterface $min, int|string|DecimalInterface $max, int $scale, RandomMode $mode)"
-    ##### randomReal
+!!! signature "public RandomProvider::randomInt(int|float|string|Decimal $min, int|float|string|Decimal $max, RandomMode $mode, int|null $seed)"
+    ##### randomInt
     **$min**
 
     type
-    :   int|string|DecimalInterface
+    :   int|float|string|Decimal
 
     description
     :   *No description available*
@@ -85,7 +51,53 @@
     **$max**
 
     type
-    :   int|string|DecimalInterface
+    :   int|float|string|Decimal
+
+    description
+    :   *No description available*
+
+    **$mode**
+
+    type
+    :   RandomMode
+
+    description
+    :   *No description available*
+
+    **$seed**
+
+    type
+    :   int|null
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
+
+    description
+    :   *No description available*
+
+---
+
+!!! signature "public RandomProvider::randomReal(int|float|string|Decimal $min, int|float|string|Decimal $max, int $scale, RandomMode $mode)"
+    ##### randomReal
+    **$min**
+
+    type
+    :   int|float|string|Decimal
+
+    description
+    :   *No description available*
+
+    **$max**
+
+    type
+    :   int|float|string|Decimal
 
     description
     :   *No description available*
@@ -104,7 +116,9 @@
     :   RandomMode
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 

@@ -11,6 +11,7 @@ namespace Samsara\Fermat\Core\Enums;
 enum CalcOperation
 {
 
+    // Arithmetic ops
     case Addition;
     case Subtraction;
     case Multiplication;
@@ -18,10 +19,13 @@ enum CalcOperation
     case Power;
     case SquareRoot;
 
+    // Utility ops
     case Modulo;
     case ContinuousModulo;
     case Compare;
+    case Abs;
 
+    // Trig ops
     case Sin;
     case Cos;
     case Tan;
@@ -29,6 +33,7 @@ enum CalcOperation
     case Csc;
     case Cot;
 
+    // Hyperbolic trig ops
     case SinH;
     case CosH;
     case TanH;
@@ -36,11 +41,22 @@ enum CalcOperation
     case CscH;
     case CotH;
 
+    // Inverse trig ops
     case ArcSin;
     case ArcCos;
     case ArcTan;
     case ArcSec;
     case ArcCsc;
     case ArcCot;
+
+    // Logarithmic ops
+    case Ln;
+    case Exp;
+    case Log10;
+
+    // Integer ops
+    case Factorial;
+    case DoubleFactorial;
+    case SubFactorial;
 
 }

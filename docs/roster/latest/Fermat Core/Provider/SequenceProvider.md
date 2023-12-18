@@ -20,50 +20,28 @@
 
 ### Static Methods
 
-!!! signature "public SequenceProvider::nthOddNumber(int $n, bool $asCollection, int $collectionSize)"
-    ##### nthOddNumber
-    **$n**
+!!! signature "public SequenceProvider::nextPrimeNumber(Samsara\Fermat\Core\Values\ImmutableDecimal $number)"
+    ##### nextPrimeNumber
+    **$number**
 
     type
-    :   int
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
-
-    **$asCollection**
-
-    type
-    :   bool
-
-    description
-    :   *No description available*
-
-    **$collectionSize**
-
-    type
-    :   int
-
-    description
-    :   
-    
-    
 
     **return**
 
     type
-    :   DecimalInterface|NumberInterface|NumberCollection
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
-
-    ###### nthOddNumber() Description:
-
-    OEIS: A005408
 
 ---
 
-!!! signature "public SequenceProvider::nthEvenNumber(int $n, bool $asCollection, int $collectionSize)"
-    ##### nthEvenNumber
+!!! signature "public SequenceProvider::nthBernoulliNumber(int $n, int|null $scale)"
+    ##### nthBernoulliNumber
     **$n**
 
     type
@@ -72,18 +50,10 @@
     description
     :   *No description available*
 
-    **$asCollection**
+    **$scale**
 
     type
-    :   bool
-
-    description
-    :   *No description available*
-
-    **$collectionSize**
-
-    type
-    :   int
+    :   int|null
 
     description
     :   
@@ -93,56 +63,16 @@
     **return**
 
     type
-    :   DecimalInterface|NumberInterface|NumberCollection
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
 
     description
     :   *No description available*
 
-    ###### nthEvenNumber() Description:
+    ###### nthBernoulliNumber() Description:
 
-    OEIS: A005843
-
----
-
-!!! signature "public SequenceProvider::nthPowerNegativeOne(int $n, bool $asCollection, int $collectionSize)"
-    ##### nthPowerNegativeOne
-    **$n**
-
-    type
-    :   int
-
-    description
-    :   *No description available*
-
-    **$asCollection**
-
-    type
-    :   bool
-
-    description
-    :   *No description available*
-
-    **$collectionSize**
-
-    type
-    :   int
-
-    description
-    :   
+    Returns the nth Bernoulli Number, where odd indexes return zero, and B1() is -1/2.
     
-    
-
-    **return**
-
-    type
-    :   DecimalInterface|NumberInterface|NumberCollection
-
-    description
-    :   *No description available*
-
-    ###### nthPowerNegativeOne() Description:
-
-    OEIS: A033999
+     This function gets very slow if you demand large precision.
 
 ---
 
@@ -177,7 +107,7 @@
     **return**
 
     type
-    :   DecimalInterface|NumberInterface|NumberCollection
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal|Samsara\Fermat\Core\Types\NumberCollection
 
     description
     :   *No description available*
@@ -188,9 +118,12 @@
 
 ---
 
-!!! signature "public SequenceProvider::nthBernoulliNumber($n, int|null $scale)"
-    ##### nthBernoulliNumber
+!!! signature "public SequenceProvider::nthEvenNumber(int $n, int|null $scale, bool $asCollection, int $collectionSize)"
+    ##### nthEvenNumber
     **$n**
+
+    type
+    :   int
 
     description
     :   *No description available*
@@ -203,39 +136,35 @@
     description
     :   *No description available*
 
-    **return**
+    **$asCollection**
 
     type
-    :   Samsara\Fermat\Core\Types\Base\Interfaces\Numbers\DecimalInterface
+    :   bool
 
     description
     :   *No description available*
 
-    ###### nthBernoulliNumber() Description:
-
-    Returns the nth Bernoulli Number, where odd indexes return zero, and B1() is -1/2.
-    
-     This function gets very slow if you demand large precision.
-
----
-
-!!! signature "public SequenceProvider::nthPrimeNumbers(int $n)"
-    ##### nthPrimeNumbers
-    **$n**
+    **$collectionSize**
 
     type
     :   int
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 
     type
-    :   Samsara\Fermat\Core\Types\NumberCollection
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal|Samsara\Fermat\Core\Types\NumberCollection
 
     description
     :   *No description available*
+
+    ###### nthEvenNumber() Description:
+
+    OEIS: A005843
 
 ---
 
@@ -270,7 +199,7 @@
     **return**
 
     type
-    :   ImmutableDecimal|NumberCollection
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal|Samsara\Fermat\Core\Types\NumberCollection
 
     description
     :   *No description available*
@@ -282,6 +211,230 @@
      This uses an implementation of the fast-doubling Karatsuba multiplication algorithm as described by 'Nayuki':
     
      https://www.nayuki.io/page/fast-fibonacci-algorithms
+
+---
+
+!!! signature "public SequenceProvider::nthFibonacciPair(int $n)"
+    ##### nthFibonacciPair
+    **$n**
+
+    type
+    :   int
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   array
+
+    description
+    :   *No description available*
+
+    ###### nthFibonacciPair() Description:
+
+    OEIS: A000045
+    
+     This uses an implementation of the fast-doubling Karatsuba multiplication algorithm as described by 'Nayuki':
+    
+     https://www.nayuki.io/page/fast-fibonacci-algorithms
+
+---
+
+!!! signature "public SequenceProvider::nthHarmonicNumber(Samsara\Fermat\Core\Values\ImmutableDecimal $n, ?int $scale)"
+    ##### nthHarmonicNumber
+    **$n**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
+
+    description
+    :   *No description available*
+
+    **$scale**
+
+    type
+    :   ?int
+
+    description
+    :   *No description available*
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
+
+    description
+    :   *No description available*
+
+---
+
+!!! signature "public SequenceProvider::nthLucasNumber(int $n)"
+    ##### nthLucasNumber
+    **$n**
+
+    type
+    :   int
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
+
+    description
+    :   *No description available*
+
+    ###### nthLucasNumber() Description:
+
+    OEIS: A000032
+
+---
+
+!!! signature "public SequenceProvider::nthOddNumber(int $n, int|null $scale, bool $asCollection, int $collectionSize)"
+    ##### nthOddNumber
+    **$n**
+
+    type
+    :   int
+
+    description
+    :   *No description available*
+
+    **$scale**
+
+    type
+    :   int|null
+
+    description
+    :   *No description available*
+
+    **$asCollection**
+
+    type
+    :   bool
+
+    description
+    :   *No description available*
+
+    **$collectionSize**
+
+    type
+    :   int
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal|Samsara\Fermat\Core\Types\NumberCollection
+
+    description
+    :   *No description available*
+
+    ###### nthOddNumber() Description:
+
+    OEIS: A005408
+
+---
+
+!!! signature "public SequenceProvider::nthPowerNegativeOne(int $n, bool $asCollection, int $collectionSize)"
+    ##### nthPowerNegativeOne
+    **$n**
+
+    type
+    :   int
+
+    description
+    :   *No description available*
+
+    **$asCollection**
+
+    type
+    :   bool
+
+    description
+    :   *No description available*
+
+    **$collectionSize**
+
+    type
+    :   int
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal|Samsara\Fermat\Core\Types\NumberCollection
+
+    description
+    :   *No description available*
+
+    ###### nthPowerNegativeOne() Description:
+
+    OEIS: A033999
+
+---
+
+!!! signature "public SequenceProvider::nthPrimeNumbers(int $n)"
+    ##### nthPrimeNumbers
+    **$n**
+
+    type
+    :   int
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Types\NumberCollection
+
+    description
+    :   *No description available*
+
+---
+
+!!! signature "public SequenceProvider::nthTriangularNumber(int $n)"
+    ##### nthTriangularNumber
+    **$n**
+
+    type
+    :   int
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   Samsara\Fermat\Core\Values\ImmutableDecimal
+
+    description
+    :   *No description available*
+
+    ###### nthTriangularNumber() Description:
+
+    OEIS: A000217
 
 ---
 

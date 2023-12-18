@@ -8,6 +8,8 @@ use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Enums\NumberFormat;
 use Samsara\Fermat\Core\Enums\NumberGrouping;
 use Samsara\Fermat\Core\Provider\NumberFormatProvider;
+use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
  * @package Samsara\Fermat\Core
@@ -176,6 +178,16 @@ trait FormatterTrait
         }
 
         return $baseValue;
+    }
+
+    protected function toImmutable(): ImmutableDecimal
+    {
+        return (new ImmutableDecimal($this->getValue(NumberBase::Ten), $this->getScale(), $this->getBase()))->setMode($this->getMode());
+    }
+
+    protected function toMutable(): MutableDecimal
+    {
+        return (new MutableDecimal($this->getValue(NumberBase::Ten), $this->getScale(), $this->getBase()))->setMode($this->getMode());
     }
 
     /**

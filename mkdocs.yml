@@ -4,7 +4,7 @@ extra_css:
     - css/custom.css
 repo_url: 'https://github.com/JordanRL/Fermat/'
 site_url: 'https://jordanrl.github.io/Fermat/'
-copyright: 'Copyright &copy; 2015-2022 Jordan LeDoux'
+copyright: 'Copyright &copy; 2015-2024 Jordan LeDoux'
 nav:
     -
         Introduction:
@@ -73,175 +73,321 @@ nav:
     -
         'Source Reference':
             -
-                'Fermat Core':
+                'Fermat Complex':
                     -
-                        Numbers: 'roster/latest/Fermat Core/Numbers.md'
-                    -
-                        Collections: 'roster/latest/Fermat Core/Collections.md'
-                    -
-                        Values:
+                        '':
                             -
-                                MutableDecimal: 'roster/latest/Fermat Core/Values/MutableDecimal.md'
+                                ComplexNumbers: 'roster/latest/Fermat Complex//ComplexNumbers.md'
                             -
-                                ImmutableDecimal: 'roster/latest/Fermat Core/Values/ImmutableDecimal.md'
-                            -
-                                ImmutableFraction: 'roster/latest/Fermat Core/Values/ImmutableFraction.md'
-                            -
-                                MutableFraction: 'roster/latest/Fermat Core/Values/MutableFraction.md'
-                    -
-                        Types:
-                            -
-                                Fraction: 'roster/latest/Fermat Core/Types/Fraction.md'
-                            -
-                                NumberCollection: 'roster/latest/Fermat Core/Types/NumberCollection.md'
-                            -
-                                Decimal: 'roster/latest/Fermat Core/Types/Decimal.md'
-                            -
-                                Tuple: 'roster/latest/Fermat Core/Types/Tuple.md'
-                            -
-                                Base:
+                                Types:
                                     -
-                                        Number: 'roster/latest/Fermat Core/Types/Base/Number.md'
+                                        ComplexNumber: 'roster/latest/Fermat Complex//Types/ComplexNumber.md'
                                     -
-                                        Interfaces:
+                                        Base:
                                             -
-                                                Numbers:
+                                                Interfaces:
                                                     -
-                                                        NumberInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/NumberInterface.md'
-                                                    -
-                                                        DecimalInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/DecimalInterface.md'
-                                                    -
-                                                        FractionInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/FractionInterface.md'
-                                                    -
-                                                        SimpleNumberInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Numbers/SimpleNumberInterface.md'
-                                            -
-                                                Callables:
-                                                    -
-                                                        ContinuedFractionTermInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Callables/ContinuedFractionTermInterface.md'
-                                            -
-                                                Groups:
-                                                    -
-                                                        NumberCollectionInterface: 'roster/latest/Fermat Core/Types/Base/Interfaces/Groups/NumberCollectionInterface.md'
-                            -
-                                Traits:
+                                                        Numbers:
+                                                            -
+                                                                ComplexNumberInterface: 'roster/latest/Fermat Complex//Types/Base/Interfaces/Numbers/ComplexNumberInterface.md'
                                     -
-                                        ComparisonTrait: 'roster/latest/Fermat Core/Types/Traits/ComparisonTrait.md'
+                                        Traits:
+                                            -
+                                                ArithmeticComplexHelperTrait: 'roster/latest/Fermat Complex//Types/Traits/ArithmeticComplexHelperTrait.md'
+                                            -
+                                                ArithmeticComplexTrait: 'roster/latest/Fermat Complex//Types/Traits/ArithmeticComplexTrait.md'
+                                            -
+                                                ComplexScaleTrait: 'roster/latest/Fermat Complex//Types/Traits/ComplexScaleTrait.md'
+                            -
+                                Values:
                                     -
-                                        ArithmeticSimpleTrait: 'roster/latest/Fermat Core/Types/Traits/ArithmeticSimpleTrait.md'
+                                        MutableComplexNumber: 'roster/latest/Fermat Complex//Values/MutableComplexNumber.md'
                                     -
-                                        InverseTrigonometrySimpleTrait: 'roster/latest/Fermat Core/Types/Traits/InverseTrigonometrySimpleTrait.md'
-                                    -
-                                        IntegerMathTrait: 'roster/latest/Fermat Core/Types/Traits/IntegerMathTrait.md'
-                                    -
-                                        TrigonometrySimpleTrait: 'roster/latest/Fermat Core/Types/Traits/TrigonometrySimpleTrait.md'
-                                    -
-                                        LogSimpleTrait: 'roster/latest/Fermat Core/Types/Traits/LogSimpleTrait.md'
-                                    -
-                                        Trigonometry:
-                                            -
-                                                TrigonometrySelectionTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/TrigonometrySelectionTrait.md'
-                                            -
-                                                InverseTrigonometryNativeTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/InverseTrigonometryNativeTrait.md'
-                                            -
-                                                InverseTrigonometrySelectionTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/InverseTrigonometrySelectionTrait.md'
-                                            -
-                                                TrigonometryScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/TrigonometryScaleTrait.md'
-                                            -
-                                                InverseTrigonometryScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/InverseTrigonometryScaleTrait.md'
-                                            -
-                                                TrigonometryNativeTrait: 'roster/latest/Fermat Core/Types/Traits/Trigonometry/TrigonometryNativeTrait.md'
-                                    -
-                                        Arithmetic:
-                                            -
-                                                ArithmeticGMPTrait: 'roster/latest/Fermat Core/Types/Traits/Arithmetic/ArithmeticGMPTrait.md'
-                                            -
-                                                ArithmeticSelectionTrait: 'roster/latest/Fermat Core/Types/Traits/Arithmetic/ArithmeticSelectionTrait.md'
-                                            -
-                                                ArithmeticScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Arithmetic/ArithmeticScaleTrait.md'
-                                            -
-                                                ArithmeticNativeTrait: 'roster/latest/Fermat Core/Types/Traits/Arithmetic/ArithmeticNativeTrait.md'
-                                    -
-                                        Decimal:
-                                            -
-                                                LogScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/LogScaleTrait.md'
-                                            -
-                                                ScaleTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/ScaleTrait.md'
-                                            -
-                                                LogNativeTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/LogNativeTrait.md'
-                                            -
-                                                LogSelectionTrait: 'roster/latest/Fermat Core/Types/Traits/Decimal/LogSelectionTrait.md'
-                    -
-                        Provider:
-                            -
-                                TrigonometryProvider: 'roster/latest/Fermat Core/Provider/TrigonometryProvider.md'
-                            -
-                                SeriesProvider: 'roster/latest/Fermat Core/Provider/SeriesProvider.md'
-                            -
-                                RoundingProvider: 'roster/latest/Fermat Core/Provider/RoundingProvider.md'
-                            -
-                                ConstantProvider: 'roster/latest/Fermat Core/Provider/ConstantProvider.md'
-                            -
-                                SequenceProvider: 'roster/latest/Fermat Core/Provider/SequenceProvider.md'
-                            -
-                                BaseConversionProvider: 'roster/latest/Fermat Core/Provider/BaseConversionProvider.md'
-                            -
-                                ArithmeticProvider: 'roster/latest/Fermat Core/Provider/ArithmeticProvider.md'
-                            -
-                                CalculationModeProvider: 'roster/latest/Fermat Core/Provider/CalculationModeProvider.md'
-                            -
-                                RandomProvider: 'roster/latest/Fermat Core/Provider/RandomProvider.md'
+                                        ImmutableComplexNumber: 'roster/latest/Fermat Complex//Values/ImmutableComplexNumber.md'
             -
-                'Fermat Stats':
+                'Fermat Linear Algebra':
                     -
-                        Values:
+                        '':
+                            -
+                                Types:
+                                    -
+                                        Traits:
+                                            -
+                                                ArithmeticMatrixTrait: 'roster/latest/Fermat Linear Algebra//Types/Traits/ArithmeticMatrixTrait.md'
+                                            -
+                                                Matrix:
+                                                    -
+                                                        DirectAccessTrait: 'roster/latest/Fermat Linear Algebra//Types/Traits/Matrix/DirectAccessTrait.md'
+                                                    -
+                                                        ShapeTrait: 'roster/latest/Fermat Linear Algebra//Types/Traits/Matrix/ShapeTrait.md'
+                                    -
+                                        Matrix: 'roster/latest/Fermat Linear Algebra//Types/Matrix.md'
+                                    -
+                                        Vector: 'roster/latest/Fermat Linear Algebra//Types/Vector.md'
+                                    -
+                                        Base:
+                                            -
+                                                Interfaces:
+                                                    -
+                                                        Groups:
+                                                            -
+                                                                VectorInterface: 'roster/latest/Fermat Linear Algebra//Types/Base/Interfaces/Groups/VectorInterface.md'
+                                                            -
+                                                                MatrixInterface: 'roster/latest/Fermat Linear Algebra//Types/Base/Interfaces/Groups/MatrixInterface.md'
+                            -
+                                Values:
+                                    -
+                                        ImmutableMatrix: 'roster/latest/Fermat Linear Algebra//Values/ImmutableMatrix.md'
+                                    -
+                                        MutableMatrix: 'roster/latest/Fermat Linear Algebra//Values/MutableMatrix.md'
+                            -
+                                Matrices: 'roster/latest/Fermat Linear Algebra//Matrices.md'
+            -
+                'Fermat Statistics':
+                    -
+                        '':
+                            -
+                                Provider:
+                                    -
+                                        StatsProvider: 'roster/latest/Fermat Statistics//Provider/StatsProvider.md'
                             -
                                 Distribution:
                                     -
-                                        Normal: 'roster/latest/Fermat Stats/Values/Distribution/Normal.md'
+                                        Discrete:
+                                            -
+                                                Poisson: 'roster/latest/Fermat Statistics//Distribution/Discrete/Poisson.md'
+                                            -
+                                                Bernoulli: 'roster/latest/Fermat Statistics//Distribution/Discrete/Bernoulli.md'
+                                            -
+                                                Binomial: 'roster/latest/Fermat Statistics//Distribution/Discrete/Binomial.md'
                                     -
-                                        Exponential: 'roster/latest/Fermat Stats/Values/Distribution/Exponential.md'
+                                        Continuous:
+                                            -
+                                                Normal: 'roster/latest/Fermat Statistics//Distribution/Continuous/Normal.md'
+                                            -
+                                                Exponential: 'roster/latest/Fermat Statistics//Distribution/Continuous/Exponential.md'
+                            -
+                                Types:
                                     -
-                                        Poisson: 'roster/latest/Fermat Stats/Values/Distribution/Poisson.md'
-                    -
-                        Types:
-                            -
-                                Distribution: 'roster/latest/Fermat Stats/Types/Distribution.md'
-                    -
-                        Provider:
-                            -
-                                StatsProvider: 'roster/latest/Fermat Stats/Provider/StatsProvider.md'
+                                        DiscreteDistribution: 'roster/latest/Fermat Statistics//Types/DiscreteDistribution.md'
+                                    -
+                                        ContinuousDistribution: 'roster/latest/Fermat Statistics//Types/ContinuousDistribution.md'
+                                    -
+                                        Distribution: 'roster/latest/Fermat Statistics//Types/Distribution.md'
             -
-                'Fermat Coordinate Systems':
+                'Fermat Coordinates':
                     -
-                        Values:
+                        '':
                             -
-                                Geometry:
+                                Types:
                                     -
-                                        CoordinateSystems:
+                                        Coordinate: 'roster/latest/Fermat Coordinates//Types/Coordinate.md'
+                                    -
+                                        Base:
                                             -
-                                                PolarCoordinate: 'roster/latest/Fermat Coordinate Systems/Values/Geometry/CoordinateSystems/PolarCoordinate.md'
-                                            -
-                                                CylindricalCoordinate: 'roster/latest/Fermat Coordinate Systems/Values/Geometry/CoordinateSystems/CylindricalCoordinate.md'
-                                            -
-                                                SphericalCoordinate: 'roster/latest/Fermat Coordinate Systems/Values/Geometry/CoordinateSystems/SphericalCoordinate.md'
-                                            -
-                                                CartesianCoordinate: 'roster/latest/Fermat Coordinate Systems/Values/Geometry/CoordinateSystems/CartesianCoordinate.md'
+                                                Interfaces:
+                                                    -
+                                                        Coordinates:
+                                                            -
+                                                                TwoDCoordinateInterface: 'roster/latest/Fermat Coordinates//Types/Base/Interfaces/Coordinates/TwoDCoordinateInterface.md'
+                                                            -
+                                                                CoordinateInterface: 'roster/latest/Fermat Coordinates//Types/Base/Interfaces/Coordinates/CoordinateInterface.md'
+                                                            -
+                                                                ThreeDCoordinateInterface: 'roster/latest/Fermat Coordinates//Types/Base/Interfaces/Coordinates/ThreeDCoordinateInterface.md'
+                            -
+                                Values:
+                                    -
+                                        CylindricalCoordinate: 'roster/latest/Fermat Coordinates//Values/CylindricalCoordinate.md'
+                                    -
+                                        CartesianCoordinate: 'roster/latest/Fermat Coordinates//Values/CartesianCoordinate.md'
+                                    -
+                                        SphericalCoordinate: 'roster/latest/Fermat Coordinates//Values/SphericalCoordinate.md'
+                                    -
+                                        PolarCoordinate: 'roster/latest/Fermat Coordinates//Values/PolarCoordinate.md'
+            -
+                'Fermat Expressions':
                     -
-                        Types:
+                        '':
                             -
-                                Coordinate: 'roster/latest/Fermat Coordinate Systems/Types/Coordinate.md'
-                            -
-                                Base:
+                                Provider:
                                     -
-                                        Interfaces:
+                                        SpecialPolynomials: 'roster/latest/Fermat Expressions//Provider/SpecialPolynomials.md'
+                            -
+                                Types:
+                                    -
+                                        Expression: 'roster/latest/Fermat Expressions//Types/Expression.md'
+                                    -
+                                        Base:
                                             -
-                                                Coordinates:
+                                                Interfaces:
                                                     -
-                                                        ThreeDCoordinateInterface: 'roster/latest/Fermat Coordinate Systems/Types/Base/Interfaces/Coordinates/ThreeDCoordinateInterface.md'
+                                                        Evaluateables:
+                                                            -
+                                                                FunctionInterface: 'roster/latest/Fermat Expressions//Types/Base/Interfaces/Evaluateables/FunctionInterface.md'
+                                                            -
+                                                                ExpressionInterface: 'roster/latest/Fermat Expressions//Types/Base/Interfaces/Evaluateables/ExpressionInterface.md'
+                            -
+                                Values:
+                                    -
+                                        Algebra:
+                                            -
+                                                ExponentialFunction: 'roster/latest/Fermat Expressions//Values/Algebra/ExponentialFunction.md'
+                                            -
+                                                PolynomialFunction: 'roster/latest/Fermat Expressions//Values/Algebra/PolynomialFunction.md'
+            -
+                'Fermat Core':
+                    -
+                        '':
+                            -
+                                Provider:
+                                    -
+                                        SeriesProvider: 'roster/latest/Fermat Core//Provider/SeriesProvider.md'
+                                    -
+                                        TrigonometryProvider: 'roster/latest/Fermat Core//Provider/TrigonometryProvider.md'
+                                    -
+                                        SequenceProvider: 'roster/latest/Fermat Core//Provider/SequenceProvider.md'
+                                    -
+                                        CalculationModeProvider: 'roster/latest/Fermat Core//Provider/CalculationModeProvider.md'
+                                    -
+                                        ArithmeticProvider: 'roster/latest/Fermat Core//Provider/ArithmeticProvider.md'
+                                    -
+                                        NumberFormatProvider: 'roster/latest/Fermat Core//Provider/NumberFormatProvider.md'
+                                    -
+                                        RoundingProvider: 'roster/latest/Fermat Core//Provider/RoundingProvider.md'
+                                    -
+                                        BaseConversionProvider: 'roster/latest/Fermat Core//Provider/BaseConversionProvider.md'
+                                    -
+                                        ConstantProvider: 'roster/latest/Fermat Core//Provider/ConstantProvider.md'
+                                    -
+                                        RandomProvider: 'roster/latest/Fermat Core//Provider/RandomProvider.md'
+                                    -
+                                        RoundingModeAdapters:
+                                            -
+                                                Modes:
                                                     -
-                                                        TwoDCoordinateInterface: 'roster/latest/Fermat Coordinate Systems/Types/Base/Interfaces/Coordinates/TwoDCoordinateInterface.md'
+                                                        StochasticAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/StochasticAdapter.md'
                                                     -
-                                                        CoordinateInterface: 'roster/latest/Fermat Coordinate Systems/Types/Base/Interfaces/Coordinates/CoordinateInterface.md'
+                                                        HalfUpAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/HalfUpAdapter.md'
+                                                    -
+                                                        HalfZeroAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/HalfZeroAdapter.md'
+                                                    -
+                                                        BaseAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/BaseAdapter.md'
+                                                    -
+                                                        HalfDownAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/HalfDownAdapter.md'
+                                                    -
+                                                        CeilAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/CeilAdapter.md'
+                                                    -
+                                                        TruncateAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/TruncateAdapter.md'
+                                                    -
+                                                        HalfRandomAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/HalfRandomAdapter.md'
+                                                    -
+                                                        HalfAlternatingAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/HalfAlternatingAdapter.md'
+                                                    -
+                                                        HalfInfAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/HalfInfAdapter.md'
+                                                    -
+                                                        FloorAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/FloorAdapter.md'
+                                                    -
+                                                        HalfEvenAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/HalfEvenAdapter.md'
+                                                    -
+                                                        HalfOddAdapter: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/Modes/HalfOddAdapter.md'
+                                            -
+                                                ModeAdapterFactory: 'roster/latest/Fermat Core//Provider/RoundingModeAdapters/ModeAdapterFactory.md'
+                            -
+                                Collections: 'roster/latest/Fermat Core//Collections.md'
+                            -
+                                Numbers: 'roster/latest/Fermat Core//Numbers.md'
+                            -
+                                Types:
+                                    -
+                                        NumberCollection: 'roster/latest/Fermat Core//Types/NumberCollection.md'
+                                    -
+                                        Fraction: 'roster/latest/Fermat Core//Types/Fraction.md'
+                                    -
+                                        Tuple: 'roster/latest/Fermat Core//Types/Tuple.md'
+                                    -
+                                        Decimal: 'roster/latest/Fermat Core//Types/Decimal.md'
+                                    -
+                                        Base:
+                                            -
+                                                Number: 'roster/latest/Fermat Core//Types/Base/Number.md'
+                                            -
+                                                Interfaces:
+                                                    -
+                                                        Callables:
+                                                            -
+                                                                ContinuedFractionTermInterface: 'roster/latest/Fermat Core//Types/Base/Interfaces/Callables/ContinuedFractionTermInterface.md'
+                                                    -
+                                                        Groups:
+                                                            -
+                                                                NumberCollectionInterface: 'roster/latest/Fermat Core//Types/Base/Interfaces/Groups/NumberCollectionInterface.md'
+                                            -
+                                                Traits:
+                                                    -
+                                                        ArithmeticGMPTrait: 'roster/latest/Fermat Core//Types/Base/Traits/ArithmeticGMPTrait.md'
+                                                    -
+                                                        LogSelectionTrait: 'roster/latest/Fermat Core//Types/Base/Traits/LogSelectionTrait.md'
+                                                    -
+                                                        InverseTrigonometrySelectionTrait: 'roster/latest/Fermat Core//Types/Base/Traits/InverseTrigonometrySelectionTrait.md'
+                                                    -
+                                                        TrigonometryNativeTrait: 'roster/latest/Fermat Core//Types/Base/Traits/TrigonometryNativeTrait.md'
+                                                    -
+                                                        TrigonometrySelectionTrait: 'roster/latest/Fermat Core//Types/Base/Traits/TrigonometrySelectionTrait.md'
+                                                    -
+                                                        TrigonometryScaleTrait: 'roster/latest/Fermat Core//Types/Base/Traits/TrigonometryScaleTrait.md'
+                                                    -
+                                                        ArithmeticHelperSimpleTrait: 'roster/latest/Fermat Core//Types/Base/Traits/ArithmeticHelperSimpleTrait.md'
+                                                    -
+                                                        TrigonometryHelpersTrait: 'roster/latest/Fermat Core//Types/Base/Traits/TrigonometryHelpersTrait.md'
+                                                    -
+                                                        InverseTrigonometryScaleTrait: 'roster/latest/Fermat Core//Types/Base/Traits/InverseTrigonometryScaleTrait.md'
+                                                    -
+                                                        LogScaleTrait: 'roster/latest/Fermat Core//Types/Base/Traits/LogScaleTrait.md'
+                                                    -
+                                                        LogNativeTrait: 'roster/latest/Fermat Core//Types/Base/Traits/LogNativeTrait.md'
+                                                    -
+                                                        ArithmeticScaleTrait: 'roster/latest/Fermat Core//Types/Base/Traits/ArithmeticScaleTrait.md'
+                                                    -
+                                                        InverseTrigonometryNativeTrait: 'roster/latest/Fermat Core//Types/Base/Traits/InverseTrigonometryNativeTrait.md'
+                                                    -
+                                                        InverseTrigonometryHelpersTrait: 'roster/latest/Fermat Core//Types/Base/Traits/InverseTrigonometryHelpersTrait.md'
+                                                    -
+                                                        ArithmeticSelectionTrait: 'roster/latest/Fermat Core//Types/Base/Traits/ArithmeticSelectionTrait.md'
+                                                    -
+                                                        ArithmeticNativeTrait: 'roster/latest/Fermat Core//Types/Base/Traits/ArithmeticNativeTrait.md'
+                                    -
+                                        Traits:
+                                            -
+                                                IntegerMathTrait: 'roster/latest/Fermat Core//Types/Traits/IntegerMathTrait.md'
+                                            -
+                                                NumberNormalizationTrait: 'roster/latest/Fermat Core//Types/Traits/NumberNormalizationTrait.md'
+                                            -
+                                                SimpleArithmeticTrait: 'roster/latest/Fermat Core//Types/Traits/SimpleArithmeticTrait.md'
+                                            -
+                                                CalculationModeTrait: 'roster/latest/Fermat Core//Types/Traits/CalculationModeTrait.md'
+                                            -
+                                                ComparisonTrait: 'roster/latest/Fermat Core//Types/Traits/ComparisonTrait.md'
+                                            -
+                                                SimpleLogTrait: 'roster/latest/Fermat Core//Types/Traits/SimpleLogTrait.md'
+                                            -
+                                                SimpleInverseTrigonometryTrait: 'roster/latest/Fermat Core//Types/Traits/SimpleInverseTrigonometryTrait.md'
+                                            -
+                                                SimpleTrigonometryTrait: 'roster/latest/Fermat Core//Types/Traits/SimpleTrigonometryTrait.md'
+                                            -
+                                                Decimal:
+                                                    -
+                                                        ScaleTrait: 'roster/latest/Fermat Core//Types/Traits/Decimal/ScaleTrait.md'
+                                                    -
+                                                        FormatterTrait: 'roster/latest/Fermat Core//Types/Traits/Decimal/FormatterTrait.md'
+                            -
+                                Values:
+                                    -
+                                        ImmutableDecimal: 'roster/latest/Fermat Core//Values/ImmutableDecimal.md'
+                                    -
+                                        MutableFraction: 'roster/latest/Fermat Core//Values/MutableFraction.md'
+                                    -
+                                        MutableDecimal: 'roster/latest/Fermat Core//Values/MutableDecimal.md'
+                                    -
+                                        ImmutableFraction: 'roster/latest/Fermat Core//Values/ImmutableFraction.md'
 theme:
     palette:
         -

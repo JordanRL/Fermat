@@ -8,8 +8,10 @@ use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcOperation;
+use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticGMPTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticHelperSimpleTrait;
+use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticInternalTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticNativeTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticScaleTrait;
 use Samsara\Fermat\Core\Types\Base\Traits\ArithmeticSelectionTrait;
@@ -31,6 +33,7 @@ trait SimpleArithmeticTrait
     use ArithmeticNativeTrait;
     use ArithmeticGMPTrait;
     use ArithmeticHelperSimpleTrait;
+    use ArithmeticInternalTrait;
 
     /**
      * Adds a number to this number. Works (to the degree that math allows it to work) for all classes that extend the
@@ -45,13 +48,21 @@ trait SimpleArithmeticTrait
         string|int|float|Decimal|Fraction|ComplexNumber $num
     ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
-        [$thisNum, $thatNum] = $this->translateToObjects($num);
-
-        if ($thatNum->isComplex()) {
-            return $thatNum->add($thisNum);
+        if (
+            is_string($num) ||
+            is_float($num) ||
+            is_int($num) ||
+            $num instanceof MutableDecimal ||
+            $num instanceof MutableFraction ||
+            $num instanceof MutableComplexNumber
+        ) {
+            [$thisNum, $thatNum] = $this->translateToObjects($num);
+        } else {
+            $thisNum = $this;
+            $thatNum = $num;
         }
 
-        return $this->helperAddSub($thisNum, $thatNum, CalcOperation::Addition);
+        return $this->addInternal($thisNum, $thatNum);
     }
 
     /**
@@ -73,7 +84,19 @@ trait SimpleArithmeticTrait
 
         $scale = $scale ?? $this->getScale();
 
-        [$thisNum, $thatNum] = $this->translateToObjects($num);
+        if (
+            is_string($num) ||
+            is_float($num) ||
+            is_int($num) ||
+            $num instanceof MutableDecimal ||
+            $num instanceof MutableFraction ||
+            $num instanceof MutableComplexNumber
+        ) {
+            [$thisNum, $thatNum] = $this->translateToObjects($num);
+        } else {
+            $thisNum = $this;
+            $thatNum = $num;
+        }
 
         if ($thatNum->isEqual(0)) {
             throw new IntegrityConstraint(
@@ -83,14 +106,7 @@ trait SimpleArithmeticTrait
             );
         }
 
-        if ($thatNum->isComplex()) {
-            [$thisRealPart, $thisImaginaryPart] = self::partSelector($thisNum, $thatNum, 0, $this->getMode());
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $thisComplex = (new ImmutableComplexNumber($thisRealPart, $thisImaginaryPart))->setMode($this->getMode());
-            return $thisComplex->divide($thatNum);
-        }
-
-        return $this->helperMulDiv($thisNum, $thatNum, CalcOperation::Division, $scale);
+        return $this->divideInternal($thisNum, $thatNum, $scale);
     }
 
     /**
@@ -106,13 +122,21 @@ trait SimpleArithmeticTrait
         string|int|float|Decimal|Fraction|ComplexNumber $num
     ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
-        [$thisNum, $thatNum] = $this->translateToObjects($num);
-
-        if ($thatNum->isComplex()) {
-            return $thatNum->multiply($thisNum);
+        if (
+            is_string($num) ||
+            is_float($num) ||
+            is_int($num) ||
+            $num instanceof MutableDecimal ||
+            $num instanceof MutableFraction ||
+            $num instanceof MutableComplexNumber
+        ) {
+            [$thisNum, $thatNum] = $this->translateToObjects($num);
+        } else {
+            $thisNum = $this;
+            $thatNum = $num;
         }
 
-        return $this->helperMulDiv($thisNum, $thatNum, CalcOperation::Multiplication, $this->getScale());
+        return $this->multiplyInternal($thisNum, $thatNum, $thisNum->getScale());
     }
 
     /**
@@ -227,13 +251,21 @@ trait SimpleArithmeticTrait
         string|int|float|Decimal|Fraction|ComplexNumber $num
     ): MutableDecimal|ImmutableDecimal|MutableComplexNumber|ImmutableComplexNumber|MutableFraction|ImmutableFraction|static
     {
-        [$thisNum, $thatNum] = $this->translateToObjects($num);
-
-        if ($thatNum->isComplex()) {
-            return $thatNum->multiply(-1)->add($thisNum);
+        if (
+            is_string($num) ||
+            is_float($num) ||
+            is_int($num) ||
+            $num instanceof MutableDecimal ||
+            $num instanceof MutableFraction ||
+            $num instanceof MutableComplexNumber
+        ) {
+            [$thisNum, $thatNum] = $this->translateToObjects($num);
+        } else {
+            $thisNum = $this;
+            $thatNum = $num;
         }
 
-        return $this->helperAddSub($thisNum, $thatNum, CalcOperation::Subtraction);
+        return $this->subtractInternal($thisNum, $thatNum);
     }
 
 }

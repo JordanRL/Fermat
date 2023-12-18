@@ -4,10 +4,13 @@ namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Core\Enums\CalcOperation;
+use Samsara\Fermat\Core\Enums\CompoundNumber;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
+use Samsara\Fermat\Core\Provider\ArithmeticProvider;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\Traits\NumberNormalizationTrait;
@@ -25,22 +28,22 @@ trait ArithmeticHelperSimpleTrait
     use NumberNormalizationTrait;
 
     /**
-     * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum
-     * @param ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum
+     * @param Decimal|Fraction|ComplexNumber $thisNum
+     * @param Decimal|Fraction|ComplexNumber $thatNum
      * @param CalcOperation                                             $operation
      *
-     * @return static|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction
+     * @return string|array
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
     protected function helperAddSub(
-        ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum,
-        ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum,
+        Decimal|Fraction|ComplexNumber $thisNum,
+        Decimal|Fraction|ComplexNumber $thatNum,
         CalcOperation                                             $operation
-    ): static|ImmutableComplexNumber|ImmutableDecimal|MutableDecimal|ImmutableFraction|MutableFraction
+    ): string|array
     {
         if ($thatNum->isEqual(0)) {
-            return $this;
+            return $this->getValue(NumberBase::Ten);
         }
 
         if ($this->isReal() xor $thatNum->isReal()) {
@@ -50,6 +53,9 @@ trait ArithmeticHelperSimpleTrait
         if ($this instanceof Fraction) {
             return $this->helperAddSubFraction($thisNum, $thatNum, $operation);
         } else {
+            if ($thatNum instanceof Fraction) {
+                $thatNum = $thatNum->asDecimal();
+            }
             $value = match ($operation) {
                 CalcOperation::Addition => $this->addSelector($thatNum),
                 CalcOperation::Subtraction => $this->subtractSelector($thatNum),
@@ -64,9 +70,7 @@ trait ArithmeticHelperSimpleTrait
                 $value .= 'i';
             }
 
-            $originalScale = $this->getScale();
-
-            return $this->setValue($value)->roundToScale($originalScale);
+            return $value;
         }
     }
 
@@ -80,10 +84,10 @@ trait ArithmeticHelperSimpleTrait
      * @throws IntegrityConstraint
      */
     protected function helperAddSubFraction(
-        ImmutableFraction                  $thisNum,
-        ImmutableDecimal|ImmutableFraction $thatNum,
+        Fraction                  $thisNum,
+        Decimal|Fraction $thatNum,
         CalcOperation                      $operation
-    ): static
+    ): array
     {
         if ($this instanceof Decimal) {
             /**
@@ -135,10 +139,11 @@ trait ArithmeticHelperSimpleTrait
             };
         }
 
-        return $this->setValue(
+        return [
+            CompoundNumber::Fraction,
             $finalNumerator,
             $finalDenominator
-        )->simplify();
+        ];
     }
 
     /**
@@ -151,10 +156,10 @@ trait ArithmeticHelperSimpleTrait
      * @throws IntegrityConstraint
      */
     protected function helperAddSubXor(
-        ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum,
-        ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum,
+        Decimal|Fraction|ComplexNumber $thisNum,
+        Decimal|Fraction|ComplexNumber $thatNum,
         CalcOperation                                             $operation
-    ): ImmutableDecimal|ImmutableComplexNumber
+    ): string|array
     {
         [$thisRealPart, $thisImaginaryPart] = static::partSelector($thisNum, $thatNum, 0, $this->getMode());
         [$thatRealPart, $thatImaginaryPart] = static::partSelector($thatNum, $thisNum, 0, $this->getMode());
@@ -178,17 +183,19 @@ trait ArithmeticHelperSimpleTrait
             )
         };
 
-        if ($newImaginaryPart->isEqual(0)) {
-            return (new ImmutableDecimal($newRealPart->getValue(NumberBase::Ten)))->setMode($this->getMode());
+        if ($newImaginaryPart == '0') {
+            return $newRealPart;
         }
 
-        if ($newRealPart->isEqual(0)) {
-            return (new ImmutableDecimal($newImaginaryPart->getValue(NumberBase::Ten)))->setMode($this->getMode());
+        if ($newRealPart == '0') {
+            return $newImaginaryPart;
         }
 
-        $complex = new ImmutableComplexNumber($newRealPart, $newImaginaryPart);
-
-        return $complex->setMode($this->getMode());
+        return [
+            CompoundNumber::ComplexNumber,
+            $newRealPart,
+            $newImaginaryPart
+        ];
     }
 
     /**
@@ -197,23 +204,35 @@ trait ArithmeticHelperSimpleTrait
      * @param CalcOperation                                             $operation
      * @param int                                                       $scale
      *
-     * @return ImmutableDecimal|ImmutableComplexNumber|static
+     * @return string|array
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
     protected function helperMulDiv(
-        ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thisNum,
-        ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum,
+        Decimal|Fraction|ComplexNumber $thisNum,
+        Decimal|Fraction|ComplexNumber $thatNum,
         CalcOperation                                             $operation,
         int                                                       $scale
-    ): static|ImmutableComplexNumber|ImmutableDecimal
+    ): string|array
     {
         if ($thatNum->isEqual(1)) {
-            return $this;
+            if ($this instanceof Decimal) {
+                return $this->getValue(NumberBase::Ten);
+            } else {
+                return [
+                    CompoundNumber::Fraction,
+                    $this->getNumerator(),
+                    $this->getDenominator()
+                ];
+            }
         }
 
         if ($this instanceof Fraction) {
             return $this->helperMulDivFraction($thisNum, $thatNum, $operation, $scale);
+        }
+
+        if ($thatNum instanceof Fraction) {
+            $thatNum = $thatNum->asDecimal($scale);
         }
 
         $value = match ($operation) {
@@ -227,16 +246,16 @@ trait ArithmeticHelperSimpleTrait
         };
 
         if ($thisNum->isImaginary() xor $thatNum->isImaginary()) {
-            $value .= 'i';
-
             if ($thatNum->isImaginary() && $operation == CalcOperation::Division) {
-                $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
+                $value = ArithmeticProvider::multiply($value, '-1', $scale);
             }
+
+            $value .= 'i';
         } elseif ($thisNum->isImaginary() && $thatNum->isImaginary() && $operation == CalcOperation::Multiplication) {
-            $value = Numbers::make(Numbers::IMMUTABLE, $value)->multiply(-1);
+            $value = ArithmeticProvider::multiply($value, '-1', $scale);
         }
 
-        return $this->setValue($value, $scale + 1)->roundToScale($scale);
+        return $value;
     }
 
     /**
@@ -245,16 +264,16 @@ trait ArithmeticHelperSimpleTrait
      * @param CalcOperation                                             $operation
      * @param int                                                       $scale
      *
-     * @return ImmutableDecimal|ImmutableComplexNumber|static
+     * @return string|array
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
      */
     protected function helperMulDivFraction(
-        ImmutableFraction                                         $thisNum,
-        ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $thatNum,
-        CalcOperation                                             $operation,
-        int                                                       $scale
-    ): static|ImmutableComplexNumber|ImmutableDecimal
+        Fraction                       $thisNum,
+        Decimal|Fraction|ComplexNumber $thatNum,
+        CalcOperation                  $operation,
+        int                            $scale
+    ): string|array
     {
         if ($this instanceof Decimal) {
             /**
@@ -288,10 +307,11 @@ trait ArithmeticHelperSimpleTrait
                 )
             };
 
-            return $this->setValue(
+            return [
+                CompoundNumber::Fraction,
                 $thisNum->getNumerator()->multiply($mulNumerator),
                 $thisNum->getDenominator()->multiply($mulDenominator)
-            )->simplify();
+            ];
         }
 
         if ($thatNum->isWhole()) {
@@ -314,10 +334,11 @@ trait ArithmeticHelperSimpleTrait
                 )
             };
 
-            return $this->setValue(
+            return [
+                CompoundNumber::Fraction,
                 $thisNum->getNumerator()->multiply($mulNumerator),
                 $thisNum->getDenominator()->multiply($mulDenominator)
-            )->simplify();
+            ];
         }
 
         $value = match ($operation) {
@@ -330,7 +351,7 @@ trait ArithmeticHelperSimpleTrait
             )
         };
 
-        return $value->setMode($this->getMode());
+        return $value->getValue(NumberBase::Ten);
     }
 
 }

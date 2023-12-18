@@ -10,6 +10,7 @@ use Samsara\Fermat\Complex\Types\ComplexNumber;
 use Samsara\Fermat\Complex\Values\ImmutableComplexNumber;
 use Samsara\Fermat\Complex\Values\MutableComplexNumber;
 use Samsara\Fermat\Core\Enums\NumberBase;
+use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Decimal;
 use Samsara\Fermat\Core\Types\Fraction;
 use Samsara\Fermat\Core\Types\Traits\NumberNormalizationTrait;
@@ -122,7 +123,6 @@ trait ArithmeticComplexTrait
      * @return ImmutableComplexNumber[]
      * @throws IncompatibleObjectState
      * @throws IntegrityConstraint
-     * @throws OptionalExit
      */
     public function nthRoots(int|ImmutableDecimal $root, ?int $scale = null): array
     {
@@ -175,8 +175,12 @@ trait ArithmeticComplexTrait
 
         [$thatRealPart, $thatImaginaryPart] = self::partSelector($thatNum, $thisNum, 0, $this->getMode(), $internalScale);
 
-        if ($thatNum->isReal() && $thatNum->isNatural() && $thatNum->isPositive()) {
-            [$newRealPart, $newImaginaryPart] = $this->helperPowPolarRotate($thisNum, $thatNum);
+        if ($thatNum->isReal() && $thatNum->isNatural()) {
+            if ($thatNum->isNegative()) {
+                $thisNum = Numbers::makeOne($scale)->divide($thisNum);
+                $thatNum = $thatNum->multiply('-1');
+            }
+            [$newRealPart, $newImaginaryPart] = $thisNum->helperPowPolarRotate($thisNum, $thatNum);
         } else {
             [$newRealPart, $newImaginaryPart] = $this->helperPowPolar($thatRealPart, $thatImaginaryPart, $internalScale);
         }

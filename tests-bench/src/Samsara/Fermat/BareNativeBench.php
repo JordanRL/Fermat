@@ -50,21 +50,21 @@ class BareNativeBench
         asin(1);
     }
 
-    #[Groups(['logs', 'bare-native'])]
+    #[Groups(['bare-native'])]
     #[Revs(1000000)]
     public function benchBareNativeLn()
     {
         log(5);
     }
 
-    #[Groups(['logs', 'bare-native'])]
+    #[Groups(['bare-native'])]
     #[Revs(1000000)]
     public function benchBareNativeLog10()
     {
         log10(5);
     }
 
-    #[Groups(['logs', 'bare-native'])]
+    #[Groups(['bare-native'])]
     #[Revs(1000000)]
     public function benchBareNativeExp()
     {

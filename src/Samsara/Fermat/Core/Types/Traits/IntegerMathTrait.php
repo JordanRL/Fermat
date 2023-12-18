@@ -18,10 +18,14 @@ trait IntegerMathTrait
 {
 
     /**
-     * Only valid for integer numbers. Returns a collection of all the integer divisors of this number.
+     * Retrieves the divisors of the current object.
      *
-     * @return NumberCollection
-     * @throws IntegrityConstraint
+     * This method calculates the divisors of the current object by iterating from 2 to (current value / 2).
+     * For each divisor, if the current object is divisible by the divisor without remainder, the divisor
+     * and the quotient of the division are added to the resulting NumberCollection. The resulting NumberCollection
+     * is then sorted in ascending order.
+     *
+     * @return NumberCollection The divisors of the current object.
      */
     public function getDivisors(): NumberCollection
     {
@@ -43,12 +47,16 @@ trait IntegerMathTrait
     }
 
     /**
-     * Only valid for integer numbers. Returns the greatest common divisor for this number and the supplied number.
+     * Retrieves the greatest common divisor (GCD) between the current object and a given number.
      *
-     * @param $num
+     * This method calculates the GCD between the current object and the given number. It uses the gmp_gcd function from the GMP extension
+     * to perform the actual calculation. The GCD is calculated using the absolute values of the numbers, ensuring that negative numbers
+     * do not affect the result.
      *
-     * @return static
-     * @throws IntegrityConstraint
+     * @param mixed $num The number to calculate the GCD with.
+     *
+     * @return static A new instance of the current object with the GCD as its value.
+     * @throws IntegrityConstraint If either the current object or the given number is not an integer.
      */
     public function getGreatestCommonDivisor($num): static
     {
@@ -72,12 +80,16 @@ trait IntegerMathTrait
     }
 
     /**
-     * Only valid for integer numbers. Returns the least common multiple of this number and the supplied number.
+     * Retrieves the least common multiple (LCM) of the current object and the specified number.
      *
-     * @param $num
+     * This method calculates the LCM of the current object and the specified number using the gmp_lcm function from the GMP extension.
+     * It ensures that both numbers are integers before performing the calculation. If either number is not an integer, an IntegrityConstraint
+     * exception is thrown.
      *
-     * @return static
-     * @throws IntegrityConstraint
+     * @param mixed $num The number to calculate the LCM with.
+     *
+     * @return static The result as a new ImmutableDecimal object.
+     * @throws IntegrityConstraint if either number is not an integer.
      */
     public function getLeastCommonMultiple($num): static
     {
@@ -100,7 +112,13 @@ trait IntegerMathTrait
     }
 
     /**
-     * @return NumberCollection
+     * Retrieves the prime factors of the current object.
+     *
+     * This method calculates the prime factors of the current object by repeatedly dividing the object by prime numbers starting from 2.
+     * Each prime factor is added to the resulting NumberCollection. The loop continues until the remaining value of the current object
+     * is no longer greater than 1.
+     *
+     * @return NumberCollection The prime factors of the current object.
      */
     public function getPrimeFactors(): NumberCollection
     {
@@ -124,6 +142,12 @@ trait IntegerMathTrait
     /**
      * Only valid for integer numbers. Uses the Miller-Rabin probabilistic primality test. The default "certainty" value of 20
      * results in a false-positive rate of 1 in 1.10 x 10^12.
+     *
+     * First, the function performs a quick check using the `_primeEarlyExit` method. This test will immediately return if
+     * the value is 2 or 3 (in which case it is prime), is not an integer, or is divisible by two or three (in which case
+     * it is not prime).
+     *
+     * If the value passes this preliminary test, the function then proceeds to the Miller-Rabin probabilistic primality test.
      *
      * With high enough certainty values, the probability that the program returned an incorrect result due to errors in
      * the computer hardware begins to dominate. Typically, a certainty of around 40 is sufficient for a prime number used
@@ -186,12 +210,16 @@ trait IntegerMathTrait
     }
 
     /**
-     * Only valid for integer numbers. Takes the factorial of this number. The factorial is every number between 1 and
-     * this number multiplied together.
+     * Calculates the factorial of the current object.
      *
-     * @return static
-     * @throws IncompatibleObjectState
-     * @throws IntegrityConstraint
+     * This method returns the factorial of the current object if the object is a non-negative whole number. The factorial of a non-negative
+     * whole number is calculated by multiplying all the positive integers from 1 to that number. For example, the factorial of 5 is
+     * calculated as 5 * 4 * 3 * 2 * 1 = 120.
+     *
+     * @return static The factorial of the current object.
+     *
+     * @throws IncompatibleObjectState If the current object is a negative number, an exception is thrown with a descriptive error message.
+     * @throws IncompatibleObjectState If the current object has a fractional value, an exception is thrown with a descriptive error message.
      */
     public function factorial(): static
     {
@@ -217,6 +245,19 @@ trait IntegerMathTrait
         return $this->setValue(gmp_strval(gmp_fact($this->getValue(NumberBase::Ten))));
     }
 
+    /**
+     * Calculates the falling factorial of a given number.
+     *
+     * The falling factorial is a mathematical operation that calculates the product of a given number and all positive integers
+     * less than it, down to the specified number of terms.
+     *
+     * This method calculates the falling factorial of the provided $num by calling the risingFallingFactorialHelper method with a
+     * negative value for the number of terms, indicating that the factorial should be calculated in descending order.
+     *
+     * @param int|float|string|Decimal $num The number to calculate the falling factorial.
+     *
+     * @return static The falling factorial of the given number.
+     */
     public function fallingFactorial(int|float|string|Decimal $num): static
     {
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num);
@@ -224,6 +265,13 @@ trait IntegerMathTrait
         return $this->risingFallingFactorialHelper($num, -1);
     }
 
+    /**
+     * Calculates the rising factorial of a given number.
+     *
+     * @param int|float|string|Decimal $num The number for which to calculate the rising factorial.
+     *
+     * @return static Returns the resulting rising factorial value.
+     */
     public function risingFactorial(int|float|string|Decimal $num): static
     {
         $num = Numbers::makeOrDont(Numbers::IMMUTABLE, $num);
@@ -282,6 +330,16 @@ trait IntegerMathTrait
         return $this->setValue($num->floor());
     }
 
+    /**
+     * Helper method for calculating the rising or falling factorial of a given number.
+     *
+     * @param ImmutableDecimal $num The number for which to calculate the rising or falling factorial.
+     * @param int              $signum The signum value to determine whether to calculate rising or falling factorial.
+     *
+     * @return static Returns the resulting rising or falling factorial value.
+     * @throws IncompatibleObjectState If the current object is not in a valid state.
+     *
+     */
     protected function risingFallingFactorialHelper(ImmutableDecimal $num, int $signum): static
     {
         if (!$this->isWhole()) {
@@ -305,6 +363,13 @@ trait IntegerMathTrait
         return $this->setValue($answer);
     }
 
+    /**
+     * Determines if the given number is a prime number and returns early if possible.
+     *
+     * @return int Returns 0 if the number is not a prime number and continues with further checks.
+     *             Returns 1 if the number is not a prime number and exits early.
+     *             Returns 2 if the number is a prime number and exits early.
+     */
     private function _primeEarlyExit(): int
     {
         if (!$this->isInt()) {

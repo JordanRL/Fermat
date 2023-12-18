@@ -37,7 +37,7 @@ abstract class ContinuousDistribution extends Distribution
                     $x1,
                     $internalScale)
             )->abs()
-                ->truncateToScale($scale);
+                ->roundToScale($scale);
 
         return $rangePdf;
     }

@@ -28,15 +28,7 @@ trait ComparisonTrait
         if ($this instanceof Decimal) {
             $value = Numbers::makeOrDont(Numbers::IMMUTABLE, $value, $this->getScale());
 
-            if (($this->isImaginary() xor $value->isImaginary()) && $this->getAsBaseTenRealNumber() != '0') {
-                return false;
-            }
-
-            if ($this->compare($value) === 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return $this->isEqualDecimal($value);
         } else {
             /** @var ImmutableFraction $number */
             $number = Numbers::makeOrDont(Numbers::IMMUTABLE_FRACTION, $value);
@@ -266,6 +258,25 @@ trait ComparisonTrait
     public function isWhole(): bool
     {
         return $this->isInt();
+    }
+
+    /**
+     * @param Decimal $value
+     *
+     * @return bool
+     * @throws IntegrityConstraint
+     */
+    protected function isEqualDecimal(Decimal $value): bool
+    {
+        if (($this->isImaginary() xor $value->isImaginary()) && $this->getAsBaseTenRealNumber() != '0') {
+            return false;
+        }
+
+        if ($this->compare($value) === 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

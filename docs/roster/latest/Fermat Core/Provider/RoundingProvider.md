@@ -8,26 +8,6 @@
 
 ### Static Methods
 
-!!! signature "public RoundingProvider::setRoundingMode(RoundingMode $mode)"
-    ##### setRoundingMode
-    **$mode**
-
-    type
-    :   RoundingMode
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   void
-
-    description
-    :   *No description available*
-
----
-
 !!! signature "public RoundingProvider::getRoundingMode()"
     ##### getRoundingMode
     **return**
@@ -40,12 +20,12 @@
 
 ---
 
-!!! signature "public RoundingProvider::round(DecimalInterface $decimal, int $places)"
+!!! signature "public RoundingProvider::round(string $decimal, int $places)"
     ##### round
     **$decimal**
 
     type
-    :   DecimalInterface
+    :   string
 
     description
     :   *No description available*
@@ -56,12 +36,36 @@
     :   int
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 
     type
     :   string
+
+    description
+    :   *No description available*
+
+---
+
+!!! signature "public RoundingProvider::setRoundingMode(RoundingMode $mode)"
+    ##### setRoundingMode
+    **$mode**
+
+    type
+    :   RoundingMode
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   void
 
     description
     :   *No description available*

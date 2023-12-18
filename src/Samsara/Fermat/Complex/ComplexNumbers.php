@@ -53,7 +53,7 @@ class ComplexNumbers
 
         throw new IntegrityConstraint(
             'Cannot build complex number from provided inputs',
-            'Ensure oyu provide one of the valid inputs'
+            'Ensure you provide one of the valid inputs'
         );
 
     }

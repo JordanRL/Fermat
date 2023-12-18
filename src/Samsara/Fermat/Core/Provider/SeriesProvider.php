@@ -5,6 +5,7 @@ namespace Samsara\Fermat\Core\Provider;
 use Samsara\Exceptions\SystemError\LogicalError\IncompatibleObjectState;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
 use Samsara\Exceptions\UsageError\OptionalExit;
+use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
@@ -194,27 +195,41 @@ class SeriesProvider
         $divergeCount = -1;
         $persistentDivergeCount = -1;
         $currentScale = 0;
+        $term = Numbers::makeOne($scale);
 
         while ($continue) {
-            $term = Numbers::makeOne($scale);
 
             try {
                 $exTerm = $value->pow($exponent($termNumber));
-                $term = $term->multiply($exTerm);
-                $term = $term->divide($denominator($termNumber), $scale);
-                $term = $term->multiply($numerator($termNumber));
+                $thisTerm = $term->performOperationsFromArray(
+                    [
+                        [
+                            CalcOperation::Multiplication,
+                            $exTerm
+                        ],
+                        [
+                            CalcOperation::Division,
+                            $denominator($termNumber)
+                        ],
+                        [
+                            CalcOperation::Multiplication,
+                            $numerator($termNumber)
+                        ]
+                    ],
+                    $scale
+                );
             } catch (IntegrityConstraint) {
                 return $sum->truncateToScale($currentScale + 1);
             }
 
-            /** @var ImmutableDecimal $term */
-            if ($term->numberOfLeadingZeros() >= $scale && !$term->isWhole()) {
+            /** @var ImmutableDecimal $thisTerm */
+            if ($thisTerm->numberOfLeadingZeros() >= $scale && !$thisTerm->isWhole()) {
                 $continue = false;
             }
 
-            $currentScale = $term->numberOfLeadingZeros();
+            $currentScale = $thisTerm->numberOfLeadingZeros();
 
-            if ($term->isEqual(0)) {
+            if ($thisTerm->isEqual(0)) {
                 $adjustmentOfZero++;
             } else {
                 $adjustmentOfZero = 0;
@@ -225,8 +240,19 @@ class SeriesProvider
             }
 
             /** @var ImmutableDecimal $sum */
-            $sum = $sum->add($term);
-            $currDiff = $sum->subtract($prevSum)->abs();
+            $sum = $sum->add($thisTerm);
+            $currDiff = $sum->performOperationsFromArray(
+                [
+                    [
+                        CalcOperation::Subtraction,
+                        $prevSum
+                    ],
+                    [
+                        CalcOperation::Abs
+                    ]
+                ],
+                $sum->getScale()
+            );
 
             if ($prevDiff->isLessThan($currDiff)) {
                 $divergeCount++;

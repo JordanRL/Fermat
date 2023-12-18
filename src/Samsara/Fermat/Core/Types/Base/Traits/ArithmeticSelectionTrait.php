@@ -18,9 +18,13 @@ trait ArithmeticSelectionTrait
 {
 
     /**
-     * @param Decimal $num
+     * Adds a Decimal number to the current Decimal object.
      *
-     * @return string
+     * @param Decimal $num The Decimal number to be added.
+     *
+     * @return string The result of the addition operation as a string in decimal representation.
+     *
+     * @throws IntegrityConstraint If the addition operation violates any integrity constraints.
      */
     protected function addSelector(Decimal $num): string
     {

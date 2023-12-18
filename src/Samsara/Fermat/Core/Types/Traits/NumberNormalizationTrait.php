@@ -107,8 +107,8 @@ trait NumberNormalizationTrait
      * @throws IntegrityConstraint
      */
     protected static function partSelector(
-        ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $partThis,
-        ImmutableDecimal|ImmutableFraction|ImmutableComplexNumber $compareTo,
+        Decimal|Fraction|ComplexNumber $partThis,
+        Decimal|Fraction|ComplexNumber $compareTo,
         int                                                       $identity,
         ?CalcMode                                                 $mode,
         ?int                                                      $scale = null

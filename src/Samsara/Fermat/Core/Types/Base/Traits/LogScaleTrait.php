@@ -4,12 +4,14 @@ namespace Samsara\Fermat\Core\Types\Base\Traits;
 
 use Decimal\Decimal;
 use Samsara\Exceptions\UsageError\IntegrityConstraint;
+use Samsara\Fermat\Core\Enums\CalcOperation;
 use Samsara\Fermat\Core\Enums\NumberBase;
 use Samsara\Fermat\Core\Numbers;
 use Samsara\Fermat\Core\Provider\ConstantProvider;
 use Samsara\Fermat\Core\Provider\SeriesProvider;
 use Samsara\Fermat\Core\Types\Base\Interfaces\Callables\ContinuedFractionTermInterface;
 use Samsara\Fermat\Core\Values\ImmutableDecimal;
+use Samsara\Fermat\Core\Values\MutableDecimal;
 
 /**
  * @package Samsara\Fermat\Core
@@ -28,7 +30,7 @@ trait LogScaleTrait
         $scale = $scale ?? $this->getScale();
 
         if (extension_loaded('decimal')) {
-            $decimalScale = max($scale * 2, $this->numberOfTotalDigits() * 2);
+            $decimalScale = $scale + $this->numberOfTotalDigits() + 2;
             $num = new Decimal($this->getValue(NumberBase::Ten), $decimalScale);
 
             $num = $num->exp();
@@ -37,14 +39,7 @@ trait LogScaleTrait
         }
 
         if ($this->isInt()) {
-            $addScale = 1;
-            $addScaleCount = 0;
-            do {
-                $addScaleCount++;
-                $addScale *= 1.3;
-            } while ($addScale <= $this->asInt());
-            $addScale = ceil($addScale);
-            $e = Numbers::makeE($scale + $addScale);
+            $e = Numbers::makeE($scale + $this->numberOfTotalDigits() + 2);
             $value = $e->pow($this);
         } else {
             $intScale = ($this->numberOfIntDigits()) ? ($scale + 2) * $this->numberOfIntDigits() : ($scale + 2);
@@ -142,7 +137,7 @@ trait LogScaleTrait
         $internalScale += 3 + $this->numberOfLeadingZeros();
 
         if (extension_loaded('decimal')) {
-            $decimalScale = max($internalScale * 2, $this->numberOfTotalDigits() * 2);
+            $decimalScale = max($internalScale + 2, $this->numberOfTotalDigits() + 2);
             $num = new Decimal($this->getValue(NumberBase::Ten), $decimalScale);
             $num = $num->ln();
             return $num->toFixed($internalScale);
@@ -184,11 +179,11 @@ trait LogScaleTrait
         }
 
 
-        $right = $num->subtract(1)->divide($num->add(1), $internalScale);
+        //$right = $num->toImmutable()->subtract($one)->divide($num->toImmutable()->add($one), $internalScale);
+        $right = $num->subtract($one)->divide($num->add($one), $internalScale);
         $k = 0;
         do {
-            $left = $two->divide($two->multiply($k)->add(1), $internalScale);
-            $diff = $left->multiply($right->pow(2 * $k + 1));
+            $diff = $two->divide(2 * $k + 1, $internalScale)->multiply($right->pow(2 * $k + 1));
 
             $adjustedNum = $adjustedNum->add($diff);
 
@@ -224,7 +219,7 @@ trait LogScaleTrait
         $internalScale += 1;
 
         if (extension_loaded('decimal')) {
-            $decimalScale = max($internalScale * 2, $this->numberOfTotalDigits() * 2);
+            $decimalScale = max($internalScale + 2, $this->numberOfTotalDigits() + 2);
             $num = new Decimal($this->getValue(NumberBase::Ten), $decimalScale);
             $num = $num->log10();
             return $num->toFixed($internalScale);

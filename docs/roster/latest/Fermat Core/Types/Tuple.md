@@ -93,18 +93,6 @@
     
 ---
 
-!!! signature "public Tuple->size()"
-    ##### size
-    **return**
-
-    type
-    :   int
-
-    description
-    :   *No description available*
-    
----
-
 !!! signature "public Tuple->hasIndex(int $index)"
     ##### hasIndex
     **$index**
@@ -113,12 +101,26 @@
     :   int
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 
     type
     :   bool
+
+    description
+    :   *No description available*
+    
+---
+
+!!! signature "public Tuple->size()"
+    ##### size
+    **return**
+
+    type
+    :   int
 
     description
     :   *No description available*

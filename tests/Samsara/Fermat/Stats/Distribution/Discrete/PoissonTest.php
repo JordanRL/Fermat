@@ -54,7 +54,7 @@ class PoissonTest extends TestCase
 
         return [
             'cdf: lambda 3' => [$a, '6', '0.9664914647'],
-            'cdf: lambda 12' => [$b, '10', '0.3472294176'],
+            'cdf: lambda 12' => [$b, '10', '0.3472294175'],
             'cdf: lambda 1' => [$c, '0', '0.3678794412'],
             'cdf: lambda 110' => [$d, '96', '0.0970245527'],
         ];

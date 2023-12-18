@@ -18,11 +18,16 @@ class PolynomialFunction extends Expression implements FunctionInterface
 {
 
     /**
-     * PolynomialFunction constructor.
+     * Constructs a polynomial function with provided coefficients.
      *
-     * @param array|NumberCollection $coefficients
+     * This constructor method instantiates a PolynomialFunction object with the provided coefficients that can be either an array
+     * or a NumberCollection. The coefficients are sanitized to be an ImmutableDecimal and used to define each term of the polynomial.
+     * The 'terms' field is populated with the sanitized coefficients, and a closure function for evaluating the polynomial expression is
+     * assigned to the 'expression' field.
      *
-     * @throws IntegrityConstraint
+     * @param array|NumberCollection $coefficients The coefficients of the polynomial, it must be either an array or a NumberCollection.
+     *
+     * @throws IntegrityConstraint If a non-integer key is found in the coefficients array.
      */
     public function __construct(array|NumberCollection $coefficients)
     {
@@ -30,6 +35,9 @@ class PolynomialFunction extends Expression implements FunctionInterface
 
         $sanitizedCoefficients = [];
 
+        /*
+         * Sanitize the coefficients for each term so that they are in the expected form of an ImmutableDecimal.
+         */
         foreach ($coefficients as $exponent => $coefficient) {
             if (!is_int($exponent)) {
                 throw new IntegrityConstraint(
@@ -139,16 +147,34 @@ class PolynomialFunction extends Expression implements FunctionInterface
     }
 
     /**
-     * @return FunctionInterface
-     * @throws IntegrityConstraint
+     * Calculates the derivative of a polynomial function.
+     *
+     * A derivative in calculus is a measure of how a function changes as its input changes.
+     * In terms of polynomial function, the derivative of a term (ax^n) is (n * ax^{n-1}).
+     *
+     * This method loops through each term (coefficient) of the polynomial function
+     * and multiplies the coefficient by its exponent, then decreases the exponent by one.
+     *
+     * It essentially applies the power rule of derivatives, which states: d/dx[x^n] = n * x^{n-1}.
+     *
+     * Note: Terms with an exponent of 0 (constant terms) are dropped in the derivative,
+     * as their derivative is 0.
+     *
+     * @example For a polynomial function 3x^2 + 2x + 1, the derivative would be 2*3x + 2 or 6x + 2.
+     *
+     * @return static Returns a new instance which represents the derivative of the original polynomial function
+     *
+     * @see https://en.wikipedia.org/wiki/Derivative
+     * @see https://en.wikipedia.org/wiki/Polynomial#Polynomials_in_one_variable
+     * @see PolynomialFunction For the definition of the function's valid input and expected output.
+     * @see FunctionInterface::derivativeExpression() For the derivative function in the FunctionInterface.
      */
-    public function derivativeExpression(): FunctionInterface
+    public function derivativeExpression(): static
     {
         $newCoefficients = [];
 
         /**
          * @var int              $exponent
-         * @var ImmutableDecimal $coefficient
          */
         foreach ($this->terms as $exponent => $coefficient) {
             if ($exponent == 0) {
@@ -158,9 +184,23 @@ class PolynomialFunction extends Expression implements FunctionInterface
             $newCoefficients[$exponent - 1] = $coefficient->multiply($exponent);
         }
 
-        return new PolynomialFunction($newCoefficients);
+        return new static($newCoefficients);
     }
 
+    /**
+     * This method returns the shape of the PolynomialFunction.
+     *
+     * It returns an associative array where the exponent values are the keys, and
+     * the corresponding coefficients are the string values, which are the results
+     * of the `getValue()` function on the `ImmutableDecimal` object.
+     *
+     * @return array
+     *
+     * @example
+     * If the PolynomialFunction is represented by equation 3x^2 + 2x - 1,
+     * the result of this function would be:
+     *  {2 => '3', 1 => '2', 0 => '-1'}
+     */
     public function describeShape(): array
     {
 
@@ -179,9 +219,14 @@ class PolynomialFunction extends Expression implements FunctionInterface
     }
 
     /**
-     * @param int|float|string|Decimal $x
+     * Evaluates the PolynomialFunction at the given value 'x'.
      *
-     * @return ImmutableDecimal
+     * The function substitutes 'x' with the provided value and returns the computed result as an instance of ImmutableDecimal.
+     *
+     * @param int|float|string|Decimal $x The value at which polynomial needs to be evaluated.
+     * @return ImmutableDecimal The result of the computation.
+     *
+     * @see PolynomialFunction::__construct for the callable that is used to evaluate the polynomial.
      */
     public function evaluateAt(int|float|string|Decimal $x): ImmutableDecimal
     {
@@ -191,10 +236,23 @@ class PolynomialFunction extends Expression implements FunctionInterface
     }
 
     /**
-     * @param float|int|string|Decimal $C
+     * This function calculates the integral of the polynomial expression.
+     * It treats the input $C as the constant of integration, which defaults to 0.
+     * The function makes $C an 'IMMUTABLE' type numeric value with the help of the Numbers::make function.
+     * Then, for each term in the polynomial, it increases the exponent by one and divides the coefficient by the new exponent.
+     * Finally, it returns a new PolynomialFunction constructed with the new coefficients.
      *
-     * @return FunctionInterface
-     * @throws IntegrityConstraint
+     * @param float|int|string|Decimal $C The constant of integration.
+     * @return FunctionInterface The integral of the polynomial function.
+     *
+     * @example
+     * Let's assume we have a PolynomialFunction P with terms [2 => '3', 1 => '2', 0 => '1'] (which represents the function `3x^2 + 2x + 1`)
+     *
+     * If we call `P->integralExpression(1)`, it will return another PolynomialFunction Q,
+     * with coefficients [0 => '1', 3 => '1', 2 => '1', 1 => '0.5']  (which represents the function `x^3 + x^2 + 0.5x + 1`)
+     * That's because the integral of `3x^2` is `x^3`, the integral of `2x` is `x^2`, and the integral of `1` is `0.5x`,
+     * and we added the constant of integration `1` at the end.
+     *
      */
     public function integralExpression(float|int|string|Decimal $C = 0): FunctionInterface
     {
@@ -219,7 +277,7 @@ class PolynomialFunction extends Expression implements FunctionInterface
         return new PolynomialFunction($newCoefficients);
     }
 
-    public function multiplyByPolynomial(PolynomialFunction $polynomialFunction)
+    public function multiplyByPolynomial(PolynomialFunction $polynomialFunction): PolynomialFunction
     {
         $thisShape = $this->describeShape();
         $thatShape = $polynomialFunction->describeShape();

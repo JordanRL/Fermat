@@ -8,26 +8,6 @@
 
 ### Static Methods
 
-!!! signature "public ConstantProvider::makePi(int $digits)"
-    ##### makePi
-    **$digits**
-
-    type
-    :   int
-
-    description
-    :   *No description available*
-
-    **return**
-
-    type
-    :   string
-
-    description
-    :   *No description available*
-
----
-
 !!! signature "public ConstantProvider::makeE(int $digits)"
     ##### makeE
     **$digits**
@@ -36,7 +16,9 @@
     :   int
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 
@@ -58,6 +40,50 @@
 
 ---
 
+!!! signature "public ConstantProvider::makeGoldenRatio(int $digits)"
+    ##### makeGoldenRatio
+    **$digits**
+
+    type
+    :   int
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+
+---
+
+!!! signature "public ConstantProvider::makeIPowI(int $digits)"
+    ##### makeIPowI
+    **$digits**
+
+    type
+    :   int
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+
+---
+
 !!! signature "public ConstantProvider::makeLn10(int $digits)"
     ##### makeLn10
     **$digits**
@@ -66,7 +92,9 @@
     :   int
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 
@@ -82,6 +110,32 @@
 
 ---
 
+!!! signature "public ConstantProvider::makeLn1p1(int $digits)"
+    ##### makeLn1p1
+    **$digits**
+
+    type
+    :   int
+
+    description
+    :   
+    
+    
+
+    **return**
+
+    type
+    :   string
+
+    description
+    :   *No description available*
+
+    ###### makeLn1p1() Description:
+
+    This function is a special case of the ln() function where x can be represented by (n + 1)/n, where n is an integer. This particular special case converges extremely rapidly. For ln(1.1), n = 10.
+
+---
+
 !!! signature "public ConstantProvider::makeLn2(int $digits)"
     ##### makeLn2
     **$digits**
@@ -90,7 +144,9 @@
     :   int
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 
@@ -102,19 +158,21 @@
 
     ###### makeLn2() Description:
 
-    The lnScale() implementation is very efficient, so this is probably our best bet for computing more digits of ln(10) to provide.
+    This function is a special case of the ln() function where x can be represented by (n + 1)/n, where n is an integer. This particular special case converges extremely rapidly. For ln(2), n = 1.
 
 ---
 
-!!! signature "public ConstantProvider::makeLn1p1(int $digits)"
-    ##### makeLn1p1
+!!! signature "public ConstantProvider::makePi(int $digits)"
+    ##### makePi
     **$digits**
 
     type
     :   int
 
     description
-    :   *No description available*
+    :   
+    
+    
 
     **return**
 

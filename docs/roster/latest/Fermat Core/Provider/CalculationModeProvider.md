@@ -13,6 +13,11 @@
     value
     :   4.6116860184274E+18
 
+!!! signature constant "CalculationModeProvider::PHP_INT_MIN_HALF"
+    ##### PHP_INT_MIN_HALF
+    value
+    :   -4611686018427387904
+
 
 
 ## Methods

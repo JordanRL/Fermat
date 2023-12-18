@@ -556,6 +556,7 @@ class ArithmeticAutoTest extends TestCase
             'IComplex (0.000000000001+1i)^(3+3i)' => [$j, $m, '-0.008983291021i', ImmutableDecimal::class],
             'IComplex (1+0i)^(3+3i)' => [$k, $m, '1', ImmutableDecimal::class],
             'IComplex (0+1i)^(3+3i)' => [$l, $m, '-0.008983291i', ImmutableDecimal::class],
+            'IComplex (3+3i)^(-3)' => [$m, $negThree, '-0.0092592593-0.0092592593i', ImmutableComplexNumber::class],
         ];
     }
 
@@ -775,6 +776,22 @@ class ArithmeticAutoTest extends TestCase
         foreach ($answers as $i => $answer) {
             $this->assertEquals($expected[$i], $answer->getValue());
         }
+    }
+
+    /**
+     * @large
+     */
+    public function testNthRootsException()
+    {
+
+        $three = new ImmutableDecimal('3');
+        $threeI = new ImmutableDecimal('3i');
+        $negThree = new ImmutableDecimal('-3');
+        $m = self::$m ?? new ImmutableComplexNumber($three, $threeI);
+
+        $this->expectException(IntegrityConstraint::class);
+        $m->nthRoots($negThree);
+
     }
 
 }

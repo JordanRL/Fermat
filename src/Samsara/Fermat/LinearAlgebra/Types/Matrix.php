@@ -43,9 +43,12 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @return ImmutableDecimal
-     * @throws IncompatibleObjectState
-     * @throws IntegrityConstraint
+     * Calculates the determinant of the matrix.
+     *
+     * @return ImmutableDecimal The determinant of the matrix.
+     *
+     * @throws IncompatibleObjectState If the matrix is not square.
+     *     Use the `isSquare()` method to check the shape of the matrix before calculating the determinant.
      */
     public function getDeterminant(): ImmutableDecimal
     {
@@ -72,9 +75,9 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @return static
-     * @throws IncompatibleObjectState
-     * @throws IntegrityConstraint
+     * Calculates the inverse matrix of the current matrix.
+     *
+     * @return static The inverse matrix of the current matrix.
      */
     public function getInverseMatrix(): static
     {
@@ -93,6 +96,14 @@ abstract class Matrix implements MatrixInterface
         return $cofactorsAdjoint->multiply($inverseDeterminant);
     }
 
+    /**
+     * Returns a new collection that contains the matrix of minors for each element in the current collection.
+     *
+     * The matrix of minors is obtained by creating a new collection where each element is the determinant of the minor of the element in the current collection.
+     * A minor is obtained by removing the row and column that the element is in, and calculating the determinant of the resulting submatrix.
+     *
+     * @return static A new collection containing the matrix of minors.
+     */
     public function getMatrixOfMinors(): static
     {
         $fn = function (Decimal|Fraction|ComplexNumber $value, int $rowIndex, int $columnIndex) {
@@ -104,10 +115,13 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @param MatrixInterface $value
+     * Adds a MatrixInterface object to the current matrix and returns a new matrix with the sum.
      *
-     * @return static
-     * @throws IntegrityConstraint
+     * @param MatrixInterface $value The matrix to be added. The matrix must have the same size as the current matrix.
+     *
+     * @return static A new matrix containing the sum of the current matrix and the given matrix.
+     *
+     * @throws IntegrityConstraint If the matrices have different sizes.
      */
     public function add(MatrixInterface $value): static
     {
@@ -221,9 +235,12 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @param callable $fn
+     * Applies a given function to each element in the collection and returns a new collection with the results.
      *
-     * @return static
+     * @param callable $fn The function to apply to each element. The function should accept three parameters:
+     *     the value of the element, the index of the row, and the index of the column.
+     *
+     * @return static A new collection with the results of the function applied to each element.
      */
     public function mapFuction(callable $fn): static
     {
@@ -294,10 +311,13 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @param MatrixInterface $value
+     * Subtract a matrix from the current matrix.
      *
-     * @return static
-     * @throws IntegrityConstraint
+     * @param MatrixInterface $value The matrix to subtract from the current matrix.
+     *
+     * @return static The resulting matrix after subtraction.
+     *
+     * @throws IntegrityConstraint If the matrices are not the same size.
      */
     public function subtract(MatrixInterface $value): static
     {
@@ -326,10 +346,11 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @param Decimal $value
+     * Subtract a scalar value from each element of the collection.
      *
-     * @return static
-     * @throws IntegrityConstraint
+     * @param Decimal $value The scalar value to subtract.
+     *
+     * @return static Returns a new instance of the collection with the scalar value subtracted from each element.
      */
     public function subtractScalarAsI(Decimal $value): static
     {
@@ -339,10 +360,11 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @param Decimal $value
+     * Subtract a scalar value from each element in the collection.
      *
-     * @return static
-     * @throws IntegrityConstraint
+     * @param Decimal $value The scalar value to subtract.
+     *
+     * @return static A new instance of the collection with the scalar subtracted from each element.
      */
     public function subtractScalarAsJ(Decimal $value): static
     {
@@ -377,8 +399,12 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
-     * @param array  $data
-     * @param string $mode
+     * Normalize the input data based on the given mode.
+     *
+     * @param array  $data The input data to be normalized.
+     * @param string $mode The mode for normalizing the data. Possible values are 'MODE_ROWS_INPUT' and 'MODE_COLUMNS_INPUT'.
+     *
+     * @return void
      */
     protected function normalizeInputData(array $data, string $mode): void
     {
