@@ -115,6 +115,18 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
+     * Returns a new collection that contains the matrix of minors for each element in the current collection.
+     *
+     * This is an alias for getMatrixOfMinors().
+     *
+     * @return static A new collection containing the matrix of minors.
+     */
+    public function minors(): static
+    {
+        return $this->getMatrixOfMinors();
+    }
+
+    /**
      * Adds a MatrixInterface object to the current matrix and returns a new matrix with the sum.
      *
      * @param MatrixInterface $value The matrix to be added. The matrix must have the same size as the current matrix.
