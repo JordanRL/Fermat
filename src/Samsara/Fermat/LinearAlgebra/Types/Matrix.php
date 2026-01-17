@@ -84,7 +84,6 @@ abstract class Matrix implements MatrixInterface
         $determinant = $this->getDeterminant();
         $inverseDeterminant = new ImmutableFraction(Numbers::makeOne(), $determinant);
 
-        // TODO: Implement minors & cofactors method https://www.mathsisfun.com/algebra/matrix-inverse-minors-cofactors-adjugate.html
         if ($this->getRowCount() > 2) {
             $minors = $this->getMatrixOfMinors();
             $cofactors = $minors->applyAlternatingSigns();
