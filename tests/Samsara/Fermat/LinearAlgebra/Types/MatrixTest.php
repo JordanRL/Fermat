@@ -618,4 +618,51 @@ class MatrixTest extends TestCase
         $this->assertEquals('1', $minorMatrix->getRow(0)->get(0)->getValue());
     }
 
+    public function testCofactors()
+    {
+        // Test 2x2 matrix
+        $matrixData = [
+            new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '3'), Numbers::make(Numbers::IMMUTABLE, '5')]), // row 1
+            new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '4'), Numbers::make(Numbers::IMMUTABLE, '2')]), // row 2
+        ];
+
+        $matrix = new ImmutableMatrix($matrixData);
+        $cofactorMatrix = $matrix->cofactors();
+
+        $this->assertEquals('2', $cofactorMatrix->getRow(0)->get(0)->getValue());
+        $this->assertEquals('-4', $cofactorMatrix->getRow(0)->get(1)->getValue());
+        $this->assertEquals('-5', $cofactorMatrix->getRow(1)->get(0)->getValue());
+        $this->assertEquals('3', $cofactorMatrix->getRow(1)->get(1)->getValue());
+
+        // Test 3x3 matrix
+        $matrixData = [
+            new NumberCollection([new ImmutableDecimal(3), new ImmutableDecimal(0), new ImmutableDecimal(2)]),
+            new NumberCollection([new ImmutableDecimal(2), new ImmutableDecimal(0), new ImmutableDecimal(-2)]),
+            new NumberCollection([new ImmutableDecimal(0), new ImmutableDecimal(1), new ImmutableDecimal(1)])
+        ];
+
+        $matrix = new ImmutableMatrix($matrixData);
+        $cofactorMatrix = $matrix->cofactors();
+
+        $this->assertEquals('2', $cofactorMatrix->getRow(0)->get(0)->getValue());
+        $this->assertEquals('-2', $cofactorMatrix->getRow(0)->get(1)->getValue());
+        $this->assertEquals('2', $cofactorMatrix->getRow(0)->get(2)->getValue());
+        $this->assertEquals('2', $cofactorMatrix->getRow(1)->get(0)->getValue());
+        $this->assertEquals('3', $cofactorMatrix->getRow(1)->get(1)->getValue());
+        $this->assertEquals('-3', $cofactorMatrix->getRow(1)->get(2)->getValue());
+        $this->assertEquals('0', $cofactorMatrix->getRow(2)->get(0)->getValue());
+        $this->assertEquals('10', $cofactorMatrix->getRow(2)->get(1)->getValue());
+        $this->assertEquals('0', $cofactorMatrix->getRow(2)->get(2)->getValue());
+
+        // Test 1x1 matrix
+        $matrixData = [
+            new NumberCollection([Numbers::make(Numbers::IMMUTABLE, '5')])
+        ];
+
+        $matrix = new ImmutableMatrix($matrixData);
+        $cofactorMatrix = $matrix->cofactors();
+
+        $this->assertEquals('1', $cofactorMatrix->getRow(0)->get(0)->getValue());
+    }
+
 }
