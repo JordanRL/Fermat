@@ -30,11 +30,16 @@ trait ShapeTrait
     }
 
     /**
+     * Returns the adjugate matrix (also known as classical adjoint).
+     *
+     * The adjugate is the transpose of the cofactor matrix.
+     * This is different from getAdjoint() which is just the transpose.
+     *
      * @return static
      */
     public function getAdjugate(): static
     {
-        return $this->getAdjoint();
+        return $this->cofactors()->getAdjoint();
     }
 
     /**

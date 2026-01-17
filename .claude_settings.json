@@ -1,0 +1,39 @@
+{
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true
+  },
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Read(./**)",
+      "Write(./**)",
+      "Edit(./**)",
+      "Glob(./**)",
+      "Grep(./**)",
+      "Read(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/001-matrix-minors-and-cofactors/**)",
+      "Write(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/001-matrix-minors-and-cofactors/**)",
+      "Edit(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/001-matrix-minors-and-cofactors/**)",
+      "Glob(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/001-matrix-minors-and-cofactors/**)",
+      "Grep(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/001-matrix-minors-and-cofactors/**)",
+      "Read(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/001-matrix-minors-and-cofactors/.auto-claude/specs/001-matrix-minors-and-cofactors/**)",
+      "Write(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/001-matrix-minors-and-cofactors/.auto-claude/specs/001-matrix-minors-and-cofactors/**)",
+      "Edit(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/001-matrix-minors-and-cofactors/.auto-claude/specs/001-matrix-minors-and-cofactors/**)",
+      "Read(/home/jordan/Projects/Fermat/.auto-claude/**)",
+      "Write(/home/jordan/Projects/Fermat/.auto-claude/**)",
+      "Edit(/home/jordan/Projects/Fermat/.auto-claude/**)",
+      "Glob(/home/jordan/Projects/Fermat/.auto-claude/**)",
+      "Grep(/home/jordan/Projects/Fermat/.auto-claude/**)",
+      "Bash(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "mcp__context7__resolve-library-id(*)",
+      "mcp__context7__get-library-docs(*)",
+      "mcp__graphiti-memory__search_nodes(*)",
+      "mcp__graphiti-memory__search_facts(*)",
+      "mcp__graphiti-memory__add_episode(*)",
+      "mcp__graphiti-memory__get_episodes(*)",
+      "mcp__graphiti-memory__get_entity_edge(*)"
+    ]
+  }
+}
