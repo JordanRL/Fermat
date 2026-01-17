@@ -127,6 +127,19 @@ abstract class Matrix implements MatrixInterface
     }
 
     /**
+     * Returns a new matrix containing the cofactors of each element in the current matrix.
+     *
+     * The matrix of cofactors is obtained by taking the matrix of minors and applying alternating signs
+     * based on position. The sign pattern follows a checkerboard pattern starting with + at position (0,0).
+     *
+     * @return static A new matrix containing the cofactors.
+     */
+    public function cofactors(): static
+    {
+        return $this->getMatrixOfMinors()->applyAlternatingSigns();
+    }
+
+    /**
      * Adds a MatrixInterface object to the current matrix and returns a new matrix with the sum.
      *
      * @param MatrixInterface $value The matrix to be added. The matrix must have the same size as the current matrix.
