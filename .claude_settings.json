@@ -1,0 +1,39 @@
+{
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true
+  },
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Read(./**)",
+      "Write(./**)",
+      "Edit(./**)",
+      "Glob(./**)",
+      "Grep(./**)",
+      "Read(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/003-financial-mathematics-module/**)",
+      "Write(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/003-financial-mathematics-module/**)",
+      "Edit(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/003-financial-mathematics-module/**)",
+      "Glob(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/003-financial-mathematics-module/**)",
+      "Grep(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/003-financial-mathematics-module/**)",
+      "Read(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/003-financial-mathematics-module/.auto-claude/specs/003-financial-mathematics-module/**)",
+      "Write(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/003-financial-mathematics-module/.auto-claude/specs/003-financial-mathematics-module/**)",
+      "Edit(/home/jordan/Projects/Fermat/.auto-claude/worktrees/tasks/003-financial-mathematics-module/.auto-claude/specs/003-financial-mathematics-module/**)",
+      "Read(/home/jordan/Projects/Fermat/.auto-claude/**)",
+      "Write(/home/jordan/Projects/Fermat/.auto-claude/**)",
+      "Edit(/home/jordan/Projects/Fermat/.auto-claude/**)",
+      "Glob(/home/jordan/Projects/Fermat/.auto-claude/**)",
+      "Grep(/home/jordan/Projects/Fermat/.auto-claude/**)",
+      "Bash(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "mcp__context7__resolve-library-id(*)",
+      "mcp__context7__get-library-docs(*)",
+      "mcp__graphiti-memory__search_nodes(*)",
+      "mcp__graphiti-memory__search_facts(*)",
+      "mcp__graphiti-memory__add_episode(*)",
+      "mcp__graphiti-memory__get_episodes(*)",
+      "mcp__graphiti-memory__get_entity_edge(*)"
+    ]
+  }
+}

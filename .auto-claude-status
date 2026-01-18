@@ -1,0 +1,25 @@
+{
+  "active": true,
+  "spec": "003-financial-mathematics-module",
+  "state": "building",
+  "subtasks": {
+    "completed": 18,
+    "total": 20,
+    "in_progress": 1,
+    "failed": 0
+  },
+  "phase": {
+    "current": "Integration and Full Test Suite",
+    "id": null,
+    "total": 3
+  },
+  "workers": {
+    "active": 0,
+    "max": 1
+  },
+  "session": {
+    "number": 20,
+    "started_at": "2026-01-17T18:00:38.026136"
+  },
+  "last_update": "2026-01-17T18:48:06.189166"
+}

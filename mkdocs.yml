@@ -61,6 +61,8 @@ nav:
                     -
                         'Coordinate Systems': modules/coordinate-systems/about.md
                     -
+                        Finance: modules/finance/about.md
+                    -
                         Stats: modules/stats/about.md
             -
                 'Unstable Modules':
