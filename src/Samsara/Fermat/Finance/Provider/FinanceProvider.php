@@ -179,4 +179,64 @@ class FinanceProvider
         return $presentValue->multiply($multiplier);
     }
 
+    /**
+     * Calculate the present value of an annuity (ordinary annuity).
+     *
+     * Formula: PV = PMT * [(1 - (1 + r)^-n) / r] for r != 0
+     * Formula: PV = PMT * n for r = 0
+     *
+     * @param int|float|string|Decimal $payment The payment amount per period
+     * @param int|float|string|Decimal $rate The interest rate per period (as decimal, e.g., 0.05 for 5%)
+     * @param int|float|string|Decimal $periods The number of periods
+     *
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public static function annuityPresentValue(
+        int|float|string|Decimal $payment,
+        int|float|string|Decimal $rate,
+        int|float|string|Decimal $periods
+    ): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $payment */
+        $payment = Numbers::makeOrDont(Numbers::IMMUTABLE, $payment);
+        /** @var ImmutableDecimal $rate */
+        $rate = Numbers::makeOrDont(Numbers::IMMUTABLE, $rate);
+        /** @var ImmutableDecimal $periods */
+        $periods = Numbers::makeOrDont(Numbers::IMMUTABLE, $periods);
+
+        // Edge case: when rate is 0, PV = PMT * n
+        if ($rate->isEqual(0)) {
+            return $payment->multiply($periods);
+        }
+
+        // Validate that rate is not -100% or less (would cause division by zero or negative base)
+        /** @var ImmutableDecimal $negativeOne */
+        $negativeOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1);
+        if ($rate->isLessThanOrEqualTo($negativeOne)) {
+            throw new IntegrityConstraint(
+                'Rate cannot be -100% or less',
+                'Provide a rate greater than -1',
+                'Rate must be > -1 to avoid division by zero or negative base in (1 + r)'
+            );
+        }
+
+        // PV = PMT * [(1 - (1 + r)^-n) / r]
+        /** @var ImmutableDecimal $one */
+        $one = Numbers::makeOrDont(Numbers::IMMUTABLE, 1);
+        /** @var ImmutableDecimal $base */
+        $base = $one->add($rate);
+        /** @var ImmutableDecimal $negativeN */
+        $negativeN = $periods->multiply($negativeOne);
+        /** @var ImmutableDecimal $discountFactor */
+        $discountFactor = $base->pow($negativeN);
+        /** @var ImmutableDecimal $numerator */
+        $numerator = $one->subtract($discountFactor);
+        /** @var ImmutableDecimal $annuityFactor */
+        $annuityFactor = $numerator->divide($rate);
+
+        return $payment->multiply($annuityFactor);
+    }
+
 }
