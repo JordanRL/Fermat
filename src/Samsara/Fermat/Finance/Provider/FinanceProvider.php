@@ -607,4 +607,71 @@ class FinanceProvider
         );
     }
 
+    /**
+     * Calculate the price of a bond.
+     *
+     * Formula: P = C * [(1 - (1 + r)^-n) / r] + F / (1 + r)^n for r != 0
+     * Formula: P = C * n + F for r = 0
+     *
+     * @param int|float|string|Decimal $faceValue The face value (par value) of the bond
+     * @param int|float|string|Decimal $couponRate The coupon rate per period (as decimal, e.g., 0.05 for 5%)
+     * @param int|float|string|Decimal $marketRate The market interest rate (yield) per period (as decimal, e.g., 0.04 for 4%)
+     * @param int|float|string|Decimal $periods The number of periods until maturity
+     *
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public static function bondPrice(
+        int|float|string|Decimal $faceValue,
+        int|float|string|Decimal $couponRate,
+        int|float|string|Decimal $marketRate,
+        int|float|string|Decimal $periods
+    ): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $faceValue */
+        $faceValue = Numbers::makeOrDont(Numbers::IMMUTABLE, $faceValue);
+        /** @var ImmutableDecimal $couponRate */
+        $couponRate = Numbers::makeOrDont(Numbers::IMMUTABLE, $couponRate);
+        /** @var ImmutableDecimal $marketRate */
+        $marketRate = Numbers::makeOrDont(Numbers::IMMUTABLE, $marketRate);
+        /** @var ImmutableDecimal $periods */
+        $periods = Numbers::makeOrDont(Numbers::IMMUTABLE, $periods);
+
+        // Calculate coupon payment: C = Face Value * Coupon Rate
+        /** @var ImmutableDecimal $couponPayment */
+        $couponPayment = $faceValue->multiply($couponRate);
+
+        // Edge case: when market rate is 0, P = C * n + F
+        if ($marketRate->isEqual(0)) {
+            /** @var ImmutableDecimal $couponsPV */
+            $couponsPV = $couponPayment->multiply($periods);
+            return $couponsPV->add($faceValue);
+        }
+
+        // Validate that market rate is not -100% or less (would cause division by zero or negative base)
+        /** @var ImmutableDecimal $negativeOne */
+        $negativeOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1);
+        if ($marketRate->isLessThanOrEqualTo($negativeOne)) {
+            throw new IntegrityConstraint(
+                'Market rate cannot be -100% or less',
+                'Provide a market rate greater than -1',
+                'Market rate must be > -1 to avoid division by zero or negative base in (1 + r)'
+            );
+        }
+
+        // Calculate present value of coupon payments (annuity)
+        // PV of coupons = C * [(1 - (1 + r)^-n) / r]
+        /** @var ImmutableDecimal $couponsPV */
+        $couponsPV = self::annuityPresentValue($couponPayment, $marketRate, $periods);
+
+        // Calculate present value of face value
+        // PV of face value = F / (1 + r)^n
+        /** @var ImmutableDecimal $faceValuePV */
+        $faceValuePV = self::presentValue($faceValue, $marketRate, $periods);
+
+        // Bond price = PV of coupons + PV of face value
+        return $couponsPV->add($faceValuePV);
+    }
+
 }

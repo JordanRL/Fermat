@@ -344,4 +344,56 @@ class FinanceProviderTest extends TestCase
         $this->assertEquals('0.1', $answer5->round(4)->getValue());
     }
 
+    /**
+     * @small
+     */
+    public function testBondPrice()
+    {
+        // Test case 1: Bond at par (coupon rate = market rate)
+        // Face Value = 1000, Coupon Rate = 5% (0.05), Market Rate = 5% (0.05), Periods = 10
+        // Expected: Bond should be priced at par value = 1000
+        // Coupon Payment = 1000 * 0.05 = 50
+        // Price = 50 * [(1 - 1.05^-10) / 0.05] + 1000 / 1.05^10 = 386.09 + 613.91 = 1000
+        $answer1 = FinanceProvider::bondPrice(1000, 0.05, 0.05, 10);
+        $this->assertEquals('1000', $answer1->round(2)->getValue());
+
+        // Test case 2: Bond at premium (coupon rate > market rate)
+        // Face Value = 1000, Coupon Rate = 6% (0.06), Market Rate = 5% (0.05), Periods = 10
+        // Expected: Bond should be priced above par
+        // Coupon Payment = 1000 * 0.06 = 60
+        // Price = 60 * [(1 - 1.05^-10) / 0.05] + 1000 / 1.05^10
+        // = 60 * 7.72173... + 613.91... = 463.30 + 613.91 = 1077.21
+        $answer2 = FinanceProvider::bondPrice(1000, 0.06, 0.05, 10);
+        $this->assertEquals('1077.22', $answer2->round(2)->getValue());
+
+        // Test case 3: Bond at discount (coupon rate < market rate)
+        // Face Value = 1000, Coupon Rate = 4% (0.04), Market Rate = 5% (0.05), Periods = 10
+        // Expected: Bond should be priced below par
+        // Coupon Payment = 1000 * 0.04 = 40
+        // Price = 40 * [(1 - 1.05^-10) / 0.05] + 1000 / 1.05^10
+        // = 40 * 7.72173... + 613.91... = 308.87 + 613.91 = 922.78
+        $answer3 = FinanceProvider::bondPrice(1000, 0.04, 0.05, 10);
+        $this->assertEquals('922.78', $answer3->round(2)->getValue());
+
+        // Test case 4: Zero-coupon bond
+        // Face Value = 1000, Coupon Rate = 0% (0), Market Rate = 5% (0.05), Periods = 10
+        // Expected: Price = Face Value / (1 + r)^n = 1000 / 1.05^10 = 613.91
+        $answer4 = FinanceProvider::bondPrice(1000, 0, 0.05, 10);
+        $this->assertEquals('613.91', $answer4->round(2)->getValue());
+
+        // Test case 5: Bond with different parameters
+        // Face Value = 5000, Coupon Rate = 7% (0.07), Market Rate = 6% (0.06), Periods = 20
+        // Coupon Payment = 5000 * 0.07 = 350
+        // Price = 350 * [(1 - 1.06^-20) / 0.06] + 5000 / 1.06^20
+        // = 350 * 11.46993... + 1559.02... = 4014.48 + 1559.02 = 5573.50
+        $answer5 = FinanceProvider::bondPrice(5000, 0.07, 0.06, 20);
+        $this->assertEquals('5573.5', $answer5->round(2)->getValue());
+
+        // Test case 6: Edge case with zero market rate
+        // Face Value = 1000, Coupon Rate = 5% (0.05), Market Rate = 0% (0), Periods = 10
+        // Expected: Price = (50 * 10) + 1000 = 500 + 1000 = 1500
+        $answer6 = FinanceProvider::bondPrice(1000, 0.05, 0, 10);
+        $this->assertEquals('1500', $answer6->getValue());
+    }
+
 }
