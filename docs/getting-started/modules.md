@@ -62,6 +62,22 @@ This is unlikely to happen in most applications however, unless your application
 !!! note "See Also"
     The [Complex Numbers](../modules/complex-numbers/about.md) section of this documentation contains more detailed information about this module and its behavior.
 
+### Fermat Finance
+
+!!! caution "Unstable"
+    The Fermat Finance module does **not** have a released stable version and should not be used in a production environment.
+
+    To include this module anyway, require the current development state like so:
+
+    `composer require "samsara/fermat-finance:dev-master"`
+
+The Fermat Finance module provides comprehensive financial mathematics calculations including time value of money, loan analysis, investment evaluation, and bond pricing. This module has no other dependencies and can be required as a stand-alone addition to Fermat.
+
+Financial calculations often involve complex iterative algorithms (like IRR and bond yield calculations), so the scale setting on your objects tends to have an impact on performance within this module.
+
+!!! see-also "See Also"
+    The [Finance](../modules/finance/about.md) section of this documentation contains more detailed information about this module and its behavior.
+
 ### Fermat Linear Algebra
 
 !!! caution "Unstable"
