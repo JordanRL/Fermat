@@ -148,4 +148,34 @@ class FinanceProviderTest extends TestCase
         $this->assertEquals('1000', $answer4->getValue());
     }
 
+    /**
+     * @small
+     */
+    public function testAnnuityFutureValue()
+    {
+        // Test case 1: Basic annuity future value
+        // Payment = 100, Rate = 5% (0.05), Periods = 10
+        // Expected: 100 * [((1.05)^10 - 1) / 0.05] = 100 * 12.57789... ≈ 1257.79
+        $answer1 = FinanceProvider::annuityFutureValue(100, 0.05, 10);
+        $this->assertEquals('1257.79', $answer1->round(2)->getValue());
+
+        // Test case 2: Annuity with different rate
+        // Payment = 500, Rate = 6% (0.06), Periods = 5
+        // Expected: 500 * [((1.06)^5 - 1) / 0.06] = 500 * 5.63709... ≈ 2818.55
+        $answer2 = FinanceProvider::annuityFutureValue(500, 0.06, 5);
+        $this->assertEquals('2818.55', $answer2->round(2)->getValue());
+
+        // Test case 3: Longer term annuity
+        // Payment = 1000, Rate = 4% (0.04), Periods = 20
+        // Expected: 1000 * [((1.04)^20 - 1) / 0.04] = 1000 * 29.77807... ≈ 29778.08
+        $answer3 = FinanceProvider::annuityFutureValue(1000, 0.04, 20);
+        $this->assertEquals('29778.08', $answer3->round(2)->getValue());
+
+        // Test case 4: Edge case with zero rate
+        // Payment = 100, Rate = 0% (0), Periods = 10
+        // Expected: 100 * 10 = 1000
+        $answer4 = FinanceProvider::annuityFutureValue(100, 0, 10);
+        $this->assertEquals('1000', $answer4->getValue());
+    }
+
 }
