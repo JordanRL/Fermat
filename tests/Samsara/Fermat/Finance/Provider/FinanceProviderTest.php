@@ -178,4 +178,34 @@ class FinanceProviderTest extends TestCase
         $this->assertEquals('1000', $answer4->getValue());
     }
 
+    /**
+     * @small
+     */
+    public function testLoanPayment()
+    {
+        // Test case 1: Basic loan payment
+        // Principal = 10000, Rate = 5% (0.05), Periods = 12
+        // Expected: 10000 * [0.05(1.05)^12] / [(1.05)^12 - 1] ≈ 1128.25
+        $answer1 = FinanceProvider::loanPayment(10000, 0.05, 12);
+        $this->assertEquals('1128.25', $answer1->round(2)->getValue());
+
+        // Test case 2: Loan with different rate
+        // Principal = 20000, Rate = 6% (0.06), Periods = 24
+        // Expected: 20000 * [0.06(1.06)^24] / [(1.06)^24 - 1] ≈ 1593.58
+        $answer2 = FinanceProvider::loanPayment(20000, 0.06, 24);
+        $this->assertEquals('1593.58', $answer2->round(2)->getValue());
+
+        // Test case 3: Loan with different terms
+        // Principal = 5000, Rate = 3% (0.03), Periods = 10
+        // Expected: 5000 * [0.03(1.03)^10] / [(1.03)^10 - 1] ≈ 586.15
+        $answer3 = FinanceProvider::loanPayment(5000, 0.03, 10);
+        $this->assertEquals('586.15', $answer3->round(2)->getValue());
+
+        // Test case 4: Edge case with zero rate
+        // Principal = 10000, Rate = 0% (0), Periods = 10
+        // Expected: 10000 / 10 = 1000
+        $answer4 = FinanceProvider::loanPayment(10000, 0, 10);
+        $this->assertEquals('1000', $answer4->getValue());
+    }
+
 }

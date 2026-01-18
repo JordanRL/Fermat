@@ -297,4 +297,64 @@ class FinanceProvider
         return $payment->multiply($annuityFactor);
     }
 
+    /**
+     * Calculate loan payment amount (ordinary annuity payment).
+     *
+     * Formula: PMT = P * [r(1 + r)^n] / [(1 + r)^n - 1] for r != 0
+     * Formula: PMT = P / n for r = 0
+     *
+     * @param int|float|string|Decimal $principal The principal (loan amount)
+     * @param int|float|string|Decimal $rate The interest rate per period (as decimal, e.g., 0.05 for 5%)
+     * @param int|float|string|Decimal $periods The number of periods
+     *
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public static function loanPayment(
+        int|float|string|Decimal $principal,
+        int|float|string|Decimal $rate,
+        int|float|string|Decimal $periods
+    ): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $principal */
+        $principal = Numbers::makeOrDont(Numbers::IMMUTABLE, $principal);
+        /** @var ImmutableDecimal $rate */
+        $rate = Numbers::makeOrDont(Numbers::IMMUTABLE, $rate);
+        /** @var ImmutableDecimal $periods */
+        $periods = Numbers::makeOrDont(Numbers::IMMUTABLE, $periods);
+
+        // Edge case: when rate is 0, PMT = P / n
+        if ($rate->isEqual(0)) {
+            return $principal->divide($periods);
+        }
+
+        // Validate that rate is not -100% or less (would cause division by zero or negative base)
+        /** @var ImmutableDecimal $negativeOne */
+        $negativeOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1);
+        if ($rate->isLessThanOrEqualTo($negativeOne)) {
+            throw new IntegrityConstraint(
+                'Rate cannot be -100% or less',
+                'Provide a rate greater than -1',
+                'Rate must be > -1 to avoid division by zero or negative base in (1 + r)'
+            );
+        }
+
+        // PMT = P * [r(1 + r)^n] / [(1 + r)^n - 1]
+        /** @var ImmutableDecimal $one */
+        $one = Numbers::makeOrDont(Numbers::IMMUTABLE, 1);
+        /** @var ImmutableDecimal $base */
+        $base = $one->add($rate);
+        /** @var ImmutableDecimal $growthFactor */
+        $growthFactor = $base->pow($periods);
+        /** @var ImmutableDecimal $numerator */
+        $numerator = $rate->multiply($growthFactor);
+        /** @var ImmutableDecimal $denominator */
+        $denominator = $growthFactor->subtract($one);
+        /** @var ImmutableDecimal $paymentFactor */
+        $paymentFactor = $numerator->divide($denominator);
+
+        return $principal->multiply($paymentFactor);
+    }
+
 }
