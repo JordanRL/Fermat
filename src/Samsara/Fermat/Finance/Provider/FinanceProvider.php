@@ -142,4 +142,41 @@ class FinanceProvider
         return $futureValue->divide($divisor);
     }
 
+    /**
+     * Calculate future value.
+     *
+     * Formula: FV = PV * (1 + r)^n
+     *
+     * @param int|float|string|Decimal $presentValue The present value
+     * @param int|float|string|Decimal $rate The interest rate per period (as decimal, e.g., 0.05 for 5%)
+     * @param int|float|string|Decimal $periods The number of periods
+     *
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public static function futureValue(
+        int|float|string|Decimal $presentValue,
+        int|float|string|Decimal $rate,
+        int|float|string|Decimal $periods
+    ): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $presentValue */
+        $presentValue = Numbers::makeOrDont(Numbers::IMMUTABLE, $presentValue);
+        /** @var ImmutableDecimal $rate */
+        $rate = Numbers::makeOrDont(Numbers::IMMUTABLE, $rate);
+        /** @var ImmutableDecimal $periods */
+        $periods = Numbers::makeOrDont(Numbers::IMMUTABLE, $periods);
+
+        // FV = PV * (1 + r)^n
+        /** @var ImmutableDecimal $one */
+        $one = Numbers::makeOrDont(Numbers::IMMUTABLE, 1);
+        /** @var ImmutableDecimal $base */
+        $base = $one->add($rate);
+        /** @var ImmutableDecimal $multiplier */
+        $multiplier = $base->pow($periods);
+
+        return $presentValue->multiply($multiplier);
+    }
+
 }

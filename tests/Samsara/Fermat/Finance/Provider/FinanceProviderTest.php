@@ -88,4 +88,34 @@ class FinanceProviderTest extends TestCase
         $this->assertEquals('1000', $answer4->getValue());
     }
 
+    /**
+     * @small
+     */
+    public function testFutureValue()
+    {
+        // Test case 1: Basic future value
+        // Present Value = 1000, Rate = 5% (0.05), Periods = 2
+        // Expected: 1000 * (1.05)^2 = 1000 * 1.1025 = 1102.5
+        $answer1 = FinanceProvider::futureValue(1000, 0.05, 2);
+        $this->assertEquals('1102.5', $answer1->getValue());
+
+        // Test case 2: Future value with different rate
+        // Present Value = 3969.16, Rate = 8% (0.08), Periods = 3
+        // Expected: 3969.16 * (1.08)^3 = 3969.16 * 1.259712 ≈ 5000
+        $answer2 = FinanceProvider::futureValue(3969.16, 0.08, 3);
+        $this->assertEquals('5000', $answer2->round(2)->getValue());
+
+        // Test case 3: Future value with fractional rate
+        // Present Value = 8024.51, Rate = 4.5% (0.045), Periods = 5
+        // Expected: 8024.51 * (1.045)^5 = 8024.51 * 1.24618... ≈ 10000
+        $answer3 = FinanceProvider::futureValue(8024.51, 0.045, 5);
+        $this->assertEquals('10000', $answer3->round(2)->getValue());
+
+        // Test case 4: Edge case with zero rate
+        // Present Value = 1000, Rate = 0% (0), Periods = 5
+        // Expected: 1000 * (1.0)^5 = 1000
+        $answer4 = FinanceProvider::futureValue(1000, 0, 5);
+        $this->assertEquals('1000', $answer4->getValue());
+    }
+
 }
