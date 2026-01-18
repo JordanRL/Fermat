@@ -432,4 +432,62 @@ class FinanceProvider
         return $schedule;
     }
 
+    /**
+     * Calculate net present value (NPV) of a series of cash flows.
+     *
+     * Formula: NPV = Σ(CF_t / (1 + r)^t) for t from 0 to n
+     *
+     * @param array $cashFlows Array of cash flows indexed by period (period 0 is initial investment, typically negative)
+     * @param int|float|string|Decimal $rate The discount rate per period (as decimal, e.g., 0.05 for 5%)
+     *
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public static function netPresentValue(
+        array $cashFlows,
+        int|float|string|Decimal $rate
+    ): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $rate */
+        $rate = Numbers::makeOrDont(Numbers::IMMUTABLE, $rate);
+
+        // Validate that rate is not -100% or less (would cause division by zero or negative base)
+        /** @var ImmutableDecimal $negativeOne */
+        $negativeOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1);
+        if ($rate->isLessThanOrEqualTo($negativeOne)) {
+            throw new IntegrityConstraint(
+                'Rate cannot be -100% or less',
+                'Provide a rate greater than -1',
+                'Rate must be > -1 to avoid division by zero or negative base in (1 + r)'
+            );
+        }
+
+        /** @var ImmutableDecimal $npv */
+        $npv = Numbers::makeOrDont(Numbers::IMMUTABLE, 0);
+        /** @var ImmutableDecimal $one */
+        $one = Numbers::makeOrDont(Numbers::IMMUTABLE, 1);
+        /** @var ImmutableDecimal $base */
+        $base = $one->add($rate);
+
+        // Calculate NPV by summing the present value of each cash flow
+        foreach ($cashFlows as $period => $cashFlow) {
+            /** @var ImmutableDecimal $cashFlow */
+            $cashFlow = Numbers::makeOrDont(Numbers::IMMUTABLE, $cashFlow);
+            /** @var ImmutableDecimal $periodNum */
+            $periodNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $period);
+
+            // Calculate present value of this cash flow: CF / (1 + r)^t
+            /** @var ImmutableDecimal $discountFactor */
+            $discountFactor = $base->pow($periodNum);
+            /** @var ImmutableDecimal $presentValue */
+            $presentValue = $cashFlow->divide($discountFactor);
+
+            // Add to running total
+            $npv = $npv->add($presentValue);
+        }
+
+        return $npv;
+    }
+
 }

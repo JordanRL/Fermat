@@ -253,4 +253,48 @@ class FinanceProviderTest extends TestCase
         $this->assertEquals('0', $schedule2[9]['balance']->getValue());
     }
 
+    /**
+     * @small
+     */
+    public function testNetPresentValue()
+    {
+        // Test case 1: Basic NPV calculation
+        // Cash flows: [-1000, 300, 300, 300, 300], Rate = 10% (0.1)
+        // Expected: -1000 + 300/1.1 + 300/1.1^2 + 300/1.1^3 + 300/1.1^4
+        // = -1000 + 272.727272 + 247.933884 + 225.394440 + 204.904036 ≈ -49.04
+        $cashFlows1 = [0 => -1000, 1 => 300, 2 => 300, 3 => 300, 4 => 300];
+        $answer1 = FinanceProvider::netPresentValue($cashFlows1, 0.1);
+        $this->assertEquals('-49.04', $answer1->round(2)->getValue());
+
+        // Test case 2: Positive NPV (profitable project)
+        // Cash flows: [-1000, 400, 400, 400, 400], Rate = 10% (0.1)
+        // Expected: -1000 + 400/1.1 + 400/1.1^2 + 400/1.1^3 + 400/1.1^4
+        // = -1000 + 363.636363 + 330.578512 + 300.526102 + 273.205547 ≈ 267.95
+        $cashFlows2 = [0 => -1000, 1 => 400, 2 => 400, 3 => 400, 4 => 400];
+        $answer2 = FinanceProvider::netPresentValue($cashFlows2, 0.1);
+        $this->assertEquals('267.95', $answer2->round(2)->getValue());
+
+        // Test case 3: NPV with varying cash flows
+        // Cash flows: [-5000, 1000, 2000, 3000, 2000], Rate = 8% (0.08)
+        // Expected: -5000 + 1000/1.08 + 2000/1.08^2 + 3000/1.08^3 + 2000/1.08^4
+        // = -5000 + 925.92592 + 1714.67764 + 2381.49672 + 1470.05971 ≈ 1492.16
+        $cashFlows3 = [0 => -5000, 1 => 1000, 2 => 2000, 3 => 3000, 4 => 2000];
+        $answer3 = FinanceProvider::netPresentValue($cashFlows3, 0.08);
+        $this->assertEquals('1492.16', $answer3->round(2)->getValue());
+
+        // Test case 4: Edge case with zero rate
+        // Cash flows: [-1000, 300, 300, 300, 300], Rate = 0% (0)
+        // Expected: -1000 + 300 + 300 + 300 + 300 = 200
+        $cashFlows4 = [0 => -1000, 1 => 300, 2 => 300, 3 => 300, 4 => 300];
+        $answer4 = FinanceProvider::netPresentValue($cashFlows4, 0);
+        $this->assertEquals('200', $answer4->getValue());
+
+        // Test case 5: Single period NPV
+        // Cash flows: [-1000, 1100], Rate = 10% (0.1)
+        // Expected: -1000 + 1100/1.1 = -1000 + 1000 = 0
+        $cashFlows5 = [0 => -1000, 1 => 1100];
+        $answer5 = FinanceProvider::netPresentValue($cashFlows5, 0.1);
+        $this->assertEquals('0', $answer5->getValue());
+    }
+
 }
