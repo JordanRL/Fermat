@@ -357,4 +357,79 @@ class FinanceProvider
         return $principal->multiply($paymentFactor);
     }
 
+    /**
+     * Generate a loan amortization schedule.
+     *
+     * Returns an array of payment details for each period, including:
+     * - period: The payment period number
+     * - payment: The total payment amount
+     * - principal: The principal portion of the payment
+     * - interest: The interest portion of the payment
+     * - balance: The remaining loan balance after the payment
+     *
+     * @param int|float|string|Decimal $principal The principal (loan amount)
+     * @param int|float|string|Decimal $rate The interest rate per period (as decimal, e.g., 0.05 for 5%)
+     * @param int|float|string|Decimal $periods The number of periods
+     *
+     * @return array Array of payment details for each period
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public static function amortizationSchedule(
+        int|float|string|Decimal $principal,
+        int|float|string|Decimal $rate,
+        int|float|string|Decimal $periods
+    ): array
+    {
+        /** @var ImmutableDecimal $principal */
+        $principal = Numbers::makeOrDont(Numbers::IMMUTABLE, $principal);
+        /** @var ImmutableDecimal $rate */
+        $rate = Numbers::makeOrDont(Numbers::IMMUTABLE, $rate);
+        /** @var ImmutableDecimal $periods */
+        $periods = Numbers::makeOrDont(Numbers::IMMUTABLE, $periods);
+
+        // Calculate the periodic payment
+        /** @var ImmutableDecimal $payment */
+        $payment = self::loanPayment($principal, $rate, $periods);
+
+        /** @var ImmutableDecimal $balance */
+        $balance = $principal;
+        /** @var ImmutableDecimal $zero */
+        $zero = Numbers::makeOrDont(Numbers::IMMUTABLE, 0);
+
+        $schedule = [];
+        $periodCount = (int)$periods->getValue();
+
+        for ($i = 1; $i <= $periodCount; $i++) {
+            // Calculate interest for this period
+            /** @var ImmutableDecimal $interest */
+            $interest = $balance->multiply($rate);
+
+            // Calculate principal payment
+            /** @var ImmutableDecimal $principalPayment */
+            $principalPayment = $payment->subtract($interest);
+
+            // Update balance
+            /** @var ImmutableDecimal $newBalance */
+            $newBalance = $balance->subtract($principalPayment);
+
+            // Handle final period rounding - ensure balance is exactly zero
+            if ($i === $periodCount) {
+                $newBalance = $zero;
+            }
+
+            $schedule[] = [
+                'period' => $i,
+                'payment' => $payment,
+                'principal' => $principalPayment,
+                'interest' => $interest,
+                'balance' => $newBalance,
+            ];
+
+            $balance = $newBalance;
+        }
+
+        return $schedule;
+    }
+
 }

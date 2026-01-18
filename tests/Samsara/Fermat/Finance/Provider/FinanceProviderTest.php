@@ -208,4 +208,49 @@ class FinanceProviderTest extends TestCase
         $this->assertEquals('1000', $answer4->getValue());
     }
 
+    /**
+     * @small
+     */
+    public function testAmortizationSchedule()
+    {
+        // Test case 1: Simple loan amortization
+        // Principal = 10000, Rate = 5% (0.05), Periods = 12
+        // Payment ≈ 1128.25 per period
+        $schedule = FinanceProvider::amortizationSchedule(10000, 0.05, 12);
+
+        // Verify we have 12 periods
+        $this->assertCount(12, $schedule);
+
+        // Verify first payment details
+        // Period 1: Balance = 10000, Interest = 10000 * 0.05 = 500
+        // Principal = 1128.25 - 500 = 628.25, New Balance = 10000 - 628.25 = 9371.75
+        $this->assertEquals(1, $schedule[0]['period']);
+        $this->assertEquals('1128.25', $schedule[0]['payment']->round(2)->getValue());
+        $this->assertEquals('500', $schedule[0]['interest']->round(2)->getValue());
+        $this->assertEquals('628.25', $schedule[0]['principal']->round(2)->getValue());
+        $this->assertEquals('9371.75', $schedule[0]['balance']->round(2)->getValue());
+
+        // Verify last payment
+        $this->assertEquals(12, $schedule[11]['period']);
+        $this->assertEquals('0', $schedule[11]['balance']->getValue());
+
+        // Verify sum of principal payments equals original principal
+        $totalPrincipal = array_reduce($schedule, function($carry, $item) {
+            return $carry->add($item['principal']);
+        }, \Samsara\Fermat\Core\Numbers::makeOrDont(\Samsara\Fermat\Core\Numbers::IMMUTABLE, 0));
+        $this->assertEquals('10000', $totalPrincipal->round(2)->getValue());
+
+        // Test case 2: Loan with zero interest
+        // Principal = 1000, Rate = 0% (0), Periods = 10
+        // Payment = 1000 / 10 = 100 per period
+        $schedule2 = FinanceProvider::amortizationSchedule(1000, 0, 10);
+
+        $this->assertCount(10, $schedule2);
+        $this->assertEquals('100', $schedule2[0]['payment']->getValue());
+        $this->assertEquals('0', $schedule2[0]['interest']->getValue());
+        $this->assertEquals('100', $schedule2[0]['principal']->getValue());
+        $this->assertEquals('900', $schedule2[0]['balance']->getValue());
+        $this->assertEquals('0', $schedule2[9]['balance']->getValue());
+    }
+
 }
