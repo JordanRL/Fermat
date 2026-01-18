@@ -297,4 +297,51 @@ class FinanceProviderTest extends TestCase
         $this->assertEquals('0', $answer5->getValue());
     }
 
+    /**
+     * @small
+     */
+    public function testInternalRateOfReturn()
+    {
+        // Test case 1: Basic IRR calculation
+        // Cash flows: [-1000, 1100], should have IRR = 10% (0.1)
+        // Verification: -1000 + 1100/(1.1)^1 = -1000 + 1000 = 0
+        $cashFlows1 = [0 => -1000, 1 => 1100];
+        $answer1 = FinanceProvider::internalRateOfReturn($cashFlows1);
+        $this->assertEquals('0.1', $answer1->round(4)->getValue());
+
+        // Test case 2: Multi-period IRR
+        // Cash flows: [-1000, 300, 400, 500, 200]
+        // IRR should be approximately 11.79%
+        $cashFlows2 = [0 => -1000, 1 => 300, 2 => 400, 3 => 500, 4 => 200];
+        $answer2 = FinanceProvider::internalRateOfReturn($cashFlows2);
+        // Verify that NPV at this rate is approximately zero
+        $npv2 = FinanceProvider::netPresentValue($cashFlows2, $answer2);
+        $this->assertEquals('0', $npv2->round(2)->getValue());
+
+        // Test case 3: Standard project cash flows
+        // Cash flows: [-5000, 1000, 2000, 2000, 3000]
+        // This represents a project with initial investment and increasing returns
+        $cashFlows3 = [0 => -5000, 1 => 1000, 2 => 2000, 3 => 2000, 4 => 3000];
+        $answer3 = FinanceProvider::internalRateOfReturn($cashFlows3);
+        // Verify that NPV at this rate is approximately zero
+        $npv3 = FinanceProvider::netPresentValue($cashFlows3, $answer3);
+        $this->assertEquals('0', $npv3->round(2)->getValue());
+
+        // Test case 4: IRR with different initial guess
+        // Cash flows: [-1000, 400, 400, 400, 400]
+        // Using a different initial guess should still converge
+        $cashFlows4 = [0 => -1000, 1 => 400, 2 => 400, 3 => 400, 4 => 400];
+        $answer4 = FinanceProvider::internalRateOfReturn($cashFlows4, 0.2);
+        // Verify that NPV at this rate is approximately zero
+        $npv4 = FinanceProvider::netPresentValue($cashFlows4, $answer4);
+        $this->assertEquals('0', $npv4->round(2)->getValue());
+
+        // Test case 5: Simple two-period case with known IRR
+        // Cash flows: [-2000, 2200], IRR = 10% (0.1)
+        // Verification: -2000 + 2200/(1.1)^1 = -2000 + 2000 = 0
+        $cashFlows5 = [0 => -2000, 1 => 2200];
+        $answer5 = FinanceProvider::internalRateOfReturn($cashFlows5);
+        $this->assertEquals('0.1', $answer5->round(4)->getValue());
+    }
+
 }

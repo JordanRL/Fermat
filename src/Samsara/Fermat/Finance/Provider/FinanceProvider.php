@@ -490,4 +490,121 @@ class FinanceProvider
         return $npv;
     }
 
+    /**
+     * Calculate the internal rate of return (IRR) for a series of cash flows.
+     *
+     * IRR is the discount rate that makes the net present value (NPV) equal to zero.
+     * Uses the Newton-Raphson method for iterative approximation.
+     *
+     * Formula: Find r such that NPV = Σ(CF_t / (1 + r)^t) = 0
+     *
+     * @param array $cashFlows Array of cash flows indexed by period (period 0 is initial investment, typically negative)
+     * @param int|float|string|Decimal $guess Initial guess for IRR (default 0.1 for 10%)
+     * @param int|float|string|Decimal $tolerance Convergence tolerance (default 0.000001)
+     * @param int $maxIterations Maximum number of iterations (default 100)
+     *
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public static function internalRateOfReturn(
+        array $cashFlows,
+        int|float|string|Decimal $guess = 0.1,
+        int|float|string|Decimal $tolerance = 0.000001,
+        int $maxIterations = 100
+    ): ImmutableDecimal
+    {
+        // Validate cash flows
+        if (empty($cashFlows)) {
+            throw new IntegrityConstraint(
+                'Cash flows array cannot be empty',
+                'Provide at least one cash flow',
+                'IRR calculation requires at least one cash flow'
+            );
+        }
+
+        /** @var ImmutableDecimal $rate */
+        $rate = Numbers::makeOrDont(Numbers::IMMUTABLE, $guess);
+        /** @var ImmutableDecimal $tolerance */
+        $tolerance = Numbers::makeOrDont(Numbers::IMMUTABLE, $tolerance);
+        /** @var ImmutableDecimal $one */
+        $one = Numbers::makeOrDont(Numbers::IMMUTABLE, 1);
+        /** @var ImmutableDecimal $negativeOne */
+        $negativeOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1);
+
+        // Newton-Raphson iteration
+        for ($i = 0; $i < $maxIterations; $i++) {
+            // Calculate NPV at current rate
+            /** @var ImmutableDecimal $npv */
+            $npv = Numbers::makeOrDont(Numbers::IMMUTABLE, 0);
+            /** @var ImmutableDecimal $npvDerivative */
+            $npvDerivative = Numbers::makeOrDont(Numbers::IMMUTABLE, 0);
+            /** @var ImmutableDecimal $base */
+            $base = $one->add($rate);
+
+            // Calculate NPV and its derivative
+            foreach ($cashFlows as $period => $cashFlow) {
+                /** @var ImmutableDecimal $cashFlow */
+                $cashFlow = Numbers::makeOrDont(Numbers::IMMUTABLE, $cashFlow);
+                /** @var ImmutableDecimal $periodNum */
+                $periodNum = Numbers::makeOrDont(Numbers::IMMUTABLE, $period);
+
+                // NPV calculation: CF / (1 + r)^t
+                /** @var ImmutableDecimal $discountFactor */
+                $discountFactor = $base->pow($periodNum);
+                /** @var ImmutableDecimal $presentValue */
+                $presentValue = $cashFlow->divide($discountFactor);
+                $npv = $npv->add($presentValue);
+
+                // Derivative calculation: -t * CF / (1 + r)^(t+1)
+                if ($periodNum->isGreaterThan(0)) {
+                    /** @var ImmutableDecimal $derivativeTerm */
+                    $derivativeTerm = $periodNum->multiply($negativeOne)->multiply($cashFlow);
+                    /** @var ImmutableDecimal $derivativeDivisor */
+                    $derivativeDivisor = $base->pow($periodNum->add($one));
+                    /** @var ImmutableDecimal $derivativeValue */
+                    $derivativeValue = $derivativeTerm->divide($derivativeDivisor);
+                    $npvDerivative = $npvDerivative->add($derivativeValue);
+                }
+            }
+
+            // Check for convergence
+            if ($npv->abs()->isLessThan($tolerance)) {
+                return $rate;
+            }
+
+            // Check for zero derivative (would cause division by zero)
+            /** @var ImmutableDecimal $zero */
+            $zero = Numbers::makeOrDont(Numbers::IMMUTABLE, 0);
+            if ($npvDerivative->isEqual($zero)) {
+                throw new IntegrityConstraint(
+                    'IRR calculation failed: derivative is zero',
+                    'Try a different initial guess',
+                    'The Newton-Raphson method encountered a zero derivative'
+                );
+            }
+
+            // Newton-Raphson update: r_new = r_old - NPV / NPV'
+            /** @var ImmutableDecimal $delta */
+            $delta = $npv->divide($npvDerivative);
+            $rate = $rate->subtract($delta);
+
+            // Validate that rate stays above -100%
+            if ($rate->isLessThanOrEqualTo($negativeOne)) {
+                throw new IntegrityConstraint(
+                    'IRR calculation failed: rate converged to -100% or less',
+                    'The cash flows may not have a valid IRR',
+                    'IRR must be greater than -100%'
+                );
+            }
+        }
+
+        // Maximum iterations reached
+        throw new IntegrityConstraint(
+            'IRR calculation did not converge within maximum iterations',
+            'Try increasing maxIterations or adjusting the initial guess',
+            'The Newton-Raphson method did not converge within ' . $maxIterations . ' iterations'
+        );
+    }
+
 }
