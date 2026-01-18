@@ -674,4 +674,88 @@ class FinanceProvider
         return $couponsPV->add($faceValuePV);
     }
 
+    /**
+     * Calculate the yield to maturity (YTM) of a bond.
+     *
+     * YTM is the internal rate of return on the bond - the discount rate that makes
+     * the present value of all future cash flows equal to the current bond price.
+     * Uses the internal rate of return method on the bond's cash flows.
+     *
+     * Formula: Find r such that CurrentPrice = Σ(CF_t / (1 + r)^t) where CF includes coupons and face value
+     *
+     * @param int|float|string|Decimal $currentPrice The current market price of the bond
+     * @param int|float|string|Decimal $faceValue The face value (par value) of the bond
+     * @param int|float|string|Decimal $couponRate The coupon rate per period (as decimal, e.g., 0.05 for 5%)
+     * @param int|float|string|Decimal $periods The number of periods until maturity
+     * @param int|float|string|Decimal $guess Initial guess for YTM (default 0.05 for 5%)
+     * @param int|float|string|Decimal $tolerance Convergence tolerance (default 0.000001)
+     * @param int $maxIterations Maximum number of iterations (default 100)
+     *
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public static function bondYieldToMaturity(
+        int|float|string|Decimal $currentPrice,
+        int|float|string|Decimal $faceValue,
+        int|float|string|Decimal $couponRate,
+        int|float|string|Decimal $periods,
+        int|float|string|Decimal $guess = null,
+        int|float|string|Decimal $tolerance = 0.000001,
+        int $maxIterations = 100
+    ): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $currentPrice */
+        $currentPrice = Numbers::makeOrDont(Numbers::IMMUTABLE, $currentPrice);
+        /** @var ImmutableDecimal $faceValue */
+        $faceValue = Numbers::makeOrDont(Numbers::IMMUTABLE, $faceValue);
+        /** @var ImmutableDecimal $couponRate */
+        $couponRate = Numbers::makeOrDont(Numbers::IMMUTABLE, $couponRate);
+        /** @var ImmutableDecimal $periods */
+        $periods = Numbers::makeOrDont(Numbers::IMMUTABLE, $periods);
+
+        // Calculate coupon payment: C = Face Value * Coupon Rate
+        /** @var ImmutableDecimal $couponPayment */
+        $couponPayment = $faceValue->multiply($couponRate);
+
+        // If no guess provided, use a financial approximation for better initial guess
+        // YTM ≈ [C + (F - P) / n] / [(F + P) / 2]
+        if ($guess === null) {
+            /** @var ImmutableDecimal $numerator */
+            $numerator = $couponPayment->add($faceValue->subtract($currentPrice)->divide($periods));
+            /** @var ImmutableDecimal $denominator */
+            $denominator = $faceValue->add($currentPrice)->divide(Numbers::makeOrDont(Numbers::IMMUTABLE, 2));
+            /** @var ImmutableDecimal $initialGuess */
+            $initialGuess = $numerator->divide($denominator);
+        } else {
+            $initialGuess = Numbers::makeOrDont(Numbers::IMMUTABLE, $guess);
+        }
+
+        // Build cash flows array for IRR calculation
+        // Period 0: negative of current price (initial investment)
+        // Periods 1 to n-1: coupon payments
+        // Period n: coupon payment + face value
+        $cashFlows = [];
+
+        // Period 0: Initial investment (negative of current price)
+        /** @var ImmutableDecimal $negativePrice */
+        $negativePrice = $currentPrice->multiply(Numbers::makeOrDont(Numbers::IMMUTABLE, -1));
+        $cashFlows[0] = $negativePrice;
+
+        // Periods 1 to n: Build the cash flows
+        $periodCount = (int)$periods->getValue();
+        for ($i = 1; $i <= $periodCount; $i++) {
+            if ($i === $periodCount) {
+                // Last period: coupon payment + face value
+                $cashFlows[$i] = $couponPayment->add($faceValue);
+            } else {
+                // Regular coupon payment
+                $cashFlows[$i] = $couponPayment;
+            }
+        }
+
+        // Use the internal rate of return method to find YTM
+        return self::internalRateOfReturn($cashFlows, $initialGuess, $tolerance, $maxIterations);
+    }
+
 }

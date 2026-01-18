@@ -396,4 +396,67 @@ class FinanceProviderTest extends TestCase
         $this->assertEquals('1500', $answer6->getValue());
     }
 
+    /**
+     * @small
+     */
+    public function testBondYieldToMaturity()
+    {
+        // Test case 1: Bond at par (price = face value, YTM should equal coupon rate)
+        // Current Price = 1000, Face Value = 1000, Coupon Rate = 5% (0.05), Periods = 10
+        // Expected: YTM = 5% (0.05)
+        $answer1 = FinanceProvider::bondYieldToMaturity(1000, 1000, 0.05, 10);
+        $this->assertEquals('0.05', $answer1->round(4)->getValue());
+
+        // Test case 2: Bond at premium (price > face value, YTM should be less than coupon rate)
+        // Using the bond price from testBondPrice: Price = 1077.22, Face = 1000, Coupon = 6%, Periods = 10
+        // Expected: YTM should be approximately 5% (0.05)
+        $answer2 = FinanceProvider::bondYieldToMaturity(1077.22, 1000, 0.06, 10);
+        $this->assertEquals('0.05', $answer2->round(4)->getValue());
+        // Verify by calculating bond price with this YTM
+        $verifyPrice2 = FinanceProvider::bondPrice(1000, 0.06, $answer2, 10);
+        $this->assertEquals('1077.22', $verifyPrice2->round(2)->getValue());
+
+        // Test case 3: Bond at discount (price < face value, YTM should be greater than coupon rate)
+        // Using the bond price from testBondPrice: Price = 922.78, Face = 1000, Coupon = 4%, Periods = 10
+        // Expected: YTM should be approximately 5% (0.05)
+        $answer3 = FinanceProvider::bondYieldToMaturity(922.78, 1000, 0.04, 10);
+        $this->assertEquals('0.05', $answer3->round(4)->getValue());
+        // Verify by calculating bond price with this YTM
+        $verifyPrice3 = FinanceProvider::bondPrice(1000, 0.04, $answer3, 10);
+        $this->assertEquals('922.78', $verifyPrice3->round(2)->getValue());
+
+        // Test case 4: Zero-coupon bond
+        // Price = 613.91, Face Value = 1000, Coupon Rate = 0%, Periods = 10
+        // Expected: YTM = 5% (0.05)
+        // Verification: 1000 / (1.05)^10 = 613.91
+        $answer4 = FinanceProvider::bondYieldToMaturity(613.91, 1000, 0, 10);
+        $this->assertEquals('0.05', $answer4->round(4)->getValue());
+
+        // Test case 5: Larger face value bond
+        // Face Value = 5000, Coupon Rate = 6% (0.06), Market Rate = 6% (0.06), Periods = 10
+        // Expected: YTM = 6% (0.06) (bond at par)
+        $answer5 = FinanceProvider::bondYieldToMaturity(5000, 5000, 0.06, 10);
+        $this->assertEquals('0.06', $answer5->round(4)->getValue());
+        // Verify by calculating bond price with this YTM
+        $verifyPrice5 = FinanceProvider::bondPrice(5000, 0.06, $answer5, 10);
+        $this->assertEquals('5000', $verifyPrice5->round(2)->getValue());
+
+        // Test case 6: High yield bond (trading at significant discount)
+        // Price = 800, Face Value = 1000, Coupon Rate = 5% (0.05), Periods = 10
+        // YTM should be higher than 5%
+        $answer6 = FinanceProvider::bondYieldToMaturity(800, 1000, 0.05, 10);
+        $this->assertGreaterThan(0.05, (float)$answer6->getValue());
+        // Verify by calculating bond price with this YTM
+        $verifyPrice6 = FinanceProvider::bondPrice(1000, 0.05, $answer6, 10);
+        $this->assertEquals('800', $verifyPrice6->round(2)->getValue());
+
+        // Test case 7: Premium bond with different initial guess
+        // Price = 1200, Face Value = 1000, Coupon Rate = 8% (0.08), Periods = 10
+        // Using different initial guess to test convergence
+        $answer7 = FinanceProvider::bondYieldToMaturity(1200, 1000, 0.08, 10, 0.03);
+        // Verify by calculating bond price with this YTM
+        $verifyPrice7 = FinanceProvider::bondPrice(1000, 0.08, $answer7, 10);
+        $this->assertEquals('1200', $verifyPrice7->round(2)->getValue());
+    }
+
 }
