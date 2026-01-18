@@ -1,0 +1,25 @@
+{
+  "active": true,
+  "spec": "001-matrix-minors-and-cofactors",
+  "state": "building",
+  "subtasks": {
+    "completed": 6,
+    "total": 7,
+    "in_progress": 1,
+    "failed": 0
+  },
+  "phase": {
+    "current": "Add Comprehensive Tests",
+    "id": null,
+    "total": 3
+  },
+  "workers": {
+    "active": 0,
+    "max": 1
+  },
+  "session": {
+    "number": 1,
+    "started_at": "2026-01-17T17:25:02.226019"
+  },
+  "last_update": "2026-01-17T17:25:02.286953"
+}

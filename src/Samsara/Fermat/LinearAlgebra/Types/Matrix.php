@@ -59,7 +59,14 @@ abstract class Matrix implements MatrixInterface
             );
         }
 
-        if ($this->numRows > 2) {
+        if ($this->numRows === 0) {
+            // The determinant of a 0x0 matrix is defined as 1 by convention
+            $determinant = Numbers::makeOne();
+        } elseif ($this->numRows === 1) {
+            $determinant = $this->rows[0]->get(0);
+        } elseif ($this->numRows === 2) {
+            $determinant = $this->rows[0]->get(0)->multiply($this->rows[1]->get(1))->subtract($this->rows[1]->get(0)->multiply($this->rows[0]->get(1)));
+        } else {
             $determinant = Numbers::makeZero();
 
             foreach ($this->rows[0]->toArray() as $key => $value) {
@@ -67,8 +74,6 @@ abstract class Matrix implements MatrixInterface
 
                 $determinant = $determinant->add($value->multiply($childMatrix->getDeterminant())->multiply(SequenceProvider::nthPowerNegativeOne($key)));
             }
-        } else {
-            $determinant = $this->rows[0]->get(0)->multiply($this->rows[1]->get(1))->subtract($this->rows[1]->get(0)->multiply($this->rows[0]->get(1)));
         }
 
         return $determinant;
@@ -84,7 +89,6 @@ abstract class Matrix implements MatrixInterface
         $determinant = $this->getDeterminant();
         $inverseDeterminant = new ImmutableFraction(Numbers::makeOne(), $determinant);
 
-        // TODO: Implement minors & cofactors method https://www.mathsisfun.com/algebra/matrix-inverse-minors-cofactors-adjugate.html
         if ($this->getRowCount() > 2) {
             $minors = $this->getMatrixOfMinors();
             $cofactors = $minors->applyAlternatingSigns();
@@ -112,6 +116,31 @@ abstract class Matrix implements MatrixInterface
         };
 
         return $this->mapFuction($fn);
+    }
+
+    /**
+     * Returns a new collection that contains the matrix of minors for each element in the current collection.
+     *
+     * This is an alias for getMatrixOfMinors().
+     *
+     * @return static A new collection containing the matrix of minors.
+     */
+    public function minors(): static
+    {
+        return $this->getMatrixOfMinors();
+    }
+
+    /**
+     * Returns a new matrix containing the cofactors of each element in the current matrix.
+     *
+     * The matrix of cofactors is obtained by taking the matrix of minors and applying alternating signs
+     * based on position. The sign pattern follows a checkerboard pattern starting with + at position (0,0).
+     *
+     * @return static A new matrix containing the cofactors.
+     */
+    public function cofactors(): static
+    {
+        return $this->getMatrixOfMinors()->applyAlternatingSigns();
     }
 
     /**

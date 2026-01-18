@@ -8,3 +8,6 @@ tools/
 .php-cs-fixer.cache
 .phive/
 phive.phar.asc
+
+# Auto Claude data directory
+.auto-claude/
