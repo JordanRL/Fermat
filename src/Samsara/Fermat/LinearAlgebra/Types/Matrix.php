@@ -59,7 +59,14 @@ abstract class Matrix implements MatrixInterface
             );
         }
 
-        if ($this->numRows > 2) {
+        if ($this->numRows === 0) {
+            // The determinant of a 0x0 matrix is defined as 1 by convention
+            $determinant = Numbers::makeOne();
+        } elseif ($this->numRows === 1) {
+            $determinant = $this->rows[0]->get(0);
+        } elseif ($this->numRows === 2) {
+            $determinant = $this->rows[0]->get(0)->multiply($this->rows[1]->get(1))->subtract($this->rows[1]->get(0)->multiply($this->rows[0]->get(1)));
+        } else {
             $determinant = Numbers::makeZero();
 
             foreach ($this->rows[0]->toArray() as $key => $value) {
@@ -67,8 +74,6 @@ abstract class Matrix implements MatrixInterface
 
                 $determinant = $determinant->add($value->multiply($childMatrix->getDeterminant())->multiply(SequenceProvider::nthPowerNegativeOne($key)));
             }
-        } else {
-            $determinant = $this->rows[0]->get(0)->multiply($this->rows[1]->get(1))->subtract($this->rows[1]->get(0)->multiply($this->rows[0]->get(1)));
         }
 
         return $determinant;

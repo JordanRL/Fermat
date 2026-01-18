@@ -512,10 +512,10 @@ class MatrixTest extends TestCase
         $matrix = new ImmutableMatrix($matrixData);
         $adjugate = $matrix->getAdjugate();
 
-        $this->assertEquals('3', $adjugate->getRow(0)->get(0)->getValue());
-        $this->assertEquals('4', $adjugate->getRow(0)->get(1)->getValue());
-        $this->assertEquals('5', $adjugate->getRow(1)->get(0)->getValue());
-        $this->assertEquals('2', $adjugate->getRow(1)->get(1)->getValue());
+        $this->assertEquals('2', $adjugate->getRow(0)->get(0)->getValue());
+        $this->assertEquals('-5', $adjugate->getRow(0)->get(1)->getValue());
+        $this->assertEquals('-4', $adjugate->getRow(1)->get(0)->getValue());
+        $this->assertEquals('3', $adjugate->getRow(1)->get(1)->getValue());
 
     }
 
