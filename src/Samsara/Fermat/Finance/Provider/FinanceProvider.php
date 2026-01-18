@@ -94,4 +94,52 @@ class FinanceProvider
         return $principal->multiply($base->pow($exponent));
     }
 
+    /**
+     * Calculate present value.
+     *
+     * Formula: PV = FV / (1 + r)^n
+     *
+     * @param int|float|string|Decimal $futureValue The future value
+     * @param int|float|string|Decimal $rate The discount rate per period (as decimal, e.g., 0.05 for 5%)
+     * @param int|float|string|Decimal $periods The number of periods
+     *
+     * @return ImmutableDecimal
+     * @throws IncompatibleObjectState
+     * @throws IntegrityConstraint
+     */
+    public static function presentValue(
+        int|float|string|Decimal $futureValue,
+        int|float|string|Decimal $rate,
+        int|float|string|Decimal $periods
+    ): ImmutableDecimal
+    {
+        /** @var ImmutableDecimal $futureValue */
+        $futureValue = Numbers::makeOrDont(Numbers::IMMUTABLE, $futureValue);
+        /** @var ImmutableDecimal $rate */
+        $rate = Numbers::makeOrDont(Numbers::IMMUTABLE, $rate);
+        /** @var ImmutableDecimal $periods */
+        $periods = Numbers::makeOrDont(Numbers::IMMUTABLE, $periods);
+
+        // Validate that rate is not -100% or less (would cause division by zero or negative base)
+        /** @var ImmutableDecimal $negativeOne */
+        $negativeOne = Numbers::makeOrDont(Numbers::IMMUTABLE, -1);
+        if ($rate->isLessThanOrEqualTo($negativeOne)) {
+            throw new IntegrityConstraint(
+                'Rate cannot be -100% or less',
+                'Provide a rate greater than -1',
+                'Rate must be > -1 to avoid division by zero or negative base in (1 + r)'
+            );
+        }
+
+        // PV = FV / (1 + r)^n
+        /** @var ImmutableDecimal $one */
+        $one = Numbers::makeOrDont(Numbers::IMMUTABLE, 1);
+        /** @var ImmutableDecimal $base */
+        $base = $one->add($rate);
+        /** @var ImmutableDecimal $divisor */
+        $divisor = $base->pow($periods);
+
+        return $futureValue->divide($divisor);
+    }
+
 }
