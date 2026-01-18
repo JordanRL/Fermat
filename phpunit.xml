@@ -49,5 +49,8 @@
     <testsuite name="Stats">
       <directory suffix=".php">./tests/Samsara/Fermat/Stats</directory>
     </testsuite>
+    <testsuite name="Finance">
+      <directory suffix=".php">./tests/Samsara/Fermat/Finance</directory>
+    </testsuite>
   </testsuites>
 </phpunit>
